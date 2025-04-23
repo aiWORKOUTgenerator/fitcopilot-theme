@@ -1,0 +1,111 @@
+// Import Sass modules with @use
+@use './theme.scss';
+@use './animations.scss';
+@use './reset.scss';
+
+// Import Tailwind
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Import external dependencies with @import
+@import 'aos/dist/aos.css'; // External CSS still needs @import
+
+// Base styles
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text);
+  background-color: var(--color-background-dark);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Grid pattern
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.global-grid-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+// Main container
+.homepage-container {
+  min-height: 100vh;
+  position: relative;
+}
+
+// Text gradient animation
+.text-gradient {
+  position: relative;
+  display: inline-block;
+  
+  &::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    background: linear-gradient(90deg, #a3e635 0%, #34d399 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0;
+    animation: gradientFade 8s ease-in-out infinite;
+  }
+}
+
+@keyframes gradientFade {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+// Button hover effects
+.button {
+  &.primary {
+    &:hover {
+      box-shadow: 0 0 20px rgba(163, 230, 53, 0.3);
+    }
+  }
+  
+  &.secondary {
+    &:hover {
+      box-shadow: 0 0 20px rgba(163, 230, 53, 0.1);
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .text-gradient::before {
+    animation: none;
+  }
+  
+  .button {
+    transition: none;
+  }
+} 

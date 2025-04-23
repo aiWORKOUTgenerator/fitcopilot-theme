@@ -1,0 +1,61 @@
+:root {
+  // Colors
+  --color-primary: #a3e635; // lime-400
+  --color-primary-light: #d9f99d; // lime-200
+  --color-primary-dark: #65a30d; // lime-600
+  
+  --color-secondary: #10b981; // emerald-500
+  --color-secondary-light: #6ee7b7; // emerald-300
+  --color-secondary-dark: #047857; // emerald-700
+  
+  --color-background: #111827; // gray-900
+  --color-background-light: #1f2937; // gray-800
+  --color-background-dark: #030712; // gray-950
+  
+  --color-text: #f9fafb; // gray-50
+  --color-text-muted: #9ca3af; // gray-400
+  --color-text-dark: #111827; // gray-900
+  
+  --color-border: #374151; // gray-700
+  
+  // Typography
+  --font-family-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-heading: var(--font-family-sans);
+  
+  // Typography Scale
+  --font-size-xs: 0.75rem;     // 12px
+  --font-size-sm: 0.875rem;    // 14px
+  --font-size-base: 1rem;      // 16px
+  --font-size-lg: 1.125rem;    // 18px
+  --font-size-xl: 1.25rem;     // 20px
+  --font-size-2xl: 1.5rem;     // 24px
+  --font-size-3xl: 1.875rem;   // 30px
+  --font-size-4xl: 2.25rem;    // 36px
+  --font-size-5xl: 3rem;       // 48px
+  --font-size-6xl: 3.75rem;    // 60px
+  
+  // Font Weights
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  
+  // Spacing
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+  
+  // Transitions
+  --transition-fast: 150ms;
+  --transition-normal: 250ms;
+  --transition-slow: 350ms;
+} 

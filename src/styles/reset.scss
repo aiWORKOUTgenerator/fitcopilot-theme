@@ -1,0 +1,69 @@
+/* Reset CSS for React App */
+#athlete-dashboard-root {
+  /* Reset box model */
+  box-sizing: border-box;
+  
+  /* Reset margins and padding */
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  
+  /* Ensure our app fills the container */
+  display: block;
+  
+  /* Reset font settings */
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  
+  /* Reset text styles */
+  text-align: left;
+  text-decoration: none;
+  
+  /* Prevent WordPress admin bar from affecting layout */
+  position: relative;
+  z-index: 1;
+  
+  /* Reset all elements inside */
+  & * {
+    box-sizing: border-box;
+  }
+  
+  /* Remove default margins from typography elements */
+  & h1, & h2, & h3, & h4, & h5, & h6, & p, & ul, & ol, & li {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Reset list styles */
+  & ul, & ol {
+    list-style: none;
+  }
+  
+  /* Reset links */
+  & a {
+    text-decoration: none;
+    color: inherit;
+    
+    &:hover, &:focus, &:active {
+      outline: none;
+    }
+  }
+  
+  /* Reset buttons */
+  & button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+  }
+  
+  /* Reset images */
+  & img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+} 

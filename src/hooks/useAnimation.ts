@@ -1,0 +1,77 @@
+import { useEffect } from 'react';
+import AOS from 'aos';
+
+type EasingOptions = 
+  | 'linear'
+  | 'ease'
+  | 'ease-in'
+  | 'ease-out'
+  | 'ease-in-out'
+  | 'ease-in-back'
+  | 'ease-out-back'
+  | 'ease-in-out-back'
+  | 'ease-in-sine'
+  | 'ease-out-sine'
+  | 'ease-in-out-sine'
+  | 'ease-in-quad'
+  | 'ease-out-quad'
+  | 'ease-in-out-quad'
+  | 'ease-in-cubic'
+  | 'ease-out-cubic'
+  | 'ease-in-out-cubic'
+  | 'ease-in-quart'
+  | 'ease-out-quart'
+  | 'ease-in-out-quart';
+
+interface AnimationOptions {
+  duration?: number;
+  easing?: EasingOptions;
+  once?: boolean;
+  offset?: number;
+  delay?: number;
+  disableForReducedMotion?: boolean;
+}
+
+export function useAnimation(options: AnimationOptions = {}) {
+  useEffect(() => {
+    const initializeAnimations = async () => {
+      try {
+        // Check if AOS is already defined globally
+        if (typeof window.AOS !== 'undefined') {
+          window.AOS.init({
+            duration: options.duration || 800,
+            easing: options.easing || 'ease-in-out',
+            once: options.once !== undefined ? options.once : true,
+            offset: options.offset || 100,
+            delay: options.delay || 0,
+            disable: options.disableForReducedMotion !== false && 
+                     window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          });
+        } else {
+          // Dynamically import AOS
+          const AOS = (await import('aos')).default;
+          AOS.init({
+            duration: options.duration || 800,
+            easing: options.easing || 'ease-in-out',
+            once: options.once !== undefined ? options.once : true,
+            offset: options.offset || 100,
+            delay: options.delay || 0,
+            disable: options.disableForReducedMotion !== false && 
+                     window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          });
+        }
+      } catch (error) {
+        console.error('Failed to load animation library:', error);
+      }
+    };
+
+    initializeAnimations();
+    
+    // Cleanup function
+    return () => {
+      document.querySelectorAll('[data-aos]').forEach(el => {
+        el.removeAttribute('data-aos');
+      });
+    };
+  }, [options]);
+} 
