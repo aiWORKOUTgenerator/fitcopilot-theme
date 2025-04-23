@@ -18,19 +18,51 @@ This theme follows a feature-first approach, organizing code based on features r
 src/
 ├── features/                  # Application features
 │   ├── Homepage/
-│   │   ├── Hero/
+│   │   ├── index.ts          # Main exports
+│   │   ├── Homepage.tsx      # Container component
+│   │   ├── Hero/             # Feature section
 │   │   │   ├── index.ts
 │   │   │   ├── Hero.tsx
-│   │   │   ├── Hero.styles.scss
-│   │   │   ├── Hero.test.tsx
-│   │   │   └── components/
-│   │   └── index.ts
+│   │   │   ├── Hero.scss
+│   │   │   ├── types.ts
+│   │   │   └── components/   # Sub-components
+│   │   ├── Features/         # Another section
+│   │   ├── Journey/          # Another section
+│   │   └── hooks/            # Feature-specific hooks
 │   └── shared/
-├── hooks/                      # Shared custom hooks
-├── utils/                      # Utility functions
-├── types/                      # Global type definitions
-├── styles/                     # Global styles and theme
-└── api/                        # API integration layer
+├── hooks/                     # Shared custom hooks
+├── utils/                     # Utility functions
+├── types/                     # Global type definitions
+├── styles/                    # Global styles and theme
+└── api/                       # API integration layer
+```
+
+## Feature-Based Architecture Documentation
+
+We have comprehensive documentation about our feature-based architecture:
+
+- [Full Architecture Guide](./docs/feature-architecture.md) - Detailed explanation of patterns and principles
+- [Features README](./src/features/README.md) - Quick reference for implementing features
+
+### Key Principles
+
+1. **Feature Encapsulation**: Each feature is self-contained with minimal dependencies
+2. **Single Responsibility**: Components have one clear purpose
+3. **Clear Interfaces**: Features expose well-defined public APIs
+4. **Domain-Driven**: Organization follows business domains, not technical types
+
+### Import/Export Pattern
+
+We use direct imports to maintain TypeScript compatibility:
+
+```typescript
+// In a feature's main index.ts
+import Homepage from './Homepage';
+export default Homepage;
+
+// Direct imports for components
+import { Hero } from './Hero/Hero';
+export { Hero };
 ```
 
 ## Development

@@ -89,8 +89,7 @@ function fitcopilot_is_react_template() {
     global $template;
     
     $react_templates = array(
-        'homepage-template.php',
-        'page-homepage.php'
+        'homepage-template.php'
     );
     
     foreach ($react_templates as $react_template) {
