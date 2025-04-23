@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { TestimonialCard } from './components/TestimonialCard';
 import './Testimonials.scss';
 import { TestimonialsProps } from './types';
-import { TestimonialCard } from './components/TestimonialCard';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 /**
- * Testimonials component - Displays user testimonials
+ * Testimonials component - Displays user testimonials in a grid layout
  */
 export const Testimonials: React.FC<TestimonialsProps> = ({ testimonials = [] }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  
   // Default testimonials if none provided from props
   const defaultTestimonials = testimonials.length > 0 ? testimonials : [
     {
@@ -34,80 +31,44 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ testimonials = [] })
       rating: 4
     }
   ];
-  
-  const nextTestimonial = () => {
-    setActiveIndex((prevIndex) => 
-      prevIndex === defaultTestimonials.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-  
-  const prevTestimonial = () => {
-    setActiveIndex((prevIndex) => 
-      prevIndex === 0 ? defaultTestimonials.length - 1 : prevIndex - 1
-    );
-  };
 
   return (
     <section className="testimonials-section py-24 bg-[#151F38]" id="testimonials">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-16" data-aos="fade-up">
+          <span className="text-xs font-bold tracking-widest uppercase text-[#CCFF00] mb-2 block">Success Stories</span>
           <h2 className="text-4xl font-bold mb-4 text-white">
-            What Our <span className="text-[#CCFF00]">Subscribers</span> Are Saying
+            What Our <span className="text-[#CCFF00]">Athletes</span> Say
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
             Real results from everyday athletes like you
           </p>
         </div>
-        
-        <div className="testimonials-slider relative max-w-4xl mx-auto">
-          <div className="testimonials-track">
-            {defaultTestimonials.map((testimonial, index) => (
-              <div 
-                key={testimonial.id}
-                className={`testimonial-slide transition-opacity duration-500 ${index === activeIndex ? 'opacity-100' : 'opacity-0 absolute top-0 left-0'}`}
-              >
-                <TestimonialCard
-                  name={testimonial.name}
-                  role={testimonial.role}
-                  quote={testimonial.quote}
-                  avatar={testimonial.avatar}
-                  rating={testimonial.rating}
-                />
-              </div>
-            ))}
-          </div>
-          
-          {/* Navigation controls */}
-          <div className="flex justify-center mt-8 gap-4">
-            <button 
-              onClick={prevTestimonial}
-              className="p-2 rounded-full bg-[#0B1121] border border-gray-700 hover:border-[#CCFF00] transition-colors duration-300"
-              aria-label="Previous testimonial"
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {defaultTestimonials.map((testimonial, index) => (
+            <div
+              key={testimonial.id}
+              data-aos="fade-up"
+              data-aos-delay={index * 100}
             >
-              <ChevronLeft size={24} className="text-gray-400" />
-            </button>
-            
-            <div className="flex gap-2">
-              {defaultTestimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-colors duration-300 ${
-                    index === activeIndex ? 'bg-[#CCFF00]' : 'bg-gray-700'
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                ></button>
-              ))}
+              <TestimonialCard
+                name={testimonial.name}
+                role={testimonial.role}
+                quote={testimonial.quote}
+                avatar={testimonial.avatar}
+              />
             </div>
-            
-            <button 
-              onClick={nextTestimonial}
-              className="p-2 rounded-full bg-[#0B1121] border border-gray-700 hover:border-[#CCFF00] transition-colors duration-300"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight size={24} className="text-gray-400" />
-            </button>
-          </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
+          <a href="#" className="inline-flex items-center text-[#CCFF00] hover:text-[#d9ff66] font-medium transition-colors">
+            Read More Success Stories
+            <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </a>
         </div>
       </div>
     </section>

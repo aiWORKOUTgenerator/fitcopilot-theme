@@ -1,7 +1,8 @@
 .testimonial-card {
   position: relative;
   overflow: hidden;
-  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
   &::before {
     content: '"';
     position: absolute;
@@ -13,4 +14,23 @@
     color: rgba(204, 255, 0, 0.08);
     z-index: 0;
   }
-} 
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(204, 255, 0, 0.1),
+      0 8px 10px -5px rgba(204, 255, 0, 0.04);
+  }
+
+  .testimonial-quote {
+    color: #CCFF00;
+    opacity: 0.6;
+  }
+
+  .testimonial-image {
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

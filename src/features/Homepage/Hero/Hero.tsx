@@ -192,21 +192,23 @@ const Hero: React.FC<HeroProps> = ({
                 Get a Free Workout
               </a>
 
-              {/* Tooltip - Updated to match Pricing */}
-              <div className="tooltip-container">
-                <div className={`tooltip ${tooltipStates.freeWorkout.show ? 'show' : 'hide'}`}>
-                  <div className="tooltip-content">
-                    <div className="tooltip-icon">
-                      <Zap className="w-4 h-4 text-lime-300" />
-                    </div>
-                    <div className="tooltip-text">
-                      <h5 className="tooltip-title">Quick Workout Builder</h5>
-                      <p className="text-xs text-gray-300">
-                        Generate a personalized workout plan in seconds with our AI technology - no registration required.
-                      </p>
-                    </div>
+              {/* Tooltip styled to match Pricing */}
+              <div
+                className={`tooltip ${tooltipStates.freeWorkout.show ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
+                role="tooltip"
+                id="freeWorkout-tooltip"
+                aria-hidden={!tooltipStates.freeWorkout.show}
+              >
+                <div className="tooltip-content">
+                  <div className="tooltip-icon">
+                    <Zap className="w-4 h-4 text-lime-300" />
                   </div>
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-3 h-3 bg-gray-800"></div>
+                  <div className="tooltip-text">
+                    <h5 className="tooltip-title">Quick Workout Builder</h5>
+                    <p className="text-xs text-gray-300">
+                      Generate a personalized workout plan in seconds with our AI technology - no registration required.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -225,21 +227,23 @@ const Hero: React.FC<HeroProps> = ({
                 Create Your Account
               </a>
 
-              {/* Tooltip - Updated to match Pricing */}
-              <div className="tooltip-container">
-                <div className={`tooltip ${tooltipStates.createAccount.show ? 'show' : 'hide'}`}>
-                  <div className="tooltip-content">
-                    <div className="tooltip-icon">
-                      <Shield className="w-4 h-4 text-lime-300" />
-                    </div>
-                    <div className="tooltip-text">
-                      <h5 className="tooltip-title">Member Benefits</h5>
-                      <p className="text-xs text-gray-300">
-                        Save workouts, track progress, and access premium features with your free account.
-                      </p>
-                    </div>
+              {/* Tooltip styled to match Pricing */}
+              <div
+                className={`tooltip ${tooltipStates.createAccount.show ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
+                role="tooltip"
+                id="createAccount-tooltip"
+                aria-hidden={!tooltipStates.createAccount.show}
+              >
+                <div className="tooltip-content">
+                  <div className="tooltip-icon">
+                    <Shield className="w-4 h-4 text-lime-300" />
                   </div>
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-3 h-3 bg-gray-800"></div>
+                  <div className="tooltip-text">
+                    <h5 className="tooltip-title">Member Benefits</h5>
+                    <p className="text-xs text-gray-300">
+                      Save workouts, track progress, and access premium features with your free account.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

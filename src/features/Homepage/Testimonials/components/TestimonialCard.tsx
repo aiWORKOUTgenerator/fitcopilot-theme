@@ -1,5 +1,5 @@
+import { Quote } from 'lucide-react';
 import React from 'react';
-import { Star } from 'lucide-react';
 import './TestimonialCard.scss';
 
 interface TestimonialCardProps {
@@ -13,52 +13,34 @@ interface TestimonialCardProps {
 /**
  * Renders an individual testimonial card
  */
-export const TestimonialCard: React.FC<TestimonialCardProps> = ({ 
-  name, 
-  role, 
-  quote, 
-  avatar,
-  rating = 5
+export const TestimonialCard: React.FC<TestimonialCardProps> = ({
+  name,
+  role,
+  quote,
+  avatar
 }) => {
-  // Generate rating stars
-  const renderStars = () => {
-    return Array.from({ length: 5 }).map((_, index) => (
-      <Star 
-        key={index}
-        size={16}
-        className={`${index < rating ? 'text-[#CCFF00] fill-[#CCFF00]' : 'text-gray-600'}`}
-      />
-    ));
-  };
-
   return (
-    <div className="testimonial-card bg-[#0B1121] p-8 rounded-2xl border border-gray-800">
-      {/* Rating */}
-      <div className="flex mb-6">
-        {renderStars()}
-      </div>
-      
+    <div className="testimonial-card bg-gray-800/70 backdrop-blur-lg p-8 rounded-2xl border border-gray-700 transition-all duration-300 group">
+      {/* Quote icon */}
+      <Quote size={32} className="testimonial-quote mb-3 text-[#CCFF00]" />
+
       {/* Quote */}
-      <blockquote className="mb-6">
-        <p className="text-gray-300 text-lg leading-relaxed italic">
-          "{quote}"
-        </p>
-      </blockquote>
-      
+      <p className="text-gray-300 italic mb-6">"{quote}"</p>
+
       {/* Author */}
       <div className="flex items-center">
-        <div className="testimonial-card__avatar">
+        <div className="mr-4">
           {avatar ? (
-            <img src={avatar} alt={name} className="w-12 h-12 rounded-full" />
+            <img src={avatar} alt={name} className="w-12 h-12 rounded-full testimonial-image" />
           ) : (
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#CCFF00] to-[#64D2B9] flex items-center justify-center text-[#0B1121] font-bold text-lg">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#CCFF00] to-[#64D2B9] flex items-center justify-center text-[#0B1121] font-bold text-lg testimonial-image">
               {name.charAt(0)}
             </div>
           )}
         </div>
-        <div className="ml-4">
-          <h4 className="font-semibold text-white">{name}</h4>
-          <p className="text-gray-400 text-sm">{role}</p>
+        <div>
+          <h4 className="font-bold text-white group-hover:text-[#CCFF00] transition-colors">{name}</h4>
+          <p className="text-sm text-gray-400">{role}</p>
         </div>
       </div>
     </div>

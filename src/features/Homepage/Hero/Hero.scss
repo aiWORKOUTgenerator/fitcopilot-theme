@@ -2,198 +2,159 @@
 
 .hero {
   position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 60px 0;
   overflow: hidden;
-  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-  color: white;
-  padding: 2rem;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--color-background);
 
-  &-content {
-    position: relative;
-    z-index: 1;
-    max-width: 1200px;
-    width: 100%;
-    text-align: center;
-  }
-
-  &-logo {
-    max-width: 300px;
-    margin: 0 auto 2rem;
-  }
-
-  &-title {
-    font-size: 3.5rem;
-    font-weight: 700;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-  }
-
-  &-description {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    opacity: 0.9;
-  }
-
-  &-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 2rem;
-  }
-}
-
-.floating-icon {
-  position: absolute;
-  color: rgba(255, 255, 255, 0.1);
-  pointer-events: none;
-  z-index: 0;
-
-  @keyframes float {
-
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-
-    50% {
-      transform: translateY(-20px);
-    }
-  }
-}
-
-.tooltip {
-  position: absolute;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-size: 0.875rem;
-  pointer-events: none;
-  z-index: 10;
-  transition: opacity 0.3s ease;
-  opacity: 0;
-
-  &.visible {
-    opacity: 1;
-  }
-}
-
-.hero-section {
-  position: relative;
-
+  // Grid pattern background
   &::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 120%;
-    height: 120%;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle at center,
-        rgba(204, 255, 0, 0.1) 0%,
-        rgba(11, 17, 33, 0) 50%);
-    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center center;
+    z-index: 0;
     pointer-events: none;
   }
 
-  // Grid pattern (if you choose to re-enable it)
-  .bg-grid-pattern {
-    background-image: linear-gradient(to right,
-        rgba(255, 255, 255, 0.05) 1px,
-        transparent 1px),
-      linear-gradient(to bottom,
-        rgba(255, 255, 255, 0.05) 1px,
-        transparent 1px);
-    background-size: 30px 30px;
+  .container {
+    position: relative;
+    z-index: 1;
   }
 
-  // Citron text pulsing
-  .citron-text {
-    color: #ddff0e;
-    font-weight: 600;
-    animation: pulseCitron 3s ease-in-out infinite;
-    will-change: opacity, text-shadow;
+  h1 {
+    margin-bottom: 1.5rem;
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.2;
+
+    .citron-text {
+      color: var(--color-accent);
+      display: inline-block;
+      animation: pulseCitron 3s infinite ease-in-out;
+    }
   }
 
-  // Floating icons
-  .floating-icon {
+  p {
+    margin-bottom: 2rem;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 600px;
+  }
+
+  .hero-content {
+    max-width: 50%;
+    position: relative;
+    z-index: 2;
+
+    @media (max-width: 992px) {
+      max-width: 100%;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+  }
+
+  .hero-image {
     position: absolute;
-    opacity: 0.15;
-    filter: drop-shadow(0 0 6px rgba(163, 230, 53, 0.3));
-    transform-origin: center;
-    z-index: 5;
-    will-change: transform;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45%;
+    max-width: 700px;
+    z-index: 1;
 
-    svg {
-      color: #a3e635;
-      fill: rgba(163, 230, 53, 0.08);
-      stroke-width: 1.75;
+    @media (max-width: 992px) {
+      position: relative;
+      top: auto;
+      right: auto;
+      transform: none;
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
     }
 
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .floating-icon {
+    position: absolute;
+    opacity: 0.8;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+    animation: float 6s infinite ease-in-out;
+    z-index: 3;
+
+    &:hover {
+      z-index: 10;
+    }
+
+    // Different animation timing for odd/even icons
     &:nth-child(odd) {
-      animation-direction: alternate;
+      animation-duration: 8s;
     }
 
     &:nth-child(even) {
-      animation-direction: alternate-reverse;
+      animation-duration: 10s;
+      animation-delay: 1s;
+    }
+
+    svg {
+      fill: currentColor;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover {
+      opacity: 1;
+
+      svg {
+        transform: scale(1.1);
+      }
     }
   }
 
-  // Tooltip container
-  .tooltip-container {
-    position: absolute;
-    width: 100%;
-    top: calc(100% + 15px);
-    left: 0;
-    display: flex;
-    justify-content: center;
-    z-index: 100;
-    pointer-events: none;
-  }
-
-  // Tooltip bubble
+  /* Tooltip styling matched with pricing component */
   .tooltip {
-    position: relative;
-    background: #1f2937;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 14px;
-    line-height: 1.4;
-    max-width: 260px;
-    width: 264px;
-    color: #d1d5db;
-    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
-    border: none;
-    opacity: 0;
-    transform: translateY(8px);
-    visibility: hidden;
-    transition: all 0.3s ease;
-    will-change: transform, opacity;
+    position: absolute;
+    left: 50%;
+    bottom: 110%;
+    width: 260px;
+    background-color: rgba(17, 24, 39, 0.95);
+    border: 1px solid rgba(132, 204, 22, 0.3);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    z-index: 20;
+    transition: all 0.2s ease;
+    transform: translateX(-50%);
 
-    &::before {
+    &::after {
       content: '';
       position: absolute;
-      bottom: 100%;
       left: 50%;
-      transform: translateX(-50%);
-      border-width: 6px;
-      border-style: solid;
-      border-color: transparent transparent #1f2937 transparent;
-    }
-
-    &.show {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-
-    &.hide {
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(8px);
+      bottom: -6px;
+      width: 12px;
+      height: 12px;
+      background-color: rgba(17, 24, 39, 0.95);
+      border-right: 1px solid rgba(132, 204, 22, 0.3);
+      border-bottom: 1px solid rgba(132, 204, 22, 0.3);
+      transform: translateX(-50%) rotate(45deg);
     }
 
     .tooltip-content {
@@ -214,69 +175,95 @@
     .tooltip-text {
       flex: 1;
     }
+
+    .tooltip-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #a3e635;
+      /* text-lime-300 */
+      margin-bottom: 4px;
+    }
   }
 
-  // Arrow icon bounce
   .arrow-icon {
-    display: inline-block;
-    animation: bounce 1.5s ease-in-out infinite;
-    will-change: transform;
-    margin-left: 4px;
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    color: var(--color-accent);
+    animation: bounce 2s infinite ease-in-out;
+    cursor: pointer;
+    z-index: 5;
+
+    @media (max-width: 768px) {
+      bottom: 15px;
+    }
   }
 
-  // Button transitions
   .hero-button {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    will-change: transform, box-shadow;
-  }
+    background: linear-gradient(90deg,
+        var(--color-primary) 0%,
+        var(--color-primary-dark) 100%);
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 
-  // Shadow utilities
-  .shadow-optimized {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2),
-      0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  }
-
-  .shadow-optimized-hover {
-    box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.2),
-      0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  }
-
-  .shadow-lime {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2),
-      0 4px 6px -4px rgba(132, 204, 22, 0.1);
-  }
-
-  // Respect reduced-motion
-  @media (prefers-reduced-motion: reduce) {
-    .citron-text {
-      animation: none !important;
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.2) 50%,
+          transparent 100%);
+      transition: all 0.5s ease;
     }
 
-    .floating-icon {
-      animation: none !important;
-    }
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 
-    .tooltip {
-      transition: none !important;
-
-      &.show {
-        opacity: 1;
-        visibility: visible;
-        transform: none;
+      &::before {
+        left: 100%;
       }
     }
 
-    .arrow-icon {
-      animation: none !important;
-    }
-
-    .hero-button {
-      transition: none !important;
+    &:active {
+      transform: translateY(1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
   }
 }
 
-// Keyframes (must be top-level)
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  33% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+
+  66% {
+    transform: translateY(5px) rotate(-2deg);
+  }
+}
+
 @keyframes pulseCitron {
 
   0%,
@@ -291,16 +278,40 @@
   }
 }
 
-@keyframes float {
-  0% {
-    transform: translateY(0) rotate(0deg) scale(1);
+@keyframes bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
   }
 
   50% {
-    transform: translateY(-15px) rotate(3deg) scale(1.03);
+    transform: translateY(-5px);
   }
+}
 
-  100% {
-    transform: translateY(0) rotate(0deg) scale(1);
+// Optimize animations for users who prefer reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .hero {
+    .floating-icon {
+      animation: none;
+    }
+
+    .arrow-icon {
+      animation: none;
+    }
+
+    h1 .citron-text {
+      animation: none;
+    }
+
+    .tooltip {
+      transition: opacity 0.2s ease-in-out;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+
+    .hero-button::before {
+      display: none;
+    }
   }
 }
