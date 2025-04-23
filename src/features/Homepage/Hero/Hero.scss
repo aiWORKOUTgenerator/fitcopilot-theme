@@ -1,0 +1,16 @@
+.hero-section {
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120%;
+    height: 120%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle at center, rgba(204, 255, 0, 0.1) 0%, rgba(11, 17, 33, 0) 50%);
+    z-index: 1;
+    pointer-events: none;
+  }
+} 

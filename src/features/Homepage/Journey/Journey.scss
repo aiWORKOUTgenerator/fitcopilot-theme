@@ -1,0 +1,18 @@
+.journey-section {
+  position: relative;
+  
+  .journey-path {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    width: 75%;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(204, 255, 0, 0.3), rgba(100, 210, 185, 0.3));
+    transform: translateX(-50%);
+    z-index: 0;
+    
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+} 

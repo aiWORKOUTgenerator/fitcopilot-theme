@@ -1,0 +1,18 @@
+.pricing-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
+  }
+  
+  @media (min-width: 768px) {
+    &.popular {
+      transform: scale(1.05);
+      
+      &:hover {
+        transform: scale(1.05) translateY(-5px);
+      }
+    }
+  }
+} 

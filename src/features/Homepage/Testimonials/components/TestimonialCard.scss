@@ -1,0 +1,16 @@
+.testimonial-card {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    right: 30px;
+    font-size: 150px;
+    line-height: 1;
+    font-family: Georgia, serif;
+    color: rgba(204, 255, 0, 0.08);
+    z-index: 0;
+  }
+} 
