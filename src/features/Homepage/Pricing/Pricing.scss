@@ -1,6 +1,8 @@
+/* Pricing Section Styles */
 .pricing-section {
   position: relative;
-  
+  overflow: hidden;
+
   &::before {
     content: '';
     position: absolute;
@@ -12,4 +14,228 @@
     opacity: 0.5;
     z-index: 0;
   }
-} 
+}
+
+/* Text gradient effect */
+.text-gradient,
+.price-gradient {
+  background-size: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+}
+
+.plan-name-gradient {
+  @extend .text-gradient;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Pricing card shadows */
+.shadow-optimized-blue {
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1), 0 8px 10px -5px rgba(59, 130, 246, 0.04);
+}
+
+.shadow-optimized-lime {
+  box-shadow: 0 10px 25px -5px rgba(132, 204, 22, 0.1), 0 8px 10px -5px rgba(132, 204, 22, 0.04);
+}
+
+.shadow-optimized-purple {
+  box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.1), 0 8px 10px -5px rgba(139, 92, 246, 0.04);
+}
+
+/* Pricing animations */
+.price-shake {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.price-flash {
+  animation: flash 0.5s ease-out both;
+}
+
+.price-fade-out {
+  animation: fadeOut 0.5s ease both;
+}
+
+.price-fade-in {
+  animation: fadeIn 0.5s ease 0.3s both;
+}
+
+.price-zoom-in {
+  animation: zoomIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease both;
+}
+
+/* Pricing particles */
+.price-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.price-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(132, 204, 22, 0.3), rgba(5, 150, 105, 0.2));
+  opacity: 0.4;
+  pointer-events: none;
+  animation: float 15s infinite ease-in-out;
+}
+
+.pricing-card:hover .feature-text.highlighted {
+  background: linear-gradient(to right, #84cc16, #059669);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease;
+}
+
+/* Plan tooltips */
+.plan-tooltip {
+  position: absolute;
+  left: -10px;
+  bottom: 110%;
+  width: 260px;
+  background-color: rgba(17, 24, 39, 0.95);
+  border: 1px solid rgba(132, 204, 22, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  transition: all 0.2s ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 20px;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    background-color: rgba(17, 24, 39, 0.95);
+    border-right: 1px solid rgba(132, 204, 22, 0.3);
+    border-bottom: 1px solid rgba(132, 204, 22, 0.3);
+    transform: rotate(45deg);
+  }
+}
+
+.popular-badge,
+.elite-badge {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Animation keyframes */
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-2px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes flash {
+
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+
+  50% {
+    transform: translateY(30px) translateX(15px);
+  }
+
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+/* Particle explosion animation */
+.price-particle {
+  animation: explode 1s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
+}
+
+@keyframes explode {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty)));
+  }
+}

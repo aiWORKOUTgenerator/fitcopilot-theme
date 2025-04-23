@@ -1,18 +1,55 @@
 .pricing-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
+  overflow: visible;
+  position: relative;
+
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
   }
-  
+
+  /* Feature icon hover effect */
+  .feature-icon {
+    transition: transform 0.2s ease;
+  }
+
+  li:hover .feature-icon {
+    transform: scale(1.1);
+  }
+
+  /* Badge styling */
+  .plan-badge {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+  }
+
+  /* Pricing text styles */
+  .plan-name {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* Beta badge styling */
+  .beta-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
   @media (min-width: 768px) {
     &.popular {
       transform: scale(1.05);
-      
+
       &:hover {
         transform: scale(1.05) translateY(-5px);
       }
     }
   }
-} 
+}

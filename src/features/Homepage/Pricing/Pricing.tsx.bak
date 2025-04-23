@@ -1,7 +1,8 @@
-import { Check, ChevronDown, ChevronUp, Clock, Crown, Shield, Sparkles, Star, Users } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Check, Star, ChevronDown, ChevronUp, Crown, Sparkles, Clock, Shield, Users } from 'lucide-react';
 import './Pricing.scss';
 import { PricingProps } from './types';
+import { PricingCard } from './components/PricingCard';
 
 /**
  * Pricing component - Displays the subscription options with animation and interactive elements
@@ -370,7 +371,7 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
 
                 {/* Plan price */}
                 <div className="mb-4">
-                  {plan.popular ? (
+                  {plan.popular && (
                     // Animated price for Pro plan
                     <div className="min-h-16 flex items-end" aria-live="polite">
                       {animationState === 'normal' && (
@@ -419,15 +420,15 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
                       )}
                     </div>
                   ) : (
-                    // Regular price for other plans
-                    <div className="flex items-end">
-                      <span className={`price price-gradient bg-gradient-to-r ${plan.priceTextColors || 'from-white to-white'}`}>
-                        {plan.price === '0' ? 'Free' : `$${plan.price}`}
-                      </span>
-                      {plan.period !== 'forever' && (
-                        <span className="text-white ml-2 mb-1 font-medium">/{plan.period}</span>
-                      )}
-                    </div>
+                  // Regular price for other plans
+                  <div className="flex items-end">
+                    <span className={`price price-gradient bg-gradient-to-r ${plan.priceTextColors || 'from-white to-white'}`}>
+                      {plan.price === '0' ? 'Free' : `$${plan.price}`}
+                    </span>
+                    {plan.period !== 'forever' && (
+                      <span className="text-white ml-2 mb-1 font-medium">/{plan.period}</span>
+                    )}
+                  </div>
                   )}
                 </div>
 

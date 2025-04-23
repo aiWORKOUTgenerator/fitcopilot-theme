@@ -52,10 +52,10 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ testimonials = [] })
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4 text-white">
-            What Our <span className="text-[#CCFF00]">Users</span> Say
+            What Our <span className="text-[#CCFF00]">Subscribers</span> Are Saying
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Real results from people just like you
+            Real results from everyday athletes like you
           </p>
         </div>
         
