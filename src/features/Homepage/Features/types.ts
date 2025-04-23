@@ -1,3 +1,8 @@
+/**
+ * Available theme variants for the Features component
+ */
+export type VariantKey = 'default' | 'gym';
+
 export interface Feature {
   id: number;
   title: string;
@@ -7,4 +12,5 @@ export interface Feature {
 
 export interface FeaturesProps {
   features?: Feature[];
+  variant?: VariantKey;
 } 

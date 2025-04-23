@@ -8,7 +8,7 @@ import { useHomepageData } from './hooks/useHomepageData';
 // Import feature components
 import { Features } from './Features';
 import { Footer } from './Footer';
-import { Hero } from './Hero';
+import { Hero, getHeroVariant } from './Hero';
 import { Journey } from './Journey';
 import { Pricing } from './Pricing';
 import { Testimonials } from './Testimonials';
@@ -19,6 +19,9 @@ import { Testimonials } from './Testimonials';
 const Homepage: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const data = useHomepageData();
+
+  // Get the hero variant from WordPress settings
+  const heroVariant = getHeroVariant();
 
   // Initialize animations
   useAnimation();
@@ -35,8 +38,9 @@ const Homepage: React.FC = () => {
       {/* Global Grid Pattern */}
       <div className="global-grid-overlay bg-grid-pattern" aria-hidden="true"></div>
 
-      {/* Hero Section */}
+      {/* Hero Section - Using dynamic variant */}
       <Hero
+        variant={heroVariant}
         registrationLink={data.siteLinks.registration}
         loginLink={data.siteLinks.login}
         logoUrl={data.assets.logo}

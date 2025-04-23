@@ -1,22 +1,22 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import Hero from './Hero';
+import { Meta, StoryObj } from '@storybook/react';
+import { Hero } from './index';
 
 /**
  * Hero component documentation
  */
 const meta: Meta<typeof Hero> = {
-  title: 'features/Homepage/Hero',
+  title: 'Features/Homepage/Hero',
   component: Hero,
-  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
-    docs: {
-      description: {
-        component: 'The Hero component is the main landing section of the FitCopilot homepage. It includes a title, subtitle, logo, and call-to-action buttons.',
-      },
-    },
   },
+  tags: ['autodocs'],
   argTypes: {
+    variant: {
+      control: 'select',
+      options: ['default', 'gym'],
+      description: 'The visual style variant of the Hero component',
+    },
     registrationLink: {
       control: 'text',
       description: 'URL for the registration button',
@@ -27,7 +27,7 @@ const meta: Meta<typeof Hero> = {
     },
     logoUrl: {
       control: 'text',
-      description: 'URL for the logo image. If not provided, a text-based logo will be displayed.',
+      description: 'URL for the logo image',
     },
   },
 };
@@ -36,55 +36,57 @@ export default meta;
 type Story = StoryObj<typeof Hero>;
 
 /**
- * Default Hero with text logo
+ * Default variant of the Hero component
  */
 export const Default: Story = {
   args: {
-    registrationLink: 'https://builder.fitcopilot.ai/register',
-    loginLink: 'https://builder.fitcopilot.ai/login',
-    logoUrl: undefined
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Default Hero section with text-based logo. This is the standard configuration used on the homepage.',
-      },
-    },
+    variant: 'default',
+    registrationLink: 'https://example.com/register',
+    loginLink: 'https://example.com/login',
+    logoUrl: '/wp-content/themes/athlete-dashboard-gym-engine/assets/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png',
   },
 };
 
 /**
- * Hero with custom image logo
+ * Gym-specific variant of the Hero component
  */
-export const WithImageLogo: Story = {
+export const Gym: Story = {
   args: {
-    registrationLink: 'https://builder.fitcopilot.ai/register',
-    loginLink: 'https://builder.fitcopilot.ai/login',
-    logoUrl: 'https://placehold.co/300x60/CCFF00/0B1121.png?text=AI+WORKOUT+GENERATOR'
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'Hero section with an image-based logo instead of the text-based default.',
-      },
-    },
+    variant: 'gym',
+    registrationLink: 'https://example.com/register',
+    loginLink: 'https://example.com/login',
+    logoUrl: '/wp-content/themes/athlete-dashboard-gym-engine/assets/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png',
   },
 };
 
 /**
- * Hero with custom links
+ * Side-by-side comparison of both variants
  */
-export const WithCustomLinks: Story = {
-  args: {
-    registrationLink: '/custom-registration',
-    loginLink: '/custom-login',
-    logoUrl: undefined
-  },
+export const VariantComparison: Story = {
   parameters: {
+    layout: 'fullscreen',
     docs: {
-      description: {
-        story: 'Hero section with custom registration and login links. This configuration can be used for white-label or custom implementations.',
+      story: {
+        inline: false,
+        iframeHeight: 1000,
       },
     },
   },
+  render: (args) => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+      <div>
+        <h2 style={{ padding: '1rem', background: '#333', color: 'white', textAlign: 'center' }}>
+          Default Variant
+        </h2>
+        <Hero {...args} variant="default" />
+      </div>
+
+      <div>
+        <h2 style={{ padding: '1rem', background: '#333', color: 'white', textAlign: 'center' }}>
+          Gym Variant
+        </h2>
+        <Hero {...args} variant="gym" />
+      </div>
+    </div>
+  ),
 };

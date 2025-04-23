@@ -52,4 +52,7 @@ function fitcopilot_dequeue_styles() {
 add_action('wp_enqueue_scripts', 'fitcopilot_dequeue_styles', 100);
 
 // Include React enqueue functions
-require_once get_template_directory() . '/inc/react-enqueue.php'; 
+require_once get_template_directory() . '/inc/react-enqueue.php';
+
+// Include theme variants functionality
+require_once get_template_directory() . '/includes/theme-variants.php'; 
