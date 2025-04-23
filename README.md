@@ -2,6 +2,12 @@
 
 A React/TypeScript WordPress theme for the AI Workout Generator project.
 
+[![Documentation](https://github.com/fitcopilot/fitcopilot-theme/actions/workflows/documentation.yml/badge.svg)](https://github.com/fitcopilot/fitcopilot-theme/actions/workflows/documentation.yml)
+[![Storybook](https://github.com/fitcopilot/fitcopilot-theme/actions/workflows/storybook.yml/badge.svg)](https://github.com/fitcopilot/fitcopilot-theme/actions/workflows/storybook.yml)
+[![Lighthouse CI](https://github.com/fitcopilot/fitcopilot-theme/actions/workflows/lighthouse-ci.yml/badge.svg)](https://github.com/fitcopilot/fitcopilot-theme/actions/workflows/lighthouse-ci.yml)
+[![Performance: 94/100](https://img.shields.io/badge/Performance-94%2F100-success)](https://fitcopilot.github.io/fitcopilot-theme/metrics/performance/overview)
+[![Accessibility: 98/100](https://img.shields.io/badge/Accessibility-98%2F100-success)](https://fitcopilot.github.io/fitcopilot-theme/metrics/performance/overview)
+
 ## Architecture
 
 This theme follows a feature-first approach, organizing code based on features rather than file types. Components, hooks, styles, types, and tests are grouped together per feature.
