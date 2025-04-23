@@ -1,0 +1,62 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build project
+        run: npm run build
+      
+      - name: Start server
+        run: |
+          npm run serve &
+          sleep 5
+      
+      - name: Run Lighthouse CI
+        id: lighthouse
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            http://localhost:3000/
+            http://localhost:3000/docs/
+          configPath: './.lighthouserc.json'
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+      
+      - name: Extract metrics
+        run: |
+          mkdir -p documentation-site/static/metrics/data
+          
+          # Extract latest metrics
+          node .github/scripts/extract-metrics.js "${{ steps.lighthouse.outputs.resultsPath || '.lighthouseci/manifest.json' }}" "documentation-site/static/metrics/data/latest-metrics.json"
+          
+          # Update history
+          node .github/scripts/update-history.js "documentation-site/static/metrics/data/latest-metrics.json" "documentation-site/static/metrics/data/history.json"
+      
+      - name: Commit metrics data
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add documentation-site/static/metrics/data/
+          git commit -m "Update performance metrics [skip ci]" || echo "No changes to commit"
+          git push 

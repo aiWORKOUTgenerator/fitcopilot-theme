@@ -1,0 +1,66 @@
+[
+    {
+        "date": "2023-10-01",
+        "url": "http://localhost:3000/",
+        "performance": 86,
+        "accessibility": 92,
+        "bestPractices": 90,
+        "seo": 95,
+        "pwa": 75,
+        "webVitals": {
+            "lcp": 3200,
+            "fid": 24,
+            "cls": 0.12,
+            "fcp": 1250,
+            "tbt": 230
+        }
+    },
+    {
+        "date": "2023-10-05",
+        "url": "http://localhost:3000/",
+        "performance": 89,
+        "accessibility": 94,
+        "bestPractices": 92,
+        "seo": 96,
+        "pwa": 78,
+        "webVitals": {
+            "lcp": 2950,
+            "fid": 22,
+            "cls": 0.09,
+            "fcp": 1150,
+            "tbt": 200
+        }
+    },
+    {
+        "date": "2023-10-10",
+        "url": "http://localhost:3000/",
+        "performance": 92,
+        "accessibility": 96,
+        "bestPractices": 93,
+        "seo": 97,
+        "pwa": 82,
+        "webVitals": {
+            "lcp": 2650,
+            "fid": 19,
+            "cls": 0.07,
+            "fcp": 1050,
+            "tbt": 170
+        }
+    },
+    {
+        "date": "2023-10-15",
+        "url": "http://localhost:3000/",
+        "performance": 94,
+        "accessibility": 98,
+        "bestPractices": 95,
+        "seo": 98,
+        "pwa": 85,
+        "webVitals": {
+            "lcp": 2350,
+            "fid": 17,
+            "cls": 0.05,
+            "fcp": 980,
+            "tbt": 150
+        }
+    }
+]

@@ -1,0 +1,16 @@
+{
+    "date": "2023-10-15",
+    "url": "http://localhost:3000/",
+    "performance": 94,
+    "accessibility": 98,
+    "bestPractices": 95,
+    "seo": 98,
+    "pwa": 85,
+    "webVitals": {
+        "lcp": 2350,
+        "fid": 17,
+        "cls": 0.05,
+        "fcp": 980,
+        "tbt": 150
+    }
+}

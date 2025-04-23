@@ -51,3 +51,4 @@ sitemap.xml.gz
 
 # Cursor editor
 .cursor/ 
+*storybook.log
