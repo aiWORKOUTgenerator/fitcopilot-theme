@@ -1,59 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import './styles/homepage.scss';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
+import './styles/homepage.scss';
 
 // Import custom hooks
-import { useAnimation } from './hooks/useAnimation';
-import { useWordPress } from './hooks/useWordPress';
 
-// Import section components
-import { Hero, Features, Journey, Testimonials, Pricing, Footer } from './components/Homepage/Sections';
+// Import feature component from feature-first structure
+import HomepageFeature from './features/Homepage';
 
 /**
  * Main Homepage component
  */
 const Homepage: React.FC = () => {
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const data = useWordPress();
-  
-  // Initialize animations
-  useAnimation();
-  
-  useEffect(() => {
-    // Mark as loaded after initial render
-    setIsLoaded(true);
-  }, []);
-
-  return (
-    <main 
-      className={`homepage-container bg-black text-white transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
-    >
-      {/* Global Grid Pattern */}
-      <div className="global-grid-overlay bg-grid-pattern" aria-hidden="true"></div>
-      
-      {/* Hero Section */}
-      <Hero 
-        registrationLink={data.siteLinks.registration}
-        loginLink={data.siteLinks.login}
-        logoUrl={data.assets.logo}
-      />
-      
-      {/* Features Section */}
-      <Features />
-      
-      {/* Journey Section */}
-      <Journey />
-      
-      {/* Testimonials Section */}
-      <Testimonials />
-      
-      {/* Pricing Section */}
-      <Pricing />
-      
-      {/* Footer Section */}
-      <Footer />
-    </main>
-  );
+  return <HomepageFeature />;
 };
 
 /**
@@ -61,7 +19,7 @@ const Homepage: React.FC = () => {
  */
 const initializeApp = () => {
   const container = document.getElementById('athlete-dashboard-root');
-  
+
   if (container) {
     try {
       const root = createRoot(container);
@@ -72,7 +30,7 @@ const initializeApp = () => {
       );
     } catch (error) {
       console.error('Failed to initialize React app:', error);
-      
+
       // Fallback to display error to user
       container.innerHTML = `
         <div style="padding: 20px; text-align: center; font-family: sans-serif;">
@@ -92,7 +50,7 @@ const initializeApp = () => {
       const newRootElement = document.createElement('div');
       newRootElement.id = 'athlete-dashboard-root';
       bodyElement.appendChild(newRootElement);
-      
+
       // Then mount app to the new element
       try {
         const root = createRoot(newRootElement);

@@ -29,7 +29,10 @@ src/
 │   │   ├── Features/         # Another section
 │   │   ├── Journey/          # Another section
 │   │   └── hooks/            # Feature-specific hooks
-│   └── shared/
+├── components/                # Shared UI components
+│   └── UI/
+│       ├── Button/           # Shared UI components
+│       └── ...
 ├── hooks/                     # Shared custom hooks
 ├── utils/                     # Utility functions
 ├── types/                     # Global type definitions
@@ -41,8 +44,7 @@ src/
 
 We have comprehensive documentation about our feature-based architecture:
 
-- [Full Architecture Guide](./docs/feature-architecture.md) - Detailed explanation of patterns and principles
-- [Features README](./src/features/README.md) - Quick reference for implementing features
+- [Feature Architecture Guide](./docs/feature-architecture.md) - Detailed explanation of patterns and principles
 
 ### Key Principles
 
@@ -61,7 +63,7 @@ import Homepage from './Homepage';
 export default Homepage;
 
 // Direct imports for components
-import { Hero } from './Hero/Hero';
+import { Hero } from './Hero';
 export { Hero };
 ```
 

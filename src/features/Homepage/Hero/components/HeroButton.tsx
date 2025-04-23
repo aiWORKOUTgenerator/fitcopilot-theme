@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import Button from '../../../../components/UI/Button';
 
 interface HeroButtonProps {
   href: string;
@@ -10,26 +11,24 @@ interface HeroButtonProps {
 /**
  * Button component for the Hero section
  */
-export const HeroButton: React.FC<HeroButtonProps> = ({ 
-  href, 
-  children, 
+export const HeroButton: React.FC<HeroButtonProps> = ({
+  href,
+  children,
   variant = 'primary',
   icon
 }) => {
-  const baseClasses = "inline-flex items-center justify-center px-8 py-4 rounded-full font-medium transition-all duration-300";
-  
-  const variantClasses = {
-    primary: "text-[#0B1121] bg-[#CCFF00] hover:bg-[#D8FF33]",
-    secondary: "text-white bg-transparent border-2 border-white/10 hover:bg-white/5"
-  };
-  
+  // Map local variants to shared Button variants
+  const buttonVariant = variant === 'primary' ? 'hero-primary' : 'hero-secondary';
+
   return (
-    <a 
-      href={href} 
-      className={`${baseClasses} ${variantClasses[variant]}`}
+    <Button
+      href={href}
+      variant={buttonVariant}
+      size="lg"
+      rounded="full"
+      icon={icon}
     >
-      {icon}
       {children}
-    </a>
+    </Button>
   );
 }; 

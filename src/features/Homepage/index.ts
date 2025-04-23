@@ -5,18 +5,13 @@ import Homepage from './Homepage';
 export default Homepage;
 
 // Export component features individually
-import { Hero } from './Hero/Hero';
-import { Features } from './Features/Features';
-import { Journey } from './Journey/Journey';
-import { Testimonials } from './Testimonials/Testimonials';
-import { Pricing } from './Pricing/Pricing';
-import { Footer } from './Footer/Footer';
+import { Features } from './Features';
+import { Footer } from './Footer';
+import { Hero } from './Hero';
+import { Journey } from './Journey';
+import { Pricing } from './Pricing';
+import { Testimonials } from './Testimonials';
 
 export {
-  Hero,
-  Features,
-  Journey,
-  Testimonials,
-  Pricing,
-  Footer
-}; 
+    Features, Footer, Hero, Journey, Pricing, Testimonials
+};
