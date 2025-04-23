@@ -1,48 +1,69 @@
-import React from 'react';
-import { Brain, Activity, Award, Users } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
+import React, { forwardRef } from 'react';
 import './FeatureCard.scss';
 
-interface FeatureCardProps {
+export interface FeatureCardProps {
+  icon: React.ReactNode;
   title: string;
   description: string;
-  icon?: string;
+  gradient: string;
+  demoComponent: React.ReactNode;
+  isActive: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }
 
-/**
- * Renders an individual feature card
- */
-export const FeatureCard: React.FC<FeatureCardProps> = ({ 
-  title, 
-  description, 
-  icon = 'brain'
-}) => {
-  // Map icon names to actual icon components
-  const getIcon = () => {
-    switch(icon) {
-      case 'brain':
-        return <Brain size={32} className="text-[#CCFF00]" />;
-      case 'chart':
-        return <Activity size={32} className="text-[#CCFF00]" />;
-      case 'medal':
-        return <Award size={32} className="text-[#CCFF00]" />;
-      case 'users':
-        return <Users size={32} className="text-[#CCFF00]" />;
-      default:
-        return <Brain size={32} className="text-[#CCFF00]" />;
-    }
-  };
-
-  return (
-    <div className="feature-card bg-[#151F38] p-6 rounded-xl border border-gray-800 hover:border-[#CCFF00]/30 transition-all duration-300">
-      <div className="feature-card__icon-container mb-5 p-3 inline-block rounded-lg bg-[#0F172A]">
-        {getIcon()}
+const FeatureCard = forwardRef<HTMLDivElement, FeatureCardProps>(
+  (
+    {
+      icon,
+      title,
+      description,
+      gradient,
+      demoComponent,
+      isActive,
+      onMouseEnter,
+      onMouseLeave,
+    },
+    ref
+  ) => (
+    <div
+      ref={ref}
+      className="flip-card h-96"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <div className="flip-card-inner w-full h-full">
+        <div className="flip-card-front absolute w-full h-full group bg-gray-800/70 backdrop-blur-lg rounded-2xl p-8 border border-gray-700 transition-all duration-500 hover:border-lime-300/50 hover:shadow-lg hover:shadow-lime-300/20 flex flex-col items-center justify-center">
+          <div className={`h-24 w-24 rounded-2xl mb-6 mx-auto flex items-center justify-center bg-gradient-to-br ${gradient}`}>
+            {icon}
+          </div>
+          <h3 className="text-white text-xl font-bold mb-4 group-hover:text-lime-300 transition-colors">{title}</h3>
+          <p className="text-gray-400 group-hover:text-gray-300 transition-colors">{description}</p>
+          <div className="mt-6">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-700/50 text-lime-300 group-hover:bg-lime-300/20 transition-colors">
+              Hover to Preview
+            </span>
+          </div>
+        </div>
+        <div className="flip-card-back absolute w-full h-full bg-gray-800/90 backdrop-blur-lg rounded-2xl p-6 border border-lime-300/30 shadow-lg shadow-lime-300/10 flex flex-col">
+          <h3 className="text-lime-300 text-lg font-bold mb-4 text-center flex items-center justify-center">
+            {title} <CheckCircle className="ml-2 animate-pulse" size={20} />
+          </h3>
+          <div className="flex-1 px-2">
+            {demoComponent}
+          </div>
+          <div className="mt-4 text-center">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-lime-500/20 text-lime-300">
+              Hover to Flip Back
+            </span>
+          </div>
+        </div>
       </div>
-      
-      <h3 className="text-xl font-semibold mb-3 text-white">{title}</h3>
-      
-      <p className="text-gray-400 leading-relaxed">
-        {description}
-      </p>
     </div>
-  );
-}; 
+  )
+);
+
+FeatureCard.displayName = 'FeatureCard';
+
+export default FeatureCard; 

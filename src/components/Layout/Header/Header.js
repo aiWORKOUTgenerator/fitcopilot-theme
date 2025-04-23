@@ -1,0 +1,5 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+const Header = ({ logo, navigation, showLogin = false }) => {
+    return (_jsx("header", { className: "bg-white dark:bg-gray-900 shadow-sm", children: _jsx("div", { className: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8", children: _jsxs("div", { className: "flex items-center justify-between h-16", children: [_jsx("div", { className: "flex items-center", children: _jsx("img", { src: logo, alt: "Logo", className: "h-8 w-auto" }) }), _jsx("nav", { className: "hidden md:flex space-x-8", children: navigation.map((item) => (_jsx("a", { href: item.href, className: "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium", children: item.label }, item.href))) }), showLogin && (_jsx("div", { className: "flex items-center", children: _jsx("a", { href: "/login", className: "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium", children: "Login" }) }))] }) }) }));
+};
+export default Header;

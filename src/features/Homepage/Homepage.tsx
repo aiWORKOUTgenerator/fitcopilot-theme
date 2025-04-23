@@ -43,7 +43,7 @@ const Homepage: React.FC = () => {
       />
 
       {/* Features Section */}
-      <Features features={data.features} />
+      <Features />
 
       {/* Journey Section */}
       <Journey journey={data.journey} />
