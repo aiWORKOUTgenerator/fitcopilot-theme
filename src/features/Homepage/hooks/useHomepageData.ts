@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useWordPress } from '../../../hooks/useWordPress';
+import { Feature, FooterLinkGroup, JourneyStep, PricingPlan, Testimonial } from '../../../types/wordpress';
 
 interface HomepageData {
   siteLinks: {
@@ -9,11 +10,11 @@ interface HomepageData {
   assets: {
     logo: string;
   };
-  features: any[];
-  journey: any[];
-  testimonials: any[];
-  pricing: any[];
-  footerLinks: any[];
+  features: Feature[];
+  journey: JourneyStep[];
+  testimonials: Testimonial[];
+  pricing: PricingPlan[];
+  footerLinks: FooterLinkGroup[];
 }
 
 /**
@@ -51,11 +52,11 @@ export const useHomepageData = (): HomepageData => {
           logo: wpData.assets?.logo || '',
         },
         // Use empty arrays as fallbacks for missing data from WordPress
-        features: [],
-        journey: [],
-        testimonials: [],
-        pricing: [],
-        footerLinks: [],
+        features: wpData.features || [],
+        journey: wpData.journey || [],
+        testimonials: wpData.testimonials || [],
+        pricing: wpData.pricing || [],
+        footerLinks: wpData.footerLinks || [],
       });
     }
   }, [wpData]);

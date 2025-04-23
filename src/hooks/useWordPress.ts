@@ -1,51 +1,60 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { WordPressData } from '../types/wordpress';
 
-interface WordPressData {
-  siteLinks: {
-    registration: string;
-    login: string;
-    workoutBuilder: string;
-  };
-  assets: {
-    logo: string;
-  };
-  wpData: {
-    restUrl: string;
-    nonce: string;
-    userId: number;
-  };
-}
-
-export const useWordPress = () => {
+/**
+ * Custom hook to access WordPress data
+ * @returns WordPress data from window or fallback
+ */
+export const useWordPress = (): WordPressData => {
   const [wpData, setWpData] = useState<WordPressData>(() => {
     // Try to get data from window object
-    if (typeof window !== 'undefined' && window.athleteDashboardData) {
-      return window.athleteDashboardData;
+    if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
+      return {
+        siteLinks: window.athleteDashboardData.wpData.siteLinks || {
+          registration: 'https://aigymengine.com/workout-generator-registration',
+          login: 'https://aigymengine.com/react-login',
+        },
+        assets: window.athleteDashboardData.wpData.assets || {
+          logo: '/wp-content/themes/fitcopilot/assets/images/logo.png'
+        },
+        features: [],
+        journey: [],
+        testimonials: [],
+        pricing: [],
+        footerLinks: []
+      };
     }
-    
+
     // Fallback data
     return {
       siteLinks: {
         registration: 'https://aigymengine.com/workout-generator-registration',
         login: 'https://aigymengine.com/react-login',
-        workoutBuilder: 'https://builder.fitcopilot.ai'
       },
       assets: {
         logo: '/wp-content/themes/fitcopilot/assets/images/logo.png'
       },
-      wpData: {
-        restUrl: '',
-        nonce: '',
-        userId: 0
-      }
+      features: [],
+      journey: [],
+      testimonials: [],
+      pricing: [],
+      footerLinks: []
     };
   });
 
   useEffect(() => {
     // Update data if window.athleteDashboardData changes
     const handleDataChange = () => {
-      if (typeof window !== 'undefined' && window.athleteDashboardData) {
-        setWpData(window.athleteDashboardData);
+      if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
+        setWpData({
+          siteLinks: window.athleteDashboardData.wpData.siteLinks || wpData.siteLinks,
+          assets: window.athleteDashboardData.wpData.assets || wpData.assets,
+          features: [],
+          journey: [],
+          testimonials: [],
+          pricing: [],
+          footerLinks: []
+        });
       }
     };
 
@@ -55,7 +64,7 @@ export const useWordPress = () => {
     return () => {
       window.removeEventListener('athleteDashboardDataLoaded', handleDataChange);
     };
-  }, []);
+  }, [wpData]);
 
   return wpData;
 }; 

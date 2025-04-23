@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
-import AOS from 'aos';
 
-type EasingOptions = 
+type EasingOptions =
   | 'linear'
   | 'ease'
   | 'ease-in'
@@ -44,8 +43,8 @@ export function useAnimation(options: AnimationOptions = {}) {
             once: options.once !== undefined ? options.once : true,
             offset: options.offset || 100,
             delay: options.delay || 0,
-            disable: options.disableForReducedMotion !== false && 
-                     window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            disable: options.disableForReducedMotion !== false &&
+              window.matchMedia('(prefers-reduced-motion: reduce)').matches
           });
         } else {
           // Dynamically import AOS
@@ -56,8 +55,8 @@ export function useAnimation(options: AnimationOptions = {}) {
             once: options.once !== undefined ? options.once : true,
             offset: options.offset || 100,
             delay: options.delay || 0,
-            disable: options.disableForReducedMotion !== false && 
-                     window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            disable: options.disableForReducedMotion !== false &&
+              window.matchMedia('(prefers-reduced-motion: reduce)').matches
           });
         }
       } catch (error) {
@@ -66,7 +65,7 @@ export function useAnimation(options: AnimationOptions = {}) {
     };
 
     initializeAnimations();
-    
+
     // Cleanup function
     return () => {
       document.querySelectorAll('[data-aos]').forEach(el => {

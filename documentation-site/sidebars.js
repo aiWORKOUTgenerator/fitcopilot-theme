@@ -40,6 +40,7 @@ const sidebars = {
         'development/workflow',
         'development/code-standards',
         'development/testing',
+        'development/eslint-configuration',
       ]
     },
     {

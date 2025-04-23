@@ -76,7 +76,20 @@ if (document.readyState === 'loading') {
 // Add TypeScript type declarations
 declare global {
   interface Window {
-    athleteDashboardData?: any;
-    AOS?: any;
+    athleteDashboardData?: {
+      wpData?: {
+        siteLinks?: {
+          registration?: string;
+          login?: string;
+        };
+        assets?: {
+          logo?: string;
+        };
+      }
+    };
+    AOS?: {
+      init: (options: object) => void;
+      refresh: () => void;
+    };
   }
 } 

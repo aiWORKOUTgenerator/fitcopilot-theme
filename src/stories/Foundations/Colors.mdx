@@ -1,0 +1,81 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
+
+<Meta title="Foundations/Colors" />
+
+# Color System
+
+FitCopilot uses a carefully crafted color system that reinforces our brand identity while ensuring accessibility and readability.
+
+## Brand Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Primary Brand Colors"
+    subtitle="Used for primary actions, highlights, and key brand elements"
+    colors={{
+      'primary': '#CCFF00',
+      'primary-dark': '#A8CC00',
+      'primary-light': '#E0FF66',
+    }}
+  />
+  <ColorItem
+    title="Secondary Brand Colors"
+    subtitle="Used for secondary actions and complementary elements"
+    colors={{
+      'secondary': '#64D2B9',
+      'secondary-dark': '#4BA894',
+      'secondary-light': '#8FE1CF',
+    }}
+  />
+</ColorPalette>
+
+## Background Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Background"
+    subtitle="Used for page backgrounds and container elements"
+    colors={{
+      'background-dark': '#0F172A',
+      'background-medium': '#151F38',
+      'background-light': '#1E293B',
+    }}
+  />
+</ColorPalette>
+
+## Text Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Text"
+    subtitle="Used for text content"
+    colors={{
+      'text-white': '#FFFFFF',
+      'text-light': '#F1F5F9',
+      'text-muted': '#94A3B8',
+      'text-dark': '#1E293B',
+    }}
+  />
+</ColorPalette>
+
+## Functional Colors
+
+<ColorPalette>
+  <ColorItem
+    title="Status Colors"
+    subtitle="Used to convey state and feedback"
+    colors={{
+      'success': '#22C55E',
+      'warning': '#F59E0B',
+      'error': '#EF4444',
+      'info': '#0EA5E9',
+    }}
+  />
+</ColorPalette>
+
+## Usage Guidelines
+
+- Use brand colors sparingly for maximum impact
+- Ensure text has sufficient contrast with background colors (WCAG AA compliance minimum)
+- Reserve status colors for their semantic meanings
+- For gradients, combine primary and secondary colors in a left-to-right direction 
