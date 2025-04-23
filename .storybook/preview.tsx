@@ -1,6 +1,7 @@
 import { withThemeByClassName } from '@storybook/addon-themes';
 import type { Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
+import React from 'react';
 import '../src/styles/homepage.scss';
 
 const preview: Preview = {
@@ -17,6 +18,9 @@ const preview: Preview = {
     docs: {
       theme: themes.dark,
       toc: true,
+      source: {
+        state: 'open',
+      }
     },
     backgrounds: {
       default: 'dark',
@@ -56,6 +60,43 @@ const preview: Preview = {
         },
       },
     },
+    a11y: {
+      // Enable a11y checks for all stories by default
+      config: {
+        rules: [
+          {
+            // Color contrast
+            id: 'color-contrast',
+            enabled: true,
+          },
+          {
+            // Alternative text for images
+            id: 'image-alt',
+            enabled: true,
+          },
+          {
+            // Link names
+            id: 'link-name',
+            enabled: true,
+          },
+          {
+            // Button names
+            id: 'button-name',
+            enabled: true,
+          },
+          {
+            // ARIA attributes
+            id: 'aria-valid-attr',
+            enabled: true,
+          }
+        ],
+      },
+      // Show A11y tab in addons panel
+      options: {
+        checks: { 'color-contrast': { options: { noScroll: true } } },
+        restoreScroll: true,
+      },
+    },
     layout: 'centered',
     options: {
       storySort: {
@@ -77,6 +118,12 @@ const preview: Preview = {
       },
       defaultTheme: 'dark',
     }),
+    // Add story wrapper for consistent padding
+    (Story) => (
+      <div style={{ padding: '1rem', maxWidth: '100%' }} >
+        <Story />
+      </div>
+    ),
   ],
 };
 

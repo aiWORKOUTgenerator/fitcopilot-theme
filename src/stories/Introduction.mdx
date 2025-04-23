@@ -1,18 +1,87 @@
-import { Meta } from '@storybook/blocks';
+import { Meta, Canvas, Story } from '@storybook/blocks';
+import { Button } from './UI/Button/Button';
 
 <Meta title="Introduction" />
 
-# FitCopilot Component Library
+# FitCopilot Design System
 
-Welcome to the FitCopilot component library. This Storybook serves as an interactive documentation for all UI components used in the FitCopilot platform.
+Welcome to the FitCopilot component library and design system, the single source of truth for our UI development. This Storybook serves as the interactive documentation for all design tokens, components, and patterns used in the FitCopilot platform.
 
-## Architecture
+## Design Principles
+
+Our design system follows these core principles:
+
+1. **Accessibility First**: Every component meets WCAG 2.1 AA standards, ensuring usability for all users.
+2. **Consistency Over Customization**: We prioritize consistent experiences over one-off customizations.
+3. **Progressive Enhancement**: Components work with or without JavaScript, enhancing the experience when available.
+4. **Performance Matters**: We optimize for speed, keeping components lightweight.
+5. **Responsive By Default**: All components adapt seamlessly to any screen size.
+
+## Component Architecture
 
 FitCopilot follows a feature-first approach to component organization:
 
-- **UI Components**: Reusable, presentational elements without business logic
-- **Layout Components**: Provide structure without business logic
-- **Feature Components**: Self-contained application functionality
+- **UI Components**: Reusable, presentational elements (buttons, inputs, cards)
+- **Layout Components**: Structural components (grid, containers, sections)
+- **Feature Components**: Domain-specific components with business logic
+
+## Component Usage Guidelines
+
+### Do's and Don'ts
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
+  <div style={{ border: '1px solid #e2e8f0', borderRadius: '0.5rem', padding: '1rem' }}>
+    <h4 style={{ color: '#0ea5e9', marginTop: 0 }}>Do</h4>
+    <ul style={{ paddingLeft: '1.5rem' }}>
+      <li>Use design tokens for all visual properties</li>
+      <li>Follow the component API as documented</li>
+      <li>Test components across devices and browsers</li>
+      <li>Include proper ARIA attributes</li>
+      <li>Communicate changes through proper channels</li>
+    </ul>
+  </div>
+  <div style={{ border: '1px solid #e2e8f0', borderRadius: '0.5rem', padding: '1rem' }}>
+    <h4 style={{ color: '#ef4444', marginTop: 0 }}>Don't</h4>
+    <ul style={{ paddingLeft: '1.5rem' }}>
+      <li>Override component styling with custom CSS</li>
+      <li>Create one-off components for single use cases</li>
+      <li>Bypass the design system with inline styles</li>
+      <li>Add unnecessary wrappers or divs</li>
+      <li>Use hardcoded values instead of tokens</li>
+    </ul>
+  </div>
+</div>
+
+## Component Anatomy
+
+Each component follows a consistent structure:
+
+1. **Props Interface**: Clear TypeScript interfaces defining all accepted props
+2. **Default Exports**: Components are named exports for better tree-shaking
+3. **Styling**: Component styling through Tailwind utility classes
+4. **Documentation**: Comprehensive JSDoc comments
+
+```tsx
+interface ButtonProps {
+  /** The button's label content */
+  label: string;
+  /** Whether the button has primary styling */
+  primary?: boolean;
+  /** The button's size */
+  size?: 'small' | 'medium' | 'large';
+  /** Click handler */
+  onClick?: () => void;
+}
+
+export const Button: React.FC<ButtonProps> = ({ 
+  label, 
+  primary = false,
+  size = 'medium',
+  onClick 
+}) => {
+  // Component implementation
+};
+```
 
 ## Navigation
 
@@ -23,23 +92,38 @@ The sidebar is organized to match our component hierarchy:
 - **Layout**: Structural components like containers, grids, and sections
 - **Features**: Complex feature components organized by section (Homepage, Workouts, etc.)
 
-## Component Structure
+## Contribution Workflow
 
-Each component story demonstrates:
+To add or update component stories:
 
-- Default state and variations
-- Interactive props through Controls
-- Accessibility compliance
-- Responsive behavior through Viewports
-- Design specifications through Figma embeds (where available)
+1. **Audit**: Run `npm run storybook:audit` to identify components missing stories
+2. **Generate**: Use `npm run storybook:generate src/path/to/Component.tsx` for new stories
+3. **Document**: Fill in component descriptions and prop documentation
+4. **Test**: Ensure your story passes a11y tests and works in all viewports
+5. **Review**: Submit your changes for design review
 
-## Contributing
+## Accessibility Standards
 
-To add or update component stories, follow these guidelines:
+All components must:
 
-1. Place story files next to the component they document
-2. Include comprehensive prop documentation
-3. Showcase all relevant states and variations
-4. Ensure component passes all accessibility checks
+- Include proper semantic HTML elements
+- Support keyboard navigation
+- Maintain color contrast ratios (4.5:1 minimum)
+- Include ARIA attributes when appropriate
+- Work with screen readers
 
-For detailed guidelines, see the [Storybook Contribution Guide](https://docs.fitcopilot.com/contributing/storybook). 
+## Version Control
+
+This design system follows semantic versioning:
+
+- **Major**: Breaking changes to component APIs
+- **Minor**: New components or enhanced features
+- **Patch**: Bug fixes and non-breaking improvements
+
+## Resources
+
+- [FitCopilot UI Guidelines](https://docs.fitcopilot.com/ui-guidelines)
+- [Accessibility Checklist](https://docs.fitcopilot.com/accessibility)
+- [Contribution Guidelines](https://docs.fitcopilot.com/contributing)
+- [Release Schedule](https://docs.fitcopilot.com/releases)
+- [Browser Support](https://docs.fitcopilot.com/browser-support) 

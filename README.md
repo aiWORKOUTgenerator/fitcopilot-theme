@@ -84,12 +84,41 @@ Below is the actual directory structure of the project, showing how the architec
 
 ```
 .
+├── .cursor
+│   └── rules
+│       └── developer-guide.mdc
+├── .eslintrc.js
+├── .github
+│   └── workflows
+│       ├── documentation.yml
+│       ├── lighthouse-ci.yml
+│       ├── lighthouse.yml
+│       ├── metrics.yml
+│       └── storybook.yml
+├── .gitignore
+├── .lighthouserc.json
+├── .vscode
+│   ├── feature-templates
+│   │   ├── component.scss
+│   │   ├── component.tsx
+│   │   ├── index.ts
+│   │   └── types.ts
+│   └── settings.json
 ├── README.md
 ├── assets
 │   └── images
 │       └── logo.png
 ├── docs
 │   └── feature-architecture.md
+├── documentation-site
+│   ├── api
+│   ├── blog
+│   ├── components
+│   ├── docs
+│   ├── metrics
+│   ├── scripts
+│   ├── src
+│   └── static
 ├── footer.php
 ├── functions.php
 ├── header.php
@@ -97,21 +126,119 @@ Below is the actual directory structure of the project, showing how the architec
 ├── inc
 │   └── react-enqueue.php
 ├── index.php
-├── package-lock.json
 ├── package.json
 ├── postcss.config.js
+├── scripts
+│   ├── extract-metrics.js
+│   ├── generate-story.js
+│   └── storybook-audit.js
 ├── src
 │   ├── Homepage.tsx
 │   ├── components
 │   │   ├── Layout
+│   │   │   └── Section
+│   │   │       └── index.tsx
 │   │   └── UI
+│   │       └── Button
+│   │           └── index.tsx
 │   ├── features
 │   │   ├── Homepage
+│   │   │   ├── Features
+│   │   │   │   ├── Features.scss
+│   │   │   │   ├── Features.tsx
+│   │   │   │   ├── components
+│   │   │   │   │   ├── FeatureCard.scss
+│   │   │   │   │   ├── FeatureCard.stories.tsx
+│   │   │   │   │   ├── FeatureCard.tsx
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── Footer
+│   │   │   │   ├── Footer.scss
+│   │   │   │   ├── Footer.stories.tsx
+│   │   │   │   ├── Footer.tsx
+│   │   │   │   ├── components
+│   │   │   │   │   ├── FooterLinkGroup.scss
+│   │   │   │   │   ├── FooterLinkGroup.stories.tsx
+│   │   │   │   │   ├── FooterLinkGroup.tsx
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── Hero
+│   │   │   │   ├── Hero.scss
+│   │   │   │   ├── Hero.stories.tsx
+│   │   │   │   ├── Hero.tsx
+│   │   │   │   ├── components
+│   │   │   │   │   ├── HeroButton.stories.tsx
+│   │   │   │   │   ├── HeroButton.tsx
+│   │   │   │   │   ├── HeroLogo.stories.tsx
+│   │   │   │   │   ├── HeroLogo.tsx
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── Homepage.tsx
+│   │   │   ├── Journey
+│   │   │   │   ├── Journey.scss
+│   │   │   │   ├── Journey.tsx
+│   │   │   │   ├── components
+│   │   │   │   │   ├── JourneyStep.scss
+│   │   │   │   │   ├── JourneyStep.tsx
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── Pricing
+│   │   │   │   ├── Pricing.scss
+│   │   │   │   ├── Pricing.tsx
+│   │   │   │   ├── components
+│   │   │   │   │   ├── PricingCard.scss
+│   │   │   │   │   ├── PricingCard.stories.tsx
+│   │   │   │   │   ├── PricingCard.tsx
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── Testimonials
+│   │   │   │   ├── Testimonials.scss
+│   │   │   │   ├── Testimonials.stories.tsx
+│   │   │   │   ├── Testimonials.tsx
+│   │   │   │   ├── components
+│   │   │   │   │   ├── TestimonialCard.scss
+│   │   │   │   │   ├── TestimonialCard.stories.tsx
+│   │   │   │   │   ├── TestimonialCard.tsx
+│   │   │   │   │   └── index.ts
+│   │   │   │   ├── index.ts
+│   │   │   │   └── types.ts
+│   │   │   ├── hooks
+│   │   │   │   ├── index.ts
+│   │   │   │   └── useHomepageData.ts
+│   │   │   └── index.ts
 │   │   └── README.md
 │   ├── hooks
 │   │   ├── useAnimation.ts
 │   │   └── useWordPress.ts
 │   ├── index.tsx
+│   ├── stories
+│   │   ├── Button.stories.ts
+│   │   ├── Button.tsx
+│   │   ├── Configure.mdx
+│   │   ├── Foundations
+│   │   │   ├── Colors.mdx
+│   │   │   ├── Components.tsx
+│   │   │   ├── DesignTokens.mdx
+│   │   │   └── Typography.mdx
+│   │   ├── Header.stories.ts
+│   │   ├── Header.tsx
+│   │   ├── Introduction.mdx
+│   │   ├── Page.stories.ts
+│   │   ├── Page.tsx
+│   │   ├── UI
+│   │   │   └── Button
+│   │   │       ├── Button.stories.tsx
+│   │   │       ├── Button.tsx
+│   │   │       └── button.css
+│   │   ├── assets
+│   │   └── features
+│   │       └── Homepage
+│   │           └── Hero.stories.tsx
 │   ├── styles
 │   │   ├── animations.scss
 │   │   ├── homepage.scss
@@ -134,13 +261,65 @@ features/Homepage/
 │   ├── Features.scss
 │   ├── Features.tsx
 │   ├── components/
+│   │   ├── FeatureCard.scss
+│   │   ├── FeatureCard.stories.tsx
+│   │   ├── FeatureCard.tsx
+│   │   └── index.ts
 │   ├── index.ts
 │   └── types.ts
 ├── Footer/                 # Footer section
+│   ├── Footer.scss
+│   ├── Footer.stories.tsx
+│   ├── Footer.tsx
+│   ├── components/
+│   │   ├── FooterLinkGroup.scss
+│   │   ├── FooterLinkGroup.stories.tsx
+│   │   ├── FooterLinkGroup.tsx
+│   │   └── index.ts
+│   ├── index.ts
+│   └── types.ts
 ├── Hero/                   # Hero section
+│   ├── Hero.scss
+│   ├── Hero.stories.tsx
+│   ├── Hero.tsx
+│   ├── components/
+│   │   ├── HeroButton.stories.tsx
+│   │   ├── HeroButton.tsx
+│   │   ├── HeroLogo.stories.tsx
+│   │   ├── HeroLogo.tsx
+│   │   └── index.ts
+│   ├── index.ts
+│   └── types.ts
 ├── Journey/                # Journey section
+│   ├── Journey.scss
+│   ├── Journey.tsx
+│   ├── components/
+│   │   ├── JourneyStep.scss
+│   │   ├── JourneyStep.tsx
+│   │   └── index.ts
+│   ├── index.ts
+│   └── types.ts
 ├── Pricing/                # Pricing section
+│   ├── Pricing.scss
+│   ├── Pricing.tsx
+│   ├── components/
+│   │   ├── PricingCard.scss
+│   │   ├── PricingCard.stories.tsx
+│   │   ├── PricingCard.tsx
+│   │   └── index.ts
+│   ├── index.ts
+│   └── types.ts
 ├── Testimonials/           # Testimonials section
+│   ├── Testimonials.scss
+│   ├── Testimonials.stories.tsx
+│   ├── Testimonials.tsx
+│   ├── components/
+│   │   ├── TestimonialCard.scss
+│   │   ├── TestimonialCard.stories.tsx
+│   │   ├── TestimonialCard.tsx
+│   │   └── index.ts
+│   ├── index.ts
+│   └── types.ts
 ├── Homepage.tsx            # Main component
 ├── hooks/
 │   ├── index.ts

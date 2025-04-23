@@ -5,7 +5,8 @@
     "aos": "^3.0.0-beta.6",
     "lucide-react": "^0.263.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@docusaurus/core": "^3.7.0",
@@ -21,21 +22,25 @@
     "@storybook/addon-viewport": "^8.6.12",
     "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
     "@storybook/blocks": "^8.6.12",
+    "@storybook/jest": "^0.2.2",
     "@storybook/react": "^8.6.12",
     "@storybook/react-webpack5": "^8.6.12",
     "@storybook/test": "^8.6.12",
+    "@storybook/testing-library": "^0.2.1",
     "@types/aos": "^3.0.7",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@typescript-eslint/parser": "^8.31.0",
     "autoprefixer": "^10.4.14",
+    "chalk": "^5.4.1",
     "chromatic": "^10.9.6",
     "css-loader": "^6.8.1",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-storybook": "^0.8.0",
+    "glob": "^11.0.2",
     "mini-css-extract-plugin": "^2.7.6",
     "postcss": "^8.4.27",
     "postcss-loader": "^7.3.3",
@@ -56,6 +61,7 @@
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
     "chromatic": "chromatic --exit-zero-on-changes",
+    "chromatic:baseline": "chromatic --skip-visual-regression --exit-zero-on-changes",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --max-warnings=20",
     "lint-strict": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --max-warnings=0",
     "lint-stories": "eslint \"src/**/*.stories.{js,jsx,ts,tsx}\" --max-warnings=0",
@@ -65,6 +71,8 @@
     "docs:generate": "node documentation-site/scripts/generate-component-docs.js",
     "docs:update": "npm run docs:generate && npm run docs && npm run storybook",
     "metrics": "node documentation-site/scripts/generate-metrics.js",
-    "metrics:dashboard": "npm run metrics && cd documentation-site && npm start"
+    "metrics:dashboard": "npm run metrics && cd documentation-site && npm start",
+    "storybook:audit": "node scripts/storybook-audit.js",
+    "storybook:generate": "node scripts/generate-story.js"
   }
 }

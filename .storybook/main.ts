@@ -15,7 +15,8 @@ const config: StorybookConfig = {
     "@storybook/addon-viewport",
     "@storybook/addon-designs",
     "@storybook/addon-measure",
-    "@storybook/addon-coverage"
+    "@storybook/addon-coverage",
+    "@storybook/addon-themes"
   ],
   "framework": {
     "name": "@storybook/react-webpack5",
@@ -36,6 +37,18 @@ const config: StorybookConfig = {
   },
   "core": {
     "disableTelemetry": true,
+    "builder": {
+      "name": "@storybook/builder-webpack5",
+      "options": {
+        "fsCache": true,
+        "lazyCompilation": true
+      }
+    }
+  },
+  "features": {
+    "storyStoreV7": true,
+    "buildStoriesJson": true,
+    "interactionsDebugger": true
   },
   "webpackFinal": async (config) => {
     // Add any custom webpack configurations here
@@ -62,6 +75,16 @@ const config: StorybookConfig = {
         ],
         include: path.resolve(__dirname, '../'),
       });
+    }
+
+    // Enable filesystem caching for faster rebuilds
+    if (config.cache) {
+      config.cache = {
+        type: 'filesystem',
+        buildDependencies: {
+          config: [__filename]
+        }
+      };
     }
 
     return config;
