@@ -3,19 +3,34 @@ import {
     Award,
     Dumbbell,
     Heart,
+    Play,
+    RefreshCw,
     User,
-    Users
+    Users,
+    X
 } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 import '../PersonalTraining.scss';
 
 /**
  * Default Personal Training component for the homepage
  */
 const PersonalTraining: React.FC = () => {
+    // Track flipped state for each trainer by ID
+    const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+
+    // Flip card handlers
+    const flipCard = (trainerId: string) => {
+        setFlippedCards(prev => ({
+            ...prev,
+            [trainerId]: !prev[trainerId]
+        }));
+    };
+
     // Trainer data
     const trainers = [
         {
+            id: "trainer-1",
             name: "Alex Rivera",
             image: "/assets/trainers/trainer1.jpg", // Replace with actual image path
             specialty: "Strength & Conditioning",
@@ -23,9 +38,15 @@ const PersonalTraining: React.FC = () => {
             bio: "Specialized in transforming physiques through science-based training protocols. Alex has helped over 200 clients achieve their fitness goals.",
             years: 8,
             clients: 178,
-            featured: true
+            featured: true,
+            videoCard: {
+                title: "High-Intensity Workout Demo",
+                image: "/assets/trainers/workout-demo.jpg", // Replace with actual image path
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1", // Replace with actual video URL
+            }
         },
         {
+            id: "trainer-2",
             name: "Morgan Chen",
             image: "/assets/trainers/trainer2.jpg", // Replace with actual image path
             specialty: "Nutrition & Weight Loss",
@@ -36,6 +57,7 @@ const PersonalTraining: React.FC = () => {
             featured: false
         },
         {
+            id: "trainer-3",
             name: "Jordan Smith",
             image: "/assets/trainers/trainer3.jpg", // Replace with actual image path
             specialty: "Athletic Performance",
@@ -62,9 +84,9 @@ const PersonalTraining: React.FC = () => {
 
             {/* Trainers Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-16">
-                {trainers.map((trainer, index) => (
+                {trainers.map((trainer) => (
                     <div
-                        key={index}
+                        key={trainer.id}
                         className={`trainer-card ${trainer.featured ? 'md:col-span-2 md:row-span-2' : ''}`}
                     >
                         {/* Trainer Image */}
@@ -104,6 +126,74 @@ const PersonalTraining: React.FC = () => {
                             Schedule Session
                             <ArrowRight size={18} />
                         </button>
+
+                        {/* Flip Card for Featured Trainer */}
+                        {trainer.featured && trainer.videoCard && (
+                            <div className="flip-card-container">
+                                <div
+                                    className={`flip-card ${flippedCards[trainer.id] ? 'flipped' : ''}`}
+                                    onClick={() => flipCard(trainer.id)}
+                                >
+                                    {/* Front of Card (Image) */}
+                                    <div className="flip-card-front">
+                                        {trainer.videoCard.image && !trainer.videoCard.image.includes('assets') ? (
+                                            <img
+                                                src={trainer.videoCard.image}
+                                                alt={trainer.videoCard.title}
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center">
+                                                <Play size={64} className="text-white opacity-70" />
+                                            </div>
+                                        )}
+
+                                        {/* Overlay with Title */}
+                                        <div className="overlay">
+                                            <div className="flip-card-title">{trainer.videoCard.title}</div>
+                                            <div className="flip-card-hint">
+                                                Click to watch video
+                                                <Play size={16} />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Back of Card (Video Player) */}
+                                    <div className="flip-card-back">
+                                        <div className="video-container">
+                                            {flippedCards[trainer.id] && (
+                                                <iframe
+                                                    src={trainer.videoCard.videoUrl}
+                                                    title={trainer.videoCard.title}
+                                                    frameBorder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                ></iframe>
+                                            )}
+                                        </div>
+                                        <div className="video-controls">
+                                            <button
+                                                className="control-button"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    flipCard(trainer.id);
+                                                }}
+                                            >
+                                                <RefreshCw size={20} />
+                                            </button>
+                                            <button
+                                                className="control-button close-button"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    flipCard(trainer.id);
+                                                }}
+                                            >
+                                                <X size={20} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>
