@@ -1,11 +1,16 @@
-import React, { ReactNode } from 'react';
-import Button from '../../../../components/UI/Button';
+import classNames from 'classnames';
+import * as React from 'react';
+import './HeroButton.scss';
 
 interface HeroButtonProps {
   href: string;
-  children: ReactNode;
+  children: React.ReactNode;
   variant: 'primary' | 'secondary';
-  icon?: ReactNode;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
+  className?: string;
+  fullWidth?: boolean;
+  size?: 'small' | 'medium' | 'large';
 }
 
 /**
@@ -15,20 +20,32 @@ export const HeroButton: React.FC<HeroButtonProps> = ({
   href,
   children,
   variant = 'primary',
-  icon
+  leftIcon,
+  rightIcon,
+  className,
+  fullWidth = false,
+  size = 'large'
 }) => {
-  // Map local variants to shared Button variants
-  const buttonVariant = variant === 'primary' ? 'hero-primary' : 'hero-secondary';
+  const buttonClasses = classNames(
+    'hero-button',
+    `button--${size}`,
+    `button--${variant}`,
+    {
+      'button--fullwidth': fullWidth,
+      'button--with-left-icon': leftIcon,
+      'button--with-right-icon': rightIcon,
+    },
+    className
+  );
 
   return (
-    <Button
+    <a
       href={href}
-      variant={buttonVariant}
-      size="lg"
-      rounded="full"
-      icon={icon}
+      className={buttonClasses}
     >
-      {children}
-    </Button>
+      {leftIcon && <span className="button__icon button__icon--left">{leftIcon}</span>}
+      <span className="button__text">{children}</span>
+      {rightIcon && <span className="button__icon button__icon--right">{rightIcon}</span>}
+    </a>
   );
 }; 

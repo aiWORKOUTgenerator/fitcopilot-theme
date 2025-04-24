@@ -1,7 +1,8 @@
 import * as React from 'react';
+import { getHomepageVariant } from '../hooks/useHomepageService';
 
 /**
- * Creates a variant-aware component loader
+ * Creates a variant-aware component specifically for Homepage features
  * 
  * @param variantMap Record mapping variant keys to component implementations
  * @param defaultVariant The default variant to use if none specified or invalid
@@ -25,27 +26,7 @@ export function createVariantComponent<
 }
 
 /**
- * WordPress data integration - reads variant settings from the global WP data
- * 
- * @returns An object containing all variant settings from WordPress
- */
-export function getWordPressVariants(): Record<string, string> {
-    // Access the WordPress localized data if available
-    if (typeof window !== 'undefined' &&
-        window.athleteDashboardData &&
-        window.athleteDashboardData.wpData &&
-        typeof window.athleteDashboardData.wpData === 'object' &&
-        'themeVariants' in window.athleteDashboardData.wpData &&
-        window.athleteDashboardData.wpData.themeVariants) {
-        return window.athleteDashboardData.wpData.themeVariants as Record<string, string>;
-    }
-
-    // Return empty object if data not available
-    return {};
-}
-
-/**
- * Gets a specific component variant from WordPress settings
+ * Gets a specific component variant from WordPress settings for the Homepage
  * 
  * @param componentKey The component key in WordPress settings
  * @param defaultVariant The default variant to return if not found
@@ -55,6 +36,5 @@ export function getComponentVariant<T extends string>(
     componentKey: string,
     defaultVariant: T
 ): T {
-    const variants = getWordPressVariants();
-    return (variants[componentKey] as T) || defaultVariant;
+    return getHomepageVariant<T>(componentKey, defaultVariant);
 } 

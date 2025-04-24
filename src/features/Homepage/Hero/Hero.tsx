@@ -1,6 +1,7 @@
 import { Apple, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 import './Hero.scss';
+import { HeroButton } from './components/HeroButton';
 
 /**
  * Interface for floating icon props
@@ -56,7 +57,7 @@ const Hero: React.FC<HeroProps> = ({
   logoUrl = '/wp-content/themes/athlete-dashboard-gym-engine/assets/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png'
 }) => {
   // Animation states for tooltips
-  const [tooltipStates, setTooltipStates] = useState({
+  const [tooltipStates, setTooltipStates] = React.useState({
     freeWorkout: {
       show: false,
       isAutoShow: false,
@@ -70,7 +71,7 @@ const Hero: React.FC<HeroProps> = ({
   });
 
   // Animation timeline references
-  const timeoutsRef = useRef<number[]>([]);
+  const timeoutsRef = React.useRef<number[]>([]);
 
   // Clear all timeouts on cleanup
   const clearAllTimeouts = () => {
@@ -92,7 +93,7 @@ const Hero: React.FC<HeroProps> = ({
   ];
 
   // On mount and unmount
-  useEffect(() => {
+  React.useEffect(() => {
     // Cleanup all timeouts on unmount
     return () => {
       clearAllTimeouts();
@@ -184,13 +185,14 @@ const Hero: React.FC<HeroProps> = ({
               onMouseEnter={() => handleMouseEnter('freeWorkout')}
               onMouseLeave={() => handleMouseLeave('freeWorkout')}
             >
-              <a
+              <HeroButton
                 href="https://builder.fitcopilot.ai"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-optimized hover:shadow-optimized-hover hover:-translate-y-1 w-full sm:w-auto button primary hero-button"
+                variant="primary"
+                leftIcon={<Zap className="h-5 w-5" />}
+                fullWidth
               >
-                <Zap className="mr-2 h-5 w-5" />
                 Get a Free Workout
-              </a>
+              </HeroButton>
 
               {/* Tooltip styled to match Pricing */}
               <div
@@ -219,13 +221,14 @@ const Hero: React.FC<HeroProps> = ({
               onMouseEnter={() => handleMouseEnter('createAccount')}
               onMouseLeave={() => handleMouseLeave('createAccount')}
             >
-              <a
+              <HeroButton
                 href={registrationLink}
-                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gray-800 border-2 border-lime-300/30 text-white hover:bg-lime-300/10 hover:-translate-y-1 w-full sm:w-auto button secondary hero-button"
+                variant="secondary"
+                leftIcon={<UserPlus className="h-5 w-5 text-lime-300" />}
+                fullWidth
               >
-                <UserPlus className="mr-2 h-5 w-5 text-lime-300" />
                 Create Your Account
-              </a>
+              </HeroButton>
 
               {/* Tooltip styled to match Pricing */}
               <div
@@ -249,15 +252,16 @@ const Hero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Sign In Link */}
-          <div>
-            <a
+          {/* Login Link */}
+          <div className="mt-6">
+            <HeroButton
               href={loginLink}
-              className="inline-flex items-center text-gray-400 hover:text-lime-300 transition-colors duration-300"
+              variant="secondary"
+              size="small"
+              leftIcon={<LogIn className="h-4 w-4" />}
             >
-              <LogIn size={16} className="mr-1" />
-              Already have an account? Sign in
-            </a>
+              Already a member? Sign in
+            </HeroButton>
           </div>
         </div>
 

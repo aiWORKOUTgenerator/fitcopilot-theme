@@ -1,8 +1,8 @@
 import React from 'react';
-import { createVariantComponent, getComponentVariant } from '../../../utils/variantLoader';
+import { createVariantComponent, getComponentVariant } from '../utils/variantLoader';
 import DefaultHero from './default';
 import GymHero from './gym';
-import { HeroProps, VariantKey } from './types';
+import type { HeroProps, VariantKey } from './types';
 
 /**
  * Map of Hero component variants
@@ -24,6 +24,6 @@ export const getHeroVariant = (): VariantKey => {
     return getComponentVariant<VariantKey>('hero', 'default');
 };
 
-export * from './types';
 export { Hero };
+export * from './types';
 

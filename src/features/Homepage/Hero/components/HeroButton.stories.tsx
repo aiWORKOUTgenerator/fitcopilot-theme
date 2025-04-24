@@ -31,7 +31,7 @@ const meta: Meta<typeof HeroButton> = {
       options: ['primary', 'secondary'],
       description: 'Visual style variant of the button',
     },
-    icon: {
+    leftIcon: {
       control: 'select',
       options: ['play', 'arrow', 'none'],
       mapping: {
@@ -39,7 +39,26 @@ const meta: Meta<typeof HeroButton> = {
         arrow: <FaArrowRight />,
         none: undefined
       },
-      description: 'Icon to display alongside the button text',
+      description: 'Icon to display on the left side of the button text',
+    },
+    rightIcon: {
+      control: 'select',
+      options: ['play', 'arrow', 'none'],
+      mapping: {
+        play: <FaPlay />,
+        arrow: <FaArrowRight />,
+        none: undefined
+      },
+      description: 'Icon to display on the right side of the button text',
+    },
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+      description: 'Size variant of the button',
+    },
+    fullWidth: {
+      control: 'boolean',
+      description: 'Whether the button should take full width',
     },
   },
 };
@@ -55,7 +74,10 @@ export const Primary: Story = {
     href: '#start',
     children: 'Get Started',
     variant: 'primary',
-    icon: undefined
+    leftIcon: undefined,
+    rightIcon: undefined,
+    size: 'large',
+    fullWidth: false
   },
   parameters: {
     docs: {
@@ -74,7 +96,10 @@ export const Secondary: Story = {
     href: '#learn-more',
     children: 'Learn More',
     variant: 'secondary',
-    icon: undefined
+    leftIcon: undefined,
+    rightIcon: undefined,
+    size: 'large',
+    fullWidth: false
   },
   parameters: {
     docs: {
@@ -86,19 +111,63 @@ export const Secondary: Story = {
 };
 
 /**
- * Button with icon example
+ * Button with left icon example
  */
-export const WithIcon: Story = {
+export const WithLeftIcon: Story = {
   args: {
     href: '#watch-demo',
     children: 'Watch Demo',
     variant: 'primary',
-    icon: <FaPlay />
+    leftIcon: <FaPlay />,
+    size: 'large',
+    fullWidth: false
   },
   parameters: {
     docs: {
       description: {
-        story: 'HeroButton with an icon displayed alongside the text.',
+        story: 'HeroButton with an icon displayed to the left of the text.',
+      },
+    },
+  },
+};
+
+/**
+ * Button with right icon example
+ */
+export const WithRightIcon: Story = {
+  args: {
+    href: '#learn-more',
+    children: 'Learn More',
+    variant: 'secondary',
+    rightIcon: <FaArrowRight />,
+    size: 'large',
+    fullWidth: false
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'HeroButton with an icon displayed to the right of the text.',
+      },
+    },
+  },
+};
+
+/**
+ * Small button example
+ */
+export const Small: Story = {
+  args: {
+    href: '#sign-in',
+    children: 'Sign In',
+    variant: 'secondary',
+    leftIcon: undefined,
+    size: 'small',
+    fullWidth: false
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Small sized HeroButton, useful for secondary actions like sign-in.',
       },
     },
   },

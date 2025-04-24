@@ -1,37 +1,77 @@
-import React from 'react';
+/**
+ * Button Component
+ * 
+ * A reusable button component that supports different variants, sizes,
+ * loading states, and accessibility features.
+ * 
+ * @example
+ * <Button variant="primary" size="medium" onClick={handleClick}>
+ *   Click Me
+ * </Button>
+ */
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'outline';
-    size?: 'sm' | 'md' | 'lg';
+import classNames from 'classnames';
+import * as React from 'react';
+import './Button.scss';
+
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    /** Button size variant */
+    size?: 'small' | 'medium' | 'large';
+    /** Button color variant */
+    variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost';
+    /** Sets width to 100% when true */
+    fullWidth?: boolean;
+    /** Shows loading spinner and disables button when true */
+    isLoading?: boolean;
+    /** Icon to display before button text */
+    leftIcon?: React.ReactNode;
+    /** Icon to display after button text */
+    rightIcon?: React.ReactNode;
+    /** Button content */
+    children: React.ReactNode;
 }
 
+/**
+ * Button component for triggering actions
+ */
 const Button: React.FC<ButtonProps> = ({
-    variant = 'primary',
-    size = 'md',
-    className = '',
     children,
-    ...props
+    className,
+    size = 'medium',
+    variant = 'primary',
+    fullWidth = false,
+    isLoading = false,
+    leftIcon,
+    rightIcon,
+    disabled,
+    ...rest
 }) => {
-    const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
-
-    const variants = {
-        primary: 'bg-blue-600 text-white hover:bg-blue-700',
-        secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
-        outline: 'border border-gray-300 bg-transparent hover:bg-gray-100',
-    };
-
-    const sizes = {
-        sm: 'h-8 px-3 text-sm',
-        md: 'h-10 px-4 text-base',
-        lg: 'h-12 px-6 text-lg',
-    };
+    const buttonClasses = classNames(
+        'button',
+        `button--${size}`,
+        `button--${variant}`,
+        {
+            'button--fullwidth': fullWidth,
+            'button--loading': isLoading,
+            'button--with-left-icon': leftIcon,
+            'button--with-right-icon': rightIcon,
+        },
+        className
+    );
 
     return (
         <button
-            className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-            {...props}
+            className={buttonClasses}
+            disabled={disabled || isLoading}
+            {...rest}
         >
-            {children}
+            {isLoading && <span className="button__spinner" aria-hidden="true" />}
+
+            {leftIcon && <span className="button__icon button__icon--left">{leftIcon}</span>}
+
+            <span className="button__text">{children}</span>
+
+            {rightIcon && <span className="button__icon button__icon--right">{rightIcon}</span>}
         </button>
     );
 };

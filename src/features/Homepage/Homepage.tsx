@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import '../../styles/homepage.scss';
+import './styles/homepage.scss';
 
 // Import custom hooks
-import { useAnimation } from '../../hooks/useAnimation';
-import { useHomepageData } from './hooks/useHomepageData';
+import { useHomepageAnimation, useHomepageData } from './hooks';
 
 // Import feature components
 import { Features } from './Features';
@@ -13,10 +12,10 @@ import { Journey } from './Journey';
 import { Pricing } from './Pricing';
 import { Testimonials } from './Testimonials';
 
-// Import demo components
-import DemoNav from '../../components/DemoNav';
+// Import feature-specific components
+import { DemoNav } from './components';
 
-interface HomepageProps {
+export interface HomepageProps {
   demoMode?: boolean;
 }
 
@@ -34,7 +33,7 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
   });
 
   // Initialize animations
-  useAnimation();
+  useHomepageAnimation();
 
   useEffect(() => {
     // Mark as loaded after initial render

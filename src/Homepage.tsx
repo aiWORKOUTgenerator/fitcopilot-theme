@@ -1,17 +1,15 @@
-import React from 'react';
+import * as React from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles/homepage.scss';
 
-// Import custom hooks
-
 // Import feature component from feature-first structure
-import HomepageFeature from './features/Homepage';
+import Homepage from './features/Homepage';
 
 /**
- * Main Homepage component
+ * Main Homepage component wrapper
  */
-const Homepage: React.FC = () => {
-  return <HomepageFeature />;
+const HomepageApp: React.FC = () => {
+  return <Homepage />;
 };
 
 /**
@@ -25,7 +23,7 @@ const initializeApp = () => {
       const root = createRoot(container);
       root.render(
         <React.StrictMode>
-          <Homepage />
+          <HomepageApp />
         </React.StrictMode>
       );
     } catch (error) {
@@ -56,7 +54,7 @@ const initializeApp = () => {
         const root = createRoot(newRootElement);
         root.render(
           <React.StrictMode>
-            <Homepage />
+            <HomepageApp />
           </React.StrictMode>
         );
       } catch (error) {

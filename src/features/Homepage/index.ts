@@ -1,17 +1,16 @@
-// Use direct component imports instead of relying on module resolution
-import Homepage from './Homepage';
+// Main feature export
+export { default } from './Homepage';
 
-// Default export for the main component
-export default Homepage;
+// Export sub-components with named exports
+export { Features } from './Features';
+export { Footer } from './Footer';
+export { Hero } from './Hero';
+export { Journey } from './Journey';
+export { Pricing } from './Pricing';
+export { Testimonials } from './Testimonials';
 
-// Export component features individually
-import { Features } from './Features';
-import { Footer } from './Footer';
-import { Hero } from './Hero';
-import { Journey } from './Journey';
-import { Pricing } from './Pricing';
-import { Testimonials } from './Testimonials';
+// Export hooks
+export * from './hooks';
 
-export {
-    Features, Footer, Hero, Journey, Pricing, Testimonials
-};
+// Export types
+export type { HomepageProps } from './Homepage';

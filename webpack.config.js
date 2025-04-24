@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 module.exports = {
+  mode: 'production',
   entry: {
     'homepage': ['./src/Homepage.tsx', './src/styles/homepage.scss']
   },
@@ -30,9 +31,27 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
+        test: /\.(ts|tsx)$/,
+        include: path.resolve(__dirname, 'src'),
+        exclude: [
+          /node_modules/,
+          /\.stories\.(ts|tsx)$/,
+          /\.test\.(ts|tsx)$/,
+          /stories\//
+        ],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              '@babel/preset-env',
+              '@babel/preset-react',
+              '@babel/preset-typescript'
+            ],
+            plugins: [
+              '@babel/plugin-transform-runtime'
+            ]
+          }
+        }
       },
       {
         test: /\.scss$/,
