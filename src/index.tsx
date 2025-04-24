@@ -9,12 +9,20 @@ import './styles/global.scss';
 const initializeApp = () => {
     const container = document.getElementById('athlete-dashboard-root');
 
+    // Get WordPress data from global variable, using any type to avoid TS errors
+    const wpData = (window.athleteDashboardData?.wpData || {}) as any;
+
+    // Check for demo mode flag
+    const isDemo = wpData.demoMode === true;
+
     if (container) {
         try {
             const root = createRoot(container);
             root.render(
                 <React.StrictMode>
-                    <Homepage />
+                    <Homepage
+                        demoMode={isDemo}
+                    />
                 </React.StrictMode>
             );
         } catch (error) {
@@ -45,7 +53,7 @@ const initializeApp = () => {
                 const root = createRoot(newRootElement);
                 root.render(
                     <React.StrictMode>
-                        <Homepage />
+                        <Homepage demoMode={isDemo} />
                     </React.StrictMode>
                 );
             } catch (error) {
@@ -60,25 +68,4 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeApp);
 } else {
     initializeApp();
-}
-
-// Add TypeScript type declarations
-declare global {
-    interface Window {
-        athleteDashboardData?: {
-            wpData?: {
-                siteLinks?: {
-                    registration?: string;
-                    login?: string;
-                };
-                assets?: {
-                    logo?: string;
-                };
-            }
-        };
-        AOS?: {
-            init: (options: object) => void;
-            refresh: () => void;
-        };
-    }
 } 

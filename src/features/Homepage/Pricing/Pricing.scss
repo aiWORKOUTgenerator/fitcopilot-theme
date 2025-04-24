@@ -105,34 +105,6 @@
   transition: all 0.3s ease;
 }
 
-/* Plan tooltips */
-.plan-tooltip {
-  position: absolute;
-  left: -10px;
-  bottom: 110%;
-  width: 260px;
-  background-color: rgba(17, 24, 39, 0.95);
-  border: 1px solid rgba(132, 204, 22, 0.3);
-  border-radius: 0.5rem;
-  padding: 0.75rem;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-  z-index: 20;
-  transition: all 0.2s ease;
-
-  &::after {
-    content: '';
-    position: absolute;
-    left: 20px;
-    bottom: -6px;
-    width: 12px;
-    height: 12px;
-    background-color: rgba(17, 24, 39, 0.95);
-    border-right: 1px solid rgba(132, 204, 22, 0.3);
-    border-bottom: 1px solid rgba(132, 204, 22, 0.3);
-    transform: rotate(45deg);
-  }
-}
-
 .popular-badge,
 .elite-badge {
   display: inline-flex;

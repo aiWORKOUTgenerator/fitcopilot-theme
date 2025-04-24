@@ -23,6 +23,19 @@ function fitcopilot_register_variant_customizer($wp_customize) {
         'priority'    => 30,
     ));
 
+    // Demo Mode Setting
+    $wp_customize->add_setting('fitcopilot_demo_mode', array(
+        'default'           => false,
+        'sanitize_callback' => 'fitcopilot_sanitize_checkbox',
+    ));
+
+    $wp_customize->add_control('fitcopilot_demo_mode', array(
+        'label'       => __('Enable Demo Mode', 'fitcopilot'),
+        'description' => __('Shows a navigation menu for demoing all sections and variants.', 'fitcopilot'),
+        'section'     => 'fitcopilot_variants',
+        'type'        => 'checkbox',
+    ));
+
     // Hero Section Variant
     $wp_customize->add_setting('fitcopilot_hero_variant', array(
         'default'           => 'default',
@@ -75,6 +88,13 @@ function fitcopilot_sanitize_variant($input) {
 }
 
 /**
+ * Sanitize checkbox values
+ */
+function fitcopilot_sanitize_checkbox($input) {
+    return (isset($input) && $input === true) ? true : false;
+}
+
+/**
  * Pass variant settings to React via wp_localize_script
  */
 function fitcopilot_localize_variant_data() {
@@ -85,22 +105,56 @@ function fitcopilot_localize_variant_data() {
         // Add more variants as needed
     );
     
+    // Check for demo mode URL parameter ?demo=1
+    $force_demo = isset($_GET['demo']) && $_GET['demo'] == '1';
+    
+    // Get demo mode setting
+    $demo_mode = $force_demo || (bool) get_theme_mod('fitcopilot_demo_mode', false);
+    
     // Prepare the data to be passed to React
     $data = array(
         'wpData' => array(
             'themeVariants' => $variants,
+            'demoMode'      => $demo_mode,
             'siteUrl'       => get_site_url(),
             'ajaxUrl'       => admin_url('admin-ajax.php'),
             'nonce'         => wp_create_nonce('fitcopilot_ajax_nonce'),
+            'siteLinks'     => array(
+                'registration' => site_url('/registration'),
+                'login'        => site_url('/login'),
+            ),
+            'assets'        => array(
+                'logo'          => get_theme_file_uri('/assets/images/logo.png'),
+            ),
         ),
     );
     
-    // Localize the script
-    wp_localize_script(
-        'fitcopilot-app', // The handle of your main React script
-        'athleteDashboardData',
-        $data
+    // Explicitly output debug information to ensure it's working
+    if (WP_DEBUG) {
+        error_log('FitCopilot Demo Mode: ' . ($demo_mode ? 'Enabled' : 'Disabled') . ($force_demo ? ' (forced via URL)' : ''));
+        error_log('FitCopilot Theme Variants: ' . json_encode($variants));
+    }
+    
+    // Try multiple script handles to ensure the data is attached
+    $script_handles = array(
+        'fitcopilot-app',            // Try the main expected handle
+        'athlete-dashboard-homepage', // From homepage-template.php
+        'homepage'                    // From webpack output
     );
+    
+    foreach ($script_handles as $handle) {
+        if (wp_script_is($handle, 'registered') || wp_script_is($handle, 'enqueued')) {
+            wp_localize_script(
+                $handle,
+                'athleteDashboardData',
+                $data
+            );
+            
+            if (WP_DEBUG) {
+                error_log('FitCopilot: Localized variant data to script handle: ' . $handle);
+            }
+        }
+    }
 }
 add_action('wp_enqueue_scripts', 'fitcopilot_localize_variant_data', 20);
 

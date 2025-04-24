@@ -1,5 +1,6 @@
 import { Check, ChevronDown, ChevronUp, Clock, Crown, Shield, Sparkles, Star, Users } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
+import { Tooltip } from '../../../components/UI/Tooltip';
 import './Pricing.scss';
 import { PricingProps } from './types';
 
@@ -304,44 +305,36 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
 
               {/* Pro Plan Tooltip */}
               {plan.name === 'Pro' && (
-                <div
-                  className={`plan-tooltip ${showBetaTooltip ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
-                    }`}
-                  role="tooltip"
+                <Tooltip
+                  isVisible={showBetaTooltip}
+                  content="Provide feedback directly to our development team and help shape the future of FitCopilot."
+                  position="top"
+                  title="Beta Release Offer"
+                  titleColor="text-lime-300"
+                  icon={<Shield className="w-5 h-5 text-lime-300" aria-hidden="true" />}
+                  accentColor="rgba(132, 204, 22, 0.3)"
                   id="pro-tooltip"
-                  aria-hidden={!showBetaTooltip}
+                  showOnHover={false}
                 >
-                  <div className="flex items-start mb-2">
-                    <Shield className="w-5 h-5 text-lime-300 mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                    <div>
-                      <h5 className="font-medium text-lime-300 text-sm">Beta Release Offer</h5>
-                      <p className="text-xs text-gray-300">
-                        Provide feedback directly to our development team and help shape the future of FitCopilot.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                  <div></div> {/* Empty div as child since we're controlling visibility externally */}
+                </Tooltip>
               )}
 
               {/* Elite Plan Tooltip */}
               {plan.name === 'Elite' && (
-                <div
-                  className={`plan-tooltip ${showEliteTooltip ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
-                    }`}
-                  role="tooltip"
+                <Tooltip
+                  isVisible={showEliteTooltip}
+                  content="Work with real certified trainers who will optimize your plan using both their fitness expertise and AI tools."
+                  position="top"
+                  title="Certified Trainers"
+                  titleColor="text-purple-300"
+                  icon={<Users className="w-5 h-5 text-purple-300" aria-hidden="true" />}
+                  accentColor="rgba(139, 92, 246, 0.3)"
                   id="elite-tooltip"
-                  aria-hidden={!showEliteTooltip}
+                  showOnHover={false}
                 >
-                  <div className="flex items-start mb-2">
-                    <Users className="w-5 h-5 text-purple-300 mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                    <div>
-                      <h5 className="font-medium text-purple-300 text-sm">Certified Trainers</h5>
-                      <p className="text-xs text-gray-300">
-                        Work with real certified trainers who will optimize your plan using both their fitness expertise and AI tools.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                  <div></div> {/* Empty div as child since we're controlling visibility externally */}
+                </Tooltip>
               )}
 
               <div className="p-6 border-b border-gray-700">
@@ -481,24 +474,37 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
                       ) : (
                         <div className="w-5 h-5 mr-3 flex-shrink-0 mt-0.5" aria-hidden="true" />
                       )}
-                      <span className={`${feature.isHighlighted
-                        ? 'text-white font-medium feature-text highlighted'
-                        : feature.included
-                          ? 'text-gray-300 feature-text'
-                          : 'text-gray-500 feature-text'
-                        } group relative`}
-                      >
-                        {feature.text}
 
-                        {feature.tooltip && (
-                          <div className="absolute left-0 bottom-full mb-2 w-48 p-2 bg-gray-800 rounded-md shadow-optimized text-xs text-gray-300 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300"
-                            role="tooltip"
+                      {feature.tooltip ? (
+                        <Tooltip
+                          content={feature.tooltip}
+                          position="top"
+                          width="200px"
+                          accentColor={plan.name === 'Basic' ? 'rgba(59, 130, 246, 0.3)' :
+                            plan.name === 'Pro' ? 'rgba(132, 204, 22, 0.3)' :
+                              'rgba(139, 92, 246, 0.3)'}
+                        >
+                          <span className={`${feature.isHighlighted
+                            ? 'text-white font-medium feature-text highlighted'
+                            : feature.included
+                              ? 'text-gray-300 feature-text'
+                              : 'text-gray-500 feature-text'
+                            }`}
                           >
-                            {feature.tooltip}
-                            <div className="absolute top-full left-4 w-2 h-2 bg-gray-800 transform rotate-45"></div>
-                          </div>
-                        )}
-                      </span>
+                            {feature.text}
+                          </span>
+                        </Tooltip>
+                      ) : (
+                        <span className={`${feature.isHighlighted
+                          ? 'text-white font-medium feature-text highlighted'
+                          : feature.included
+                            ? 'text-gray-300 feature-text'
+                            : 'text-gray-500 feature-text'
+                          }`}
+                        >
+                          {feature.text}
+                        </span>
+                      )}
                     </li>
                   ))}
 

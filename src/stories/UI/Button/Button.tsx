@@ -50,4 +50,7 @@ export const Button = ({
             {label}
         </button>
     );
-}; 
+};
+
+// Export Button as default export as well
+export default Button; 

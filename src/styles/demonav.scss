@@ -1,0 +1,23 @@
+// DemoNav component styles
+
+@keyframes highlight {
+    0% {
+        box-shadow: 0 0 10px rgba(132, 204, 22, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(132, 204, 22, 0.8);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(132, 204, 22, 0.4);
+    }
+}
+
+.highlight-pulse {
+    animation: highlight 1s ease-in-out;
+}
+
+#demo-nav {
+    z-index: 99999 !important;
+}

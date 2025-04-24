@@ -55,4 +55,7 @@ add_action('wp_enqueue_scripts', 'fitcopilot_dequeue_styles', 100);
 require_once get_template_directory() . '/inc/react-enqueue.php';
 
 // Include theme variants functionality
-require_once get_template_directory() . '/includes/theme-variants.php'; 
+require_once get_template_directory() . '/includes/theme-variants.php';
+
+// Include admin dashboard
+require_once get_template_directory() . '/includes/admin-dashboard.php'; 

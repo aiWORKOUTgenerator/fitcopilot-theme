@@ -9,14 +9,19 @@ export const useWordPress = (): WordPressData => {
   const [wpData, setWpData] = useState<WordPressData>(() => {
     // Try to get data from window object
     if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
+      // Cast to any to avoid TypeScript errors
+      const wpObj = window.athleteDashboardData.wpData as any;
+
       return {
-        siteLinks: window.athleteDashboardData.wpData.siteLinks || {
+        siteLinks: wpObj.siteLinks || {
           registration: 'https://aigymengine.com/workout-generator-registration',
           login: 'https://aigymengine.com/react-login',
         },
-        assets: window.athleteDashboardData.wpData.assets || {
+        assets: wpObj.assets || {
           logo: '/wp-content/themes/fitcopilot/assets/images/logo.png'
         },
+        themeVariants: wpObj.themeVariants || {},
+        demoMode: wpObj.demoMode || false,
         features: [],
         journey: [],
         testimonials: [],
@@ -34,6 +39,8 @@ export const useWordPress = (): WordPressData => {
       assets: {
         logo: '/wp-content/themes/fitcopilot/assets/images/logo.png'
       },
+      themeVariants: {},
+      demoMode: false,
       features: [],
       journey: [],
       testimonials: [],
@@ -46,9 +53,14 @@ export const useWordPress = (): WordPressData => {
     // Update data if window.athleteDashboardData changes
     const handleDataChange = () => {
       if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
+        // Cast to any to avoid TypeScript errors
+        const wpObj = window.athleteDashboardData.wpData as any;
+
         setWpData({
-          siteLinks: window.athleteDashboardData.wpData.siteLinks || wpData.siteLinks,
-          assets: window.athleteDashboardData.wpData.assets || wpData.assets,
+          siteLinks: wpObj.siteLinks || wpData.siteLinks,
+          assets: wpObj.assets || wpData.assets,
+          themeVariants: wpObj.themeVariants || wpData.themeVariants,
+          demoMode: wpObj.demoMode || wpData.demoMode,
           features: [],
           journey: [],
           testimonials: [],

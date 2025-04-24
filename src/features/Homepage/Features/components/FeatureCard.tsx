@@ -1,8 +1,6 @@
-import { CheckCircle } from 'lucide-react';
-import React, { forwardRef } from 'react';
-import './FeatureCard.scss';
+import React from 'react';
 
-export interface FeatureCardProps {
+interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
@@ -11,59 +9,68 @@ export interface FeatureCardProps {
   isActive: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  darkMode?: boolean;
 }
 
-const FeatureCard = forwardRef<HTMLDivElement, FeatureCardProps>(
-  (
-    {
-      icon,
-      title,
-      description,
-      gradient,
-      demoComponent,
-      isActive,
-      onMouseEnter,
-      onMouseLeave,
-    },
-    ref
-  ) => (
+const FeatureCard: React.FC<FeatureCardProps> = ({
+  icon,
+  title,
+  description,
+  gradient,
+  demoComponent,
+  isActive,
+  onMouseEnter,
+  onMouseLeave,
+  darkMode = false,
+}) => {
+  return (
     <div
-      ref={ref}
-      className="flip-card h-96"
+      className={`h-[400px] md:h-[450px] rounded-2xl relative overflow-hidden group shadow-xl transition-all duration-300 ${isActive ? 'scale-[1.02]' : ''}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div className="flip-card-inner w-full h-full">
-        <div className="flip-card-front absolute w-full h-full group bg-gray-800/70 backdrop-blur-lg rounded-2xl p-8 border border-gray-700 transition-all duration-500 hover:border-lime-300/50 hover:shadow-lg hover:shadow-lime-300/20 flex flex-col items-center justify-center">
-          <div className={`h-24 w-24 rounded-2xl mb-6 mx-auto flex items-center justify-center bg-gradient-to-br ${gradient}`}>
-            {icon}
-          </div>
-          <h3 className="text-white text-xl font-bold mb-4 group-hover:text-lime-300 transition-colors">{title}</h3>
-          <p className="text-gray-400 group-hover:text-gray-300 transition-colors">{description}</p>
-          <div className="mt-6">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-700/50 text-lime-300 group-hover:bg-lime-300/20 transition-colors">
-              Hover to Preview
-            </span>
-          </div>
+      {/* Gradient Background */}
+      <div className={`absolute inset-0 ${gradient} transition-opacity duration-300 ${isActive ? 'opacity-60' : 'opacity-100'}`}></div>
+
+      {/* Demo view (shown when active) */}
+      <div
+        className={`absolute inset-0 transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'} z-10`}
+        aria-hidden={!isActive}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+
+        <div className="h-[70%] p-4">
+          {demoComponent}
         </div>
-        <div className="flip-card-back absolute w-full h-full bg-gray-800/90 backdrop-blur-lg rounded-2xl p-6 border border-lime-300/30 shadow-lg shadow-lime-300/10 flex flex-col">
-          <h3 className="text-lime-300 text-lg font-bold mb-4 text-center flex items-center justify-center">
-            {title} <CheckCircle className="ml-2 animate-pulse" size={20} />
+
+        {/* Feature info at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 p-6">
+          <h3 className={`font-bold text-xl mb-1 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+            {title}
           </h3>
-          <div className="flex-1 px-2">
-            {demoComponent}
-          </div>
-          <div className="mt-4 text-center">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-lime-500/20 text-lime-300">
-              Hover to Flip Back
-            </span>
-          </div>
+          <p className={`text-sm ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+            {description}
+          </p>
         </div>
       </div>
-    </div>
-  )
-);
 
-FeatureCard.displayName = 'FeatureCard';
+      {/* Default view (shown when inactive) */}
+      <div
+        className={`absolute inset-0 p-6 flex flex-col items-center justify-center text-center transition-opacity duration-300 ${isActive ? 'opacity-0' : 'opacity-100'} z-0`}
+        aria-hidden={isActive}
+      >
+        <div className="mb-6">
+          {icon}
+        </div>
+        <h3 className={`font-bold text-xl mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+          {title}
+        </h3>
+        <p className={`text-sm ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+          {description}
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export default FeatureCard; 

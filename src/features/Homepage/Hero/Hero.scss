@@ -91,160 +91,166 @@
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
     }
   }
+}
 
-  .floating-icon {
-    position: absolute;
-    opacity: 0.8;
-    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
-    animation: float 6s infinite ease-in-out;
-    z-index: 3;
+// Hero-specific floating icon styles
+.hero-floating-icon {
+  position: absolute;
+  opacity: 0.8;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+  animation: float 6s infinite ease-in-out;
+  z-index: 3;
 
-    &:hover {
-      z-index: 10;
-    }
+  &:hover {
+    z-index: 10;
+  }
 
-    // Different animation timing for odd/even icons
-    &:nth-child(odd) {
-      animation-duration: 8s;
-    }
+  // Different animation timing for odd/even icons
+  &:nth-child(odd) {
+    animation-duration: 8s;
+  }
 
-    &:nth-child(even) {
-      animation-duration: 10s;
-      animation-delay: 1s;
-    }
+  &:nth-child(even) {
+    animation-duration: 10s;
+    animation-delay: 1s;
+  }
+
+  svg {
+    fill: currentColor;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    opacity: 1;
 
     svg {
-      fill: currentColor;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.3s ease;
-    }
-
-    &:hover {
-      opacity: 1;
-
-      svg {
-        transform: scale(1.1);
-      }
+      transform: scale(1.1);
     }
   }
+}
 
-  /* Tooltip styling matched with pricing component */
-  .tooltip {
+// General floating icon styles (for backward compatibility)
+.floating-icon {
+  position: absolute;
+}
+
+/* Tooltip styling matched with pricing component */
+.tooltip {
+  position: absolute;
+  left: 50%;
+  bottom: 110%;
+  width: 260px;
+  background-color: rgba(17, 24, 39, 0.95);
+  border: 1px solid rgba(132, 204, 22, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  transition: all 0.2s ease;
+  transform: translateX(-50%);
+
+  &::after {
+    content: '';
     position: absolute;
     left: 50%;
-    bottom: 110%;
-    width: 260px;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
     background-color: rgba(17, 24, 39, 0.95);
-    border: 1px solid rgba(132, 204, 22, 0.3);
-    border-radius: 0.5rem;
-    padding: 0.75rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-    z-index: 20;
-    transition: all 0.2s ease;
-    transform: translateX(-50%);
-
-    &::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      bottom: -6px;
-      width: 12px;
-      height: 12px;
-      background-color: rgba(17, 24, 39, 0.95);
-      border-right: 1px solid rgba(132, 204, 22, 0.3);
-      border-bottom: 1px solid rgba(132, 204, 22, 0.3);
-      transform: translateX(-50%) rotate(45deg);
-    }
-
-    .tooltip-content {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 8px;
-    }
-
-    .tooltip-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 8px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .tooltip-text {
-      flex: 1;
-    }
-
-    .tooltip-title {
-      font-size: 14px;
-      font-weight: 500;
-      color: #a3e635;
-      /* text-lime-300 */
-      margin-bottom: 4px;
-    }
+    border-right: 1px solid rgba(132, 204, 22, 0.3);
+    border-bottom: 1px solid rgba(132, 204, 22, 0.3);
+    transform: translateX(-50%) rotate(45deg);
   }
 
-  .arrow-icon {
+  .tooltip-content {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .tooltip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .tooltip-text {
+    flex: 1;
+  }
+
+  .tooltip-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #a3e635;
+    /* text-lime-300 */
+    margin-bottom: 4px;
+  }
+}
+
+.arrow-icon {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  color: var(--color-accent);
+  animation: bounce 2s infinite ease-in-out;
+  cursor: pointer;
+  z-index: 5;
+
+  @media (max-width: 768px) {
+    bottom: 15px;
+  }
+}
+
+.hero-button {
+  background: linear-gradient(90deg,
+      var(--color-primary) 0%,
+      var(--color-primary-dark) 100%);
+  color: #fff;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+
+  &::before {
+    content: '';
     position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 40px;
-    color: var(--color-accent);
-    animation: bounce 2s infinite ease-in-out;
-    cursor: pointer;
-    z-index: 5;
-
-    @media (max-width: 768px) {
-      bottom: 15px;
-    }
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%);
+    transition: all 0.5s ease;
   }
 
-  .hero-button {
-    background: linear-gradient(90deg,
-        var(--color-primary) 0%,
-        var(--color-primary-dark) 100%);
-    color: #fff;
-    font-weight: 600;
-    padding: 12px 28px;
-    border-radius: 8px;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 
     &::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg,
-          transparent 0%,
-          rgba(255, 255, 255, 0.2) 50%,
-          transparent 100%);
-      transition: all 0.5s ease;
+      left: 100%;
     }
+  }
 
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-
-      &::before {
-        left: 100%;
-      }
-    }
-
-    &:active {
-      transform: translateY(1px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -252,15 +258,11 @@
 
   0%,
   100% {
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(0);
   }
 
-  33% {
-    transform: translateY(-10px) rotate(2deg);
-  }
-
-  66% {
-    transform: translateY(5px) rotate(-2deg);
+  50% {
+    transform: translateY(-20px);
   }
 }
 

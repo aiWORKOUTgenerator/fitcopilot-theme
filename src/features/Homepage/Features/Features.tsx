@@ -2,8 +2,9 @@
 
 import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, Medal, Pause, Play, Timer } from 'lucide-react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
-import './Features.css';
+import './Features.scss';
 import FeatureCard from './components/FeatureCard';
+import { FeaturesProps } from './types';
 
 /**
  * Interface for floating icon props
@@ -292,12 +293,15 @@ interface FloatingIconData {
 /**
  * Features section component
  */
-export const Features: React.FC = () => {
+export const Features: React.FC<FeaturesProps> = ({
+  features: _features = [],
+  variant: _variant = 'default'
+}) => {
   // Only tracking currentDemoIndex since hoveredIndex isn't being used
   const [activeFeatureIndex, setActiveFeatureIndex] = useState<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const features: Feature[] = [
+  const featureItems: Feature[] = [
     {
       icon: <BarChart3 size={48} className="text-lime-300 group-hover:scale-110 transition-transform duration-300" />,
       title: "Customized Workouts",
@@ -392,7 +396,7 @@ export const Features: React.FC = () => {
 
         {/* Feature cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
+          {featureItems.map((feature, index) => (
             <FeatureCard
               key={index}
               icon={feature.icon}

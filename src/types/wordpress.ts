@@ -73,6 +73,8 @@ export interface WordPressData {
     assets?: {
         logo?: string;
     };
+    themeVariants?: Record<string, string>;
+    demoMode?: boolean;
     features?: Feature[];
     journey?: JourneyStep[];
     testimonials?: Testimonial[];

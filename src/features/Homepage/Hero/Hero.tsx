@@ -19,7 +19,7 @@ interface FloatingIconProps {
 const FloatingIcon: React.FC<FloatingIconProps> = ({ children, delay, speed, left, top }) => {
   return (
     <div
-      className="floating-icon"
+      className="floating-icon hero-floating-icon"
       style={{
         left: `${left}%`,
         top: `${top}%`,
