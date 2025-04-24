@@ -79,7 +79,15 @@ function formatHomepageData(wpData: WordPressServiceData): HomepageData {
  * @returns The variant value
  */
 export function getHomepageVariant<T extends string>(key: string, defaultVariant: T): T {
-    // Prefix the key to namespace it for the Homepage feature
-    const homepageKey = `homepage_${key}`;
-    return wordPressService.getThemeVariant(homepageKey, defaultVariant);
+    // The PHP Customizer uses keys without prefix (e.g., 'fitcopilot_hero_variant')
+    // Rather than adding a prefix, map directly to the key used in PHP
+    const wpKey = `fitcopilot_${key}_variant`;
+
+    // Get the variant value from WordPress service
+    const variantValue = wordPressService.getThemeVariant(wpKey, defaultVariant);
+
+    // Log for debugging
+    console.log(`Getting variant for ${key}, using WP key: ${wpKey}, value: ${variantValue}`);
+
+    return variantValue;
 } 

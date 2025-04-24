@@ -17,6 +17,15 @@ export function createVariantComponent<
 ): React.FC<Props> {
     return (props: Props) => {
         const { variant = defaultVariant, ...restProps } = props;
+        
+        // Debug: Log when component renders with specified variant
+        console.log(`Rendering variant component with variant: ${variant}`);
+        
+        // If the specified variant doesn't exist in the map, use default
+        if (!variantMap[variant]) {
+            console.warn(`Variant "${variant}" not found in variant map, using default instead`);
+        }
+        
         // Use the specified variant or fall back to default
         const Component = variantMap[variant] || variantMap[defaultVariant];
 
@@ -36,5 +45,16 @@ export function getComponentVariant<T extends string>(
     componentKey: string,
     defaultVariant: T
 ): T {
-    return getHomepageVariant<T>(componentKey, defaultVariant);
+    // Check if window.athleteDashboardData is available for debugging
+    if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
+        console.log('Debug - window.athleteDashboardData.wpData:', window.athleteDashboardData.wpData);
+    }
+    
+    // Get variant from WordPress settings
+    const variant = getHomepageVariant<T>(componentKey, defaultVariant);
+    
+    // Add additional debugging
+    console.log(`getComponentVariant: key=${componentKey}, result=${variant}`);
+    
+    return variant;
 } 

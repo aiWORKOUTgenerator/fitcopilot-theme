@@ -219,7 +219,32 @@ class DefaultWordPressService implements WordPressService {
      */
     public getThemeVariant<T extends string>(key: string, defaultVariant: T): T {
         const variants = this.data.themeVariants;
-        return (variants[key] as T) || defaultVariant;
+
+        // Debug information
+        console.log('Available theme variants:', variants);
+        console.log(`Looking for variant with key: ${key}`);
+
+        // First try the exact key
+        if (variants[key] !== undefined) {
+            console.log(`Found exact match for ${key}: ${variants[key]}`);
+            return variants[key] as T;
+        }
+
+        // Then try without fitcopilot_ prefix if it exists
+        if (key.startsWith('fitcopilot_') && key.endsWith('_variant')) {
+            // Extract the middle part (e.g., 'hero' from 'fitcopilot_hero_variant')
+            const shortKey = key.replace('fitcopilot_', '').replace('_variant', '');
+
+            // Check if the short key exists
+            if (variants[shortKey] !== undefined) {
+                console.log(`Found match for ${shortKey}: ${variants[shortKey]}`);
+                return variants[shortKey] as T;
+            }
+        }
+
+        // If we're falling back to default, log this for debugging
+        console.log(`No match found for ${key}, using default: ${defaultVariant}`);
+        return defaultVariant;
     }
 }
 

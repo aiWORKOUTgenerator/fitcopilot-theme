@@ -1,5 +1,6 @@
-import { Dumbbell, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
+import { Apple, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
+import { HeroButton } from '../components/HeroButton';
 import '../Hero.scss';
 import { HeroProps } from '../types';
 
@@ -75,15 +76,15 @@ const Hero: React.FC<HeroProps> = ({
 
     // Floating icons data - gym specific icons
     const floatingIcons: FloatingIconData[] = [
-        { Icon: Dumbbell, size: 32, left: 5, top: 15, delay: 0, speed: 8 },
-        { Icon: Dumbbell, size: 40, left: 15, top: 60, delay: 1.5, speed: 10 },
+        { Icon: Dumbbell, size: 28, left: 5, top: 15, delay: 0, speed: 8 },
+        { Icon: Timer, size: 36, left: 15, top: 60, delay: 1.5, speed: 10 },
         { Icon: Medal, size: 32, left: 25, top: 25, delay: 0.8, speed: 12 },
-        { Icon: Zap, size: 40, left: 80, top: 20, delay: 2, speed: 9 },
+        { Icon: Flame, size: 40, left: 80, top: 20, delay: 2, speed: 9 },
         { Icon: Heart, size: 32, left: 85, top: 65, delay: 1, speed: 11 },
-        { Icon: Dumbbell, size: 28, left: 10, top: 80, delay: 2.5, speed: 10 },
-        { Icon: Timer, size: 28, left: 70, top: 10, delay: 0.5, speed: 7 },
-        { Icon: Medal, size: 36, left: 90, top: 40, delay: 1.2, speed: 9 },
-        { Icon: Dumbbell, size: 42, left: 30, top: 70, delay: 1.8, speed: 13 }
+        { Icon: Apple, size: 28, left: 10, top: 80, delay: 2.5, speed: 10 },
+        { Icon: Coffee, size: 24, left: 70, top: 10, delay: 0.5, speed: 7 },
+        { Icon: Footprints, size: 36, left: 90, top: 40, delay: 1.2, speed: 9 },
+        { Icon: Bike, size: 40, left: 30, top: 70, delay: 1.8, speed: 13 }
     ];
 
     // On mount and unmount
@@ -122,11 +123,6 @@ const Hero: React.FC<HeroProps> = ({
         <section
             className="w-full min-h-screen flex items-center justify-center py-20 px-4 relative overflow-hidden bg-gray-900"
             aria-labelledby="hero-heading"
-            style={{
-                backgroundImage: 'linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.7)), url("/wp-content/themes/fitcopilot/assets/images/gym-background.jpg")',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center'
-            }}
         >
             {/* Floating fitness icons - decorative */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none z-10" aria-hidden="true">
@@ -138,14 +134,14 @@ const Hero: React.FC<HeroProps> = ({
                         delay={icon.delay}
                         speed={icon.speed}
                     >
-                        <icon.Icon size={icon.size} className="text-red-500" />
+                        <icon.Icon size={icon.size} />
                     </FloatingIcon>
                 ))}
             </div>
 
             <div className="max-w-4xl mx-auto relative z-20 text-center">
                 {/* Content Card with Backdrop Blur */}
-                <div className="bg-black/40 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-red-900/30 mb-6">
+                <div className="bg-gray-800/30 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-gray-700 mb-6">
                     {/* Logo */}
                     <div className="mb-8 flex justify-center">
                         <img
@@ -159,17 +155,17 @@ const Hero: React.FC<HeroProps> = ({
                         id="hero-heading"
                         className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white"
                     >
-                        <span className="bg-gradient-to-r from-red-500 to-orange-400 text-transparent bg-clip-text text-gradient" data-text="GYM-POWERED AI">
-                            GYM-POWERED AI
-                        </span> Workout Builder
+                        <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text text-gradient" data-text="Gym Training AI">
+                            Gym Training AI
+                        </span> Tailored Just for You
                     </h1>
 
-                    <div className="w-24 h-1 bg-gradient-to-r from-red-500 to-orange-400 mx-auto mb-6 rounded-full"></div>
+                    <div className="w-24 h-1 bg-gradient-to-r from-lime-300 to-emerald-400 mx-auto mb-6 rounded-full"></div>
 
                     <p
                         className="text-gray-300 mb-10 max-w-2xl mx-auto text-base md:text-xl lead"
                     >
-                        Transform your gym sessions with <span className="text-red-400">professional-grade workouts</span> customized for your equipment and goals.
+                        Transform your gym workouts with <span className="citron-text">professional-grade plans</span> customized for your fitness level and equipment access.
                     </p>
 
                     {/* CTA Buttons Container */}
@@ -182,13 +178,14 @@ const Hero: React.FC<HeroProps> = ({
                             onMouseEnter={() => handleMouseEnter('freeWorkout')}
                             onMouseLeave={() => handleMouseLeave('freeWorkout')}
                         >
-                            <a
+                            <HeroButton
                                 href="https://builder.fitcopilot.ai"
-                                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gradient-to-r from-red-500 to-orange-400 hover:from-red-600 hover:to-orange-500 text-white shadow-optimized hover:shadow-optimized-hover hover:-translate-y-1 w-full sm:w-auto button primary hero-button"
+                                variant="primary"
+                                leftIcon={<Zap className="h-5 w-5" />}
+                                fullWidth
                             >
-                                <Zap className="mr-2 h-5 w-5" />
-                                Build Gym Workout
-                            </a>
+                                Get a Free Workout
+                            </HeroButton>
 
                             {/* Tooltip styled to match Pricing */}
                             <div
@@ -199,7 +196,7 @@ const Hero: React.FC<HeroProps> = ({
                             >
                                 <div className="tooltip-content">
                                     <div className="tooltip-icon">
-                                        <Zap className="w-4 h-4 text-red-400" />
+                                        <Zap className="w-4 h-4 text-lime-300" />
                                     </div>
                                     <div className="tooltip-text">
                                         <h5 className="tooltip-title">Gym Workout Builder</h5>
@@ -217,13 +214,14 @@ const Hero: React.FC<HeroProps> = ({
                             onMouseEnter={() => handleMouseEnter('createAccount')}
                             onMouseLeave={() => handleMouseLeave('createAccount')}
                         >
-                            <a
+                            <HeroButton
                                 href={registrationLink}
-                                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gray-900 border-2 border-red-500/30 text-white hover:bg-red-500/10 hover:-translate-y-1 w-full sm:w-auto button secondary hero-button"
+                                variant="secondary"
+                                leftIcon={<UserPlus className="h-5 w-5 text-lime-300" />}
+                                fullWidth
                             >
-                                <UserPlus className="mr-2 h-5 w-5 text-red-400" />
-                                Join Our Gym
-                            </a>
+                                Create Your Account
+                            </HeroButton>
 
                             {/* Tooltip styled to match Pricing */}
                             <div
@@ -234,7 +232,7 @@ const Hero: React.FC<HeroProps> = ({
                             >
                                 <div className="tooltip-content">
                                     <div className="tooltip-icon">
-                                        <Shield className="w-4 h-4 text-red-400" />
+                                        <Shield className="w-4 h-4 text-lime-300" />
                                     </div>
                                     <div className="tooltip-text">
                                         <h5 className="tooltip-title">Premium Gym Membership</h5>
@@ -251,7 +249,7 @@ const Hero: React.FC<HeroProps> = ({
                     <div className="mt-6">
                         <a
                             href={loginLink}
-                            className="text-gray-400 hover:text-red-400 transition inline-flex items-center"
+                            className="text-gray-400 hover:text-lime-300 transition inline-flex items-center"
                         >
                             <LogIn className="w-4 h-4 mr-1" />
                             <span>Existing members login here</span>
@@ -261,23 +259,23 @@ const Hero: React.FC<HeroProps> = ({
 
                 {/* Features Highlights */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-gray-300">
-                    <div className="p-4 rounded-2xl bg-black/30 backdrop-blur-sm border border-red-900/20">
-                        <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mb-3 mx-auto">
-                            <Dumbbell className="w-5 h-5 text-red-400" />
+                    <div className="p-4 rounded-2xl bg-gray-800/30 backdrop-blur-sm border border-gray-700">
+                        <div className="w-10 h-10 rounded-full bg-lime-500/20 flex items-center justify-center mb-3 mx-auto">
+                            <Dumbbell className="w-5 h-5 text-lime-300" />
                         </div>
                         <h3 className="font-semibold text-white mb-1">Gym-Specific Routines</h3>
                         <p className="text-sm">Optimized for gym equipment and professional training environments.</p>
                     </div>
-                    <div className="p-4 rounded-2xl bg-black/30 backdrop-blur-sm border border-red-900/20">
-                        <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mb-3 mx-auto">
-                            <Timer className="w-5 h-5 text-red-400" />
+                    <div className="p-4 rounded-2xl bg-gray-800/30 backdrop-blur-sm border border-gray-700">
+                        <div className="w-10 h-10 rounded-full bg-lime-500/20 flex items-center justify-center mb-3 mx-auto">
+                            <Timer className="w-5 h-5 text-lime-300" />
                         </div>
                         <h3 className="font-semibold text-white mb-1">Efficient Scheduling</h3>
                         <p className="text-sm">Maximize your gym time with scientifically designed workout splits.</p>
                     </div>
-                    <div className="p-4 rounded-2xl bg-black/30 backdrop-blur-sm border border-red-900/20">
-                        <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center mb-3 mx-auto">
-                            <Medal className="w-5 h-5 text-red-400" />
+                    <div className="p-4 rounded-2xl bg-gray-800/30 backdrop-blur-sm border border-gray-700">
+                        <div className="w-10 h-10 rounded-full bg-lime-500/20 flex items-center justify-center mb-3 mx-auto">
+                            <Medal className="w-5 h-5 text-lime-300" />
                         </div>
                         <h3 className="font-semibold text-white mb-1">Progress Tracking</h3>
                         <p className="text-sm">Monitor performance and adjust training intensity for optimal results.</p>

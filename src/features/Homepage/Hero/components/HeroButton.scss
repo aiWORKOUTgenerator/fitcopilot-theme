@@ -61,7 +61,7 @@
 
   /* Variants */
   &.button--primary {
-    background: linear-gradient(90deg, #84cc16 0%, #65a30d 100%);
+    background: linear-gradient(90deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
     color: #fff;
     border: none;
 
@@ -71,12 +71,12 @@
   }
 
   &.button--secondary {
-    background: rgba(132, 204, 22, 0.1);
-    color: #fff;
-    border: 1px solid rgba(132, 204, 22, 0.3);
+    background-color: rgba(139, 92, 246, 0.1);
+    color: var(--color-primary);
+    border: 1px solid rgba(139, 92, 246, 0.3);
 
     &:hover {
-      background: rgba(132, 204, 22, 0.2);
+      background-color: rgba(139, 92, 246, 0.2);
     }
   }
 
@@ -90,11 +90,11 @@
   .button__icon {
     display: inline-flex;
     align-items: center;
-    
+
     &--left {
       margin-right: 8px;
     }
-    
+
     &--right {
       margin-left: 8px;
     }

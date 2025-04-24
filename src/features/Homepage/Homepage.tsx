@@ -9,8 +9,10 @@ import { Features } from './Features';
 import { Footer } from './Footer';
 import { getHeroVariant, Hero, VariantKey } from './Hero';
 import { Journey } from './Journey';
+import { getPersonalTrainingVariant, PersonalTraining } from './PersonalTraining';
 import { Pricing } from './Pricing';
 import { Testimonials } from './Testimonials';
+import { getTrainingVariant, Training } from './Training';
 
 // Import feature-specific components
 import { DemoNav } from './components';
@@ -30,6 +32,8 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
   const [variants, setVariants] = useState<Record<string, VariantKey>>({
     hero: getHeroVariant(),
     features: 'default',
+    training: getTrainingVariant(),
+    personalTraining: getPersonalTrainingVariant(),
   });
 
   // Initialize animations
@@ -39,9 +43,13 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
     // Mark as loaded after initial render
     setIsLoaded(true);
 
-    // Log demo mode status for debugging
+    // Enhanced logging for debugging variants
+    console.log('========= VARIANT DEBUG INFO =========');
+    console.log('Current Hero Variant:', variants.hero);
+    console.log('getHeroVariant() returned:', getHeroVariant());
     console.log('Demo mode status:', demoMode);
-    console.log('Current variants:', variants);
+    console.log('All current variants:', variants);
+    console.log('====================================');
 
     // Add a class to the body for demo mode
     if (demoMode) {
@@ -81,6 +89,18 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
     {
       id: 'journey',
       label: 'Journey'
+    },
+    {
+      id: 'training',
+      label: 'Training Programs',
+      variantKey: 'training',
+      variants: ['default', 'gym'] as VariantKey[]
+    },
+    {
+      id: 'personalTraining',
+      label: 'Personal Training',
+      variantKey: 'personalTraining',
+      variants: ['default', 'gym'] as VariantKey[]
     },
     {
       id: 'testimonials',
@@ -138,6 +158,16 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
       {/* Journey Section */}
       <section id="journey">
         <Journey journey={data.journey} />
+      </section>
+
+      {/* Training Programs Section */}
+      <section id="training">
+        <Training variant={variants.training} />
+      </section>
+
+      {/* Personal Training Section */}
+      <section id="personalTraining">
+        <PersonalTraining variant={variants.personalTraining} />
       </section>
 
       {/* Testimonials Section */}

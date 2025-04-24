@@ -98,10 +98,16 @@ function fitcopilot_sanitize_checkbox($input) {
  * Pass variant settings to React via wp_localize_script
  */
 function fitcopilot_localize_variant_data() {
-    // Get all variant settings
+    // Get all variant settings using both direct keys and simpler keys for JS
     $variants = array(
-        'hero'     => get_theme_mod('fitcopilot_hero_variant', 'default'),
+        // Original theme mod keys from the Customizer
+        'fitcopilot_hero_variant' => get_theme_mod('fitcopilot_hero_variant', 'default'),
+        'fitcopilot_features_variant' => get_theme_mod('fitcopilot_features_variant', 'default'),
+        
+        // Also include simplified keys for easier JS access
+        'hero' => get_theme_mod('fitcopilot_hero_variant', 'default'),
         'features' => get_theme_mod('fitcopilot_features_variant', 'default'),
+        
         // Add more variants as needed
     );
     

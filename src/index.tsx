@@ -1,7 +1,16 @@
-import React from 'react';
+import * as React from 'react';
 import { createRoot } from 'react-dom/client';
+import './styles/homepage.scss';
+
+// Import feature component from feature-first structure
 import Homepage from './features/Homepage';
-import './styles/global.scss';
+
+/**
+ * Main Homepage component wrapper
+ */
+const HomepageApp: React.FC = () => {
+    return <Homepage />;
+};
 
 /**
  * Initialize the React application
@@ -9,20 +18,30 @@ import './styles/global.scss';
 const initializeApp = () => {
     const container = document.getElementById('athlete-dashboard-root');
 
-    // Get WordPress data from global variable, using any type to avoid TS errors
-    const wpData = (window.athleteDashboardData?.wpData || {}) as any;
+    // Debug WordPress data at initialization
+    if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
+        console.log('==== ATHLETE DASHBOARD INITIALIZATION ====');
+        console.log('WordPress Data:', window.athleteDashboardData.wpData);
 
-    // Check for demo mode flag
-    const isDemo = wpData.demoMode === true;
+        // Use any type casting to avoid TypeScript errors with dynamic properties
+        const wpData = window.athleteDashboardData.wpData as any;
+
+        if (wpData.themeVariants) {
+            console.log('Theme Variants:', wpData.themeVariants);
+        } else {
+            console.warn('No theme variants found in WordPress data');
+        }
+        console.log('=========================================');
+    } else {
+        console.warn('No WordPress data found at window.athleteDashboardData');
+    }
 
     if (container) {
         try {
             const root = createRoot(container);
             root.render(
                 <React.StrictMode>
-                    <Homepage
-                        demoMode={isDemo}
-                    />
+                    <HomepageApp />
                 </React.StrictMode>
             );
         } catch (error) {
@@ -53,7 +72,7 @@ const initializeApp = () => {
                 const root = createRoot(newRootElement);
                 root.render(
                     <React.StrictMode>
-                        <Homepage demoMode={isDemo} />
+                        <HomepageApp />
                     </React.StrictMode>
                 );
             } catch (error) {
