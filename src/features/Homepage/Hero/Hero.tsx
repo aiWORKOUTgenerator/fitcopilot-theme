@@ -1,7 +1,6 @@
 import { Apple, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
-import * as React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Hero.scss';
-import { HeroButton } from './components/HeroButton';
 
 /**
  * Interface for floating icon props
@@ -57,7 +56,7 @@ const Hero: React.FC<HeroProps> = ({
   logoUrl = '/wp-content/themes/athlete-dashboard-gym-engine/assets/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png'
 }) => {
   // Animation states for tooltips
-  const [tooltipStates, setTooltipStates] = React.useState({
+  const [tooltipStates, setTooltipStates] = useState({
     freeWorkout: {
       show: false,
       isAutoShow: false,
@@ -71,7 +70,7 @@ const Hero: React.FC<HeroProps> = ({
   });
 
   // Animation timeline references
-  const timeoutsRef = React.useRef<number[]>([]);
+  const timeoutsRef = useRef<number[]>([]);
 
   // Clear all timeouts on cleanup
   const clearAllTimeouts = () => {
@@ -93,7 +92,7 @@ const Hero: React.FC<HeroProps> = ({
   ];
 
   // On mount and unmount
-  React.useEffect(() => {
+  useEffect(() => {
     // Cleanup all timeouts on unmount
     return () => {
       clearAllTimeouts();
@@ -185,32 +184,29 @@ const Hero: React.FC<HeroProps> = ({
               onMouseEnter={() => handleMouseEnter('freeWorkout')}
               onMouseLeave={() => handleMouseLeave('freeWorkout')}
             >
-              <HeroButton
+              <a
                 href="https://builder.fitcopilot.ai"
-                variant="primary"
-                leftIcon={<Zap className="h-5 w-5" />}
-                fullWidth
+                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-optimized hover:shadow-optimized-hover hover:-translate-y-1 w-full sm:w-auto button primary hero-button"
               >
+                <Zap className="mr-2 h-5 w-5" />
                 Get a Free Workout
-              </HeroButton>
+              </a>
 
-              {/* Tooltip styled to match Pricing */}
-              <div
-                className={`tooltip ${tooltipStates.freeWorkout.show ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
-                role="tooltip"
-                id="freeWorkout-tooltip"
-                aria-hidden={!tooltipStates.freeWorkout.show}
-              >
-                <div className="tooltip-content">
-                  <div className="tooltip-icon">
-                    <Zap className="w-4 h-4 text-lime-300" />
+              {/* Tooltip - Updated to match Pricing */}
+              <div className="tooltip-container">
+                <div className={`tooltip ${tooltipStates.freeWorkout.show ? 'show' : 'hide'}`}>
+                  <div className="tooltip-content">
+                    <div className="tooltip-icon">
+                      <Zap className="w-4 h-4 text-lime-300" />
+                    </div>
+                    <div className="tooltip-text">
+                      <h5 className="tooltip-title">Quick Workout Builder</h5>
+                      <p className="text-xs text-gray-300">
+                        Generate a personalized workout plan in seconds with our AI technology - no registration required.
+                      </p>
+                    </div>
                   </div>
-                  <div className="tooltip-text">
-                    <h5 className="tooltip-title">Quick Workout Builder</h5>
-                    <p className="text-xs text-gray-300">
-                      Generate a personalized workout plan in seconds with our AI technology - no registration required.
-                    </p>
-                  </div>
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-3 h-3 bg-gray-800"></div>
                 </div>
               </div>
             </div>
@@ -221,47 +217,43 @@ const Hero: React.FC<HeroProps> = ({
               onMouseEnter={() => handleMouseEnter('createAccount')}
               onMouseLeave={() => handleMouseLeave('createAccount')}
             >
-              <HeroButton
+              <a
                 href={registrationLink}
-                variant="secondary"
-                leftIcon={<UserPlus className="h-5 w-5 text-lime-300" />}
-                fullWidth
+                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gray-800 border-2 border-lime-300/30 text-white hover:bg-lime-300/10 hover:-translate-y-1 w-full sm:w-auto button secondary hero-button"
               >
+                <UserPlus className="mr-2 h-5 w-5 text-lime-300" />
                 Create Your Account
-              </HeroButton>
+              </a>
 
-              {/* Tooltip styled to match Pricing */}
-              <div
-                className={`tooltip ${tooltipStates.createAccount.show ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
-                role="tooltip"
-                id="createAccount-tooltip"
-                aria-hidden={!tooltipStates.createAccount.show}
-              >
-                <div className="tooltip-content">
-                  <div className="tooltip-icon">
-                    <Shield className="w-4 h-4 text-lime-300" />
+              {/* Tooltip - Updated to match Pricing */}
+              <div className="tooltip-container">
+                <div className={`tooltip ${tooltipStates.createAccount.show ? 'show' : 'hide'}`}>
+                  <div className="tooltip-content">
+                    <div className="tooltip-icon">
+                      <Shield className="w-4 h-4 text-lime-300" />
+                    </div>
+                    <div className="tooltip-text">
+                      <h5 className="tooltip-title">Member Benefits</h5>
+                      <p className="text-xs text-gray-300">
+                        Save workouts, track progress, and access premium features with your free account.
+                      </p>
+                    </div>
                   </div>
-                  <div className="tooltip-text">
-                    <h5 className="tooltip-title">Member Benefits</h5>
-                    <p className="text-xs text-gray-300">
-                      Save workouts, track progress, and access premium features with your free account.
-                    </p>
-                  </div>
+                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-3 h-3 bg-gray-800"></div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Login Link */}
-          <div className="mt-6">
-            <HeroButton
+          {/* Sign In Link */}
+          <div>
+            <a
               href={loginLink}
-              variant="secondary"
-              size="small"
-              leftIcon={<LogIn className="h-4 w-4" />}
+              className="inline-flex items-center text-gray-400 hover:text-lime-300 transition-colors duration-300"
             >
-              Already a member? Sign in
-            </HeroButton>
+              <LogIn size={16} className="mr-1" />
+              Already have an account? Sign in
+            </a>
           </div>
         </div>
 

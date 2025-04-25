@@ -19,8 +19,8 @@
     right: 0;
     bottom: 0;
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 20px 20px;
     background-position: center center;
     z-index: 0;
@@ -93,10 +93,31 @@
   }
 }
 
-// Hero-specific floating icon styles
+// Main section styling 
+.hero-section {
+  position: relative;
+  background-color: #0f172a; // Darker navy/black background
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center center;
+    z-index: 0;
+    pointer-events: none;
+  }
+}
+
 .hero-floating-icon {
   position: absolute;
-  opacity: 0.8;
+  opacity: 0.6; // More subtle icons
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
   animation: float 6s infinite ease-in-out;
   z-index: 3;
@@ -131,43 +152,111 @@
   }
 }
 
-// General floating icon styles (for backward compatibility)
+// General floating icon styles
 .floating-icon {
   position: absolute;
+  color: rgba(132, 204, 22, 0.5); // More subtle color
 }
 
-/* Tooltip styling matched with pricing component */
-.tooltip {
+/* Float animation for floating icons */
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* Gradient animation */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// Card styling
+.bg-gray-800\/30 {
+  background-color: rgba(17, 24, 39, 0.2) !important; // More subtle transparency
+  backdrop-filter: blur(10px) !important;
+}
+
+// Text gradient
+.text-gradient {
+  background-size: 200% 200%;
+  animation: gradientMove 8s ease infinite;
+  background-image: linear-gradient(90deg, #a3e635, #65a30d) !important; // Brighter lime green gradient
+}
+
+.bg-gradient-to-r.from-lime-300.to-emerald-400 {
+  background-image: linear-gradient(90deg, #a3e635, #65a30d) !important; // Match the button gradient
+}
+
+// Divider
+.w-24.h-1 {
+  margin-bottom: 1.75rem !important; // More space after divider
+  background-image: linear-gradient(90deg, #a3e635, #65a30d) !important;
+}
+
+// Paragraph spacing
+.mb-10 {
+  margin-bottom: 2.75rem !important; // More space after paragraph
+}
+
+/* Tooltip Structure */
+.tooltip-container {
   position: absolute;
-  left: 50%;
-  bottom: 110%;
-  width: 260px;
-  background-color: rgba(17, 24, 39, 0.95);
-  border: 1px solid rgba(132, 204, 22, 0.3);
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 50;
+  margin-bottom: 8px;
+}
+
+.tooltip {
+  position: relative;
+  background-color: rgba(15, 23, 42, 0.95); // Darker tooltip background
+  border: 1px solid rgba(163, 230, 53, 0.3);
   border-radius: 0.5rem;
   padding: 0.75rem;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-  z-index: 20;
   transition: all 0.2s ease;
-  transform: translateX(-50%);
+  width: 260px;
+  opacity: 0;
+  transform: translateY(10px);
+  visibility: hidden;
 
-  &::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    bottom: -6px;
-    width: 12px;
-    height: 12px;
-    background-color: rgba(17, 24, 39, 0.95);
-    border-right: 1px solid rgba(132, 204, 22, 0.3);
-    border-bottom: 1px solid rgba(132, 204, 22, 0.3);
-    transform: translateX(-50%) rotate(45deg);
+  &.show {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  &.hide {
+    opacity: 0;
+    transform: translateY(10px);
+    visibility: hidden;
   }
 
   .tooltip-content {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 8px;
   }
 
   .tooltip-icon {
@@ -187,83 +276,88 @@
     font-size: 14px;
     font-weight: 500;
     color: #a3e635;
-    /* text-lime-300 */
     margin-bottom: 4px;
   }
 }
 
-.arrow-icon {
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 40px;
-  color: var(--color-accent);
-  animation: bounce 2s infinite ease-in-out;
-  cursor: pointer;
-  z-index: 5;
-
-  @media (max-width: 768px) {
-    bottom: 15px;
-  }
+/* Button container */
+.flex.flex-col.sm\:flex-row.gap-6 {
+  gap: 1.5rem !important; // More space between buttons
+  margin-bottom: 2rem !important; // More space after buttons
 }
 
+/* Custom button styles */
 .hero-button {
-  background: linear-gradient(90deg,
-      var(--color-primary) 0%,
-      var(--color-primary-dark) 100%);
-  color: #fff;
-  font-weight: 600;
-  padding: 12px 28px;
-  border-radius: 8px;
-  font-size: 1rem;
-  border: none;
-  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  text-align: center;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  min-width: 210px; // Ensure consistent width
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.2) 50%,
-        transparent 100%);
-    transition: all 0.5s ease;
-  }
+  &.primary {
+    background: linear-gradient(90deg, #a3e635, #65a30d); // Brighter lime green gradient
+    color: #0f172a; // Darker text color for better contrast
+    position: relative;
+    z-index: 1;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-
-    &::before {
-      left: 100%;
+    &:hover {
+      background: linear-gradient(90deg, #bef264, #84cc16);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
     }
   }
 
-  &:active {
-    transform: translateY(1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  &.secondary {
+    background-color: rgba(15, 23, 42, 0.8); // Darker background
+    color: #ffffff;
+    border: 2px solid rgba(163, 230, 53, 0.3);
+
+    &:hover {
+      background-color: rgba(163, 230, 53, 0.1);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    }
   }
 }
 
-@keyframes float {
+/* Custom shadow styles */
+.shadow-optimized {
+  box-shadow: 0 10px 15px -5px rgba(0, 0, 0, 0.3);
+}
 
-  0%,
-  100% {
-    transform: translateY(0);
-  }
+.shadow-optimized-hover {
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.4);
+}
 
-  50% {
-    transform: translateY(-20px);
+/* Sign in link */
+a.inline-flex.items-center.text-gray-400 {
+  font-size: 0.875rem;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+
+  &:hover {
+    color: #a3e635;
   }
+}
+
+/* Feature Pills */
+.flex.flex-wrap.justify-center.gap-3.mt-8 {
+  margin-top: 2.5rem !important;
+}
+
+.bg-gray-800\/50 {
+  background-color: rgba(15, 23, 42, 0.5) !important;
+  border: 1px solid rgba(31, 41, 55, 0.5) !important;
+}
+
+// Helper classes
+.citron-text {
+  color: #a3e635;
+  font-weight: 600;
 }
 
 @keyframes pulseCitron {
@@ -271,49 +365,30 @@
   0%,
   100% {
     opacity: 0.8;
-    text-shadow: 0 0 0 rgba(221, 255, 14, 0);
+    text-shadow: 0 0 0 rgba(163, 230, 53, 0);
   }
 
   50% {
     opacity: 1;
-    text-shadow: 0 0 6px rgba(221, 255, 14, 0.4);
-  }
-}
-
-@keyframes bounce {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-5px);
+    text-shadow: 0 0 6px rgba(163, 230, 53, 0.4);
   }
 }
 
 // Optimize animations for users who prefer reduced motion
 @media (prefers-reduced-motion: reduce) {
-  .hero {
-    .floating-icon {
-      animation: none;
-    }
+  .floating-icon {
+    animation: none;
+  }
 
-    .arrow-icon {
-      animation: none;
-    }
+  .text-gradient {
+    animation: none;
+  }
 
-    h1 .citron-text {
-      animation: none;
-    }
+  .tooltip {
+    transition: opacity 0.2s ease-in-out;
+  }
 
-    .tooltip {
-      transition: opacity 0.2s ease-in-out;
-      transform: translateX(-50%) translateY(0) scale(1);
-    }
-
-    .hero-button::before {
-      display: none;
-    }
+  .hero-button:hover {
+    transform: none;
   }
 }
