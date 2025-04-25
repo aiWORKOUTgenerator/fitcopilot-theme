@@ -8,7 +8,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'FitCopilot Documentation',
   tagline: 'AI Workout Generator - React/TypeScript WordPress Theme',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://docs.fitcopilot.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -50,7 +50,7 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'getting-started/introduction',
             position: 'left',
             label: 'Documentation',
           },
@@ -84,11 +84,15 @@ const config = {
             items: [
               {
                 label: 'Introduction',
-                to: '/docs/intro',
+                to: '/docs/getting-started/introduction',
               },
               {
                 label: 'Architecture',
-                to: '/docs/architecture',
+                to: '/docs/architecture/overview',
+              },
+              {
+                label: 'Development',
+                to: '/docs/development/workflow',
               },
             ],
           },
@@ -125,6 +129,22 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
         additionalLanguages: ['php', 'scss', 'typescript', 'jsx', 'tsx']
+      },
+      algolia: {
+        // Replace with actual values when you set up Algolia DocSearch
+        appId: 'YOUR_APP_ID',
+        apiKey: 'YOUR_SEARCH_API_KEY',
+        indexName: 'fitcopilot',
+        contextualSearch: true,
+        searchParameters: {
+          facetFilters: ['language:en'],
+        },
+      },
+      docs: {
+        sidebar: {
+          hideable: true,
+          autoCollapseCategories: true,
+        },
       },
     }),
   plugins: [

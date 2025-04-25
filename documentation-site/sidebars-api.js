@@ -1,43 +1,55 @@
 /**
- * Creating a sidebar for API documentation.
+ * API documentation sidebar configuration
  */
 
 /** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
-const sidebars = {
-    // By default, Docusaurus generates a sidebar from the docs folder structure
-    apiSidebar: [
+const sidebarsApi = {
+    api: [
         {
             type: 'category',
-            label: 'API Reference',
+            label: 'Overview',
             items: [
                 'overview',
-                {
-                    type: 'category',
-                    label: 'WordPress Endpoints',
-                    items: [
-                        'wordpress/overview',
-                        'wordpress/workouts'
-                    ]
-                },
-                {
-                    type: 'category',
-                    label: 'React Interfaces',
-                    items: [
-                        'interfaces/overview',
-                        'interfaces/workout'
-                    ]
-                },
-                {
-                    type: 'category',
-                    label: 'Hooks',
-                    items: [
-                        'hooks/overview',
-                        'hooks/use-workout-data'
-                    ]
-                }
-            ],
+                'usage'
+            ]
+        },
+        {
+            type: 'category',
+            label: 'Components',
+            items: [
+                'components/feature-components',
+                'components/ui-components',
+                'components/layout-components',
+            ]
+        },
+        {
+            type: 'category',
+            label: 'Hooks',
+            items: [
+                'hooks/data-hooks',
+                'hooks/ui-hooks',
+                'hooks/wordpress-hooks',
+            ]
+        },
+        {
+            type: 'category',
+            label: 'WordPress Integration',
+            items: [
+                'wordpress/data-contracts',
+                'wordpress/rest-endpoints',
+                'wordpress/theme-customizer',
+            ]
+        },
+        {
+            type: 'category',
+            label: 'Utilities',
+            items: [
+                'utils/formatters',
+                'utils/validators',
+                'utils/helpers',
+            ]
         },
     ],
 };
 
-module.exports = sidebars; 
+module.exports = sidebarsApi; 

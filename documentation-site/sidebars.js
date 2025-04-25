@@ -17,9 +17,9 @@ const sidebars = {
       type: 'category',
       label: 'Getting Started',
       items: [
-        'intro',
-        'installation',
-        'setup',
+        'getting-started/introduction',
+        'getting-started/installation',
+        'getting-started/quick-start',
       ]
     },
     {
@@ -27,8 +27,9 @@ const sidebars = {
       label: 'Architecture',
       items: [
         'architecture/overview',
-        'architecture/feature-architecture',
+        'architecture/feature-first-approach',
         'architecture/component-model',
+        'architecture/variant-system',
         'architecture/state-management',
         'architecture/styling',
       ]
@@ -40,6 +41,9 @@ const sidebars = {
         'development/workflow',
         'development/code-standards',
         'development/testing',
+        'development/storybook',
+        'development/adding-features',
+        'development/typescript',
         'development/eslint-configuration',
       ]
     },
@@ -49,8 +53,19 @@ const sidebars = {
       items: [
         'wordpress/overview',
         'wordpress/templates',
+        'wordpress/rest-api',
         'wordpress/hooks',
-        'wordpress/api'
+        'wordpress/customizer',
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Contributing',
+      items: [
+        'contributing/contributing',
+        'contributing/pull-requests',
+        'contributing/code-review',
+        'contributing/documentation',
       ]
     }
   ],

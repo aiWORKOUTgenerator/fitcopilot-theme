@@ -1,94 +1,160 @@
 ---
 sidebar_position: 1
+title: Architecture Overview
+description: Overview of the FitCopilot theme architecture and design patterns
+keywords: [architecture, overview, design patterns, structure]
+tags: [architecture, overview]
 ---
 
 # Architecture Overview
 
-## Introduction
+The FitCopilot theme follows a carefully designed architecture that prioritizes maintainability, scalability, and developer experience. This guide provides a high-level overview of the architectural approach and design patterns used in the theme.
 
-The FitCopilot theme is built using a modern React/TypeScript architecture that integrates with WordPress. This architecture focuses on maintainability, scalability, and developer experience by organizing code into feature-based modules and leveraging React's component model.
+## Core Architecture Principles
 
-## Key Architectural Principles
+The architecture is built on these fundamental principles:
 
-The architecture of FitCopilot is guided by the following principles:
+1. **Feature-First Organization**: Code is organized by business domain rather than technical type
+2. **Component-Based Design**: UI elements are built as reusable, self-contained components
+3. **Type Safety**: TypeScript is used throughout to ensure type safety and improve developer experience
+4. **WordPress Integration**: Seamless integration with WordPress APIs and templates
+5. **Theme Variants**: Support for multiple visual variants with consistent implementation
 
-1. **Feature-First Organization**: Code is organized by business domain rather than technical type.
-2. **Component-Based Design**: UI is built from reusable, composable components.
-3. **Type Safety**: TypeScript is used throughout the codebase to ensure type safety.
-4. **Separation of Concerns**: Clear boundaries between presentation, application logic, and data access.
-5. **WordPress Integration**: Seamless integration with WordPress APIs and templates.
+## Directory Structure
 
-## High-Level Architecture
-
-The FitCopilot theme employs a hybrid architecture that combines WordPress themes with a React frontend:
+The theme follows this high-level directory structure:
 
 ```
-FitCopilot Theme
-├── WordPress Theme Files (PHP)
-│   ├── Templates
-│   ├── Functions
-│   └── WordPress Hooks
-└── React Application (TypeScript)
-    ├── Features
-    │   ├── Homepage
-    │   └── [Other Features]
-    ├── Components
-    ├── Hooks
-    └── Utils
+fitcopilot-theme/
+├── src/                      # Source code
+│   ├── features/             # Feature modules
+│   ├── components/           # Shared UI components
+│   ├── hooks/                # Custom React hooks
+│   ├── utils/                # Utility functions
+│   ├── types/                # TypeScript type definitions
+│   ├── styles/               # Global styles
+│   └── index.tsx             # Main entry point
+├── dist/                     # Compiled output
+├── assets/                   # Static assets
+├── inc/                      # WordPress PHP includes
+├── includes/                 # WordPress theme functionality
+├── *.php                     # WordPress template files
+└── package.json              # Project dependencies
 ```
 
-### WordPress Integration
+## Feature-First Architecture
 
-The WordPress side of the architecture handles:
+The core organizing principle is a feature-first approach, where code is structured around business features rather than technical types. This approach:
 
-- Theme setup and configuration
-- Template rendering and WordPress hooks
-- REST API endpoints for data access
-- Enqueuing scripts and styles
+- Improves discoverability by grouping related code
+- Enhances maintainability by encapsulating feature logic
+- Supports better scalability as the application grows
 
-### React Application
+Learn more in the [Feature-First Approach](./feature-first-approach.md) guide.
 
-The React application manages:
+## Component Classification
 
-- User interface components
-- Client-side state management
-- User interactions
-- Data fetching from WordPress REST API
+Components in the theme are classified into distinct categories:
 
-## Key Technical Decisions
+1. **UI Components**: Reusable, presentational elements without business logic
+2. **Layout Components**: Structural components for page layout
+3. **Feature Components**: Domain-specific components with business logic
+4. **Composite Components**: Combinations of UI components with minimal logic
 
-### Frontend Framework
-- **React**: Used for building the UI component hierarchy
-- **TypeScript**: Provides type safety and better developer experience
+This classification helps maintain separation of concerns and promotes reusability. See the [Component Model](./component-model.md) for more details.
 
-### Build Tools
-- **Webpack**: Bundles JavaScript, CSS, and other assets
-- **Babel**: Transpiles modern JavaScript features
-- **SASS**: Used for styling with variables and mixins
+## Theme Variants System
 
-### State Management
-- **React Hooks**: Manage component-level state
-- **Context API**: For global state management where needed
+The theme supports multiple visual variants (default, gym) that can be selected in the WordPress customizer. This system:
 
-### WordPress Integration
-- **WordPress REST API**: Used for data exchange
-- **WordPress Hooks System**: Extends WordPress functionality
-- **Custom Endpoints**: For specialized data needs
+- Maintains consistent implementation across variants
+- Provides clear separation of variant-specific code
+- Makes it easy to add new variants
 
-## Development Workflow
+The [Theme Variants](./variant-system.md) guide explains this system in detail.
 
-The development workflow is designed to be efficient and maintainable:
+## State Management
 
-1. **Local Development**: Using Docker or Local by Flywheel
-2. **Build Process**: Webpack for bundling assets
-3. **Type Checking**: TypeScript for static analysis
-4. **Code Quality**: ESLint and Prettier for code quality
+State management follows these principles:
+
+- **Local Component State**: For UI-specific state
+- **Custom Hooks**: For shared state and logic
+- **Context API**: For global state when needed
+- **Data Fetching**: Abstracted through custom hooks
+
+See the [State Management](./state-management.md) guide for more information.
+
+## WordPress Integration
+
+WordPress integration is achieved through:
+
+- **Enqueued Scripts**: Loading React application in WordPress
+- **Data Localization**: Passing WordPress data to React
+- **REST API**: Communication between React and WordPress
+- **Theme Templates**: WordPress templates that serve as entry points
+
+Learn more in the [WordPress Integration](../wordpress/overview.md) guide.
+
+## Styling Approach
+
+The theme uses a combination of:
+
+- **SCSS Modules**: For component-specific styling
+- **CSS Variables**: For theme tokens and customization
+- **BEM Methodology**: For CSS class naming
+- **Responsive Design**: Mobile-first approach
+
+Read more in the [Styling Approach](./styling.md) guide.
+
+## Relationship Diagram
+
+The following diagram illustrates the relationships between different parts of the architecture:
+
+```
+┌─────────────────────────────────────────────────┐
+│                WordPress Layer                   │
+│                                                  │
+│  ┌───────────┐    ┌───────────┐    ┌──────────┐  │
+│  │  Template │    │    PHP    │    │  REST API │  │
+│  │   Files   │    │  Functions│    │ Endpoints │  │
+│  └─────┬─────┘    └─────┬─────┘    └─────┬────┘  │
+└────────┼───────────────┼────────────────┼────────┘
+          │               │                │        
+┌─────────┼───────────────┼────────────────┼────────┐
+│         ▼               ▼                ▼        │
+│  ┌─────────────────────────────────────────────┐  │
+│  │             React Application               │  │
+│  └─────────────────────────────────────────────┘  │
+│                        │                          │
+│         ┌──────────────┼───────────────┐         │
+│         │              │               │         │
+│  ┌──────▼─────┐  ┌─────▼────┐  ┌──────▼─────┐   │
+│  │  Features  │  │  Shared   │  │    Hooks   │   │
+│  │            │  │Components │  │            │   │
+│  └──────┬─────┘  └──────────┘  └────────────┘   │
+│         │                                        │
+│  ┌──────▼─────────────────────────────────┐      │
+│  │  Feature-Specific Components & Logic   │      │
+│  └────────────────────────────────────────┘      │
+│                                                   │
+│                React/TypeScript Layer             │
+└───────────────────────────────────────────────────┘
+```
 
 ## Next Steps
 
-For more detailed information about specific parts of the architecture, please refer to:
+To dive deeper into specific aspects of the architecture:
 
-- [Feature Architecture](./feature-architecture.md): Details on the feature-based code organization
-- [Component Model](./component-model.md): Information about the component hierarchy
-- [State Management](./state-management.md): How state is managed across the application
-- [Styling](./styling.md): Approach to styling and theming 
+- [Feature-First Approach](./feature-first-approach.md)
+- [Component Model](./component-model.md)
+- [Theme Variants System](./variant-system.md)
+- [State Management](./state-management.md)
+- [Styling Approach](./styling.md)
+
+## Related Resources
+
+:::tip Related Documentation
+- [Development Workflow](../development/workflow.md)
+- [WordPress Integration](../wordpress/overview.md)
+- [API Reference](/api)
+::: 

@@ -1,111 +1,82 @@
 ---
 sidebar_position: 1
+title: API Overview
+description: Overview of the FitCopilot theme API
+keywords: [api, overview, reference]
+tags: [api, overview]
 ---
 
-# API Reference Overview
+# API Overview
 
-## Introduction
+Welcome to the FitCopilot API documentation. This section provides comprehensive reference for all components, hooks, WordPress integration points, and utilities in the FitCopilot theme.
 
-The FitCopilot theme provides several APIs and interfaces for interacting with workout data, user preferences, and WordPress integration. This reference documentation covers both WordPress REST API endpoints and React interfaces.
+## Documentation Structure
 
-## API Categories
+The API documentation is organized into the following sections:
 
-The API documentation is organized into three main sections:
+### Components
 
-### WordPress Endpoints
+Documentation for all React components in the theme, categorized by type:
 
-Documentation of the custom WordPress REST API endpoints used by the application, including:
+- [Feature Components](./components/feature-components.md) - Domain-specific components with business logic
+- [UI Components](./components/ui-components.md) - Reusable, presentational elements without business logic
+- [Layout Components](./components/layout-components.md) - Structural components for page layout
 
-- Authentication requirements
-- Available endpoints
-- Request/response formats
-- Error handling
+Each component is documented with its props, usage examples, and related information.
 
-[View WordPress Endpoints →](./wordpress/overview.md)
+### Hooks
 
-### React Interfaces
+Documentation for custom React hooks:
 
-TypeScript interfaces and types used throughout the application, including:
+- [Data Hooks](./hooks/data-hooks.md) - Hooks for data fetching and manipulation
+- [UI Hooks](./hooks/ui-hooks.md) - Hooks for UI interactions and animations
+- [WordPress Hooks](./hooks/wordpress-hooks.md) - Hooks for WordPress integration
 
-- Component props interfaces
-- Data models
-- State interfaces
-- API response types
+Each hook is documented with its parameters, return values, and usage examples.
 
-[View React Interfaces →](./interfaces/overview.md)
+### WordPress Integration
 
-### React Hooks
+Documentation for WordPress integration points:
 
-Custom React hooks that provide reusable logic for:
+- [Data Contracts](./wordpress/data-contracts.md) - Data structures passed between WordPress and React
+- [REST Endpoints](./wordpress/rest-endpoints.md) - Custom REST API endpoints
+- [Theme Customizer](./wordpress/theme-customizer.md) - Theme customizer options
 
-- Data fetching
-- State management
-- WordPress API integration
-- User interactions
+### Utilities
 
-[View React Hooks →](./hooks/overview.md)
+Documentation for utility functions:
 
-## Using the API
+- [Formatters](./utils/formatters.md) - Functions for formatting data
+- [Validators](./utils/validators.md) - Functions for validating data
+- [Helpers](./utils/helpers.md) - Miscellaneous helper functions
 
-### Authentication
+## Using This Documentation
 
-Most API endpoints require authentication using WordPress nonces. Here's how to authenticate:
+Each API reference page follows a consistent format:
 
-```typescript
-// Example authentication for API requests
-const fetchData = async () => {
-  const response = await fetch('/wp-json/fitcopilot/v1/workouts', {
-    headers: {
-      'X-WP-Nonce': wpApiSettings.nonce,
-    },
-  });
-  
-  return response.json();
-};
-```
+1. **Description** - A brief description of the component, hook, or utility
+2. **Import** - How to import it in your code
+3. **Usage** - Basic usage examples
+4. **API Reference** - Detailed documentation of props, parameters, and return values
+5. **Examples** - More comprehensive examples of common use cases
+6. **Related Documentation** - Links to related documentation
 
-### Error Handling
+## TypeScript Support
 
-API responses include standard HTTP status codes along with detailed error messages when applicable. Here's how to handle errors:
+All components, hooks, and utilities are fully typed with TypeScript. Type definitions are included in the documentation.
 
-```typescript
-const fetchData = async () => {
-  try {
-    const response = await fetch('/wp-json/fitcopilot/v1/workouts');
-    
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || 'An error occurred');
-    }
-    
-    return response.json();
-  } catch (error) {
-    console.error('API Error:', error);
-    // Handle error appropriately
-  }
-};
-```
+## Related Documentation
 
-## API Versioning
+For more information on the architecture and development workflow, see:
 
-All API endpoints are versioned to ensure backward compatibility:
+- [Architecture Overview](../docs/architecture/overview.md)
+- [Feature-First Approach](../docs/architecture/feature-first-approach.md)
+- [Development Workflow](../docs/development/workflow.md)
 
-- **v1**: Current stable version
-- **experimental**: For upcoming features (not stable)
+## Search and Navigation
 
-## API Changes and Updates
+Use the search function at the top of the page to find specific components, hooks, or utilities. You can also use the sidebar to navigate through the different sections of the API documentation.
 
-API changes are documented in the [Changelog](./changelog.md) and follow semantic versioning:
+## Contributing
 
-- **Major version**: Breaking changes
-- **Minor version**: New features, no breaking changes
-- **Patch version**: Bug fixes, no breaking changes
-
-## Development Tools
-
-For API development and testing, we recommend:
-
-- [Postman](https://www.postman.com/) for API testing
-- [TypeScript](https://www.typescriptlang.org/) for type checking
-- [React Query](https://react-query.tanstack.com/) for data fetching
-- [WordPress REST API Handbook](https://developer.wordpress.org/rest-api/) for WordPress API reference 
+If you find any issues or would like to contribute to the API documentation, please see the [Contributing Documentation](../docs/contributing/documentation.md) guide. 
