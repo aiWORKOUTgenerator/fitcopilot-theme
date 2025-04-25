@@ -8,6 +8,7 @@ export { Hero } from './Hero';
 export { Journey } from './Journey';
 export { Pricing } from './Pricing';
 export { Testimonials } from './Testimonials';
+export { TrainingFeatures } from './TrainingFeatures';
 
 // Export hooks
 export * from './hooks';

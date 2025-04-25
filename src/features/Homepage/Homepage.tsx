@@ -13,6 +13,7 @@ import { getPersonalTrainingVariant, PersonalTraining } from './PersonalTraining
 import { Pricing } from './Pricing';
 import { Testimonials } from './Testimonials';
 import { getTrainingVariant, Training } from './Training';
+import { getTrainingFeaturesVariant, TrainingFeatures } from './TrainingFeatures';
 
 // Import feature-specific components
 import { DemoNav } from './components';
@@ -34,6 +35,7 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
     features: 'default',
     training: getTrainingVariant(),
     personalTraining: getPersonalTrainingVariant(),
+    trainingFeatures: getTrainingFeaturesVariant(),
   });
 
   // Initialize animations
@@ -94,6 +96,12 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
       id: 'training',
       label: 'Training Programs',
       variantKey: 'training',
+      variants: ['default', 'gym'] as VariantKey[]
+    },
+    {
+      id: 'trainingFeatures',
+      label: 'Training Features',
+      variantKey: 'trainingFeatures',
       variants: ['default', 'gym'] as VariantKey[]
     },
     {
@@ -163,6 +171,11 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
       {/* Training Programs Section */}
       <section id="training">
         <Training variant={variants.training} />
+      </section>
+
+      {/* Training Features Section */}
+      <section id="trainingFeatures">
+        <TrainingFeatures variant={variants.trainingFeatures} />
       </section>
 
       {/* Personal Training Section */}
