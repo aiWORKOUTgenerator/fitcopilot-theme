@@ -11,10 +11,10 @@
  */
 
 import classNames from 'classnames';
-import * as React from 'react';
+import React from 'react';
 import './Button.scss';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps {
     /** Button size variant */
     size?: 'small' | 'medium' | 'large';
     /** Button color variant */
@@ -29,12 +29,22 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     rightIcon?: React.ReactNode;
     /** Button content */
     children: React.ReactNode;
+    /** Additional CSS classes */
+    className?: string;
+    /** Whether the button is disabled */
+    disabled?: boolean;
+    /** Button click handler */
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    /** Button type */
+    type?: 'button' | 'submit' | 'reset';
+    /** Additional HTML attributes */
+    [key: string]: any;
 }
 
 /**
  * Button component for triggering actions
  */
-const Button: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = ({
     children,
     className,
     size = 'medium',
