@@ -1,108 +1,106 @@
 /**
  * Button Component Styles
  * 
- * Comprehensive styles for the Button component with variants,
- * sizes, states and accessibility features.
+ * Using design system tokens for consistency
  */
 
-@import '../../../styles/variables';
-@import '../../../styles/mixins';
+// Import design system once
+@use '../../../styles/design-system/index' as *;
 
+// Build on top of the base .btn styles from design system
 .button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     position: relative;
     border: none;
-    border-radius: $border-radius;
-    font-family: $font-family-base;
+    border-radius: var(--radius-md);
+    font-family: var(--font-sans);
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: var(--transition-standard);
     outline: none;
     white-space: nowrap;
 
     &:focus-visible {
-        box-shadow: 0 0 0 2px $color-white, 0 0 0 4px $color-primary;
+        box-shadow: var(--shadow-focus-ring);
     }
 
     &:disabled {
-        opacity: 0.6;
+        opacity: var(--opacity-disabled);
         cursor: not-allowed;
     }
 
     // Size variants
     &--small {
-        height: 36px;
-        padding: 0 16px;
-        font-size: 14px;
+        height: var(--size-btn-sm);
+        padding: 0 var(--spacing-4);
+        font-size: var(--type-small);
     }
 
     &--medium {
-        height: 44px;
-        padding: 0 20px;
-        font-size: 16px;
+        height: var(--size-btn-md);
+        padding: 0 var(--spacing-6);
+        font-size: var(--type-base);
     }
 
     &--large {
-        height: 52px;
-        padding: 0 24px;
-        font-size: 18px;
+        height: var(--size-btn-lg);
+        padding: 0 var(--spacing-8);
+        font-size: var(--type-lg);
     }
 
     // Color variants
     &--primary {
-        background-color: $color-primary;
-        color: $color-white;
+        background-color: var(--color-primary);
+        color: var(--color-text-inverse);
 
         &:hover:not(:disabled) {
-            background-color: var(--color-primary-dark);
+            filter: brightness(1.05);
         }
 
         &:active:not(:disabled) {
-            background-color: var(--color-primary-dark);
-            filter: brightness(0.9);
+            filter: brightness(0.95);
         }
     }
 
     &--secondary {
-        background-color: $color-secondary;
-        color: $color-white;
+        background-color: var(--color-secondary);
+        color: var(--color-text-inverse);
 
         &:hover:not(:disabled) {
-            background-color: var(--color-secondary-dark);
+            filter: brightness(1.05);
         }
 
         &:active:not(:disabled) {
-            background-color: var(--color-secondary-dark);
-            filter: brightness(0.9);
+            filter: brightness(0.95);
         }
     }
 
     &--tertiary {
         background-color: transparent;
-        color: $color-primary;
-        border: 1px solid $color-primary;
+        color: var(--color-primary);
+        border: 1px solid var(--color-primary);
 
         &:hover:not(:disabled) {
-            background-color: rgba(163, 230, 53, 0.05);
+            background-color: rgba(var(--color-primary), 0.05);
         }
 
         &:active:not(:disabled) {
-            background-color: rgba(163, 230, 53, 0.1);
+            background-color: rgba(var(--color-primary), 0.1);
         }
     }
 
     &--ghost {
         background-color: transparent;
-        color: $color-text-primary;
+        color: var(--color-text);
 
         &:hover:not(:disabled) {
-            background-color: rgba(249, 250, 251, 0.05);
+            background-color: var(--color-hover-light);
         }
 
         &:active:not(:disabled) {
-            background-color: rgba(249, 250, 251, 0.1);
+            background-color: var(--color-active-light);
         }
     }
 
@@ -125,7 +123,7 @@
             margin-left: -10px;
             border: 2px solid currentColor;
             border-top-color: transparent;
-            border-radius: 50%;
+            border-radius: var(--radius-full);
             animation: button-spin 0.8s linear infinite;
         }
 
@@ -141,11 +139,11 @@
         justify-content: center;
 
         &--left {
-            margin-right: 8px;
+            margin-right: var(--spacing-2);
         }
 
         &--right {
-            margin-left: 8px;
+            margin-left: var(--spacing-2);
         }
     }
 

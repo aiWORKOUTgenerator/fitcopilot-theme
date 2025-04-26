@@ -1,3 +1,6 @@
+// Import design system
+@use '../../../styles/design-system/index' as *;
+
 .tooltip-container {
     position: relative;
     display: inline-block;
@@ -5,13 +8,13 @@
 
 .tooltip {
     position: absolute;
-    background-color: rgba(17, 24, 39, 0.95);
+    background-color: var(--color-tooltip-bg);
     border: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
-    border-radius: 0.5rem;
-    padding: 0.75rem;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-3);
+    box-shadow: var(--shadow-lg);
     z-index: 20;
-    transition: all 0.2s ease;
+    transition: var(--transition-standard);
     pointer-events: none;
 
     // Default visibility classes
@@ -36,9 +39,9 @@
             position: absolute;
             left: 50%;
             bottom: -6px;
-            width: 12px;
-            height: 12px;
-            background-color: rgba(17, 24, 39, 0.95);
+            width: var(--size-tooltip-arrow);
+            height: var(--size-tooltip-arrow);
+            background-color: var(--color-tooltip-bg);
             border-right: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
             border-bottom: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
             transform: translateX(-50%) rotate(45deg);
@@ -55,9 +58,9 @@
             position: absolute;
             left: 50%;
             top: -6px;
-            width: 12px;
-            height: 12px;
-            background-color: rgba(17, 24, 39, 0.95);
+            width: var(--size-tooltip-arrow);
+            height: var(--size-tooltip-arrow);
+            background-color: var(--color-tooltip-bg);
             border-left: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
             border-top: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
             transform: translateX(-50%) rotate(45deg);
@@ -74,9 +77,9 @@
             position: absolute;
             top: 50%;
             right: -6px;
-            width: 12px;
-            height: 12px;
-            background-color: rgba(17, 24, 39, 0.95);
+            width: var(--size-tooltip-arrow);
+            height: var(--size-tooltip-arrow);
+            background-color: var(--color-tooltip-bg);
             border-top: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
             border-right: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
             transform: translateY(-50%) rotate(45deg);
@@ -93,9 +96,9 @@
             position: absolute;
             top: 50%;
             left: -6px;
-            width: 12px;
-            height: 12px;
-            background-color: rgba(17, 24, 39, 0.95);
+            width: var(--size-tooltip-arrow);
+            height: var(--size-tooltip-arrow);
+            background-color: var(--color-tooltip-bg);
             border-bottom: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
             border-left: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
             transform: translateY(-50%) rotate(45deg);

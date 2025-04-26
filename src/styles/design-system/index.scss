@@ -1,4 +1,19 @@
-@import 'colors';
-@import 'typography';
-@import 'backgrounds';
-@import 'components';
+// Design System - Single source of truth
+// Only import from here to ensure all components
+// have access to the same tokens
+
+// Core tokens
+@forward './colors';
+@forward './typography';
+@forward './spacing';
+@forward './radii';
+@forward './shadows';
+@forward './transitions';
+@forward './backgrounds';
+@forward './mixins';
+
+// Component-specific tokens
+@forward './component-tokens';
+
+// Component Base Styles
+@forward './components';

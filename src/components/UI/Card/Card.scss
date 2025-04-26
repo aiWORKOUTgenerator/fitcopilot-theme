@@ -1,2 +1,83 @@
-// Card component styles
-// The base styles are defined in src/styles/design-system/_components.scss 
+/**
+ * Card Component Styles
+ * 
+ * Using design system tokens for consistency
+ */
+
+// Import design system once
+@use '../../../styles/design-system/index' as *;
+
+// Extend the base .card class from the design system
+.card {
+    // The base styles are in _components.scss
+    // We're adding variants and extensions here
+
+    transition: var(--transition-standard);
+
+    // Elevation variants
+    &--elevated {
+        box-shadow: var(--shadow-md);
+    }
+
+    &--prominent {
+        box-shadow: var(--shadow-lg);
+    }
+
+    // Border variants
+    &--bordered {
+        border: 1px solid var(--color-border, rgba(0, 0, 0, 0.1));
+    }
+
+    // Interactive state
+    &--interactive {
+        cursor: pointer;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        &:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+    }
+
+    // Padding variants
+    &--compact {
+        padding: var(--spacing-2);
+    }
+
+    &--spacious {
+        padding: var(--spacing-8);
+    }
+
+    // Content layout
+    &__header {
+        margin-bottom: var(--spacing-4);
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin: 0;
+            color: var(--color-text);
+        }
+    }
+
+    &__content {
+        color: var(--color-muted);
+    }
+
+    &__footer {
+        margin-top: var(--spacing-4);
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--spacing-2);
+    }
+}
+
+// The base .card class is defined in the design system _components.scss file
+// This file can be used for card variants and extensions 

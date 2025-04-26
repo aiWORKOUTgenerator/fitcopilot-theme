@@ -3,6 +3,10 @@
     --type-base: 1rem;
     --type-lg: 1.125rem;
     --type-xl: 1.5rem;
+    --type-h1: clamp(2.5rem, 5vw, 3.5rem);
     --font-sans: 'Inter', sans-serif;
     --font-heading: 'Roboto', sans-serif;
+    --font-family-sans: var(--font-sans);
+    --line-height-tight: 1.2;
+    --line-height-normal: 1.6;
 }

@@ -1,0 +1,168 @@
+/**
+ * Component-specific tokens
+ * Organized by component type
+ */
+
+:root {
+    /* Tooltip */
+    --size-tooltip-arrow: 12px;
+
+    /* Button */
+    --size-btn-sm: 36px;
+    --size-btn-md: 44px;
+    --size-btn-lg: 52px;
+
+    /* Hero */
+    --size-hero-min-height: 80vh;
+    --size-hero-content-width: 50%;
+    --size-content-max-sm: 600px;
+    --size-hero-image-width: 45%;
+    --size-hero-image-max-width: 700px;
+    --size-hero-image-max-width-mobile: 500px;
+    --size-hero-grid-pattern: 20px;
+    --size-hero-tooltip-width: 260px;
+    --size-hero-floating-icon-translate: -10px;
+    --size-hero-button-min-width: 210px;
+    --size-hero-tooltip-margin-right: 8px;
+    --size-hero-tooltip-margin-top: 2px;
+    --size-hero-gap-buttons: 1.5rem;
+    --size-hero-margin-buttons: 2rem;
+    --size-hero-margin-feature-pills: 2.5rem;
+    --size-hero-button-padding: 1rem 2rem;
+    --size-hero-tooltip-transform-y: 10px;
+    --size-hero-breakpoint-mobile: 992px;
+    --size-hero-border-width-primary: 1px;
+    --size-hero-border-width-secondary: 2px;
+    --size-hero-backdrop-blur: 10px;
+    --size-hero-image-center-translate: -50%;
+    --pos-hero-bg-x: center;
+    --pos-hero-bg-y: center;
+    --size-hero-gradient-x: 200%;
+    --size-hero-gradient-y: 200%;
+    --size-hero-clamp-middle: 2vw;
+    --pos-hero-before-left-start: -100%;
+    --pos-hero-before-left-end: 100%;
+    --transform-hero-button-down: 1px;
+    --transform-hero-button-up: -2px;
+    --opacity-hero-white-shine: 0.2;
+    --pos-hero-gradient-0: 0%;
+    --pos-hero-gradient-50: 50%;
+    --pos-hero-gradient-100: 100%;
+    --color-hero-transparent: transparent;
+    --cursor-hero-pointer: pointer;
+    --white-space-hero-nowrap: nowrap;
+    --text-decoration-hero-none: none;
+    --border-hero-none: none;
+    --transform-hero-none: none;
+    --width-hero-full: 100%;
+    --height-hero-full: 100%;
+    --max-width-hero-full: 100%;
+    --transition-hero-none: none;
+    --cursor-hero-not-allowed: not-allowed;
+    --margin-hero-auto: 0 auto;
+    --pos-hero-auto: auto;
+    --height-hero-auto: auto;
+    --color-hero-current: currentColor;
+
+    /* Hero Positions and Layout */
+    --pos-hero-element-relative: relative;
+    --pos-hero-element-absolute: absolute;
+    --pos-hero-top-0: 0;
+    --pos-hero-left-0: 0;
+    --pos-hero-right-0: 0;
+    --pos-hero-bottom-0: 0;
+    --pos-hero-bottom-100: 100%;
+    --pos-hero-element-center: 50%;
+    --z-hero-behind: 0;
+    --z-hero-base: 1;
+    --z-hero-content: 2;
+    --z-hero-floating: 3;
+    --z-hero-hover: 10;
+    --z-hero-tooltip: 50;
+
+    /* Hero Display and Flex properties */
+    --display-hero-flex: flex;
+    --display-hero-inline-flex: inline-flex;
+    --display-hero-none: none;
+    --flex-hero-row: row;
+    --flex-hero-column: column;
+    --flex-hero-center: center;
+    --flex-hero-shrink-0: 0;
+    --flex-hero-grow-1: 1;
+    --align-hero-center: center;
+    --align-hero-flex-start: flex-start;
+    --justify-hero-center: center;
+
+    /* Hero Visual Properties */
+    --overflow-hero-hidden: hidden;
+    --pointer-hero-none: none;
+    --visibility-hero-visible: visible;
+    --visibility-hero-hidden: hidden;
+    --content-hero-empty: '';
+    --text-align-hero-center: center;
+    --weight-hero-heading: 800;
+
+    /* Hero Animations */
+    --duration-hero-float-base: 6s;
+    --duration-hero-float-odd: 8s;
+    --duration-hero-float-even: 10s;
+    --duration-hero-gradient: 8s;
+    --duration-hero-button-transition: 0.3s;
+    --duration-hero-pulse: 3s;
+    --duration-hero-animation-delay: 1s;
+    --ease-hero-gradient: ease;
+    --scale-hero-icon-hover: 1.1;
+    --scale-hero-button-hover-y: -4px;
+    --angle-hero-gradient: 90deg;
+    --angle-hero-float-rotate: 5deg;
+    --pos-hero-gradient-start: 0% 50%;
+    --pos-hero-gradient-mid: 100% 50%;
+    --pos-hero-gradient-end: 0% 50%;
+    --animation-hero-none: none;
+
+    /* Hero Colors */
+    --color-hero-button-primary-text: #0f172a;
+    --color-hero-signin-text: rgba(255, 255, 255, 0.6);
+    --color-hero-feature-pill-bg: rgba(15, 23, 42, 0.5);
+    --color-hero-feature-pill-border: rgba(31, 41, 55, 0.5);
+    --color-hero-tooltip-title: #a3e635;
+    --color-hero-button-secondary-bg: rgba(15, 23, 42, 0.8);
+    --color-hero-button-secondary-border: rgba(163, 230, 53, 0.3);
+    --color-hero-button-secondary-hover-bg: rgba(163, 230, 53, 0.1);
+    --opacity-hero-floating-icon: 0.5;
+    --opacity-hero-tooltip-border: 0.3;
+    --opacity-hero-lime-border: 0.3;
+
+    /* Hero Text */
+    --type-hero-tooltip-title: 14px;
+    --type-hero-signin: 0.875rem;
+    --weight-hero-button: 700;
+    --weight-hero-tooltip-title: 500;
+    --weight-hero-citron-text: 600;
+
+    /* Hero Shadows */
+    --shadow-hero-button-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    --shadow-hero-secondary-button-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    --shadow-hero-optimized: 0 10px 15px -5px rgba(0, 0, 0, 0.3);
+    --shadow-hero-optimized-hover: 0 20px 30px -10px rgba(0, 0, 0, 0.4);
+    --shadow-hero-citron-text: 0 0 6px rgba(163, 230, 53, 0.4);
+    --shadow-hero-no-shadow: 0 0 0 rgba(var(--color-lime-rgb), 0);
+
+    /* Hero Opacity */
+    --opacity-disabled: 0.6;
+    --opacity-hero-icon: 0.6;
+    --opacity-hero-citron-pulse-min: 0.8;
+    --opacity-hero-tooltip-hidden: 0;
+    --opacity-hero-tooltip-visible: 1;
+    --opacity-hero-icon-hover: 1;
+
+    /* HeroButton */
+    --size-hero-btn-gap: 0.5rem;
+    --size-hero-btn-padding-x-sm: 1.25rem;
+    --size-hero-btn-padding-x-md: 1.75rem;
+    --size-hero-btn-padding-x-lg: 2rem;
+    --size-hero-btn-padding-y-sm: 0.5rem;
+    --size-hero-btn-padding-y-md: 0.75rem;
+    --size-hero-btn-padding-y-lg: 1rem;
+    --size-hero-btn-icon-margin: 8px;
+}

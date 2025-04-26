@@ -1,0 +1,308 @@
+{
+  "overall": 29,
+  "components": {
+    "styles": {
+      "total": 71,
+      "tokens": 6,
+      "percentage": 8,
+      "files": [
+        "src/styles/mixins.scss",
+        "src/styles/homepage.scss",
+        "src/styles/global.scss",
+        "src/styles/demonav.scss",
+        "src/styles/animations.scss",
+        "src/features/Homepage/styles/homepage.scss"
+      ]
+    },
+    "design-system": {
+      "total": 26,
+      "tokens": 7,
+      "percentage": 27,
+      "files": [
+        "src/styles/design-system/_mixins.scss",
+        "src/styles/design-system/_components.scss",
+        "src/styles/design-system/_component-tokens.scss"
+      ]
+    },
+    "DemoNav": {
+      "total": 3,
+      "tokens": 0,
+      "percentage": 0,
+      "files": [
+        "src/features/Homepage/components/DemoNav/DemoNav.scss"
+      ]
+    },
+    "TrainingFeatures": {
+      "total": 54,
+      "tokens": 0,
+      "percentage": 0,
+      "files": [
+        "src/features/Homepage/TrainingFeatures/TrainingFeatures.scss"
+      ]
+    },
+    "Training": {
+      "total": 63,
+      "tokens": 4,
+      "percentage": 6,
+      "files": [
+        "src/features/Homepage/Training/Training.scss"
+      ]
+    },
+    "Testimonials": {
+      "total": 6,
+      "tokens": 0,
+      "percentage": 0,
+      "files": [
+        "src/features/Homepage/Testimonials/Testimonials.scss"
+      ]
+    },
+    "TestimonialCard.scss": {
+      "total": 10,
+      "tokens": 0,
+      "percentage": 0,
+      "files": [
+        "src/features/Homepage/Testimonials/components/TestimonialCard.scss"
+      ]
+    },
+    "Pricing": {
+      "total": 47,
+      "tokens": 1,
+      "percentage": 2,
+      "files": [
+        "src/features/Homepage/Pricing/Pricing.scss"
+      ]
+    },
+    "PricingCard.scss": {
+      "total": 13,
+      "tokens": 0,
+      "percentage": 0,
+      "files": [
+        "src/features/Homepage/Pricing/components/PricingCard.scss"
+      ]
+    },
+    "PersonalTraining": {
+      "total": 123,
+      "tokens": 8,
+      "percentage": 7,
+      "files": [
+        "src/features/Homepage/PersonalTraining/PersonalTraining.scss"
+      ]
+    },
+    "Journey": {
+      "total": 21,
+      "tokens": 0,
+      "percentage": 0,
+      "files": [
+        "src/features/Homepage/Journey/Journey.scss"
+      ]
+    },
+    "JourneyStep.scss": {
+      "total": 6,
+      "tokens": 0,
+      "percentage": 0,
+      "files": [
+        "src/features/Homepage/Journey/components/JourneyStep.scss"
+      ]
+    },
+    "Hero": {
+      "total": 109,
+      "tokens": 109,
+      "percentage": 100,
+      "files": [
+        "src/features/Homepage/Hero/Hero.scss"
+      ]
+    },
+    "HeroButton.scss": {
+      "total": 38,
+      "tokens": 38,
+      "percentage": 100,
+      "files": [
+        "src/features/Homepage/Hero/components/HeroButton.scss"
+      ]
+    },
+    "Footer": {
+      "total": 2,
+      "tokens": 0,
+      "percentage": 0,
+      "files": [
+        "src/features/Homepage/Footer/Footer.scss"
+      ]
+    },
+    "FooterLinkGroup.scss": {
+      "total": 1,
+      "tokens": 0,
+      "percentage": 0,
+      "files": [
+        "src/features/Homepage/Footer/components/FooterLinkGroup.scss"
+      ]
+    },
+    "Features": {
+      "total": 86,
+      "tokens": 2,
+      "percentage": 2,
+      "files": [
+        "src/features/Homepage/Features/Features.scss"
+      ]
+    },
+    "FeatureCard.scss": {
+      "total": 13,
+      "tokens": 0,
+      "percentage": 0,
+      "files": [
+        "src/features/Homepage/Features/components/FeatureCard.scss"
+      ]
+    },
+    "UI": {
+      "total": 87,
+      "tokens": 54,
+      "percentage": 62,
+      "files": [
+        "src/components/UI/Tooltip/Tooltip.scss",
+        "src/components/UI/Card/Card.scss",
+        "src/components/UI/Button/Button.scss"
+      ]
+    }
+  },
+  "files": {
+    "src/styles/mixins.scss": {
+      "total": 7,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/styles/homepage.scss": {
+      "total": 22,
+      "tokens": 4,
+      "percentage": 18
+    },
+    "src/styles/global.scss": {
+      "total": 11,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/styles/demonav.scss": {
+      "total": 4,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/styles/animations.scss": {
+      "total": 11,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/styles/design-system/_mixins.scss": {
+      "total": 5,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/styles/design-system/_components.scss": {
+      "total": 9,
+      "tokens": 7,
+      "percentage": 78
+    },
+    "src/styles/design-system/_component-tokens.scss": {
+      "total": 12,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/features/Homepage/styles/homepage.scss": {
+      "total": 16,
+      "tokens": 2,
+      "percentage": 13
+    },
+    "src/features/Homepage/components/DemoNav/DemoNav.scss": {
+      "total": 3,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/features/Homepage/TrainingFeatures/TrainingFeatures.scss": {
+      "total": 54,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/features/Homepage/Training/Training.scss": {
+      "total": 63,
+      "tokens": 4,
+      "percentage": 6
+    },
+    "src/features/Homepage/Testimonials/Testimonials.scss": {
+      "total": 6,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/features/Homepage/Testimonials/components/TestimonialCard.scss": {
+      "total": 10,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/features/Homepage/Pricing/Pricing.scss": {
+      "total": 47,
+      "tokens": 1,
+      "percentage": 2
+    },
+    "src/features/Homepage/Pricing/components/PricingCard.scss": {
+      "total": 13,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/features/Homepage/PersonalTraining/PersonalTraining.scss": {
+      "total": 123,
+      "tokens": 8,
+      "percentage": 7
+    },
+    "src/features/Homepage/Journey/Journey.scss": {
+      "total": 21,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/features/Homepage/Journey/components/JourneyStep.scss": {
+      "total": 6,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/features/Homepage/Hero/Hero.scss": {
+      "total": 109,
+      "tokens": 109,
+      "percentage": 100
+    },
+    "src/features/Homepage/Hero/components/HeroButton.scss": {
+      "total": 38,
+      "tokens": 38,
+      "percentage": 100
+    },
+    "src/features/Homepage/Footer/Footer.scss": {
+      "total": 2,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/features/Homepage/Footer/components/FooterLinkGroup.scss": {
+      "total": 1,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/features/Homepage/Features/Features.scss": {
+      "total": 86,
+      "tokens": 2,
+      "percentage": 2
+    },
+    "src/features/Homepage/Features/components/FeatureCard.scss": {
+      "total": 13,
+      "tokens": 0,
+      "percentage": 0
+    },
+    "src/components/UI/Tooltip/Tooltip.scss": {
+      "total": 28,
+      "tokens": 17,
+      "percentage": 61
+    },
+    "src/components/UI/Card/Card.scss": {
+      "total": 14,
+      "tokens": 11,
+      "percentage": 79
+    },
+    "src/components/UI/Button/Button.scss": {
+      "total": 45,
+      "tokens": 26,
+      "percentage": 58
+    }
+  }
+}

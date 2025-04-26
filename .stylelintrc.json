@@ -1,0 +1,51 @@
+{
+    "extends": "stylelint-config-standard-scss",
+    "rules": {
+        "declaration-property-value-disallowed-list": {
+            "background-color": [
+                "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/",
+                "/^rgba?\\(/"
+            ],
+            "color": [
+                "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/",
+                "/^rgba?\\(/"
+            ],
+            "border-color": [
+                "/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/",
+                "/^rgba?\\(/"
+            ],
+            "margin": [
+                "/^[0-9]+px$/",
+                "/^[0-9]+\\.[0-9]+px$/"
+            ],
+            "padding": [
+                "/^[0-9]+px$/",
+                "/^[0-9]+\\.[0-9]+px$/"
+            ],
+            "height": [
+                "/^[0-9]+px$/",
+                "/^[0-9]+\\.[0-9]+px$/"
+            ],
+            "width": [
+                "/^[0-9]+px$/",
+                "/^[0-9]+\\.[0-9]+px$/"
+            ],
+            "font-size": [
+                "/^[0-9]+px$/",
+                "/^[0-9]+\\.[0-9]+px$/"
+            ],
+            "box-shadow": [
+                "/^[0-9]+px/",
+                "/rgba?\\(/"
+            ]
+        },
+        "selector-class-pattern": null,
+        "at-rule-no-unknown": null,
+        "scss/at-rule-no-unknown": true
+    },
+    "ignoreFiles": [
+        "node_modules/**/*",
+        "dist/**/*",
+        "build/**/*"
+    ]
+}

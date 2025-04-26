@@ -1,0 +1,22 @@
+// Common mixins for the design system
+@mixin center-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin responsive-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@mixin card-shadow {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+} 

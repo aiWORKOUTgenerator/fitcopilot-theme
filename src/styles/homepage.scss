@@ -4,9 +4,7 @@
 @use './reset.scss';
 
 // Import Tailwind
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 // Import external dependencies with @import
 @import 'aos/dist/aos.css'; // External CSS still needs @import
@@ -33,8 +31,8 @@ body {
 
 // Grid pattern
 .bg-grid-pattern {
-  background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 30px 30px;
 }
 
@@ -59,7 +57,7 @@ body {
 .text-gradient {
   position: relative;
   display: inline-block;
-  
+
   &::before {
     content: attr(data-text);
     position: absolute;
@@ -76,9 +74,12 @@ body {
 }
 
 @keyframes gradientFade {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
@@ -91,7 +92,7 @@ body {
       box-shadow: 0 0 20px rgba(163, 230, 53, 0.3);
     }
   }
-  
+
   &.secondary {
     &:hover {
       box-shadow: 0 0 20px rgba(163, 230, 53, 0.1);
@@ -104,8 +105,8 @@ body {
   .text-gradient::before {
     animation: none;
   }
-  
+
   .button {
     transition: none;
   }
-} 
+}

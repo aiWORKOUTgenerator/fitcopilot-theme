@@ -1,4 +1,4 @@
-@import 'design-system/index';
+@use 'design-system/index' as *;
 
 // Add demo mode navigation styles
 @keyframes highlight-pulse {
