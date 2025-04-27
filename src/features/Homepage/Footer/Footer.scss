@@ -1,11 +1,22 @@
+// Canonical design system import - MUST BE FIRST
+@import '../../../styles/design-system/index';
+
 .footer-section {
   position: relative;
-  
+
   a {
     transition: color 0.3s ease;
-    
+
     &:hover {
       color: #CCFF00;
     }
   }
-} 
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+  background-color: var(--color-background-dark);
+  color: var(--color-text-inverse);
+}

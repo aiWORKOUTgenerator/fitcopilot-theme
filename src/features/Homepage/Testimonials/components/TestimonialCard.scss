@@ -1,3 +1,6 @@
+// Canonical design system import - MUST BE FIRST
+@import '../../../../styles/design-system/index';
+
 .testimonial-card {
   position: relative;
   overflow: hidden;

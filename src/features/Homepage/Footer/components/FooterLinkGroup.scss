@@ -1,6 +1,11 @@
+// Canonical design system import - MUST BE FIRST
+@import '../../../../styles/design-system/index';
+
+@import "../../../../styles/shared/canon.scss";
+
 .footer-link-group {
   ul {
     padding: 0;
     list-style-type: none;
   }
-} 
+}

@@ -1,8 +1,8 @@
-// Canonical design system import - MUST BE FIRST
-@import '../../../../styles/design-system/index';
-
 /* Import the base Button styles */
 @use '../../../../components/UI/Button/Button.scss' as *;
+
+// Canonical design system import - MUST BE FIRST
+@import '../../../../styles/design-system/index';
 
 /* Hero-specific button styling */
 .hero-button {
