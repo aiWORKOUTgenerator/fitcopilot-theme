@@ -1,0 +1,20 @@
+{
+  "overall": 46,
+  "components": {
+    "PersonalTraining": {
+      "total": 161,
+      "tokens": 161,
+      "percentage": 100,
+      "files": [
+        "src/features/Homepage/PersonalTraining/PersonalTraining.scss"
+      ]
+    }
+  },
+  "files": {
+    "src/features/Homepage/PersonalTraining/PersonalTraining.scss": {
+      "total": 161,
+      "tokens": 161,
+      "percentage": 100
+    }
+  }
+}

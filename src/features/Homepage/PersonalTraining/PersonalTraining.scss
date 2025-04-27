@@ -376,6 +376,70 @@
     }
 }
 
+// New token-based classes
+.section-header {
+    margin-bottom: var(--margin-pt-section-bottom);
+    text-align: var(--text-align-pt-title-center);
+}
+
+.section-tag {
+    font-size: var(--size-pt-tag-font);
+    font-weight: var(--weight-pt-tag-font);
+    letter-spacing: var(--letter-spacing-pt-tag);
+    text-transform: var(--transform-pt-text-uppercase);
+    color: var(--color-pt-tag);
+    margin-bottom: var(--margin-pt-tag-bottom);
+    display: var(--display-pt-block);
+}
+
+.section-description {
+    color: var(--color-pt-description);
+    max-width: var(--max-width-pt-description);
+    margin-left: var(--margin-pt-auto);
+    margin-right: var(--margin-pt-auto);
+}
+
+// Trainer card elements
+.trainer-placeholder {
+    width: var(--width-pt-img-full);
+    height: var(--height-pt-trainer-img);
+    background: var(--gradient-pt-card-bg);
+    display: var(--display-pt-flex);
+    align-items: var(--align-pt-center);
+    justify-content: var(--justify-pt-center);
+
+    .icon {
+        color: var(--color-pt-white);
+        opacity: var(--opacity-pt-icon);
+    }
+}
+
+// Icon classes
+.icon-xs {
+    width: var(--size-pt-icon-xs);
+    height: var(--size-pt-icon-xs);
+}
+
+.icon-sm {
+    width: var(--size-pt-icon-sm);
+    height: var(--size-pt-icon-sm);
+}
+
+.icon-md {
+    width: var(--size-pt-icon-md);
+    height: var(--size-pt-icon-md);
+}
+
+.icon-lg {
+    width: var(--size-pt-icon-lg);
+    height: var(--size-pt-icon-lg);
+}
+
+.icon-xl {
+    width: var(--size-pt-icon-xl);
+    height: var(--size-pt-icon-xl);
+}
+
 // Animation for pattern
 @keyframes patternMove {
     0% {

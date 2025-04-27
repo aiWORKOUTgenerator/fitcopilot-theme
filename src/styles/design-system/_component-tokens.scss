@@ -346,4 +346,30 @@
     --size-hero-btn-padding-y-md: 0.75rem;
     --size-hero-btn-padding-y-lg: 1rem;
     --size-hero-btn-icon-margin: 8px;
+
+    /* PersonalTraining - Additional Tokens */
+
+    /* Icon Sizes */
+    --size-pt-icon-xs: 14px;
+    --size-pt-icon-sm: 16px;
+    --size-pt-icon-md: 18px;
+    --size-pt-icon-lg: 48px;
+    --size-pt-icon-xl: 64px;
+
+    /* Text Elements */
+    --margin-pt-section-bottom: 4rem;
+    --margin-pt-tag-bottom: 0.5rem;
+    --size-pt-tag-font: 0.75rem;
+    --weight-pt-tag-font: 700;
+    --letter-spacing-pt-tag: 0.1em;
+    --color-pt-tag: #b794f4;
+    /* text-violet-300 */
+    --color-pt-description: #9ca3af;
+    /* text-gray-400 */
+    --max-width-pt-description: 36rem;
+    /* max-w-2xl */
+
+    /* Gradients */
+    --gradient-pt-card-bg: linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(67, 56, 202) 100%);
+    --opacity-pt-icon: 0.7;
 }

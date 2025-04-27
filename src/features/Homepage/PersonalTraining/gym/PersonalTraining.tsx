@@ -9,6 +9,7 @@ import {
     User
 } from 'lucide-react';
 import React from 'react';
+import '../PersonalTraining.scss';
 
 /**
  * Gym variant of the Personal Training component
@@ -20,7 +21,7 @@ const PersonalTraining: React.FC = () => {
             name: "Alex Rivera",
             image: "/assets/trainers/trainer1.jpg", // Replace with actual image path
             specialty: "Hypertrophy Coach",
-            specialtyIcon: <Dumbbell />,
+            specialtyIcon: <span className="icon-xs"><Dumbbell /></span>,
             certifications: ["NASM-CPT", "ISSA Specialist in Sports Nutrition"],
             bio: "With a background in competitive bodybuilding, Alex specializes in muscle development, physique enhancement, and body recomposition strategies.",
             rating: 4.9,
@@ -31,7 +32,7 @@ const PersonalTraining: React.FC = () => {
             name: "Morgan Chen",
             image: "/assets/trainers/trainer2.jpg", // Replace with actual image path
             specialty: "Wellness Coach",
-            specialtyIcon: <Heart />,
+            specialtyIcon: <span className="icon-xs"><Heart /></span>,
             certifications: ["ACE-CPT", "Precision Nutrition Level 2"],
             bio: "Morgan combines nutritional coaching with personalized training to help clients transform their bodies and improve overall health markers.",
             rating: 4.8,
@@ -42,7 +43,7 @@ const PersonalTraining: React.FC = () => {
             name: "Jordan Smith",
             image: "/assets/trainers/trainer3.jpg", // Replace with actual image path
             specialty: "Performance Coach",
-            specialtyIcon: <Award />,
+            specialtyIcon: <span className="icon-xs"><Award /></span>,
             certifications: ["CSCS", "USAW Level 1"],
             bio: "Former D1 athlete with expertise in strength development, power output, and athletic performance for both competitive and recreational athletes.",
             rating: 5.0,
@@ -53,7 +54,7 @@ const PersonalTraining: React.FC = () => {
             name: "Taylor West",
             image: "/assets/trainers/trainer4.jpg", // Replace with actual image path
             specialty: "Mobility Specialist",
-            specialtyIcon: <Medal />,
+            specialtyIcon: <span className="icon-xs"><Medal /></span>,
             certifications: ["ACSM-CPT", "FMS Level 2"],
             bio: "Specializing in mobility training, injury prevention, and corrective exercise. Perfect for those looking to improve movement quality and reduce pain.",
             rating: 4.7,
@@ -63,71 +64,71 @@ const PersonalTraining: React.FC = () => {
     ];
 
     return (
-        <section className="py-20 bg-gray-50 relative overflow-hidden">
+        <section className="personal-training-section gym-variant">
             {/* Background decoration */}
-            <div className="absolute inset-0 bg-gradient-to-br from-violet-50 to-white opacity-70"></div>
+            <div className="gym-bg-decoration"></div>
 
-            <div className="container mx-auto px-4 relative z-10">
+            <div className="container">
                 {/* Section header */}
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-violet-700 to-purple-500">
+                <div className="section-header">
+                    <h2 className="section-title">
+                        <span className="highlight">
                             Expert Personal Trainers
                         </span>
                     </h2>
-                    <p className="text-lg text-gray-700 max-w-3xl mx-auto">
+                    <p className="section-description">
                         Our certified personal trainers bring years of experience and specialized knowledge to help you achieve your fitness goals faster and more effectively.
                     </p>
                 </div>
 
                 {/* Trainers grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <div className="trainers-container gym-grid">
                     {trainers.map((trainer, index) => (
                         <div
                             key={index}
-                            className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-100 h-full flex flex-col"
+                            className="trainer-card"
                         >
                             {/* Trainer image */}
-                            <div className="relative h-64 bg-gradient-to-br from-violet-400 to-purple-500">
+                            <div className="trainer-image">
                                 {trainer.image && !trainer.image.includes('assets/trainers') ? (
                                     <img
                                         src={trainer.image}
                                         alt={trainer.name}
-                                        className="w-full h-full object-cover"
+                                        className="trainer-photo"
                                     />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center">
-                                        <User size={64} className="text-white opacity-70" />
+                                    <div className="image-placeholder">
+                                        <span className="icon-xl"><User /></span>
                                     </div>
                                 )}
 
                                 {/* Specialty badge */}
-                                <div className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full text-sm font-medium text-violet-700 flex items-center shadow-md">
-                                    {React.cloneElement(trainer.specialtyIcon, { size: 14, className: "mr-1" })}
+                                <div className="specialty gym">
+                                    <span className="icon">{trainer.specialtyIcon}</span>
                                     {trainer.specialty}
                                 </div>
                             </div>
 
-                            <div className="p-6 flex-grow flex flex-col">
+                            <div className="trainer-content">
                                 {/* Name and rating */}
-                                <div className="flex justify-between items-start mb-3">
-                                    <h3 className="text-xl font-bold text-gray-900">{trainer.name}</h3>
-                                    <div className="flex items-center text-sm">
-                                        <Star size={16} className="text-amber-400 mr-1" />
-                                        <span className="font-medium">{trainer.rating}</span>
-                                        <span className="text-gray-500 ml-1">({trainer.reviews})</span>
+                                <div className="trainer-header">
+                                    <h3 className="trainer-name">{trainer.name}</h3>
+                                    <div className="trainer-rating">
+                                        <span className="star-icon"><span className="icon-sm"><Star /></span></span>
+                                        <span className="rating-value">{trainer.rating}</span>
+                                        <span className="review-count">({trainer.reviews})</span>
                                     </div>
                                 </div>
 
                                 {/* Bio */}
-                                <p className="text-gray-600 mb-4 flex-grow">{trainer.bio}</p>
+                                <p className="trainer-bio">{trainer.bio}</p>
 
                                 {/* Certifications */}
-                                <div className="mb-4">
-                                    <p className="text-sm font-medium text-gray-700 mb-1">Certifications:</p>
-                                    <div className="flex flex-wrap gap-1">
+                                <div className="cert-container">
+                                    <p className="cert-title">Certifications:</p>
+                                    <div className="cert-badges">
                                         {trainer.certifications.map((cert, i) => (
-                                            <span key={i} className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
+                                            <span key={i} className="cert-badge">
                                                 {cert}
                                             </span>
                                         ))}
@@ -135,15 +136,15 @@ const PersonalTraining: React.FC = () => {
                                 </div>
 
                                 {/* Availability */}
-                                <div className="flex items-center text-sm text-gray-500 mb-4">
-                                    <Calendar size={14} className="mr-1" />
+                                <div className="availability">
+                                    <span className="calendar-icon"><span className="icon-xs"><Calendar /></span></span>
                                     <span>Available: {trainer.availability}</span>
                                 </div>
 
                                 {/* CTA button */}
-                                <button className="w-full py-3 bg-gradient-to-r from-violet-600 to-purple-500 text-white font-medium rounded-lg hover:shadow-md transition-all duration-300 flex items-center justify-center mt-auto">
+                                <button className="book-button">
                                     Book Session
-                                    <ArrowRight size={16} className="ml-2" />
+                                    <span className="icon"><span className="icon-sm"><ArrowRight /></span></span>
                                 </button>
                             </div>
                         </div>
@@ -151,21 +152,19 @@ const PersonalTraining: React.FC = () => {
                 </div>
 
                 {/* CTA section */}
-                <div className="bg-gradient-to-r from-violet-600 to-purple-500 rounded-2xl p-8 md:p-12 shadow-xl">
-                    <div className="md:flex items-center justify-between">
-                        <div className="mb-6 md:mb-0 md:mr-8">
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                                Start Your Fitness Journey Today
-                            </h3>
-                            <p className="text-violet-100 text-lg max-w-2xl">
-                                Book a free fitness assessment with one of our expert trainers and get a personalized plan to reach your goals.
-                            </p>
-                        </div>
-                        <button className="whitespace-nowrap bg-white text-violet-700 py-4 px-8 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center">
-                            Schedule Free Assessment
-                            <ArrowRight size={18} className="ml-2" />
-                        </button>
+                <div className="booking-box">
+                    <div className="booking-content">
+                        <h3 className="booking-title">
+                            Start Your Fitness Journey Today
+                        </h3>
+                        <p className="booking-text">
+                            Book a free fitness assessment with one of our expert trainers and get a personalized plan to reach your goals.
+                        </p>
                     </div>
+                    <button className="booking-button">
+                        Schedule Free Assessment
+                        <span className="icon"><span className="icon-md"><ArrowRight /></span></span>
+                    </button>
                 </div>
             </div>
         </section>
