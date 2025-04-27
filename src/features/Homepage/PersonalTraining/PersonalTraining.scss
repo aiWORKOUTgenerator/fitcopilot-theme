@@ -5,7 +5,7 @@
     position: var(--pos-pt-relative);
     overflow: var(--overflow-pt-hidden);
     padding: var(--spacing-8) 0;
-    background-color: var(--color-background);
+    background-color: var(--color-pt-section-bg);
 
     // Grid pattern background
     &::before {
