@@ -9,7 +9,7 @@ import {
     Users,
     X
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 import '../PersonalTraining.scss';
 
 /**
@@ -95,7 +95,9 @@ const PersonalTraining: React.FC = () => {
                             style={trainer.image && !trainer.image.includes('assets/trainers') ? { backgroundImage: `url(${trainer.image})` } : {}}
                         >
                             {(!trainer.image || trainer.image.includes('assets/trainers')) && (
-                                <User size={48} className="text-white" />
+                                <div className="text-white">
+                                    <User size={48} />
+                                </div>
                             )}
                         </div>
 
@@ -143,7 +145,9 @@ const PersonalTraining: React.FC = () => {
                                             />
                                         ) : (
                                             <div className="w-full h-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center">
-                                                <Play size={64} className="text-white opacity-70" />
+                                                <div className="text-white opacity-70">
+                                                    <Play size={64} />
+                                                </div>
                                             </div>
                                         )}
 
@@ -173,7 +177,7 @@ const PersonalTraining: React.FC = () => {
                                         <div className="video-controls">
                                             <button
                                                 className="control-button"
-                                                onClick={(e) => {
+                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                     e.stopPropagation();
                                                     flipCard(trainer.id);
                                                 }}
@@ -182,7 +186,7 @@ const PersonalTraining: React.FC = () => {
                                             </button>
                                             <button
                                                 className="control-button close-button"
-                                                onClick={(e) => {
+                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                     e.stopPropagation();
                                                     flipCard(trainer.id);
                                                 }}
