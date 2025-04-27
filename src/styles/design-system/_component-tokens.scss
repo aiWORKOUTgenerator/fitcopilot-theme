@@ -165,4 +165,95 @@
     --size-hero-btn-padding-y-md: 0.75rem;
     --size-hero-btn-padding-y-lg: 1rem;
     --size-hero-btn-icon-margin: 8px;
+
+    /* Training Component */
+    --pos-tr-relative: relative;
+    --pos-tr-absolute: absolute;
+    --z-tr-base: 1;
+    --z-tr-behind: -1;
+    --content-tr-empty: '';
+    --pos-tr-top-0: 0;
+    --pos-tr-left-0: 0;
+    --pos-tr-right-0: 0;
+    --pos-tr-bottom-0: 0;
+    --size-tr-grid-pattern: 20px;
+    --pos-tr-bg-center: center center;
+    --pointer-tr-none: none;
+    --color-tr-grid-line: rgba(255, 255, 255, 0.03);
+    --angle-tr-grid-vertical: 90deg;
+    --bg-tr-grid-pattern: linear-gradient(var(--color-tr-grid-line) 1px, transparent 1px), linear-gradient(var(--angle-tr-grid-vertical), var(--color-tr-grid-line) 1px, transparent 1px);
+
+    /* Program Card */
+    --color-tr-card-bg: rgba(31, 41, 55, 0.5);
+    --radius-tr-card: 1rem;
+    --padding-tr-card: 2rem;
+    --duration-tr-transition: 0.3s;
+    --ease-tr-transition: ease;
+    --border-tr-width: 1px;
+    --size-tr-backdrop-blur: 8px;
+    --transform-tr-card-hover-y: -5px;
+    --shadow-tr-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    --color-tr-card-border-hover: rgba(139, 92, 246, 0.3);
+    --color-tr-card-border-active: rgba(139, 92, 246, 0.5);
+    --shadow-tr-card-active: 0 10px 25px -5px rgba(139, 92, 246, 0.1);
+
+    /* Program Icon */
+    --display-tr-flex: flex;
+    --align-tr-center: center;
+    --justify-tr-center: center;
+    --size-tr-icon-width: 64px;
+    --size-tr-icon-height: 64px;
+    --radius-tr-icon: 0.75rem;
+    --spacing-tr-icon-bottom: 1.5rem;
+    --transform-tr-icon-hover: scale(1.05);
+    --filter-tr-icon-shadow: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
+
+    /* Program Text */
+    --spacing-tr-title-bottom: 0.5rem;
+    --size-tr-description: 0.95rem;
+    --line-height-tr-description: 1.6;
+    --duration-tr-color-transition: 0.3s;
+
+    /* Expanded Content */
+    --color-tr-expanded-bg: rgba(31, 41, 55, 0.4);
+    --radius-tr-expanded: 1rem;
+    --padding-tr-expanded: 1.5rem;
+    --spacing-tr-expanded-top: 1rem;
+    --overflow-tr-hidden: hidden;
+    --spacing-tr-benefits-bottom: 1.5rem;
+    --spacing-tr-benefit-item-bottom: 0.5rem;
+    --spacing-tr-benefit-icon-right: 0.5rem;
+    --spacing-tr-benefit-icon-top: 0.125rem;
+    --flex-tr-shrink-0: 0;
+
+    /* CTA Button */
+    --display-tr-inline-flex: inline-flex;
+    --padding-tr-cta-y: 0.5rem;
+    --padding-tr-cta-x: 1.5rem;
+    --radius-tr-cta: 9999px;
+    --weight-tr-cta: 500;
+    --size-tr-cta-font: 0.875rem;
+    --color-tr-cta-text: #111827;
+    --shadow-tr-cta: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --transform-tr-cta-hover-y: -2px;
+    --shadow-tr-cta-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --spacing-tr-cta-icon-left: 0.5rem;
+
+    /* Connector Lines */
+    --size-tr-connector-height: 2rem;
+    --size-tr-connector-width: 1px;
+    --color-tr-connector-gradient: linear-gradient(to bottom, rgba(139, 92, 246, 0.5), transparent);
+    --spacing-tr-connector-left: 2rem;
+    --spacing-tr-connector-top: 0.25rem;
+    --spacing-tr-connector-bottom: 0.25rem;
+
+    /* Main CTA Button */
+    --padding-tr-main-cta-y: 1rem;
+    --padding-tr-main-cta-x: 2rem;
+    --weight-tr-main-cta: 600;
+    --size-tr-main-cta-font: 1rem;
+    --shadow-tr-main-cta: 0 10px 25px -5px rgba(139, 92, 246, 0.3);
+    --transform-tr-main-cta-hover-y: -3px;
+    --shadow-tr-main-cta-hover: 0 20px 25px -5px rgba(139, 92, 246, 0.4);
+    --spacing-tr-main-cta-top: 4rem;
 }
