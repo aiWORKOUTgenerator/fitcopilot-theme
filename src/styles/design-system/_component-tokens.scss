@@ -85,6 +85,11 @@
     --bg-pt-grid-pattern: linear-gradient(to right, var(--color-pt-grid-line) 1px, transparent 1px) var(--pos-pt-bg-center) / var(--size-pt-grid-pattern) var(--size-pt-grid-pattern), linear-gradient(to bottom, var(--color-pt-grid-line) 1px, transparent 1px) var(--pos-pt-bg-center) / var(--size-pt-grid-pattern) var(--size-pt-grid-pattern);
     --bg-pt-booking-pattern: linear-gradient(45deg, transparent var(--size-pt-pattern), rgba(255, 255, 255, 0.05) var(--size-pt-pattern), transparent var(--size-pt-pattern));
 
+    /* Accessibility - Reduced Motion */
+    --animation-pt-none: none;
+    --duration-pt-reduced-transition: 0.5s;
+    --transform-pt-none: none;
+
     /* Grid pattern background */
     --content-pt-empty: '';
     --pos-pt-top-0: 0;

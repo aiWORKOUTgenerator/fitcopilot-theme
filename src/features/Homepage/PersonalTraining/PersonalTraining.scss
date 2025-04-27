@@ -391,21 +391,23 @@
 @media (prefers-reduced-motion) {
     .personal-training-section {
         .booking-box::before {
-            animation: none;
+            animation: var(--animation-pt-none);
         }
 
         .flip-card {
             .flip-card-inner {
-                transition: transform 0.5s ease;
+                transition: transform var(--duration-pt-reduced-transition) var(--ease-pt-transition);
             }
         }
 
         .trainer-card {
-            transition: transform 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
+            transition: transform var(--duration-pt-reduced-transition) var(--ease-pt-transition),
+                box-shadow var(--duration-pt-reduced-transition) var(--ease-pt-transition),
+                border-color var(--duration-pt-reduced-transition) var(--ease-pt-transition);
 
             &:hover {
                 .trainer-image img {
-                    transform: none;
+                    transform: var(--transform-pt-none);
                 }
             }
         }
