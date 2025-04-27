@@ -12,21 +12,9 @@ const el = document.getElementById(rootElementId);
 
 // Fail loudly if container is missing
 if (!el) {
-    console.error(`CRITICAL ERROR: #${rootElementId} container missing from DOM`);
-
-    // Create the container as fallback (helps in development only)
-    const newRootElement = document.createElement('div');
-    newRootElement.id = rootElementId;
-    document.body.appendChild(newRootElement);
-    console.warn(`Created missing #${rootElementId} container - check template`);
-
-    // Mount app to the fallback container
-    try {
-        createRoot(newRootElement).render(<App />);
-        console.log('✅ App mounted on dynamically created container');
-    } catch (error) {
-        console.error('❌ Failed to mount on fallback container:', error);
-    }
+    throw new Error(
+        `❌ Mount point #${rootElementId} not found in DOM—check your template!`
+    );
 } else {
     // Normal path - container exists
     try {
