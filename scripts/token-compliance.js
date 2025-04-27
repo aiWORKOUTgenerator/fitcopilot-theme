@@ -11,6 +11,20 @@ const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
 
+// Process command line arguments
+const args = process.argv.slice(2);
+let targetComponent = null;
+let targetPath = null;
+
+// Parse command line arguments
+args.forEach(arg => {
+    if (arg.startsWith('--component=')) {
+        targetComponent = arg.split('=')[1];
+    } else if (!arg.startsWith('--')) {
+        targetPath = arg;
+    }
+});
+
 // Properties we want to check for token usage
 const TRACKED_PROPERTIES = [
     'color',
@@ -56,7 +70,12 @@ const results = {};
 const componentResults = {};
 
 // Find all SCSS files
-const scssFiles = glob.sync('src/**/*.scss', { ignore: ['src/styles/theme.scss', 'src/styles/reset.scss'] });
+let scssFiles;
+if (targetPath) {
+    scssFiles = glob.sync(`${targetPath}/**/*.scss`, { ignore: ['src/styles/theme.scss', 'src/styles/reset.scss'] });
+} else {
+    scssFiles = glob.sync('src/**/*.scss', { ignore: ['src/styles/theme.scss', 'src/styles/reset.scss'] });
+}
 
 let totalTokenUsage = 0;
 let totalProperties = 0;
@@ -110,6 +129,12 @@ scssFiles.forEach(file => {
 // Extract component name from file path
 function getComponentName(filePath) {
     const parts = filePath.split('/');
+
+    // Check if the path contains the target component
+    if (targetComponent && filePath.includes(targetComponent)) {
+        return targetComponent;
+    }
+
     // Try to find the component folder
     const componentIndex = parts.findIndex(part =>
         part === 'components' || part === 'Button' || part === 'Tooltip' || part === 'Card'
@@ -123,15 +148,37 @@ function getComponentName(filePath) {
     return parts[parts.length - 2] || 'Unknown';
 }
 
+// Filter results by target component if specified
+let filteredResults = { ...results };
+let filteredComponentResults = { ...componentResults };
+
+if (targetComponent) {
+    filteredResults = {};
+    Object.entries(results).forEach(([file, data]) => {
+        if (file.includes(targetComponent)) {
+            filteredResults[file] = data;
+        }
+    });
+
+    filteredComponentResults = {};
+    if (componentResults[targetComponent]) {
+        filteredComponentResults[targetComponent] = componentResults[targetComponent];
+    }
+}
+
 // Generate report
 console.log('=== Design Token Compliance Report ===\n');
+
+if (targetComponent) {
+    console.log(`Report for component: ${targetComponent}\n`);
+}
 
 console.log('Overall Token Usage:');
 const overallPercentage = Math.round((totalTokenUsage / totalProperties) * 100);
 console.log(`${totalTokenUsage}/${totalProperties} properties (${overallPercentage}%)\n`);
 
 console.log('By Component:');
-const sortedComponents = Object.entries(componentResults)
+const sortedComponents = Object.entries(filteredComponentResults)
     .sort((a, b) => b[1].percentage - a[1].percentage);
 
 sortedComponents.forEach(([component, data]) => {
@@ -140,7 +187,7 @@ sortedComponents.forEach(([component, data]) => {
 });
 
 console.log('\nDetailed File Results:');
-Object.entries(results)
+Object.entries(filteredResults)
     .sort((a, b) => a[0].localeCompare(b[0]))
     .forEach(([file, data]) => {
         const status = data.percentage >= 90 ? '🟢' : data.percentage >= 70 ? '🟡' : '🔴';
@@ -148,9 +195,17 @@ Object.entries(results)
     });
 
 // Output results as JSON for potential integration with other tools
+const reportFileName = targetComponent ?
+    `token-compliance-${targetComponent.toLowerCase()}-report.json` :
+    'token-compliance-report.json';
+
 fs.writeFileSync(
-    path.join(__dirname, '../token-compliance-report.json'),
-    JSON.stringify({ overall: overallPercentage, components: componentResults, files: results }, null, 2)
+    path.join(__dirname, '..', reportFileName),
+    JSON.stringify({
+        overall: overallPercentage,
+        components: filteredComponentResults,
+        files: filteredResults
+    }, null, 2)
 );
 
-console.log('\nDetailed report saved to token-compliance-report.json'); 
+console.log(`\nDetailed report saved to ${reportFileName}`); 

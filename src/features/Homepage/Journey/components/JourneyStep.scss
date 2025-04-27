@@ -1,20 +1,22 @@
+@import "../../../../styles/design-system/index.scss";
+
 .journey-step {
-  position: relative;
-  z-index: 10;
+  position: var(--pos-jr-relative);
+  z-index: var(--z-jr-step);
 
   &__number {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #CCFF00 0%, #9BE368 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: var(--width-jr-step-number);
+    height: var(--height-jr-step-number);
+    border-radius: var(--radius-jr-step-number);
+    background: var(--bg-jr-step-number);
+    display: var(--display-jr-flex);
+    align-items: var(--align-jr-center);
+    justify-content: var(--justify-jr-center);
 
     span {
-      font-weight: 700;
-      color: #0B1121;
-      font-size: 16px;
+      font-weight: var(--weight-jr-step-number);
+      color: var(--color-jr-step-number);
+      font-size: var(--size-jr-step-number);
     }
   }
 }

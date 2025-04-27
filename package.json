@@ -93,9 +93,10 @@
     "token-report:daily": "node scripts/generate-compliance-report.js",
     "token-report:hero": "node scripts/token-compliance.js src/features/Homepage/Hero",
     "token-report:ui": "node scripts/token-compliance.js src/components/UI",
-    "token-report:personal-training": "node scripts/token-compliance.js src/features/Homepage/PersonalTraining",
+    "token-report:personal-training": "node scripts/token-compliance.js --component=PersonalTraining",
     "token-report:training": "node scripts/token-compliance.js src/features/Homepage/Training",
     "token-report:features": "node scripts/token-compliance.js src/features/Homepage/Features",
+    "token-report:journey": "node scripts/token-compliance.js src/features/Homepage/Journey",
     "token-report:pricing": "node scripts/token-compliance.js src/features/Homepage/Pricing"
   }
 }

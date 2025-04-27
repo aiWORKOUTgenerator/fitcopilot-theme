@@ -1,19 +1,21 @@
+@import "../../../styles/design-system/index.scss";
+
 /* Journey Section Styles */
 .journey-section {
-  position: relative;
-  overflow: hidden;
+  position: var(--pos-jr-relative);
+  overflow: var(--overflow-jr-hidden);
 
   .journey-path {
-    position: absolute;
-    top: 70px;
-    left: 50%;
-    width: 75%;
-    height: 2px;
-    background: linear-gradient(90deg, rgba(204, 255, 0, 0.3), rgba(100, 210, 185, 0.3));
-    transform: translateX(-50%);
-    z-index: 0;
+    position: var(--pos-jr-absolute);
+    top: var(--top-jr-path);
+    left: var(--left-jr-path-center);
+    width: var(--width-jr-path);
+    height: var(--height-jr-path);
+    background: var(--bg-jr-path);
+    transform: var(--transform-jr-center-x);
+    z-index: var(--z-jr-path);
 
-    @media (max-width: 768px) {
+    @media (max-width: var(--breakpoint-md)) {
       display: none;
     }
   }
@@ -21,69 +23,69 @@
 
 /* Step connector - vertical line connecting the steps */
 .step-connector {
-  position: absolute;
-  top: calc(100% - 20px);
-  left: 44px;
-  width: 2px;
-  height: 60px;
-  background: linear-gradient(180deg, rgba(153, 255, 0, 0.5) 0%, rgba(153, 255, 0, 0.1) 100%);
-  z-index: 1;
+  position: var(--pos-jr-absolute);
+  top: var(--top-jr-connector);
+  left: var(--left-jr-connector);
+  width: var(--width-jr-connector);
+  height: var(--height-jr-connector);
+  background: var(--bg-jr-connector);
+  z-index: var(--z-jr-connector);
 }
 
 /* Glow effects for different card types */
 .lime-glow:hover {
-  box-shadow: 0 0 25px rgba(132, 204, 22, 0.15);
+  box-shadow: var(--shadow-jr-lime-glow);
 }
 
 .cyan-glow:hover {
-  box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
+  box-shadow: var(--shadow-jr-cyan-glow);
 }
 
 .violet-glow:hover {
-  box-shadow: 0 0 25px rgba(139, 92, 246, 0.15);
+  box-shadow: var(--shadow-jr-violet-glow);
 }
 
 .amber-glow:hover {
-  box-shadow: 0 0 25px rgba(251, 146, 60, 0.15);
+  box-shadow: var(--shadow-jr-amber-glow);
 }
 
 /* Animation classes */
 .animate-fade-slide-up {
-  animation: fadeSlideUp 0.5s ease forwards;
+  animation: fadeSlideUp var(--animation-duration-md) var(--animation-ease) var(--animation-fill-forwards);
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease forwards;
+  animation: fadeIn var(--animation-duration-md) var(--animation-ease) var(--animation-fill-forwards);
 }
 
 @keyframes fadeSlideUp {
   from {
-    opacity: 0;
-    transform: translateY(10px);
+    opacity: var(--opacity-jr-hidden);
+    transform: var(--transform-jr-slide-from);
   }
 
   to {
-    opacity: 1;
-    transform: translateY(0);
+    opacity: var(--opacity-jr-visible);
+    transform: var(--transform-jr-slide-to);
   }
 }
 
 @keyframes fadeIn {
   from {
-    opacity: 0;
+    opacity: var(--opacity-jr-hidden);
   }
 
   to {
-    opacity: 1;
+    opacity: var(--opacity-jr-visible);
   }
 }
 
 /* Text gradient effect */
 .text-gradient {
-  background-size: 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
+  background-size: var(--bg-size-jr-text-gradient);
+  background-clip: var(--bg-clip-jr-text);
+  -webkit-background-clip: var(--bg-clip-jr-text);
+  -moz-background-clip: var(--bg-clip-jr-text);
+  -webkit-text-fill-color: var(--color-jr-transparent);
+  -moz-text-fill-color: var(--color-jr-transparent);
 }

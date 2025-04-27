@@ -1,50 +1,9 @@
 import { Activity, Apple, BarChart3, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, Medal, Timer } from 'lucide-react';
 import React, { useRef, useState } from 'react';
+import { FloatingIconData, renderFloatingIcon } from '../components';
 import FeatureCard from '../components/FeatureCard';
 import { ProgressChart, SampleWorkout, VideoPlayer } from '../components/FeatureCardDemos';
 import '../Features.scss';
-
-/**
- * Interface for floating icon props
- */
-interface FloatingIconProps {
-    children: React.ReactNode;
-    delay: number;
-    speed: number;
-    left: number;
-    top: number;
-}
-
-/**
- * Floating icon component for decorative background elements
- */
-const FloatingIcon: React.FC<FloatingIconProps> = ({ children, delay, speed, left, top }) => {
-    return (
-        <div
-            className="floating-icon"
-            style={{
-                left: `${left}%`,
-                top: `${top}%`,
-                animation: `float ${speed}s ease-in-out infinite ${delay}s`
-            }}
-            aria-hidden="true"
-        >
-            {children}
-        </div>
-    );
-};
-
-/**
- * Interface for floating icon data
- */
-interface FloatingIconData {
-    Icon: React.ElementType;
-    size: number;
-    left: number;
-    top: number;
-    delay: number;
-    speed: number;
-}
 
 /**
  * Gym variant of Features component
@@ -78,15 +37,15 @@ const Features: React.FC = () => {
     ];
 
     const floatingIcons: FloatingIconData[] = [
-        { Icon: Dumbbell, size: 24, left: 5, top: 15, delay: 0, speed: 8 },
-        { Icon: Timer, size: 32, left: 15, top: 60, delay: 1.5, speed: 10 },
-        { Icon: Medal, size: 28, left: 25, top: 25, delay: 0.8, speed: 12 },
-        { Icon: Flame, size: 36, left: 80, top: 20, delay: 2, speed: 9 },
-        { Icon: Heart, size: 28, left: 85, top: 65, delay: 1, speed: 11 },
-        { Icon: Apple, size: 24, left: 10, top: 80, delay: 2.5, speed: 10 },
-        { Icon: Coffee, size: 20, left: 70, top: 10, delay: 0.5, speed: 7 },
-        { Icon: Footprints, size: 32, left: 90, top: 40, delay: 1.2, speed: 9 },
-        { Icon: Bike, size: 36, left: 30, top: 70, delay: 1.8, speed: 13 }
+        { Icon: Dumbbell, size: 24, left: 5, top: 15, delay: 0, speed: 8, className: "text-violet-300/20" },
+        { Icon: Timer, size: 32, left: 15, top: 60, delay: 1.5, speed: 10, className: "text-violet-300/20" },
+        { Icon: Medal, size: 28, left: 25, top: 25, delay: 0.8, speed: 12, className: "text-violet-300/20" },
+        { Icon: Flame, size: 36, left: 80, top: 20, delay: 2, speed: 9, className: "text-violet-300/20" },
+        { Icon: Heart, size: 28, left: 85, top: 65, delay: 1, speed: 11, className: "text-violet-300/20" },
+        { Icon: Apple, size: 24, left: 10, top: 80, delay: 2.5, speed: 10, className: "text-violet-300/20" },
+        { Icon: Coffee, size: 20, left: 70, top: 10, delay: 0.5, speed: 7, className: "text-violet-300/20" },
+        { Icon: Footprints, size: 32, left: 90, top: 40, delay: 1.2, speed: 9, className: "text-violet-300/20" },
+        { Icon: Bike, size: 36, left: 30, top: 70, delay: 1.8, speed: 13, className: "text-violet-300/20" }
     ];
 
     // Handle hover over features
@@ -121,17 +80,7 @@ const Features: React.FC = () => {
 
             {/* Floating fitness icons - decorative */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-                {floatingIcons.map((icon, index) => (
-                    <FloatingIcon
-                        key={index}
-                        left={icon.left}
-                        top={icon.top}
-                        delay={icon.delay}
-                        speed={icon.speed}
-                    >
-                        <icon.Icon size={icon.size} className="text-violet-300/20" />
-                    </FloatingIcon>
-                ))}
+                {floatingIcons.map((icon, index) => renderFloatingIcon(icon, index))}
             </div>
 
             {/* Main content */}
@@ -147,18 +96,19 @@ const Features: React.FC = () => {
                 {/* Feature cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {features.map((feature, index) => (
-                        <FeatureCard
-                            key={index}
-                            icon={feature.icon}
-                            title={feature.title}
-                            description={feature.description}
-                            gradient={feature.gradient}
-                            demoComponent={feature.demoComponent}
-                            isActive={activeFeatureIndex === index}
-                            onMouseEnter={() => handleFeatureHover(index)}
-                            onMouseLeave={handleMouseLeave}
-                            darkMode={true}
-                        />
+                        <div key={index}>
+                            <FeatureCard
+                                icon={feature.icon}
+                                title={feature.title}
+                                description={feature.description}
+                                gradient={feature.gradient}
+                                demoComponent={feature.demoComponent}
+                                isActive={activeFeatureIndex === index}
+                                onMouseEnter={() => handleFeatureHover(index)}
+                                onMouseLeave={handleMouseLeave}
+                                darkMode={true}
+                            />
+                        </div>
                     ))}
                 </div>
 
