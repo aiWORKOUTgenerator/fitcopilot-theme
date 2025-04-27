@@ -44,4 +44,48 @@ After changes: ___%
 ## Reviewer Checklist
 - [ ] Code follows project standards and guidelines
 - [ ] Tests pass
-- [ ] Documentation is updated (if needed) 
+- [ ] Documentation is updated (if needed)
+
+## Description
+
+<!-- Please include a summary of the changes and related issue. -->
+
+## Type of change
+
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Enhancement
+- [ ] Breaking change
+- [ ] Documentation update
+
+## Critical Pattern Verification
+
+**React Bootstrap Integrity:**
+- [ ] I did NOT change webpack entry point away from `src/index.tsx` 
+- [ ] I ensured React bootstrap logs are included in the build
+- [ ] I verified the app mounts correctly (checked in browser)
+
+<!-- If you DID change webpack.config.js, please explain why and how you've verified it doesn't break anything -->
+
+**Template Integrity:**
+- [ ] I did NOT change `homepage-template.php` or the mount point ID
+- [ ] I maintained the single React bootstrap pattern
+
+## Checklist
+
+- [ ] My code follows the style guidelines of this project
+- [ ] I have performed a self-review of my own code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] New and existing unit tests pass locally with my changes
+- [ ] Any dependent changes have been merged and published
+
+## Screenshots
+
+<!-- If applicable, add screenshots to help explain your changes. -->
+
+## Additional notes
+
+<!-- Add any other context about the PR here. --> 
