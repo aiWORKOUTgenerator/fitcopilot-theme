@@ -1,90 +1,53 @@
-import * as React from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
-import './styles/homepage.scss';
+import App from './Homepage'; // Always point at real root
+import './styles/homepage.scss'; // Global styles
 
-// Import feature component from feature-first structure
-import Homepage from './features/Homepage';
+// Critical diagnostic for troubleshooting
+console.log('🚀 React bootstrap running from src/index.tsx');
 
-/**
- * Main Homepage component wrapper
- */
-const HomepageApp: React.FC = () => {
-    return <Homepage />;
-};
+// The one and only place that should call createRoot
+const rootElementId = 'athlete-dashboard-root';
+const el = document.getElementById(rootElementId);
 
-/**
- * Initialize the React application
- */
-const initializeApp = () => {
-    const container = document.getElementById('athlete-dashboard-root');
+// Fail loudly if container is missing
+if (!el) {
+    console.error(`CRITICAL ERROR: #${rootElementId} container missing from DOM`);
 
-    // Debug WordPress data at initialization
-    if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
-        console.log('==== ATHLETE DASHBOARD INITIALIZATION ====');
-        console.log('WordPress Data:', window.athleteDashboardData.wpData);
+    // Create the container as fallback (helps in development only)
+    const newRootElement = document.createElement('div');
+    newRootElement.id = rootElementId;
+    document.body.appendChild(newRootElement);
+    console.warn(`Created missing #${rootElementId} container - check template`);
 
-        // Use any type casting to avoid TypeScript errors with dynamic properties
-        const wpData = window.athleteDashboardData.wpData as any;
-
-        if (wpData.themeVariants) {
-            console.log('Theme Variants:', wpData.themeVariants);
-        } else {
-            console.warn('No theme variants found in WordPress data');
-        }
-        console.log('=========================================');
-    } else {
-        console.warn('No WordPress data found at window.athleteDashboardData');
+    // Mount app to the fallback container
+    try {
+        createRoot(newRootElement).render(<App />);
+        console.log('✅ App mounted on dynamically created container');
+    } catch (error) {
+        console.error('❌ Failed to mount on fallback container:', error);
     }
-
-    if (container) {
-        try {
-            const root = createRoot(container);
-            root.render(
-                <React.StrictMode>
-                    <HomepageApp />
-                </React.StrictMode>
-            );
-        } catch (error) {
-            console.error('Failed to initialize React app:', error);
-
-            // Fallback to display error to user
-            container.innerHTML = `
-        <div style="padding: 20px; text-align: center; font-family: sans-serif;">
-          <h2>Unable to load homepage</h2>
-          <p>Something went wrong with the homepage application. Please try refreshing the page.</p>
-          <button onclick="window.location.reload()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
-            Refresh Page
-          </button>
-        </div>
-      `;
-        }
-    } else {
-        // If container doesn't exist, create it
-        console.warn('Root element not found, creating it dynamically');
-        const bodyElement = document.body;
-        if (bodyElement) {
-            const newRootElement = document.createElement('div');
-            newRootElement.id = 'athlete-dashboard-root';
-            bodyElement.appendChild(newRootElement);
-
-            // Then mount app to the new element
-            try {
-                const root = createRoot(newRootElement);
-                root.render(
-                    <React.StrictMode>
-                        <HomepageApp />
-                    </React.StrictMode>
-                );
-            } catch (error) {
-                console.error('Failed to initialize React app on dynamically created element:', error);
-            }
-        }
-    }
-};
-
-// Initialize on DOM ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeApp);
 } else {
-    initializeApp();
+    // Normal path - container exists
+    try {
+        createRoot(el).render(
+            <React.StrictMode>
+                <App />
+            </React.StrictMode>
+        );
+        console.log('✅ App successfully mounted to #' + rootElementId);
+    } catch (error) {
+        console.error('❌ Mount error:', error);
+
+        // Fallback to display error to user
+        el.innerHTML = `
+      <div style="padding: 20px; text-align: center; font-family: sans-serif;">
+        <h2>Unable to load application</h2>
+        <p>Something went wrong with the application. Please try refreshing the page.</p>
+        <button onclick="window.location.reload()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+          Refresh Page
+        </button>
+      </div>
+    `;
+    }
 } 
