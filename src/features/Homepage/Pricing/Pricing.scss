@@ -1,114 +1,116 @@
+@import "../../../styles/design-system/index.scss";
+
 /* Pricing Section Styles */
 .pricing-section {
-  position: relative;
-  overflow: hidden;
+  position: var(--pos-ps-relative);
+  overflow: var(--overflow-ps-hidden);
 
   &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    content: var(--content-ps-empty);
+    position: var(--pos-ps-absolute);
+    top: var(--top-ps-0);
+    left: var(--left-ps-0);
+    width: var(--width-ps-full);
+    height: var(--height-ps-full);
     background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23CCFF00' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.5;
-    z-index: 0;
+    opacity: var(--opacity-ps-pattern);
+    z-index: var(--z-ps-0);
   }
 }
 
 /* Text gradient effect */
 .text-gradient,
 .price-gradient {
-  background-size: 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
+  background-size: var(--bg-size-ps-text-gradient);
+  background-clip: var(--bg-clip-ps-text);
+  -webkit-background-clip: var(--webkit-bg-clip-ps-text);
+  -moz-background-clip: var(--moz-bg-clip-ps-text);
+  -webkit-text-fill-color: var(--webkit-text-fill-ps-transparent);
+  -moz-text-fill-color: var(--moz-text-fill-ps-transparent);
 }
 
 .plan-name-gradient {
   @extend .text-gradient;
-  font-size: 1.75rem;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: var(--size-ps-plan-name);
+  font-weight: var(--weight-ps-plan-name);
+  line-height: var(--line-height-ps-plan-name);
 }
 
 .price {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1;
+  font-size: var(--size-ps-price);
+  font-weight: var(--weight-ps-price);
+  line-height: var(--line-height-ps-price);
 }
 
 /* Pricing card shadows */
 .shadow-optimized-blue {
-  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.1), 0 8px 10px -5px rgba(59, 130, 246, 0.04);
+  box-shadow: var(--shadow-ps-blue);
 }
 
 .shadow-optimized-lime {
-  box-shadow: 0 10px 25px -5px rgba(132, 204, 22, 0.1), 0 8px 10px -5px rgba(132, 204, 22, 0.04);
+  box-shadow: var(--shadow-ps-lime);
 }
 
 .shadow-optimized-purple {
-  box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.1), 0 8px 10px -5px rgba(139, 92, 246, 0.04);
+  box-shadow: var(--shadow-ps-purple);
 }
 
 /* Pricing animations */
 .price-shake {
-  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: shake var(--duration-ps-animation) var(--cubic-ps-shake) both;
 }
 
 .price-flash {
-  animation: flash 0.5s ease-out both;
+  animation: flash var(--duration-ps-animation) var(--ease-ps-out) both;
 }
 
 .price-fade-out {
-  animation: fadeOut 0.5s ease both;
+  animation: fadeOut var(--duration-ps-animation) var(--ease-ps-standard) both;
 }
 
 .price-fade-in {
-  animation: fadeIn 0.5s ease 0.3s both;
+  animation: fadeIn var(--duration-ps-animation) var(--ease-ps-standard) var(--delay-ps-animation) both;
 }
 
 .price-zoom-in {
-  animation: zoomIn 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+  animation: zoomIn var(--duration-ps-animation-long) var(--cubic-ps-zoom) var(--delay-ps-animation) both;
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease both;
+  animation: fadeIn var(--duration-ps-animation) var(--ease-ps-standard) both;
 }
 
 /* Pricing particles */
 .price-particles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
+  position: var(--pos-ps-absolute);
+  top: var(--pos-ps-particle-all);
+  left: var(--pos-ps-particle-all);
+  right: var(--pos-ps-particle-all);
+  bottom: var(--pos-ps-particle-all);
+  overflow: var(--overflow-ps-hidden);
 }
 
 .price-particle {
-  position: absolute;
-  border-radius: 50%;
-  background: linear-gradient(135deg, rgba(132, 204, 22, 0.3), rgba(5, 150, 105, 0.2));
-  opacity: 0.4;
-  pointer-events: none;
-  animation: float 15s infinite ease-in-out;
+  position: var(--pos-ps-absolute);
+  border-radius: var(--radius-ps-particle);
+  background: var(--bg-ps-particle);
+  opacity: var(--opacity-ps-particle);
+  pointer-events: var(--pointer-ps-none);
+  animation: float var(--duration-ps-float) infinite var(--ease-ps-standard);
 }
 
 .pricing-card:hover .feature-text.highlighted {
-  background: linear-gradient(to right, #84cc16, #059669);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: all 0.3s ease;
+  background: var(--bg-ps-feature-highlight);
+  -webkit-background-clip: var(--webkit-bg-clip-ps-text);
+  background-clip: var(--bg-clip-ps-text);
+  -webkit-text-fill-color: var(--webkit-text-fill-ps-transparent);
+  transition: all var(--duration-ps-transition) var(--ease-ps-standard);
 }
 
 .popular-badge,
 .elite-badge {
-  display: inline-flex;
-  align-items: center;
+  display: var(--display-ps-inline-flex);
+  align-items: var(--align-ps-center);
 }
 
 /* Animation keyframes */
@@ -116,7 +118,7 @@
 
   0%,
   100% {
-    transform: translateX(0);
+    transform: var(--transform-ps-x-0);
   }
 
   10%,
@@ -124,14 +126,14 @@
   50%,
   70%,
   90% {
-    transform: translateX(-2px);
+    transform: translateX(var(--transform-ps-shake-left));
   }
 
   20%,
   40%,
   60%,
   80% {
-    transform: translateX(2px);
+    transform: translateX(var(--transform-ps-shake-right));
   }
 }
 
@@ -140,74 +142,74 @@
   0%,
   50%,
   100% {
-    opacity: 1;
+    opacity: var(--opacity-ps-full);
   }
 
   25%,
   75% {
-    opacity: 0.5;
+    opacity: var(--opacity-ps-half);
   }
 }
 
 @keyframes fadeOut {
   from {
-    opacity: 1;
+    opacity: var(--opacity-ps-full);
   }
 
   to {
-    opacity: 0.5;
+    opacity: var(--opacity-ps-half);
   }
 }
 
 @keyframes fadeIn {
   from {
-    opacity: 0;
+    opacity: var(--opacity-ps-0);
   }
 
   to {
-    opacity: 1;
+    opacity: var(--opacity-ps-full);
   }
 }
 
 @keyframes zoomIn {
   from {
-    opacity: 0;
-    transform: scale(0.8);
+    opacity: var(--opacity-ps-0);
+    transform: scale(var(--scale-ps-zoom-start));
   }
 
   to {
-    opacity: 1;
-    transform: scale(1);
+    opacity: var(--opacity-ps-full);
+    transform: scale(var(--scale-ps-zoom-end));
   }
 }
 
 @keyframes float {
   0% {
-    transform: translateY(0) translateX(0);
+    transform: var(--transform-ps-particle-y0-x0);
   }
 
   50% {
-    transform: translateY(30px) translateX(15px);
+    transform: var(--transform-ps-particle-y30-x15);
   }
 
   100% {
-    transform: translateY(0) translateX(0);
+    transform: var(--transform-ps-particle-y0-x0);
   }
 }
 
 /* Particle explosion animation */
 .price-particle {
-  animation: explode 1s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
+  animation: explode var(--duration-ps-explode) var(--cubic-ps-explode) forwards;
 }
 
 @keyframes explode {
   0% {
-    opacity: 1;
-    transform: translate(-50%, -50%);
+    opacity: var(--opacity-ps-full);
+    transform: var(--transform-ps-explode-start);
   }
 
   100% {
-    opacity: 0;
+    opacity: var(--opacity-ps-0);
     transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty)));
   }
 }

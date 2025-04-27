@@ -4,6 +4,17 @@
  */
 
 :root {
+    /* Global Animation Tokens */
+    --animation-duration-sm: 0.2s;
+    --animation-duration-md: 0.5s;
+    --animation-duration-lg: 1s;
+    --animation-ease: ease;
+    --animation-ease-in: ease-in;
+    --animation-ease-out: ease-out;
+    --animation-ease-in-out: ease-in-out;
+    --animation-linear: linear;
+    --animation-fill-forwards: forwards;
+
     /* Tooltip */
     --size-tooltip-arrow: 12px;
 
@@ -64,105 +75,270 @@
     --height-hero-auto: auto;
     --color-hero-current: currentColor;
 
-    /* Hero Positions and Layout */
-    --pos-hero-element-relative: relative;
-    --pos-hero-element-absolute: absolute;
-    --pos-hero-top-0: 0;
-    --pos-hero-left-0: 0;
-    --pos-hero-right-0: 0;
-    --pos-hero-bottom-0: 0;
-    --pos-hero-bottom-100: 100%;
-    --pos-hero-element-center: 50%;
-    --z-hero-behind: 0;
-    --z-hero-base: 1;
-    --z-hero-content: 2;
-    --z-hero-floating: 3;
-    --z-hero-hover: 10;
-    --z-hero-tooltip: 50;
+    /* PersonalTraining */
+    --pos-pt-relative: relative;
+    --pos-pt-absolute: absolute;
+    --z-pt-1: 1;
+    --z-pt-minus-1: -1;
+    --color-pt-section-bg: #111827;
+    --margin-pt-center: 0 auto;
+    --size-pt-grid-cols: repeat(auto-fill, minmax(300px, 1fr));
+    --padding-pt-container: 0 var(--spacing-4);
+    --size-pt-section-title: clamp(2rem, 4vw, var(--type-3xl));
+    --size-pt-booking-max-width: 700px;
+    --pos-pt-bg-position-start: 0 0;
+    --color-pt-transparent: transparent;
+    --margin-pt-auto: auto;
+    --display-pt-block: block;
+    --display-pt-grid: grid;
+    --max-width-pt-container: var(--container-max-width);
+    --text-align-pt-title-center: center;
+    --bg-pt-grid-pattern: linear-gradient(to right, var(--color-pt-grid-line) 1px, transparent 1px) var(--pos-pt-bg-center) / var(--size-pt-grid-pattern) var(--size-pt-grid-pattern), linear-gradient(to bottom, var(--color-pt-grid-line) 1px, transparent 1px) var(--pos-pt-bg-center) / var(--size-pt-grid-pattern) var(--size-pt-grid-pattern);
+    --bg-pt-booking-pattern: linear-gradient(45deg, transparent var(--size-pt-pattern), rgba(255, 255, 255, 0.05) var(--size-pt-pattern), transparent var(--size-pt-pattern));
 
-    /* Hero Display and Flex properties */
-    --display-hero-flex: flex;
-    --display-hero-inline-flex: inline-flex;
-    --display-hero-none: none;
-    --flex-hero-row: row;
-    --flex-hero-column: column;
-    --flex-hero-center: center;
-    --flex-hero-shrink-0: 0;
-    --flex-hero-grow-1: 1;
-    --align-hero-center: center;
-    --align-hero-flex-start: flex-start;
-    --justify-hero-center: center;
+    /* Accessibility - Reduced Motion */
+    --animation-pt-none: none;
+    --duration-pt-reduced-transition: 0.5s;
+    --transform-pt-none: none;
 
-    /* Hero Visual Properties */
-    --overflow-hero-hidden: hidden;
-    --pointer-hero-none: none;
-    --visibility-hero-visible: visible;
-    --visibility-hero-hidden: hidden;
-    --content-hero-empty: '';
-    --text-align-hero-center: center;
-    --weight-hero-heading: 800;
+    /* Grid pattern background */
+    --content-pt-empty: '';
+    --pos-pt-top-0: 0;
+    --pos-pt-left-0: 0;
+    --pos-pt-right-0: 0;
+    --pos-pt-bottom-0: 0;
+    --color-pt-grid-line: rgba(255, 255, 255, 0.03);
+    --size-pt-grid-pattern: 20px;
+    --pos-pt-bg-center: center center;
+    --pointer-pt-none: none;
 
-    /* Hero Animations */
-    --duration-hero-float-base: 6s;
-    --duration-hero-float-odd: 8s;
-    --duration-hero-float-even: 10s;
-    --duration-hero-gradient: 8s;
-    --duration-hero-button-transition: 0.3s;
-    --duration-hero-pulse: 3s;
-    --duration-hero-animation-delay: 1s;
-    --ease-hero-gradient: ease;
-    --scale-hero-icon-hover: 1.1;
-    --scale-hero-button-hover-y: -4px;
-    --angle-hero-gradient: 90deg;
-    --angle-hero-float-rotate: 5deg;
-    --pos-hero-gradient-start: 0% 50%;
-    --pos-hero-gradient-mid: 100% 50%;
-    --pos-hero-gradient-end: 0% 50%;
-    --animation-hero-none: none;
+    /* Trainer Card */
+    --color-pt-card-bg: rgba(31, 41, 55, 0.5);
+    --radius-pt-card: 1rem;
+    --spacing-pt-card-padding: 2rem;
+    --duration-pt-transition: 0.3s;
+    --ease-pt-transition: ease;
+    --border-pt-width: 1px;
+    --size-pt-backdrop-blur: 8px;
+    --transform-pt-card-hover-y: -5px;
+    --shadow-pt-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    --color-pt-card-border-hover: rgba(139, 92, 246, 0.3);
 
-    /* Hero Colors */
-    --color-hero-button-primary-text: #0f172a;
-    --color-hero-signin-text: rgba(255, 255, 255, 0.6);
-    --color-hero-feature-pill-bg: rgba(15, 23, 42, 0.5);
-    --color-hero-feature-pill-border: rgba(31, 41, 55, 0.5);
-    --color-hero-tooltip-title: #a3e635;
-    --color-hero-button-secondary-bg: rgba(15, 23, 42, 0.8);
-    --color-hero-button-secondary-border: rgba(163, 230, 53, 0.3);
-    --color-hero-button-secondary-hover-bg: rgba(163, 230, 53, 0.1);
-    --opacity-hero-floating-icon: 0.5;
-    --opacity-hero-tooltip-border: 0.3;
-    --opacity-hero-lime-border: 0.3;
+    /* Trainer Image */
+    --width-pt-img-full: 100%;
+    --height-pt-trainer-img: 280px;
+    --radius-pt-img: 0.75rem;
+    --object-fit-pt-cover: cover;
+    --spacing-pt-img-bottom: 1.5rem;
+    --filter-pt-img: contrast(1.05) brightness(0.95);
 
-    /* Hero Text */
-    --type-hero-tooltip-title: 14px;
-    --type-hero-signin: 0.875rem;
-    --weight-hero-button: 700;
-    --weight-hero-tooltip-title: 500;
-    --weight-hero-citron-text: 600;
+    /* Image Placeholder */
+    --display-pt-flex: flex;
+    --align-pt-center: center;
+    --justify-pt-center: center;
+    --opacity-pt-placeholder-icon: 0.7;
+    --filter-pt-icon-shadow: drop-shadow(0 0 8px rgba(0, 0, 0, 0.2));
 
-    /* Hero Shadows */
-    --shadow-hero-button-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-    --shadow-hero-secondary-button-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-    --shadow-hero-optimized: 0 10px 15px -5px rgba(0, 0, 0, 0.3);
-    --shadow-hero-optimized-hover: 0 20px 30px -10px rgba(0, 0, 0, 0.4);
-    --shadow-hero-citron-text: 0 0 6px rgba(163, 230, 53, 0.4);
-    --shadow-hero-no-shadow: 0 0 0 rgba(var(--color-lime-rgb), 0);
+    /* Trainer Specialty Badge */
+    --display-pt-inline-flex: inline-flex;
+    --padding-pt-badge-y: 0.25rem;
+    --padding-pt-badge-x: 0.75rem;
+    --radius-pt-badge: 9999px;
+    --size-pt-badge-font: 0.75rem;
+    --weight-pt-badge: 500;
+    --transform-pt-text-uppercase: uppercase;
+    --letter-spacing-pt-badge: 0.05em;
+    --color-pt-badge-bg: rgba(139, 92, 246, 0.15);
+    --spacing-pt-badge-bottom: 0.75rem;
+    --spacing-pt-badge-icon-right: 0.375rem;
 
-    /* Hero Opacity */
-    --opacity-disabled: 0.6;
-    --opacity-hero-icon: 0.6;
-    --opacity-hero-citron-pulse-min: 0.8;
-    --opacity-hero-tooltip-hidden: 0;
-    --opacity-hero-tooltip-visible: 1;
-    --opacity-hero-icon-hover: 1;
+    /* Trainer Text Elements */
+    --size-pt-name: 1.25rem;
+    --weight-pt-name: 700;
+    --spacing-pt-name-bottom: 0.5rem;
+    --size-pt-bio: 0.95rem;
+    --line-height-pt-bio: 1.6;
+    --spacing-pt-bio-bottom: 1.5rem;
 
-    /* HeroButton */
-    --size-hero-btn-gap: 0.5rem;
-    --size-hero-btn-padding-x-sm: 1.25rem;
-    --size-hero-btn-padding-x-md: 1.75rem;
-    --size-hero-btn-padding-x-lg: 2rem;
-    --size-hero-btn-padding-y-sm: 0.5rem;
-    --size-hero-btn-padding-y-md: 0.75rem;
-    --size-hero-btn-padding-y-lg: 1rem;
-    --size-hero-btn-icon-margin: 8px;
+    /* Trainer Stats */
+    --display-pt-grid: grid;
+    --grid-pt-cols-2: repeat(2, 1fr);
+    --spacing-pt-grid-gap: 1rem;
+    --spacing-pt-stats-bottom: 1.5rem;
+    --text-align-pt-center: center;
+    --size-pt-stat-value: 1.5rem;
+    --weight-pt-stat-value: 700;
+    --display-pt-block: block;
+    --spacing-pt-stat-value-bottom: 0.25rem;
+    --size-pt-stat-label: 0.875rem;
+
+    /* Action Button */
+    --width-pt-button-full: 100%;
+    --padding-pt-button-y: 0.75rem;
+    --padding-pt-button-x: 1.5rem;
+    --radius-pt-button: 0.5rem;
+    --color-pt-button-text: #111827;
+    --weight-pt-button: 600;
+    --transform-pt-button-hover-y: -2px;
+    --shadow-pt-button-hover: 0 8px 20px rgba(139, 92, 246, 0.3);
+    --transform-pt-button-icon-x: 3px;
+    --spacing-pt-button-icon-left: 0.5rem;
+    --transform-pt-img-hover-scale: 1.02;
+
+    /* Booking Box */
+    --radius-pt-booking-box: 1.5rem;
+    --overflow-pt-hidden: hidden;
+    --padding-pt-booking-y: 3rem;
+    --padding-pt-booking-x: 2rem;
+    --pos-pt-inset-0: 0;
+    --size-pt-pattern: 30px;
+    --animation-pt-pattern-duration: 15s;
+    --animation-pt-pattern-timing: linear;
+    --animation-pt-pattern-iteration: infinite;
+
+    /* Booking Text Elements */
+    --size-pt-booking-title: 2rem;
+    --weight-pt-booking-title: 800;
+    --spacing-pt-booking-title-bottom: 1rem;
+    --color-pt-white: white;
+    --shadow-pt-text: 0 2px 10px rgba(0, 0, 0, 0.2);
+    --size-pt-booking-text: 1.125rem;
+    --line-height-pt-booking-text: 1.6;
+    --spacing-pt-booking-text-bottom: 2rem;
+    --color-pt-white-90: rgba(255, 255, 255, 0.9);
+
+    /* Journey Component */
+    --pos-jr-relative: relative;
+    --pos-jr-absolute: absolute;
+    --overflow-jr-hidden: hidden;
+    --top-jr-path: 70px;
+    --left-jr-path-center: 50%;
+    --width-jr-path: 75%;
+    --height-jr-path: 2px;
+    --bg-jr-path: linear-gradient(90deg, rgba(204, 255, 0, 0.3), rgba(100, 210, 185, 0.3));
+    --transform-jr-center-x: translateX(-50%);
+    --z-jr-path: 0;
+    --z-jr-step: 10;
+    --top-jr-connector: calc(100% - 20px);
+    --left-jr-connector: 44px;
+    --width-jr-connector: 2px;
+    --height-jr-connector: 60px;
+    --bg-jr-connector: linear-gradient(180deg, rgba(153, 255, 0, 0.5) 0%, rgba(153, 255, 0, 0.1) 100%);
+    --z-jr-connector: 1;
+
+    /* JourneyStep Component */
+    --width-jr-step-number: 32px;
+    --height-jr-step-number: 32px;
+    --radius-jr-step-number: 50%;
+    --bg-jr-step-number: linear-gradient(135deg, #CCFF00 0%, #9BE368 100%);
+    --display-jr-flex: flex;
+    --align-jr-center: center;
+    --justify-jr-center: center;
+    --weight-jr-step-number: 700;
+    --color-jr-step-number: #0B1121;
+    --size-jr-step-number: 16px;
+
+    /* Journey Card Glow Effects */
+    --shadow-jr-lime-glow: 0 0 25px rgba(132, 204, 22, 0.15);
+    --shadow-jr-cyan-glow: 0 0 25px rgba(6, 182, 212, 0.15);
+    --shadow-jr-violet-glow: 0 0 25px rgba(139, 92, 246, 0.15);
+    --shadow-jr-amber-glow: 0 0 25px rgba(251, 146, 60, 0.15);
+
+    /* Journey Animations */
+    --transform-jr-slide-from: translateY(10px);
+    --transform-jr-slide-to: translateY(0);
+    --opacity-jr-hidden: 0;
+    --opacity-jr-visible: 1;
+
+    /* Journey Text Gradient */
+    --bg-size-jr-text-gradient: 100%;
+    --bg-clip-jr-text: text;
+    --color-jr-transparent: transparent;
+
+    /* Pricing Section */
+    --pos-ps-relative: relative;
+    --pos-ps-absolute: absolute;
+    --overflow-ps-hidden: hidden;
+    --content-ps-empty: '';
+    --top-ps-0: 0;
+    --left-ps-0: 0;
+    --width-ps-full: 100%;
+    --height-ps-full: 100%;
+    --opacity-ps-pattern: 0.5;
+    --z-ps-0: 0;
+
+    /* Pricing Text */
+    --bg-size-ps-text-gradient: 100%;
+    --bg-clip-ps-text: text;
+    --webkit-bg-clip-ps-text: text;
+    --moz-bg-clip-ps-text: text;
+    --webkit-text-fill-ps-transparent: transparent;
+    --moz-text-fill-ps-transparent: transparent;
+    --size-ps-plan-name: 1.75rem;
+    --weight-ps-plan-name: 700;
+    --line-height-ps-plan-name: 1.2;
+    --size-ps-price: 2.5rem;
+    --weight-ps-price: 700;
+    --line-height-ps-price: 1;
+
+    /* Pricing Card Shadows */
+    --shadow-ps-blue: 0 10px 25px -5px rgba(59, 130, 246, 0.1), 0 8px 10px -5px rgba(59, 130, 246, 0.04);
+    --shadow-ps-lime: 0 10px 25px -5px rgba(132, 204, 22, 0.1), 0 8px 10px -5px rgba(132, 204, 22, 0.04);
+    --shadow-ps-purple: 0 10px 25px -5px rgba(139, 92, 246, 0.1), 0 8px 10px -5px rgba(139, 92, 246, 0.04);
+
+    /* Pricing Animations */
+    --duration-ps-animation: 0.5s;
+    --duration-ps-animation-long: 0.7s;
+    --delay-ps-animation: 0.3s;
+    --cubic-ps-shake: cubic-bezier(0.36, 0.07, 0.19, 0.97);
+    --cubic-ps-zoom: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --ease-ps-standard: ease;
+    --ease-ps-out: ease-out;
+    --transform-ps-shake-left: -2px;
+    --transform-ps-shake-right: 2px;
+    --transform-ps-x-0: translateX(0);
+    --opacity-ps-full: 1;
+    --opacity-ps-half: 0.5;
+    --opacity-ps-0: 0;
+    --scale-ps-zoom-start: 0.8;
+    --scale-ps-zoom-end: 1;
+
+    /* Pricing Particles */
+    --pos-ps-particle-all: 0;
+    --radius-ps-particle: 50%;
+    --bg-ps-particle: linear-gradient(135deg, rgba(132, 204, 22, 0.3), rgba(5, 150, 105, 0.2));
+    --opacity-ps-particle: 0.4;
+    --pointer-ps-none: none;
+    --duration-ps-float: 15s;
+    --transform-ps-particle-y0-x0: translateY(0) translateX(0);
+    --transform-ps-particle-y30-x15: translateY(30px) translateX(15px);
+    --duration-ps-explode: 1s;
+    --cubic-ps-explode: cubic-bezier(0.17, 0.67, 0.83, 0.67);
+    --transform-ps-explode-start: translate(-50%, -50%);
+
+    /* Feature Highlight */
+    --bg-ps-feature-highlight: linear-gradient(to right, #84cc16, #059669);
+    --duration-ps-transition: 0.3s;
+
+    /* Badge Styles */
+    --display-ps-inline-flex: inline-flex;
+    --align-ps-center: center;
+
+    /* PricingCard */
+    --transform-ps-card-up: translateY(-5px);
+    --transform-ps-popular-scale: scale(1.05);
+    --transform-ps-popular-hover: scale(1.05) translateY(-5px);
+    --transition-ps-card: transform 0.3s ease, box-shadow 0.3s ease;
+    --overflow-ps-visible: visible;
+
+    /* Feature Icons */
+    --transition-ps-icon: transform 0.2s ease;
+    --transform-ps-icon-hover: scale(1.1);
+
+    /* Badge Styling */
+    --weight-ps-badge: 600;
+    --gap-ps-badge: 0.25rem;
+
+    /* Media Breakpoints */
+    --breakpoint-ps-md: 768px;
 }

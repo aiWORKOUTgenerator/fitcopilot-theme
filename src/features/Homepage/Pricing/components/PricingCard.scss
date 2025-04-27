@@ -1,54 +1,56 @@
+@import "../../../../styles/design-system/index.scss";
+
 .pricing-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: visible;
-  position: relative;
+  transition: var(--transition-ps-card);
+  overflow: var(--overflow-ps-visible);
+  position: var(--pos-ps-relative);
 
   &:hover {
-    transform: translateY(-5px);
+    transform: var(--transform-ps-card-up);
   }
 
   /* Feature icon hover effect */
   .feature-icon {
-    transition: transform 0.2s ease;
+    transition: var(--transition-ps-icon);
   }
 
   li:hover .feature-icon {
-    transform: scale(1.1);
+    transform: var(--transform-ps-icon-hover);
   }
 
   /* Badge styling */
   .plan-badge {
-    display: inline-flex;
-    align-items: center;
-    font-weight: 600;
+    display: var(--display-ps-inline-flex);
+    align-items: var(--align-ps-center);
+    font-weight: var(--weight-ps-badge);
   }
 
   /* Pricing text styles */
   .plan-name {
-    font-size: 1.75rem;
-    font-weight: 700;
-    line-height: 1.2;
+    font-size: var(--size-ps-plan-name);
+    font-weight: var(--weight-ps-plan-name);
+    line-height: var(--line-height-ps-plan-name);
   }
 
   .price {
-    font-size: 2.5rem;
-    font-weight: 700;
-    line-height: 1;
+    font-size: var(--size-ps-price);
+    font-weight: var(--weight-ps-price);
+    line-height: var(--line-height-ps-price);
   }
 
   /* Beta badge styling */
   .beta-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
+    display: var(--display-ps-inline-flex);
+    align-items: var(--align-ps-center);
+    gap: var(--gap-ps-badge);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: var(--breakpoint-ps-md)) {
     &.popular {
-      transform: scale(1.05);
+      transform: var(--transform-ps-popular-scale);
 
       &:hover {
-        transform: scale(1.05) translateY(-5px);
+        transform: var(--transform-ps-popular-hover);
       }
     }
   }
