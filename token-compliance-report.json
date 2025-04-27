@@ -1,5 +1,5 @@
 {
-  "overall": 29,
+  "overall": 43,
   "components": {
     "styles": {
       "total": 71,
@@ -15,9 +15,9 @@
       ]
     },
     "design-system": {
-      "total": 26,
+      "total": 31,
       "tokens": 7,
-      "percentage": 27,
+      "percentage": 23,
       "files": [
         "src/styles/design-system/_mixins.scss",
         "src/styles/design-system/_components.scss",
@@ -81,9 +81,9 @@
       ]
     },
     "PersonalTraining": {
-      "total": 123,
-      "tokens": 8,
-      "percentage": 7,
+      "total": 137,
+      "tokens": 125,
+      "percentage": 91,
       "files": [
         "src/features/Homepage/PersonalTraining/PersonalTraining.scss"
       ]
@@ -200,7 +200,7 @@
       "percentage": 78
     },
     "src/styles/design-system/_component-tokens.scss": {
-      "total": 12,
+      "total": 17,
       "tokens": 0,
       "percentage": 0
     },
@@ -245,9 +245,9 @@
       "percentage": 0
     },
     "src/features/Homepage/PersonalTraining/PersonalTraining.scss": {
-      "total": 123,
-      "tokens": 8,
-      "percentage": 7
+      "total": 137,
+      "tokens": 125,
+      "percentage": 91
     },
     "src/features/Homepage/Journey/Journey.scss": {
       "total": 21,

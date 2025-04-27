@@ -64,6 +64,167 @@
     --height-hero-auto: auto;
     --color-hero-current: currentColor;
 
+    /* PersonalTraining */
+    --pos-pt-relative: relative;
+    --pos-pt-absolute: absolute;
+    --z-pt-1: 1;
+    --z-pt-minus-1: -1;
+
+    /* Grid pattern background */
+    --content-pt-empty: '';
+    --pos-pt-top-0: 0;
+    --pos-pt-left-0: 0;
+    --pos-pt-right-0: 0;
+    --pos-pt-bottom-0: 0;
+    --color-pt-grid-line: rgba(255, 255, 255, 0.03);
+    --size-pt-grid-pattern: 20px;
+    --pos-pt-bg-center: center center;
+    --pointer-pt-none: none;
+
+    /* Trainer Card */
+    --color-pt-card-bg: rgba(31, 41, 55, 0.5);
+    --radius-pt-card: 1rem;
+    --spacing-pt-card-padding: 2rem;
+    --duration-pt-transition: 0.3s;
+    --ease-pt-transition: ease;
+    --border-pt-width: 1px;
+    --size-pt-backdrop-blur: 8px;
+    --transform-pt-card-hover-y: -5px;
+    --shadow-pt-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    --color-pt-card-border-hover: rgba(139, 92, 246, 0.3);
+
+    /* Trainer Image */
+    --width-pt-img-full: 100%;
+    --height-pt-trainer-img: 280px;
+    --radius-pt-img: 0.75rem;
+    --object-fit-pt-cover: cover;
+    --spacing-pt-img-bottom: 1.5rem;
+    --filter-pt-img: contrast(1.05) brightness(0.95);
+
+    /* Image Placeholder */
+    --display-pt-flex: flex;
+    --align-pt-center: center;
+    --justify-pt-center: center;
+    --opacity-pt-placeholder-icon: 0.7;
+    --filter-pt-icon-shadow: drop-shadow(0 0 8px rgba(0, 0, 0, 0.2));
+
+    /* Trainer Specialty Badge */
+    --display-pt-inline-flex: inline-flex;
+    --padding-pt-badge-y: 0.25rem;
+    --padding-pt-badge-x: 0.75rem;
+    --radius-pt-badge: 9999px;
+    --size-pt-badge-font: 0.75rem;
+    --weight-pt-badge: 500;
+    --transform-pt-text-uppercase: uppercase;
+    --letter-spacing-pt-badge: 0.05em;
+    --color-pt-badge-bg: rgba(139, 92, 246, 0.15);
+    --spacing-pt-badge-bottom: 0.75rem;
+    --spacing-pt-badge-icon-right: 0.375rem;
+
+    /* Trainer Text Elements */
+    --size-pt-name: 1.25rem;
+    --weight-pt-name: 700;
+    --spacing-pt-name-bottom: 0.5rem;
+    --size-pt-bio: 0.95rem;
+    --line-height-pt-bio: 1.6;
+    --spacing-pt-bio-bottom: 1.5rem;
+
+    /* Trainer Stats */
+    --display-pt-grid: grid;
+    --grid-pt-cols-2: repeat(2, 1fr);
+    --spacing-pt-grid-gap: 1rem;
+    --spacing-pt-stats-bottom: 1.5rem;
+    --text-align-pt-center: center;
+    --size-pt-stat-value: 1.5rem;
+    --weight-pt-stat-value: 700;
+    --display-pt-block: block;
+    --spacing-pt-stat-value-bottom: 0.25rem;
+    --size-pt-stat-label: 0.875rem;
+
+    /* Action Button */
+    --width-pt-button-full: 100%;
+    --padding-pt-button-y: 0.75rem;
+    --padding-pt-button-x: 1.5rem;
+    --radius-pt-button: 0.5rem;
+    --color-pt-button-text: #111827;
+    --weight-pt-button: 600;
+    --transform-pt-button-hover-y: -2px;
+    --shadow-pt-button-hover: 0 8px 20px rgba(139, 92, 246, 0.3);
+    --transform-pt-button-icon-x: 3px;
+    --spacing-pt-button-icon-left: 0.5rem;
+    --transform-pt-img-hover-scale: 1.02;
+
+    /* Booking Box */
+    --radius-pt-booking-box: 1.5rem;
+    --overflow-pt-hidden: hidden;
+    --padding-pt-booking-y: 3rem;
+    --padding-pt-booking-x: 2rem;
+    --pos-pt-inset-0: 0;
+    --size-pt-pattern: 30px;
+    --animation-pt-pattern-duration: 15s;
+    --animation-pt-pattern-timing: linear;
+    --animation-pt-pattern-iteration: infinite;
+
+    /* Booking Text Elements */
+    --size-pt-booking-title: 2rem;
+    --weight-pt-booking-title: 800;
+    --spacing-pt-booking-title-bottom: 1rem;
+    --color-pt-white: white;
+    --shadow-pt-text: 0 2px 10px rgba(0, 0, 0, 0.2);
+    --size-pt-booking-text: 1.125rem;
+    --line-height-pt-booking-text: 1.6;
+    --spacing-pt-booking-text-bottom: 2rem;
+    --color-pt-white-90: rgba(255, 255, 255, 0.9);
+
+    /* Booking Button */
+    --padding-pt-booking-button-y: 1rem;
+    --padding-pt-booking-button-x: 2rem;
+    --radius-pt-booking-button: 9999px;
+    --color-pt-booking-button-bg: white;
+    --shadow-pt-booking-button: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    --transform-pt-booking-button-hover-y: -3px;
+    --shadow-pt-booking-button-hover: 0 15px 30px -5px rgba(0, 0, 0, 0.3);
+    --spacing-pt-booking-button-icon-left: 0.75rem;
+
+    /* Flip Card */
+    --spacing-pt-flip-card-top: 2rem;
+    --perspective-pt-flip-card: 1500px;
+    --height-pt-flip-card: 280px;
+    --transform-style-pt-3d: preserve-3d;
+    --transition-pt-flip: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --cursor-pt-pointer: pointer;
+    --transform-pt-flip-y-180: rotateY(180deg);
+    --backface-pt-hidden: hidden;
+    --shadow-pt-flip-card: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+    --transform-pt-flip-y-0: rotateY(0deg);
+
+    /* Flip Card Overlay */
+    --pos-pt-inset-0: 0;
+    --gradient-pt-overlay: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 70%);
+    --display-pt-flex-column: column;
+    --justify-pt-flex-end: flex-end;
+    --padding-pt-overlay: 1.5rem;
+    --size-pt-flip-title: 1.25rem;
+    --weight-pt-flip-title: 700;
+    --spacing-pt-flip-title-bottom: 0.5rem;
+    --color-pt-white-80: rgba(255, 255, 255, 0.8);
+    --size-pt-flip-hint: 0.9rem;
+    --spacing-pt-flip-hint-icon-left: 0.5rem;
+
+    /* Flip Card Back */
+    --color-pt-card-back-bg: rgba(31, 41, 55, 0.9);
+    --flex-pt-grow: 1;
+
+    /* Video Controls */
+    --justify-pt-space-between: space-between;
+    --padding-pt-controls: 1rem;
+    --color-pt-controls-bg: rgba(17, 24, 39, 0.8);
+    --border-pt-none: none;
+    --size-pt-control-button: 40px;
+    --radius-pt-round: 50%;
+    --duration-pt-control-transition: 0.2s;
+    --color-pt-control-hover-bg: rgba(255, 255, 255, 0.1);
+
     /* Hero Positions and Layout */
     --pos-hero-element-relative: relative;
     --pos-hero-element-absolute: absolute;
