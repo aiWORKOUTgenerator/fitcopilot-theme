@@ -31,6 +31,13 @@ By Component:
 🔴 FeatureCard.scss: 0% (0/13)
 ```
 
+### Training
+- [x] Imported design-system partials
+- [x] Replaced all hard-coded values with tokens
+- [x] Added new tokens to _component-tokens.scss
+- [x] Compliance: 100% (63/63 props)
+- [ ] Storybook QA ⏳
+
 ## Task Assignments
 
 Each developer should create a branch from `token-compliance/boilerplate` following the naming convention `token-compliance/[component-name]`.

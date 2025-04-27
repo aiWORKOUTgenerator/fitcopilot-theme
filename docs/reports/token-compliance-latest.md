@@ -1,4 +1,4 @@
-# Token Compliance Report - 2025-04-26
+# Token Compliance Report - 2025-04-27
 
 ## Summary
 
@@ -6,13 +6,13 @@ Overall Token Usage:
 
 ## Compliance by Component
 
+🟢 Training: 100% (63/63)
 🟢 Hero: 100% (109/109)
 🟢 HeroButton.scss: 100% (38/38)
 🔴 UI: 62% (54/87)
-🔴 design-system: 27% (7/26)
+🔴 design-system: 21% (7/34)
 🔴 styles: 8% (6/71)
 🔴 PersonalTraining: 7% (8/123)
-🔴 Training: 6% (4/63)
 🔴 Pricing: 2% (1/47)
 🔴 Features: 2% (2/86)
 🔴 DemoNav: 0% (0/3)
@@ -43,11 +43,11 @@ Overall Token Usage:
 🔴 src/features/Homepage/styles/homepage.scss: 13% (2/16)
 🔴 src/features/Homepage/Testimonials/components/TestimonialCard.scss: 0% (0/10)
 🔴 src/features/Homepage/Testimonials/Testimonials.scss: 0% (0/6)
-🔴 src/features/Homepage/Training/Training.scss: 6% (4/63)
+🟢 src/features/Homepage/Training/Training.scss: 100% (63/63)
 🔴 src/features/Homepage/TrainingFeatures/TrainingFeatures.scss: 0% (0/54)
 🔴 src/styles/animations.scss: 0% (0/11)
 🔴 src/styles/demonav.scss: 0% (0/4)
-🔴 src/styles/design-system/_component-tokens.scss: 0% (0/12)
+🔴 src/styles/design-system/_component-tokens.scss: 0% (0/20)
 🟡 src/styles/design-system/_components.scss: 78% (7/9)
 🔴 src/styles/design-system/_mixins.scss: 0% (0/5)
 🔴 src/styles/global.scss: 0% (0/11)
@@ -64,16 +64,16 @@ Detailed report saved to token-compliance-report.json
 === Design Token Compliance Report ===
 
 Overall Token Usage:
-229/779 properties (29%)
+288/787 properties (37%)
 
 By Component:
+🟢 Training: 100% (63/63)
 🟢 Hero: 100% (109/109)
 🟢 HeroButton.scss: 100% (38/38)
 🔴 UI: 62% (54/87)
-🔴 design-system: 27% (7/26)
+🔴 design-system: 21% (7/34)
 🔴 styles: 8% (6/71)
 🔴 PersonalTraining: 7% (8/123)
-🔴 Training: 6% (4/63)
 🔴 Pricing: 2% (1/47)
 🔴 Features: 2% (2/86)
 🔴 DemoNav: 0% (0/3)
@@ -106,11 +106,11 @@ Detailed File Results:
 🔴 src/features/Homepage/styles/homepage.scss: 13% (2/16)
 🔴 src/features/Homepage/Testimonials/components/TestimonialCard.scss: 0% (0/10)
 🔴 src/features/Homepage/Testimonials/Testimonials.scss: 0% (0/6)
-🔴 src/features/Homepage/Training/Training.scss: 6% (4/63)
+🟢 src/features/Homepage/Training/Training.scss: 100% (63/63)
 🔴 src/features/Homepage/TrainingFeatures/TrainingFeatures.scss: 0% (0/54)
 🔴 src/styles/animations.scss: 0% (0/11)
 🔴 src/styles/demonav.scss: 0% (0/4)
-🔴 src/styles/design-system/_component-tokens.scss: 0% (0/12)
+🔴 src/styles/design-system/_component-tokens.scss: 0% (0/20)
 🟡 src/styles/design-system/_components.scss: 78% (7/9)
 🔴 src/styles/design-system/_mixins.scss: 0% (0/5)
 🔴 src/styles/global.scss: 0% (0/11)
@@ -133,7 +133,7 @@ Add a trend chart here to track progress over time.
 |-----------|----------|-----------|-------------|
 | UI        | TBD      | 62%       | TBD         |
 | PersonalTraining | TBD | 7%      | TBD         |
-| Training  | TBD      | 6%        | TBD         |
+| TrainingFeatures | TBD | 0%      | TBD         |
 | Features  | TBD      | 2%        | TBD         |
 | Pricing   | TBD      | 2%        | TBD         |
 
@@ -141,6 +141,7 @@ Add a trend chart here to track progress over time.
 
 | Component | Completed By | Date |
 |-----------|--------------|------|
-| Hero      | Team         | 2025-04-26 |
-| HeroButton| Team         | 2025-04-26 |
+| Training  | Team         | 2025-04-27 |
+| Hero      | Team         | 2025-04-20 |
+| HeroButton| Team         | 2025-04-20 |
 
