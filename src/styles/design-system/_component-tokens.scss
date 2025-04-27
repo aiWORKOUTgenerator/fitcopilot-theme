@@ -256,4 +256,91 @@
     --transform-tr-main-cta-hover-y: -3px;
     --shadow-tr-main-cta-hover: 0 20px 25px -5px rgba(139, 92, 246, 0.4);
     --spacing-tr-main-cta-top: 4rem;
+
+    /* TrainingFeatures Component */
+    --pos-tf-relative: relative;
+    --pos-tf-absolute: absolute;
+    --z-tf-base: 1;
+    --z-tf-behind: -1;
+    --content-tf-empty: '';
+    --pos-tf-top-0: 0;
+    --pos-tf-left-0: 0;
+    --pos-tf-right-0: 0;
+    --pos-tf-bottom-0: 0;
+    --size-tf-grid-pattern: 20px;
+    --pos-tf-bg-center: center center;
+    --pointer-tf-none: none;
+    --color-tf-grid-line: rgba(255, 255, 255, 0.03);
+    --angle-tf-grid-vertical: 90deg;
+    --bg-tf-grid-pattern: linear-gradient(var(--color-tf-grid-line) 1px, transparent 1px), linear-gradient(var(--angle-tf-grid-vertical), var(--color-tf-grid-line) 1px, transparent 1px);
+    --width-tf-full: 100%;
+    --height-tf-full: 100%;
+    --transform-tf-none: none;
+    --duration-tf-reduced-motion: 0.1s;
+
+    /* Feature Card */
+    --color-tf-card-bg: rgba(31, 41, 55, 0.7);
+    --size-tf-backdrop-blur: 8px;
+    --duration-tf-transition: 0.3s;
+    --ease-tf-transition: ease;
+    --transform-tf-card-hover-y: -5px;
+    --shadow-tf-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+
+    /* Feature Icon */
+    --display-tf-flex: flex;
+    --align-tf-center: center;
+    --justify-tf-center: center;
+    --size-tf-icon-width: 48px;
+    --size-tf-icon-height: 48px;
+    --radius-tf-icon: 12px;
+    --flex-tf-shrink-0: 0;
+    --transform-tf-icon-hover: scale(1.05);
+    --filter-tf-icon-shadow: drop-shadow(0 0 8px rgba(0, 0, 0, 0.1));
+
+    /* Feature Text */
+    --weight-tf-title: 600;
+    --size-tf-description: 0.95rem;
+    --line-height-tf-description: 1.6;
+
+    /* Flip Card */
+    --perspective-tf-flip-card: 1500px;
+    --transform-style-tf-3d: preserve-3d;
+    --duration-tf-flip-transition: 0.8s;
+    --ease-tf-flip-transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transform-tf-flip-y-180: rotateY(180deg);
+    --transform-tf-flip-y-0: rotateY(0deg);
+    --backface-tf-hidden: hidden;
+    --radius-tf-flip-card: 0.75rem;
+    --overflow-tf-hidden: hidden;
+    --flex-tf-direction-column: column;
+    --justify-tf-flex-start: flex-start;
+    --flex-tf-grow: 1;
+
+    /* Flip Card Image */
+    --size-tf-img-height: 140px;
+    --radius-tf-img: 0.5rem;
+    --object-fit-tf-cover: cover;
+    --opacity-tf-img: 0.8;
+    --opacity-tf-img-hover: 1;
+
+    /* Feature Details */
+    --spacing-tf-details-bottom: 1rem;
+    --spacing-tf-detail-item-bottom: 0.5rem;
+    --spacing-tf-detail-bullet-right: 0.5rem;
+    --size-tf-back-title: 1.125rem;
+
+    /* Flip Button */
+    --display-tf-inline-flex: inline-flex;
+    --duration-tf-button-transition: 0.2s;
+    --transform-tf-button-hover-x: 2px;
+    --spacing-tf-button-icon-right: 0.25rem;
+
+    /* CTA Button */
+    --padding-tf-cta-y: 0.75rem;
+    --padding-tf-cta-x: 1.5rem;
+    --radius-tf-cta: 9999px;
+    --weight-tf-cta: 600;
+    --transform-tf-cta-hover-y: -2px;
+    --shadow-tf-cta-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    --spacing-tf-cta-icon-left: 0.5rem;
 }
