@@ -15,17 +15,15 @@
         left: var(--pos-pt-left-0);
         right: var(--pos-pt-right-0);
         bottom: var(--pos-pt-bottom-0);
-        background:
-            linear-gradient(to right, var(--color-pt-grid-line) 1px, transparent 1px) var(--pos-pt-bg-center) / var(--size-pt-grid-pattern) var(--size-pt-grid-pattern),
-            linear-gradient(to bottom, var(--color-pt-grid-line) 1px, transparent 1px) var(--pos-pt-bg-center) / var(--size-pt-grid-pattern) var(--size-pt-grid-pattern);
+        background: var(--bg-pt-grid-pattern);
         pointer-events: var(--pointer-pt-none);
         z-index: var(--z-pt-minus-1);
     }
 
     .section-title {
         margin-bottom: var(--spacing-8);
-        text-align: center;
-        font-size: clamp(2rem, 4vw, var(--type-3xl));
+        text-align: var(--text-align-pt-title-center);
+        font-size: var(--size-pt-section-title);
         font-weight: var(--weight-black);
 
         .highlight {
@@ -34,12 +32,12 @@
     }
 
     .trainers-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        display: var(--display-pt-grid);
+        grid-template-columns: var(--size-pt-grid-cols);
         gap: var(--spacing-6);
-        max-width: var(--container-max-width);
-        margin: 0 auto;
-        padding: 0 var(--spacing-4);
+        max-width: var(--max-width-pt-container);
+        margin: var(--margin-pt-center);
+        padding: var(--padding-pt-container);
     }
 
     // Trainer card
@@ -194,9 +192,9 @@
         padding: var(--padding-pt-booking-y) var(--padding-pt-booking-x);
         margin-top: var(--spacing-16);
         background: var(--gradient-primary);
-        max-width: var(--container-max-width);
-        margin-left: auto;
-        margin-right: auto;
+        max-width: var(--max-width-pt-container);
+        margin-left: var(--margin-pt-auto);
+        margin-right: var(--margin-pt-auto);
 
         &::before {
             content: var(--content-pt-empty);
@@ -205,8 +203,7 @@
             left: var(--pos-pt-left-0);
             right: var(--pos-pt-right-0);
             bottom: var(--pos-pt-bottom-0);
-            background:
-                linear-gradient(45deg, transparent var(--size-pt-pattern), rgba(255, 255, 255, 0.05) var(--size-pt-pattern), transparent var(--size-pt-pattern));
+            background: var(--bg-pt-booking-pattern);
             background-size: var(--size-pt-pattern) var(--size-pt-pattern);
             animation: patternMove var(--animation-pt-pattern-duration) var(--animation-pt-pattern-timing) var(--animation-pt-pattern-iteration);
             pointer-events: var(--pointer-pt-none);
@@ -228,9 +225,9 @@
         margin-bottom: var(--spacing-pt-booking-text-bottom);
         text-align: var(--text-align-pt-center);
         color: var(--color-pt-white-90);
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
+        max-width: var(--size-pt-booking-max-width);
+        margin-left: var(--margin-pt-auto);
+        margin-right: var(--margin-pt-auto);
     }
 
     .booking-button {
@@ -241,8 +238,8 @@
         color: var(--color-secondary);
         border-radius: var(--radius-pt-booking-button);
         font-weight: var(--weight-pt-button);
-        margin: 0 auto;
-        display: block;
+        margin: var(--margin-pt-center);
+        display: var(--display-pt-block);
         box-shadow: var(--shadow-pt-booking-button);
         transition: transform var(--duration-pt-transition) var(--ease-pt-transition),
             box-shadow var(--duration-pt-transition) var(--ease-pt-transition);
@@ -360,7 +357,7 @@
             }
 
             .control-button {
-                background: transparent;
+                background: var(--color-pt-transparent);
                 border: var(--border-pt-none);
                 width: var(--size-pt-control-button);
                 height: var(--size-pt-control-button);
@@ -382,7 +379,7 @@
 // Animation for pattern
 @keyframes patternMove {
     0% {
-        background-position: 0 0;
+        background-position: var(--pos-pt-bg-position-start);
     }
 
     100% {

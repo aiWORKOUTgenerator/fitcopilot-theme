@@ -70,7 +70,20 @@
     --z-pt-1: 1;
     --z-pt-minus-1: -1;
     --color-pt-section-bg: #111827;
-    /* Explicitly defined section background */
+    --margin-pt-center: 0 auto;
+    --size-pt-grid-cols: repeat(auto-fill, minmax(300px, 1fr));
+    --padding-pt-container: 0 var(--spacing-4);
+    --size-pt-section-title: clamp(2rem, 4vw, var(--type-3xl));
+    --size-pt-booking-max-width: 700px;
+    --pos-pt-bg-position-start: 0 0;
+    --color-pt-transparent: transparent;
+    --margin-pt-auto: auto;
+    --display-pt-block: block;
+    --display-pt-grid: grid;
+    --max-width-pt-container: var(--container-max-width);
+    --text-align-pt-title-center: center;
+    --bg-pt-grid-pattern: linear-gradient(to right, var(--color-pt-grid-line) 1px, transparent 1px) var(--pos-pt-bg-center) / var(--size-pt-grid-pattern) var(--size-pt-grid-pattern), linear-gradient(to bottom, var(--color-pt-grid-line) 1px, transparent 1px) var(--pos-pt-bg-center) / var(--size-pt-grid-pattern) var(--size-pt-grid-pattern);
+    --bg-pt-booking-pattern: linear-gradient(45deg, transparent var(--size-pt-pattern), rgba(255, 255, 255, 0.05) var(--size-pt-pattern), transparent var(--size-pt-pattern));
 
     /* Grid pattern background */
     --content-pt-empty: '';
