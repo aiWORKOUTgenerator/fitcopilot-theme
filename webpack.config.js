@@ -5,7 +5,7 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 module.exports = {
   mode: 'production',
   entry: {
-    'homepage': ['./src/index.tsx', './src/styles/homepage.scss']
+    'homepage': ['./src/Homepage.tsx', './src/styles/homepage.scss']
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -106,7 +106,6 @@ module.exports = {
   ],
   externals: {
     'react': 'React',
-    'react-dom': 'ReactDOM',
-    'react-dom/client': 'ReactDOM'
+    'react-dom': 'ReactDOM'
   }
 }; 

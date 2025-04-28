@@ -23,6 +23,10 @@ add_action('wp_head', 'wp_print_styles', 8);
 add_action('wp_head', 'wp_print_head_scripts', 9);
 add_action('wp_head', 'wp_site_icon', 99);
 
+// Enqueue React and ReactDOM from CDN
+wp_enqueue_script('react', 'https://unpkg.com/react@18/umd/react.production.min.js', array(), '18.0.0', true);
+wp_enqueue_script('react-dom', 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js', array('react'), '18.0.0', true);
+
 // Get the manifest file
 $manifest_path = get_template_directory() . '/dist/manifest.json';
 $manifest = file_exists($manifest_path) ? json_decode(file_get_contents($manifest_path), true) : [];
