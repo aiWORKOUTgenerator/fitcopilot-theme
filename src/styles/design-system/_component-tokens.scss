@@ -64,6 +64,187 @@
     --height-hero-auto: auto;
     --color-hero-current: currentColor;
 
+    /* PersonalTraining */
+    --pos-pt-relative: relative;
+    --pos-pt-absolute: absolute;
+    --z-pt-1: 1;
+    --z-pt-minus-1: -1;
+    --color-pt-section-bg: #111827;
+    --margin-pt-center: 0 auto;
+    --size-pt-grid-cols: repeat(auto-fill, minmax(300px, 1fr));
+    --padding-pt-container: 0 var(--spacing-4);
+    --size-pt-section-title: clamp(2rem, 4vw, var(--type-3xl));
+    --size-pt-booking-max-width: 700px;
+    --pos-pt-bg-position-start: 0 0;
+    --color-pt-transparent: transparent;
+    --margin-pt-auto: auto;
+    --display-pt-block: block;
+    --display-pt-grid: grid;
+    --max-width-pt-container: var(--container-max-width);
+    --text-align-pt-title-center: center;
+    --bg-pt-grid-pattern: linear-gradient(to right, var(--color-pt-grid-line) 1px, transparent 1px) var(--pos-pt-bg-center) / var(--size-pt-grid-pattern) var(--size-pt-grid-pattern), linear-gradient(to bottom, var(--color-pt-grid-line) 1px, transparent 1px) var(--pos-pt-bg-center) / var(--size-pt-grid-pattern) var(--size-pt-grid-pattern);
+    --bg-pt-booking-pattern: linear-gradient(45deg, transparent var(--size-pt-pattern), rgba(255, 255, 255, 0.05) var(--size-pt-pattern), transparent var(--size-pt-pattern));
+
+    /* Accessibility - Reduced Motion */
+    --animation-pt-none: none;
+    --duration-pt-reduced-transition: 0.5s;
+    --transform-pt-none: none;
+
+    /* Grid pattern background */
+    --content-pt-empty: '';
+    --pos-pt-top-0: 0;
+    --pos-pt-left-0: 0;
+    --pos-pt-right-0: 0;
+    --pos-pt-bottom-0: 0;
+    --color-pt-grid-line: rgba(255, 255, 255, 0.03);
+    --size-pt-grid-pattern: 20px;
+    --pos-pt-bg-center: center center;
+    --pointer-pt-none: none;
+
+    /* Trainer Card */
+    --color-pt-card-bg: rgba(31, 41, 55, 0.5);
+    --radius-pt-card: 1rem;
+    --spacing-pt-card-padding: 2rem;
+    --duration-pt-transition: 0.3s;
+    --ease-pt-transition: ease;
+    --border-pt-width: 1px;
+    --size-pt-backdrop-blur: 8px;
+    --transform-pt-card-hover-y: -5px;
+    --shadow-pt-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    --color-pt-card-border-hover: rgba(139, 92, 246, 0.3);
+
+    /* Trainer Image */
+    --width-pt-img-full: 100%;
+    --height-pt-trainer-img: 280px;
+    --radius-pt-img: 0.75rem;
+    --object-fit-pt-cover: cover;
+    --spacing-pt-img-bottom: 1.5rem;
+    --filter-pt-img: contrast(1.05) brightness(0.95);
+
+    /* Image Placeholder */
+    --display-pt-flex: flex;
+    --align-pt-center: center;
+    --justify-pt-center: center;
+    --opacity-pt-placeholder-icon: 0.7;
+    --filter-pt-icon-shadow: drop-shadow(0 0 8px rgba(0, 0, 0, 0.2));
+
+    /* Trainer Specialty Badge */
+    --display-pt-inline-flex: inline-flex;
+    --padding-pt-badge-y: 0.25rem;
+    --padding-pt-badge-x: 0.75rem;
+    --radius-pt-badge: 9999px;
+    --size-pt-badge-font: 0.75rem;
+    --weight-pt-badge: 500;
+    --transform-pt-text-uppercase: uppercase;
+    --letter-spacing-pt-badge: 0.05em;
+    --color-pt-badge-bg: rgba(139, 92, 246, 0.15);
+    --spacing-pt-badge-bottom: 0.75rem;
+    --spacing-pt-badge-icon-right: 0.375rem;
+
+    /* Trainer Text Elements */
+    --size-pt-name: 1.25rem;
+    --weight-pt-name: 700;
+    --spacing-pt-name-bottom: 0.5rem;
+    --size-pt-bio: 0.95rem;
+    --line-height-pt-bio: 1.6;
+    --spacing-pt-bio-bottom: 1.5rem;
+
+    /* Trainer Stats */
+    --display-pt-grid: grid;
+    --grid-pt-cols-2: repeat(2, 1fr);
+    --spacing-pt-grid-gap: 1rem;
+    --spacing-pt-stats-bottom: 1.5rem;
+    --text-align-pt-center: center;
+    --size-pt-stat-value: 1.5rem;
+    --weight-pt-stat-value: 700;
+    --display-pt-block: block;
+    --spacing-pt-stat-value-bottom: 0.25rem;
+    --size-pt-stat-label: 0.875rem;
+
+    /* Action Button */
+    --width-pt-button-full: 100%;
+    --padding-pt-button-y: 0.75rem;
+    --padding-pt-button-x: 1.5rem;
+    --radius-pt-button: 0.5rem;
+    --color-pt-button-text: #111827;
+    --weight-pt-button: 600;
+    --transform-pt-button-hover-y: -2px;
+    --shadow-pt-button-hover: 0 8px 20px rgba(139, 92, 246, 0.3);
+    --transform-pt-button-icon-x: 3px;
+    --spacing-pt-button-icon-left: 0.5rem;
+    --transform-pt-img-hover-scale: 1.02;
+
+    /* Booking Box */
+    --radius-pt-booking-box: 1.5rem;
+    --overflow-pt-hidden: hidden;
+    --padding-pt-booking-y: 3rem;
+    --padding-pt-booking-x: 2rem;
+    --pos-pt-inset-0: 0;
+    --size-pt-pattern: 30px;
+    --animation-pt-pattern-duration: 15s;
+    --animation-pt-pattern-timing: linear;
+    --animation-pt-pattern-iteration: infinite;
+
+    /* Booking Text Elements */
+    --size-pt-booking-title: 2rem;
+    --weight-pt-booking-title: 800;
+    --spacing-pt-booking-title-bottom: 1rem;
+    --color-pt-white: white;
+    --shadow-pt-text: 0 2px 10px rgba(0, 0, 0, 0.2);
+    --size-pt-booking-text: 1.125rem;
+    --line-height-pt-booking-text: 1.6;
+    --spacing-pt-booking-text-bottom: 2rem;
+    --color-pt-white-90: rgba(255, 255, 255, 0.9);
+
+    /* Booking Button */
+    --padding-pt-booking-button-y: 1rem;
+    --padding-pt-booking-button-x: 2rem;
+    --radius-pt-booking-button: 9999px;
+    --color-pt-booking-button-bg: white;
+    --shadow-pt-booking-button: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    --transform-pt-booking-button-hover-y: -3px;
+    --shadow-pt-booking-button-hover: 0 15px 30px -5px rgba(0, 0, 0, 0.3);
+    --spacing-pt-booking-button-icon-left: 0.75rem;
+
+    /* Flip Card */
+    --spacing-pt-flip-card-top: 2rem;
+    --perspective-pt-flip-card: 1500px;
+    --height-pt-flip-card: 280px;
+    --transform-style-pt-3d: preserve-3d;
+    --transition-pt-flip: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --cursor-pt-pointer: pointer;
+    --transform-pt-flip-y-180: rotateY(180deg);
+    --backface-pt-hidden: hidden;
+    --shadow-pt-flip-card: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+    --transform-pt-flip-y-0: rotateY(0deg);
+
+    /* Flip Card Overlay */
+    --pos-pt-inset-0: 0;
+    --gradient-pt-overlay: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 70%);
+    --display-pt-flex-column: column;
+    --justify-pt-flex-end: flex-end;
+    --padding-pt-overlay: 1.5rem;
+    --size-pt-flip-title: 1.25rem;
+    --weight-pt-flip-title: 700;
+    --spacing-pt-flip-title-bottom: 0.5rem;
+    --color-pt-white-80: rgba(255, 255, 255, 0.8);
+    --size-pt-flip-hint: 0.9rem;
+    --spacing-pt-flip-hint-icon-left: 0.5rem;
+
+    /* Flip Card Back */
+    --color-pt-card-back-bg: rgba(31, 41, 55, 0.9);
+    --flex-pt-grow: 1;
+
+    /* Video Controls */
+    --justify-pt-space-between: space-between;
+    --padding-pt-controls: 1rem;
+    --color-pt-controls-bg: rgba(17, 24, 39, 0.8);
+    --border-pt-none: none;
+    --size-pt-control-button: 40px;
+    --radius-pt-round: 50%;
+    --duration-pt-control-transition: 0.2s;
+    --color-pt-control-hover-bg: rgba(255, 255, 255, 0.1);
+
     /* Hero Positions and Layout */
     --pos-hero-element-relative: relative;
     --pos-hero-element-absolute: absolute;
@@ -166,181 +347,29 @@
     --size-hero-btn-padding-y-lg: 1rem;
     --size-hero-btn-icon-margin: 8px;
 
-    /* Training Component */
-    --pos-tr-relative: relative;
-    --pos-tr-absolute: absolute;
-    --z-tr-base: 1;
-    --z-tr-behind: -1;
-    --content-tr-empty: '';
-    --pos-tr-top-0: 0;
-    --pos-tr-left-0: 0;
-    --pos-tr-right-0: 0;
-    --pos-tr-bottom-0: 0;
-    --size-tr-grid-pattern: 20px;
-    --pos-tr-bg-center: center center;
-    --pointer-tr-none: none;
-    --color-tr-grid-line: rgba(255, 255, 255, 0.03);
-    --angle-tr-grid-vertical: 90deg;
-    --bg-tr-grid-pattern: linear-gradient(var(--color-tr-grid-line) 1px, transparent 1px), linear-gradient(var(--angle-tr-grid-vertical), var(--color-tr-grid-line) 1px, transparent 1px);
+    /* PersonalTraining - Additional Tokens */
 
-    /* Program Card */
-    --color-tr-card-bg: rgba(31, 41, 55, 0.5);
-    --radius-tr-card: 1rem;
-    --padding-tr-card: 2rem;
-    --duration-tr-transition: 0.3s;
-    --ease-tr-transition: ease;
-    --border-tr-width: 1px;
-    --size-tr-backdrop-blur: 8px;
-    --transform-tr-card-hover-y: -5px;
-    --shadow-tr-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-    --color-tr-card-border-hover: rgba(139, 92, 246, 0.3);
-    --color-tr-card-border-active: rgba(139, 92, 246, 0.5);
-    --shadow-tr-card-active: 0 10px 25px -5px rgba(139, 92, 246, 0.1);
+    /* Icon Sizes */
+    --size-pt-icon-xs: 14px;
+    --size-pt-icon-sm: 16px;
+    --size-pt-icon-md: 18px;
+    --size-pt-icon-lg: 48px;
+    --size-pt-icon-xl: 64px;
 
-    /* Program Icon */
-    --display-tr-flex: flex;
-    --align-tr-center: center;
-    --justify-tr-center: center;
-    --size-tr-icon-width: 64px;
-    --size-tr-icon-height: 64px;
-    --radius-tr-icon: 0.75rem;
-    --spacing-tr-icon-bottom: 1.5rem;
-    --transform-tr-icon-hover: scale(1.05);
-    --filter-tr-icon-shadow: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
+    /* Text Elements */
+    --margin-pt-section-bottom: 4rem;
+    --margin-pt-tag-bottom: 0.5rem;
+    --size-pt-tag-font: 0.75rem;
+    --weight-pt-tag-font: 700;
+    --letter-spacing-pt-tag: 0.1em;
+    --color-pt-tag: #b794f4;
+    /* text-violet-300 */
+    --color-pt-description: #9ca3af;
+    /* text-gray-400 */
+    --max-width-pt-description: 36rem;
+    /* max-w-2xl */
 
-    /* Program Text */
-    --spacing-tr-title-bottom: 0.5rem;
-    --size-tr-description: 0.95rem;
-    --line-height-tr-description: 1.6;
-    --duration-tr-color-transition: 0.3s;
-
-    /* Expanded Content */
-    --color-tr-expanded-bg: rgba(31, 41, 55, 0.4);
-    --radius-tr-expanded: 1rem;
-    --padding-tr-expanded: 1.5rem;
-    --spacing-tr-expanded-top: 1rem;
-    --overflow-tr-hidden: hidden;
-    --spacing-tr-benefits-bottom: 1.5rem;
-    --spacing-tr-benefit-item-bottom: 0.5rem;
-    --spacing-tr-benefit-icon-right: 0.5rem;
-    --spacing-tr-benefit-icon-top: 0.125rem;
-    --flex-tr-shrink-0: 0;
-
-    /* CTA Button */
-    --display-tr-inline-flex: inline-flex;
-    --padding-tr-cta-y: 0.5rem;
-    --padding-tr-cta-x: 1.5rem;
-    --radius-tr-cta: 9999px;
-    --weight-tr-cta: 500;
-    --size-tr-cta-font: 0.875rem;
-    --color-tr-cta-text: #111827;
-    --shadow-tr-cta: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --transform-tr-cta-hover-y: -2px;
-    --shadow-tr-cta-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    --spacing-tr-cta-icon-left: 0.5rem;
-
-    /* Connector Lines */
-    --size-tr-connector-height: 2rem;
-    --size-tr-connector-width: 1px;
-    --color-tr-connector-gradient: linear-gradient(to bottom, rgba(139, 92, 246, 0.5), transparent);
-    --spacing-tr-connector-left: 2rem;
-    --spacing-tr-connector-top: 0.25rem;
-    --spacing-tr-connector-bottom: 0.25rem;
-
-    /* Main CTA Button */
-    --padding-tr-main-cta-y: 1rem;
-    --padding-tr-main-cta-x: 2rem;
-    --weight-tr-main-cta: 600;
-    --size-tr-main-cta-font: 1rem;
-    --shadow-tr-main-cta: 0 10px 25px -5px rgba(139, 92, 246, 0.3);
-    --transform-tr-main-cta-hover-y: -3px;
-    --shadow-tr-main-cta-hover: 0 20px 25px -5px rgba(139, 92, 246, 0.4);
-    --spacing-tr-main-cta-top: 4rem;
-
-    /* TrainingFeatures Component */
-    --pos-tf-relative: relative;
-    --pos-tf-absolute: absolute;
-    --z-tf-base: 1;
-    --z-tf-behind: -1;
-    --content-tf-empty: '';
-    --pos-tf-top-0: 0;
-    --pos-tf-left-0: 0;
-    --pos-tf-right-0: 0;
-    --pos-tf-bottom-0: 0;
-    --size-tf-grid-pattern: 20px;
-    --pos-tf-bg-center: center center;
-    --pointer-tf-none: none;
-    --color-tf-grid-line: rgba(255, 255, 255, 0.03);
-    --angle-tf-grid-vertical: 90deg;
-    --bg-tf-grid-pattern: linear-gradient(var(--color-tf-grid-line) 1px, transparent 1px), linear-gradient(var(--angle-tf-grid-vertical), var(--color-tf-grid-line) 1px, transparent 1px);
-    --width-tf-full: 100%;
-    --height-tf-full: 100%;
-    --transform-tf-none: none;
-    --duration-tf-reduced-motion: 0.1s;
-
-    /* Feature Card */
-    --color-tf-card-bg: rgba(31, 41, 55, 0.7);
-    --size-tf-backdrop-blur: 8px;
-    --duration-tf-transition: 0.3s;
-    --ease-tf-transition: ease;
-    --transform-tf-card-hover-y: -5px;
-    --shadow-tf-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-
-    /* Feature Icon */
-    --display-tf-flex: flex;
-    --align-tf-center: center;
-    --justify-tf-center: center;
-    --size-tf-icon-width: 48px;
-    --size-tf-icon-height: 48px;
-    --radius-tf-icon: 12px;
-    --flex-tf-shrink-0: 0;
-    --transform-tf-icon-hover: scale(1.05);
-    --filter-tf-icon-shadow: drop-shadow(0 0 8px rgba(0, 0, 0, 0.1));
-
-    /* Feature Text */
-    --weight-tf-title: 600;
-    --size-tf-description: 0.95rem;
-    --line-height-tf-description: 1.6;
-
-    /* Flip Card */
-    --perspective-tf-flip-card: 1500px;
-    --transform-style-tf-3d: preserve-3d;
-    --duration-tf-flip-transition: 0.8s;
-    --ease-tf-flip-transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --transform-tf-flip-y-180: rotateY(180deg);
-    --transform-tf-flip-y-0: rotateY(0deg);
-    --backface-tf-hidden: hidden;
-    --radius-tf-flip-card: 0.75rem;
-    --overflow-tf-hidden: hidden;
-    --flex-tf-direction-column: column;
-    --justify-tf-flex-start: flex-start;
-    --flex-tf-grow: 1;
-
-    /* Flip Card Image */
-    --size-tf-img-height: 140px;
-    --radius-tf-img: 0.5rem;
-    --object-fit-tf-cover: cover;
-    --opacity-tf-img: 0.8;
-    --opacity-tf-img-hover: 1;
-
-    /* Feature Details */
-    --spacing-tf-details-bottom: 1rem;
-    --spacing-tf-detail-item-bottom: 0.5rem;
-    --spacing-tf-detail-bullet-right: 0.5rem;
-    --size-tf-back-title: 1.125rem;
-
-    /* Flip Button */
-    --display-tf-inline-flex: inline-flex;
-    --duration-tf-button-transition: 0.2s;
-    --transform-tf-button-hover-x: 2px;
-    --spacing-tf-button-icon-right: 0.25rem;
-
-    /* CTA Button */
-    --padding-tf-cta-y: 0.75rem;
-    --padding-tf-cta-x: 1.5rem;
-    --radius-tf-cta: 9999px;
-    --weight-tf-cta: 600;
-    --transform-tf-cta-hover-y: -2px;
-    --shadow-tf-cta-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-    --spacing-tf-cta-icon-left: 0.5rem;
+    /* Gradients */
+    --gradient-pt-card-bg: linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(67, 56, 202) 100%);
+    --opacity-pt-icon: 0.7;
 }

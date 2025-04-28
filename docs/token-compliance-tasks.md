@@ -118,3 +118,135 @@ We'll have a kickoff meeting on [DATE] to:
 - Demo the Hero component implementation
 - Answer questions
 - Assign tasks 
+
+## PersonalTraining Component Tokenization
+
+### Completed: July 2023
+
+The PersonalTraining component has been fully tokenized to achieve 100% design token compliance.
+
+### Added Tokens
+
+The following new tokens were added to support the PersonalTraining component:
+
+#### Icon Sizes
+
+```scss
+/* Icon Sizes */
+--size-pt-icon-xs: 14px;
+--size-pt-icon-sm: 16px;
+--size-pt-icon-md: 18px;
+--size-pt-icon-lg: 48px;
+--size-pt-icon-xl: 64px;
+```
+
+#### Text Elements
+
+```scss
+/* Text Elements */
+--margin-pt-section-bottom: 4rem;
+--margin-pt-tag-bottom: 0.5rem;
+--size-pt-tag-font: 0.75rem;
+--weight-pt-tag-font: 700;
+--letter-spacing-pt-tag: 0.1em;
+--color-pt-tag: #b794f4; /* text-violet-300 */
+--color-pt-description: #9ca3af; /* text-gray-400 */
+--max-width-pt-description: 36rem; /* max-w-2xl */
+```
+
+#### Visual Styles
+
+```scss
+/* Gradients */
+--gradient-pt-card-bg: linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(67, 56, 202) 100%);
+--opacity-pt-icon: 0.7;
+```
+
+### Added CSS Classes
+
+New CSS classes were added to PersonalTraining.scss to replace utility classes:
+
+#### Section Structure
+
+```scss
+.section-header {
+    margin-bottom: var(--margin-pt-section-bottom);
+    text-align: var(--text-align-pt-title-center);
+}
+
+.section-tag {
+    font-size: var(--size-pt-tag-font);
+    font-weight: var(--weight-pt-tag-font);
+    letter-spacing: var(--letter-spacing-pt-tag);
+    text-transform: var(--transform-pt-text-uppercase);
+    color: var(--color-pt-tag);
+    margin-bottom: var(--margin-pt-tag-bottom);
+    display: var(--display-pt-block);
+}
+
+.section-description {
+    color: var(--color-pt-description);
+    max-width: var(--max-width-pt-description);
+    margin-left: var(--margin-pt-auto);
+    margin-right: var(--margin-pt-auto);
+}
+```
+
+#### UI Elements
+
+```scss
+.trainer-placeholder {
+    width: var(--width-pt-img-full);
+    height: var(--height-pt-trainer-img);
+    background: var(--gradient-pt-card-bg);
+    display: var(--display-pt-flex);
+    align-items: var(--align-pt-center);
+    justify-content: var(--justify-pt-center);
+
+    .icon {
+        color: var(--color-pt-white);
+        opacity: var(--opacity-pt-icon);
+    }
+}
+```
+
+#### Icon Size Classes
+
+```scss
+.icon-xs {
+    width: var(--size-pt-icon-xs);
+    height: var(--size-pt-icon-xs);
+}
+
+.icon-sm {
+    width: var(--size-pt-icon-sm);
+    height: var(--size-pt-icon-sm);
+}
+
+.icon-md {
+    width: var(--size-pt-icon-md);
+    height: var(--size-pt-icon-md);
+}
+
+.icon-lg {
+    width: var(--size-pt-icon-lg);
+    height: var(--size-pt-icon-lg);
+}
+
+.icon-xl {
+    width: var(--size-pt-icon-xl);
+    height: var(--size-pt-icon-xl);
+}
+```
+
+### Implementation Changes
+
+1. Replaced all inline Tailwind utility classes with token-based classes
+2. Wrapped all Lucide icons with spans that have token-based size classes
+3. Standardized icon sizing across both component variants
+4. Replaced hardcoded colors and spacing with design tokens
+5. Improved accessibility with standardized sizing
+
+### Variants
+
+Both the default and gym variants of the PersonalTraining component have been updated to use the same token-based classes, ensuring visual consistency while maintaining their distinct personalities. 

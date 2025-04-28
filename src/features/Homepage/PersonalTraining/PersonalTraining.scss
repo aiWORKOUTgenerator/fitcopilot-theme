@@ -1,408 +1,479 @@
+@import "../../../styles/theme.scss";
+@import "../../../styles/design-system/index.scss";
+
 .personal-training-section {
-    position: relative;
-    z-index: 1;
+    position: var(--pos-pt-relative);
+    overflow: var(--overflow-pt-hidden);
+    padding: var(--spacing-8) 0;
+    background-color: var(--color-pt-section-bg);
 
     // Grid pattern background
     &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image:
-            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-        background-size: 20px 20px;
-        background-position: center center;
-        z-index: -1;
-        pointer-events: none;
+        content: var(--content-pt-empty);
+        position: var(--pos-pt-absolute);
+        top: var(--pos-pt-top-0);
+        left: var(--pos-pt-left-0);
+        right: var(--pos-pt-right-0);
+        bottom: var(--pos-pt-bottom-0);
+        background: var(--bg-pt-grid-pattern);
+        pointer-events: var(--pointer-pt-none);
+        z-index: var(--z-pt-minus-1);
     }
 
-    // Trainer profiles
-    .trainer-card {
-        position: relative;
-        background-color: rgba(31, 41, 55, 0.5); // bg-gray-800 with opacity
-        border-radius: 1rem;
-        padding: 2rem;
-        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        border: 1px solid var(--color-border);
-        backdrop-filter: blur(8px);
+    .section-title {
+        margin-bottom: var(--spacing-8);
+        text-align: var(--text-align-pt-title-center);
+        font-size: var(--size-pt-section-title);
+        font-weight: var(--weight-black);
 
-        &:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-            border-color: rgba(139, 92, 246, 0.3); // Using violet color
-        }
-
-        .trainer-image {
-            width: 100%;
-            height: 280px;
-            border-radius: 0.75rem;
-            object-fit: cover;
-            margin-bottom: 1.5rem;
-            filter: contrast(1.05) brightness(0.95);
-            transition: all 0.3s ease;
-
-            &.img-placeholder {
-                background: linear-gradient(135deg,
-                        var(--color-primary-dark) 0%,
-                        var(--color-primary) 50%,
-                        var(--color-secondary) 100%);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                svg {
-                    opacity: 0.7;
-                    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.2));
-                }
-            }
-        }
-
-        .trainer-specialty {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background-color: rgba(139, 92, 246, 0.15);
+        .highlight {
             color: var(--color-primary);
-            margin-bottom: 0.75rem;
-
-            svg {
-                margin-right: 0.375rem;
-            }
         }
+    }
 
-        .trainer-name {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--color-text);
-            transition: color 0.3s ease;
-        }
+    .trainers-container {
+        display: var(--display-pt-grid);
+        grid-template-columns: var(--size-pt-grid-cols);
+        gap: var(--spacing-6);
+        max-width: var(--max-width-pt-container);
+        margin: var(--margin-pt-center);
+        padding: var(--padding-pt-container);
+    }
 
-        .trainer-bio {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--color-text-muted);
-            margin-bottom: 1.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .trainer-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-
-            .stat-item {
-                text-align: center;
-
-                .stat-value {
-                    font-size: 1.5rem;
-                    font-weight: 700;
-                    display: block;
-                    color: var(--color-primary);
-                    margin-bottom: 0.25rem;
-                }
-
-                .stat-label {
-                    font-size: 0.875rem;
-                    color: var(--color-text-muted);
-                    text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                }
-            }
-        }
-
-        .action-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 0.75rem 1.5rem;
-            border-radius: 0.5rem;
-            background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
-            color: #111827;
-            font-weight: 600;
-            transition: all 0.3s ease;
-
-            &:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
-
-                svg {
-                    transform: translateX(3px);
-                }
-            }
-
-            svg {
-                margin-left: 0.5rem;
-                transition: transform 0.3s ease;
-            }
-        }
+    // Trainer card
+    .trainer-card {
+        position: var(--pos-pt-relative);
+        background-color: var(--color-pt-card-bg);
+        border-radius: var(--radius-pt-card);
+        padding: var(--spacing-pt-card-padding);
+        transition: transform var(--duration-pt-transition) var(--ease-pt-transition),
+            box-shadow var(--duration-pt-transition) var(--ease-pt-transition),
+            border-color var(--duration-pt-transition) var(--ease-pt-transition);
+        border: var(--border-pt-width) solid var(--color-border);
+        backdrop-filter: blur(var(--size-pt-backdrop-blur));
 
         &:hover {
-            .trainer-image {
-                transform: scale(1.02);
+            transform: translateY(var(--transform-pt-card-hover-y));
+            box-shadow: var(--shadow-pt-card-hover);
+            border-color: var(--color-pt-card-border-hover);
+
+            .trainer-image img {
+                transform: scale(var(--transform-pt-img-hover-scale));
             }
 
-            .trainer-name {
-                color: var(--color-primary);
-            }
-
-            .trainer-bio {
-                color: var(--color-text);
+            .book-button .icon {
+                transform: translateX(var(--transform-pt-button-icon-x));
             }
         }
     }
 
-    // Decorated box for booking consultation
-    .booking-box {
-        position: relative;
-        border-radius: 1.5rem;
-        overflow: hidden;
-        padding: 3rem 2rem;
+    // Trainer image
+    .trainer-image {
+        width: var(--width-pt-img-full);
+        height: var(--height-pt-trainer-img);
+        border-radius: var(--radius-pt-img);
+        overflow: var(--overflow-pt-hidden);
+        margin-bottom: var(--spacing-pt-img-bottom);
 
-        // Background gradients
-        &::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg,
-                    rgba(var(--color-primary-dark-rgb), 0.9) 0%,
-                    rgba(var(--color-primary-rgb), 0.8) 50%,
-                    rgba(var(--color-secondary-rgb), 0.7) 100%);
-            z-index: -1;
+        img {
+            width: var(--width-pt-img-full);
+            height: var(--height-pt-trainer-img);
+            object-fit: var(--object-fit-pt-cover);
+            transition: transform var(--duration-pt-transition) var(--ease-pt-transition);
+            filter: var(--filter-pt-img);
         }
 
-        // Animated pattern
-        &::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-size: 30px 30px;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-            z-index: -1;
-            animation: patternMove 15s linear infinite;
-        }
-
-        .booking-title {
-            font-size: 2rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: white;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .booking-text {
-            font-size: 1.125rem;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .booking-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem 2rem;
-            border-radius: 9999px;
-            background-color: white;
-            color: var(--color-primary-dark);
-            font-weight: 600;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-
-            &:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.3);
-
-                svg {
-                    transform: translateX(3px);
-                }
-            }
+        // Image placeholder
+        .image-placeholder {
+            width: var(--width-pt-img-full);
+            height: var(--height-pt-trainer-img);
+            background-color: var(--color-gray-800);
+            display: var(--display-pt-flex);
+            align-items: var(--align-pt-center);
+            justify-content: var(--justify-pt-center);
 
             svg {
-                margin-left: 0.75rem;
-                transition: transform 0.3s ease;
+                opacity: var(--opacity-pt-placeholder-icon);
+                filter: var(--filter-pt-icon-shadow);
             }
         }
     }
 
-    // Animations
-    @keyframes patternMove {
-        0% {
-            background-position: 0 0;
-        }
+    // Trainer specialty badge
+    .specialty {
+        display: var(--display-pt-inline-flex);
+        align-items: var(--align-pt-center);
+        padding: var(--padding-pt-badge-y) var(--padding-pt-badge-x);
+        border-radius: var(--radius-pt-badge);
+        font-size: var(--size-pt-badge-font);
+        font-weight: var(--weight-pt-badge);
+        text-transform: var(--transform-pt-text-uppercase);
+        letter-spacing: var(--letter-spacing-pt-badge);
+        background-color: var(--color-pt-badge-bg);
+        color: var(--color-primary);
+        margin-bottom: var(--spacing-pt-badge-bottom);
 
-        100% {
-            background-position: 30px 30px;
+        .icon {
+            margin-right: var(--spacing-pt-badge-icon-right);
         }
     }
 
-    // Flip Card
+    // Trainer name
+    .trainer-name {
+        font-size: var(--size-pt-name);
+        font-weight: var(--weight-pt-name);
+        margin-bottom: var(--spacing-pt-name-bottom);
+        color: var(--color-text);
+    }
+
+    // Trainer bio
+    .trainer-bio {
+        font-size: var(--size-pt-bio);
+        line-height: var(--line-height-pt-bio);
+        margin-bottom: var(--spacing-pt-bio-bottom);
+        color: var(--color-text-secondary);
+    }
+
+    // Trainer stats
+    .trainer-stats {
+        display: var(--display-pt-grid);
+        grid-template-columns: var(--grid-pt-cols-2);
+        gap: var(--spacing-pt-grid-gap);
+        margin-bottom: var(--spacing-pt-stats-bottom);
+
+        .stat {
+            text-align: var(--text-align-pt-center);
+
+            .value {
+                font-size: var(--size-pt-stat-value);
+                font-weight: var(--weight-pt-stat-value);
+                color: var(--color-primary);
+                display: var(--display-pt-block);
+                margin-bottom: var(--spacing-pt-stat-value-bottom);
+            }
+
+            .label {
+                font-size: var(--size-pt-stat-label);
+                color: var(--color-text-secondary);
+            }
+        }
+    }
+
+    // Book button
+    .book-button {
+        width: var(--width-pt-button-full);
+        padding: var(--padding-pt-button-y) var(--padding-pt-button-x);
+        display: var(--display-pt-flex);
+        align-items: var(--align-pt-center);
+        justify-content: var(--justify-pt-center);
+        background-color: var(--color-primary);
+        color: var(--color-pt-button-text);
+        border-radius: var(--radius-pt-button);
+        font-weight: var(--weight-pt-button);
+        transition: transform var(--duration-pt-transition) var(--ease-pt-transition),
+            box-shadow var(--duration-pt-transition) var(--ease-pt-transition);
+
+        &:hover {
+            transform: translateY(var(--transform-pt-button-hover-y));
+            box-shadow: var(--shadow-pt-button-hover);
+        }
+
+        .icon {
+            margin-left: var(--spacing-pt-button-icon-left);
+            transition: transform var(--duration-pt-transition) var(--ease-pt-transition);
+        }
+    }
+
+    // Booking consultation box
+    .booking-box {
+        position: var(--pos-pt-relative);
+        border-radius: var(--radius-pt-booking-box);
+        overflow: var(--overflow-pt-hidden);
+        padding: var(--padding-pt-booking-y) var(--padding-pt-booking-x);
+        margin-top: var(--spacing-16);
+        background: var(--gradient-primary);
+        max-width: var(--max-width-pt-container);
+        margin-left: var(--margin-pt-auto);
+        margin-right: var(--margin-pt-auto);
+
+        &::before {
+            content: var(--content-pt-empty);
+            position: var(--pos-pt-absolute);
+            top: var(--pos-pt-top-0);
+            left: var(--pos-pt-left-0);
+            right: var(--pos-pt-right-0);
+            bottom: var(--pos-pt-bottom-0);
+            background: var(--bg-pt-booking-pattern);
+            background-size: var(--size-pt-pattern) var(--size-pt-pattern);
+            animation: patternMove var(--animation-pt-pattern-duration) var(--animation-pt-pattern-timing) var(--animation-pt-pattern-iteration);
+            pointer-events: var(--pointer-pt-none);
+        }
+    }
+
+    .booking-title {
+        font-size: var(--size-pt-booking-title);
+        font-weight: var(--weight-pt-booking-title);
+        margin-bottom: var(--spacing-pt-booking-title-bottom);
+        text-align: var(--text-align-pt-center);
+        color: var(--color-pt-white);
+        text-shadow: var(--shadow-pt-text);
+    }
+
+    .booking-text {
+        font-size: var(--size-pt-booking-text);
+        line-height: var(--line-height-pt-booking-text);
+        margin-bottom: var(--spacing-pt-booking-text-bottom);
+        text-align: var(--text-align-pt-center);
+        color: var(--color-pt-white-90);
+        max-width: var(--size-pt-booking-max-width);
+        margin-left: var(--margin-pt-auto);
+        margin-right: var(--margin-pt-auto);
+    }
+
+    .booking-button {
+        display: var(--display-pt-inline-flex);
+        align-items: var(--align-pt-center);
+        padding: var(--padding-pt-booking-button-y) var(--padding-pt-booking-button-x);
+        background-color: var(--color-pt-booking-button-bg);
+        color: var(--color-secondary);
+        border-radius: var(--radius-pt-booking-button);
+        font-weight: var(--weight-pt-button);
+        margin: var(--margin-pt-center);
+        display: var(--display-pt-block);
+        box-shadow: var(--shadow-pt-booking-button);
+        transition: transform var(--duration-pt-transition) var(--ease-pt-transition),
+            box-shadow var(--duration-pt-transition) var(--ease-pt-transition);
+
+        &:hover {
+            transform: translateY(var(--transform-pt-booking-button-hover-y));
+            box-shadow: var(--shadow-pt-booking-button-hover);
+        }
+
+        .icon {
+            margin-left: var(--spacing-pt-booking-button-icon-left);
+        }
+    }
+
+    // Flip card
     .flip-card-container {
-        margin-top: 2rem;
-        perspective: 1500px;
-        width: 100%;
-        height: 280px;
+        margin-top: var(--spacing-pt-flip-card-top);
     }
 
     .flip-card {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        transform-style: preserve-3d;
-        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border-radius: 1rem;
-        cursor: pointer;
+        perspective: var(--perspective-pt-flip-card);
+        height: var(--height-pt-flip-card);
+        position: var(--pos-pt-relative);
+        transform-style: var(--transform-style-pt-3d);
+        transition: var(--transition-pt-flip);
+        cursor: var(--cursor-pt-pointer);
 
         &.flipped {
-            transform: rotateY(180deg);
+            .flip-card-inner {
+                transform: var(--transform-pt-flip-y-180);
+            }
+        }
+
+        .flip-card-inner {
+            position: var(--pos-pt-relative);
+            width: var(--width-pt-img-full);
+            height: var(--height-pt-trainer-img);
+            transform-style: var(--transform-style-pt-3d);
+            transition: var(--transition-pt-flip);
         }
 
         .flip-card-front,
         .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 1rem;
-            overflow: hidden;
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
+            position: var(--pos-pt-absolute);
+            width: var(--width-pt-img-full);
+            height: var(--height-pt-trainer-img);
+            backface-visibility: var(--backface-pt-hidden);
+            border-radius: var(--radius-pt-img);
+            overflow: var(--overflow-pt-hidden);
+            box-shadow: var(--shadow-pt-flip-card);
         }
 
         .flip-card-front {
-            background-color: rgba(31, 41, 55, 0.5);
-            transform: rotateY(0deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transform: var(--transform-pt-flip-y-0);
+            background-color: var(--color-gray-800);
 
             img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
+                width: var(--width-pt-img-full);
+                height: var(--height-pt-trainer-img);
+                object-fit: var(--object-fit-pt-cover);
             }
 
             .overlay {
-                position: absolute;
-                inset: 0;
-                background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 70%);
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
-                padding: 1.5rem;
+                position: var(--pos-pt-absolute);
+                top: var(--pos-pt-top-0);
+                left: var(--pos-pt-left-0);
+                right: var(--pos-pt-right-0);
+                bottom: var(--pos-pt-bottom-0);
+                background: var(--gradient-pt-overlay);
+                display: var(--display-pt-flex);
+                flex-direction: var(--display-pt-flex-column);
+                justify-content: var(--justify-pt-flex-end);
+                padding: var(--padding-pt-overlay);
 
-                .flip-card-title {
-                    color: white;
-                    font-size: 1.25rem;
-                    font-weight: 700;
-                    margin-bottom: 0.5rem;
+                .flip-title {
+                    font-size: var(--size-pt-flip-title);
+                    font-weight: var(--weight-pt-flip-title);
+                    margin-bottom: var(--spacing-pt-flip-title-bottom);
+                    color: var(--color-pt-white);
                 }
 
-                .flip-card-hint {
-                    display: inline-flex;
-                    align-items: center;
-                    color: rgba(255, 255, 255, 0.8);
-                    font-size: 0.9rem;
+                .flip-hint {
+                    display: var(--display-pt-flex);
+                    align-items: var(--align-pt-center);
+                    color: var(--color-pt-white-80);
+                    font-size: var(--size-pt-flip-hint);
 
-                    svg {
-                        margin-left: 0.5rem;
+                    .icon {
+                        margin-right: var(--spacing-pt-flip-hint-icon-left);
                     }
                 }
             }
         }
 
         .flip-card-back {
-            background-color: rgba(31, 41, 55, 0.9);
-            transform: rotateY(180deg);
-            display: flex;
-            flex-direction: column;
+            transform: var(--transform-pt-flip-y-180);
+            background-color: var(--color-pt-card-back-bg);
+            display: var(--display-pt-flex);
+            flex-direction: var(--display-pt-flex-column);
 
-            .video-container {
-                flex-grow: 1;
-                width: 100%;
-                position: relative;
-
-                video,
-                iframe {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                }
+            .video-content {
+                position: var(--pos-pt-relative);
+                flex-grow: var(--flex-pt-grow);
+                display: var(--display-pt-flex);
+                align-items: var(--align-pt-center);
+                justify-content: var(--justify-pt-center);
             }
 
             .video-controls {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 1rem;
-                background: rgba(17, 24, 39, 0.8);
+                display: var(--display-pt-flex);
+                align-items: var(--align-pt-center);
+                justify-content: var(--justify-pt-space-between);
+                padding: var(--padding-pt-controls);
+                background-color: var(--color-pt-controls-bg);
+            }
 
-                .control-button {
-                    background: none;
-                    border: none;
-                    color: white;
-                    cursor: pointer;
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: all 0.2s ease;
+            .control-button {
+                background: var(--color-pt-transparent);
+                border: var(--border-pt-none);
+                width: var(--size-pt-control-button);
+                height: var(--size-pt-control-button);
+                border-radius: var(--radius-pt-round);
+                display: var(--display-pt-flex);
+                align-items: var(--align-pt-center);
+                justify-content: var(--justify-pt-center);
+                color: var(--color-pt-white);
+                transition: background-color var(--duration-pt-control-transition) var(--ease-pt-transition);
 
-                    &:hover {
-                        background: rgba(255, 255, 255, 0.1);
-                    }
-                }
-
-                .close-button {
-                    background: var(--color-primary);
-
-                    &:hover {
-                        background: var(--color-primary-dark);
-                    }
+                &:hover {
+                    background-color: var(--color-pt-control-hover-bg);
                 }
             }
         }
     }
 }
 
-// Optimize animations for users who prefer reduced motion
-@media (prefers-reduced-motion: reduce) {
+// New token-based classes
+.section-header {
+    margin-bottom: var(--margin-pt-section-bottom);
+    text-align: var(--text-align-pt-title-center);
+}
+
+.section-tag {
+    font-size: var(--size-pt-tag-font);
+    font-weight: var(--weight-pt-tag-font);
+    letter-spacing: var(--letter-spacing-pt-tag);
+    text-transform: var(--transform-pt-text-uppercase);
+    color: var(--color-pt-tag);
+    margin-bottom: var(--margin-pt-tag-bottom);
+    display: var(--display-pt-block);
+}
+
+.section-description {
+    color: var(--color-pt-description);
+    max-width: var(--max-width-pt-description);
+    margin-left: var(--margin-pt-auto);
+    margin-right: var(--margin-pt-auto);
+}
+
+// Trainer card elements
+.trainer-placeholder {
+    width: var(--width-pt-img-full);
+    height: var(--height-pt-trainer-img);
+    background: var(--gradient-pt-card-bg);
+    display: var(--display-pt-flex);
+    align-items: var(--align-pt-center);
+    justify-content: var(--justify-pt-center);
+
+    .icon {
+        color: var(--color-pt-white);
+        opacity: var(--opacity-pt-icon);
+    }
+}
+
+// Icon classes
+.icon-xs {
+    width: var(--size-pt-icon-xs);
+    height: var(--size-pt-icon-xs);
+}
+
+.icon-sm {
+    width: var(--size-pt-icon-sm);
+    height: var(--size-pt-icon-sm);
+}
+
+.icon-md {
+    width: var(--size-pt-icon-md);
+    height: var(--size-pt-icon-md);
+}
+
+.icon-lg {
+    width: var(--size-pt-icon-lg);
+    height: var(--size-pt-icon-lg);
+}
+
+.icon-xl {
+    width: var(--size-pt-icon-xl);
+    height: var(--size-pt-icon-xl);
+}
+
+// Animation for pattern
+@keyframes patternMove {
+    0% {
+        background-position: var(--pos-pt-bg-position-start);
+    }
+
+    100% {
+        background-position: var(--size-pt-pattern) var(--size-pt-pattern);
+    }
+}
+
+// Accessibility: Reduced motion preference
+@media (prefers-reduced-motion) {
     .personal-training-section {
+        .booking-box::before {
+            animation: var(--animation-pt-none);
+        }
 
-        .training-card,
-        .benefits-card,
-        .coach-card,
-        .cta-button {
-            &:hover {
-                transform: var(--transform-tf-none);
+        .flip-card {
+            .flip-card-inner {
+                transition: transform var(--duration-pt-reduced-transition) var(--ease-pt-transition);
             }
-
-            transition: var(--duration-tf-reduced-motion);
         }
 
-        .booking-box::after {
-            animation: none;
-        }
+        .trainer-card {
+            transition: transform var(--duration-pt-reduced-transition) var(--ease-pt-transition),
+                box-shadow var(--duration-pt-reduced-transition) var(--ease-pt-transition),
+                border-color var(--duration-pt-reduced-transition) var(--ease-pt-transition);
 
-        .action-button:hover svg,
-        .booking-button:hover svg {
-            transform: none;
+            &:hover {
+                .trainer-image img {
+                    transform: var(--transform-pt-none);
+                }
+            }
         }
     }
 }
