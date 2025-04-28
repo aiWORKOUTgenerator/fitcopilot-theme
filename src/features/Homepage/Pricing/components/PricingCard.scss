@@ -1,57 +1,61 @@
-// Canonical design system import - MUST BE FIRST
-@import '../../../../styles/design-system/index';
+@import '../../../../styles/design-system/_colors';
+@import '../../../../styles/design-system/_spacing';
+@import '../../../../styles/design-system/_typography';
+@import '../../../../styles/design-system/_components';
+@import '../../../../styles/design-system/_transitions';
+@import '../../../../styles/design-system/_shadows';
 
 .pricing-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: var(--pr-transition-hover);
   overflow: visible;
   position: relative;
 
   &:hover {
-    transform: translateY(-5px);
+    transform: var(--pr-transform-hover);
   }
 
   /* Feature icon hover effect */
   .feature-icon {
-    transition: transform 0.2s ease;
+    transition: var(--pr-transition-feature-icon);
   }
 
   li:hover .feature-icon {
-    transform: scale(1.1);
+    transform: var(--pr-transform-feature-icon-hover);
   }
 
   /* Badge styling */
   .plan-badge {
-    display: inline-flex;
-    align-items: center;
-    font-weight: 600;
+    display: var(--pr-display-badge);
+    align-items: var(--pr-align-badge);
+    font-weight: var(--pr-font-weight-badge);
   }
 
   /* Pricing text styles */
   .plan-name {
-    font-size: 1.75rem;
-    font-weight: 700;
-    line-height: 1.2;
+    font-size: var(--pr-font-size-plan-name);
+    font-weight: var(--pr-font-weight-plan-name);
+    line-height: var(--pr-line-height-plan-name);
   }
 
   .price {
-    font-size: 2.5rem;
-    font-weight: 700;
-    line-height: 1;
+    font-size: var(--pr-font-size-price);
+    font-weight: var(--pr-font-weight-price);
+    line-height: var(--pr-line-height-price);
   }
 
   /* Beta badge styling */
   .beta-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
+    display: var(--pr-display-badge);
+    align-items: var(--pr-align-badge);
+    gap: var(--pr-gap-badge);
   }
 
   @media (min-width: 768px) {
     &.popular {
-      transform: scale(1.05);
+      transform: scale(var(--pr-scale-popular));
 
       &:hover {
-        transform: scale(1.05) translateY(-5px);
+        transform: var(--pr-transform-popular-hover);
       }
     }
   }
