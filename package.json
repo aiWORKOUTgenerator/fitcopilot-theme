@@ -21,6 +21,7 @@
     "@babel/preset-typescript": "^7.27.0",
     "@docusaurus/core": "^3.7.0",
     "@docusaurus/preset-classic": "^3.7.0",
+    "@lhci/cli": "^0.14.0",
     "@storybook/addon-a11y": "^8.6.12",
     "@storybook/addon-coverage": "^1.0.1",
     "@storybook/addon-designs": "^8.0.0",
