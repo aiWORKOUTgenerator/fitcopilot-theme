@@ -1,7 +1,10 @@
-// Import global design tokens
+// Sass @use statements must come first
 @use '../../../styles/theme.scss';
 @use '../../../styles/animations.scss';
 @use '../../../styles/reset.scss';
+
+// Canonical design system import - MUST COME AFTER @use statements
+@import '../../../styles/design-system/index';
 
 // Import external dependencies
 @import 'aos/dist/aos.css'; // Animation library

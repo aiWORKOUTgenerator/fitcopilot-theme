@@ -1,81 +1,77 @@
-@import 'src/styles/design-system/_colors';
-@import 'src/styles/design-system/_spacing';
-@import 'src/styles/design-system/_typography';
-@import 'src/styles/design-system/_components';
-@import 'src/styles/design-system/_transitions';
-@import 'src/styles/design-system/_shadows';
+// Canonical design system import - MUST BE FIRST
+@import '../../../styles/design-system/index';
 
 .training-section {
-    position: var(--pos-tr-relative);
-    z-index: var(--z-tr-base);
+    position: relative;
+    z-index: 1;
 
     // Grid pattern background
     &::before {
-        content: var(--content-tr-empty);
-        position: var(--pos-tr-absolute);
-        top: var(--pos-tr-top-0);
-        left: var(--pos-tr-left-0);
-        right: var(--pos-tr-right-0);
-        bottom: var(--pos-tr-bottom-0);
-        background-image: var(--bg-tr-grid-pattern);
-        background-size: var(--size-tr-grid-pattern) var(--size-tr-grid-pattern);
-        background-position: var(--pos-tr-bg-center);
-        z-index: var(--z-tr-behind);
-        pointer-events: var(--pointer-tr-none);
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 20px 20px;
+        background-position: center center;
+        z-index: -1;
+        pointer-events: none;
     }
 
     .program-card {
-        background-color: var(--color-tr-card-bg);
-        border-radius: var(--radius-tr-card);
-        padding: var(--padding-tr-card);
-        transition: transform var(--duration-tr-transition) var(--ease-tr-transition),
-            box-shadow var(--duration-tr-transition) var(--ease-tr-transition),
-            border-color var(--duration-tr-transition) var(--ease-tr-transition);
-        border: var(--border-tr-width) solid var(--color-border);
-        backdrop-filter: blur(var(--size-tr-backdrop-blur));
+        background-color: rgba(31, 41, 55, 0.5); // bg-gray-800 with opacity
+        border-radius: 1rem;
+        padding: 2rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        border: 1px solid var(--color-border);
+        backdrop-filter: blur(8px);
 
         &:hover {
-            transform: translateY(var(--transform-tr-card-hover-y));
-            box-shadow: var(--shadow-tr-card-hover);
-            border-color: var(--color-tr-card-border-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            border-color: rgba(139, 92, 246, 0.3);
         }
 
         &.active {
-            border-color: var(--color-tr-card-border-active);
-            box-shadow: var(--shadow-tr-card-active);
+            border-color: rgba(139, 92, 246, 0.5);
+            box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.1);
         }
 
         .program-icon {
-            display: var(--display-tr-flex);
-            align-items: var(--align-tr-center);
-            justify-content: var(--justify-tr-center);
-            width: var(--size-tr-icon-width);
-            height: var(--size-tr-icon-height);
-            border-radius: var(--radius-tr-icon);
-            margin-bottom: var(--spacing-tr-icon-bottom);
-            transition: transform var(--duration-tr-transition) var(--ease-tr-transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 64px;
+            height: 64px;
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
 
             svg {
-                filter: var(--filter-tr-icon-shadow);
+                filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
             }
         }
 
         h3 {
-            margin-bottom: var(--spacing-tr-title-bottom);
+            margin-bottom: 0.5rem;
             color: var(--color-text);
-            transition: color var(--duration-tr-color-transition) var(--ease-tr-transition);
+            transition: color 0.3s ease;
         }
 
         p {
-            font-size: var(--size-tr-description);
-            line-height: var(--line-height-tr-description);
+            font-size: 0.95rem;
+            line-height: 1.6;
             color: var(--color-text-muted);
-            transition: color var(--duration-tr-color-transition) var(--ease-tr-transition);
+            transition: color 0.3s ease;
         }
 
         &:hover {
             .program-icon {
-                transform: var(--transform-tr-icon-hover);
+                transform: scale(1.05);
             }
 
             h3 {
@@ -90,86 +86,86 @@
 
     // Expanded program content
     .expanded-content {
-        background-color: var(--color-tr-expanded-bg);
-        border-radius: var(--radius-tr-expanded);
-        border: var(--border-tr-width) solid var(--color-border);
-        padding: var(--padding-tr-expanded);
-        margin-top: var(--spacing-tr-expanded-top);
-        overflow: var(--overflow-tr-hidden);
-        transition: all var(--duration-tr-transition) var(--ease-tr-transition);
+        background-color: rgba(31, 41, 55, 0.4);
+        border-radius: 1rem;
+        border: 1px solid var(--color-border);
+        padding: 1.5rem;
+        margin-top: 1rem;
+        overflow: hidden;
+        transition: all 0.3s ease;
 
         .benefits-list {
-            margin-bottom: var(--spacing-tr-benefits-bottom);
+            margin-bottom: 1.5rem;
 
             li {
-                display: var(--display-tr-flex);
+                display: flex;
                 align-items: flex-start;
-                margin-bottom: var(--spacing-tr-benefit-item-bottom);
+                margin-bottom: 0.5rem;
 
                 svg {
-                    margin-right: var(--spacing-tr-benefit-icon-right);
-                    margin-top: var(--spacing-tr-benefit-icon-top);
-                    flex-shrink: var(--flex-tr-shrink-0);
+                    margin-right: 0.5rem;
+                    margin-top: 0.125rem;
+                    flex-shrink: 0;
                 }
             }
         }
 
         .cta-button {
-            display: var(--display-tr-inline-flex);
-            align-items: var(--align-tr-center);
-            justify-content: var(--justify-tr-center);
-            padding: var(--padding-tr-cta-y) var(--padding-tr-cta-x);
-            border-radius: var(--radius-tr-cta);
-            font-weight: var(--weight-tr-cta);
-            font-size: var(--size-tr-cta-font);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
             background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
-            color: var(--color-tr-cta-text);
-            box-shadow: var(--shadow-tr-cta);
-            transition: all var(--duration-tr-transition) var(--ease-tr-transition);
+            color: #111827;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
 
             &:hover {
-                transform: translateY(var(--transform-tr-cta-hover-y));
-                box-shadow: var(--shadow-tr-cta-hover);
+                transform: translateY(-2px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             }
 
             svg {
-                margin-left: var(--spacing-tr-cta-icon-left);
+                margin-left: 0.5rem;
             }
         }
     }
 
     // Connector lines between program cards
     .connector-line {
-        height: var(--size-tr-connector-height);
-        width: var(--size-tr-connector-width);
-        background: var(--color-tr-connector-gradient);
-        margin-left: var(--spacing-tr-connector-left);
-        margin-top: var(--spacing-tr-connector-top);
-        margin-bottom: var(--spacing-tr-connector-bottom);
+        height: 2rem;
+        width: 1px;
+        background: linear-gradient(to bottom, rgba(139, 92, 246, 0.5), transparent);
+        margin-left: 2rem;
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
     }
 
     // Main CTA button
     .main-cta-button {
-        display: var(--display-tr-inline-flex);
-        align-items: var(--align-tr-center);
-        justify-content: var(--justify-tr-center);
-        padding: var(--padding-tr-main-cta-y) var(--padding-tr-main-cta-x);
-        border-radius: var(--radius-tr-cta);
-        font-weight: var(--weight-tr-main-cta);
-        font-size: var(--size-tr-main-cta-font);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem 2rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 1rem;
         background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
-        color: var(--color-tr-cta-text);
-        box-shadow: var(--shadow-tr-main-cta);
-        transition: all var(--duration-tr-transition) var(--ease-tr-transition);
-        margin-top: var(--spacing-tr-main-cta-top);
+        color: #111827;
+        box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.3);
+        transition: all 0.3s ease;
+        margin-top: 4rem;
 
         &:hover {
-            transform: translateY(var(--transform-tr-main-cta-hover-y));
-            box-shadow: var(--shadow-tr-main-cta-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgba(139, 92, 246, 0.4);
         }
 
         svg {
-            margin-left: var(--spacing-tr-cta-icon-left);
+            margin-left: 0.5rem;
         }
     }
 }

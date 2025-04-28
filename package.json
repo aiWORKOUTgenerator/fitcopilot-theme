@@ -65,11 +65,16 @@
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
-    "webpack-manifest-plugin": "^5.0.0"
+    "webpack-manifest-plugin": "^5.0.0",
+    "husky": "^8.0.0"
   },
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
+    "verify:mount": "./scripts/verify-mount-point.sh",
+    "verify:scss": "./scripts/verify-scss-imports.sh",
+    "verify:all": "npm run verify:mount && npm run verify:scss",
+    "prebuild": "npm run verify:all || echo '⚠️ Verification warnings - check consistency!'",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
@@ -97,6 +102,7 @@
     "token-report:training": "node scripts/token-compliance.js src/features/Homepage/Training",
     "token-report:features": "node scripts/token-compliance.js src/features/Homepage/Features",
     "token-report:journey": "node scripts/token-compliance.js src/features/Homepage/Journey",
-    "token-report:pricing": "node scripts/token-compliance.js src/features/Homepage/Pricing"
+    "token-report:pricing": "node scripts/token-compliance.js src/features/Homepage/Pricing",
+    "prepare": "husky install"
   }
 }
