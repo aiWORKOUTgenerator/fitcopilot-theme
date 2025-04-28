@@ -89,6 +89,7 @@
     "metrics:dashboard": "npm run metrics && cd documentation-site && npm start",
     "storybook:audit": "node scripts/storybook-audit.js",
     "storybook:generate": "node scripts/generate-story.js",
-    "token-report": "node scripts/token-compliance.js"
+    "token-report": "node scripts/token-compliance.js",
+    "serve": "serve dist --single --listen 5000"
   }
 }
