@@ -8,6 +8,10 @@
 
 # Production
 /build
+/dist
+/dist-backup
+/.lighthouseci
+/docs/reports
 
 # Misc
 .DS_Store

@@ -23,6 +23,14 @@ add_action('wp_head', 'wp_print_styles', 8);
 add_action('wp_head', 'wp_print_head_scripts', 9);
 add_action('wp_head', 'wp_site_icon', 99);
 
+// Critical CSS for above-the-fold content
+$critical_css_path = get_template_directory() . '/src/critical.css';
+$critical_css = file_exists($critical_css_path) ? file_get_contents($critical_css_path) : '';
+
+// Enqueue React and ReactDOM from CDN
+wp_enqueue_script('react', 'https://unpkg.com/react@18/umd/react.production.min.js', array(), '18.0.0', true);
+wp_enqueue_script('react-dom', 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js', array('react'), '18.0.0', true);
+
 // Get the manifest file
 $manifest_path = get_template_directory() . '/dist/manifest.json';
 $manifest = file_exists($manifest_path) ? json_decode(file_get_contents($manifest_path), true) : [];
@@ -95,9 +103,27 @@ if (isset($manifest['homepage.js'])) {
         );
     }
 }
-
-get_header();
 ?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="profile" href="https://gmpg.org/xfn/11">
+    
+    <!-- Inline critical CSS -->
+    <style>
+        <?php echo $critical_css; ?>
+    </style>
+    
+    <!-- Preload key assets -->
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <?php wp_head(); ?>
+</head>
+<body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
 
 <!-- React application root element -->
 <div id="athlete-dashboard-root" style="display: block; width: 100%; min-height: 500px;"></div>

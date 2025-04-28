@@ -3,9 +3,9 @@ module.exports = {
     ci: {
         collect: {
             // The URL(s) to run against
-            url: ["http://localhost:8080"],
+            url: ["http://localhost:5000/"],
             // How to spin up your built app
-            startServerCommand: "npx serve -s dist --port=8080",
+            startServerCommand: "npm run serve",
             // Run each page 3 times for averaged metrics
             numberOfRuns: 3,
             // Optional: increase timeout if your build is large
