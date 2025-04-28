@@ -24,16 +24,13 @@ jobs:
         
       - name: Build
         run: npm run build
-
-      - name: Install serve
-        run: npm install -g serve
         
       - name: Start server and run Lighthouse CI
         run: |
-          serve dist -l 8080 &
+          npm run serve &
           sleep 5
           mkdir -p lighthouse-results
-          npx @lhci/cli@0.11.x autorun --outputDir=./lighthouse-results
+          npx @lhci/cli@0.11.x autorun --config=./lighthouserc.js --outputDir=./lighthouse-results
           
       - name: Upload Lighthouse results
         uses: actions/upload-artifact@v3.1.2
