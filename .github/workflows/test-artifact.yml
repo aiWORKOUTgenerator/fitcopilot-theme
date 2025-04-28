@@ -16,7 +16,7 @@ jobs:
           echo "Test content" > test-output/test.txt
       
       - name: Upload test artifact
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v2.3.1
         with:
           name: test-artifact
           path: test-output/ 
