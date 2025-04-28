@@ -32,4 +32,11 @@ jobs:
         run: |
           serve dist -l 8080 &
           sleep 5
-          npx @lhci/cli@0.11.x autorun
+          mkdir -p lighthouse-results
+          npx @lhci/cli@0.11.x autorun --outputDir=./lighthouse-results
+          
+      - name: Upload Lighthouse results
+        uses: actions/upload-artifact@v3
+        with:
+          name: lighthouse-results
+          path: ./lighthouse-results
