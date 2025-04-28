@@ -79,7 +79,7 @@ jobs:
         
       - name: Upload visual differences if test fails
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: visual-regression-diff
           path: .loki/difference
