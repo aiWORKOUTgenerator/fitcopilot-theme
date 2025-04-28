@@ -384,6 +384,18 @@
 // Optimize animations for users who prefer reduced motion
 @media (prefers-reduced-motion: reduce) {
     .personal-training-section {
+
+        .training-card,
+        .benefits-card,
+        .coach-card,
+        .cta-button {
+            &:hover {
+                transform: var(--transform-tf-none);
+            }
+
+            transition: var(--duration-tf-reduced-motion);
+        }
+
         .booking-box::after {
             animation: none;
         }

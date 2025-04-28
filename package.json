@@ -87,6 +87,15 @@
     "metrics:dashboard": "npm run metrics && cd documentation-site && npm start",
     "storybook:audit": "node scripts/storybook-audit.js",
     "storybook:generate": "node scripts/generate-story.js",
-    "token-report": "node scripts/token-compliance.js"
+    "token-report": "node scripts/token-compliance.js",
+    "token-report:component": "node scripts/token-compliance.js",
+    "token-report:generate": "node scripts/generate-compliance-report.js",
+    "token-report:daily": "node scripts/generate-compliance-report.js",
+    "token-report:hero": "node scripts/token-compliance.js src/features/Homepage/Hero",
+    "token-report:ui": "node scripts/token-compliance.js src/components/UI",
+    "token-report:personal-training": "node scripts/token-compliance.js src/features/Homepage/PersonalTraining",
+    "token-report:training": "node scripts/token-compliance.js src/features/Homepage/Training",
+    "token-report:features": "node scripts/token-compliance.js src/features/Homepage/Features",
+    "token-report:pricing": "node scripts/token-compliance.js src/features/Homepage/Pricing"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "overall": 29,
+  "overall": 43,
   "components": {
     "styles": {
       "total": 71,
@@ -15,9 +15,9 @@
       ]
     },
     "design-system": {
-      "total": 26,
+      "total": 42,
       "tokens": 7,
-      "percentage": 27,
+      "percentage": 17,
       "files": [
         "src/styles/design-system/_mixins.scss",
         "src/styles/design-system/_components.scss",
@@ -33,17 +33,17 @@
       ]
     },
     "TrainingFeatures": {
-      "total": 54,
-      "tokens": 0,
-      "percentage": 0,
+      "total": 52,
+      "tokens": 52,
+      "percentage": 100,
       "files": [
         "src/features/Homepage/TrainingFeatures/TrainingFeatures.scss"
       ]
     },
     "Training": {
       "total": 63,
-      "tokens": 4,
-      "percentage": 6,
+      "tokens": 63,
+      "percentage": 100,
       "files": [
         "src/features/Homepage/Training/Training.scss"
       ]
@@ -81,9 +81,9 @@
       ]
     },
     "PersonalTraining": {
-      "total": 123,
-      "tokens": 8,
-      "percentage": 7,
+      "total": 125,
+      "tokens": 10,
+      "percentage": 8,
       "files": [
         "src/features/Homepage/PersonalTraining/PersonalTraining.scss"
       ]
@@ -200,7 +200,7 @@
       "percentage": 78
     },
     "src/styles/design-system/_component-tokens.scss": {
-      "total": 12,
+      "total": 28,
       "tokens": 0,
       "percentage": 0
     },
@@ -215,14 +215,14 @@
       "percentage": 0
     },
     "src/features/Homepage/TrainingFeatures/TrainingFeatures.scss": {
-      "total": 54,
-      "tokens": 0,
-      "percentage": 0
+      "total": 52,
+      "tokens": 52,
+      "percentage": 100
     },
     "src/features/Homepage/Training/Training.scss": {
       "total": 63,
-      "tokens": 4,
-      "percentage": 6
+      "tokens": 63,
+      "percentage": 100
     },
     "src/features/Homepage/Testimonials/Testimonials.scss": {
       "total": 6,
@@ -245,9 +245,9 @@
       "percentage": 0
     },
     "src/features/Homepage/PersonalTraining/PersonalTraining.scss": {
-      "total": 123,
-      "tokens": 8,
-      "percentage": 7
+      "total": 125,
+      "tokens": 10,
+      "percentage": 8
     },
     "src/features/Homepage/Journey/Journey.scss": {
       "total": 21,
