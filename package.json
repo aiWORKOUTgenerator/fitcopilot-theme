@@ -60,18 +60,27 @@
     "postcss-nesting": "^13.0.1",
     "sass": "^1.87.0",
     "sass-loader": "^16.0.5",
-    "serve": "^14.2.4",
     "storybook": "^8.6.12",
     "tailwindcss": "^4.1.4",
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
-    "webpack-manifest-plugin": "^5.0.0"
+    "webpack-manifest-plugin": "^5.0.0",
+    "husky": "^8.0.0"
   },
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
+    "build:verify": "npm run build -- --mode production && bash scripts/verify-bootstrap.sh",
+    "verify:mount": "./scripts/verify-mount-point.sh",
+    "verify:scss": "./scripts/verify-scss-imports.sh",
+    "verify:react-html": "./scripts/verify-html-react.sh",
+    "verify:bootstrap": "./scripts/verify-bootstrap.sh",
+    "verify:e2e-mount": "node scripts/e2e-mount-check.js",
+    "verify:all": "npm run verify:mount && npm run verify:scss && npm run verify:bootstrap && echo 'Note: verify:react-html must be run separately with a URL'",
+    "prebuild": "npm run verify:mount || echo '⚠️ Verification warnings - check consistency!'",
+    "postbuild": "npm run verify:bootstrap || echo '⚠️ Bootstrap verification failed - check output!'",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
@@ -90,6 +99,16 @@
     "storybook:audit": "node scripts/storybook-audit.js",
     "storybook:generate": "node scripts/generate-story.js",
     "token-report": "node scripts/token-compliance.js",
-    "serve": "serve dist --single --listen 5000"
+    "token-report:component": "node scripts/token-compliance.js",
+    "token-report:generate": "node scripts/generate-compliance-report.js",
+    "token-report:daily": "node scripts/generate-compliance-report.js",
+    "token-report:hero": "node scripts/token-compliance.js src/features/Homepage/Hero",
+    "token-report:ui": "node scripts/token-compliance.js src/components/UI",
+    "token-report:personal-training": "node scripts/token-compliance.js --component=PersonalTraining",
+    "token-report:training": "node scripts/token-compliance.js src/features/Homepage/Training",
+    "token-report:features": "node scripts/token-compliance.js src/features/Homepage/Features",
+    "token-report:journey": "node scripts/token-compliance.js src/features/Homepage/Journey",
+    "token-report:pricing": "node scripts/token-compliance.js src/features/Homepage/Pricing",
+    "prepare": "husky install"
   }
 }
