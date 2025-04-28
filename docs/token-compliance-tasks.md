@@ -7,9 +7,11 @@ This document outlines the component tokenization tasks for our team to achieve 
 As of the latest run:
 
 ```
-Overall Token Usage: 229/779 properties (29%)
+Overall Token Usage: 288/779 properties (37%)
 
 By Component:
+🟢 Pricing: 100% (47/47)
+🟢 PricingCard.scss: 100% (13/13)
 🟢 Hero: 100% (109/109)
 🟢 HeroButton.scss: 100% (38/38)
 🔴 UI: 62% (54/87)
@@ -17,13 +19,11 @@ By Component:
 🔴 styles: 8% (6/71)
 🔴 PersonalTraining: 7% (8/123)
 🔴 Training: 6% (4/63)
-🔴 Pricing: 2% (1/47)
 🔴 Features: 2% (2/86)
 🔴 DemoNav: 0% (0/3)
 🔴 TrainingFeatures: 0% (0/54)
 🔴 Testimonials: 0% (0/6)
 🔴 TestimonialCard.scss: 0% (0/10)
-🔴 PricingCard.scss: 0% (0/13)
 🔴 Journey: 0% (0/21)
 🔴 JourneyStep.scss: 0% (0/6)
 🔴 Footer: 0% (0/2)
@@ -35,16 +35,16 @@ By Component:
 
 Each developer should create a branch from `token-compliance/boilerplate` following the naming convention `token-compliance/[component-name]`.
 
-| Developer  | Primary Component                | Secondary Component    | Branch Name                      | Props (approx) |
-|------------|----------------------------------|------------------------|----------------------------------|----------------|
-| Developer 1| PersonalTraining                 | Footer                 | token-compliance/personal-training| 125            |
-| Developer 2| Training & TrainingFeatures      | -                      | token-compliance/training        | 117            |
-| Developer 3| Features                         | FeatureCard            | token-compliance/features        | 99             |
-| Developer 4| Pricing                          | PricingCard            | token-compliance/pricing         | 60             |
-| Developer 5| UI Components                    | -                      | token-compliance/ui              | 87             |
-| Developer 6| Journey                          | JourneyStep            | token-compliance/journey         | 27             |
-| Developer 7| Testimonials                     | TestimonialCard        | token-compliance/testimonials    | 16             |
-| Developer 8| DemoNav                          | design-system          | token-compliance/demo-nav        | 29             |
+| Developer  | Primary Component                | Secondary Component    | Branch Name                      | Props (approx) | Status      |
+|------------|----------------------------------|------------------------|----------------------------------|----------------|-------------|
+| Developer 1| PersonalTraining                 | Footer                 | token-compliance/personal-training| 125            | In Progress |
+| Developer 2| Training & TrainingFeatures      | -                      | token-compliance/training        | 117            | In Progress |
+| Developer 3| Features                         | FeatureCard            | token-compliance/features        | 99             | In Progress |
+| Developer 4| Pricing                          | PricingCard            | token-compliance/pricing         | 60             | ✅ Complete  |
+| Developer 5| UI Components                    | -                      | token-compliance/ui              | 87             | In Progress |
+| Developer 6| Journey                          | JourneyStep            | token-compliance/journey         | 27             | In Progress |
+| Developer 7| Testimonials                     | TestimonialCard        | token-compliance/testimonials    | 16             | In Progress |
+| Developer 8| DemoNav                          | design-system          | token-compliance/demo-nav        | 29             | In Progress |
 
 ## Component Dependencies
 
