@@ -1,73 +1,146 @@
-# Token Compliance Report - April 27, 2025
+# Token Compliance Report - 2025-04-27
 
 ## Summary
-This report summarizes the current token compliance state across the FitCopilot theme components.
 
-## Overall Token Usage
-- **358/800 properties (45%)** are using design tokens
+Overall Token Usage:
 
-## Component Compliance
+## Compliance by Component
 
-### 100% Compliant Components
-- **TrainingFeatures**: 52/52 properties (100%)
-- **Training**: 63/63 properties (100%)
-- **Hero**: 109/109 properties (100%)
-- **HeroButton**: 38/38 properties (100%)
-- **PersonalTraining**: 137/137 properties (100%)
+🟢 PersonalTraining: 100% (161/161)
+🟢 JourneyStep.scss: 100% (6/6)
+🟢 Hero: 100% (109/109)
+🟢 HeroButton.scss: 100% (38/38)
+🟡 Journey: 86% (18/21)
+🔴 UI: 62% (54/87)
+🔴 design-system: 21% (7/33)
+🔴 styles: 8% (6/71)
+🔴 Training: 6% (4/63)
+🔴 Pricing: 2% (1/47)
+🔴 Features: 2% (2/86)
+🔴 DemoNav: 0% (0/3)
+🔴 TrainingFeatures: 0% (0/54)
+🔴 Testimonials: 0% (0/6)
+🔴 TestimonialCard.scss: 0% (0/10)
+🔴 PricingCard.scss: 0% (0/13)
+🔴 Footer: 0% (0/2)
+🔴 FooterLinkGroup.scss: 0% (0/1)
+🔴 FeatureCard.scss: 0% (0/13)
+🔴 src/components/UI/Button/Button.scss: 58% (26/45)
+🟡 src/components/UI/Card/Card.scss: 79% (11/14)
+🔴 src/components/UI/Tooltip/Tooltip.scss: 61% (17/28)
+🔴 src/features/Homepage/components/DemoNav/DemoNav.scss: 0% (0/3)
+🔴 src/features/Homepage/Features/components/FeatureCard.scss: 0% (0/13)
+🔴 src/features/Homepage/Features/Features.scss: 2% (2/86)
+🔴 src/features/Homepage/Footer/components/FooterLinkGroup.scss: 0% (0/1)
+🔴 src/features/Homepage/Footer/Footer.scss: 0% (0/2)
+🟢 src/features/Homepage/Hero/components/HeroButton.scss: 100% (38/38)
+🟢 src/features/Homepage/Hero/Hero.scss: 100% (109/109)
+🟢 src/features/Homepage/Journey/components/JourneyStep.scss: 100% (6/6)
+🟡 src/features/Homepage/Journey/Journey.scss: 86% (18/21)
+🟢 src/features/Homepage/PersonalTraining/PersonalTraining.scss: 100% (161/161)
+🔴 src/features/Homepage/Pricing/components/PricingCard.scss: 0% (0/13)
+🔴 src/features/Homepage/Pricing/Pricing.scss: 2% (1/47)
+🔴 src/features/Homepage/styles/homepage.scss: 13% (2/16)
+🔴 src/features/Homepage/Testimonials/components/TestimonialCard.scss: 0% (0/10)
+🔴 src/features/Homepage/Testimonials/Testimonials.scss: 0% (0/6)
+🔴 src/features/Homepage/Training/Training.scss: 6% (4/63)
+🔴 src/features/Homepage/TrainingFeatures/TrainingFeatures.scss: 0% (0/54)
+🔴 src/styles/animations.scss: 0% (0/11)
+🔴 src/styles/demonav.scss: 0% (0/4)
+🔴 src/styles/design-system/_component-tokens.scss: 0% (0/19)
+🟡 src/styles/design-system/_components.scss: 78% (7/9)
+🔴 src/styles/design-system/_mixins.scss: 0% (0/5)
+🔴 src/styles/global.scss: 0% (0/11)
+🔴 src/styles/homepage.scss: 18% (4/22)
+🔴 src/styles/mixins.scss: 0% (0/7)
+Detailed report saved to token-compliance-report.json
 
-### Partially Compliant Components
-- **UI**: 54/87 properties (62%)
-- **design-system**: 7/33 properties (21%)
-- **styles**: 6/71 properties (8%)
-- **Pricing**: 1/47 properties (2%)
-- **Features**: 2/86 properties (2%)
+## Full Report
 
-### Non-Compliant Components (0%)
-- DemoNav, Testimonials, TestimonialCard, PricingCard, Journey, JourneyStep, Footer, FooterLinkGroup, FeatureCard
+<details>
+<summary>Click to expand full report</summary>
 
-## Recent Improvements
-- Achieved 100% token compliance for PersonalTraining component (from 97% to 100%)
-- Added accessibility-focused tokens for reduced motion support
-- Increased overall token usage from 43% to 45%
-- Standardized token naming using the component prefix pattern (pt-)
+```
+=== Design Token Compliance Report ===
 
-## Next Steps
-1. Address non-compliant components, starting with smaller components (DemoNav, Footer)
-2. Increase token usage in partially compliant components with lowest percentages
-3. Create additional component-specific tokens for Pricing and Features
-4. Document token usage patterns to ensure consistency in future development
+Overall Token Usage:
+406/824 properties (49%)
 
-## File-Level Compliance Details
-### High Compliance (75%+)
-- src/features/Homepage/PersonalTraining/PersonalTraining.scss: 100% (137/137)
-- src/components/UI/Card/Card.scss: 79% (11/14)
-- src/styles/design-system/_components.scss: 78% (7/9)
+By Component:
+🟢 PersonalTraining: 100% (161/161)
+🟢 JourneyStep.scss: 100% (6/6)
+🟢 Hero: 100% (109/109)
+🟢 HeroButton.scss: 100% (38/38)
+🟡 Journey: 86% (18/21)
+🔴 UI: 62% (54/87)
+🔴 design-system: 21% (7/33)
+🔴 styles: 8% (6/71)
+🔴 Training: 6% (4/63)
+🔴 Pricing: 2% (1/47)
+🔴 Features: 2% (2/86)
+🔴 DemoNav: 0% (0/3)
+🔴 TrainingFeatures: 0% (0/54)
+🔴 Testimonials: 0% (0/6)
+🔴 TestimonialCard.scss: 0% (0/10)
+🔴 PricingCard.scss: 0% (0/13)
+🔴 Footer: 0% (0/2)
+🔴 FooterLinkGroup.scss: 0% (0/1)
+🔴 FeatureCard.scss: 0% (0/13)
 
-### Medium Compliance (30-75%)
-- src/components/UI/Tooltip/Tooltip.scss: 61% (17/28)
-- src/components/UI/Button/Button.scss: 58% (26/45)
+Detailed File Results:
+🔴 src/components/UI/Button/Button.scss: 58% (26/45)
+🟡 src/components/UI/Card/Card.scss: 79% (11/14)
+🔴 src/components/UI/Tooltip/Tooltip.scss: 61% (17/28)
+🔴 src/features/Homepage/components/DemoNav/DemoNav.scss: 0% (0/3)
+🔴 src/features/Homepage/Features/components/FeatureCard.scss: 0% (0/13)
+🔴 src/features/Homepage/Features/Features.scss: 2% (2/86)
+🔴 src/features/Homepage/Footer/components/FooterLinkGroup.scss: 0% (0/1)
+🔴 src/features/Homepage/Footer/Footer.scss: 0% (0/2)
+🟢 src/features/Homepage/Hero/components/HeroButton.scss: 100% (38/38)
+🟢 src/features/Homepage/Hero/Hero.scss: 100% (109/109)
+🟢 src/features/Homepage/Journey/components/JourneyStep.scss: 100% (6/6)
+🟡 src/features/Homepage/Journey/Journey.scss: 86% (18/21)
+🟢 src/features/Homepage/PersonalTraining/PersonalTraining.scss: 100% (161/161)
+🔴 src/features/Homepage/Pricing/components/PricingCard.scss: 0% (0/13)
+🔴 src/features/Homepage/Pricing/Pricing.scss: 2% (1/47)
+🔴 src/features/Homepage/styles/homepage.scss: 13% (2/16)
+🔴 src/features/Homepage/Testimonials/components/TestimonialCard.scss: 0% (0/10)
+🔴 src/features/Homepage/Testimonials/Testimonials.scss: 0% (0/6)
+🔴 src/features/Homepage/Training/Training.scss: 6% (4/63)
+🔴 src/features/Homepage/TrainingFeatures/TrainingFeatures.scss: 0% (0/54)
+🔴 src/styles/animations.scss: 0% (0/11)
+🔴 src/styles/demonav.scss: 0% (0/4)
+🔴 src/styles/design-system/_component-tokens.scss: 0% (0/19)
+🟡 src/styles/design-system/_components.scss: 78% (7/9)
+🔴 src/styles/design-system/_mixins.scss: 0% (0/5)
+🔴 src/styles/global.scss: 0% (0/11)
+🔴 src/styles/homepage.scss: 18% (4/22)
+🔴 src/styles/mixins.scss: 0% (0/7)
 
-### Low Compliance (Below 30%)
-- src/styles/homepage.scss: 18% (4/22)
-- src/features/Homepage/styles/homepage.scss: 13% (2/16)
-- src/features/Homepage/Training/Training.scss: 6% (4/63)
-- src/features/Homepage/Pricing/Pricing.scss: 2% (1/47)
-- src/features/Homepage/Features/Features.scss: 2% (2/86)
+Detailed report saved to token-compliance-report.json
+
+```
+
+</details>
+
+## Trend
+
+Add a trend chart here to track progress over time.
 
 ## Current Priority Components
 
 | Component | Assignee | Current % | Target Date |
 |-----------|----------|-----------|-------------|
-| UI        | TBD      | 62%       | 2025-05-15  |
-| Features  | TBD      | 2%        | 2025-05-20  |
-| Pricing   | TBD      | 2%        | 2025-05-25  |
+| UI        | TBD      | 62%       | TBD         |
+| PersonalTraining | TBD | 7%      | TBD         |
+| Training  | TBD      | 6%        | TBD         |
+| Features  | TBD      | 2%        | TBD         |
+| Pricing   | TBD      | 2%        | TBD         |
 
 ## Recently Completed Components
 
 | Component | Completed By | Date |
 |-----------|--------------|------|
-| PersonalTraining | Justin | 2025-04-28 |
-| TrainingFeatures | Team   | 2025-04-27 |
-| Training  | Team         | 2025-04-26 |
-| Hero      | Team         | 2025-04-20 |
-| HeroButton| Team         | 2025-04-20 | 
+| Hero      | Team         | 2025-04-27 |
+| HeroButton| Team         | 2025-04-27 |
+

@@ -96,6 +96,7 @@
     "token-report:personal-training": "node scripts/token-compliance.js --component=PersonalTraining",
     "token-report:training": "node scripts/token-compliance.js src/features/Homepage/Training",
     "token-report:features": "node scripts/token-compliance.js src/features/Homepage/Features",
+    "token-report:journey": "node scripts/token-compliance.js src/features/Homepage/Journey",
     "token-report:pricing": "node scripts/token-compliance.js src/features/Homepage/Pricing"
   }
 }

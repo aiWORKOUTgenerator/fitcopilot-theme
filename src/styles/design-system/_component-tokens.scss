@@ -4,6 +4,17 @@
  */
 
 :root {
+    /* Global Animation Tokens */
+    --animation-duration-sm: 0.2s;
+    --animation-duration-md: 0.5s;
+    --animation-duration-lg: 1s;
+    --animation-ease: ease;
+    --animation-ease-in: ease-in;
+    --animation-ease-out: ease-out;
+    --animation-ease-in-out: ease-in-out;
+    --animation-linear: linear;
+    --animation-fill-forwards: forwards;
+
     /* Tooltip */
     --size-tooltip-arrow: 12px;
 
@@ -372,4 +383,52 @@
     /* Gradients */
     --gradient-pt-card-bg: linear-gradient(135deg, rgb(124, 58, 237) 0%, rgb(67, 56, 202) 100%);
     --opacity-pt-icon: 0.7;
+
+    /* Journey Component */
+    --pos-jr-relative: relative;
+    --pos-jr-absolute: absolute;
+    --overflow-jr-hidden: hidden;
+    --top-jr-path: 70px;
+    --left-jr-path-center: 50%;
+    --width-jr-path: 75%;
+    --height-jr-path: 2px;
+    --bg-jr-path: linear-gradient(90deg, rgba(204, 255, 0, 0.3), rgba(100, 210, 185, 0.3));
+    --transform-jr-center-x: translateX(-50%);
+    --z-jr-path: 0;
+    --z-jr-step: 10;
+    --top-jr-connector: calc(100% - 20px);
+    --left-jr-connector: 44px;
+    --width-jr-connector: 2px;
+    --height-jr-connector: 60px;
+    --bg-jr-connector: linear-gradient(180deg, rgba(153, 255, 0, 0.5) 0%, rgba(153, 255, 0, 0.1) 100%);
+    --z-jr-connector: 1;
+
+    /* JourneyStep Component */
+    --width-jr-step-number: 32px;
+    --height-jr-step-number: 32px;
+    --radius-jr-step-number: 50%;
+    --bg-jr-step-number: linear-gradient(135deg, #CCFF00 0%, #9BE368 100%);
+    --display-jr-flex: flex;
+    --align-jr-center: center;
+    --justify-jr-center: center;
+    --weight-jr-step-number: 700;
+    --color-jr-step-number: #0B1121;
+    --size-jr-step-number: 16px;
+
+    /* Journey Card Glow Effects */
+    --shadow-jr-lime-glow: 0 0 25px rgba(132, 204, 22, 0.15);
+    --shadow-jr-cyan-glow: 0 0 25px rgba(6, 182, 212, 0.15);
+    --shadow-jr-violet-glow: 0 0 25px rgba(139, 92, 246, 0.15);
+    --shadow-jr-amber-glow: 0 0 25px rgba(251, 146, 60, 0.15);
+
+    /* Journey Animations */
+    --transform-jr-slide-from: translateY(10px);
+    --transform-jr-slide-to: translateY(0);
+    --opacity-jr-hidden: 0;
+    --opacity-jr-visible: 1;
+
+    /* Journey Text Gradient */
+    --bg-size-jr-text-gradient: 100%;
+    --bg-clip-jr-text: text;
+    --color-jr-transparent: transparent;
 }
