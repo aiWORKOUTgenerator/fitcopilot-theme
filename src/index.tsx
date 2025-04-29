@@ -3,48 +3,76 @@ import { createRoot } from 'react-dom/client';
 import App from './Homepage'; // Always point at real root
 import './styles/homepage.scss'; // Global styles
 
-// Critical diagnostic for troubleshooting
-console.log('🚀 React bootstrap running from src/index.tsx');
+// Debug React bootstrap process with more detailed logs
+console.log('React bootstrap starting...');
+console.log('Environment check:', {
+    isDevelopment: process.env.NODE_ENV === 'development',
+    isProduction: process.env.NODE_ENV === 'production'
+});
 
-// The one and only place that should call createRoot
+// Root element ID where the React app will mount
 const rootElementId = 'athlete-dashboard-root';
-const el = document.getElementById(rootElementId);
+console.log(`Looking for mount point with ID: #${rootElementId}`);
 
-// Fail loudly if container is missing
-if (!el) {
-    console.error(`CRITICAL ERROR: #${rootElementId} container missing from DOM`);
+// Get the container element
+const container = document.getElementById(rootElementId);
 
-    // Create the container as fallback (helps in development only)
-    const newRootElement = document.createElement('div');
-    newRootElement.id = rootElementId;
-    document.body.appendChild(newRootElement);
-    console.warn(`Created missing #${rootElementId} container - check template`);
+// Handle case where container doesn't exist
+if (!container) {
+    console.error(`Mount point #${rootElementId} not found in DOM. Creating one...`);
 
-    // Mount app to the fallback container
     try {
-        createRoot(newRootElement).render(<App />);
-        console.log('✅ App mounted on dynamically created container');
-    } catch (error) {
-        console.error('❌ Failed to mount on fallback container:', error);
-    }
-} else {
-    // Normal path - container exists
-    try {
-        createRoot(el).render(
+        // Create a container if it doesn't exist
+        const newContainer = document.createElement('div');
+        newContainer.id = rootElementId;
+        document.body.appendChild(newContainer);
+        console.log(`Created #${rootElementId} and appended to body`);
+
+        // Mount app to the newly created container
+        const root = createRoot(newContainer);
+        root.render(
             <React.StrictMode>
                 <App />
             </React.StrictMode>
         );
-        console.log('✅ App successfully mounted to #' + rootElementId);
+        console.log('React app successfully mounted to dynamically created container');
     } catch (error) {
-        console.error('❌ Mount error:', error);
+        console.error('Failed to create container and mount app:', error);
 
-        // Fallback to display error to user
-        el.innerHTML = `
-      <div style="padding: 20px; text-align: center; font-family: sans-serif;">
-        <h2>Unable to load application</h2>
-        <p>Something went wrong with the application. Please try refreshing the page.</p>
-        <button onclick="window.location.reload()" style="padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+        // Fallback error message
+        const errorMsg = document.createElement('div');
+        errorMsg.innerHTML = `
+      <div style="text-align: center; margin: 2rem; font-family: system-ui, sans-serif;">
+        <h2>Something went wrong</h2>
+        <p>The app couldn't start properly. Please try refreshing the page.</p>
+        <button onclick="window.location.reload()" style="padding: 0.5rem 1rem; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer;">
+          Refresh Page
+        </button>
+      </div>
+    `;
+        document.body.appendChild(errorMsg);
+    }
+} else {
+    console.log(`Mount point #${rootElementId} found in DOM, rendering React app...`);
+
+    try {
+        // Mount app to the existing container
+        const root = createRoot(container);
+        root.render(
+            <React.StrictMode>
+                <App />
+            </React.StrictMode>
+        );
+        console.log('React app successfully mounted to existing container');
+    } catch (error) {
+        console.error('Failed to mount React app to existing container:', error);
+
+        // Error display
+        container.innerHTML = `
+      <div style="text-align: center; margin: 2rem; font-family: system-ui, sans-serif;">
+        <h2>Something went wrong</h2>
+        <p>The app couldn't start properly. Please try refreshing the page.</p>
+        <button onclick="window.location.reload()" style="padding: 0.5rem 1rem; background: #0066cc; color: white; border: none; border-radius: 4px; cursor: pointer;">
           Refresh Page
         </button>
       </div>

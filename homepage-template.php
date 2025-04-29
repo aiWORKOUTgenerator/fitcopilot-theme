@@ -23,13 +23,17 @@ add_action('wp_head', 'wp_print_styles', 8);
 add_action('wp_head', 'wp_print_head_scripts', 9);
 add_action('wp_head', 'wp_site_icon', 99);
 
-// Enqueue React and ReactDOM from CDN
-wp_enqueue_script('react', 'https://unpkg.com/react@18/umd/react.production.min.js', array(), '18.0.0', true);
-wp_enqueue_script('react-dom', 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js', array('react'), '18.0.0', true);
-
 // Get the manifest file
 $manifest_path = get_template_directory() . '/dist/manifest.json';
 $manifest = file_exists($manifest_path) ? json_decode(file_get_contents($manifest_path), true) : [];
+
+if (empty($manifest)) {
+    error_log('Homepage template: React manifest is empty or invalid');
+}
+
+// Ensure React is enqueued first
+wp_enqueue_script('react', 'https://unpkg.com/react@18/umd/react.production.min.js', array(), '18.0.0', true);
+wp_enqueue_script('react-dom', 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js', array('react'), '18.0.0', true);
 
 // Enqueue homepage CSS with cache busting
 if (isset($manifest['homepage.css'])) {
@@ -43,7 +47,11 @@ if (isset($manifest['homepage.css'])) {
             [],
             filemtime($css_path)
         );
+    } else {
+        error_log('Homepage template: CSS file not found at ' . $css_path);
     }
+} else {
+    error_log('Homepage template: homepage.css not found in manifest');
 }
 
 // Enqueue any chunk files if they exist
@@ -59,6 +67,8 @@ foreach ($manifest as $key => $value) {
                 filemtime($chunk_path),
                 true
             );
+        } else {
+            error_log('Homepage template: Chunk file not found at ' . $chunk_path);
         }
     }
 }
@@ -82,28 +92,57 @@ if (isset($manifest['homepage.js'])) {
             'athlete-dashboard-homepage',
             'athleteDashboardData',
             [
-                'siteLinks' => [
-                    'registration' => site_url('/registration'),
-                    'login' => site_url('/login'),
-                    'workoutBuilder' => 'https://builder.aiworkoutgenerator.com',
-                ],
-                'assets' => [
-                    'logo' => get_theme_file_uri('/assets/images/logo.png')
-                ],
                 'wpData' => [
+                    'siteLinks' => [
+                        'registration' => site_url('/registration'),
+                        'login' => site_url('/login'),
+                        'workoutBuilder' => 'https://builder.aiworkoutgenerator.com',
+                    ],
+                    'assets' => [
+                        'logo' => get_theme_file_uri('/assets/images/logo.png')
+                    ],
                     'restUrl' => esc_url_raw(rest_url()),
                     'nonce' => wp_create_nonce('wp_rest'),
                     'userId' => get_current_user_id(),
                 ]
             ]
         );
+        
+        // Add inline script to verify data is available
+        wp_add_inline_script(
+            'athlete-dashboard-homepage',
+            'console.log("athleteDashboardData is available:", window.athleteDashboardData);',
+            'before'
+        );
+    } else {
+        error_log('Homepage template: JS file not found at ' . $js_path);
     }
+} else {
+    error_log('Homepage template: homepage.js not found in manifest');
 }
 
 get_header();
 ?>
 
 <!-- React application root element -->
-<div id="athlete-dashboard-root" style="display: block; width: 100%; min-height: 500px;"></div>
+<div id="athlete-dashboard-root" style="display: block; width: 100%; min-height: 500px; position: relative;">
+    <!-- Loading indicator while React initializes -->
+    <div id="react-loading" style="text-align: center; padding: 2rem;">
+        <p>Loading application...</p>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // Verify DOM and React mount point
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Homepage template: DOM loaded, checking React mount point');
+        const mountPoint = document.getElementById('athlete-dashboard-root');
+        if (mountPoint) {
+            console.log('Homepage template: Mount point exists');
+        } else {
+            console.error('Homepage template: Mount point missing!');
+        }
+    });
+</script>
 
 <?php get_footer(); ?> 

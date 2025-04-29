@@ -13,8 +13,17 @@ if (!defined('ABSPATH')) {
 function fitcopilot_enqueue_react() {
     // Only load these on frontend (not admin)
     if (!is_admin()) {
-        wp_enqueue_script('react', 'https://unpkg.com/react@18/umd/react.production.min.js', array(), '18.0.0', true);
-        wp_enqueue_script('react-dom', 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js', array('react'), '18.0.0', true);
+        // Use development versions in debug mode for better error messages
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            wp_enqueue_script('react', 'https://unpkg.com/react@18/umd/react.development.js', array(), '18.0.0', true);
+            wp_enqueue_script('react-dom', 'https://unpkg.com/react-dom@18/umd/react-dom.development.js', array('react'), '18.0.0', true);
+        } else {
+            wp_enqueue_script('react', 'https://unpkg.com/react@18/umd/react.production.min.js', array(), '18.0.0', true);
+            wp_enqueue_script('react-dom', 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js', array('react'), '18.0.0', true);
+        }
+        
+        // Add console message to verify React is loaded
+        wp_add_inline_script('react-dom', 'console.log("React and ReactDOM loaded from CDN");', 'after');
     }
 }
 add_action('wp_enqueue_scripts', 'fitcopilot_enqueue_react');
@@ -27,7 +36,18 @@ function fitcopilot_get_react_manifest() {
     
     if ($manifest === null) {
         $manifest_path = get_template_directory() . '/dist/manifest.json';
-        $manifest = file_exists($manifest_path) ? json_decode(file_get_contents($manifest_path), true) : [];
+        
+        if (file_exists($manifest_path)) {
+            $manifest = json_decode(file_get_contents($manifest_path), true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                error_log('Error parsing React manifest JSON: ' . json_last_error_msg());
+                $manifest = array();
+            }
+        } else {
+            error_log('React manifest file not found at: ' . $manifest_path);
+            $manifest = array();
+        }
     }
     
     return $manifest;
@@ -47,12 +67,22 @@ function fitcopilot_enqueue_react_script($handle, $manifest_key, $deps = array()
             wp_enqueue_script(
                 $handle,
                 get_template_directory_uri() . '/dist/' . $file,
-                $deps,
+                array_merge($deps, array('react', 'react-dom')), // Always depend on React
                 filemtime($file_path),
                 $in_footer
             );
+            
+            // Add debugging info
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                wp_add_inline_script($handle, 'console.log("' . $handle . ' script loaded from: ' . get_template_directory_uri() . '/dist/' . $file . '");', 'before');
+            }
+            
             return true;
+        } else {
+            error_log('React script file not found: ' . $file_path);
         }
+    } else {
+        error_log('React manifest key not found: ' . $manifest_key);
     }
     
     return false;
@@ -76,7 +106,11 @@ function fitcopilot_enqueue_react_style($handle, $manifest_key, $deps = array())
                 filemtime($file_path)
             );
             return true;
+        } else {
+            error_log('React style file not found: ' . $file_path);
         }
+    } else {
+        error_log('React manifest key not found for style: ' . $manifest_key);
     }
     
     return false;

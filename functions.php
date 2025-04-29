@@ -58,4 +58,33 @@ require_once get_template_directory() . '/inc/react-enqueue.php';
 require_once get_template_directory() . '/includes/theme-variants.php';
 
 // Include admin dashboard
-require_once get_template_directory() . '/includes/admin-dashboard.php'; 
+require_once get_template_directory() . '/includes/admin-dashboard.php';
+
+// Add debugging script to help diagnose React mount issues
+function fitcopilot_add_debug_script() {
+    if (is_page_template('homepage-template.php')) {
+        ?>
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Debug: DOM fully loaded');
+                console.log('Debug: #athlete-dashboard-root exists:', !!document.getElementById('athlete-dashboard-root'));
+                console.log('Debug: athleteDashboardData exists:', typeof window.athleteDashboardData !== 'undefined');
+                if (window.athleteDashboardData) {
+                    console.log('Debug: athleteDashboardData.wpData exists:', typeof window.athleteDashboardData.wpData !== 'undefined');
+                }
+                
+                // Check if scripts are loaded
+                const scripts = document.querySelectorAll('script');
+                const scriptUrls = Array.from(scripts).map(s => s.src);
+                console.log('Debug: All script URLs:', scriptUrls);
+                
+                // Monitor for errors
+                window.addEventListener('error', function(event) {
+                    console.log('Debug: JavaScript error detected:', event.message, 'at', event.filename, 'line', event.lineno);
+                });
+            });
+        </script>
+        <?php
+    }
+}
+add_action('wp_footer', 'fitcopilot_add_debug_script', 999); 
