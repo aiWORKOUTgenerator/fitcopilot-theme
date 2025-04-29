@@ -1,35 +1,35 @@
 :root {
-    --color-primary: #3498db;
-    --color-secondary: #2ecc71;
-    --color-background: #f7f9fa;
-    --color-surface: #ffffff;
-    --color-text: #333333;
-    --color-muted: #666666;
+    /* Core colors - inherit from theme.scss */
+    --color-primary: var(--color-primary);
+    --color-secondary: var(--color-secondary);
+    --color-background: var(--color-background);
+    --color-background-light: var(--color-background-light);
+    --color-background-dark: var(--color-background-dark);
+    --color-text: var(--color-text);
+    --color-text-muted: var(--color-text-muted);
+    --color-text-dark: var(--color-text-dark);
+    --color-border: var(--color-border);
 
-    /* New tokens */
+    /* Extended semantic colors */
     --color-text-inverse: #ffffff;
-    --color-tooltip-bg: rgba(17, 24, 39, 0.95);
-    --color-background-dark: #0f172a;
-    --color-hover-light: rgba(249, 250, 251, 0.05);
-    --color-active-light: rgba(249, 250, 251, 0.1);
+    --color-surface: #ffffff;
+    --color-tooltip-bg: rgba(var(--color-background-dark-rgb), 0.95);
+    --color-hover-light: rgba(var(--color-text-rgb), 0.05);
+    --color-active-light: rgba(var(--color-text-rgb), 0.1);
 
-    /* Theme colors */
-    --color-primary-dark: #2980b9;
-    --color-primary-light: #5dade2;
-    --color-secondary-dark: #27ae60;
-    --color-secondary-light: #58d68d;
-    --color-text-dark: #111827;
-    --color-border: rgba(0, 0, 0, 0.1);
+    /* Component interaction colors */
+    --color-interactive-default: var(--color-primary);
+    --color-interactive-hover: var(--color-primary-light);
+    --color-interactive-pressed: var(--color-primary-dark);
+    --color-interactive-disabled: rgba(var(--color-primary-rgb), 0.4);
 
-    /* Theme-specific colors */
-    --color-lime-light: #bef264;
-    --color-lime: #a3e635;
-    --color-lime-dark: #65a30d;
-    --color-lime-medium: #84cc16;
+    /* Accent color system */
+    --color-accent-lime-light: #bef264;
+    --color-accent-lime: #a3e635;
+    --color-accent-lime-dark: #65a30d;
+    --color-accent-lime-medium: #84cc16;
 
-    /* RGB values for alpha operations */
-    --color-primary-rgb: 52, 152, 219;
-    /* #3498db */
-    --color-lime-rgb: 163, 230, 53;
-    /* #a3e635 */
+    /* Extended RGB color values */
+    --color-surface-rgb: 255, 255, 255;
+    --color-accent-lime-rgb: 163, 230, 53;
 }

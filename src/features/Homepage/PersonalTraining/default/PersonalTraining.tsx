@@ -5,7 +5,6 @@ import {
     Heart,
     Play,
     RefreshCw,
-    User,
     Users,
     X
 } from 'lucide-react';
@@ -75,7 +74,7 @@ const PersonalTraining: React.FC = () => {
             <div className="section-header">
                 <span className="section-tag">Expert Coaching</span>
                 <h2 className="section-title">
-                    Personal <span className="highlight">Trainers</span>
+                    Personal <span className="highlight bg-gradient-to-r from-violet-400 to-blue-500 text-transparent bg-clip-text">Trainers</span>
                 </h2>
                 <p className="section-description">
                     Work directly with our certified fitness professionals who will create custom training programs tailored to your specific goals and needs.
@@ -95,14 +94,16 @@ const PersonalTraining: React.FC = () => {
                             style={trainer.image && !trainer.image.includes('assets/trainers') ? { backgroundImage: `url(${trainer.image})` } : {}}
                         >
                             {(!trainer.image || trainer.image.includes('assets/trainers')) && (
-                                <div className="image-placeholder">
-                                    <span className="icon-lg"><User /></span>
+                                <div className="trainer-placeholder bg-gradient-to-br from-violet-600 to-blue-700 flex items-center justify-center">
+                                    <div className="icon">
+                                        <span className="icon-xl"><Play /></span>
+                                    </div>
                                 </div>
                             )}
                         </div>
 
                         {/* Trainer Specialty Tag */}
-                        <div className="specialty">
+                        <div className="specialty bg-opacity-15 bg-violet-600">
                             <span className="icon">{trainer.specialtyIcon}</span>
                             {trainer.specialty}
                         </div>
@@ -145,7 +146,7 @@ const PersonalTraining: React.FC = () => {
                                                     alt={trainer.videoCard.title}
                                                 />
                                             ) : (
-                                                <div className="trainer-placeholder">
+                                                <div className="trainer-placeholder bg-gradient-to-br from-violet-600 to-blue-700">
                                                     <div className="icon">
                                                         <span className="icon-xl"><Play /></span>
                                                     </div>

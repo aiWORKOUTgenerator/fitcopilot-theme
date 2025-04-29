@@ -2,7 +2,7 @@
 // Only import from here to ensure all components
 // have access to the same tokens
 
-// Core tokens
+// Core tokens (semantic naming layer)
 @forward './colors';
 @forward './typography';
 @forward './spacing';
@@ -13,8 +13,11 @@
 @forward './mixins';
 @forward './breakpoints';
 
-// Component-specific tokens
+// Component-specific tokens (extend semantic layer)
 @forward './component-tokens';
 
 // Component Base Styles
 @forward './components';
+
+// Import theme variables (base color values)
+@import '../theme.scss';
