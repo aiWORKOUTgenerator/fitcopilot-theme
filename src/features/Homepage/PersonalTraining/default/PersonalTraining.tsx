@@ -34,7 +34,7 @@ const PersonalTraining: React.FC = () => {
             name: "Alex Rivera",
             image: "/assets/trainers/trainer1.jpg", // Replace with actual image path
             specialty: "Strength & Conditioning",
-            specialtyIcon: <span className="icon-xs"><Dumbbell /></span>,
+            specialtyIcon: <Dumbbell size={14} />,
             bio: "Specialized in transforming physiques through science-based training protocols. Alex has helped over 200 clients achieve their fitness goals.",
             years: 8,
             clients: 178,
@@ -50,7 +50,7 @@ const PersonalTraining: React.FC = () => {
             name: "Morgan Chen",
             image: "/assets/trainers/trainer2.jpg", // Replace with actual image path
             specialty: "Nutrition & Weight Loss",
-            specialtyIcon: <span className="icon-xs"><Heart /></span>,
+            specialtyIcon: <Heart size={14} />,
             bio: "Certified nutritionist and weight management specialist. Morgan creates personalized diet plans that complement your training regimen.",
             years: 6,
             clients: 152,
@@ -61,7 +61,7 @@ const PersonalTraining: React.FC = () => {
             name: "Jordan Smith",
             image: "/assets/trainers/trainer3.jpg", // Replace with actual image path
             specialty: "Athletic Performance",
-            specialtyIcon: <span className="icon-xs"><Award /></span>,
+            specialtyIcon: <Award size={14} />,
             bio: "Former professional athlete who now trains competitors at all levels. Specializes in sport-specific training and performance enhancement.",
             years: 10,
             clients: 215,
@@ -70,20 +70,20 @@ const PersonalTraining: React.FC = () => {
     ];
 
     return (
-        <section className="personal-training-section">
+        <section className="personal-training-section w-full py-20 px-4 bg-gray-900">
             {/* Header */}
-            <div className="section-header">
-                <span className="section-tag">Expert Coaching</span>
-                <h2 className="section-title">
-                    Personal <span className="highlight">Trainers</span>
+            <div className="text-center mb-16">
+                <span className="text-xs font-bold tracking-widest uppercase text-violet-300 mb-2 block">Expert Coaching</span>
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+                    Personal <span className="bg-gradient-to-r from-violet-300 to-indigo-400 text-transparent bg-clip-text">Trainers</span>
                 </h2>
-                <p className="section-description">
+                <p className="text-gray-400 max-w-2xl mx-auto">
                     Work directly with our certified fitness professionals who will create custom training programs tailored to your specific goals and needs.
                 </p>
             </div>
 
             {/* Trainers Grid */}
-            <div className="trainers-container">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-16">
                 {trainers.map((trainer) => (
                     <div
                         key={trainer.id}
@@ -91,19 +91,19 @@ const PersonalTraining: React.FC = () => {
                     >
                         {/* Trainer Image */}
                         <div
-                            className="trainer-image"
+                            className={`trainer-image ${!trainer.image || trainer.image.includes('assets/trainers') ? 'img-placeholder' : ''}`}
                             style={trainer.image && !trainer.image.includes('assets/trainers') ? { backgroundImage: `url(${trainer.image})` } : {}}
                         >
                             {(!trainer.image || trainer.image.includes('assets/trainers')) && (
-                                <div className="image-placeholder">
-                                    <span className="icon-lg"><User /></span>
+                                <div className="text-white">
+                                    <User size={48} />
                                 </div>
                             )}
                         </div>
 
                         {/* Trainer Specialty Tag */}
-                        <div className="specialty">
-                            <span className="icon">{trainer.specialtyIcon}</span>
+                        <div className="trainer-specialty">
+                            {trainer.specialtyIcon}
                             {trainer.specialty}
                         </div>
 
@@ -113,20 +113,20 @@ const PersonalTraining: React.FC = () => {
 
                         {/* Trainer Stats */}
                         <div className="trainer-stats">
-                            <div className="stat">
-                                <span className="value">{trainer.years}</span>
-                                <span className="label">Years Exp</span>
+                            <div className="stat-item">
+                                <span className="stat-value">{trainer.years}</span>
+                                <span className="stat-label">Years Exp</span>
                             </div>
-                            <div className="stat">
-                                <span className="value">{trainer.clients}</span>
-                                <span className="label">Clients</span>
+                            <div className="stat-item">
+                                <span className="stat-value">{trainer.clients}</span>
+                                <span className="stat-label">Clients</span>
                             </div>
                         </div>
 
                         {/* Action Button */}
-                        <button className="book-button">
+                        <button className="action-button">
                             Schedule Session
-                            <span className="icon icon-md"><ArrowRight /></span>
+                            <ArrowRight size={18} />
                         </button>
 
                         {/* Flip Card for Featured Trainer */}
@@ -136,65 +136,63 @@ const PersonalTraining: React.FC = () => {
                                     className={`flip-card ${flippedCards[trainer.id] ? 'flipped' : ''}`}
                                     onClick={() => flipCard(trainer.id)}
                                 >
-                                    <div className="flip-card-inner">
-                                        {/* Front of Card (Image) */}
-                                        <div className="flip-card-front">
-                                            {trainer.videoCard.image && !trainer.videoCard.image.includes('assets') ? (
-                                                <img
-                                                    src={trainer.videoCard.image}
-                                                    alt={trainer.videoCard.title}
-                                                />
-                                            ) : (
-                                                <div className="trainer-placeholder">
-                                                    <div className="icon">
-                                                        <span className="icon-xl"><Play /></span>
-                                                    </div>
+                                    {/* Front of Card (Image) */}
+                                    <div className="flip-card-front">
+                                        {trainer.videoCard.image && !trainer.videoCard.image.includes('assets') ? (
+                                            <img
+                                                src={trainer.videoCard.image}
+                                                alt={trainer.videoCard.title}
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center">
+                                                <div className="text-white opacity-70">
+                                                    <Play size={64} />
                                                 </div>
-                                            )}
+                                            </div>
+                                        )}
 
-                                            {/* Overlay with Title */}
-                                            <div className="overlay">
-                                                <div className="flip-title">{trainer.videoCard.title}</div>
-                                                <div className="flip-hint">
-                                                    Click to watch video
-                                                    <span className="icon"><span className="icon-sm"><Play /></span></span>
-                                                </div>
+                                        {/* Overlay with Title */}
+                                        <div className="overlay">
+                                            <div className="flip-card-title">{trainer.videoCard.title}</div>
+                                            <div className="flip-card-hint">
+                                                Click to watch video
+                                                <Play size={16} />
                                             </div>
                                         </div>
+                                    </div>
 
-                                        {/* Back of Card (Video Player) */}
-                                        <div className="flip-card-back">
-                                            <div className="video-content">
-                                                {flippedCards[trainer.id] && (
-                                                    <iframe
-                                                        src={trainer.videoCard.videoUrl}
-                                                        title={trainer.videoCard.title}
-                                                        frameBorder="0"
-                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                        allowFullScreen
-                                                    ></iframe>
-                                                )}
-                                            </div>
-                                            <div className="video-controls">
-                                                <button
-                                                    className="control-button"
-                                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                        e.stopPropagation();
-                                                        flipCard(trainer.id);
-                                                    }}
-                                                >
-                                                    <span className="icon-md"><RefreshCw /></span>
-                                                </button>
-                                                <button
-                                                    className="control-button close-button"
-                                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                        e.stopPropagation();
-                                                        flipCard(trainer.id);
-                                                    }}
-                                                >
-                                                    <span className="icon-md"><X /></span>
-                                                </button>
-                                            </div>
+                                    {/* Back of Card (Video Player) */}
+                                    <div className="flip-card-back">
+                                        <div className="video-container">
+                                            {flippedCards[trainer.id] && (
+                                                <iframe
+                                                    src={trainer.videoCard.videoUrl}
+                                                    title={trainer.videoCard.title}
+                                                    frameBorder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                ></iframe>
+                                            )}
+                                        </div>
+                                        <div className="video-controls">
+                                            <button
+                                                className="control-button"
+                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                    e.stopPropagation();
+                                                    flipCard(trainer.id);
+                                                }}
+                                            >
+                                                <RefreshCw size={20} />
+                                            </button>
+                                            <button
+                                                className="control-button close-button"
+                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                    e.stopPropagation();
+                                                    flipCard(trainer.id);
+                                                }}
+                                            >
+                                                <X size={20} />
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -205,7 +203,7 @@ const PersonalTraining: React.FC = () => {
             </div>
 
             {/* Consultation CTA */}
-            <div className="booking-box">
+            <div className="booking-box max-w-4xl mx-auto">
                 <div className="max-w-xl">
                     <h3 className="booking-title">Ready for Personalized Training?</h3>
                     <p className="booking-text">
@@ -213,13 +211,13 @@ const PersonalTraining: React.FC = () => {
                     </p>
                     <button className="booking-button">
                         Book Free Consultation
-                        <span className="icon"><span className="icon-md"><ArrowRight /></span></span>
+                        <ArrowRight size={20} />
                     </button>
                 </div>
 
                 {/* Decorative Element */}
                 <div className="absolute right-0 bottom-0 opacity-20 hidden md:block" aria-hidden="true">
-                    <span style={{ width: '180px', height: '180px', display: 'block' }}><Users /></span>
+                    <Users size={180} />
                 </div>
             </div>
         </section>
