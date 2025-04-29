@@ -6,16 +6,17 @@ import {
     Play,
     RefreshCw,
     User,
-    Users,
     X
 } from 'lucide-react';
 import React, { MouseEvent, useState } from 'react';
+import Button from '../../../../components/UI/Button/Button';
 import '../PersonalTraining.scss';
+import { PersonalTrainingProps, Trainer } from '../types';
 
 /**
  * Default Personal Training component for the homepage
  */
-const PersonalTraining: React.FC = () => {
+const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers }) => {
     // Track flipped state for each trainer by ID
     const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
 
@@ -27,12 +28,12 @@ const PersonalTraining: React.FC = () => {
         }));
     };
 
-    // Trainer data
-    const trainers = [
+    // Default trainer data if none provided
+    const trainers: Trainer[] = propTrainers || [
         {
             id: "trainer-1",
             name: "Alex Rivera",
-            image: "/assets/trainers/trainer1.jpg", // Replace with actual image path
+            image: "/assets/trainers/trainer1.jpg",
             specialty: "Strength & Conditioning",
             specialtyIcon: <Dumbbell size={14} />,
             bio: "Specialized in transforming physiques through science-based training protocols. Alex has helped over 200 clients achieve their fitness goals.",
@@ -41,14 +42,14 @@ const PersonalTraining: React.FC = () => {
             featured: true,
             videoCard: {
                 title: "High-Intensity Workout Demo",
-                image: "/assets/trainers/workout-demo.jpg", // Replace with actual image path
-                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1", // Replace with actual video URL
+                image: "/assets/trainers/workout-demo.jpg",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
             }
         },
         {
             id: "trainer-2",
             name: "Morgan Chen",
-            image: "/assets/trainers/trainer2.jpg", // Replace with actual image path
+            image: "/assets/trainers/trainer2.jpg",
             specialty: "Nutrition & Weight Loss",
             specialtyIcon: <Heart size={14} />,
             bio: "Certified nutritionist and weight management specialist. Morgan creates personalized diet plans that complement your training regimen.",
@@ -59,7 +60,7 @@ const PersonalTraining: React.FC = () => {
         {
             id: "trainer-3",
             name: "Jordan Smith",
-            image: "/assets/trainers/trainer3.jpg", // Replace with actual image path
+            image: "/assets/trainers/trainer3.jpg",
             specialty: "Athletic Performance",
             specialtyIcon: <Award size={14} />,
             bio: "Former professional athlete who now trains competitors at all levels. Specializes in sport-specific training and performance enhancement.",
@@ -69,8 +70,13 @@ const PersonalTraining: React.FC = () => {
         }
     ];
 
+    // Find featured trainer
+    const featuredTrainer = trainers.find(trainer => trainer.featured);
+    // Get regular trainers
+    const regularTrainers = trainers.filter(trainer => !trainer.featured);
+
     return (
-        <section className="personal-training-section w-full py-20 px-4 bg-gray-900">
+        <section className="personal-training-section w-full py-20 px-4 bg-black">
             {/* Header */}
             <div className="text-center mb-16">
                 <span className="text-xs font-bold tracking-widest uppercase text-violet-300 mb-2 block">Expert Coaching</span>
@@ -82,142 +88,198 @@ const PersonalTraining: React.FC = () => {
                 </p>
             </div>
 
-            {/* Trainers Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-16">
-                {trainers.map((trainer) => (
-                    <div
-                        key={trainer.id}
-                        className={`trainer-card ${trainer.featured ? 'md:col-span-2 md:row-span-2' : ''}`}
-                    >
-                        {/* Trainer Image */}
-                        <div
-                            className={`trainer-image ${!trainer.image || trainer.image.includes('assets/trainers') ? 'img-placeholder' : ''}`}
-                            style={trainer.image && !trainer.image.includes('assets/trainers') ? { backgroundImage: `url(${trainer.image})` } : {}}
-                        >
-                            {(!trainer.image || trainer.image.includes('assets/trainers')) && (
-                                <div className="text-white">
-                                    <User size={48} />
+            {/* Two-Column Layout */}
+            <div className="max-w-6xl mx-auto mb-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Left Column - Featured Trainer */}
+                    {featuredTrainer && (
+                        <div className="md:pr-4">
+                            <div className="rounded-xl overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-800 h-full">
+                                {/* Trainer Image */}
+                                <div className="aspect-video bg-gray-800 flex items-center justify-center">
+                                    {featuredTrainer.image && !featuredTrainer.image.includes('assets/trainers') ? (
+                                        <img
+                                            src={featuredTrainer.image}
+                                            alt={featuredTrainer.name}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <User size={48} className="text-white opacity-70" />
+                                    )}
                                 </div>
-                            )}
-                        </div>
 
-                        {/* Trainer Specialty Tag */}
-                        <div className="trainer-specialty">
-                            {trainer.specialtyIcon}
-                            {trainer.specialty}
-                        </div>
+                                <div className="p-6">
+                                    {/* Trainer Specialty Tag */}
+                                    <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-violet-900/50 text-violet-300 mb-3">
+                                        {featuredTrainer.specialtyIcon}
+                                        <span className="ml-1">{featuredTrainer.specialty}</span>
+                                    </div>
 
-                        {/* Trainer Info */}
-                        <h3 className="trainer-name">{trainer.name}</h3>
-                        <p className="trainer-bio">{trainer.bio}</p>
+                                    {/* Trainer Info */}
+                                    <h3 className="text-xl font-bold mb-2 text-white">{featuredTrainer.name}</h3>
+                                    <p className="text-gray-400 mb-4">{featuredTrainer.bio}</p>
 
-                        {/* Trainer Stats */}
-                        <div className="trainer-stats">
-                            <div className="stat-item">
-                                <span className="stat-value">{trainer.years}</span>
-                                <span className="stat-label">Years Exp</span>
-                            </div>
-                            <div className="stat-item">
-                                <span className="stat-value">{trainer.clients}</span>
-                                <span className="stat-label">Clients</span>
-                            </div>
-                        </div>
+                                    {/* Trainer Stats */}
+                                    <div className="grid grid-cols-2 gap-4 mb-6">
+                                        <div className="text-center">
+                                            <span className="text-2xl font-bold text-violet-300 block mb-1">{featuredTrainer.years}</span>
+                                            <span className="text-sm text-gray-500">Years Exp</span>
+                                        </div>
+                                        <div className="text-center">
+                                            <span className="text-2xl font-bold text-violet-300 block mb-1">{featuredTrainer.clients}</span>
+                                            <span className="text-sm text-gray-500">Clients</span>
+                                        </div>
+                                    </div>
 
-                        {/* Action Button */}
-                        <button className="action-button">
-                            Schedule Session
-                            <ArrowRight size={18} />
-                        </button>
+                                    {/* Action Button */}
+                                    <Button
+                                        variant="primary"
+                                        size="medium"
+                                        fullWidth
+                                        themeContext="personal-training"
+                                        rightIcon={<ArrowRight size={18} />}
+                                    >
+                                        Schedule Session
+                                    </Button>
 
-                        {/* Flip Card for Featured Trainer */}
-                        {trainer.featured && trainer.videoCard && (
-                            <div className="flip-card-container">
-                                <div
-                                    className={`flip-card ${flippedCards[trainer.id] ? 'flipped' : ''}`}
-                                    onClick={() => flipCard(trainer.id)}
-                                >
-                                    {/* Front of Card (Image) */}
-                                    <div className="flip-card-front">
-                                        {trainer.videoCard.image && !trainer.videoCard.image.includes('assets') ? (
-                                            <img
-                                                src={trainer.videoCard.image}
-                                                alt={trainer.videoCard.title}
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center">
-                                                <div className="text-white opacity-70">
-                                                    <Play size={64} />
+                                    {/* Flip Card for Featured Trainer */}
+                                    {featuredTrainer.videoCard && (
+                                        <div className="mt-6">
+                                            <div
+                                                className={`flip-card ${flippedCards[featuredTrainer.id] ? 'flipped' : ''}`}
+                                                onClick={() => flipCard(featuredTrainer.id)}
+                                            >
+                                                {/* Front of Card */}
+                                                <div className="flip-card-front bg-gray-800 flex items-center justify-center flex-col rounded-lg aspect-video">
+                                                    <Play size={64} className="text-white opacity-70 mb-4" />
+                                                    <h4 className="text-lg font-medium text-white">{featuredTrainer.videoCard.title}</h4>
+                                                    <p className="text-sm text-gray-400 flex items-center mt-2">
+                                                        Click to watch
+                                                        <Play size={16} className="ml-1" />
+                                                    </p>
+                                                </div>
+
+                                                {/* Back of Card */}
+                                                <div className="flip-card-back bg-gray-800 rounded-lg">
+                                                    <div className="flex-grow flex items-center justify-center p-4">
+                                                        {flippedCards[featuredTrainer.id] && featuredTrainer.videoCard.videoUrl && (
+                                                            <iframe
+                                                                src={featuredTrainer.videoCard.videoUrl}
+                                                                title={featuredTrainer.videoCard.title}
+                                                                frameBorder="0"
+                                                                className="w-full h-full"
+                                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                                allowFullScreen
+                                                            ></iframe>
+                                                        )}
+                                                    </div>
+                                                    <div className="bg-gray-700 p-3 flex justify-between">
+                                                        <button
+                                                            className="p-2 rounded-full bg-gray-600 text-white"
+                                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                                e.stopPropagation();
+                                                                flipCard(featuredTrainer.id);
+                                                            }}
+                                                        >
+                                                            <RefreshCw size={20} />
+                                                        </button>
+                                                        <button
+                                                            className="p-2 rounded-full bg-gray-600 text-white"
+                                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                                e.stopPropagation();
+                                                                flipCard(featuredTrainer.id);
+                                                            }}
+                                                        >
+                                                            <X size={20} />
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        )}
-
-                                        {/* Overlay with Title */}
-                                        <div className="overlay">
-                                            <div className="flip-card-title">{trainer.videoCard.title}</div>
-                                            <div className="flip-card-hint">
-                                                Click to watch video
-                                                <Play size={16} />
-                                            </div>
                                         </div>
-                                    </div>
-
-                                    {/* Back of Card (Video Player) */}
-                                    <div className="flip-card-back">
-                                        <div className="video-container">
-                                            {flippedCards[trainer.id] && (
-                                                <iframe
-                                                    src={trainer.videoCard.videoUrl}
-                                                    title={trainer.videoCard.title}
-                                                    frameBorder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowFullScreen
-                                                ></iframe>
-                                            )}
-                                        </div>
-                                        <div className="video-controls">
-                                            <button
-                                                className="control-button"
-                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                    e.stopPropagation();
-                                                    flipCard(trainer.id);
-                                                }}
-                                            >
-                                                <RefreshCw size={20} />
-                                            </button>
-                                            <button
-                                                className="control-button close-button"
-                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                    e.stopPropagation();
-                                                    flipCard(trainer.id);
-                                                }}
-                                            >
-                                                <X size={20} />
-                                            </button>
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
                             </div>
-                        )}
+                        </div>
+                    )}
+
+                    {/* Right Column - Regular Trainers */}
+                    <div className="md:pl-4">
+                        <div className="space-y-8">
+                            {regularTrainers.map((trainer) => (
+                                <div
+                                    key={trainer.id}
+                                    className="rounded-xl overflow-hidden bg-gradient-to-br from-gray-900 to-gray-800 border border-gray-800"
+                                >
+                                    {/* Trainer Image */}
+                                    <div className="aspect-video bg-gray-800 flex items-center justify-center">
+                                        {trainer.image && !trainer.image.includes('assets/trainers') ? (
+                                            <img
+                                                src={trainer.image}
+                                                alt={trainer.name}
+                                                className="w-full h-full object-cover"
+                                            />
+                                        ) : (
+                                            <User size={48} className="text-white opacity-70" />
+                                        )}
+                                    </div>
+
+                                    <div className="p-6">
+                                        {/* Trainer Specialty Tag */}
+                                        <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-violet-900/50 text-violet-300 mb-3">
+                                            {trainer.specialtyIcon}
+                                            <span className="ml-1">{trainer.specialty}</span>
+                                        </div>
+
+                                        {/* Trainer Info */}
+                                        <h3 className="text-xl font-bold mb-2 text-white">{trainer.name}</h3>
+                                        <p className="text-gray-400 mb-4">{trainer.bio}</p>
+
+                                        {/* Trainer Stats */}
+                                        <div className="grid grid-cols-2 gap-4 mb-6">
+                                            <div className="text-center">
+                                                <span className="text-2xl font-bold text-violet-300 block mb-1">{trainer.years}</span>
+                                                <span className="text-sm text-gray-500">Years Exp</span>
+                                            </div>
+                                            <div className="text-center">
+                                                <span className="text-2xl font-bold text-violet-300 block mb-1">{trainer.clients}</span>
+                                                <span className="text-sm text-gray-500">Clients</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Action Button */}
+                                        <Button
+                                            variant="primary"
+                                            size="medium"
+                                            fullWidth
+                                            themeContext="personal-training"
+                                            rightIcon={<ArrowRight size={18} />}
+                                        >
+                                            Schedule Session
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                ))}
+                </div>
             </div>
 
             {/* Consultation CTA */}
-            <div className="booking-box max-w-4xl mx-auto">
-                <div className="max-w-xl">
-                    <h3 className="booking-title">Ready for Personalized Training?</h3>
-                    <p className="booking-text">
+            <div className="max-w-6xl mx-auto rounded-2xl overflow-hidden bg-violet-600 p-8">
+                <div className="relative z-10">
+                    <h3 className="text-3xl font-bold mb-4 text-white">Ready for Personalized Training?</h3>
+                    <p className="text-violet-100 mb-8">
                         Schedule a free consultation with one of our expert trainers. We'll discuss your goals, fitness level, and create a plan tailored just for you.
                     </p>
-                    <button className="booking-button">
+                    {/* CTA Button */}
+                    <Button
+                        variant="secondary"
+                        size="large"
+                        themeContext="personal-training-cta"
+                        rightIcon={<ArrowRight size={20} />}
+                    >
                         Book Free Consultation
-                        <ArrowRight size={20} />
-                    </button>
-                </div>
-
-                {/* Decorative Element */}
-                <div className="absolute right-0 bottom-0 opacity-20 hidden md:block" aria-hidden="true">
-                    <Users size={180} />
+                    </Button>
                 </div>
             </div>
         </section>

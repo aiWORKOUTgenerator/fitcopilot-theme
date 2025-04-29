@@ -5,60 +5,81 @@ import {
     Dumbbell,
     Heart,
     Medal,
-    Star,
-    User
+    Play,
+    RefreshCw,
+    User,
+    Users,
+    X
 } from 'lucide-react';
-import React from 'react';
+import React, { MouseEvent, useState } from 'react';
+import '../PersonalTraining.scss';
+import { PersonalTrainingProps, Trainer } from '../types';
 
 /**
  * Gym variant of the Personal Training component
  */
-const PersonalTraining: React.FC = () => {
-    // Trainer data with gym-specific focus
-    const trainers = [
+const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers }) => {
+    // Track flipped state for each trainer by ID
+    const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+
+    // Flip card handlers
+    const flipCard = (trainerId: string) => {
+        setFlippedCards(prev => ({
+            ...prev,
+            [trainerId]: !prev[trainerId]
+        }));
+    };
+
+    // Default trainer data if none provided
+    const trainers: Trainer[] = propTrainers || [
         {
+            id: "trainer-1",
             name: "Alex Rivera",
-            image: "/assets/trainers/trainer1.jpg", // Replace with actual image path
+            image: "/assets/trainers/trainer1.jpg",
             specialty: "Hypertrophy Coach",
-            specialtyIcon: <Dumbbell />,
-            certifications: ["NASM-CPT", "ISSA Specialist in Sports Nutrition"],
+            specialtyIcon: <Dumbbell size={14} />,
             bio: "With a background in competitive bodybuilding, Alex specializes in muscle development, physique enhancement, and body recomposition strategies.",
-            rating: 4.9,
-            reviews: 48,
-            availability: "Mon-Fri"
+            years: 8,
+            clients: 178,
+            featured: true,
+            videoCard: {
+                title: "High-Intensity Workout Demo",
+                image: "/assets/trainers/workout-demo.jpg",
+                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
+            }
         },
         {
+            id: "trainer-2",
             name: "Morgan Chen",
-            image: "/assets/trainers/trainer2.jpg", // Replace with actual image path
+            image: "/assets/trainers/trainer2.jpg",
             specialty: "Wellness Coach",
-            specialtyIcon: <Heart />,
-            certifications: ["ACE-CPT", "Precision Nutrition Level 2"],
+            specialtyIcon: <Heart size={14} />,
             bio: "Morgan combines nutritional coaching with personalized training to help clients transform their bodies and improve overall health markers.",
-            rating: 4.8,
-            reviews: 52,
-            availability: "Tue-Sat"
+            years: 6,
+            clients: 152,
+            featured: false
         },
         {
+            id: "trainer-3",
             name: "Jordan Smith",
-            image: "/assets/trainers/trainer3.jpg", // Replace with actual image path
+            image: "/assets/trainers/trainer3.jpg",
             specialty: "Performance Coach",
-            specialtyIcon: <Award />,
-            certifications: ["CSCS", "USAW Level 1"],
+            specialtyIcon: <Award size={14} />,
             bio: "Former D1 athlete with expertise in strength development, power output, and athletic performance for both competitive and recreational athletes.",
-            rating: 5.0,
-            reviews: 37,
-            availability: "Mon-Wed, Fri"
+            years: 10,
+            clients: 215,
+            featured: false
         },
         {
+            id: "trainer-4",
             name: "Taylor West",
-            image: "/assets/trainers/trainer4.jpg", // Replace with actual image path
+            image: "/assets/trainers/trainer4.jpg",
             specialty: "Mobility Specialist",
-            specialtyIcon: <Medal />,
-            certifications: ["ACSM-CPT", "FMS Level 2"],
+            specialtyIcon: <Medal size={14} />,
             bio: "Specializing in mobility training, injury prevention, and corrective exercise. Perfect for those looking to improve movement quality and reduce pain.",
-            rating: 4.7,
-            reviews: 41,
-            availability: "Wed-Sun"
+            years: 4,
+            clients: 89,
+            featured: false
         }
     ];
 
@@ -84,7 +105,7 @@ const PersonalTraining: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
                     {trainers.map((trainer, index) => (
                         <div
-                            key={index}
+                            key={trainer.id}
                             className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-100 h-full flex flex-col"
                         >
                             {/* Trainer image */}
@@ -103,7 +124,8 @@ const PersonalTraining: React.FC = () => {
 
                                 {/* Specialty badge */}
                                 <div className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full text-sm font-medium text-violet-700 flex items-center shadow-md">
-                                    {React.cloneElement(trainer.specialtyIcon, { size: 14, className: "mr-1" })}
+                                    {/* Safely render the icon */}
+                                    <span className="mr-1">{trainer.specialtyIcon}</span>
                                     {trainer.specialty}
                                 </div>
                             </div>
@@ -112,32 +134,21 @@ const PersonalTraining: React.FC = () => {
                                 {/* Name and rating */}
                                 <div className="flex justify-between items-start mb-3">
                                     <h3 className="text-xl font-bold text-gray-900">{trainer.name}</h3>
-                                    <div className="flex items-center text-sm">
-                                        <Star size={16} className="text-amber-400 mr-1" />
-                                        <span className="font-medium">{trainer.rating}</span>
-                                        <span className="text-gray-500 ml-1">({trainer.reviews})</span>
-                                    </div>
                                 </div>
 
                                 {/* Bio */}
                                 <p className="text-gray-600 mb-4 flex-grow">{trainer.bio}</p>
 
-                                {/* Certifications */}
+                                {/* Stats */}
                                 <div className="mb-4">
-                                    <p className="text-sm font-medium text-gray-700 mb-1">Certifications:</p>
-                                    <div className="flex flex-wrap gap-1">
-                                        {trainer.certifications.map((cert, i) => (
-                                            <span key={i} className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
-                                                {cert}
-                                            </span>
-                                        ))}
+                                    <div className="flex items-center text-sm text-gray-500 mb-2">
+                                        <Calendar size={14} className="mr-2" />
+                                        <span>{trainer.years} years experience</span>
                                     </div>
-                                </div>
-
-                                {/* Availability */}
-                                <div className="flex items-center text-sm text-gray-500 mb-4">
-                                    <Calendar size={14} className="mr-1" />
-                                    <span>Available: {trainer.availability}</span>
+                                    <div className="flex items-center text-sm text-gray-500">
+                                        <Users size={14} className="mr-2" />
+                                        <span>{trainer.clients}+ clients trained</span>
+                                    </div>
                                 </div>
 
                                 {/* CTA button */}
@@ -146,6 +157,62 @@ const PersonalTraining: React.FC = () => {
                                     <ArrowRight size={16} className="ml-2" />
                                 </button>
                             </div>
+
+                            {/* Video card for featured trainer */}
+                            {trainer.featured && trainer.videoCard && (
+                                <div className="p-6 pt-0">
+                                    <div
+                                        className={`flip-card ${flippedCards[trainer.id] ? 'flipped' : ''}`}
+                                        onClick={() => flipCard(trainer.id)}
+                                    >
+                                        {/* Front of Card */}
+                                        <div className="flip-card-front bg-gray-50 flex items-center justify-center flex-col rounded-lg">
+                                            <Play size={64} className="text-violet-500 mb-4" />
+                                            <h4 className="text-lg font-medium text-gray-900">{trainer.videoCard.title}</h4>
+                                            <p className="text-sm text-gray-500 flex items-center mt-2">
+                                                Click to watch
+                                                <Play size={16} className="ml-1 text-violet-500" />
+                                            </p>
+                                        </div>
+
+                                        {/* Back of Card */}
+                                        <div className="flip-card-back bg-gray-50 rounded-lg">
+                                            <div className="flex-grow flex items-center justify-center p-4">
+                                                {flippedCards[trainer.id] && trainer.videoCard.videoUrl && (
+                                                    <iframe
+                                                        src={trainer.videoCard.videoUrl}
+                                                        title={trainer.videoCard.title}
+                                                        frameBorder="0"
+                                                        className="w-full h-full"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                        allowFullScreen
+                                                    ></iframe>
+                                                )}
+                                            </div>
+                                            <div className="bg-gray-100 p-3 flex justify-between">
+                                                <button
+                                                    className="p-2 rounded-full bg-violet-100 text-violet-600"
+                                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                        e.stopPropagation();
+                                                        flipCard(trainer.id);
+                                                    }}
+                                                >
+                                                    <RefreshCw size={20} />
+                                                </button>
+                                                <button
+                                                    className="p-2 rounded-full bg-violet-100 text-violet-600"
+                                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                        e.stopPropagation();
+                                                        flipCard(trainer.id);
+                                                    }}
+                                                >
+                                                    <X size={20} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

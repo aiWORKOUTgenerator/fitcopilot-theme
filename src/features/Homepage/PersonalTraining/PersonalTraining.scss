@@ -2,10 +2,10 @@
 @import "../../../styles/design-system/index.scss";
 
 .personal-training-section {
-    position: var(--pos-pt-relative);
-    overflow: var(--overflow-pt-hidden);
-    padding: var(--spacing-8) 0;
-    background-color: var(--color-pt-section-bg);
+    position: relative;
+    overflow: hidden;
+    padding: 2rem 0;
+    background-color: #000;
 
     // Grid pattern background
     &::before {
@@ -260,118 +260,59 @@
     }
 
     .flip-card {
-        perspective: var(--perspective-pt-flip-card);
-        height: var(--height-pt-flip-card);
-        position: var(--pos-pt-relative);
-        transform-style: var(--transform-style-pt-3d);
-        transition: var(--transition-pt-flip);
-        cursor: var(--cursor-pt-pointer);
+        perspective: 1000px;
+        height: 240px;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s;
+        cursor: pointer;
+        border-radius: 0.5rem;
+        overflow: hidden;
 
         &.flipped {
-            .flip-card-inner {
-                transform: var(--transform-pt-flip-y-180);
-            }
-        }
-
-        .flip-card-inner {
-            position: var(--pos-pt-relative);
-            width: var(--width-pt-img-full);
-            height: var(--height-pt-trainer-img);
-            transform-style: var(--transform-style-pt-3d);
-            transition: var(--transition-pt-flip);
+            transform: rotateY(180deg);
         }
 
         .flip-card-front,
         .flip-card-back {
-            position: var(--pos-pt-absolute);
-            width: var(--width-pt-img-full);
-            height: var(--height-pt-trainer-img);
-            backface-visibility: var(--backface-pt-hidden);
-            border-radius: var(--radius-pt-img);
-            overflow: var(--overflow-pt-hidden);
-            box-shadow: var(--shadow-pt-flip-card);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 0.5rem;
+            overflow: hidden;
         }
 
         .flip-card-front {
-            transform: var(--transform-pt-flip-y-0);
-            background-color: var(--color-gray-800);
-
-            img {
-                width: var(--width-pt-img-full);
-                height: var(--height-pt-trainer-img);
-                object-fit: var(--object-fit-pt-cover);
-            }
-
-            .overlay {
-                position: var(--pos-pt-absolute);
-                top: var(--pos-pt-top-0);
-                left: var(--pos-pt-left-0);
-                right: var(--pos-pt-right-0);
-                bottom: var(--pos-pt-bottom-0);
-                background: var(--gradient-pt-overlay);
-                display: var(--display-pt-flex);
-                flex-direction: var(--display-pt-flex-column);
-                justify-content: var(--justify-pt-flex-end);
-                padding: var(--padding-pt-overlay);
-
-                .flip-title {
-                    font-size: var(--size-pt-flip-title);
-                    font-weight: var(--weight-pt-flip-title);
-                    margin-bottom: var(--spacing-pt-flip-title-bottom);
-                    color: var(--color-pt-white);
-                }
-
-                .flip-hint {
-                    display: var(--display-pt-flex);
-                    align-items: var(--align-pt-center);
-                    color: var(--color-pt-white-80);
-                    font-size: var(--size-pt-flip-hint);
-
-                    .icon {
-                        margin-right: var(--spacing-pt-flip-hint-icon-left);
-                    }
-                }
-            }
+            transform: rotateY(0deg);
+            background-color: var(--color-gray-800, #1f2937);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            text-align: center;
         }
 
         .flip-card-back {
-            transform: var(--transform-pt-flip-y-180);
-            background-color: var(--color-pt-card-back-bg);
-            display: var(--display-pt-flex);
-            flex-direction: var(--display-pt-flex-column);
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            background-color: var(--color-gray-800, #1f2937);
 
-            .video-content {
-                position: var(--pos-pt-relative);
-                flex-grow: var(--flex-pt-grow);
-                display: var(--display-pt-flex);
-                align-items: var(--align-pt-center);
-                justify-content: var(--justify-pt-center);
+            iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
             }
+        }
+    }
 
-            .video-controls {
-                display: var(--display-pt-flex);
-                align-items: var(--align-pt-center);
-                justify-content: var(--justify-pt-space-between);
-                padding: var(--padding-pt-controls);
-                background-color: var(--color-pt-controls-bg);
-            }
+    button {
+        transition: all 0.3s ease;
 
-            .control-button {
-                background: var(--color-pt-transparent);
-                border: var(--border-pt-none);
-                width: var(--size-pt-control-button);
-                height: var(--size-pt-control-button);
-                border-radius: var(--radius-pt-round);
-                display: var(--display-pt-flex);
-                align-items: var(--align-pt-center);
-                justify-content: var(--justify-pt-center);
-                color: var(--color-pt-white);
-                transition: background-color var(--duration-pt-control-transition) var(--ease-pt-transition);
-
-                &:hover {
-                    background-color: var(--color-pt-control-hover-bg);
-                }
-            }
+        &:hover {
+            transform: translateY(-2px);
         }
     }
 }
@@ -387,29 +328,49 @@
     }
 }
 
-// Accessibility: Reduced motion preference
-@media (prefers-reduced-motion) {
-    .personal-training-section {
-        .booking-box::before {
-            animation: var(--animation-pt-none);
-        }
+// Media query for reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+    .flip-card {
+        transition: transform 0.1s;
+    }
+}
 
-        .flip-card {
-            .flip-card-inner {
-                transition: transform var(--duration-pt-reduced-transition) var(--ease-pt-transition);
-            }
-        }
+// Button styling for PersonalTraining section
+.button--personal-training {
+    background: linear-gradient(to right, #8b5cf6, #6d28d9);
+    color: white;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    height: auto;
 
-        .trainer-card {
-            transition: transform var(--duration-pt-reduced-transition) var(--ease-pt-transition),
-                box-shadow var(--duration-pt-reduced-transition) var(--ease-pt-transition),
-                border-color var(--duration-pt-reduced-transition) var(--ease-pt-transition);
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.2);
+        filter: none;
+    }
 
-            &:hover {
-                .trainer-image img {
-                    transform: var(--transform-pt-none);
-                }
-            }
-        }
+    .button__icon--right {
+        margin-left: 0.5rem;
+    }
+}
+
+// CTA Button styling
+.button--personal-training-cta {
+    background-color: white;
+    color: #7c3aed;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    height: auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
+    &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        filter: none;
+    }
+
+    .button__icon--right {
+        margin-left: 0.5rem;
     }
 }
