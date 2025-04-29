@@ -1,5 +1,33 @@
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  safelist: [
+    // Animation classes that might be added dynamically
+    'animate-fade-in',
+    'animate-fade-slide-up',
+    'opacity-0',
+    'opacity-100',
+    'invisible',
+    'visible',
+    // Feature-specific classes that might be dynamically applied
+    'from-lime-300',
+    'to-emerald-400',
+    'from-cyan-300',
+    'to-blue-400',
+    'from-violet-300',
+    'to-purple-400',
+    'from-amber-300',
+    'to-orange-400',
+    // Dynamic variant styles
+    'lime-glow',
+    'cyan-glow',
+    'violet-glow',
+    'amber-glow',
+    // Tooltip classes
+    'tooltip-top',
+    'tooltip-bottom',
+    'tooltip-left',
+    'tooltip-right',
+  ],
   theme: {
     extend: {
       colors: {

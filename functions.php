@@ -51,6 +51,45 @@ function fitcopilot_dequeue_styles() {
 }
 add_action('wp_enqueue_scripts', 'fitcopilot_dequeue_styles', 100);
 
+/**
+ * Add theme variant data attribute to body
+ * This allows CSS to apply different styles based on the chosen theme variant
+ */
+function fitcopilot_body_attributes($attributes) {
+    // Ensure $attributes is an array
+    $attributes = (is_array($attributes)) ? $attributes : array();
+    
+    $current_variant = get_theme_mod('fitcopilot_theme_variant', 'default');
+    
+    // Sanitize the variant name
+    $current_variant = sanitize_html_class($current_variant);
+    
+    // Add data-theme attribute to the array of attributes
+    $attributes['data-theme'] = esc_attr($current_variant);
+    
+    // Add debug info as data attribute if WP_DEBUG is enabled
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        $attributes['data-debug'] = 'true';
+    }
+    
+    return $attributes;
+}
+add_filter('body_attributes', 'fitcopilot_body_attributes');
+
+// Add theme variant as a body class
+function fitcopilot_add_body_data_theme($classes) {
+    // Ensure $classes is an array
+    $classes = (is_array($classes)) ? $classes : array();
+    
+    $current_variant = get_theme_mod('fitcopilot_theme_variant', 'default');
+    
+    // Add the theme variant as a body class
+    $classes[] = 'theme-' . sanitize_html_class($current_variant);
+    
+    return $classes;
+}
+add_filter('body_class', 'fitcopilot_add_body_data_theme');
+
 // Include React enqueue functions
 require_once get_template_directory() . '/inc/react-enqueue.php';
 
@@ -82,9 +121,57 @@ function fitcopilot_add_debug_script() {
                 window.addEventListener('error', function(event) {
                     console.log('Debug: JavaScript error detected:', event.message, 'at', event.filename, 'line', event.lineno);
                 });
+                
+                // Define global callback that React can use to signal successful mounting
+                window.fitcopilotReactMounted = function() {
+                    console.log('WordPress received React mounted notification');
+                    document.body.classList.add('react-mounted');
+                };
             });
         </script>
         <?php
     }
 }
-add_action('wp_footer', 'fitcopilot_add_debug_script', 999); 
+add_action('wp_footer', 'fitcopilot_add_debug_script', 999);
+
+/**
+ * Include theme diagnostics tool
+ */
+require get_template_directory() . '/inc/diagnostics.php';
+
+/**
+ * Include admin diagnostics page
+ */
+require get_template_directory() . '/inc/admin-diagnostics.php';
+
+/**
+ * Include React debugging tools
+ */
+require get_template_directory() . '/inc/react-debug.php';
+
+/**
+ * Add a debug option to show React component debug info
+ */
+function fitcopilot_debug_scripts() {
+    if (isset($_GET['show_react_debug']) && current_user_can('manage_options')) {
+        echo '<script>console.log("FitCopilot React debug mode enabled.");</script>';
+        do_shortcode('[fitcopilot_react_debug]');
+    }
+}
+add_action('wp_footer', 'fitcopilot_debug_scripts', 999);
+
+/**
+ * Output body attributes on frontend
+ */
+function fitcopilot_output_body_attributes() {
+    $attributes = apply_filters('body_attributes', array());
+    
+    $output = '';
+    if (is_array($attributes)) {
+        foreach ($attributes as $name => $value) {
+            $output .= esc_attr($name) . '="' . esc_attr($value) . '" ';
+        }
+    }
+    
+    echo trim($output);
+} 

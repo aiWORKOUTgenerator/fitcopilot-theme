@@ -1,86 +1,52 @@
 <?php
 /**
- * FitCopilot Theme Variants
- * 
- * Handles the WordPress side of theme variants including:
- * - Customizer integration for selecting variants
- * - Passing variant choices to the React front-end
- * - Default variant settings
+ * Theme Variants Functionality
+ *
+ * This file handles the theme variant system, including:
+ * - Customizer settings
+ * - Body class and attribute handling
+ * - Admin UI for selecting variants
  */
 
+// Exit if accessed directly
 if (!defined('ABSPATH')) {
-    exit; // Exit if accessed directly
+    exit;
 }
 
 /**
- * Register theme customizer settings for variants
+ * Add theme variant options to the WordPress customizer
  */
-function fitcopilot_register_variant_customizer($wp_customize) {
-    // Add a section for theme variants
-    $wp_customize->add_section('fitcopilot_variants', array(
-        'title'       => __('Theme Variants', 'fitcopilot'),
-        'description' => __('Customize the appearance of different sections by selecting variants.', 'fitcopilot'),
-        'priority'    => 30,
+function fitcopilot_theme_customizer($wp_customize) {
+    // Add Theme Variants section
+    $wp_customize->add_section('fitcopilot_theme_variants', array(
+        'title'      => __('Theme Variants', 'fitcopilot'),
+        'priority'   => 30,
     ));
 
-    // Demo Mode Setting
-    $wp_customize->add_setting('fitcopilot_demo_mode', array(
-        'default'           => false,
-        'sanitize_callback' => 'fitcopilot_sanitize_checkbox',
-    ));
-
-    $wp_customize->add_control('fitcopilot_demo_mode', array(
-        'label'       => __('Enable Demo Mode', 'fitcopilot'),
-        'description' => __('Shows a navigation menu for demoing all sections and variants.', 'fitcopilot'),
-        'section'     => 'fitcopilot_variants',
-        'type'        => 'checkbox',
-    ));
-
-    // Hero Section Variant
-    $wp_customize->add_setting('fitcopilot_hero_variant', array(
+    // Add theme variant setting
+    $wp_customize->add_setting('fitcopilot_theme_variant', array(
         'default'           => 'default',
-        'sanitize_callback' => 'fitcopilot_sanitize_variant',
+        'sanitize_callback' => 'fitcopilot_sanitize_theme_variant',
+        'transport'         => 'refresh',
     ));
 
-    $wp_customize->add_control('fitcopilot_hero_variant', array(
-        'label'       => __('Hero Section Variant', 'fitcopilot'),
-        'description' => __('Select the style variant for the hero section.', 'fitcopilot'),
-        'section'     => 'fitcopilot_variants',
-        'type'        => 'select',
-        'choices'     => array(
-            'default' => __('Default', 'fitcopilot'),
-            'gym'     => __('Gym', 'fitcopilot'),
-        ),
+    // Add control for theme variant
+    $wp_customize->add_control('fitcopilot_theme_variant', array(
+        'label'    => __('Select Theme Variant', 'fitcopilot'),
+        'section'  => 'fitcopilot_theme_variants',
+        'type'     => 'select',
+        'choices'  => fitcopilot_get_theme_variants(),
     ));
-
-    // Features Section Variant
-    $wp_customize->add_setting('fitcopilot_features_variant', array(
-        'default'           => 'default',
-        'sanitize_callback' => 'fitcopilot_sanitize_variant',
-    ));
-
-    $wp_customize->add_control('fitcopilot_features_variant', array(
-        'label'       => __('Features Section Variant', 'fitcopilot'),
-        'description' => __('Select the style variant for the features section.', 'fitcopilot'),
-        'section'     => 'fitcopilot_variants',
-        'type'        => 'select',
-        'choices'     => array(
-            'default' => __('Default', 'fitcopilot'),
-            'gym'     => __('Gym', 'fitcopilot'),
-        ),
-    ));
-
-    // Add more variants as needed for other sections
 }
-add_action('customize_register', 'fitcopilot_register_variant_customizer');
+add_action('customize_register', 'fitcopilot_theme_customizer');
 
 /**
- * Sanitize variant choices
+ * Sanitize the theme variant selection
  */
-function fitcopilot_sanitize_variant($input) {
-    $valid = array('default', 'gym');
+function fitcopilot_sanitize_theme_variant($input) {
+    $valid_variants = array_keys(fitcopilot_get_theme_variants());
     
-    if (in_array($input, $valid, true)) {
+    if (in_array($input, $valid_variants)) {
         return $input;
     }
     
@@ -88,103 +54,144 @@ function fitcopilot_sanitize_variant($input) {
 }
 
 /**
- * Sanitize checkbox values
+ * Get available theme variants
  */
-function fitcopilot_sanitize_checkbox($input) {
-    return (isset($input) && $input === true) ? true : false;
+function fitcopilot_get_theme_variants() {
+    return apply_filters('fitcopilot_theme_variants', array(
+        'default'     => __('Default', 'fitcopilot'),
+        'modern'      => __('Modern', 'fitcopilot'),
+        'classic'     => __('Classic', 'fitcopilot'),
+        'minimalist'  => __('Minimalist', 'fitcopilot'),
+        'sports'      => __('Sports', 'fitcopilot'),
+        'wellness'    => __('Wellness', 'fitcopilot'),
+    ));
 }
 
 /**
- * Pass variant settings to React via wp_localize_script
+ * Add theme variant class to body
  */
-function fitcopilot_localize_variant_data() {
-    // Get all variant settings using both direct keys and simpler keys for JS
-    $variants = array(
-        // Original theme mod keys from the Customizer
-        'fitcopilot_hero_variant' => get_theme_mod('fitcopilot_hero_variant', 'default'),
-        'fitcopilot_features_variant' => get_theme_mod('fitcopilot_features_variant', 'default'),
-        
-        // Also include simplified keys for easier JS access
-        'hero' => get_theme_mod('fitcopilot_hero_variant', 'default'),
-        'features' => get_theme_mod('fitcopilot_features_variant', 'default'),
-        
-        // Add more variants as needed
-    );
+function fitcopilot_add_variant_body_class($classes) {
+    $current_variant = get_theme_mod('fitcopilot_theme_variant', 'default');
     
-    // Check for demo mode URL parameter ?demo=1
-    $force_demo = isset($_GET['demo']) && $_GET['demo'] == '1';
+    // Add the theme variant as a body class
+    $classes[] = 'theme-variant-' . sanitize_html_class($current_variant);
     
-    // Get demo mode setting
-    $demo_mode = $force_demo || (bool) get_theme_mod('fitcopilot_demo_mode', false);
+    // Add a class to indicate this is using the variant system
+    $classes[] = 'has-theme-variant';
     
-    // Prepare the data to be passed to React
-    $data = array(
-        'wpData' => array(
-            'themeVariants' => $variants,
-            'demoMode'      => $demo_mode,
-            'siteUrl'       => get_site_url(),
-            'ajaxUrl'       => admin_url('admin-ajax.php'),
-            'nonce'         => wp_create_nonce('fitcopilot_ajax_nonce'),
-            'siteLinks'     => array(
-                'registration' => site_url('/registration'),
-                'login'        => site_url('/login'),
-            ),
-            'assets'        => array(
-                'logo'          => get_theme_file_uri('/assets/images/logo.png'),
-            ),
-        ),
-    );
-    
-    // Explicitly output debug information to ensure it's working
-    if (WP_DEBUG) {
-        error_log('FitCopilot Demo Mode: ' . ($demo_mode ? 'Enabled' : 'Disabled') . ($force_demo ? ' (forced via URL)' : ''));
-        error_log('FitCopilot Theme Variants: ' . json_encode($variants));
-    }
-    
-    // Try multiple script handles to ensure the data is attached
-    $script_handles = array(
-        'fitcopilot-app',            // Try the main expected handle
-        'athlete-dashboard-homepage', // From homepage-template.php
-        'homepage'                    // From webpack output
-    );
-    
-    foreach ($script_handles as $handle) {
-        if (wp_script_is($handle, 'registered') || wp_script_is($handle, 'enqueued')) {
-            wp_localize_script(
-                $handle,
-                'athleteDashboardData',
-                $data
-            );
-            
-            if (WP_DEBUG) {
-                error_log('FitCopilot: Localized variant data to script handle: ' . $handle);
-            }
-        }
-    }
+    return $classes;
 }
-add_action('wp_enqueue_scripts', 'fitcopilot_localize_variant_data', 20);
+add_filter('body_class', 'fitcopilot_add_variant_body_class');
 
 /**
- * Admin interface additions
+ * Add data attributes to the body tag for JavaScript access
  */
-function fitcopilot_admin_variant_notice() {
-    $screen = get_current_screen();
+function fitcopilot_add_body_data_attributes($attributes) {
+    $current_variant = get_theme_mod('fitcopilot_theme_variant', 'default');
     
-    // Only show on dashboard
-    if ($screen->id !== 'dashboard') {
+    // Ensure $attributes is an array
+    $attributes = (is_array($attributes)) ? $attributes : array();
+    
+    // Add theme variant as data attribute
+    $attributes['data-theme-variant'] = esc_attr($current_variant);
+    
+    return $attributes;
+}
+add_filter('body_attributes', 'fitcopilot_add_body_data_attributes');
+
+/**
+ * Pass theme variant to JavaScript
+ */
+function fitcopilot_localize_theme_variant() {
+    $current_variant = get_theme_mod('fitcopilot_theme_variant', 'default');
+    
+    // Only add if we're on a page that uses our React app
+    if (is_page_template('homepage-template.php')) {
+        wp_localize_script('fitcopilot-react', 'fitcopilotTheme', array(
+            'variant' => $current_variant,
+            'variants' => array_keys(fitcopilot_get_theme_variants()),
+        ));
+    }
+}
+add_action('wp_enqueue_scripts', 'fitcopilot_localize_theme_variant', 100);
+
+/**
+ * Add admin bar menu for quick theme variant switching
+ */
+function fitcopilot_admin_bar_theme_variants($admin_bar) {
+    if (!current_user_can('manage_options')) {
         return;
     }
     
+    $current_variant = get_theme_mod('fitcopilot_theme_variant', 'default');
+    $variants = fitcopilot_get_theme_variants();
+    
+    // Add top-level menu
+    $admin_bar->add_menu(array(
+        'id'    => 'fitcopilot-theme-variants',
+        'title' => __('Theme Variant', 'fitcopilot') . ': ' . $variants[$current_variant],
+        'href'  => admin_url('customize.php?autofocus[section]=fitcopilot_theme_variants'),
+    ));
+    
+    // Add submenu for each variant
+    foreach ($variants as $variant_key => $variant_name) {
+        $admin_bar->add_menu(array(
+            'id'     => 'fitcopilot-theme-variant-' . $variant_key,
+            'parent' => 'fitcopilot-theme-variants',
+            'title'  => $variant_name . ($variant_key === $current_variant ? ' ✓' : ''),
+            'href'   => '#',
+            'meta'   => array(
+                'onclick' => 'fitcopilotSwitchThemeVariant("' . esc_js($variant_key) . '"); return false;',
+            ),
+        ));
+    }
+}
+add_action('admin_bar_menu', 'fitcopilot_admin_bar_theme_variants', 100);
+
+/**
+ * Add JavaScript to handle quick variant switching
+ */
+function fitcopilot_theme_variant_switcher_script() {
+    if (!is_admin_bar_showing() || !current_user_can('manage_options')) {
+        return;
+    }
     ?>
-    <div class="notice notice-info is-dismissible">
-        <p>
-            <strong><?php _e('Theme Variants Available:', 'fitcopilot'); ?></strong> 
-            <?php _e('Customize the appearance of your site by selecting different variants for each section in the Customizer.', 'fitcopilot'); ?>
-            <a href="<?php echo esc_url(admin_url('customize.php?autofocus[section]=fitcopilot_variants')); ?>" class="button button-primary" style="margin-left: 10px;">
-                <?php _e('Customize Variants', 'fitcopilot'); ?>
-            </a>
-        </p>
-    </div>
+    <script type="text/javascript">
+    function fitcopilotSwitchThemeVariant(variant) {
+        // Store the selection in a cookie for preview purposes
+        document.cookie = "fitcopilot_theme_variant_preview=" + variant + "; path=/";
+        
+        // Update body classes immediately for preview
+        const body = document.body;
+        const classes = body.className.split(' ');
+        const newClasses = classes.filter(cls => !cls.startsWith('theme-variant-'));
+        newClasses.push('theme-variant-' + variant);
+        body.className = newClasses.join(' ');
+        
+        // Update data attribute
+        body.setAttribute('data-theme-variant', variant);
+        
+        // Reload the page to apply changes
+        window.location.reload();
+    }
+    </script>
     <?php
 }
-add_action('admin_notices', 'fitcopilot_admin_variant_notice'); 
+add_action('wp_footer', 'fitcopilot_theme_variant_switcher_script');
+
+/**
+ * Handle preview cookie if set
+ */
+function fitcopilot_handle_preview_cookie() {
+    if (isset($_COOKIE['fitcopilot_theme_variant_preview']) && current_user_can('manage_options')) {
+        $preview_variant = sanitize_key($_COOKIE['fitcopilot_theme_variant_preview']);
+        $valid_variants = array_keys(fitcopilot_get_theme_variants());
+        
+        if (in_array($preview_variant, $valid_variants)) {
+            add_filter('theme_mod_fitcopilot_theme_variant', function() use ($preview_variant) {
+                return $preview_variant;
+            });
+        }
+    }
+}
+add_action('init', 'fitcopilot_handle_preview_cookie'); 

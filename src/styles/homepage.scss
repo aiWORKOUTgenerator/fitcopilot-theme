@@ -3,11 +3,17 @@
 @use './animations.scss';
 @use './reset.scss';
 
-// Import Tailwind
+// Import theme variables first
+@import './variants/theme-variables';
+
+// Then import Tailwind
 @import "tailwindcss";
 
 // Import external dependencies with @import
 @import 'aos/dist/aos.css'; // External CSS still needs @import
+
+// Import variables
+@import 'variables';
 
 // Base styles
 html {

@@ -5,13 +5,18 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 module.exports = {
   mode: 'production',
   entry: {
-    'homepage': ['./src/index.tsx', './src/styles/homepage.scss']
+    'homepage': ['./src/index.tsx', './src/styles/homepage.scss'],
+    'debug': './src/debug.js'
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
     chunkFilename: '[id].[contenthash].js',
     publicPath: '/wp-content/themes/fitcopilot/dist/'
+  },
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM'
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.css', '.scss', '.json'],

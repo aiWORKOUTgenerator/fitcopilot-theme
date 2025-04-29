@@ -1,6 +1,6 @@
 <?php
 /**
- * FitCopilot Admin Dashboard
+ * Fitcopilot Admin Dashboard
  * 
  * Handles the WordPress admin dashboard including:
  * - Creating an admin menu item
@@ -17,8 +17,8 @@ if (!defined('ABSPATH')) {
  */
 function fitcopilot_register_admin_menu() {
     add_menu_page(
-        __('FitCopilot Dashboard', 'fitcopilot'),
-        __('FitCopilot', 'fitcopilot'),
+        __('Fitcopilot Dashboard', 'fitcopilot'),
+        __('Fitcopilot', 'fitcopilot'),
         'manage_options',
         'fitcopilot-dashboard',
         'fitcopilot_dashboard_page',
@@ -139,7 +139,7 @@ function fitcopilot_dashboard_page() {
             <div class="fitcopilot-admin-logo">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.75 3.03v.41c0 .98.75 1.56 1.72 1.56H16V3.75a.75.75 0 1 1 1.5 0v1.41l1.72.78c.45.2.72.64.72 1.12V21a1.5 1.5 0 0 1-1.5 1.5h-13.5a1.5 1.5 0 0 1-1.5-1.5V7.06c0-.48.27-.93.72-1.12l6.05-2.72c.38-.17.82-.17 1.2 0l.2.09zm-.22 1.72a.75.75 0 0 0-.99.7v16.05h10.22V7.38l-1.72-.78V8.4c0 .98-.75 1.56-1.72 1.56H14.3a1.5 1.5 0 0 1-1.28-.72l-.22-.32V4.75Z"/></svg>
             </div>
-            <h1><?php echo esc_html__('FitCopilot Dashboard', 'fitcopilot'); ?></h1>
+            <h1><?php echo esc_html__('Fitcopilot Dashboard', 'fitcopilot'); ?></h1>
         </div>
         
         <form method="post" action="">
@@ -147,7 +147,7 @@ function fitcopilot_dashboard_page() {
             
             <div class="fitcopilot-card">
                 <h2><?php echo esc_html__('Theme Settings', 'fitcopilot'); ?></h2>
-                <p><?php echo esc_html__('Configure how your FitCopilot theme behaves and appears.', 'fitcopilot'); ?></p>
+                <p><?php echo esc_html__('Configure how your Fitcopilot theme behaves and appears.', 'fitcopilot'); ?></p>
                 
                 <div class="fitcopilot-toggle-wrap">
                     <div class="fitcopilot-toggle">
@@ -226,7 +226,7 @@ function fitcopilot_admin_bar_link($wp_admin_bar) {
 
     $wp_admin_bar->add_node([
         'id'    => 'fitcopilot-dashboard',
-        'title' => __('FitCopilot Dashboard', 'fitcopilot'),
+        'title' => __('Fitcopilot Dashboard', 'fitcopilot'),
         'href'  => admin_url('admin.php?page=fitcopilot-dashboard'),
     ]);
 }

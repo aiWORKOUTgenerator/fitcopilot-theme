@@ -157,7 +157,7 @@ const DemoNav: React.FC<DemoNavProps> = ({
                     </div>
 
                     <div className="text-xs text-gray-400 mt-4 text-center border-t border-gray-700 pt-2">
-                        Disable in FitCopilot Dashboard
+                        Disable in Fitcopilot Dashboard
                     </div>
                 </div>
             )}

@@ -31,9 +31,17 @@ if (empty($manifest)) {
     error_log('Homepage template: React manifest is empty or invalid');
 }
 
-// Ensure React is enqueued first
+// Ensure React is enqueued first with the correct global variable names that webpack expects
 wp_enqueue_script('react', 'https://unpkg.com/react@18/umd/react.production.min.js', array(), '18.0.0', true);
 wp_enqueue_script('react-dom', 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js', array('react'), '18.0.0', true);
+
+// Add script to explicitly assign React and ReactDOM to window globals for webpack externals
+wp_add_inline_script('react-dom', '
+// Ensure React and ReactDOM are assigned to window globals with proper capitalization
+window.React = window.React || React;
+window.ReactDOM = window.ReactDOM || ReactDOM;
+console.log("React and ReactDOM globals initialized for webpack externals");
+', 'after');
 
 // Enqueue homepage CSS with cache busting
 if (isset($manifest['homepage.css'])) {
@@ -139,6 +147,17 @@ get_header();
         const mountPoint = document.getElementById('athlete-dashboard-root');
         if (mountPoint) {
             console.log('Homepage template: Mount point exists');
+            // Hide loading indicator when main script begins executing
+            const mainScript = document.querySelector('script[src*="homepage."]');
+            if (mainScript) {
+                mainScript.addEventListener('load', function() {
+                    console.log('Homepage script loaded, app should initialize soon');
+                    const loadingEl = document.getElementById('react-loading');
+                    if (loadingEl) {
+                        loadingEl.style.display = 'none';
+                    }
+                });
+            }
         } else {
             console.error('Homepage template: Mount point missing!');
         }
