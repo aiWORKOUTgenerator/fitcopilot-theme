@@ -1,7 +1,7 @@
 /**
  * Available theme variants for the Hero component
  */
-export type VariantKey = 'default' | 'gym';
+export type VariantKey = 'default' | 'gym' | 'mobile';
 
 /**
  * Props for the Hero component

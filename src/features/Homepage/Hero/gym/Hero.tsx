@@ -1,8 +1,6 @@
-import { Apple, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
-import { HeroButton } from '../components/HeroButton';
+import { ArrowRight, Check } from 'lucide-react';
+import React from 'react';
 import '../Hero.scss';
-import { HeroProps } from '../types';
 
 /**
  * Interface for floating icon props
@@ -46,240 +44,148 @@ interface FloatingIconData {
     speed: number;
 }
 
-const Hero: React.FC<HeroProps> = ({
-    registrationLink = "https://aigymengine.com/workout-generator-registration",
-    loginLink = "https://aigymengine.com/react-login",
-    logoUrl = '/wp-content/themes/athlete-dashboard-gym-engine/assets/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png'
-}) => {
-    // Animation states for tooltips
-    const [tooltipStates, setTooltipStates] = useState({
-        freeWorkout: {
-            show: false,
-            isAutoShow: false,
-            isHovered: false,
-        },
-        createAccount: {
-            show: false,
-            isAutoShow: false,
-            isHovered: false,
-        }
-    });
-
-    // Animation timeline references
-    const timeoutsRef = useRef<number[]>([]);
-
-    // Clear all timeouts on cleanup
-    const clearAllTimeouts = () => {
-        timeoutsRef.current.forEach(timeoutId => window.clearTimeout(timeoutId));
-        timeoutsRef.current = [];
-    };
-
-    // Floating icons data - gym specific icons
-    const floatingIcons: FloatingIconData[] = [
-        { Icon: Dumbbell, size: 28, left: 5, top: 15, delay: 0, speed: 8 },
-        { Icon: Timer, size: 36, left: 15, top: 60, delay: 1.5, speed: 10 },
-        { Icon: Medal, size: 32, left: 25, top: 25, delay: 0.8, speed: 12 },
-        { Icon: Flame, size: 40, left: 80, top: 20, delay: 2, speed: 9 },
-        { Icon: Heart, size: 32, left: 85, top: 65, delay: 1, speed: 11 },
-        { Icon: Apple, size: 28, left: 10, top: 80, delay: 2.5, speed: 10 },
-        { Icon: Coffee, size: 24, left: 70, top: 10, delay: 0.5, speed: 7 },
-        { Icon: Footprints, size: 36, left: 90, top: 40, delay: 1.2, speed: 9 },
-        { Icon: Bike, size: 40, left: 30, top: 70, delay: 1.8, speed: 13 }
+/**
+ * Hero component for the homepage gym variant
+ */
+const Hero: React.FC = () => {
+    // Benefits list
+    const benefits = [
+        "Access to state-of-the-art equipment",
+        "Expert personal trainers available",
+        "Group fitness classes included",
+        "Clean, spacious workout environment"
     ];
 
-    // On mount and unmount
-    useEffect(() => {
-        // Cleanup all timeouts on unmount
-        return () => {
-            clearAllTimeouts();
-        };
-    }, []);
-
-    // Mouse enter handler
-    const handleMouseEnter = (button: 'freeWorkout' | 'createAccount') => {
-        setTooltipStates(prev => ({
-            ...prev,
-            [button]: {
-                ...prev[button],
-                show: true,
-                isHovered: true,
-            }
-        }));
-    };
-
-    // Mouse leave handler
-    const handleMouseLeave = (button: 'freeWorkout' | 'createAccount') => {
-        setTooltipStates(prev => ({
-            ...prev,
-            [button]: {
-                ...prev[button],
-                show: false,
-                isHovered: false,
-            }
-        }));
-    };
-
     return (
-        <section
-            className="w-full min-h-screen flex items-center justify-center py-20 px-4 relative overflow-hidden bg-gray-900"
-            aria-labelledby="hero-heading"
-        >
-            {/* Floating fitness icons - decorative */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none z-10" aria-hidden="true">
-                {floatingIcons.map((icon, index) => (
-                    <FloatingIcon
-                        key={index}
-                        left={icon.left}
-                        top={icon.top}
-                        delay={icon.delay}
-                        speed={icon.speed}
-                    >
-                        <icon.Icon size={icon.size} />
-                    </FloatingIcon>
-                ))}
-            </div>
+        <section className="relative w-full min-h-[90vh] bg-gray-900 overflow-hidden flex items-center py-20">
+            {/* Background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-black opacity-90"></div>
 
-            <div className="max-w-4xl mx-auto relative z-20 text-center">
-                {/* Content Card with Backdrop Blur */}
-                <div className="bg-gray-800/30 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-gray-700 mb-6">
-                    {/* Logo */}
-                    <div className="mb-8 flex justify-center">
-                        <img
-                            src={logoUrl}
-                            alt="AI Workout Generator Logo"
-                            className="h-48 md:h-56 w-auto"
-                        />
-                    </div>
+            {/* Background image overlay */}
+            <div className="absolute inset-0 bg-black/60 z-10"></div>
 
-                    <h1
-                        id="hero-heading"
-                        className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white"
-                    >
-                        <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text text-gradient" data-text="Gym Training AI">
-                            Gym Training AI
-                        </span> Tailored Just for You
+            {/* Background image */}
+            <div
+                className="absolute inset-0 bg-cover bg-center z-0"
+                style={{
+                    backgroundImage: "url('/assets/gym-background.jpg')",
+                    backgroundPosition: "center"
+                }}
+            ></div>
+
+            {/* Grain overlay */}
+            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')] z-20"></div>
+
+            {/* Content container */}
+            <div className="container mx-auto px-4 relative z-30 flex flex-col lg:flex-row items-center">
+                {/* Left column - Text content */}
+                <div className="w-full lg:w-1/2 text-center lg:text-left mb-12 lg:mb-0">
+                    <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider uppercase bg-red-700/30 text-red-300 rounded-full mb-6">
+                        Premium Fitness Club
+                    </span>
+
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+                        Transform Your Body at <span className="bg-gradient-to-r from-red-500 to-orange-400 text-transparent bg-clip-text">FitCopilot</span> Gym
                     </h1>
 
-                    <div className="w-24 h-1 bg-gradient-to-r from-lime-300 to-emerald-400 mx-auto mb-6 rounded-full"></div>
-
-                    <p
-                        className="text-gray-300 mb-10 max-w-2xl mx-auto text-base md:text-xl lead"
-                    >
-                        Transform your gym workouts with <span className="citron-text">professional-grade plans</span> customized for your fitness level and equipment access.
+                    <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0">
+                        Join our state-of-the-art fitness center with expert trainers, premium equipment, and AI-powered workout plans.
                     </p>
 
-                    {/* CTA Buttons Container */}
-                    <div
-                        className="flex flex-col sm:flex-row gap-6 justify-center mb-6"
-                    >
-                        {/* Primary CTA: Get a Free Workout */}
-                        <div
-                            className="relative"
-                            onMouseEnter={() => handleMouseEnter('freeWorkout')}
-                            onMouseLeave={() => handleMouseLeave('freeWorkout')}
-                        >
-                            <HeroButton
-                                href="https://builder.fitcopilot.ai"
-                                variant="primary"
-                                leftIcon={<Zap className="h-5 w-5" />}
-                                fullWidth
-                            >
-                                Get a Free Workout
-                            </HeroButton>
+                    {/* Benefits list */}
+                    <ul className="mb-10 space-y-3 max-w-lg mx-auto lg:mx-0">
+                        {benefits.map((benefit, index) => (
+                            <li key={index} className="flex items-start">
+                                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-red-600/40 flex items-center justify-center mr-3 mt-0.5">
+                                    <Check size={14} className="text-red-300" />
+                                </span>
+                                <span className="text-gray-300">{benefit}</span>
+                            </li>
+                        ))}
+                    </ul>
 
-                            {/* Tooltip styled to match Pricing */}
-                            <div
-                                className={`tooltip ${tooltipStates.freeWorkout.show ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
-                                role="tooltip"
-                                id="freeWorkout-tooltip"
-                                aria-hidden={!tooltipStates.freeWorkout.show}
-                            >
-                                <div className="tooltip-content">
-                                    <div className="tooltip-icon">
-                                        <Zap className="w-4 h-4 text-lime-300" />
-                                    </div>
-                                    <div className="tooltip-text">
-                                        <h5 className="tooltip-title">Gym Workout Builder</h5>
-                                        <p className="text-xs text-gray-300">
-                                            Generate professional gym workouts optimized for your equipment and experience level.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Secondary CTA: Create Your Account */}
-                        <div
-                            className="relative"
-                            onMouseEnter={() => handleMouseEnter('createAccount')}
-                            onMouseLeave={() => handleMouseLeave('createAccount')}
-                        >
-                            <HeroButton
-                                href={registrationLink}
-                                variant="secondary"
-                                leftIcon={<UserPlus className="h-5 w-5 text-lime-300" />}
-                                fullWidth
-                            >
-                                Create Your Account
-                            </HeroButton>
-
-                            {/* Tooltip styled to match Pricing */}
-                            <div
-                                className={`tooltip ${tooltipStates.createAccount.show ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
-                                role="tooltip"
-                                id="createAccount-tooltip"
-                                aria-hidden={!tooltipStates.createAccount.show}
-                            >
-                                <div className="tooltip-content">
-                                    <div className="tooltip-icon">
-                                        <Shield className="w-4 h-4 text-lime-300" />
-                                    </div>
-                                    <div className="tooltip-text">
-                                        <h5 className="tooltip-title">Premium Gym Membership</h5>
-                                        <p className="text-xs text-gray-300">
-                                            Track your gym progress, save customized workouts, and access pro features.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Login Link */}
-                    <div className="mt-6">
-                        <a
-                            href={loginLink}
-                            className="text-gray-400 hover:text-lime-300 transition inline-flex items-center"
-                        >
-                            <LogIn className="w-4 h-4 mr-1" />
-                            <span>Existing members login here</span>
-                        </a>
+                    {/* CTA buttons */}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <button className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-all duration-200 flex items-center justify-center">
+                            Join Now
+                            <ArrowRight size={18} className="ml-2" />
+                        </button>
+                        <button className="px-8 py-4 bg-transparent border border-red-500/30 hover:bg-red-700/10 hover:border-red-500 text-red-300 font-medium rounded-lg transition-all duration-200">
+                            Tour Our Facility
+                        </button>
                     </div>
                 </div>
 
-                {/* Features Highlights */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-gray-300">
-                    <div className="p-4 rounded-2xl bg-gray-800/30 backdrop-blur-sm border border-gray-700">
-                        <div className="w-10 h-10 rounded-full bg-lime-500/20 flex items-center justify-center mb-3 mx-auto">
-                            <Dumbbell className="w-5 h-5 text-lime-300" />
+                {/* Right column - Gym image or promotional content */}
+                <div className="w-full lg:w-1/2 relative">
+                    <div className="relative mx-auto overflow-hidden rounded-2xl shadow-2xl">
+                        {/* Main image */}
+                        <img
+                            src="/assets/gym-interior.jpg"
+                            alt="FitCopilot Gym Interior"
+                            className="w-full h-auto rounded-2xl"
+                            onError={(e) => {
+                                // Fallback if image doesn't load
+                                (e.target as HTMLImageElement).style.display = 'none';
+                                (e.target as HTMLElement).parentElement!.classList.add('bg-gradient-to-b', 'from-red-800', 'to-gray-900', 'p-10', 'flex', 'items-center', 'justify-center', 'h-[400px]');
+
+                                // Add text content as fallback
+                                const textDiv = document.createElement('div');
+                                textDiv.className = 'text-center';
+                                textDiv.innerHTML = `
+                                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-600/30 flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-white mb-2">Premium Facilities</h3>
+                                    <p class="text-gray-300">Experience our world-class gym with top-tier equipment and expert trainers</p>
+                                `;
+                                (e.target as HTMLElement).parentElement!.appendChild(textDiv);
+                            }}
+                        />
+
+                        {/* Overlay with stats */}
+                        <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                            <div className="grid grid-cols-3 gap-4">
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-white">24/7</p>
+                                    <p className="text-xs text-red-300 uppercase tracking-wider">Access</p>
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-white">50+</p>
+                                    <p className="text-xs text-red-300 uppercase tracking-wider">Classes</p>
+                                </div>
+                                <div className="text-center">
+                                    <p className="text-2xl font-bold text-white">100%</p>
+                                    <p className="text-xs text-red-300 uppercase tracking-wider">Satisfaction</p>
+                                </div>
+                            </div>
                         </div>
-                        <h3 className="font-semibold text-white mb-1">Gym-Specific Routines</h3>
-                        <p className="text-sm">Optimized for gym equipment and professional training environments.</p>
-                    </div>
-                    <div className="p-4 rounded-2xl bg-gray-800/30 backdrop-blur-sm border border-gray-700">
-                        <div className="w-10 h-10 rounded-full bg-lime-500/20 flex items-center justify-center mb-3 mx-auto">
-                            <Timer className="w-5 h-5 text-lime-300" />
+
+                        {/* Floating badge */}
+                        <div className="absolute top-4 right-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center">
+                            <span className="mr-1">NEW</span>
+                            <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
                         </div>
-                        <h3 className="font-semibold text-white mb-1">Efficient Scheduling</h3>
-                        <p className="text-sm">Maximize your gym time with scientifically designed workout splits.</p>
                     </div>
-                    <div className="p-4 rounded-2xl bg-gray-800/30 backdrop-blur-sm border border-gray-700">
-                        <div className="w-10 h-10 rounded-full bg-lime-500/20 flex items-center justify-center mb-3 mx-auto">
-                            <Medal className="w-5 h-5 text-lime-300" />
-                        </div>
-                        <h3 className="font-semibold text-white mb-1">Progress Tracking</h3>
-                        <p className="text-sm">Monitor performance and adjust training intensity for optimal results.</p>
+
+                    {/* Decorative elements */}
+                    <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-gradient-to-r from-red-500 to-orange-500 blur-xl opacity-70 animate-pulse"></div>
+                    <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-gradient-to-r from-orange-500 to-red-600 blur-xl opacity-70 animate-pulse delay-300"></div>
+                </div>
+            </div>
+
+            {/* Membership banner */}
+            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-full max-w-5xl px-4">
+                <div className="bg-gradient-to-r from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-xl p-4 border border-gray-700/50 flex flex-col md:flex-row items-center justify-between">
+                    <div className="mb-4 md:mb-0">
+                        <h3 className="text-xl font-bold text-white">Limited Time Offer</h3>
+                        <p className="text-gray-300">50% off your first month when you sign up today!</p>
                     </div>
+                    <button className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-all duration-200 whitespace-nowrap">
+                        Get Started
+                    </button>
                 </div>
             </div>
         </section>

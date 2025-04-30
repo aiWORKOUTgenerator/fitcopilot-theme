@@ -50,10 +50,11 @@
         font-size: var(--type-lg);
     }
 
-    // Color variants
-    &--primary {
-        background-color: var(--color-primary);
-        color: var(--color-text-inverse);
+    // Color variants - Using a lower specificity approach to allow overrides
+    // The use of :where() reduces specificity while maintaining selector grouping
+    &:where(&--primary) {
+        background-color: var(--color-primary, #7c3aed);
+        color: var(--color-text-inverse, white);
 
         &:hover:not(:disabled) {
             filter: brightness(1.05);
@@ -64,9 +65,9 @@
         }
     }
 
-    &--secondary {
-        background-color: var(--color-secondary);
-        color: var(--color-text-inverse);
+    &:where(&--secondary) {
+        background-color: var(--color-secondary, #e5e7eb);
+        color: var(--color-text, #111827);
 
         &:hover:not(:disabled) {
             filter: brightness(1.05);
@@ -77,30 +78,30 @@
         }
     }
 
-    &--tertiary {
+    &:where(&--tertiary) {
         background-color: transparent;
-        color: var(--color-primary);
-        border: 1px solid var(--color-primary);
+        color: var(--color-primary, #7c3aed);
+        border: 1px solid var(--color-primary, #7c3aed);
 
         &:hover:not(:disabled) {
-            background-color: rgba(var(--color-primary), 0.05);
+            background-color: rgba(var(--color-primary-rgb, 124, 58, 237), 0.05);
         }
 
         &:active:not(:disabled) {
-            background-color: rgba(var(--color-primary), 0.1);
+            background-color: rgba(var(--color-primary-rgb, 124, 58, 237), 0.1);
         }
     }
 
-    &--ghost {
+    &:where(&--ghost) {
         background-color: transparent;
-        color: var(--color-text);
+        color: var(--color-text, #111827);
 
         &:hover:not(:disabled) {
-            background-color: var(--color-hover-light);
+            background-color: var(--color-hover-light, rgba(0, 0, 0, 0.05));
         }
 
         &:active:not(:disabled) {
-            background-color: var(--color-active-light);
+            background-color: var(--color-active-light, rgba(0, 0, 0, 0.1));
         }
     }
 
@@ -152,6 +153,11 @@
     }
 }
 
+// Add comments explaining the module intention
+// This allows section-specific styles to take precedence 
+// by using customization through the themeContext prop
+// Example: .button--personal-training will override the base button styles
+
 @keyframes button-spin {
     to {
         transform: rotate(360deg);
@@ -160,11 +166,11 @@
 
 // Media query for reduced motion preference
 @media (prefers-reduced-motion: reduce) {
-    .btn {
+    .button {
         transition: none;
     }
 
-    .btn-loading .btn-spinner svg {
+    .button--loading .button__spinner {
         animation-duration: 2s;
     }
 }

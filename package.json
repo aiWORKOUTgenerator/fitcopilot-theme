@@ -8,7 +8,6 @@
     "aos": "^3.0.0-beta.6",
     "classnames": "^2.5.1",
     "lucide-react": "^0.263.1",
-    "postcss-nesting": "^13.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0"
@@ -48,12 +47,15 @@
     "babel-loader": "^10.0.0",
     "chalk": "^5.4.1",
     "chromatic": "^10.9.6",
+    "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^7.0.2",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-storybook": "^0.8.0",
     "glob": "^11.0.2",
+    "husky": "^8.0.0",
     "mini-css-extract-plugin": "^2.7.6",
     "postcss": "^8.4.27",
     "postcss-loader": "^7.3.3",
@@ -62,12 +64,12 @@
     "sass-loader": "^16.0.5",
     "storybook": "^8.6.12",
     "tailwindcss": "^4.1.4",
+    "terser-webpack-plugin": "^5.3.14",
     "ts-loader": "^9.4.4",
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
-    "webpack-manifest-plugin": "^5.0.0",
-    "husky": "^8.0.0"
+    "webpack-manifest-plugin": "^5.0.0"
   },
   "scripts": {
     "dev": "webpack --mode development --watch",

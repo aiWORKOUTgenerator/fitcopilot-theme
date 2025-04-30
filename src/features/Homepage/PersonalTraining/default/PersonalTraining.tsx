@@ -9,9 +9,68 @@ import {
     X
 } from 'lucide-react';
 import React, { MouseEvent, useState } from 'react';
-import Button from '../../../../components/UI/Button/Button';
 import '../PersonalTraining.scss';
 import { PersonalTrainingProps, Trainer } from '../types';
+
+/**
+ * Custom styled button component specific to Personal Training section
+ */
+const StyledButton: React.FC<{
+    children: React.ReactNode;
+    onClick?: () => void;
+    className?: string;
+    fullWidth?: boolean;
+    variant?: 'primary' | 'cta';
+}> = ({ children, onClick, className = '', fullWidth = false, variant = 'primary' }) => {
+    const [isHovered, setIsHovered] = React.useState(false);
+
+    const primaryStyles = {
+        background: 'linear-gradient(to right, #8b5cf6, #6d28d9)',
+        color: 'white',
+    };
+
+    const ctaStyles = {
+        background: 'white',
+        color: '#7c3aed',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+    };
+
+    const hoverStyles = {
+        transform: 'translateY(-2px)',
+        boxShadow: variant === 'cta'
+            ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+            : '0 10px 15px -3px rgba(124, 58, 237, 0.3)'
+    };
+
+    const styles = {
+        ...(variant === 'cta' ? ctaStyles : primaryStyles),
+        ...(isHovered ? hoverStyles : {})
+    };
+
+    return (
+        <button
+            onClick={onClick}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className={`${className} ${fullWidth ? 'w-full' : ''}`}
+            style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '0.5rem',
+                padding: '0.75rem 1.5rem',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                ...styles
+            }}
+        >
+            {children}
+            <ArrowRight size={variant === 'cta' ? 20 : 18} style={{ marginLeft: '0.5rem' }} />
+        </button>
+    );
+};
 
 /**
  * Default Personal Training component for the homepage
@@ -132,15 +191,9 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                                     </div>
 
                                     {/* Action Button */}
-                                    <Button
-                                        variant="primary"
-                                        size="medium"
-                                        fullWidth
-                                        themeContext="personal-training"
-                                        rightIcon={<ArrowRight size={18} />}
-                                    >
+                                    <StyledButton fullWidth>
                                         Schedule Session
-                                    </Button>
+                                    </StyledButton>
 
                                     {/* Flip Card for Featured Trainer */}
                                     {featuredTrainer.videoCard && (
@@ -247,15 +300,9 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                                         </div>
 
                                         {/* Action Button */}
-                                        <Button
-                                            variant="primary"
-                                            size="medium"
-                                            fullWidth
-                                            themeContext="personal-training"
-                                            rightIcon={<ArrowRight size={18} />}
-                                        >
+                                        <StyledButton fullWidth>
                                             Schedule Session
-                                        </Button>
+                                        </StyledButton>
                                     </div>
                                 </div>
                             ))}
@@ -272,14 +319,11 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                         Schedule a free consultation with one of our expert trainers. We'll discuss your goals, fitness level, and create a plan tailored just for you.
                     </p>
                     {/* CTA Button */}
-                    <Button
-                        variant="secondary"
-                        size="large"
-                        themeContext="personal-training-cta"
-                        rightIcon={<ArrowRight size={20} />}
+                    <StyledButton
+                        variant="cta"
                     >
                         Book Free Consultation
-                    </Button>
+                    </StyledButton>
                 </div>
             </div>
         </section>

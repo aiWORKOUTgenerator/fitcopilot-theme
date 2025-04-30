@@ -27,6 +27,8 @@ export interface ButtonProps {
     leftIcon?: React.ReactNode;
     /** Icon to display after button text */
     rightIcon?: React.ReactNode;
+    /** Section context for specific styling */
+    themeContext?: string;
     /** Button content */
     children: React.ReactNode;
     /** Additional CSS classes */
@@ -53,6 +55,7 @@ export const Button: React.FC<ButtonProps> = ({
     isLoading = false,
     leftIcon,
     rightIcon,
+    themeContext,
     disabled,
     ...rest
 }) => {
@@ -60,6 +63,7 @@ export const Button: React.FC<ButtonProps> = ({
         'button',
         `button--${size}`,
         `button--${variant}`,
+        themeContext && `button--${themeContext}`,
         {
             'button--fullwidth': fullWidth,
             'button--loading': isLoading,

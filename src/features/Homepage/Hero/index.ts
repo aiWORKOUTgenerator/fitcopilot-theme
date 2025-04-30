@@ -2,6 +2,7 @@ import React from 'react';
 import { createVariantComponent, getComponentVariant } from '../utils/variantLoader';
 import DefaultHero from './default';
 import GymHero from './gym';
+import MobileHero from './mobile';
 import type { HeroProps, VariantKey } from './types';
 
 /**
@@ -9,7 +10,8 @@ import type { HeroProps, VariantKey } from './types';
  */
 export const HeroMap: Record<VariantKey, React.ComponentType<Omit<HeroProps, 'variant'>>> = {
     default: DefaultHero,
-    gym: GymHero
+    gym: GymHero,
+    mobile: MobileHero
 };
 
 /**
@@ -24,6 +26,6 @@ export const getHeroVariant = (): VariantKey => {
     return getComponentVariant<VariantKey>('hero', 'default');
 };
 
-export { Hero };
 export * from './types';
+export { Hero };
 
