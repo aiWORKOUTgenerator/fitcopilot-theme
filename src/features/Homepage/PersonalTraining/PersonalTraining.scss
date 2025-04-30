@@ -49,27 +49,27 @@
     // CTA box styling
     --gradient-pt-cta: linear-gradient(135deg, var(--color-primary, #3498db), var(--color-primary-dark, #2980b9));
 
-    position: relative;
-    z-index: 1;
-    padding: var(--section-spacing-y) var(--section-spacing-x);
-    background-color: var(--color-pt-bg);
-    color: var(--color-pt-text);
+    position: var(--pos-pt-relative, relative);
+    z-index: var(--z-pt-base, 1);
+    padding: var(--section-spacing-y, 4rem) var(--section-spacing-x, 1rem);
+    background-color: var(--color-pt-bg, #0f172a);
+    color: var(--color-pt-text, #ffffff);
 
-    // Grid pattern background - use consistent approach from implementation guide
+    // Grid pattern background
     &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        content: var(--content-pt-empty, '');
+        position: var(--pos-pt-absolute, absolute);
+        top: var(--pos-pt-top-0, 0);
+        left: var(--pos-pt-left-0, 0);
+        right: var(--pos-pt-right-0, 0);
+        bottom: var(--pos-pt-bottom-0, 0);
         background-image:
-            linear-gradient(var(--color-pt-grid) 1px, transparent 1px),
-            linear-gradient(90deg, var(--color-pt-grid) 1px, transparent 1px);
-        background-size: var(--size-pt-grid-pattern);
-        background-position: center center;
-        z-index: 0;
-        pointer-events: none;
+            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: var(--size-pt-grid-pattern, 20px 20px);
+        background-position: var(--pos-pt-center, center center);
+        z-index: var(--z-pt-behind, 0);
+        pointer-events: var(--pointer-pt-none, none);
     }
 
     .section-title {
@@ -77,7 +77,7 @@
         text-align: center;
         font-size: var(--type-4xl, 2.25rem);
         font-weight: var(--weight-black, 900);
-        color: var(--color-pt-text);
+        color: var(--color-pt-text, #ffffff);
         position: relative;
         z-index: 1;
 
@@ -86,8 +86,8 @@
         }
 
         .highlight {
-            color: var(--color-primary);
-            background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark));
+            color: var(--color-pt-accent, #8b5cf6);
+            background: linear-gradient(90deg, var(--color-violet-300, #c4b5fd), var(--color-indigo-400, #818cf8));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -96,45 +96,20 @@
     }
 
     .trainers-container {
-        max-width: var(--content-max-width);
+        max-width: var(--content-max-width, 1200px);
         margin: 0 auto;
         padding: 0 var(--spacing-4, 1rem);
         position: relative;
         z-index: 1;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 1.5rem;
 
-        &.two-column-layout {
-            display: grid;
-            gap: var(--spacing-6, 1.5rem);
+        @media (min-width: 768px) {
+            grid-template-columns: repeat(3, 1fr);
 
-            @media (min-width: 768px) {
-                grid-template-columns: 1fr 1fr;
-
-                .featured-trainer-column {
-                    .trainer-card {
-                        height: 100%;
-                    }
-                }
-
-                .other-trainers-column {
-                    display: flex;
-                    flex-direction: column;
-                    gap: var(--spacing-6, 1.5rem);
-
-                    .trainer-card {
-                        height: auto;
-                    }
-                }
-            }
-
-            @media (max-width: 767px) {
-                grid-template-columns: 1fr;
-
-                .featured-trainer-column,
-                .other-trainers-column {
-                    display: flex;
-                    flex-direction: column;
-                    gap: var(--spacing-6, 1.5rem);
-                }
+            .trainer-card.featured {
+                grid-column: span 2;
             }
         }
     }
@@ -142,22 +117,20 @@
     // Trainer card
     .trainer-card {
         position: relative;
-        background-color: var(--color-pt-card-bg);
-        border-radius: var(--radius-lg, 0.5rem);
-        padding: var(--spacing-6, 1.5rem);
-        transition: transform var(--duration-pt-transition) var(--ease-pt-transition),
-            box-shadow var(--duration-pt-transition) var(--ease-pt-transition),
-            border-color var(--duration-pt-transition) var(--ease-pt-transition);
-        border: 1px solid var(--color-pt-border);
-        backdrop-filter: blur(8px);
+        background-color: rgba(31, 41, 55, 0.5);
+        border-radius: var(--radius-pt-card, 0.5rem);
+        padding: var(--spacing-pt-card, 1.5rem);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+        backdrop-filter: blur(var(--blur-pt-backdrop, 8px));
         display: flex;
         flex-direction: column;
         height: 100%;
 
         &:hover {
-            transform: translateY(var(--transform-pt-card-hover-y));
-            box-shadow: var(--shadow-pt-card-hover);
-            border-color: rgba(var(--color-primary-rgb), 0.3);
+            transform: translateY(-0.25rem);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            border-color: rgba(var(--color-violet-rgb, 139, 92, 246), 0.3);
 
             .trainer-image img {
                 transform: scale(1.05);
@@ -169,16 +142,20 @@
     .trainer-image {
         width: 100%;
         height: 240px;
-        border-radius: var(--radius-md, 0.375rem);
+        border-radius: 0.75rem;
         overflow: hidden;
         margin-bottom: var(--spacing-4, 1rem);
         position: relative;
+        background-color: #1f2937;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform var(--duration-pt-transition) var(--ease-pt-transition);
+            transition: transform var(--duration-pt-transition, 0.3s) var(--ease-pt-transition, ease);
         }
 
         // Image placeholder
@@ -236,21 +213,23 @@
     }
 
     // Trainer specialty badge
-    .specialty {
+    .specialty,
+    .trainer-specialty {
         display: inline-flex;
         align-items: center;
-        padding: var(--spacing-1, 0.25rem) var(--spacing-3, 0.75rem);
-        border-radius: var(--radius-full, 9999px);
-        font-size: var(--type-xs, 0.75rem);
-        font-weight: var(--weight-semibold, 600);
+        padding: 0.375rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        background-color: var(--color-pt-badge-bg);
-        color: var(--color-pt-badge-text);
-        margin-bottom: var(--spacing-2, 0.5rem);
+        background-color: rgba(var(--color-violet-rgb, 139, 92, 246), 0.1);
+        color: var(--color-violet-500, #8b5cf6);
+        margin-bottom: 0.75rem;
 
-        .icon {
-            margin-right: var(--spacing-1, 0.25rem);
+        .icon,
+        svg {
+            margin-right: 0.25rem;
         }
     }
 
@@ -259,7 +238,7 @@
         font-size: var(--type-xl, 1.25rem);
         font-weight: var(--weight-bold, 700);
         margin-bottom: var(--spacing-2, 0.5rem);
-        color: var(--color-pt-text);
+        color: var(--color-pt-text, #ffffff);
     }
 
     // Trainer bio
@@ -267,7 +246,7 @@
         font-size: var(--type-sm, 0.875rem);
         line-height: 1.5;
         margin-bottom: var(--spacing-4, 1rem);
-        color: var(--color-pt-text-secondary);
+        color: var(--color-pt-text-secondary, rgba(255, 255, 255, 0.7));
     }
 
     // Trainer stats
@@ -283,14 +262,14 @@
             .value {
                 font-size: var(--type-2xl, 1.5rem);
                 font-weight: var(--weight-bold, 700);
-                color: var(--color-primary);
+                color: var(--color-violet-400, #a78bfa);
                 display: block;
                 margin-bottom: var(--spacing-1, 0.25rem);
             }
 
             .label {
                 font-size: var(--type-xs, 0.75rem);
-                color: var(--color-pt-text-secondary);
+                color: var(--color-pt-text-secondary, rgba(255, 255, 255, 0.7));
             }
         }
     }
@@ -298,16 +277,15 @@
     // Booking consultation box
     .booking-box {
         position: relative;
-        border-radius: var(--radius-xl, 0.75rem);
+        border-radius: 1rem;
         overflow: hidden;
-        padding: var(--spacing-8, 2rem) var(--spacing-6, 1.5rem);
-        margin-top: var(--spacing-16, 4rem);
-        background: var(--gradient-pt-cta);
-        max-width: var(--content-max-width);
+        padding: 3rem 2rem;
+        margin-top: 4rem;
+        background: linear-gradient(to right, var(--color-violet-600, #7c3aed), var(--color-purple-500, #8b5cf6));
+        max-width: 1024px;
         margin-left: auto;
         margin-right: auto;
-        position: relative;
-        z-index: 1;
+        text-align: center;
 
         &::before {
             content: '';
@@ -326,26 +304,46 @@
             opacity: 0.4;
             z-index: -1;
         }
-    }
 
-    .booking-title {
-        font-size: var(--type-3xl, 1.875rem);
-        font-weight: var(--weight-bold, 700);
-        margin-bottom: var(--spacing-3, 0.75rem);
-        text-align: center;
-        color: var(--color-text-inverse);
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
+        .booking-title {
+            font-size: var(--type-3xl, 1.875rem);
+            font-weight: var(--weight-bold, 700);
+            margin-bottom: var(--spacing-3, 0.75rem);
+            color: var(--color-text-inverse, #ffffff);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-    .booking-text {
-        font-size: var(--type-base, 1rem);
-        line-height: 1.6;
-        margin-bottom: var(--spacing-6, 1.5rem);
-        text-align: center;
-        color: rgba(255, 255, 255, 0.9);
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
+        .booking-text {
+            font-size: var(--type-base, 1rem);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-6, 1.5rem);
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .booking-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            background-color: white;
+            color: var(--color-violet-700, #6d28d9);
+            border-radius: 0.5rem;
+            font-weight: 600;
+            margin: 0 auto;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+
+            svg {
+                margin-left: 0.5rem;
+            }
+        }
     }
 
     // Flip card
@@ -430,6 +428,10 @@
         }
 
         .play-button-overlay:hover {
+            transform: none;
+        }
+
+        .booking-button:hover {
             transform: none;
         }
     }

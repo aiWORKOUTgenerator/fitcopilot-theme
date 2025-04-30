@@ -6,12 +6,13 @@ import {
     X
 } from 'lucide-react';
 import React, { MouseEvent, useState } from 'react';
+import { PersonalTrainingProps, Trainer } from '..';
 import '../PersonalTraining.scss';
 
 /**
  * Mobile variant of the Personal Training component
  */
-const PersonalTraining: React.FC = () => {
+const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers }) => {
     // Track flipped state for each trainer by ID
     const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
 
@@ -24,28 +25,34 @@ const PersonalTraining: React.FC = () => {
     };
 
     // Trainer data with placeholders
-    const trainers = [
+    const trainers: Trainer[] = propTrainers || [
         {
             id: 'trainer1',
             name: 'Alex Rodriguez',
             specialty: 'Strength Training',
             specialtyIcon: <Dumbbell size={16} />,
-            imageSrc: 'https://plus.unsplash.com/premium_photo-1661359682704-f17a7e38cbff?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            image: 'https://plus.unsplash.com/premium_photo-1661359682704-f17a7e38cbff?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             bio: 'Specialized in muscle building and strength conditioning with 8+ years of experience.',
             clients: 120,
-            experience: 8,
-            youtubeId: 'dQw4w9WgXcQ'
+            years: 8,
+            videoCard: {
+                title: 'Strength Training Introduction',
+                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+            }
         },
         {
             id: 'trainer2',
             name: 'Sarah Johnson',
             specialty: 'Cardio & HIIT',
             specialtyIcon: <Heart size={16} />,
-            imageSrc: 'https://images.unsplash.com/photo-1658203897339-989718522126?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            image: 'https://images.unsplash.com/photo-1658203897339-989718522126?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             bio: 'Expert in high-intensity interval training and cardiovascular fitness programs.',
             clients: 95,
-            experience: 6,
-            youtubeId: 'dQw4w9WgXcQ'
+            years: 6,
+            videoCard: {
+                title: 'HIIT Workout Demo',
+                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+            }
         }
     ];
 
@@ -60,13 +67,13 @@ const PersonalTraining: React.FC = () => {
                 <div className="flex space-x-4 min-w-max px-2">
                     {trainers.map(trainer => (
                         <div key={trainer.id} className="trainer-card w-64 flex-shrink-0">
-                            {trainer.youtubeId && flippedCards[trainer.id] ? (
+                            {trainer.videoCard?.videoUrl && flippedCards[trainer.id] ? (
                                 <div className="trainer-image relative">
                                     <div className="flip-card flipped">
                                         <div className="flip-card-front">
-                                            {trainer.imageSrc ? (
+                                            {trainer.image ? (
                                                 <img
-                                                    src={trainer.imageSrc}
+                                                    src={trainer.image}
                                                     alt={`${trainer.name}, ${trainer.specialty}`}
                                                     loading="lazy"
                                                 />
@@ -78,8 +85,8 @@ const PersonalTraining: React.FC = () => {
                                         </div>
                                         <div className="flip-card-back">
                                             <iframe
-                                                title={`${trainer.name} intro video`}
-                                                src={`https://www.youtube.com/embed/${trainer.youtubeId}?autoplay=1`}
+                                                title={trainer.videoCard.title || `${trainer.name} intro video`}
+                                                src={trainer.videoCard.videoUrl}
                                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                 allowFullScreen
                                             ></iframe>
@@ -109,9 +116,9 @@ const PersonalTraining: React.FC = () => {
                                 </div>
                             ) : (
                                 <div className="trainer-image relative">
-                                    {trainer.imageSrc ? (
+                                    {trainer.image ? (
                                         <img
-                                            src={trainer.imageSrc}
+                                            src={trainer.image}
                                             alt={`${trainer.name}, ${trainer.specialty}`}
                                             loading="lazy"
                                         />
@@ -121,7 +128,7 @@ const PersonalTraining: React.FC = () => {
                                         </div>
                                     )}
                                     {/* Play button overlay */}
-                                    {trainer.youtubeId && (
+                                    {trainer.videoCard?.videoUrl && (
                                         <div
                                             className="absolute inset-0 flex items-center justify-center"
                                             onClick={() => flipCard(trainer.id)}
@@ -145,7 +152,7 @@ const PersonalTraining: React.FC = () => {
                                         <span className="label">Clients</span>
                                     </div>
                                     <div className="stat">
-                                        <span className="value">{trainer.experience}+</span>
+                                        <span className="value">{trainer.years}+</span>
                                         <span className="label">Years</span>
                                     </div>
                                 </div>

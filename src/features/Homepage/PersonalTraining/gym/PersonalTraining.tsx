@@ -9,8 +9,8 @@ import {
     X
 } from 'lucide-react';
 import React, { MouseEvent, useState } from 'react';
+import { PersonalTrainingProps, Trainer } from '..';
 import '../PersonalTraining.scss';
-import { PersonalTrainingProps, Trainer } from '../types';
 
 /**
  * Gym variant of the Personal Training component
@@ -34,44 +34,57 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             name: 'Alex Rodriguez',
             specialty: 'Strength Training',
             specialtyIcon: <Dumbbell size={16} />,
-            imageSrc: 'https://plus.unsplash.com/premium_photo-1661359682704-f17a7e38cbff?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            image: 'https://plus.unsplash.com/premium_photo-1661359682704-f17a7e38cbff?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             bio: 'Specialized in muscle building and strength conditioning with 8+ years of experience.',
             clients: 120,
-            experience: 8,
-            youtubeId: 'dQw4w9WgXcQ'
+            years: 8,
+            featured: true,
+            videoCard: {
+                title: 'Strength Training Introduction',
+                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+            }
         },
         {
             id: 'trainer2',
             name: 'Sarah Johnson',
             specialty: 'Cardio & HIIT',
             specialtyIcon: <Heart size={16} />,
-            imageSrc: 'https://images.unsplash.com/photo-1658203897339-989718522126?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            image: 'https://images.unsplash.com/photo-1658203897339-989718522126?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             bio: 'Expert in high-intensity interval training and cardiovascular fitness programs.',
             clients: 95,
-            experience: 6,
-            youtubeId: 'dQw4w9WgXcQ'
+            years: 6,
+            videoCard: {
+                title: 'HIIT Workout Demo',
+                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+            }
         },
         {
             id: 'trainer3',
             name: 'Michael Chen',
             specialty: 'Functional Training',
             specialtyIcon: <RefreshCw size={16} />,
-            imageSrc: 'https://images.unsplash.com/photo-1652880042886-cdb6cebb9ab5?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            image: 'https://images.unsplash.com/photo-1652880042886-cdb6cebb9ab5?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             bio: 'Focuses on building practical strength for everyday activities, improving mobility and balance.',
             clients: 85,
-            experience: 7,
-            youtubeId: 'dQw4w9WgXcQ'
+            years: 7,
+            videoCard: {
+                title: 'Functional Training Basics',
+                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+            }
         },
         {
             id: 'trainer4',
             name: 'Emily Wilson',
             specialty: 'Nutrition Coaching',
             specialtyIcon: <Award size={16} />,
-            imageSrc: 'https://images.unsplash.com/photo-1559595500-c747065f4cd9?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            image: 'https://images.unsplash.com/photo-1559595500-c747065f4cd9?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
             bio: 'Certified nutrition specialist helping clients transform their health through personalized meal plans.',
             clients: 110,
-            experience: 5,
-            youtubeId: 'dQw4w9WgXcQ'
+            years: 5,
+            videoCard: {
+                title: 'Nutrition Fundamentals',
+                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+            }
         }
     ];
 
@@ -98,9 +111,9 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                         <div key={trainer.id} className="trainer-card bg-white shadow-lg rounded-lg overflow-hidden">
                             {/* Trainer Image */}
                             <div className="trainer-image h-64">
-                                {trainer.imageSrc ? (
+                                {trainer.image ? (
                                     <img
-                                        src={trainer.imageSrc}
+                                        src={trainer.image}
                                         alt={`${trainer.name}, ${trainer.specialty}`}
                                         className="w-full h-full object-cover object-center"
                                         loading="lazy"
@@ -128,23 +141,23 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                                         <span className="label">Happy Clients</span>
                                     </div>
                                     <div className="stat">
-                                        <span className="value">{trainer.experience}+</span>
+                                        <span className="value">{trainer.years}+</span>
                                         <span className="label">Years Experience</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Video Card (if applicable) */}
-                            {trainer.youtubeId && (
+                            {trainer.videoCard?.videoUrl && (
                                 <div className="p-4 bg-gray-50 border-t border-gray-200">
-                                    <h4 className="text-sm font-semibold mb-2 text-gray-900">Watch Training Sample</h4>
+                                    <h4 className="text-sm font-semibold mb-2 text-gray-900">{trainer.videoCard.title || "Watch Training Sample"}</h4>
 
                                     <div className="aspect-video relative rounded overflow-hidden bg-gray-200">
                                         {flippedCards[trainer.id] ? (
                                             <>
                                                 <iframe
-                                                    src={`https://www.youtube.com/embed/${trainer.youtubeId}?autoplay=1`}
-                                                    title={`${trainer.name} training sample`}
+                                                    src={trainer.videoCard.videoUrl}
+                                                    title={trainer.videoCard.title || `${trainer.name} training sample`}
                                                     className="w-full h-full absolute inset-0"
                                                     frameBorder="0"
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
