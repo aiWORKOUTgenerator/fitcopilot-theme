@@ -74,103 +74,118 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
         }
     ];
 
+    // Split trainers into featured (first) and others
+    const featuredTrainer = trainers[0];
+    const otherTrainers = trainers.slice(1);
+
+    // Trainer card component to avoid duplication
+    const renderTrainerCard = (trainer: Trainer) => (
+        <div key={trainer.id} className="trainer-card">
+            {/* If we have a video and the card is flipped, show video, otherwise show image */}
+            {trainer.youtubeId && flippedCards[trainer.id] ? (
+                <div className="trainer-image">
+                    <div className="flip-card">
+                        <div className="flip-card-front">
+                            {trainer.imageSrc ? (
+                                <img
+                                    src={trainer.imageSrc}
+                                    alt={`${trainer.name}, ${trainer.specialty}`}
+                                    loading="lazy"
+                                />
+                            ) : (
+                                <div className="image-placeholder">
+                                    <User size={50} />
+                                </div>
+                            )}
+                        </div>
+                        <div className="flip-card-back">
+                            <iframe
+                                title={`${trainer.name} intro video`}
+                                src={`https://www.youtube.com/embed/${trainer.youtubeId}?autoplay=1`}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                    </div>
+                    {/* Video controls */}
+                    <div className="video-controls absolute bottom-4 right-4 flex space-x-2">
+                        <button
+                            className="control-button"
+                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                e.stopPropagation();
+                                flipCard(trainer.id);
+                            }}
+                        >
+                            <Play size={24} className="text-white" />
+                        </button>
+                        <button
+                            className="control-button close-button"
+                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                e.stopPropagation();
+                                flipCard(trainer.id);
+                            }}
+                        >
+                            <X size={24} className="text-white" />
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div className="trainer-image">
+                    {trainer.imageSrc ? (
+                        <img
+                            src={trainer.imageSrc}
+                            alt={`${trainer.name}, ${trainer.specialty}`}
+                            loading="lazy"
+                        />
+                    ) : (
+                        <div className="image-placeholder">
+                            <User size={50} />
+                        </div>
+                    )}
+                    {/* Play button overlay for trainers with videos */}
+                    {trainer.youtubeId && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="play-button-overlay" onClick={() => flipCard(trainer.id)}>
+                                <Play size={48} className="text-white opacity-80 hover:opacity-100 transition-opacity duration-300" />
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+            <div>
+                <div className="specialty">
+                    <span className="icon">{trainer.specialtyIcon}</span>
+                    {trainer.specialty}
+                </div>
+                <h3 className="trainer-name text-xl font-bold mb-2">{trainer.name}</h3>
+                <p className="trainer-bio mb-4">{trainer.bio}</p>
+            </div>
+            <div className="trainer-stats mb-6 grid grid-cols-2 gap-4">
+                <div className="stat">
+                    <span className="value">{trainer.clients}+</span>
+                    <span className="label">Happy Clients</span>
+                </div>
+                <div className="stat">
+                    <span className="value">{trainer.experience}+</span>
+                    <span className="label">Years Experience</span>
+                </div>
+            </div>
+        </div>
+    );
+
     return (
         <section className="personal-training-section py-16 px-4">
             <h2 className="section-title text-white mb-8">Meet Our <span className="highlight">Expert Trainers</span></h2>
-            <div className="trainers-container">
-                {trainers.map(trainer => (
-                    <div key={trainer.id} className="trainer-card">
-                        {/* If we have a video and the card is flipped, show video, otherwise show image */}
-                        {trainer.youtubeId && flippedCards[trainer.id] ? (
-                            <div className="trainer-image">
-                                <div className="flip-card">
-                                    <div className="flip-card-front">
-                                        {trainer.imageSrc ? (
-                                            <img
-                                                src={trainer.imageSrc}
-                                                alt={`${trainer.name}, ${trainer.specialty}`}
-                                                loading="lazy"
-                                            />
-                                        ) : (
-                                            <div className="image-placeholder">
-                                                <User size={50} />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className="flip-card-back">
-                                        <iframe
-                                            title={`${trainer.name} intro video`}
-                                            src={`https://www.youtube.com/embed/${trainer.youtubeId}?autoplay=1`}
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowFullScreen
-                                        ></iframe>
-                                    </div>
-                                </div>
-                                {/* Video controls */}
-                                <div className="video-controls absolute bottom-4 right-4 flex space-x-2">
-                                    <button
-                                        className="control-button"
-                                        onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                            e.stopPropagation();
-                                            flipCard(trainer.id);
-                                        }}
-                                    >
-                                        <Play size={24} className="text-white" />
-                                    </button>
-                                    <button
-                                        className="control-button close-button"
-                                        onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                            e.stopPropagation();
-                                            flipCard(trainer.id);
-                                        }}
-                                    >
-                                        <X size={24} className="text-white" />
-                                    </button>
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="trainer-image">
-                                {trainer.imageSrc ? (
-                                    <img
-                                        src={trainer.imageSrc}
-                                        alt={`${trainer.name}, ${trainer.specialty}`}
-                                        loading="lazy"
-                                    />
-                                ) : (
-                                    <div className="image-placeholder">
-                                        <User size={50} />
-                                    </div>
-                                )}
-                                {/* Play button overlay for trainers with videos */}
-                                {trainer.youtubeId && (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="play-button-overlay" onClick={() => flipCard(trainer.id)}>
-                                            <Play size={48} className="text-white opacity-80 hover:opacity-100 transition-opacity duration-300" />
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
-                        <div>
-                            <div className="specialty">
-                                <span className="icon">{trainer.specialtyIcon}</span>
-                                {trainer.specialty}
-                            </div>
-                            <h3 className="trainer-name text-xl font-bold mb-2">{trainer.name}</h3>
-                            <p className="trainer-bio mb-4">{trainer.bio}</p>
-                        </div>
-                        <div className="trainer-stats mb-6 grid grid-cols-2 gap-4">
-                            <div className="stat">
-                                <span className="value">{trainer.clients}+</span>
-                                <span className="label">Happy Clients</span>
-                            </div>
-                            <div className="stat">
-                                <span className="value">{trainer.experience}+</span>
-                                <span className="label">Years Experience</span>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+            <div className="trainers-container two-column-layout">
+                {/* Left column - Featured trainer */}
+                <div className="featured-trainer-column">
+                    {renderTrainerCard(featuredTrainer)}
+                </div>
+
+                {/* Right column - Other trainers stacked */}
+                <div className="other-trainers-column">
+                    {otherTrainers.map(trainer => renderTrainerCard(trainer))}
+                </div>
             </div>
 
             {/* Consultation CTA */}
