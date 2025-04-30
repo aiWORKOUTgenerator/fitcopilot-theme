@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import Button from './Button';
+import Button, { DefaultButton, GymButton } from '../index';
 
 const meta: Meta<typeof Button> = {
     title: 'UI/Button',
@@ -17,7 +17,7 @@ const meta: Meta<typeof Button> = {
         variant: {
             description: 'Visual style of the button',
             control: 'select',
-            options: ['primary', 'secondary', 'tertiary', 'ghost'],
+            options: ['primary', 'secondary', 'tertiary', 'ghost', 'gradient'],
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'primary' },
@@ -30,6 +30,15 @@ const meta: Meta<typeof Button> = {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' },
+            },
+        },
+        themeContext: {
+            description: 'Theme context for styling',
+            control: 'select',
+            options: ['default', 'gym'],
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'default' },
             },
         },
         isLoading: {
@@ -74,7 +83,24 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-// Variants
+// Theme Variants
+export const DefaultTheme: Story = {
+    args: {
+        children: 'Default Theme Button',
+        variant: 'primary',
+        themeContext: 'default',
+    },
+};
+
+export const GymTheme: Story = {
+    args: {
+        children: 'Gym Theme Button',
+        variant: 'primary',
+        themeContext: 'gym',
+    },
+};
+
+// Standard Variants (Default Theme)
 export const Primary: Story = {
     args: {
         children: 'Primary Button',
@@ -100,6 +126,31 @@ export const Ghost: Story = {
     args: {
         children: 'Ghost Button',
         variant: 'ghost',
+    },
+};
+
+// Gradient Variants
+export const DefaultGradient: Story = {
+    args: {
+        children: 'Default Gradient Button',
+        variant: 'gradient',
+        themeContext: 'default',
+    },
+};
+
+export const GymGradient: Story = {
+    args: {
+        children: 'Gym Gradient Button',
+        variant: 'gradient',
+        themeContext: 'gym',
+    },
+};
+
+export const GradientWithArrow: Story = {
+    args: {
+        children: 'Gradient Button',
+        variant: 'gradient',
+        rightIcon: <span>→</span>,
     },
 };
 
@@ -165,10 +216,16 @@ export const WithRightIcon: Story = {
     },
 };
 
-export const WithBothIcons: Story = {
-    args: {
-        children: 'Button with Icons',
-        leftIcon: <span>←</span>,
-        rightIcon: <span>→</span>,
-    },
+// Define a separate meta for DefaultButton
+export const DefaultButtonMeta: Meta<typeof DefaultButton> = {
+    title: 'UI/Button/DefaultButton',
+    component: DefaultButton,
+    tags: ['autodocs'],
+};
+
+// Define a separate meta for GymButton
+export const GymButtonMeta: Meta<typeof GymButton> = {
+    title: 'UI/Button/GymButton',
+    component: GymButton,
+    tags: ['autodocs'],
 }; 

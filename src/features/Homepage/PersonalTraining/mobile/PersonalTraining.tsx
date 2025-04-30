@@ -1,4 +1,5 @@
 import {
+    ArrowRight,
     Dumbbell,
     Heart,
     Play,
@@ -7,6 +8,7 @@ import {
 } from 'lucide-react';
 import React, { MouseEvent, useState } from 'react';
 import { PersonalTrainingProps, Trainer } from '..';
+import Button from '../../../../components/UI/Button';
 import '../PersonalTraining.scss';
 
 /**
@@ -57,7 +59,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
     ];
 
     return (
-        <section className="personal-training-section py-8 px-4">
+        <section className="personal-training-section personal-training-section--mobile py-8 px-4">
             <h2 className="section-title mb-8">
                 Our <span className="highlight">Expert Trainers</span>
             </h2>
@@ -94,24 +96,30 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                                     </div>
                                     {/* Video controls */}
                                     <div className="video-controls absolute bottom-4 right-4 flex space-x-2">
-                                        <button
-                                            className="control-button"
+                                        <Button
+                                            variant="ghost"
+                                            size="small"
+                                            themeContext="default"
                                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                 e.stopPropagation();
                                                 flipCard(trainer.id);
                                             }}
+                                            aria-label="Play video"
                                         >
                                             <Play size={24} className="text-white" />
-                                        </button>
-                                        <button
-                                            className="control-button close-button"
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="small"
+                                            themeContext="default"
                                             onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                 e.stopPropagation();
                                                 flipCard(trainer.id);
                                             }}
+                                            aria-label="Close video"
                                         >
                                             <X size={24} className="text-white" />
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
                             ) : (
@@ -130,7 +138,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                                     {/* Play button overlay */}
                                     {trainer.videoCard?.videoUrl && (
                                         <div
-                                            className="absolute inset-0 flex items-center justify-center"
+                                            className="absolute inset-0 flex items-center justify-center video-play-indicator"
                                             onClick={() => flipCard(trainer.id)}
                                         >
                                             <Play size={48} className="text-white opacity-80 hover:opacity-100 transition-opacity duration-300" />
@@ -169,6 +177,16 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                     <p className="booking-text">
                         Schedule a free consultation with one of our expert trainers. We'll discuss your goals and create a plan just for you.
                     </p>
+                    <Button
+                        variant="gradient"
+                        size="medium"
+                        fullWidth={true}
+                        rightIcon={<ArrowRight size={18} />}
+                        themeContext="default"
+                        className="mt-4"
+                    >
+                        Book Consultation
+                    </Button>
                 </div>
             </div>
         </section>

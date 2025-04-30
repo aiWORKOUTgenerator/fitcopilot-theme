@@ -1,4 +1,5 @@
 import {
+    ArrowRight,
     Award,
     Calendar,
     Dumbbell,
@@ -10,6 +11,7 @@ import {
 } from 'lucide-react';
 import React, { MouseEvent, useState } from 'react';
 import { PersonalTrainingProps, Trainer } from '..';
+import Button from '../../../../components/UI/Button';
 import '../PersonalTraining.scss';
 
 /**
@@ -89,15 +91,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
     ];
 
     return (
-        <section className="personal-training-section py-16 bg-gray-100" style={{
-            // Override the dark theme with light theme variables
-            '--color-pt-bg': '#f3f4f6',
-            '--color-pt-card-bg': '#ffffff',
-            '--color-pt-text': '#111827',
-            '--color-pt-text-secondary': '#6b7280',
-            '--color-pt-border': '#e5e7eb',
-            '--color-pt-grid': 'rgba(0, 0, 0, 0.03)' // Darker grid lines for light theme
-        } as React.CSSProperties}>
+        <section className="personal-training-section personal-training-section--gym py-16 bg-gray-100">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="section-title">Our <span className="highlight">Professional Trainers</span></h2>
@@ -164,15 +158,19 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                                                     allowFullScreen
                                                 ></iframe>
                                                 <div className="absolute bottom-2 right-2 z-10 flex space-x-1">
-                                                    <button
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="small"
+                                                        themeContext="gym"
                                                         className="p-1 rounded-full bg-black/60 text-white"
                                                         onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                             e.stopPropagation();
                                                             flipCard(trainer.id);
                                                         }}
+                                                        aria-label="Close video"
                                                     >
                                                         <X size={16} />
-                                                    </button>
+                                                    </Button>
                                                 </div>
                                             </>
                                         ) : (
@@ -197,6 +195,15 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                     <p className="text-white/90 mb-6 max-w-2xl mx-auto">
                         Schedule a free consultation session with one of our expert trainers. We'll create a personalized plan to help you reach your goals.
                     </p>
+                    <Button
+                        variant="gradient"
+                        size="large"
+                        rightIcon={<ArrowRight size={18} />}
+                        themeContext="gym"
+                        className="mb-4"
+                    >
+                        Book Your Consultation
+                    </Button>
                     {/* Date selection hint */}
                     <p className="text-sm text-white/70 mt-4 flex items-center justify-center">
                         <Calendar size={16} className="mr-2" />

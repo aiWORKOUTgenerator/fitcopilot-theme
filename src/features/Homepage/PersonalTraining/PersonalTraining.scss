@@ -32,9 +32,22 @@
     --color-pt-accent: var(--color-primary, #3498db);
     --color-pt-border: rgba(255, 255, 255, 0.1);
 
+    // Section-specific button variables (properly contained to this section)
+    --pt-button-primary-bg: linear-gradient(to right, var(--color-lime-300, #84cc16), var(--color-emerald-400, #10b981));
+    --pt-button-primary-color: var(--color-text-dark, #111827);
+    --pt-button-primary-hover-y: -5px;
+    --pt-button-primary-shadow: 0 10px 15px -3px rgba(132, 204, 22, 0.3);
+
+    // Accent colors - without overriding global variables
+    --color-pt-accent: var(--color-lime-500, #84cc16);
+    --color-pt-accent-light: var(--color-lime-300, #bef264);
+    --color-pt-accent-dark: var(--color-emerald-600, #059669);
+    --color-pt-gradient: linear-gradient(to right, var(--color-lime-300, #84cc16), var(--color-emerald-400, #10b981));
+    --color-pt-accent-rgb: 132, 204, 22;
+
     // Specialty badge styling
-    --color-pt-badge-bg: rgba(var(--color-primary-rgb, 52, 152, 219), 0.1);
-    --color-pt-badge-text: var(--color-primary, #3498db);
+    --color-pt-badge-bg: rgba(var(--color-pt-accent-rgb, 132, 204, 22), 0.1);
+    --color-pt-badge-text: var(--color-pt-accent, #84cc16);
 
     // Card hover effects
     --transform-pt-card-hover-y: -5px;
@@ -47,7 +60,7 @@
     --color-pt-grid: rgba(255, 255, 255, 0.03);
 
     // CTA box styling
-    --gradient-pt-cta: linear-gradient(135deg, var(--color-primary, #3498db), var(--color-primary-dark, #2980b9));
+    --gradient-pt-cta: linear-gradient(135deg, var(--color-pt-accent, #84cc16), var(--color-pt-accent-dark, #059669));
 
     position: var(--pos-pt-relative, relative);
     z-index: var(--z-pt-base, 1);
@@ -176,39 +189,104 @@
 
     // Video controls
     .video-controls {
-        .control-button {
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s ease;
-            border: none;
-            cursor: pointer;
+        // Position and layout styles only
+        display: flex;
+        justify-content: space-between;
 
-            &:hover {
-                background-color: rgba(0, 0, 0, 0.7);
-            }
-
-            &.close-button {
-                background-color: rgba(220, 38, 38, 0.8);
-
-                &:hover {
-                    background-color: rgba(220, 38, 38, 1);
-                }
-            }
-        }
+        // Notice: Button styling is completely removed and handled by the Button component
+        // Only container positioning remains
     }
 
-    // Play button overlay
-    .play-button-overlay {
+    // Play button overlay - renamed to avoid confusion with actual buttons
+    .video-play-indicator {
         cursor: pointer;
         transition: transform 0.2s ease;
 
         &:hover {
             transform: scale(1.1);
+        }
+    }
+
+    // Gym theme variant
+    &--gym {
+        // Override the dark theme with light theme variables
+        --color-pt-bg: #f3f4f6;
+        --color-pt-card-bg: #ffffff;
+        --color-pt-text: #111827;
+        --color-pt-text-secondary: #6b7280;
+        --color-pt-border: #e5e7eb;
+        --color-pt-grid: rgba(0, 0, 0, 0.03);
+
+        // Gym-specific button variables
+        --pt-button-primary-bg: linear-gradient(to right, var(--color-violet-600, #7c3aed), var(--color-purple-500, #8b5cf6));
+        --pt-button-primary-color: var(--color-text-inverse, #ffffff);
+        --pt-button-primary-hover-y: -3px;
+        --pt-button-primary-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3);
+
+        // Gym-specific accent colors
+        --color-pt-accent: var(--color-violet-600, #7c3aed);
+        --color-pt-accent-light: var(--color-violet-400, #a78bfa);
+        --color-pt-accent-dark: var(--color-purple-700, #7e22ce);
+        --color-pt-gradient: linear-gradient(to right, var(--color-violet-600, #7c3aed), var(--color-purple-500, #8b5cf6));
+        --color-pt-accent-rgb: 124, 58, 237;
+
+        // Background is light for gym theme
+        background-color: var(--color-pt-bg, #f3f4f6);
+        color: var(--color-pt-text, #111827);
+
+        // Adjust grid pattern for light theme
+        &::before {
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+        }
+
+        // Override specialty badge styling for gym theme
+        .specialty,
+        .trainer-specialty {
+            background-color: rgba(var(--color-pt-accent-rgb, 124, 58, 237), 0.1);
+            color: var(--color-pt-accent, #7c3aed);
+        }
+
+        // Override trainer name color
+        .trainer-name {
+            color: var(--color-pt-text, #111827);
+        }
+
+        // Override trainer bio color
+        .trainer-bio {
+            color: var(--color-pt-text-secondary, #6b7280);
+        }
+
+        // Override trainer stats colors
+        .trainer-stats .stat .value {
+            color: var(--color-pt-accent, #7c3aed);
+        }
+    }
+
+    // Mobile theme variant
+    &--mobile {
+        // Mobile-specific button variables
+        --pt-button-primary-bg: linear-gradient(to right, var(--color-lime-300, #84cc16), var(--color-emerald-400, #10b981));
+        --pt-button-primary-color: var(--color-text-dark, #111827);
+        --pt-button-primary-hover-y: -2px; // Less dramatic hover for mobile
+        --pt-button-primary-shadow: 0 4px 6px -1px rgba(132, 204, 22, 0.2);
+
+        // Simplified design for mobile
+        padding: var(--spacing-8, 2rem) var(--spacing-4, 1rem);
+
+        // Adjust layout for mobile
+        .trainer-cards {
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        // Mobile-specific adjustments
+        .video-play-indicator:hover {
+            transform: none;
         }
     }
 
@@ -322,28 +400,6 @@
             margin-left: auto;
             margin-right: auto;
         }
-
-        .booking-button {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.75rem 1.5rem;
-            background-color: white;
-            color: var(--color-violet-700, #6d28d9);
-            border-radius: 0.5rem;
-            font-weight: 600;
-            margin: 0 auto;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-
-            &:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            }
-
-            svg {
-                margin-left: 0.5rem;
-            }
-        }
     }
 
     // Flip card
@@ -427,11 +483,7 @@
             transition: transform 0.1s;
         }
 
-        .play-button-overlay:hover {
-            transform: none;
-        }
-
-        .booking-button:hover {
+        .video-play-indicator:hover {
             transform: none;
         }
     }

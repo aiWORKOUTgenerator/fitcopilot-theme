@@ -2,7 +2,8 @@
  * Button Component
  * 
  * A reusable button component that supports different variants, sizes,
- * loading states, and accessibility features.
+ * loading states, and accessibility features. 
+ * This is a wrapper component that loads the appropriate theme variant.
  * 
  * @example
  * <Button variant="primary" size="medium" onClick={handleClick}>
@@ -10,85 +11,41 @@
  * </Button>
  */
 
-import classNames from 'classnames';
 import React from 'react';
-import './Button.scss';
+import { getButtonThemeContext } from './context';
+import { ButtonProps } from './types';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    /** Button size variant */
-    size?: 'small' | 'medium' | 'large';
-    /** Button color variant */
-    variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost';
-    /** Sets width to 100% when true */
-    fullWidth?: boolean;
-    /** Shows loading spinner and disables button when true */
-    isLoading?: boolean;
-    /** Icon to display before button text */
-    leftIcon?: React.ReactNode;
-    /** Icon to display after button text */
-    rightIcon?: React.ReactNode;
-    /** Section context for specific styling */
-    themeContext?: string;
-    /** Button content */
-    children: React.ReactNode;
-    /** Additional CSS classes */
-    className?: string;
-    /** Whether the button is disabled */
-    disabled?: boolean;
-    /** Button click handler */
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    /** Button type */
-    type?: 'button' | 'submit' | 'reset';
-    /** Additional HTML attributes */
-    [key: string]: any;
-}
+// Dynamically import button theme variants
+const DefaultButton = React.lazy(() => import('./default/Button'));
+const GymButton = React.lazy(() => import('./gym/Button'));
 
 /**
- * Button component for triggering actions
+ * Main Button component that selects the appropriate theme variant
  */
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
-    children,
-    className,
-    size = 'medium',
-    variant = 'primary',
-    fullWidth = false,
-    isLoading = false,
-    leftIcon,
-    rightIcon,
-    themeContext,
-    disabled,
-    ...rest
+    themeContext = 'default',
+    ...props
 }, ref) => {
-    // Generate class names with proper order for specificity
-    const buttonClasses = classNames(
-        'button',
-        `button--${size}`,
-        `button--${variant}`,
-        themeContext && `button--${themeContext}`,
-        {
-            'button--fullwidth': fullWidth,
-            'button--loading': isLoading,
-            'button--with-left-icon': !!leftIcon,
-            'button--with-right-icon': !!rightIcon,
-        },
-        className
-    );
+    const theme = getButtonThemeContext(themeContext);
 
+    // Use React.Suspense to handle the dynamic import
     return (
-        <button
-            className={buttonClasses}
-            disabled={disabled || isLoading}
-            ref={ref}
-            {...rest}
-        >
-            {isLoading && <span className="button__spinner" aria-hidden="true" />}
-
-            {leftIcon && <span className="button__icon button__icon--left">{leftIcon}</span>}
-
-            <span className="button__text">{children}</span>
-
-            {rightIcon && <span className="button__icon button__icon--right">{rightIcon}</span>}
-        </button>
+        <React.Suspense fallback={
+            <button
+                className="button button--loading"
+                disabled
+                aria-busy="true"
+            >
+                <span className="button__spinner" aria-hidden="true" />
+                <span className="button__text">{props.children}</span>
+            </button>
+        }>
+            {theme === 'gym' ? (
+                <GymButton ref={ref} {...props} />
+            ) : (
+                <DefaultButton ref={ref} {...props} />
+            )}
+        </React.Suspense>
     );
 });
 

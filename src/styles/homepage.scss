@@ -91,28 +91,9 @@ body {
   }
 }
 
-// Button hover effects
-.button {
-  &.primary {
-    &:hover {
-      box-shadow: 0 0 20px rgba(163, 230, 53, 0.3);
-    }
-  }
-
-  &.secondary {
-    &:hover {
-      box-shadow: 0 0 20px rgba(163, 230, 53, 0.1);
-    }
-  }
-}
-
 // Reduced motion
 @media (prefers-reduced-motion: reduce) {
   .text-gradient::before {
     animation: none;
-  }
-
-  .button {
-    transition: none;
   }
 }

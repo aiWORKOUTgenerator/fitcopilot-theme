@@ -9,8 +9,9 @@ import {
     Users,
     X
 } from 'lucide-react';
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { MouseEvent, useState } from 'react';
 import { PersonalTrainingProps, Trainer } from '..';
+import Button from '../../../../components/UI/Button';
 import '../PersonalTraining.scss';
 
 /**
@@ -27,36 +28,6 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             [trainerId]: !prev[trainerId]
         }));
     };
-
-    // Apply CSS variables for theming
-    useEffect(() => {
-        const root = document.documentElement;
-
-        // Store original values to restore later
-        const originalValues = {
-            ptAccent: root.style.getPropertyValue('--color-pt-accent'),
-            ptAccentLight: root.style.getPropertyValue('--color-pt-accent-light'),
-            ptAccentDark: root.style.getPropertyValue('--color-pt-accent-dark'),
-            ptGradient: root.style.getPropertyValue('--color-pt-gradient'),
-            ptAccentRgb: root.style.getPropertyValue('--color-pt-accent-rgb'),
-        };
-
-        // Set new values
-        root.style.setProperty('--color-pt-accent', 'var(--color-violet-500, #8b5cf6)');
-        root.style.setProperty('--color-pt-accent-light', 'var(--color-violet-300, #c4b5fd)');
-        root.style.setProperty('--color-pt-accent-dark', 'var(--color-violet-700, #6d28d9)');
-        root.style.setProperty('--color-pt-gradient', 'linear-gradient(to right, var(--color-violet-600, #7c3aed), var(--color-purple-500, #8b5cf6))');
-        root.style.setProperty('--color-pt-accent-rgb', 'var(--color-violet-rgb, 139, 92, 246)');
-
-        // Cleanup function to restore original values
-        return () => {
-            if (originalValues.ptAccent) root.style.setProperty('--color-pt-accent', originalValues.ptAccent);
-            if (originalValues.ptAccentLight) root.style.setProperty('--color-pt-accent-light', originalValues.ptAccentLight);
-            if (originalValues.ptAccentDark) root.style.setProperty('--color-pt-accent-dark', originalValues.ptAccentDark);
-            if (originalValues.ptGradient) root.style.setProperty('--color-pt-gradient', originalValues.ptGradient);
-            if (originalValues.ptAccentRgb) root.style.setProperty('--color-pt-accent-rgb', originalValues.ptAccentRgb);
-        };
-    }, []);
 
     // Default trainer data if none provided
     const trainers: Trainer[] = propTrainers || [
@@ -162,10 +133,15 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                             </div>
 
                             {/* Action Button */}
-                            <button className="mt-auto w-full py-3 bg-gradient-to-r from-violet-600 to-purple-500 text-white font-medium rounded-lg flex items-center justify-center hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                            <Button
+                                variant="gradient"
+                                rightIcon={<ArrowRight size={18} />}
+                                fullWidth={true}
+                                className="mt-auto debug-button-default"
+                                themeContext="default"
+                            >
                                 Schedule Session
-                                <ArrowRight size={18} className="ml-2" />
-                            </button>
+                            </Button>
 
                             {/* Flip Card for Featured Trainer */}
                             {featuredTrainer.videoCard && (
@@ -209,24 +185,32 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                                                 )}
                                             </div>
                                             <div className="bg-gray-700 p-3 flex justify-between">
-                                                <button
+                                                <Button
+                                                    variant="ghost"
+                                                    size="small"
+                                                    themeContext="default"
                                                     className="p-2 rounded-full bg-gray-600 text-white"
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         e.stopPropagation();
                                                         flipCard(featuredTrainer.id);
                                                     }}
+                                                    aria-label="Refresh video"
                                                 >
                                                     <RefreshCw size={20} />
-                                                </button>
-                                                <button
+                                                </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="small"
+                                                    themeContext="default"
                                                     className="p-2 rounded-full bg-gray-600 text-white"
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         e.stopPropagation();
                                                         flipCard(featuredTrainer.id);
                                                     }}
+                                                    aria-label="Close video"
                                                 >
                                                     <X size={20} />
-                                                </button>
+                                                </Button>
                                             </div>
                                         </div>
                                     </div>
@@ -277,10 +261,15 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                             </div>
 
                             {/* Action Button */}
-                            <button className="mt-auto w-full py-3 bg-gradient-to-r from-violet-600 to-purple-500 text-white font-medium rounded-lg flex items-center justify-center hover:-translate-y-1 hover:shadow-lg transition-all duration-300">
+                            <Button
+                                variant="gradient"
+                                rightIcon={<ArrowRight size={18} />}
+                                fullWidth={true}
+                                className="mt-auto debug-button-default"
+                                themeContext="default"
+                            >
                                 Schedule Session
-                                <ArrowRight size={18} className="ml-2" />
-                            </button>
+                            </Button>
                         </div>
                     ))}
                 </div>
@@ -292,10 +281,15 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                         <p className="text-white/80 mb-8">
                             Schedule a free consultation with one of our expert trainers. We'll discuss your goals, fitness level, and create a plan tailored just for you.
                         </p>
-                        <button className="booking-button hover:-translate-y-1 hover:shadow-lg">
-                            Book Free Consultation
-                            <ArrowRight size={20} className="ml-2" />
-                        </button>
+                        <Button
+                            variant="gradient"
+                            rightIcon={<ArrowRight size={20} />}
+                            fullWidth={true}
+                            themeContext="default"
+                            className="debug-button-cta"
+                        >
+                            Book Consultation
+                        </Button>
                     </div>
 
                     {/* Decorative Element */}
