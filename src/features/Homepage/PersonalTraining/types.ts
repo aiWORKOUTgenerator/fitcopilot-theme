@@ -1,25 +1,20 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
+
+export interface PersonalTrainingProps {
+    trainers?: Trainer[];
+    variant?: VariantKey;
+}
 
 export interface Trainer {
     id: string;
     name: string;
-    image?: string;
     specialty: string;
-    specialtyIcon: ReactNode;
+    specialtyIcon: ReactElement;
+    imageSrc: string;
     bio: string;
-    years: number;
     clients: number;
-    featured?: boolean;
-    videoCard?: {
-        title: string;
-        image?: string;
-        videoUrl?: string;
-    };
-}
-
-export interface PersonalTrainingProps {
-    trainers?: Trainer[];
-    variant?: 'default' | 'gym';
+    experience: number;
+    youtubeId?: string;
 }
 
 // Export VariantKey for consistency with other components

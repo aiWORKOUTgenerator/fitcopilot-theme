@@ -13,51 +13,43 @@ const mockTrainers: Trainer[] = [
     {
         id: "trainer-1",
         name: "Alex Rivera",
-        image: "https://placehold.co/400x600/111827/CCFF00?text=Alex+R",
+        imageSrc: "https://placehold.co/400x600/111827/CCFF00?text=Alex+R",
         specialty: "Strength & Conditioning",
         specialtyIcon: <Dumbbell size={14} />,
         bio: "Specialized in transforming physiques through science-based training protocols. Alex has helped over 200 clients achieve their fitness goals.",
-        years: 8,
+        experience: 8,
         clients: 178,
-        featured: true,
-        videoCard: {
-            title: "High-Intensity Workout Demo",
-            image: "https://placehold.co/800x450/111827/CCFF00?text=Workout+Demo",
-            videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
-        }
+        youtubeId: "dQw4w9WgXcQ"
     },
     {
         id: "trainer-2",
         name: "Morgan Chen",
-        image: "https://placehold.co/400x600/111827/CCFF00?text=Morgan+C",
+        imageSrc: "https://placehold.co/400x600/111827/CCFF00?text=Morgan+C",
         specialty: "Nutrition & Weight Loss",
         specialtyIcon: <Heart size={14} />,
         bio: "Certified nutritionist and weight management specialist. Morgan creates personalized diet plans that complement your training regimen.",
-        years: 6,
-        clients: 152,
-        featured: false
+        experience: 6,
+        clients: 152
     },
     {
         id: "trainer-3",
         name: "Jordan Smith",
-        image: "https://placehold.co/400x600/111827/CCFF00?text=Jordan+S",
+        imageSrc: "https://placehold.co/400x600/111827/CCFF00?text=Jordan+S",
         specialty: "Athletic Performance",
         specialtyIcon: <Award size={14} />,
         bio: "Former professional athlete who now trains competitors at all levels. Specializes in sport-specific training and performance enhancement.",
-        years: 10,
-        clients: 215,
-        featured: false
+        experience: 10,
+        clients: 215
     },
     {
         id: "trainer-4",
         name: "Taylor West",
-        image: "https://placehold.co/400x600/111827/CCFF00?text=Taylor+W",
+        imageSrc: "https://placehold.co/400x600/111827/CCFF00?text=Taylor+W",
         specialty: "Mobility Specialist",
         specialtyIcon: <Medal size={14} />,
         bio: "Specializing in mobility training, injury prevention, and corrective exercise. Perfect for those looking to improve movement quality and reduce pain.",
-        years: 4,
-        clients: 89,
-        featured: false
+        experience: 4,
+        clients: 89
     }
 ];
 

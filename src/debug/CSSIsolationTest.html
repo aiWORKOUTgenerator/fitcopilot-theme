@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Button Style Isolation Test</title>
+    <style>
+        /* Base button style */
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            outline: none;
+            height: auto;
+        }
+
+        /* Variant styles */
+        .button--primary {
+            background-color: #8b5cf6;
+            color: white;
+        }
+
+        .button--secondary {
+            background-color: #e5e7eb;
+            color: #1f2937;
+        }
+
+        /* Size variants */
+        .button--small {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .button--medium {
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .button--large {
+            font-size: 1rem;
+            padding: 0.75rem 1.5rem;
+        }
+
+        /* Theme context specific styles */
+        .button--personal-training {
+            background: linear-gradient(to right, #8b5cf6, #6d28d9);
+            color: white;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .button--personal-training:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.2);
+        }
+
+        /* Personal training section context */
+        .personal-training-section {
+            background-color: #000;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+        }
+
+        /* Full width variant */
+        .button--fullwidth {
+            width: 100%;
+        }
+
+        /* CTA style */
+        .button--personal-training-cta {
+            background-color: white;
+            color: #7c3aed;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .button--personal-training-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Icon spacing */
+        .button__icon--left {
+            margin-right: 0.5rem;
+        }
+
+        .button__icon--right {
+            margin-left: 0.5rem;
+        }
+
+        /* Page styling */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.5;
+            color: #1f2937;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-top: 0;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .button-debug {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
+        }
+
+        .class-name {
+            font-family: monospace;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+
+        pre {
+            background-color: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow: auto;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Button Style Isolation Test</h1>
+
+    <div class="section">
+        <h2>Base Variants</h2>
+        <div class="buttons-container">
+            <div class="button-debug">
+                <button class="button button--primary button--medium">Primary Button</button>
+                <div class="class-name">button button--primary button--medium</div>
+            </div>
+
+            <div class="button-debug">
+                <button class="button button--secondary button--medium">Secondary Button</button>
+                <div class="class-name">button button--secondary button--medium</div>
+            </div>
+
+            <div class="button-debug">
+                <button class="button button--primary button--small">Small Button</button>
+                <div class="class-name">button button--primary button--small</div>
+            </div>
+
+            <div class="button-debug">
+                <button class="button button--primary button--large">Large Button</button>
+                <div class="class-name">button button--primary button--large</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Theme Context</h2>
+        <div class="buttons-container">
+            <div class="button-debug">
+                <button class="button button--primary button--medium button--personal-training">
+                    Personal Training Button
+                </button>
+                <div class="class-name">button button--primary button--medium button--personal-training</div>
+            </div>
+
+            <div class="button-debug">
+                <button class="button button--primary button--medium button--personal-training-cta">
+                    Personal Training CTA
+                </button>
+                <div class="class-name">button button--primary button--medium button--personal-training-cta</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section personal-training-section">
+        <h2 style="color: white;">Within Personal Training Section</h2>
+        <div class="buttons-container">
+            <div class="button-debug">
+                <button class="button button--primary button--medium button--personal-training">
+                    Section Button
+                </button>
+                <div class="class-name" style="color: #a1a1aa">button button--primary button--medium
+                    button--personal-training</div>
+            </div>
+
+            <div class="button-debug">
+                <button class="button button--primary button--medium button--personal-training-cta">
+                    Section CTA Button
+                </button>
+                <div class="class-name" style="color: #a1a1aa">button button--primary button--medium
+                    button--personal-training-cta</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Variants combined with fullWidth</h2>
+        <div class="buttons-container" style="display: block;">
+            <div class="button-debug">
+                <button class="button button--primary button--medium button--personal-training button--fullwidth">
+                    Full Width Button
+                </button>
+                <div class="class-name">button button--primary button--medium button--personal-training
+                    button--fullwidth</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>With Icons</h2>
+        <div class="buttons-container">
+            <div class="button-debug">
+                <button class="button button--primary button--medium button--personal-training">
+                    <span class="button__icon--left">←</span>
+                    Left Icon
+                </button>
+                <div class="class-name">With button__icon--left</div>
+            </div>
+
+            <div class="button-debug">
+                <button class="button button--primary button--medium button--personal-training">
+                    Right Icon
+                    <span class="button__icon--right">→</span>
+                </button>
+                <div class="class-name">With button__icon--right</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>CSS Class Precedence Test</h2>
+        <pre>
+button.button--primary         /* Specificity: 0,1,1 */
+.button.button--primary        /* Specificity: 0,2,0 */
+.personal-training-section .button--primary  /* Specificity: 0,2,0 */
+.button--personal-training     /* Specificity: 0,1,0 */
+.personal-training-section .button--personal-training  /* Specificity: 0,2,0 */
+button.button--personal-training  /* Specificity: 0,1,1 */
+    </pre>
+    </div>
+
+    <script>
+        // Log computed styles to console for inspection
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all buttons
+            const buttons = document.querySelectorAll('.button');
+
+            // Log each button's computed style
+            buttons.forEach(button => {
+                const computedStyle = window.getComputedStyle(button);
+                console.log('Button with classes:', button.className);
+                console.log('Computed styles:', {
+                    background: computedStyle.background,
+                    backgroundImage: computedStyle.backgroundImage,
+                    color: computedStyle.color,
+                    padding: computedStyle.padding,
+                    borderRadius: computedStyle.borderRadius,
+                    fontWeight: computedStyle.fontWeight,
+                    boxShadow: computedStyle.boxShadow
+                });
+                console.log('---');
+            });
+        });
+    </script>
+</body>
+
+</html>

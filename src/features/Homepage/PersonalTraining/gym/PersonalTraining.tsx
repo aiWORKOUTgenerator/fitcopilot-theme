@@ -1,14 +1,11 @@
 import {
-    ArrowRight,
     Award,
     Calendar,
     Dumbbell,
     Heart,
-    Medal,
     Play,
     RefreshCw,
     User,
-    Users,
     X
 } from 'lucide-react';
 import React, { MouseEvent, useState } from 'react';
@@ -30,186 +27,150 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
         }));
     };
 
-    // Default trainer data if none provided
+    // Trainer data
     const trainers: Trainer[] = propTrainers || [
         {
-            id: "trainer-1",
-            name: "Alex Rivera",
-            image: "/assets/trainers/trainer1.jpg",
-            specialty: "Hypertrophy Coach",
-            specialtyIcon: <Dumbbell size={14} />,
-            bio: "With a background in competitive bodybuilding, Alex specializes in muscle development, physique enhancement, and body recomposition strategies.",
-            years: 8,
-            clients: 178,
-            featured: true,
-            videoCard: {
-                title: "High-Intensity Workout Demo",
-                image: "/assets/trainers/workout-demo.jpg",
-                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
-            }
+            id: 'trainer1',
+            name: 'Alex Rodriguez',
+            specialty: 'Strength Training',
+            specialtyIcon: <Dumbbell size={16} />,
+            imageSrc: 'https://plus.unsplash.com/premium_photo-1661359682704-f17a7e38cbff?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            bio: 'Specialized in muscle building and strength conditioning with 8+ years of experience.',
+            clients: 120,
+            experience: 8,
+            youtubeId: 'dQw4w9WgXcQ'
         },
         {
-            id: "trainer-2",
-            name: "Morgan Chen",
-            image: "/assets/trainers/trainer2.jpg",
-            specialty: "Wellness Coach",
-            specialtyIcon: <Heart size={14} />,
-            bio: "Morgan combines nutritional coaching with personalized training to help clients transform their bodies and improve overall health markers.",
-            years: 6,
-            clients: 152,
-            featured: false
+            id: 'trainer2',
+            name: 'Sarah Johnson',
+            specialty: 'Cardio & HIIT',
+            specialtyIcon: <Heart size={16} />,
+            imageSrc: 'https://images.unsplash.com/photo-1658203897339-989718522126?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            bio: 'Expert in high-intensity interval training and cardiovascular fitness programs.',
+            clients: 95,
+            experience: 6,
+            youtubeId: 'dQw4w9WgXcQ'
         },
         {
-            id: "trainer-3",
-            name: "Jordan Smith",
-            image: "/assets/trainers/trainer3.jpg",
-            specialty: "Performance Coach",
-            specialtyIcon: <Award size={14} />,
-            bio: "Former D1 athlete with expertise in strength development, power output, and athletic performance for both competitive and recreational athletes.",
-            years: 10,
-            clients: 215,
-            featured: false
+            id: 'trainer3',
+            name: 'Michael Chen',
+            specialty: 'Functional Training',
+            specialtyIcon: <RefreshCw size={16} />,
+            imageSrc: 'https://images.unsplash.com/photo-1652880042886-cdb6cebb9ab5?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            bio: 'Focuses on building practical strength for everyday activities, improving mobility and balance.',
+            clients: 85,
+            experience: 7,
+            youtubeId: 'dQw4w9WgXcQ'
         },
         {
-            id: "trainer-4",
-            name: "Taylor West",
-            image: "/assets/trainers/trainer4.jpg",
-            specialty: "Mobility Specialist",
-            specialtyIcon: <Medal size={14} />,
-            bio: "Specializing in mobility training, injury prevention, and corrective exercise. Perfect for those looking to improve movement quality and reduce pain.",
-            years: 4,
-            clients: 89,
-            featured: false
+            id: 'trainer4',
+            name: 'Emily Wilson',
+            specialty: 'Nutrition Coaching',
+            specialtyIcon: <Award size={16} />,
+            imageSrc: 'https://images.unsplash.com/photo-1559595500-c747065f4cd9?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            bio: 'Certified nutrition specialist helping clients transform their health through personalized meal plans.',
+            clients: 110,
+            experience: 5,
+            youtubeId: 'dQw4w9WgXcQ'
         }
     ];
 
     return (
-        <section className="py-20 bg-gray-50 relative overflow-hidden">
-            {/* Background decoration */}
-            <div className="absolute inset-0 bg-gradient-to-br from-violet-50 to-white opacity-70"></div>
-
-            <div className="container mx-auto px-4 relative z-10">
-                {/* Section header */}
+        <section className="personal-training-section py-16 bg-gray-100" style={{
+            // Override the dark theme with light theme variables
+            '--color-pt-bg': '#f3f4f6',
+            '--color-pt-card-bg': '#ffffff',
+            '--color-pt-text': '#111827',
+            '--color-pt-text-secondary': '#6b7280',
+            '--color-pt-border': '#e5e7eb',
+            '--color-pt-grid': 'rgba(0, 0, 0, 0.03)' // Darker grid lines for light theme
+        } as React.CSSProperties}>
+            <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-violet-700 to-purple-500">
-                            Expert Personal Trainers
-                        </span>
-                    </h2>
-                    <p className="text-lg text-gray-700 max-w-3xl mx-auto">
-                        Our certified personal trainers bring years of experience and specialized knowledge to help you achieve your fitness goals faster and more effectively.
+                    <h2 className="section-title">Our <span className="highlight">Professional Trainers</span></h2>
+                    <p className="text-gray-600 max-w-2xl mx-auto">
+                        Our certified trainers are here to help you achieve your fitness goals with personalized programs and expert guidance.
                     </p>
                 </div>
 
-                {/* Trainers grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-                    {trainers.map((trainer, index) => (
-                        <div
-                            key={trainer.id}
-                            className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg border border-gray-100 h-full flex flex-col"
-                        >
-                            {/* Trainer image */}
-                            <div className="relative h-64 bg-gradient-to-br from-violet-400 to-purple-500">
-                                {trainer.image && !trainer.image.includes('assets/trainers') ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {trainers.map(trainer => (
+                        <div key={trainer.id} className="trainer-card bg-white shadow-lg rounded-lg overflow-hidden">
+                            {/* Trainer Image */}
+                            <div className="trainer-image h-64">
+                                {trainer.imageSrc ? (
                                     <img
-                                        src={trainer.image}
-                                        alt={trainer.name}
-                                        className="w-full h-full object-cover"
+                                        src={trainer.imageSrc}
+                                        alt={`${trainer.name}, ${trainer.specialty}`}
+                                        className="w-full h-full object-cover object-center"
+                                        loading="lazy"
                                     />
                                 ) : (
-                                    <div className="w-full h-full flex items-center justify-center">
-                                        <User size={64} className="text-white opacity-70" />
+                                    <div className="image-placeholder">
+                                        <User size={50} />
                                     </div>
                                 )}
+                            </div>
 
-                                {/* Specialty badge */}
-                                <div className="absolute bottom-4 left-4 bg-white px-3 py-1 rounded-full text-sm font-medium text-violet-700 flex items-center shadow-md">
-                                    {/* Safely render the icon */}
-                                    <span className="mr-1">{trainer.specialtyIcon}</span>
+                            {/* Trainer Info */}
+                            <div className="p-6">
+                                <div className="specialty mb-2">
+                                    <span className="icon">{trainer.specialtyIcon}</span>
                                     {trainer.specialty}
                                 </div>
-                            </div>
+                                <h3 className="trainer-name">{trainer.name}</h3>
+                                <p className="trainer-bio">{trainer.bio}</p>
 
-                            <div className="p-6 flex-grow flex flex-col">
-                                {/* Name and rating */}
-                                <div className="flex justify-between items-start mb-3">
-                                    <h3 className="text-xl font-bold text-gray-900">{trainer.name}</h3>
-                                </div>
-
-                                {/* Bio */}
-                                <p className="text-gray-600 mb-4 flex-grow">{trainer.bio}</p>
-
-                                {/* Stats */}
-                                <div className="mb-4">
-                                    <div className="flex items-center text-sm text-gray-500 mb-2">
-                                        <Calendar size={14} className="mr-2" />
-                                        <span>{trainer.years} years experience</span>
+                                {/* Trainer Stats */}
+                                <div className="trainer-stats my-4">
+                                    <div className="stat">
+                                        <span className="value">{trainer.clients}+</span>
+                                        <span className="label">Happy Clients</span>
                                     </div>
-                                    <div className="flex items-center text-sm text-gray-500">
-                                        <Users size={14} className="mr-2" />
-                                        <span>{trainer.clients}+ clients trained</span>
+                                    <div className="stat">
+                                        <span className="value">{trainer.experience}+</span>
+                                        <span className="label">Years Experience</span>
                                     </div>
                                 </div>
-
-                                {/* CTA button */}
-                                <button className="w-full py-3 bg-gradient-to-r from-violet-600 to-purple-500 text-white font-medium rounded-lg hover:shadow-md transition-all duration-300 flex items-center justify-center mt-auto">
-                                    Book Session
-                                    <ArrowRight size={16} className="ml-2" />
-                                </button>
                             </div>
 
-                            {/* Video card for featured trainer */}
-                            {trainer.featured && trainer.videoCard && (
-                                <div className="p-6 pt-0">
-                                    <div
-                                        className={`flip-card ${flippedCards[trainer.id] ? 'flipped' : ''}`}
-                                        onClick={() => flipCard(trainer.id)}
-                                    >
-                                        {/* Front of Card */}
-                                        <div className="flip-card-front bg-gray-50 flex items-center justify-center flex-col rounded-lg">
-                                            <Play size={64} className="text-violet-500 mb-4" />
-                                            <h4 className="text-lg font-medium text-gray-900">{trainer.videoCard.title}</h4>
-                                            <p className="text-sm text-gray-500 flex items-center mt-2">
-                                                Click to watch
-                                                <Play size={16} className="ml-1 text-violet-500" />
-                                            </p>
-                                        </div>
+                            {/* Video Card (if applicable) */}
+                            {trainer.youtubeId && (
+                                <div className="p-4 bg-gray-50 border-t border-gray-200">
+                                    <h4 className="text-sm font-semibold mb-2 text-gray-900">Watch Training Sample</h4>
 
-                                        {/* Back of Card */}
-                                        <div className="flip-card-back bg-gray-50 rounded-lg">
-                                            <div className="flex-grow flex items-center justify-center p-4">
-                                                {flippedCards[trainer.id] && trainer.videoCard.videoUrl && (
-                                                    <iframe
-                                                        src={trainer.videoCard.videoUrl}
-                                                        title={trainer.videoCard.title}
-                                                        frameBorder="0"
-                                                        className="w-full h-full"
-                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                        allowFullScreen
-                                                    ></iframe>
-                                                )}
+                                    <div className="aspect-video relative rounded overflow-hidden bg-gray-200">
+                                        {flippedCards[trainer.id] ? (
+                                            <>
+                                                <iframe
+                                                    src={`https://www.youtube.com/embed/${trainer.youtubeId}?autoplay=1`}
+                                                    title={`${trainer.name} training sample`}
+                                                    className="w-full h-full absolute inset-0"
+                                                    frameBorder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                ></iframe>
+                                                <div className="absolute bottom-2 right-2 z-10 flex space-x-1">
+                                                    <button
+                                                        className="p-1 rounded-full bg-black/60 text-white"
+                                                        onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                            e.stopPropagation();
+                                                            flipCard(trainer.id);
+                                                        }}
+                                                    >
+                                                        <X size={16} />
+                                                    </button>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <div
+                                                className="w-full h-full flex flex-col items-center justify-center cursor-pointer"
+                                                onClick={() => flipCard(trainer.id)}
+                                            >
+                                                <Play size={40} className="text-violet-600 mb-2" />
+                                                <span className="text-xs font-medium text-gray-700">Play Video</span>
                                             </div>
-                                            <div className="bg-gray-100 p-3 flex justify-between">
-                                                <button
-                                                    className="p-2 rounded-full bg-violet-100 text-violet-600"
-                                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                        e.stopPropagation();
-                                                        flipCard(trainer.id);
-                                                    }}
-                                                >
-                                                    <RefreshCw size={20} />
-                                                </button>
-                                                <button
-                                                    className="p-2 rounded-full bg-violet-100 text-violet-600"
-                                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                        e.stopPropagation();
-                                                        flipCard(trainer.id);
-                                                    }}
-                                                >
-                                                    <X size={20} />
-                                                </button>
-                                            </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
                             )}
@@ -217,22 +178,17 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                     ))}
                 </div>
 
-                {/* CTA section */}
-                <div className="bg-gradient-to-r from-violet-600 to-purple-500 rounded-2xl p-8 md:p-12 shadow-xl">
-                    <div className="md:flex items-center justify-between">
-                        <div className="mb-6 md:mb-0 md:mr-8">
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
-                                Start Your Fitness Journey Today
-                            </h3>
-                            <p className="text-violet-100 text-lg max-w-2xl">
-                                Book a free fitness assessment with one of our expert trainers and get a personalized plan to reach your goals.
-                            </p>
-                        </div>
-                        <button className="whitespace-nowrap bg-white text-violet-700 py-4 px-8 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 flex items-center">
-                            Schedule Free Assessment
-                            <ArrowRight size={18} className="ml-2" />
-                        </button>
-                    </div>
+                {/* Consultation CTA */}
+                <div className="booking-box bg-gradient-to-r from-violet-600 to-indigo-600 rounded-lg p-8 mt-16 max-w-4xl mx-auto text-center shadow-xl">
+                    <h3 className="text-2xl font-bold text-white mb-4">Ready to Transform Your Fitness?</h3>
+                    <p className="text-white/90 mb-6 max-w-2xl mx-auto">
+                        Schedule a free consultation session with one of our expert trainers. We'll create a personalized plan to help you reach your goals.
+                    </p>
+                    {/* Date selection hint */}
+                    <p className="text-sm text-white/70 mt-4 flex items-center justify-center">
+                        <Calendar size={16} className="mr-2" />
+                        Next available appointment: Tomorrow at 10:00 AM
+                    </p>
                 </div>
             </div>
         </section>

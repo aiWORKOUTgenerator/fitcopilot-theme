@@ -1,12 +1,8 @@
 import {
-    ArrowRight,
-    Award,
     Dumbbell,
     Heart,
     Play,
-    RefreshCw,
     User,
-    Users,
     X
 } from 'lucide-react';
 import React, { MouseEvent, useState } from 'react';
@@ -27,197 +23,145 @@ const PersonalTraining: React.FC = () => {
         }));
     };
 
-    // Trainer data with mobile-optimized content
+    // Trainer data with placeholders
     const trainers = [
         {
-            id: "trainer-mobile-1",
-            name: "Alex Rivera",
-            image: "/assets/trainers/trainer1.jpg",
-            specialty: "Strength Coach",
-            specialtyIcon: <Dumbbell size={14} />,
-            bio: "Specialized in science-based training protocols for all fitness levels.",
-            years: 8,
-            clients: 178,
-            featured: true,
-            videoCard: {
-                title: "Workout Demo",
-                image: "/assets/trainers/workout-demo.jpg",
-                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
-            }
+            id: 'trainer1',
+            name: 'Alex Rodriguez',
+            specialty: 'Strength Training',
+            specialtyIcon: <Dumbbell size={16} />,
+            imageSrc: 'https://plus.unsplash.com/premium_photo-1661359682704-f17a7e38cbff?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            bio: 'Specialized in muscle building and strength conditioning with 8+ years of experience.',
+            clients: 120,
+            experience: 8,
+            youtubeId: 'dQw4w9WgXcQ'
         },
         {
-            id: "trainer-mobile-2",
-            name: "Morgan Chen",
-            image: "/assets/trainers/trainer2.jpg",
-            specialty: "Nutrition",
-            specialtyIcon: <Heart size={14} />,
-            bio: "Creates personalized diet plans to complement your training regimen.",
-            years: 6,
-            clients: 152,
-            featured: false
-        },
-        {
-            id: "trainer-mobile-3",
-            name: "Jordan Smith",
-            image: "/assets/trainers/trainer3.jpg",
-            specialty: "Performance",
-            specialtyIcon: <Award size={14} />,
-            bio: "Specializes in sport-specific training and performance enhancement.",
-            years: 10,
-            clients: 215,
-            featured: false
+            id: 'trainer2',
+            name: 'Sarah Johnson',
+            specialty: 'Cardio & HIIT',
+            specialtyIcon: <Heart size={16} />,
+            imageSrc: 'https://images.unsplash.com/photo-1658203897339-989718522126?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+            bio: 'Expert in high-intensity interval training and cardiovascular fitness programs.',
+            clients: 95,
+            experience: 6,
+            youtubeId: 'dQw4w9WgXcQ'
         }
     ];
 
     return (
-        <section className="personal-training-section w-full py-20 px-4 bg-gray-900">
-            {/* Header */}
-            <div className="text-center mb-16">
-                <span className="text-xs font-bold tracking-widest uppercase text-violet-300 mb-2 block">Expert Coaching</span>
-                <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-                    Personal <span className="bg-gradient-to-r from-violet-300 to-indigo-400 text-transparent bg-clip-text">Trainers</span>
-                </h2>
-                <p className="text-gray-400 max-w-2xl mx-auto">
-                    Work with certified fitness professionals who will create custom programs tailored to your specific goals.
-                </p>
-            </div>
+        <section className="personal-training-section py-8 px-4">
+            <h2 className="section-title mb-8">
+                Our <span className="highlight">Expert Trainers</span>
+            </h2>
 
-            {/* Trainers Grid - Mobile optimized */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto mb-16">
-                {trainers.map((trainer) => (
-                    <div
-                        key={trainer.id}
-                        className={`trainer-card ${trainer.featured ? 'md:col-span-2' : ''}`}
-                    >
-                        {/* Trainer Image */}
-                        <div
-                            className={`trainer-image ${!trainer.image || trainer.image.includes('assets/trainers') ? 'img-placeholder' : ''}`}
-                            style={trainer.image && !trainer.image.includes('assets/trainers') ? { backgroundImage: `url(${trainer.image})` } : {}}
-                        >
-                            {(!trainer.image || trainer.image.includes('assets/trainers')) && (
-                                <div className="text-white">
-                                    <User size={48} />
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Trainer Specialty Tag */}
-                        <div className="trainer-specialty">
-                            {trainer.specialtyIcon}
-                            {trainer.specialty}
-                        </div>
-
-                        {/* Trainer Info */}
-                        <h3 className="trainer-name">{trainer.name}</h3>
-                        <p className="trainer-bio">{trainer.bio}</p>
-
-                        {/* Trainer Stats */}
-                        <div className="trainer-stats">
-                            <div className="stat-item">
-                                <span className="stat-value">{trainer.years}</span>
-                                <span className="stat-label">Years Exp</span>
-                            </div>
-                            <div className="stat-item">
-                                <span className="stat-value">{trainer.clients}</span>
-                                <span className="stat-label">Clients</span>
-                            </div>
-                        </div>
-
-                        {/* Action Button */}
-                        <button className="action-button">
-                            Book Now
-                            <ArrowRight size={18} />
-                        </button>
-
-                        {/* Flip Card for Featured Trainer */}
-                        {trainer.featured && trainer.videoCard && (
-                            <div className="flip-card-container">
-                                <div
-                                    className={`flip-card ${flippedCards[trainer.id] ? 'flipped' : ''}`}
-                                    onClick={() => flipCard(trainer.id)}
-                                >
-                                    {/* Front of Card (Image) */}
-                                    <div className="flip-card-front">
-                                        {trainer.videoCard.image && !trainer.videoCard.image.includes('assets') ? (
-                                            <img
-                                                src={trainer.videoCard.image}
-                                                alt={trainer.videoCard.title}
-                                            />
-                                        ) : (
-                                            <div className="w-full h-full bg-gradient-to-br from-violet-600 to-indigo-800 flex items-center justify-center">
-                                                <div className="text-white opacity-70">
-                                                    <Play size={64} />
+            {/* Mobile Trainer Cards */}
+            <div className="trainer-cards overflow-x-auto pb-6">
+                <div className="flex space-x-4 min-w-max px-2">
+                    {trainers.map(trainer => (
+                        <div key={trainer.id} className="trainer-card w-64 flex-shrink-0">
+                            {trainer.youtubeId && flippedCards[trainer.id] ? (
+                                <div className="trainer-image relative">
+                                    <div className="flip-card flipped">
+                                        <div className="flip-card-front">
+                                            {trainer.imageSrc ? (
+                                                <img
+                                                    src={trainer.imageSrc}
+                                                    alt={`${trainer.name}, ${trainer.specialty}`}
+                                                    loading="lazy"
+                                                />
+                                            ) : (
+                                                <div className="image-placeholder">
+                                                    <User size={50} />
                                                 </div>
-                                            </div>
-                                        )}
-
-                                        {/* Overlay with Title */}
-                                        <div className="overlay">
-                                            <div className="flip-card-title">{trainer.videoCard.title}</div>
-                                            <div className="flip-card-hint">
-                                                Tap to watch
-                                                <Play size={16} />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Back of Card (Video Player) */}
-                                    <div className="flip-card-back">
-                                        <div className="video-container">
-                                            {flippedCards[trainer.id] && (
-                                                <iframe
-                                                    src={trainer.videoCard.videoUrl}
-                                                    title={trainer.videoCard.title}
-                                                    frameBorder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowFullScreen
-                                                ></iframe>
                                             )}
                                         </div>
-                                        <div className="video-controls">
-                                            <button
-                                                className="control-button"
-                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                    e.stopPropagation();
-                                                    flipCard(trainer.id);
-                                                }}
-                                            >
-                                                <RefreshCw size={20} />
-                                            </button>
-                                            <button
-                                                className="control-button close-button"
-                                                onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                    e.stopPropagation();
-                                                    flipCard(trainer.id);
-                                                }}
-                                            >
-                                                <X size={20} />
-                                            </button>
+                                        <div className="flip-card-back">
+                                            <iframe
+                                                title={`${trainer.name} intro video`}
+                                                src={`https://www.youtube.com/embed/${trainer.youtubeId}?autoplay=1`}
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowFullScreen
+                                            ></iframe>
                                         </div>
+                                    </div>
+                                    {/* Video controls */}
+                                    <div className="video-controls absolute bottom-4 right-4 flex space-x-2">
+                                        <button
+                                            className="control-button"
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                e.stopPropagation();
+                                                flipCard(trainer.id);
+                                            }}
+                                        >
+                                            <Play size={24} className="text-white" />
+                                        </button>
+                                        <button
+                                            className="control-button close-button"
+                                            onClick={(e: MouseEvent<HTMLButtonElement>) => {
+                                                e.stopPropagation();
+                                                flipCard(trainer.id);
+                                            }}
+                                        >
+                                            <X size={24} className="text-white" />
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="trainer-image relative">
+                                    {trainer.imageSrc ? (
+                                        <img
+                                            src={trainer.imageSrc}
+                                            alt={`${trainer.name}, ${trainer.specialty}`}
+                                            loading="lazy"
+                                        />
+                                    ) : (
+                                        <div className="image-placeholder">
+                                            <User size={50} />
+                                        </div>
+                                    )}
+                                    {/* Play button overlay */}
+                                    {trainer.youtubeId && (
+                                        <div
+                                            className="absolute inset-0 flex items-center justify-center"
+                                            onClick={() => flipCard(trainer.id)}
+                                        >
+                                            <Play size={48} className="text-white opacity-80 hover:opacity-100 transition-opacity duration-300" />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            <div className="p-4">
+                                <div className="specialty">
+                                    <span className="icon">{trainer.specialtyIcon}</span>
+                                    {trainer.specialty}
+                                </div>
+                                <h3 className="trainer-name">{trainer.name}</h3>
+                                <p className="trainer-bio">{trainer.bio}</p>
+                                <div className="trainer-stats">
+                                    <div className="stat">
+                                        <span className="value">{trainer.clients}+</span>
+                                        <span className="label">Clients</span>
+                                    </div>
+                                    <div className="stat">
+                                        <span className="value">{trainer.experience}+</span>
+                                        <span className="label">Years</span>
                                     </div>
                                 </div>
                             </div>
-                        )}
-                    </div>
-                ))}
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Consultation CTA */}
-            <div className="booking-box max-w-4xl mx-auto">
-                <div className="max-w-xl">
+            <div className="booking-box max-w-full mx-auto mt-8">
+                <div className="text-center">
                     <h3 className="booking-title">Ready to Start?</h3>
                     <p className="booking-text">
                         Schedule a free consultation with one of our expert trainers. We'll discuss your goals and create a plan just for you.
                     </p>
-                    <button className="booking-button">
-                        Book Consultation
-                        <ArrowRight size={20} />
-                    </button>
-                </div>
-
-                {/* Decorative Element */}
-                <div className="absolute right-0 bottom-0 opacity-20 hidden md:block" aria-hidden="true">
-                    <Users size={180} />
                 </div>
             </div>
         </section>

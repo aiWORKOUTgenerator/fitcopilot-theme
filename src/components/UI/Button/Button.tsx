@@ -14,7 +14,7 @@ import classNames from 'classnames';
 import React from 'react';
 import './Button.scss';
 
-export interface ButtonProps {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     /** Button size variant */
     size?: 'small' | 'medium' | 'large';
     /** Button color variant */
@@ -46,7 +46,7 @@ export interface ButtonProps {
 /**
  * Button component for triggering actions
  */
-export const Button: React.FC<ButtonProps> = ({
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
     children,
     className,
     size = 'medium',
@@ -58,7 +58,8 @@ export const Button: React.FC<ButtonProps> = ({
     themeContext,
     disabled,
     ...rest
-}) => {
+}, ref) => {
+    // Generate class names with proper order for specificity
     const buttonClasses = classNames(
         'button',
         `button--${size}`,
@@ -67,8 +68,8 @@ export const Button: React.FC<ButtonProps> = ({
         {
             'button--fullwidth': fullWidth,
             'button--loading': isLoading,
-            'button--with-left-icon': leftIcon,
-            'button--with-right-icon': rightIcon,
+            'button--with-left-icon': !!leftIcon,
+            'button--with-right-icon': !!rightIcon,
         },
         className
     );
@@ -77,6 +78,7 @@ export const Button: React.FC<ButtonProps> = ({
         <button
             className={buttonClasses}
             disabled={disabled || isLoading}
+            ref={ref}
             {...rest}
         >
             {isLoading && <span className="button__spinner" aria-hidden="true" />}
@@ -88,6 +90,8 @@ export const Button: React.FC<ButtonProps> = ({
             {rightIcon && <span className="button__icon button__icon--right">{rightIcon}</span>}
         </button>
     );
-};
+});
+
+Button.displayName = 'Button';
 
 export default Button; 
