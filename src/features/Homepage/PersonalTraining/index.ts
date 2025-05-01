@@ -1,24 +1,25 @@
-import type { VariantKey } from '../Hero/types';
+import React from 'react';
 import { createVariantComponent, getComponentVariant } from '../utils/variantLoader';
-import DefaultPersonalTraining from './default';
-import GymPersonalTraining from './gym';
-import type { Trainer } from './types';
+import type { PersonalTrainingProps, Trainer, VariantKey } from './types';
 
-/**
- * Props for PersonalTraining component
- */
-interface PersonalTrainingProps {
-    variant?: VariantKey;
-    trainers?: Trainer[];
-}
+// Import variants
+import ClassicVariant from './variants/classic';
+import DefaultVariant from './variants/default';
+import MinimalistVariant from './variants/minimalist';
+import ModernVariant from './variants/modern';
+import SportsVariant from './variants/sports';
+import WellnessVariant from './variants/wellness';
 
 /**
  * Map of PersonalTraining component variants
  */
 export const PersonalTrainingMap: Record<VariantKey, React.ComponentType<Omit<PersonalTrainingProps, 'variant'>>> = {
-    default: DefaultPersonalTraining,
-    gym: GymPersonalTraining,
-    mobile: DefaultPersonalTraining // Fallback to default for mobile as per Hero component
+    default: DefaultVariant,
+    modern: ModernVariant,
+    classic: ClassicVariant,
+    minimalist: MinimalistVariant,
+    sports: SportsVariant,
+    wellness: WellnessVariant
 };
 
 /**

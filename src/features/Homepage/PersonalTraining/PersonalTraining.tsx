@@ -10,9 +10,9 @@ import {
     X
 } from 'lucide-react';
 import React, { MouseEvent, useState } from 'react';
-import { PersonalTrainingProps, Trainer } from '..';
-import Button from '../../../../components/UI/Button';
-import '../PersonalTraining.scss';
+import Button from '../../../components/UI/Button';
+import './PersonalTraining.scss';
+import { PersonalTrainingProps, Trainer } from './types';
 
 /**
  * Default Personal Training component for the homepage
@@ -134,7 +134,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
 
                             {/* Action Button */}
                             <Button
-                                variant="gradient"
+                                variant="violet-indigo"
                                 rightIcon={<ArrowRight size={18} />}
                                 fullWidth={true}
                                 className="mt-auto debug-button-default"
@@ -262,7 +262,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
 
                             {/* Action Button */}
                             <Button
-                                variant="gradient"
+                                variant="violet-indigo"
                                 rightIcon={<ArrowRight size={18} />}
                                 fullWidth={true}
                                 className="mt-auto debug-button-default"
@@ -282,7 +282,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                             Schedule a free consultation with one of our expert trainers. We'll discuss your goals, fitness level, and create a plan tailored just for you.
                         </p>
                         <Button
-                            variant="gradient"
+                            variant="violet-indigo"
                             rightIcon={<ArrowRight size={20} />}
                             fullWidth={true}
                             themeContext="default"

@@ -21,13 +21,23 @@
     }
 }
 
-#athlete-dashboard-root .personal-training-section .button--gradient {
-    background: var(--pt-button-primary-bg, linear-gradient(to right, var(--color-lime-300, #84cc16), var(--color-emerald-400, #10b981))) !important;
-    color: var(--pt-button-primary-color, var(--color-text-dark, #111827)) !important;
+#athlete-dashboard-root .button--violet-indigo {
+    background: linear-gradient(to right, var(--color-violet-300, #a78bfa), var(--color-indigo-400, #818cf8)) !important;
+    color: var(--color-text-dark, #111827) !important;
 
     &:hover:not(:disabled) {
-        transform: translateY(var(--pt-button-primary-hover-y, -5px)) !important;
-        box-shadow: var(--pt-button-primary-shadow, 0 10px 15px -3px rgba(132, 204, 22, 0.3)) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3) !important;
+    }
+}
+
+#athlete-dashboard-root .personal-training-section .button--gradient {
+    background: linear-gradient(to right, var(--color-violet-300, #a78bfa), var(--color-indigo-400, #818cf8)) !important;
+    color: var(--color-text-dark, #111827) !important;
+
+    &:hover:not(:disabled) {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 10px 15px -3px rgba(167, 139, 250, 0.3) !important;
     }
 }
 
@@ -114,18 +124,43 @@
         }
     }
 
+    // Violet-Indigo Gradient Button - For PersonalTraining section
+    &:where(&--violet-indigo) {
+        --button-gradient-from: var(--color-violet-300, #a78bfa);
+        --button-gradient-to: var(--color-indigo-400, #818cf8);
+        --button-text-color: var(--color-gray-900, #111827);
+        --button-radius: var(--radius-md, 0.5rem);
+        --button-hover-shadow: 0 10px 15px -3px rgba(139, 92, 246, 0.3);
+
+        background: linear-gradient(to right, var(--button-gradient-from), var(--button-gradient-to));
+        color: var(--button-text-color);
+        border-radius: var(--button-radius);
+        font-weight: 600;
+        box-shadow: var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
+
+        &:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--button-hover-shadow);
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
+        }
+    }
+
     // Section-specific styling with proper specificity
     // This uses a parent selector pattern to increase specificity
     .personal-training-section & {
 
         &--primary,
         &--gradient {
-            background: var(--pt-button-primary-bg, linear-gradient(to right, var(--color-lime-300, #84cc16), var(--color-emerald-400, #10b981)));
-            color: var(--pt-button-primary-color, var(--color-text-dark, #111827));
+            background: linear-gradient(to right, var(--color-violet-300, #a78bfa), var(--color-indigo-400, #818cf8));
+            color: var(--color-text-dark, #111827);
 
             &:hover:not(:disabled) {
-                transform: translateY(var(--pt-button-primary-hover-y, -5px));
-                box-shadow: var(--pt-button-primary-shadow, 0 10px 15px -3px rgba(132, 204, 22, 0.3));
+                transform: translateY(-5px);
+                box-shadow: 0 10px 15px -3px rgba(167, 139, 250, 0.3);
             }
         }
     }

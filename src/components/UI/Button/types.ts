@@ -9,7 +9,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     /** Button size variant */
     size?: 'small' | 'medium' | 'large';
     /** Button color variant */
-    variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'gradient';
+    variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'gradient' | 'violet-indigo';
     /** Sets width to 100% when true */
     fullWidth?: boolean;
     /** Shows loading spinner and disables button when true */

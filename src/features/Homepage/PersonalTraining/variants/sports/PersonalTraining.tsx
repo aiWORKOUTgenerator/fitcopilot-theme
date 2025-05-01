@@ -10,12 +10,12 @@ import {
     X
 } from 'lucide-react';
 import React, { MouseEvent, useState } from 'react';
-import { PersonalTrainingProps, Trainer } from '..';
-import Button from '../../../../components/UI/Button';
-import '../PersonalTraining.scss';
+import Button from '../../../../../components/UI/Button';
+import '../../PersonalTraining.scss';
+import { PersonalTrainingProps, Trainer } from '../../types';
 
 /**
- * Gym variant of the Personal Training component
+ * Sports variant of the Personal Training component
  */
 const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers }) => {
     // Track flipped state for each trainer by ID
@@ -91,7 +91,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
     ];
 
     return (
-        <section className="personal-training-section personal-training-section--gym py-16 bg-gray-100">
+        <section className="personal-training-section personal-training-section--sports py-16 bg-gray-100">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="section-title">Our <span className="highlight">Professional Trainers</span></h2>
@@ -161,7 +161,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                                                     <Button
                                                         variant="ghost"
                                                         size="small"
-                                                        themeContext="gym"
+                                                        themeContext="sports"
                                                         className="p-1 rounded-full bg-black/60 text-white"
                                                         onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                             e.stopPropagation();
@@ -199,7 +199,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                         variant="gradient"
                         size="large"
                         rightIcon={<ArrowRight size={18} />}
-                        themeContext="gym"
+                        themeContext="sports"
                         className="mb-4"
                     >
                         Book Your Consultation

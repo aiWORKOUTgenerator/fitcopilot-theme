@@ -1,12 +1,12 @@
 import { Activity, Apple, BarChart3, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, Medal, Timer } from 'lucide-react';
 import React, { useRef, useState } from 'react';
-import { FloatingIconData, renderFloatingIcon } from '../components';
-import FeatureCard from '../components/FeatureCard';
-import { ProgressChart, SampleWorkout, VideoPlayer } from '../components/FeatureCardDemos';
-import '../Features.scss';
+import { FloatingIconData, renderFloatingIcon } from '../../components';
+import FeatureCard from '../../components/FeatureCard';
+import { ProgressChart, SampleWorkout, VideoPlayer } from '../../components/FeatureCardDemos';
+import '../../Features.scss';
 
 /**
- * Gym variant of Features component
+ * Sports variant of Features component
  */
 const Features: React.FC = () => {
     const [activeFeatureIndex, setActiveFeatureIndex] = useState<number | null>(null);
@@ -86,7 +86,7 @@ const Features: React.FC = () => {
             {/* Main content */}
             <div className="max-w-6xl mx-auto text-center relative z-10">
                 <div className="inline-block mb-16">
-                    <span className="text-xs font-bold tracking-widest uppercase text-violet-300 mb-2 block">Gym Experience</span>
+                    <span className="text-xs font-bold tracking-widest uppercase text-violet-300 mb-2 block">Sports Experience</span>
                     <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white">
                         Powerful Features <br />
                         <span className="bg-gradient-to-r from-violet-300 to-fuchsia-400 text-transparent bg-clip-text text-gradient" data-text="For Serious Athletes">For Serious Athletes</span>

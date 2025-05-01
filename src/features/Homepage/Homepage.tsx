@@ -7,7 +7,7 @@ import { useHomepageAnimation, useHomepageData } from './hooks';
 // Import feature components
 import { Features } from './Features';
 import { Footer } from './Footer';
-import { getHeroVariant, Hero, VariantKey } from './Hero';
+import Hero from './Hero';
 import { Journey } from './Journey';
 import { getPersonalTrainingVariant, PersonalTraining } from './PersonalTraining';
 import { Pricing } from './Pricing';
@@ -17,6 +17,7 @@ import { getTrainingFeaturesVariant, TrainingFeatures } from './TrainingFeatures
 
 // Import feature-specific components
 import { DemoNav } from './components';
+import { VariantKey } from './Hero/types';
 
 export interface HomepageProps {
   demoMode?: boolean;
@@ -31,7 +32,6 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
 
   // Track variants for demo mode
   const [variants, setVariants] = useState<Record<string, VariantKey>>({
-    hero: getHeroVariant(),
     features: 'default',
     training: getTrainingVariant(),
     personalTraining: getPersonalTrainingVariant(),
@@ -47,8 +47,6 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
 
     // Enhanced logging for debugging variants
     console.log('========= VARIANT DEBUG INFO =========');
-    console.log('Current Hero Variant:', variants.hero);
-    console.log('getHeroVariant() returned:', getHeroVariant());
     console.log('Demo mode status:', demoMode);
     console.log('All current variants:', variants);
     console.log('====================================');
@@ -78,9 +76,7 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
   const demoSections = [
     {
       id: 'hero',
-      label: 'Hero',
-      variantKey: 'hero',
-      variants: ['default', 'gym'] as VariantKey[]
+      label: 'Hero'
     },
     {
       id: 'features',
@@ -149,7 +145,6 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
       {/* Hero Section - Using dynamic variant */}
       <section id="hero">
         <Hero
-          variant={variants.hero}
           registrationLink={data.siteLinks.registration}
           loginLink={data.siteLinks.login}
           logoUrl={data.assets.logo}

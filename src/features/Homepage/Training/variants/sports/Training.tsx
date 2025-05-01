@@ -1,5 +1,6 @@
 import { ChevronDown, DumbbellIcon, Scale, Trophy, Zap } from 'lucide-react';
 import React, { useState } from 'react';
+import '../../Training.scss';
 
 const Training: React.FC = () => {
     const [selectedProgram, setSelectedProgram] = useState<number | null>(null);
@@ -72,7 +73,7 @@ const Training: React.FC = () => {
                         </span>
                     </h2>
                     <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
-                        Our gym offers specialized training methodologies designed to meet your individual goals, whether you're looking to build muscle, increase strength, or improve overall fitness.
+                        Our sports center offers specialized training methodologies designed to meet your individual goals, whether you're looking to build muscle, increase strength, or improve athletic performance.
                     </p>
                 </div>
 

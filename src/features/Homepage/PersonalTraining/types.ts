@@ -17,10 +17,16 @@ export interface Trainer {
     };
 }
 
+/**
+ * Available theme variants for the PersonalTraining component
+ * Must match the WordPress theme variant options
+ */
+export type VariantKey = 'default' | 'modern' | 'classic' | 'minimalist' | 'sports' | 'wellness';
+
+/**
+ * Props for the PersonalTraining component
+ */
 export interface PersonalTrainingProps {
     trainers?: Trainer[];
-    variant?: 'default' | 'gym';
-}
-
-// Export VariantKey for consistency with other components
-export type VariantKey = 'default' | 'gym' | 'mobile'; 
+    variant?: VariantKey;
+} 

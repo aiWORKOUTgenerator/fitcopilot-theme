@@ -1,7 +1,7 @@
 import type { VariantKey } from '../Hero/types';
 import { createVariantComponent, getComponentVariant } from '../utils/variantLoader';
 import DefaultTraining from './default';
-import GymTraining from './gym';
+import SportsTraining from './variants/sports';
 
 interface TrainingProps {
     variant?: VariantKey;
@@ -12,7 +12,7 @@ interface TrainingProps {
  */
 export const TrainingMap: Record<VariantKey, React.ComponentType<Omit<TrainingProps, 'variant'>>> = {
     default: DefaultTraining,
-    gym: GymTraining
+    sports: SportsTraining
 };
 
 /**
@@ -28,3 +28,4 @@ export const getTrainingVariant = (): VariantKey => {
 };
 
 export { Training };
+export default Training;

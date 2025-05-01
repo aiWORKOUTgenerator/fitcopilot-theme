@@ -236,4 +236,12 @@
     --pr-transform-translate-neg-50: translate(-50%, -50%);
     --pr-bg-gradient-lime-teal: linear-gradient(135deg, rgba(132, 204, 22, 0.3), rgba(5, 150, 105, 0.2));
     --pr-bg-gradient-highlight: linear-gradient(to right, #84cc16, #059669);
+
+    /* PersonalTraining */
+    --pt-button-primary-bg: linear-gradient(to right, var(--color-violet-300, #a78bfa), var(--color-indigo-400, #818cf8));
+    --pt-button-primary-color: var(--color-text-dark, #111827);
+    --pt-button-primary-hover-y: -5px;
+    --pt-button-primary-shadow: 0 10px 15px -3px rgba(167, 139, 250, 0.3);
+    --color-violet-300: #a78bfa;
+    --color-indigo-400: #818cf8;
 }

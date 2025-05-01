@@ -1,6 +1,6 @@
 import { Apple, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
-import './Hero.css';
+import './Hero.scss';
 
 /**
  * Interface for floating icon props
@@ -19,7 +19,7 @@ interface FloatingIconProps {
 const FloatingIcon: React.FC<FloatingIconProps> = ({ children, delay, speed, left, top }) => {
   return (
     <div
-      className="floating-icon"
+      className="floating-icon hero-floating-icon"
       style={{
         left: `${left}%`,
         top: `${top}%`,
@@ -53,7 +53,7 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({
   registrationLink = "https://aigymengine.com/workout-generator-registration",
   loginLink = "https://aigymengine.com/react-login",
-  logoUrl = '/wp-content/themes/athlete-dashboard-gym-engine/assets/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png'
+  logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png'
 }) => {
   // Animation states for tooltips
   const [tooltipStates, setTooltipStates] = useState({
@@ -132,17 +132,21 @@ const Hero: React.FC<HeroProps> = ({
 
       {/* Floating fitness icons - decorative */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-10" aria-hidden="true">
-        {floatingIcons.map((icon, index) => (
-          <FloatingIcon
-            key={index}
-            left={icon.left}
-            top={icon.top}
-            delay={icon.delay}
-            speed={icon.speed}
-          >
-            <icon.Icon size={icon.size} />
-          </FloatingIcon>
-        ))}
+        {floatingIcons.map((icon, index) => {
+          // Type assertion to help TypeScript understand the component
+          const IconComponent = icon.Icon as React.FC<{ size: number }>;
+          return (
+            <FloatingIcon
+              key={index}
+              left={icon.left}
+              top={icon.top}
+              delay={icon.delay}
+              speed={icon.speed}
+            >
+              <IconComponent size={icon.size} />
+            </FloatingIcon>
+          );
+        })}
       </div>
 
       <div className="max-w-4xl mx-auto relative z-20 text-center">
@@ -162,7 +166,7 @@ const Hero: React.FC<HeroProps> = ({
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-white"
           >
             <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text text-gradient" data-text="AI-Powered Workouts">
-              AI-Powered Workouts
+              AI-Powered Workouts Tailored Just for You
             </span> Tailored Just for You
           </h1>
 

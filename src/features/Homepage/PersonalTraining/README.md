@@ -1,69 +1,66 @@
-# Personal Training Component
+# PersonalTraining Component
 
-The Personal Training component showcases trainers in different theme contexts: default, gym, and mobile. It demonstrates the usage of shared UI components in different section-specific styles.
+This component displays the personal trainers section on the homepage with different theme variants.
 
-## Button Usage
+## Component Structure
 
-This component uses the shared Button component with the following patterns:
-
-### Primary Action Buttons
-
-```tsx
-<Button
-    variant="gradient"
-    rightIcon={<ArrowRight size={18} />}
-    fullWidth={true}
-    themeContext="default" // or "gym" depending on context
->
-    Schedule Session
-</Button>
+```
+PersonalTraining/
+├── variants/             # Component theme variants
+│   ├── default/          # Default variant (re-exports root component)
+│   ├── modern/           # Modern theme variant
+│   ├── classic/          # Classic theme variant
+│   ├── minimalist/       # Minimalist theme variant
+│   ├── sports/           # Sports theme variant (previously gym)
+│   └── wellness/         # Wellness theme variant
+├── PersonalTraining.tsx  # Main component implementation
+├── PersonalTraining.scss # Component styles
+├── types.ts              # TypeScript interfaces and types
+├── index.ts              # Exports with variant handling
+└── README.md             # Documentation
 ```
 
-### Control Buttons (Video Player)
+## Usage
 
 ```tsx
-<Button
-    variant="ghost"
-    size="small"
-    themeContext="default"
-    className="control-button"
-    onClick={(e) => {
-        e.stopPropagation();
-        // Action handler
-    }}
->
-    <Icon />
-</Button>
+import { PersonalTraining } from '../features/Homepage/PersonalTraining';
+
+// Using with default variant
+<PersonalTraining />
+
+// Using with a specific variant
+<PersonalTraining variant="sports" />
+
+// Using with custom trainer data
+<PersonalTraining 
+  trainers={[...]} 
+  variant="modern"
+/>
 ```
 
-### CTA Buttons
+## WordPress Integration
 
-```tsx
-<Button
-    variant="gradient"
-    rightIcon={<ArrowRight size={20} />}
-    fullWidth={true}
-    themeContext="default"
->
-    Book Consultation
-</Button>
-```
+This component integrates with WordPress theme variants as defined in `theme-variants.php`. The variant is automatically selected based on the WordPress theme setting.
 
-## CSS Architecture
+Available variants match what's defined in WordPress:
+- default
+- modern
+- classic
+- minimalist
+- sports
+- wellness
 
-The component uses a CSS containment model where section-specific styles are scoped to the `.personal-training-section` class. Button styling is handled by the Button component itself, with only layout/positioning styles defined in this component's SCSS.
+## Adding New Variants
 
-Proper CSS specificity is maintained through:
+To create a new variant:
 
-1. Base button styling from Button component
-2. Section-specific overrides via context/theming
-3. Explicit class-based overrides only where necessary
+1. Create a new directory under `variants/` with your variant name
+2. Create a `PersonalTraining.tsx` file in that directory
+3. Implement your custom variant (you can copy from an existing one)
+4. Create an `index.ts` file that exports your component
+5. Update the variant map in the root `index.ts` file if needed
 
-## Theme Contexts
+## Migrating from Previous Structure
 
-This component demonstrates how to use the Button component's theming system by setting the appropriate `themeContext` prop:
-
-- Default theme: `themeContext="default"`
-- Gym theme: `themeContext="gym"`
-
-The Button component handles the appropriate styling based on the theme context. 
+This component previously used a different variant structure with 'default', 'gym', and 'mobile' variants. 
+The new structure aligns with the WordPress theme variants. The previous 'gym' variant has been migrated to 'sports'. 

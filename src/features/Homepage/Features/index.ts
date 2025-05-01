@@ -1,7 +1,7 @@
 import type { VariantKey } from '../Hero/types';
 import { createVariantComponent, getComponentVariant } from '../utils/variantLoader';
 import DefaultFeatures from './default';
-import GymFeatures from './gym';
+import SportsFeatures from './variants/sports';
 
 interface FeaturesProps {
     variant?: VariantKey;
@@ -12,7 +12,7 @@ interface FeaturesProps {
  */
 export const FeaturesMap: Record<VariantKey, React.ComponentType<Omit<FeaturesProps, 'variant'>>> = {
     default: DefaultFeatures,
-    gym: GymFeatures
+    sports: SportsFeatures
 };
 
 /**
@@ -28,4 +28,5 @@ export const getFeaturesVariant = (): VariantKey => {
 };
 
 export { Features };
+export default Features;
 

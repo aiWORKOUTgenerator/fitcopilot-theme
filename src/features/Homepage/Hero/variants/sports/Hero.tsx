@@ -1,6 +1,6 @@
 import { ArrowRight, Check } from 'lucide-react';
 import React from 'react';
-import '../Hero.scss';
+import '../../Hero.scss';
 
 /**
  * Interface for floating icon props
@@ -45,7 +45,7 @@ interface FloatingIconData {
 }
 
 /**
- * Hero component for the homepage gym variant
+ * Hero component for the homepage sports variant
  */
 const Hero: React.FC = () => {
     // Benefits list
