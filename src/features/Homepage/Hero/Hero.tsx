@@ -1,6 +1,10 @@
 import { Apple, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import './Hero.css';
+import { HeroLogo } from './components/HeroLogo';
+
+// Image path constant
+const LOGO_PATH = './media/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png';
 
 /**
  * Interface for floating icon props
@@ -36,7 +40,7 @@ const FloatingIcon: React.FC<FloatingIconProps> = ({ children, delay, speed, lef
  * Interface for floating icon data
  */
 interface FloatingIconData {
-  Icon: React.ElementType;
+  Icon: React.ComponentType<any>;
   size: number;
   left: number;
   top: number;
@@ -53,7 +57,7 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({
   registrationLink = "https://aigymengine.com/workout-generator-registration",
   loginLink = "https://aigymengine.com/react-login",
-  logoUrl = '/wp-content/themes/athlete-dashboard-gym-engine/assets/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png'
+  logoUrl = LOGO_PATH
 }) => {
   // Animation states for tooltips
   const [tooltipStates, setTooltipStates] = useState({
@@ -149,12 +153,8 @@ const Hero: React.FC<HeroProps> = ({
         {/* Content Card with Backdrop Blur */}
         <div className="bg-gray-800/30 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-gray-700 mb-6">
           {/* Logo */}
-          <div className="mb-8 flex justify-center">
-            <img
-              src={logoUrl}
-              alt="AI Workout Generator Logo"
-              className="h-48 md:h-56 w-auto"
-            />
+          <div className="my-4 px-4 flex justify-center">
+            <HeroLogo logoUrl={logoUrl} />
           </div>
 
           <h1
@@ -171,7 +171,7 @@ const Hero: React.FC<HeroProps> = ({
           <p
             className="text-gray-300 mb-10 max-w-2xl mx-auto text-base md:text-xl lead"
           >
-            Achieve your fitness goals with <span className="citron-text">customized plans</span> designed by AI and expert trainers.
+            Achieve your fitness goals with <span className="accent-text">customized plans</span> designed by AI and expert trainers.
           </p>
 
           {/* CTA Buttons Container */}
@@ -197,7 +197,7 @@ const Hero: React.FC<HeroProps> = ({
                 <div className={`tooltip ${tooltipStates.freeWorkout.show ? 'show' : 'hide'}`}>
                   <div className="tooltip-content">
                     <div className="tooltip-icon">
-                      <Zap className="w-4 h-4 text-lime-300" />
+                      <Zap className="w-4 h-4 accent-text" />
                     </div>
                     <div className="tooltip-text">
                       <h5 className="tooltip-title">Quick Workout Builder</h5>
@@ -221,7 +221,7 @@ const Hero: React.FC<HeroProps> = ({
                 href={registrationLink}
                 className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gray-800 border-2 border-lime-300/30 text-white hover:bg-lime-300/10 hover:-translate-y-1 w-full sm:w-auto button secondary hero-button"
               >
-                <UserPlus className="mr-2 h-5 w-5 text-lime-300" />
+                <UserPlus className="mr-2 h-5 w-5 accent-text" />
                 Create Your Account
               </a>
 
@@ -230,7 +230,7 @@ const Hero: React.FC<HeroProps> = ({
                 <div className={`tooltip ${tooltipStates.createAccount.show ? 'show' : 'hide'}`}>
                   <div className="tooltip-content">
                     <div className="tooltip-icon">
-                      <Shield className="w-4 h-4 text-lime-300" />
+                      <Shield className="w-4 h-4 accent-text" />
                     </div>
                     <div className="tooltip-text">
                       <h5 className="tooltip-title">Member Benefits</h5>

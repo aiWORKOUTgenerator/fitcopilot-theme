@@ -9,9 +9,19 @@ interface HeroLogoProps {
  */
 export const HeroLogo: React.FC<HeroLogoProps> = ({ logoUrl }) => {
   return (
-    <div className="mb-12 flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       {logoUrl ? (
-        <img src={logoUrl} alt="AI Workout Generator" className="h-10" />
+        <picture>
+          <source srcSet={logoUrl} type="image/png" />
+          <img
+            src={logoUrl}
+            alt="AI Workout Generator"
+            className="hero-logo"
+            loading="eager"
+            width="380"
+            height="180"
+          />
+        </picture>
       ) : (
         <>
           <span className="text-gray-400 text-lg tracking-wider">ai</span>

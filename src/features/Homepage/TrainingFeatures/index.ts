@@ -1,23 +1,10 @@
-import { VariantKey, createVariantComponent, getComponentVariant } from '../utils/variantLoader';
-import DefaultTrainingFeatures from './default';
-import GymTrainingFeatures from './gym';
+import { getTrainingFeaturesVariant, TrainingFeaturesMap } from './variants';
 
-export interface TrainingFeaturesProps {
-    className?: string;
-    variant?: VariantKey;
-}
+// Export the variant selector function and map
+export { getTrainingFeaturesVariant, TrainingFeaturesMap };
 
-const TrainingFeaturesMap = {
-    default: DefaultTrainingFeatures,
-    gym: GymTrainingFeatures
-};
+// Export all variant components
+export * from './variants';
 
-export const getTrainingFeaturesVariant = () => {
-    return getComponentVariant<VariantKey>('trainingFeatures', 'default');
-};
-
-// Create component with variant support
-const TrainingFeatures = createVariantComponent<TrainingFeaturesProps>(TrainingFeaturesMap, getTrainingFeaturesVariant);
-
-// Export the component
-export { TrainingFeatures };
+// Default export is the function that returns the appropriate variant
+export default getTrainingFeaturesVariant();

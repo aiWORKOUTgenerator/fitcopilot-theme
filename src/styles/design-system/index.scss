@@ -2,8 +2,12 @@
 // Only import from here to ensure all components
 // have access to the same tokens
 
+// Color utilities
+@forward './color-utils';
+
 // Core tokens
-@forward './colors';
+// @forward './colors'; // Legacy color system (commented out)
+@forward './colors-next'; // New color system
 @forward './typography';
 @forward './spacing';
 @forward './radii';

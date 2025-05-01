@@ -1,5 +1,15 @@
+/**
+ * Tailwind CSS configuration
+ * 
+ * This configuration integrates our design system tokens with Tailwind,
+ * allowing seamless usage of our color tokens in Tailwind classes.
+ */
+
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  content: [
+    './src/**/*.{ts,tsx,js,jsx}',
+    './public/**/*.html',
+  ],
   safelist: [
     // Animation classes that might be added dynamically
     'animate-fade-in',
@@ -31,6 +41,59 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Map Tailwind colors to CSS custom properties
+        primary: {
+          50: 'var(--color-primary-50)',
+          100: 'var(--color-primary-100)',
+          200: 'var(--color-primary-200)',
+          300: 'var(--color-primary-300)',
+          400: 'var(--color-primary-400)',
+          500: 'var(--color-primary-500)',
+          600: 'var(--color-primary-600)',
+          700: 'var(--color-primary-700)',
+          800: 'var(--color-primary-800)',
+          900: 'var(--color-primary-900)',
+        },
+        accent: {
+          50: 'var(--color-accent-50)',
+          100: 'var(--color-accent-100)',
+          200: 'var(--color-accent-200)',
+          300: 'var(--color-accent-300)',
+          400: 'var(--color-accent-400)',
+          500: 'var(--color-accent-500)',
+          600: 'var(--color-accent-600)',
+          700: 'var(--color-accent-700)',
+          800: 'var(--color-accent-800)',
+          900: 'var(--color-accent-900)',
+        },
+        gray: {
+          50: 'var(--color-gray-50)',
+          100: 'var(--color-gray-100)',
+          200: 'var(--color-gray-200)',
+          300: 'var(--color-gray-300)',
+          400: 'var(--color-gray-400)',
+          500: 'var(--color-gray-500)',
+          600: 'var(--color-gray-600)',
+          700: 'var(--color-gray-700)',
+          800: 'var(--color-gray-800)',
+          900: 'var(--color-gray-900)',
+        },
+        // Semantic colors for direct usage
+        brand: {
+          primary: 'var(--color-brand-primary)',
+          accent: 'var(--color-brand-accent)',
+        },
+        text: {
+          primary: 'var(--color-text-primary)',
+          secondary: 'var(--color-text-secondary)',
+          accent: 'var(--color-text-accent)',
+          muted: 'var(--color-text-muted)',
+        },
+        ui: {
+          background: 'var(--color-ui-background)',
+          surface: 'var(--color-ui-surface)',
+          border: 'var(--color-ui-border)',
+        },
         lime: {
           300: '#a3e635',
           400: '#84cc16',
@@ -38,16 +101,6 @@ module.exports = {
         emerald: {
           400: '#34d399',
           500: '#10b981',
-        },
-        gray: {
-          700: '#374151',
-          800: '#1f2937',
-          900: '#111827',
-        },
-        cyan: {
-          300: '#67e8f9',
-          400: '#22d3ee',
-          500: '#06b6d4',
         },
         rose: {
           500: '#f43f5e',
@@ -120,5 +173,51 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    // Plugin to generate utility classes for alpha variants
+    function ({ addUtilities, theme, e }) {
+      const alphaUtilities = {};
+      const alphaVariants = [10, 30, 50, 70, 90];
+      const colors = ['accent-400', 'primary-500', 'gray-900'];
+
+      // Generate color alpha utilities
+      colors.forEach(color => {
+        alphaVariants.forEach(alpha => {
+          const className = `.bg-${e(color)}-alpha-${alpha}`;
+          alphaUtilities[className] = {
+            backgroundColor: `var(--color-${color}-alpha-${alpha})`,
+          };
+
+          const textClassName = `.text-${e(color)}-alpha-${alpha}`;
+          alphaUtilities[textClassName] = {
+            color: `var(--color-${color}-alpha-${alpha})`,
+          };
+
+          const borderClassName = `.border-${e(color)}-alpha-${alpha}`;
+          alphaUtilities[borderClassName] = {
+            borderColor: `var(--color-${color}-alpha-${alpha})`,
+          };
+        });
+      });
+
+      addUtilities(alphaUtilities, {
+        variants: ['responsive', 'hover', 'focus', 'active'],
+      });
+    },
+
+    // Plugin to generate utility classes for theme-specific styles
+    function ({ addBase, addUtilities }) {
+      // Add utilities for theme switching support
+      const themeUtilities = {
+        '.theme-default': { 'data-theme': 'default' },
+        '.theme-gym': { 'data-theme': 'gym' },
+        '.theme-sports': { 'data-theme': 'sports' },
+        '.theme-wellness': { 'data-theme': 'wellness' },
+      };
+
+      addUtilities(themeUtilities);
+    }
+  ],
+  // Enable JIT mode for faster development
+  mode: 'jit',
 }; 

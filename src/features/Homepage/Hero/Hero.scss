@@ -3,6 +3,25 @@
 
 // src/features/Homepage/Hero/Hero.scss
 
+// Logo styling
+.hero-logo {
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  max-height: 180px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+  display: block;
+
+  @media (max-width: 640px) {
+    max-height: 140px;
+  }
+
+  @media (max-width: 480px) {
+    max-height: 120px;
+  }
+}
+
 .hero {
   position: var(--pos-hero-element-relative);
   padding: var(--spacing-16) 0;

@@ -12,8 +12,8 @@ import { Journey } from './Journey';
 import { getPersonalTrainingVariant, PersonalTraining } from './PersonalTraining';
 import { Pricing } from './Pricing';
 import { Testimonials } from './Testimonials';
-import { getTrainingVariant, Training } from './Training';
-import { getTrainingFeaturesVariant, TrainingFeatures } from './TrainingFeatures';
+import Training, { getTrainingVariant } from './Training';
+import TrainingFeatures, { getTrainingFeaturesVariant } from './TrainingFeatures';
 
 // Import feature-specific components
 import { DemoNav } from './components';
@@ -82,7 +82,7 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
       id: 'features',
       label: 'Features',
       variantKey: 'features',
-      variants: ['default', 'gym'] as VariantKey[]
+      variants: ['default'] as VariantKey[]
     },
     {
       id: 'journey',
@@ -92,19 +92,19 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
       id: 'training',
       label: 'Training Programs',
       variantKey: 'training',
-      variants: ['default', 'gym'] as VariantKey[]
+      variants: ['default', 'boutique', 'classic', 'minimalist', 'modern', 'sports', 'wellness'] as VariantKey[]
     },
     {
       id: 'trainingFeatures',
       label: 'Training Features',
       variantKey: 'trainingFeatures',
-      variants: ['default', 'gym'] as VariantKey[]
+      variants: ['default', 'boutique', 'classic', 'minimalist', 'modern', 'sports', 'wellness'] as VariantKey[]
     },
     {
       id: 'personalTraining',
       label: 'Personal Training',
       variantKey: 'personalTraining',
-      variants: ['default', 'gym'] as VariantKey[]
+      variants: ['default'] as VariantKey[]
     },
     {
       id: 'testimonials',
