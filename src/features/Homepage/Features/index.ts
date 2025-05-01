@@ -1,32 +1,18 @@
-import type { VariantKey } from '../Hero/types';
-import { createVariantComponent, getComponentVariant } from '../utils/variantLoader';
-import DefaultFeatures from './default';
-import SportsFeatures from './variants/sports';
+import Features from './Features';
+import { getFeaturesVariant, FeaturesMap } from './variants';
 
-interface FeaturesProps {
-    variant?: VariantKey;
-}
-
-/**
- * Map of Features component variants
- */
-export const FeaturesMap: Record<VariantKey, React.ComponentType<Omit<FeaturesProps, 'variant'>>> = {
-    default: DefaultFeatures,
-    sports: SportsFeatures
-};
-
-/**
- * Features component that dynamically loads the appropriate variant
- */
-const Features = createVariantComponent<VariantKey, FeaturesProps>(FeaturesMap, 'default');
-
-/**
- * Get the Features variant from WordPress settings
- */
-export const getFeaturesVariant = (): VariantKey => {
-    return getComponentVariant<VariantKey>('features', 'default');
-};
-
+// Export the base Features component
 export { Features };
-export default Features;
+
+// Export the variant selector function and map
+export { getFeaturesVariant, FeaturesMap };
+
+// Export all variant components
+export * from './variants';
+
+// Export types
+export * from './types';
+
+// Default export is the function that returns the appropriate variant
+export default getFeaturesVariant();
 
