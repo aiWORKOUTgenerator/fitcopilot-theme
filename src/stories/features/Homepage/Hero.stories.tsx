@@ -54,7 +54,7 @@ const meta: Meta<typeof Hero> = {
             control: 'text',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '/assets/images/logo.png' },
+                defaultValue: { summary: 'http://fitcopilot-theme.local/wp-content/uploads/2025/05/AI-Workout-Generater-TransparentBG-400x516-1.png' },
             },
         },
     },
@@ -70,7 +70,7 @@ export const Default: Story = {
     args: {
         registrationLink: 'https://builder.fitcopilot.ai/register',
         loginLink: 'https://builder.fitcopilot.ai/login',
-        logoUrl: '/assets/images/logo.png',
+        logoUrl: 'http://fitcopilot-theme.local/wp-content/uploads/2025/05/AI-Workout-Generater-TransparentBG-400x516-1.png',
     },
     parameters: {
         docs: {

@@ -11,9 +11,13 @@ src/features/Homepage/Features/
 ├── types.ts                 # Type definitions
 ├── README.md                # This documentation
 ├── components/              # Sub-components used by Features
-│   └── ...
+│   ├── FeatureCard.tsx      # Card component for each feature
+│   ├── VideoPlayer.tsx      # Video player component
+│   ├── VideoPlayer.scss     # Video player styles
+│   └── VideoPlayer.md       # Video player documentation
 ├── media/                   # Media assets for the component
-│   └── ...
+│   ├── images/              # Image assets
+│   └── videos/              # Video assets
 ├── default/                 # Default implementation files
 │   ├── Features.tsx         # Default implementation
 │   └── index.ts             # Exports default implementation
@@ -65,6 +69,29 @@ const HomepageSection = () => {
     <div className="homepage">
       <Features />
       {/* Other sections */}
+    </div>
+  );
+};
+```
+
+## Video Player Component
+
+The Features component includes a reusable VideoPlayer component that can be used in other parts of the application. For details on using this component, see the [VideoPlayer documentation](./components/VideoPlayer.md).
+
+### Basic Video Player Usage
+
+```tsx
+import VideoPlayer from 'src/features/Homepage/Features/components/VideoPlayer';
+
+// In your component:
+const VideoSection = () => {
+  return (
+    <div className="video-section">
+      <VideoPlayer 
+        src="/path/to/video.mp4"
+        poster="/path/to/poster.jpg"
+        controls={true}
+      />
     </div>
   );
 };

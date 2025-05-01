@@ -1,93 +1,25 @@
-// Import the design system tokens
+// Canonical design system import - MUST BE FIRST 
 @import '../../../../styles/design-system/index';
 
 .feature-card {
-  background-color: var(--color-feature-card-bg);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  border: 1px solid var(--color-feature-card-border);
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-feature-card);
-  text-align: center;
   height: 100%;
   display: flex;
   flex-direction: column;
+  transform: translateY(0);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    background-color: var(--color-feature-card-hover-bg);
-    box-shadow: var(--shadow-feature-card-hover);
-    transform: translateY(-4px);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(204, 255, 0, 0.1);
   }
-}
 
-.feature-icon-container {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 9999px;
-  background-color: var(--color-feature-icon-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1rem;
-}
+  &__icon-container {
+    transition: background-color 0.3s ease;
+  }
 
-.feature-icon {
-  color: var(--color-feature-icon);
-}
-
-.feature-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: var(--color-feature-title);
-}
-
-.feature-description {
-  color: var(--color-feature-description);
-  line-height: 1.6;
-  flex-grow: 1;
-}
-
-// For Tailwind compatibility
-.feature-card-tw {
-  padding: 1.5rem;
-  border-radius: 0.75rem;
-  border-width: 1px;
-  border-color: rgba(var(--color-accent-400-rgb), 0.1);
-  transition-property: all;
-  transition-duration: 300ms;
-}
-
-.feature-card-tw:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  transform: translateY(-4px);
-}
-
-.feature-icon-container-tw {
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.feature-icon-tw {
-  color: var(--color-accent-400);
-}
-
-.feature-title-tw {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--color-text-primary);
-  margin-bottom: 0.75rem;
-}
-
-.feature-description-tw {
-  color: var(--color-text-secondary);
+  &:hover &__icon-container {
+    background-color: rgba(204, 255, 0, 0.1);
+  }
 }
 
 .flip-card {

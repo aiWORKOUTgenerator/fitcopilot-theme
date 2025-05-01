@@ -18,7 +18,7 @@ export const useWordPress = (): WordPressData => {
           login: 'https://aigymengine.com/react-login',
         },
         assets: wpObj.assets || {
-          logo: '/wp-content/themes/fitcopilot/assets/images/logo.png'
+          logo: 'http://fitcopilot-theme.local/wp-content/uploads/2025/05/AI-Workout-Generater-TransparentBG-400x516-1.png'
         },
         themeVariants: wpObj.themeVariants || {},
         demoMode: wpObj.demoMode || false,
@@ -37,7 +37,7 @@ export const useWordPress = (): WordPressData => {
         login: 'https://aigymengine.com/react-login',
       },
       assets: {
-        logo: '/wp-content/themes/fitcopilot/assets/images/logo.png'
+        logo: 'http://fitcopilot-theme.local/wp-content/uploads/2025/05/AI-Workout-Generater-TransparentBG-400x516-1.png'
       },
       themeVariants: {},
       demoMode: false,

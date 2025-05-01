@@ -1,9 +1,11 @@
 // src/features/Homepage/Features/Features.tsx
 
-import { Activity, Brain, CheckCircle, Dumbbell, Heart, LineChart, Pause, Play, Shield, Zap } from 'lucide-react';
-import React, { forwardRef, useEffect, useState } from 'react';
+import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, Medal, Timer } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 import './Features.scss';
 import FeatureCard from './components/FeatureCard';
+import VideoPlayer, { VideoSource } from './components/VideoPlayer';
+import { FeaturesProps } from './types';
 
 /**
  * Interface for floating icon props
@@ -185,171 +187,168 @@ export const ProgressChart: React.FC = () => {
 };
 
 /**
- * Video player component for the Expert Advice feature
+ * Interface for feature data
  */
-export const VideoPlayer = forwardRef<HTMLVideoElement>((_, ref) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  // Update play state when video state changes
-  useEffect(() => {
-    const videoElement = ref as React.RefObject<HTMLVideoElement>;
-    if (!videoElement.current) return;
-
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-
-    videoElement.current.addEventListener('play', handlePlay);
-    videoElement.current.addEventListener('pause', handlePause);
-
-    return () => {
-      if (videoElement.current) {
-        videoElement.current.removeEventListener('play', handlePlay);
-        videoElement.current.removeEventListener('pause', handlePause);
-      }
-    };
-  }, [ref]);
-
-  return (
-    <div className="relative h-full w-full flex flex-col">
-      <div className="flex-1 relative">
-        <video
-          ref={ref}
-          src="/wp-content/themes/athlete-dashboard-gym-engine/assets/videos/Mission-Bay-Footage.mp4"
-          className="h-full w-full object-cover rounded-md"
-          muted
-          loop
-          playsInline
-        />
-
-        {/* Overlay with play/pause button */}
-        <div className={`absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity ${isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-100'}`}>
-          <button
-            className="h-12 w-12 rounded-full bg-violet-500/80 flex items-center justify-center hover:bg-violet-600/80 transition-colors"
-            onClick={() => {
-              const videoElement = ref as React.RefObject<HTMLVideoElement>;
-              if (videoElement.current) {
-                if (isPlaying) {
-                  videoElement.current.pause();
-                } else {
-                  videoElement.current.play().catch(console.error);
-                }
-              }
-            }}
-          >
-            {isPlaying ? (
-              <Pause size={24} className="text-white" />
-            ) : (
-              <Play size={24} className="text-white ml-1" />
-            )}
-          </button>
-        </div>
-      </div>
-
-      <div className="mt-3">
-        <div className="video-progress">
-          <div
-            className={`video-progress-bar ${isPlaying ? 'animate-progress' : ''}`}
-            style={{
-              width: isPlaying ? 'auto' : '0%'
-            }}
-          ></div>
-        </div>
-        <div className="flex justify-between mt-2 text-xs text-gray-400">
-          <span>{isPlaying ? "2:34" : "0:00"}</span>
-          <span>5:00</span>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-// Add display name for forwarded ref component
-VideoPlayer.displayName = 'VideoPlayer';
-
-/**
- * Feature Data Interface
- */
-interface FeatureData {
-  id: string;
+interface Feature {
   icon: React.ReactNode;
   title: string;
   description: string;
+  gradient: string;
+  demoComponent: React.ReactNode;
 }
 
 /**
- * Props for the Features component
+ * Interface for floating icon data
  */
-interface FeaturesProps {
-  className?: string;
+interface FloatingIconData {
+  Icon: React.ComponentType<any>;
+  size: number;
+  left: number;
+  top: number;
+  delay: number;
+  speed: number;
 }
 
 /**
- * Features Section Component
- * 
- * Displays key features of the application in a grid layout
+ * Features component displaying key application capabilities
  */
-const Features: React.FC<FeaturesProps> = ({ className = '' }) => {
-  // Feature data
-  const features: FeatureData[] = [
+export const Features: React.FC<FeaturesProps> = ({
+  features: _features = [],
+  variant: _variant = 'default'
+}) => {
+  const [activeFeature, setActiveFeature] = useState<number | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Multiple video sources for better browser compatibility
+  const primaryVideoSrc = './wp-content/uploads/2023/videos/Mission-Bay-Footage.mp4';
+
+  // Formatted fallback sources with proper types
+  const fallbackSources: VideoSource[] = [
     {
-      id: 'ai-powered',
-      icon: <Brain size={24} />,
-      title: 'AI-Powered Workouts',
-      description: 'Our advanced AI analyzes your goals, fitness level, and preferences to create personalized workout plans.'
+      src: '/wp-content/themes/fitcopilot/src/features/Homepage/Features/media/videos/Mission-Bay-Footage.mp4',
+      type: 'video/mp4'
     },
     {
-      id: 'expert-designed',
-      icon: <Shield size={24} />,
-      title: 'Expert Designed',
-      description: 'All workout templates are created and verified by certified fitness professionals for safety and effectiveness.'
-    },
-    {
-      id: 'progress-tracking',
-      icon: <LineChart size={24} />,
-      title: 'Progress Tracking',
-      description: 'Track your improvements over time with detailed analytics and performance metrics.'
-    },
-    {
-      id: 'exercise-library',
-      icon: <Dumbbell size={24} />,
-      title: 'Extensive Exercise Library',
-      description: 'Access our database of 1000+ exercises with detailed instructions, videos, and form guidance.'
-    },
-    {
-      id: 'quick-workouts',
-      icon: <Zap size={24} />,
-      title: 'Quick Workouts',
-      description: 'Short on time? Generate effective workouts that fit your schedule, even if you only have 15 minutes.'
-    },
-    {
-      id: 'adaptive',
-      icon: <Activity size={24} />,
-      title: 'Adaptive Training',
-      description: 'Our system learns from your feedback and adjusts future workouts to match your progress and preferences.'
+      src: '/wp-content/themes/fitcopilot/public/videos/Mission-Bay-Footage.mp4',
+      type: 'video/mp4'
     }
   ];
 
-  // Using both CSS classes and Tailwind classes for flexibility
+  // Predefined features if none provided
+  const defaultFeatures: Feature[] = [
+    {
+      icon: <Dumbbell size={32} className="text-white feature-icon" />,
+      title: "AI Workout Generation",
+      description: "Get personalized workout routines based on your goals, equipment, and fitness level.",
+      gradient: "from-lime-400 to-emerald-600",
+      demoComponent: <SampleWorkout />
+    },
+    {
+      icon: <BarChart3 size={32} className="text-white feature-icon" />,
+      title: "Real-Time Progress Tracking",
+      description: "Track your fitness journey with detailed analytics and visualizations of your progress.",
+      gradient: "from-cyan-400 to-blue-600",
+      demoComponent: <ProgressChart />
+    },
+    {
+      icon: <HeartHandshake size={32} className="text-white feature-icon" />,
+      title: "Expert Advice & Form Tips",
+      description: "Access professional guidance with video demonstrations and personalized form feedback.",
+      gradient: "from-violet-400 to-purple-600",
+      demoComponent: (
+        <VideoPlayer
+          ref={videoRef}
+          src={primaryVideoSrc}
+          fallbackSrc={fallbackSources}
+          poster="/wp-content/uploads/2023/featured-images/fitness-video-poster.jpg"
+          ariaLabel="Fitness expert demonstrating proper form techniques"
+        />
+      )
+    },
+  ];
+
+  // Choose features to display - ensure all required props are provided if from props
+  const features = _features.length > 0
+    ? _features.map(feature => ({
+      ...feature,
+      gradient: feature.gradient || "from-accent-400 to-accent-600", // Default gradient if not provided
+    }))
+    : defaultFeatures;
+
+  // Floating icon data
+  const floatingIcons: FloatingIconData[] = [
+    { Icon: Dumbbell, size: 24, left: 10, top: 20, delay: 0, speed: 5 },
+    { Icon: Flame, size: 28, left: 85, top: 15, delay: 1.5, speed: 6 },
+    { Icon: Footprints, size: 24, left: 75, top: 85, delay: 0.7, speed: 7 },
+    { Icon: Medal, size: 20, left: 15, top: 70, delay: 2, speed: 5.5 },
+    { Icon: Heart, size: 16, left: 45, top: 10, delay: 1, speed: 4 },
+    { Icon: Bike, size: 28, left: 90, top: 50, delay: 0.5, speed: 6.5 },
+    { Icon: Apple, size: 20, left: 5, top: 40, delay: 1.8, speed: 5 },
+    { Icon: Activity, size: 24, left: 60, top: 95, delay: 1.3, speed: 7 },
+    { Icon: Coffee, size: 18, left: 25, top: 5, delay: 0.3, speed: 4.5 },
+    { Icon: Timer, size: 22, left: 80, top: 80, delay: 2.5, speed: 5.8 },
+  ];
+
+  // Handle feature hover
+  const handleFeatureHover = (index: number) => {
+    setActiveFeature(index);
+
+    // Auto-play video when hovering Expert Advice
+    if (index === 2 && videoRef.current) {
+      videoRef.current.play().catch(e => {
+        console.error("Video autoplay failed:", e);
+      });
+    }
+  };
+
+  // Handle mouse leave
+  const handleMouseLeave = () => {
+    setActiveFeature(null);
+
+    // Pause video when no longer hovering
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
+
   return (
-    <section className={`features-section features-section-tw bg-ui-background ${className}`}>
-      <div className="features-container container mx-auto px-4">
-        <h2 className="section-title text-4xl font-bold text-text-primary mb-4 text-center">
-          Powerful <span className="highlight text-accent-400">Features</span> for Your Fitness Journey
-        </h2>
+    <section className="features-section py-20 bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Transform Your Fitness With <span className="text-gradient">AI-Powered</span> Tools
+          </h2>
+          <p className="text-gray-300 text-lg">
+            Our platform combines artificial intelligence with exercise science to deliver a personalized fitness experience.
+          </p>
+        </div>
 
-        <p className="section-description text-text-secondary max-w-3xl mx-auto mb-16 text-center">
-          Our platform offers everything you need to succeed on your fitness journey with personalized workouts and expert guidance.
-        </p>
+        {/* Floating icons (decorative) */}
+        {floatingIcons.map((icon, index) => (
+          <FloatingIcon
+            key={index}
+            delay={icon.delay}
+            speed={icon.speed}
+            left={icon.left}
+            top={icon.top}
+          >
+            <icon.Icon size={icon.size} />
+          </FloatingIcon>
+        ))}
 
-        <div className="features-divider w-24 h-1 bg-gradient-to-r from-accent-400 to-accent-500 mx-auto mb-16 rounded-full"></div>
-
-        <div className="features-grid features-grid-tw">
-          {features.map((feature) => (
+        {/* Features grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+          {features.map((feature, index) => (
             <FeatureCard
-              key={feature.id}
+              key={index}
               icon={feature.icon}
               title={feature.title}
               description={feature.description}
+              gradient={feature.gradient}
+              demoComponent={feature.demoComponent}
+              isActive={activeFeature === index}
+              onMouseEnter={() => handleFeatureHover(index)}
+              onMouseLeave={handleMouseLeave}
             />
           ))}
         </div>

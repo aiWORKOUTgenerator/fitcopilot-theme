@@ -1,2 +1,3 @@
+export * from './HeroButton';
 export * from './HeroLogo';
-export * from './HeroButton'; 
+

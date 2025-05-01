@@ -180,7 +180,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement>((_, ref) => {
             <div className="flex-1 relative">
                 <video
                     ref={ref}
-                    src="/wp-content/themes/athlete-dashboard-gym-engine/assets/videos/Mission-Bay-Footage.mp4"
+                    src="./wp-content/themes/fitcopilot/public/videos/Mission-Bay-Footage.mp4"
                     className="h-full w-full object-cover rounded-md"
                     muted
                     loop

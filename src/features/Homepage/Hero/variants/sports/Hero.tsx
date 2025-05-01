@@ -1,36 +1,58 @@
-import { ArrowRight, Check } from 'lucide-react';
+import { Activity, ArrowRight, Award, BarChart, Check, Sun, Timer, Zap } from 'lucide-react';
 import React from 'react';
-import '../../Hero.scss';
+import { HeroProps } from '../../types';
+import './sports-hero.scss';
 
 /**
  * Interface for floating icon props
  */
 interface FloatingIconProps {
-    children: React.ReactNode;
-    delay: number;
-    speed: number;
-    left: number;
-    top: number;
+    icon: React.ReactNode;
+    top?: string;
+    left?: string;
+    right?: string;
+    bottom?: string;
+    size?: number;
+    opacity?: number;
+    rotation?: number;
 }
 
 /**
  * Floating icon component for decorative background elements
  */
-const FloatingIcon: React.FC<FloatingIconProps> = ({ children, delay, speed, left, top }) => {
+const FloatingIcon: React.FC<FloatingIconProps> = ({
+    icon,
+    top,
+    left,
+    right,
+    bottom,
+    size = 24,
+    opacity = 0.7,
+    rotation = 0
+}) => {
     return (
         <div
             className="floating-icon"
             style={{
-                left: `${left}%`,
-                top: `${top}%`,
-                animation: `float ${speed}s ease-in-out infinite ${delay}s`
+                top, left, right, bottom,
+                opacity,
+                transform: `rotate(${rotation}deg)`
             }}
-            aria-hidden="true"
         >
-            {children}
+            {React.cloneElement(icon as React.ReactElement, { size })}
         </div>
     );
 };
+
+// Define floating icons
+const floatingIcons = [
+    { icon: <Activity color="#38bdf8" />, top: '15%', left: '10%', size: 32, rotation: -15 },
+    { icon: <Zap color="#22d3ee" />, top: '25%', right: '12%', size: 28, rotation: 10 },
+    { icon: <Timer color="#38bdf8" />, bottom: '20%', left: '15%', size: 24, rotation: 5 },
+    { icon: <Award color="#22d3ee" />, top: '60%', right: '18%', size: 36, rotation: -5 },
+    { icon: <BarChart color="#38bdf8" />, bottom: '35%', right: '25%', size: 22, rotation: 15 },
+    { icon: <Sun color="#22d3ee" />, top: '40%', left: '18%', size: 26, rotation: 0 },
+];
 
 /**
  * Interface for floating icon data
@@ -44,148 +66,98 @@ interface FloatingIconData {
     speed: number;
 }
 
-/**
- * Hero component for the homepage sports variant
- */
-const Hero: React.FC = () => {
-    // Benefits list
+export const Hero: React.FC<HeroProps> = ({
+    headline = 'Level Up Your Sports Training with AI-Powered Workouts',
+    subheadline = 'Generate sport-specific training routines tailored to your performance goals',
+    ctaText = 'Create My Training Plan',
+    secondaryCtaText = 'Learn more',
+    logoUrl = 'http://fitcopilot-theme.local/wp-content/uploads/2025/05/AI-Workout-Generater-TransparentBG-400x516-1.png',
+    variant = 'sports'
+}) => {
     const benefits = [
-        "Access to state-of-the-art equipment",
-        "Expert personal trainers available",
-        "Group fitness classes included",
-        "Clean, spacious workout environment"
+        'Sport-specific training programs',
+        'Performance analysis & tracking',
+        'Recovery optimization',
+        'Competition preparation'
     ];
 
     return (
-        <section className="relative w-full min-h-[90vh] bg-gray-900 overflow-hidden flex items-center py-20">
-            {/* Background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-800 via-gray-900 to-black opacity-90"></div>
+        <section className="sports-hero relative overflow-hidden bg-gradient-to-b from-blue-900 to-blue-950 py-12 lg:py-20">
+            {/* Background elements */}
+            <div className="absolute inset-0 z-0 bg-pattern-grid opacity-10"></div>
+            <div className="sports-hero-overlay absolute inset-0 z-0"></div>
 
-            {/* Background image overlay */}
-            <div className="absolute inset-0 bg-black/60 z-10"></div>
+            {/* Floating icons */}
+            {floatingIcons.map((icon, index) => (
+                <FloatingIcon key={index} {...icon} />
+            ))}
 
-            {/* Background image */}
-            <div
-                className="absolute inset-0 bg-cover bg-center z-0"
-                style={{
-                    backgroundImage: "url('/assets/gym-background.jpg')",
-                    backgroundPosition: "center"
-                }}
-            ></div>
+            <div className="container mx-auto px-4 relative z-10">
+                <div className="flex flex-col items-center text-center mb-8">
+                    {/* Logo centered at the top */}
+                    <div className="mb-8 flex justify-center">
+                        <img
+                            src={logoUrl}
+                            alt="AI Workout Generator Logo"
+                            className="h-48 md:h-56 w-auto"
+                        />
+                    </div>
 
-            {/* Grain overlay */}
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIGJhc2VGcmVxdWVuY3k9Ii43NSIgc3RpdGNoVGlsZXM9InN0aXRjaCIgdHlwZT0iZnJhY3RhbE5vaXNlIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0wIDBoMzAwdjMwMEgweiIgZmlsdGVyPSJ1cmwoI2EpIiBvcGFjaXR5PSIuMDUiLz48L3N2Zz4=')] z-20"></div>
-
-            {/* Content container */}
-            <div className="container mx-auto px-4 relative z-30 flex flex-col lg:flex-row items-center">
-                {/* Left column - Text content */}
-                <div className="w-full lg:w-1/2 text-center lg:text-left mb-12 lg:mb-0">
-                    <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider uppercase bg-red-700/30 text-red-300 rounded-full mb-6">
-                        Premium Fitness Club
-                    </span>
-
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                        Transform Your Body at <span className="bg-gradient-to-r from-red-500 to-orange-400 text-transparent bg-clip-text">FitCopilot</span> Gym
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 max-w-4xl mx-auto">
+                        {headline}
                     </h1>
-
-                    <p className="text-lg md:text-xl text-gray-300 mb-8 max-w-xl mx-auto lg:mx-0">
-                        Join our state-of-the-art fitness center with expert trainers, premium equipment, and AI-powered workout plans.
+                    <p className="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                        {subheadline}
                     </p>
 
                     {/* Benefits list */}
-                    <ul className="mb-10 space-y-3 max-w-lg mx-auto lg:mx-0">
+                    <div className="flex flex-wrap justify-center gap-4 mb-8">
                         {benefits.map((benefit, index) => (
-                            <li key={index} className="flex items-start">
-                                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-red-600/40 flex items-center justify-center mr-3 mt-0.5">
-                                    <Check size={14} className="text-red-300" />
-                                </span>
-                                <span className="text-gray-300">{benefit}</span>
-                            </li>
+                            <div
+                                key={index}
+                                className="flex items-center bg-blue-800/30 backdrop-blur-sm rounded-full px-4 py-2 text-blue-100"
+                            >
+                                <Check size={16} className="mr-2 text-cyan-400" />
+                                <span>{benefit}</span>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
 
                     {/* CTA buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <button className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-all duration-200 flex items-center justify-center">
-                            Join Now
-                            <ArrowRight size={18} className="ml-2" />
+                    <div className="flex flex-col sm:flex-row gap-4 mt-4">
+                        <button className="bg-cyan-500 hover:bg-cyan-400 text-blue-900 font-bold py-3 px-6 rounded-full transition-all flex items-center justify-center">
+                            {ctaText}
+                            <ArrowRight className="ml-2 h-5 w-5" />
                         </button>
-                        <button className="px-8 py-4 bg-transparent border border-red-500/30 hover:bg-red-700/10 hover:border-red-500 text-red-300 font-medium rounded-lg transition-all duration-200">
-                            Tour Our Facility
+                        <button className="border border-blue-400 text-blue-100 hover:bg-blue-800/50 py-3 px-6 rounded-full transition-all">
+                            {secondaryCtaText}
                         </button>
                     </div>
                 </div>
 
-                {/* Right column - Gym image or promotional content */}
-                <div className="w-full lg:w-1/2 relative">
-                    <div className="relative mx-auto overflow-hidden rounded-2xl shadow-2xl">
-                        {/* Main image */}
+                {/* Decorative elements */}
+                <div className="mt-12 relative max-w-5xl mx-auto">
+                    <div className="aspect-[16/9] rounded-xl overflow-hidden bg-blue-800/20 backdrop-blur-sm border border-blue-700/30">
                         <img
-                            src="/assets/gym-interior.jpg"
-                            alt="FitCopilot Gym Interior"
-                            className="w-full h-auto rounded-2xl"
+                            src="/images/sports-workout-preview.jpg"
+                            alt="Sports training dashboard preview"
+                            className="w-full h-full object-cover"
                             onError={(e) => {
-                                // Fallback if image doesn't load
-                                (e.target as HTMLImageElement).style.display = 'none';
-                                (e.target as HTMLElement).parentElement!.classList.add('bg-gradient-to-b', 'from-red-800', 'to-gray-900', 'p-10', 'flex', 'items-center', 'justify-center', 'h-[400px]');
-
-                                // Add text content as fallback
-                                const textDiv = document.createElement('div');
-                                textDiv.className = 'text-center';
-                                textDiv.innerHTML = `
-                                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-600/30 flex items-center justify-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                                        </svg>
-                                    </div>
-                                    <h3 class="text-2xl font-bold text-white mb-2">Premium Facilities</h3>
-                                    <p class="text-gray-300">Experience our world-class gym with top-tier equipment and expert trainers</p>
-                                `;
-                                (e.target as HTMLElement).parentElement!.appendChild(textDiv);
+                                e.currentTarget.style.display = 'none';
+                                e.currentTarget.parentElement!.classList.add('image-fallback');
                             }}
                         />
-
-                        {/* Overlay with stats */}
-                        <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                            <div className="grid grid-cols-3 gap-4">
-                                <div className="text-center">
-                                    <p className="text-2xl font-bold text-white">24/7</p>
-                                    <p className="text-xs text-red-300 uppercase tracking-wider">Access</p>
-                                </div>
-                                <div className="text-center">
-                                    <p className="text-2xl font-bold text-white">50+</p>
-                                    <p className="text-xs text-red-300 uppercase tracking-wider">Classes</p>
-                                </div>
-                                <div className="text-center">
-                                    <p className="text-2xl font-bold text-white">100%</p>
-                                    <p className="text-xs text-red-300 uppercase tracking-wider">Satisfaction</p>
-                                </div>
+                        <div className="absolute inset-0 flex items-center justify-center image-fallback-content">
+                            <div className="text-center">
+                                <span className="block text-blue-300 text-lg mb-2">Interactive Training Preview</span>
+                                <span className="text-sm text-blue-400">Coming soon</span>
                             </div>
                         </div>
-
-                        {/* Floating badge */}
-                        <div className="absolute top-4 right-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full flex items-center">
-                            <span className="mr-1">NEW</span>
-                            <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                        </div>
                     </div>
 
-                    {/* Decorative elements */}
-                    <div className="absolute -top-6 -right-6 h-24 w-24 rounded-full bg-gradient-to-r from-red-500 to-orange-500 blur-xl opacity-70 animate-pulse"></div>
-                    <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-gradient-to-r from-orange-500 to-red-600 blur-xl opacity-70 animate-pulse delay-300"></div>
-                </div>
-            </div>
-
-            {/* Membership banner */}
-            <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-full max-w-5xl px-4">
-                <div className="bg-gradient-to-r from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-xl p-4 border border-gray-700/50 flex flex-col md:flex-row items-center justify-between">
-                    <div className="mb-4 md:mb-0">
-                        <h3 className="text-xl font-bold text-white">Limited Time Offer</h3>
-                        <p className="text-gray-300">50% off your first month when you sign up today!</p>
-                    </div>
-                    <button className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-all duration-200 whitespace-nowrap">
-                        Get Started
-                    </button>
+                    {/* Decorative dots */}
+                    <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-dot-pattern opacity-30"></div>
+                    <div className="absolute -top-4 -left-4 w-16 h-16 bg-dot-pattern opacity-20"></div>
                 </div>
             </div>
         </section>

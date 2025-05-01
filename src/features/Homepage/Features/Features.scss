@@ -4,10 +4,8 @@
 // src/features/Homepage/Features/Features.scss
 
 .features-section {
-  background-color: var(--color-feature-section-bg);
-  padding: 5rem 0;
   position: relative;
-  overflow: hidden;
+  z-index: 1;
 
   // Grid pattern background
   &::before {
@@ -30,6 +28,7 @@
   .flip-card {
     perspective: 1000px;
     transform-style: preserve-3d;
+    height: 96; // Fixed height
   }
 
   .flip-card-inner {
@@ -60,6 +59,19 @@
 
   .flip-card-back {
     transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+
+    // Ensure demo content has proper space
+    .flex-1 {
+      min-height: 0; // Allow content to shrink if needed
+      position: relative; // For absolute positioning inside
+
+      // Give extra space for video controls
+      &:has(.video-container) {
+        margin-bottom: 1rem;
+      }
+    }
   }
 
   // Floating icons (decorative)
@@ -90,16 +102,15 @@
   // Video player progress bar
   .video-progress {
     width: 100%;
-    height: 4px;
+    height: 5px !important; // Increase visibility
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    overflow: hidden;
+    border-radius: 0.5rem; // Standardized radius for smaller elements
   }
 
   .video-progress-bar {
     height: 100%;
     background: linear-gradient(to right, #84cc16, #8b5cf6);
-    border-radius: 2px;
+    border-radius: 0.5rem; // Standardized radius for smaller elements
   }
 
   // Chart animation
@@ -156,6 +167,10 @@
     .flip-card {
       height: auto;
       min-height: 20rem; // ~320px
+
+      &-back {
+        padding-bottom: 2.5rem; // More space at bottom on mobile
+      }
     }
 
     .flip-card-front,
@@ -247,78 +262,23 @@
       line-height: 1.6;
     }
   }
-}
 
-.features-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-align: center;
-  color: var(--color-feature-title);
-  margin-bottom: 1rem;
-
-  .highlight {
-    color: var(--color-feature-heading-accent);
-  }
-}
-
-.section-description {
-  max-width: 768px;
-  margin: 0 auto 4rem;
-  text-align: center;
-  color: var(--color-feature-description);
-  font-size: 1.125rem;
-  line-height: 1.6;
-}
-
-.features-divider {
-  width: 6rem;
-  height: 0.25rem;
-  margin: 0 auto 4rem;
-  border-radius: 999px;
-  background: var(--gradient-feature-divider);
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 2rem;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
+  // Give more space for the control text
+  .time-display {
+    margin-top: 0.25rem;
+    padding: 0 0.125rem;
+    font-weight: 500; // Make numbers more readable
+    border-radius: 0.5rem; // Smaller radius for text elements
   }
 
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-// For Tailwind compatibility
-.features-section-tw {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
-}
-
-.features-grid-tw {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 2rem;
-}
-
-@media (min-width: 768px) {
-  .features-grid-tw {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .features-grid-tw {
-    grid-template-columns: repeat(3, 1fr);
+  // Control button should also have consistent styling
+  .control-button {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1.5rem; // Maintain circular shape for button
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

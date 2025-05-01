@@ -51,7 +51,7 @@ class DefaultWordPressService implements WordPressService {
                 login: 'https://builder.fitcopilot.ai/login',
             },
             assets: {
-                logo: '/wp-content/themes/fitcopilot/assets/images/logo.png',
+                logo: 'http://fitcopilot-theme.local/wp-content/uploads/2025/05/AI-Workout-Generater-TransparentBG-400x516-1.png',
             },
             themeVariants: {},
             demoMode: false,

@@ -43,7 +43,7 @@ export const Default: Story = {
     variant: 'default',
     registrationLink: 'https://example.com/register',
     loginLink: 'https://example.com/login',
-    logoUrl: '/wp-content/themes/athlete-dashboard-gym-engine/assets/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png',
+    logoUrl: 'http://fitcopilot-theme.local/wp-content/uploads/2025/05/AI-Workout-Generater-TransparentBG-400x516-1.png',
   },
 };
 
@@ -55,7 +55,7 @@ export const Gym: Story = {
     variant: 'gym',
     registrationLink: 'https://example.com/register',
     loginLink: 'https://example.com/login',
-    logoUrl: '/wp-content/themes/athlete-dashboard-gym-engine/assets/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png',
+    logoUrl: 'http://fitcopilot-theme.local/wp-content/uploads/2025/05/AI-Workout-Generater-TransparentBG-400x516-1.png',
   },
 };
 

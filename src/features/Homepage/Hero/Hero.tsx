@@ -1,10 +1,7 @@
 import { Apple, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import './Hero.css';
-import { HeroLogo } from './components/HeroLogo';
-
-// Image path constant
-const LOGO_PATH = './media/images/AI-Workout-Generater-TransparentBG-1-2880x1800.png';
+import { HeroProps } from './types';
 
 /**
  * Interface for floating icon props
@@ -48,16 +45,11 @@ interface FloatingIconData {
   speed: number;
 }
 
-interface HeroProps {
-  registrationLink?: string;
-  loginLink?: string;
-  logoUrl?: string;
-}
-
 const Hero: React.FC<HeroProps> = ({
   registrationLink = "https://aigymengine.com/workout-generator-registration",
   loginLink = "https://aigymengine.com/react-login",
-  logoUrl = LOGO_PATH
+  variant = "default",
+  logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
 }) => {
   // Animation states for tooltips
   const [tooltipStates, setTooltipStates] = useState({
@@ -153,8 +145,12 @@ const Hero: React.FC<HeroProps> = ({
         {/* Content Card with Backdrop Blur */}
         <div className="bg-gray-800/30 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-gray-700 mb-6">
           {/* Logo */}
-          <div className="my-4 px-4 flex justify-center">
-            <HeroLogo logoUrl={logoUrl} />
+          <div className="mb-8 flex justify-center">
+            <img
+              src="/wp-content/themes/fitcopilot/assets/media/images/logo.png"
+              alt="AI Workout Generator Logo"
+              style={{ height: '150px', width: 'auto' }}
+            />
           </div>
 
           <h1
