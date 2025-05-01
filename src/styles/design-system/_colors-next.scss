@@ -98,6 +98,9 @@
     --color-accent-400-rgb: 139, 92, 246;
 
     // Alpha variants are automatically inherited since they use the RGB variable
+
+    // Component-specific overrides
+    --gradient-feature-divider: linear-gradient(to right, var(--color-accent-400), var(--color-accent-600));
 }
 
 /* Sports Theme - Uses blue/cyan palette */
@@ -116,6 +119,9 @@
 
     // RGB variants for opacity operations (overrides)
     --color-accent-400-rgb: 56, 189, 248;
+
+    // Component-specific overrides
+    --gradient-feature-divider: linear-gradient(to right, var(--color-accent-400), var(--color-accent-600));
 }
 
 /* Wellness Theme - Uses teal/green palette */
@@ -134,4 +140,7 @@
 
     // RGB variants for opacity operations (overrides)
     --color-accent-400-rgb: 45, 212, 191;
+
+    // Component-specific overrides
+    --gradient-feature-divider: linear-gradient(to right, var(--color-accent-400), var(--color-accent-600));
 }

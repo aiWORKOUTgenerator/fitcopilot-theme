@@ -1,11 +1,11 @@
 import Features from './Features';
-import { getFeaturesVariant, FeaturesMap } from './variants';
+import { FeaturesMap, getFeaturesVariant } from './variants';
 
 // Export the base Features component
 export { Features };
 
 // Export the variant selector function and map
-export { getFeaturesVariant, FeaturesMap };
+export { FeaturesMap, getFeaturesVariant };
 
 // Export all variant components
 export * from './variants';
@@ -14,5 +14,5 @@ export * from './variants';
 export * from './types';
 
 // Default export is the function that returns the appropriate variant
-export default getFeaturesVariant();
+export default Features;
 

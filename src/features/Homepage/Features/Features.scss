@@ -4,8 +4,10 @@
 // src/features/Homepage/Features/Features.scss
 
 .features-section {
+  background-color: var(--color-feature-section-bg);
+  padding: 5rem 0;
   position: relative;
-  z-index: 1;
+  overflow: hidden;
 
   // Grid pattern background
   &::before {
@@ -244,6 +246,79 @@
       font-size: 0.95rem;
       line-height: 1.6;
     }
+  }
+}
+
+.features-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--color-feature-title);
+  margin-bottom: 1rem;
+
+  .highlight {
+    color: var(--color-feature-heading-accent);
+  }
+}
+
+.section-description {
+  max-width: 768px;
+  margin: 0 auto 4rem;
+  text-align: center;
+  color: var(--color-feature-description);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.features-divider {
+  width: 6rem;
+  height: 0.25rem;
+  margin: 0 auto 4rem;
+  border-radius: 999px;
+  background: var(--gradient-feature-divider);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// For Tailwind compatibility
+.features-section-tw {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+.features-grid-tw {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .features-grid-tw {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .features-grid-tw {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
