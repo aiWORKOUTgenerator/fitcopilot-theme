@@ -72,11 +72,29 @@ function fitcopilot_sanitize_component_variant($input) {
  * Get component variants for localization to JavaScript
  */
 function fitcopilot_get_component_variants() {
+    $global_variant = get_theme_mod('fitcopilot_theme_variant', 'default');
+    
+    // Add cache busting to avoid stale data
+    $cache_buster = time();
+    
+    // When global variant is 'registration', force the registration variant for components
+    if ($global_variant === 'registration') {
+        return [
+            'hero' => 'registration',
+            'features' => 'registration',
+            'testimonials' => get_theme_mod('fitcopilot_testimonials_variant', $global_variant),
+            'pricing' => get_theme_mod('fitcopilot_pricing_variant', $global_variant),
+            '_cache_buster' => $cache_buster
+        ];
+    }
+    
+    // Otherwise, get individual component variants with fallback to global
     return [
-        'hero' => get_theme_mod('fitcopilot_hero_variant', get_theme_mod('fitcopilot_theme_variant', 'default')),
-        'features' => get_theme_mod('fitcopilot_features_variant', get_theme_mod('fitcopilot_theme_variant', 'default')),
-        'testimonials' => get_theme_mod('fitcopilot_testimonials_variant', get_theme_mod('fitcopilot_theme_variant', 'default')),
-        'pricing' => get_theme_mod('fitcopilot_pricing_variant', get_theme_mod('fitcopilot_theme_variant', 'default'))
+        'hero' => get_theme_mod('fitcopilot_hero_variant', $global_variant),
+        'features' => get_theme_mod('fitcopilot_features_variant', $global_variant),
+        'testimonials' => get_theme_mod('fitcopilot_testimonials_variant', $global_variant),
+        'pricing' => get_theme_mod('fitcopilot_pricing_variant', $global_variant),
+        '_cache_buster' => $cache_buster
     ];
 }
 
@@ -85,8 +103,21 @@ function fitcopilot_get_component_variants() {
  */
 function fitcopilot_add_component_variants_to_localized_data($data) {
     if (isset($data['wpData']) && is_array($data['wpData'])) {
-        $data['wpData']['themeVariants'] = fitcopilot_get_component_variants();
+        $variants = fitcopilot_get_component_variants();
+        $data['wpData']['themeVariants'] = $variants;
+        
+        // Add debug information
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            $data['wpData']['debug'] = $data['wpData']['debug'] ?? [];
+            $data['wpData']['debug']['componentVariants'] = [
+                'globalThemeVariant' => get_theme_mod('fitcopilot_theme_variant', 'default'),
+                'appliedVariants' => $variants
+            ];
+        }
     }
     return $data;
 }
-add_filter('fitcopilot_localized_data', 'fitcopilot_add_component_variants_to_localized_data'); 
+add_filter('fitcopilot_localized_data', 'fitcopilot_add_component_variants_to_localized_data', 999);
+
+// Remove the previous filter functions that might be causing conflicts
+remove_filter('fitcopilot_localized_data', 'fitcopilot_filter_component_variants_data'); 

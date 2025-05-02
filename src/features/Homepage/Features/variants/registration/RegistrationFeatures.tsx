@@ -17,6 +17,7 @@ interface ExperienceLevelCardProps {
     description: string;
     icon: React.ReactNode;
     features: string[];
+    benefits: string[];
     isSelected: boolean;
     onSelect: (level: ExperienceLevel) => void;
 }
@@ -28,10 +29,12 @@ const ExperienceLevelCard: React.FC<ExperienceLevelCardProps> = ({
     description,
     icon,
     features,
+    benefits,
     isSelected,
     onSelect
 }) => {
     const [isFlipped, setIsFlipped] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
 
     // Handle card click (flip and select)
     const handleCardClick = () => {
@@ -40,6 +43,16 @@ const ExperienceLevelCard: React.FC<ExperienceLevelCardProps> = ({
         } else {
             onSelect(level);
         }
+    };
+
+    // Handle mouse enter
+    const handleMouseEnter = () => {
+        setIsHovering(true);
+    };
+
+    // Handle mouse leave
+    const handleMouseLeave = () => {
+        setIsHovering(false);
     };
 
     // Reset flipped state when selection changes
@@ -51,8 +64,10 @@ const ExperienceLevelCard: React.FC<ExperienceLevelCardProps> = ({
 
     return (
         <div
-            className={`experience-card ${isFlipped ? 'is-flipped' : ''} ${isSelected ? 'is-selected' : ''}`}
+            className={`experience-card ${isFlipped ? 'is-flipped' : ''} ${isSelected ? 'is-selected' : ''} ${isHovering ? 'is-hovering' : ''}`}
             onClick={handleCardClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
         >
             <div className="experience-card__inner">
                 {/* Card Front */}
@@ -62,8 +77,18 @@ const ExperienceLevelCard: React.FC<ExperienceLevelCardProps> = ({
                     </div>
                     <h3 className="experience-card__title">{title}</h3>
                     <p className="experience-card__description">{description}</p>
+
+                    <div className="experience-card__benefits">
+                        {benefits.map((benefit, index) => (
+                            <div key={index} className="experience-card__benefit">
+                                <Check size={14} className="benefit-icon" />
+                                <span>{benefit}</span>
+                            </div>
+                        ))}
+                    </div>
+
                     <div className="experience-card__action">
-                        <span>Learn More</span>
+                        <span>See Your Workout Plan</span>
                         <ChevronRight size={16} />
                     </div>
                 </div>
@@ -71,19 +96,25 @@ const ExperienceLevelCard: React.FC<ExperienceLevelCardProps> = ({
                 {/* Card Back */}
                 <div className="experience-card__face experience-card__face--back">
                     <h3 className="experience-card__title">{title}</h3>
-                    <ul className="experience-card__features">
-                        {features.map((feature, index) => (
-                            <li key={index}>
-                                <Check size={16} className="feature-icon" />
-                                <span>{feature}</span>
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="experience-card__features-container">
+                        <h4 className="experience-card__features-title">Your Personalized Plan Includes:</h4>
+                        <ul className="experience-card__features">
+                            {features.map((feature, index) => (
+                                <li key={index}>
+                                    <Check size={16} className="feature-icon" />
+                                    <span>{feature}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                     <button
                         className="experience-card__button"
-                        onClick={() => onSelect(level)}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onSelect(level);
+                        }}
                     >
-                        Select This Level
+                        Start With This Plan
                     </button>
                 </div>
             </div>
@@ -96,20 +127,35 @@ const NextStepsComponent: React.FC<{
     selectedLevel: ExperienceLevel;
     onContinue: () => void;
 }> = ({ selectedLevel, onContinue }) => {
+    const levelText = selectedLevel === ExperienceLevel.BEGINNER
+        ? 'beginner'
+        : selectedLevel === ExperienceLevel.INTERMEDIATE
+            ? 'intermediate'
+            : 'advanced';
+
     return (
         <div className="next-steps-container animate-fade-in">
             <div className="next-steps-header">
-                <h3>Great Choice!</h3>
-                <p>Your workouts will be designed for your {selectedLevel === ExperienceLevel.BEGINNER ? 'beginner' : selectedLevel === ExperienceLevel.INTERMEDIATE ? 'intermediate' : 'advanced'} fitness level.</p>
+                <div className="next-steps-header__icon">
+                    {selectedLevel === ExperienceLevel.BEGINNER ? (
+                        <Hourglass size={32} />
+                    ) : selectedLevel === ExperienceLevel.INTERMEDIATE ? (
+                        <ThumbsUp size={32} />
+                    ) : (
+                        <Award size={32} />
+                    )}
+                </div>
+                <h3>Perfect Match!</h3>
+                <p>We'll tailor your fitness journey to your {levelText} experience level</p>
             </div>
 
             <div className="next-steps-content">
                 <div className="next-steps-info">
-                    <h4>What to expect next:</h4>
+                    <h4>Your personalized plan is almost ready:</h4>
                     <ul>
                         <li>
                             <Zap size={16} className="list-icon" />
-                            <span>Select your fitness goals</span>
+                            <span>Select your primary fitness goals</span>
                         </li>
                         <li>
                             <Dumbbell size={16} className="list-icon" />
@@ -117,7 +163,7 @@ const NextStepsComponent: React.FC<{
                         </li>
                         <li>
                             <Timer size={16} className="list-icon" />
-                            <span>Get your personalized AI workout plan</span>
+                            <span>Get your AI-generated workout plan</span>
                         </li>
                     </ul>
                 </div>
@@ -141,6 +187,7 @@ const RegistrationFeatures: React.FC = () => {
     // Get email from local storage (passed from Hero section)
     const [email, setEmail] = useState<string>('');
     const [selectedLevel, setSelectedLevel] = useState<ExperienceLevel | null>(null);
+    const [animateIn, setAnimateIn] = useState(false);
 
     // Load email from localStorage on mount
     useEffect(() => {
@@ -148,6 +195,11 @@ const RegistrationFeatures: React.FC = () => {
         if (storedEmail) {
             setEmail(storedEmail);
         }
+
+        // Trigger animation after component mount
+        setTimeout(() => {
+            setAnimateIn(true);
+        }, 100);
     }, []);
 
     // Handle level selection
@@ -156,6 +208,14 @@ const RegistrationFeatures: React.FC = () => {
 
         // Store the selection in localStorage
         localStorage.setItem('registration_experience_level', level);
+
+        // Track conversion event (could be connected to analytics)
+        if (typeof window !== 'undefined' && window.dataLayer) {
+            window.dataLayer.push({
+                event: 'experienceLevelSelected',
+                experienceLevel: level
+            });
+        }
     };
 
     // Handle continue to next registration step
@@ -174,12 +234,12 @@ const RegistrationFeatures: React.FC = () => {
     return (
         <section
             id="features-section"
-            className="features features--registration"
+            className={`features features--registration ${animateIn ? 'animate-in' : ''}`}
         >
             <div className="container">
                 <div className="features__header">
-                    <h2 className="features__title">Tell Us About Your Experience Level</h2>
-                    <p className="features__subtitle">This helps us create a workout program that matches your current fitness abilities</p>
+                    <h2 className="features__title">What's Your Fitness Experience Level?</h2>
+                    <p className="features__subtitle">Tell us where you are in your fitness journey so we can create your perfect workout plan</p>
 
                     {email && (
                         <div className="registration-email-display">
@@ -196,12 +256,18 @@ const RegistrationFeatures: React.FC = () => {
                             title="New to Exercise"
                             description="Perfect if you're just starting your fitness journey or returning after a long break."
                             icon={<Hourglass size={32} />}
+                            benefits={[
+                                "Perfect for beginners",
+                                "Focuses on form & safety",
+                                "Gradual progression"
+                            ]}
                             features={[
-                                "Gradual progression to build strength",
-                                "Detailed form instructions",
-                                "Beginner-friendly exercises",
-                                "Focus on building good habits",
-                                "Extra recovery time between workouts"
+                                "Step-by-step exercise tutorials",
+                                "Beginner-friendly movements",
+                                "Progressive workout intensity",
+                                "Form-focused instruction videos",
+                                "Extra recovery periods",
+                                "Habit-building guidance"
                             ]}
                             isSelected={selectedLevel === ExperienceLevel.BEGINNER}
                             onSelect={handleLevelSelect}
@@ -213,12 +279,18 @@ const RegistrationFeatures: React.FC = () => {
                             title="Some Experience"
                             description="You've been exercising regularly for a while and are familiar with common workout movements."
                             icon={<ThumbsUp size={32} />}
+                            benefits={[
+                                "Break through plateaus",
+                                "Varied exercise routines",
+                                "Balanced programming"
+                            ]}
                             features={[
-                                "Progressive overload principles",
-                                "More exercise variety",
+                                "Progressive overload techniques",
+                                "Expanded exercise variety",
                                 "Targeted muscle group focus",
-                                "Balanced cardio and strength",
-                                "Customizable workout intensity"
+                                "Balanced cardio & strength training",
+                                "Customizable workout intensity",
+                                "Performance tracking tools"
                             ]}
                             isSelected={selectedLevel === ExperienceLevel.INTERMEDIATE}
                             onSelect={handleLevelSelect}
@@ -230,12 +302,18 @@ const RegistrationFeatures: React.FC = () => {
                             title="Advanced Athlete"
                             description="You're dedicated to training and looking for challenging workouts to push your limits."
                             icon={<Award size={32} />}
+                            benefits={[
+                                "Elite performance focus",
+                                "Advanced programming",
+                                "Maximum results"
+                            ]}
                             features={[
                                 "High-intensity training protocols",
                                 "Advanced exercise techniques",
                                 "Periodization strategies",
                                 "Recovery optimization methods",
-                                "Performance-focused programming"
+                                "Performance-focused programming",
+                                "Athletic-level progressions"
                             ]}
                             isSelected={selectedLevel === ExperienceLevel.ADVANCED}
                             onSelect={handleLevelSelect}

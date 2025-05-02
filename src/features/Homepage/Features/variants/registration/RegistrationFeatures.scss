@@ -18,6 +18,14 @@
                 rgba(226, 232, 240, 0) 100%);
     }
 
+    // Add entry animation
+    &.animate-in {
+        .experience-cards-container {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .container {
         max-width: 1200px;
         margin: 0 auto;
@@ -29,6 +37,7 @@
 .features__header {
     text-align: center;
     margin-bottom: 4rem;
+    animation: fadeInDown 0.6s ease-out;
 
     .features__title {
         font-size: 2.5rem;
@@ -53,6 +62,7 @@
     border-radius: 9999px;
     font-size: 0.95rem;
     color: var(--color-text-medium, #64748b);
+    animation: pulseOnce 2s ease-out;
 
     span {
         font-weight: 600;
@@ -67,20 +77,34 @@
     gap: 2rem;
     margin: 0 auto;
     max-width: 1100px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 }
 
 // Experience card with flip animation
 .experience-card {
     perspective: 1000px;
-    height: 400px;
+    height: 450px;
     cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+    }
+
+    &.is-hovering {
+        .experience-card__icon {
+            transform: scale(1.1);
+        }
+    }
 
     &__inner {
         position: relative;
         width: 100%;
         height: 100%;
         text-align: center;
-        transition: transform 0.6s;
+        transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         transform-style: preserve-3d;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         border-radius: 1rem;
@@ -91,7 +115,7 @@
     }
 
     &.is-selected .experience-card__inner {
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 10px 25px rgba(var(--color-primary-rgb, 16, 185, 129), 0.2);
         border: 2px solid var(--color-primary, #10b981);
     }
 
@@ -109,6 +133,7 @@
 
     &__face--front {
         background-color: white;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     &__face--back {
@@ -117,15 +142,18 @@
     }
 
     &__icon {
-        width: 64px;
-        height: 64px;
+        width: 72px;
+        height: 72px;
         border-radius: 16px;
-        background-color: rgba(var(--color-primary-rgb, 134, 239, 172), 0.1);
+        background: linear-gradient(45deg,
+                rgba(var(--color-primary-rgb, 16, 185, 129), 0.1) 0%,
+                rgba(var(--color-primary-rgb, 16, 185, 129), 0.2) 100%);
         color: var(--color-primary, #10b981);
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 1.5rem;
+        transition: transform 0.3s ease, background-color 0.3s ease;
     }
 
     &__title {
@@ -133,13 +161,38 @@
         font-weight: 700;
         color: var(--color-text-dark, #1e293b);
         margin-bottom: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    &.is-hovering &__title {
+        color: var(--color-primary, #10b981);
     }
 
     &__description {
         color: var(--color-text-medium, #64748b);
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
         line-height: 1.6;
+    }
+
+    &__benefits {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
         flex-grow: 1;
+    }
+
+    &__benefit {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--color-text-medium, #64748b);
+        font-size: 0.95rem;
+
+        .benefit-icon {
+            color: var(--color-primary, #10b981);
+            flex-shrink: 0;
+        }
     }
 
     &__action {
@@ -149,12 +202,33 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
+        margin-top: auto;
+        padding-top: 1rem;
+        transition: transform 0.3s ease;
+    }
+
+    &.is-hovering &__action {
+        transform: translateX(5px);
+    }
+
+    &__features-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        margin: 1rem 0;
+    }
+
+    &__features-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--color-text-dark, #1e293b);
+        margin-bottom: 1rem;
+        text-align: left;
     }
 
     &__features {
         list-style: none;
         padding: 0;
-        margin: 1.5rem 0;
+        margin: 1rem 0;
         text-align: left;
 
         li {
@@ -163,6 +237,13 @@
             gap: 0.75rem;
             margin-bottom: 1rem;
             color: var(--color-text-medium, #64748b);
+            animation: fadeInRight 0.5s ease-out both;
+
+            @for $i from 1 through 10 {
+                &:nth-child(#{$i}) {
+                    animation-delay: #{$i * 0.1}s;
+                }
+            }
 
             .feature-icon {
                 color: var(--color-primary, #10b981);
@@ -173,18 +254,25 @@
     }
 
     &__button {
-        background-color: var(--color-primary, #10b981);
+        background: linear-gradient(45deg,
+                var(--color-primary, #10b981) 0%,
+                var(--color-primary-light, #34d399) 100%);
         color: white;
         border: none;
         padding: 0.75rem 1.5rem;
         border-radius: 0.5rem;
         font-weight: 600;
         cursor: pointer;
-        transition: background-color 0.2s, transform 0.2s;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 10px rgba(var(--color-primary-rgb, 16, 185, 129), 0.3);
 
         &:hover {
-            background-color: var(--color-primary-dark, #0d9488);
             transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(var(--color-primary-rgb, 16, 185, 129), 0.4);
+        }
+
+        &:active {
+            transform: translateY(0);
         }
     }
 }
@@ -197,21 +285,37 @@
     border-radius: 1rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     overflow: hidden;
+    animation: fadeInUp 0.8s ease-out;
 
     .next-steps-header {
         background: linear-gradient(to right, var(--color-primary, #10b981), var(--color-secondary, #14b8a6));
         padding: 2rem;
         color: white;
         text-align: center;
+        position: relative;
+
+        &__icon {
+            width: 64px;
+            height: 64px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            animation: pulseOnce 1s ease-out;
+        }
 
         h3 {
             font-size: 1.75rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
         }
 
         p {
             opacity: 0.9;
+            animation: fadeInUp 0.6s ease-out 0.4s both;
         }
     }
 
@@ -227,6 +331,7 @@
             font-weight: 600;
             color: var(--color-text-dark, #1e293b);
             margin-bottom: 1rem;
+            animation: fadeInUp 0.6s ease-out 0.6s both;
         }
 
         ul {
@@ -239,6 +344,19 @@
                 gap: 1rem;
                 margin-bottom: 1rem;
                 padding-left: 0.5rem;
+                animation: fadeInRight 0.5s ease-out both;
+
+                &:nth-child(1) {
+                    animation-delay: 0.8s;
+                }
+
+                &:nth-child(2) {
+                    animation-delay: 1s;
+                }
+
+                &:nth-child(3) {
+                    animation-delay: 1.2s;
+                }
 
                 .list-icon {
                     color: var(--color-primary, #10b981);
@@ -252,102 +370,122 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        width: 100%;
         background-color: var(--color-primary, #10b981);
         color: white;
         border: none;
-        padding: 1rem;
+        padding: 0.75rem 1.5rem;
         border-radius: 0.5rem;
         font-weight: 600;
-        font-size: 1.125rem;
         cursor: pointer;
-        transition: background-color 0.2s, transform 0.2s;
+        width: 100%;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+        animation: fadeInUp 0.6s ease-out 1.4s both;
 
         &:hover {
             background-color: var(--color-primary-dark, #0d9488);
             transform: translateY(-2px);
         }
+
+        &:active {
+            transform: translateY(0);
+        }
     }
 }
 
-// Animation
-@keyframes fadeIn {
+// Animation keyframes
+@keyframes fadeInUp {
     from {
         opacity: 0;
+        transform: translateY(20px);
     }
 
     to {
         opacity: 1;
+        transform: translateY(0);
     }
 }
 
-.animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-// Responsive styles
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulseOnce {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb, 16, 185, 129), 0.4);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(var(--color-primary-rgb, 16, 185, 129), 0);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb, 16, 185, 129), 0);
+    }
+}
+
+// Media queries for responsive design
 @media (max-width: 768px) {
-    .features--registration {
-        padding: 4rem 0;
+    .experience-cards-container {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+
+    .experience-card {
+        height: 400px;
     }
 
     .features__header {
-        margin-bottom: 3rem;
-
         .features__title {
             font-size: 2rem;
         }
 
         .features__subtitle {
-            font-size: 1.125rem;
+            font-size: 1.1rem;
         }
-    }
-
-    .experience-cards-container {
-        grid-template-columns: 1fr;
-        max-width: 400px;
-        margin: 0 auto;
-    }
-
-    .experience-card {
-        height: 350px;
     }
 }
 
 @media (max-width: 480px) {
     .features--registration {
-        padding: 3rem 0;
-    }
-
-    .container {
-        padding: 0 1.5rem;
-    }
-
-    .features__header {
-        .features__title {
-            font-size: 1.75rem;
-        }
+        padding: 4rem 0;
     }
 
     .experience-card {
-        height: 330px;
-
-        &__title {
-            font-size: 1.25rem;
-        }
+        height: 380px;
     }
 
-    .next-steps-container {
-        .next-steps-header {
-            padding: 1.5rem;
+    .features__header {
+        margin-bottom: 2.5rem;
 
-            h3 {
-                font-size: 1.5rem;
-            }
+        .features__title {
+            font-size: 1.75rem;
         }
 
-        .next-steps-content {
-            padding: 1.5rem;
+        .features__subtitle {
+            font-size: 1rem;
         }
     }
 }
