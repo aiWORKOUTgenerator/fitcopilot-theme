@@ -88,49 +88,32 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
         // Set focus to the registration container for accessibility
         registrationRef.current.focus();
       }
-    }, 100); // Reduced from 300ms to 100ms for faster response
+    }, 100);
   };
 
   const handleRegistrationComplete = (registrationData: RegistrationData) => {
-    // Handle successful registration 
-    console.log('Registration complete with data:', registrationData);
+    // Store registration data (can be used for future API calls)
+    console.log('Registration completed with data:', registrationData);
 
-    // Reset the UI state
+    // Hide registration component
     setShowRegistration(false);
+
+    // Remove active class from body
     document.body.classList.remove('registration-active');
 
-    // Redirect to workout builder
-    window.location.href = 'https://builder.fitcopilot.ai';
+    // Redirect to builder or another page if needed
+    window.location.href = '/build-workout';
   };
 
   const handleRegistrationCancel = () => {
-    // Reset UI state but use a fade out transition first
-    const registrationElement = registrationRef.current;
+    setShowRegistration(false);
+    document.body.classList.remove('registration-active');
 
-    if (registrationElement) {
-      // Add a class to trigger fade-out animation
-      registrationElement.style.opacity = '0';
-      registrationElement.style.transform = 'translateY(-10px)';
-      registrationElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-
-      // After animation completes, hide the component
-      setTimeout(() => {
-        setShowRegistration(false);
-        document.body.classList.remove('registration-active');
-      }, 300);
-    } else {
-      // Fallback if ref isn't available
-      setShowRegistration(false);
-      document.body.classList.remove('registration-active');
-    }
-
-    // Scroll back to hero section
-    if (heroRef.current) {
-      heroRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
-    }
+    // Scroll back to top of page
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   // Handle variant change in demo mode
