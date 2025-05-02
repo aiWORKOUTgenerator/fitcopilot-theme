@@ -12,7 +12,7 @@ import { Trainer } from './types';
 const mockTrainers: Trainer[] = [
     {
         id: "trainer-1",
-        name: "Alex Rivera",
+        name: "Justin Fassio",
         image: "https://placehold.co/400x600/111827/CCFF00?text=Alex+R",
         specialty: "Strength & Conditioning",
         specialtyIcon: <Dumbbell size={14} />,

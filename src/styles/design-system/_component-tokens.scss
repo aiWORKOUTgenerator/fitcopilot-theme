@@ -244,4 +244,45 @@
     --pt-button-primary-shadow: 0 10px 15px -3px rgba(167, 139, 250, 0.3);
     --color-violet-300: #a78bfa;
     --color-indigo-400: #818cf8;
+
+    /* VideoPlayer (vp) Component Tokens */
+    --vp-border-radius: 0.75rem;
+    --vp-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    --vp-container-padding-bottom: 1.75rem;
+
+    /* Color Tokens */
+    --vp-color-bg: var(--color-gray-800);
+    --vp-color-streaming-bg: var(--color-gray-900);
+    --vp-color-overlay-bg: var(--color-ui-surface-alt, rgba(31, 41, 55, 0.8));
+    --vp-color-loading-bg: var(--color-ui-surface, var(--color-gray-800));
+    --vp-color-error-bg: var(--color-ui-surface, var(--color-gray-800));
+    --vp-color-progress-bg: var(--color-gray-700);
+    --vp-color-error-icon: var(--color-red-500);
+    --vp-color-error-text: var(--color-text-secondary, var(--color-gray-300));
+    --vp-color-time-text: var(--color-text-muted, var(--color-gray-400));
+
+    /* Control Button Tokens */
+    --vp-control-button-size: 3rem;
+    --vp-control-button-mobile-size: 2.5rem;
+    --vp-control-button-bg: var(--pt-button-primary-bg);
+    --vp-control-button-color: var(--color-text-primary, var(--color-white));
+    --vp-control-button-shadow: var(--pt-button-primary-shadow, 0 2px 8px rgba(0, 0, 0, 0.3));
+    --vp-control-button-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --vp-control-button-focus-outline: 2px solid var(--color-accent-400, var(--color-violet-300));
+    --vp-control-button-focus-offset: 2px;
+
+    /* Progress Bar Tokens */
+    --vp-progress-height: 4px;
+    --vp-progress-radius: 0.5rem;
+    --vp-progress-bar-bg: var(--pt-button-primary-bg);
+
+    /* Theme-Specific Tokens */
+    --vp-gym-accent-gradient: linear-gradient(to right, var(--color-accent-300), var(--color-accent-500));
+    --vp-sports-accent-gradient: linear-gradient(to right, var(--color-accent-300), var(--color-accent-500));
+    --vp-wellness-accent-gradient: linear-gradient(to right, var(--color-accent-300), var(--color-accent-500));
+
+    /* Animation Tokens */
+    --vp-transition-standard: 0.3s ease;
+    --vp-transition-fast: 0.1s linear;
+    --vp-animation-spin-duration: 1s;
 }

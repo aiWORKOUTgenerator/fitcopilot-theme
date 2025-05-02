@@ -3,37 +3,71 @@ import {
     Award,
     Dumbbell,
     Heart,
-    Play,
-    RefreshCw,
     User,
-    Users,
-    X
+    Users
 } from 'lucide-react';
-import React, { MouseEvent, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../../../components/UI/Button';
+import MediaContainer from './components/MediaContainer';
 import './PersonalTraining.scss';
-import { PersonalTrainingProps, Trainer } from './types';
+import { PersonalTrainingProps, Trainer, WordPressVideoData } from './types';
 
 /**
  * Default Personal Training component for the homepage
  */
 const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers }) => {
-    // Track flipped state for each trainer by ID
-    const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+    // State to store WordPress video data
+    const [wordpressVideoData, setWordpressVideoData] = useState<WordPressVideoData | null>(null);
 
-    // Flip card handlers
-    const flipCard = (trainerId: string) => {
-        setFlippedCards(prev => ({
-            ...prev,
-            [trainerId]: !prev[trainerId]
-        }));
+    // Load WordPress video data on mount
+    useEffect(() => {
+        // Check both potential data sources
+        if (window.fitcopilotVideoData) {
+            setWordpressVideoData(window.fitcopilotVideoData);
+            console.log('WordPress video data loaded from fitcopilotVideoData:', window.fitcopilotVideoData);
+        }
+        // If not found in fitcopilotVideoData, try athleteDashboardData
+        else if (window.athleteDashboardData?.wpData?.videoData) {
+            const athleteVideoData: WordPressVideoData = {
+                personalTraining: window.athleteDashboardData.wpData.videoData.personalTraining
+            };
+            setWordpressVideoData(athleteVideoData);
+            console.log('WordPress video data loaded from athleteDashboardData:', athleteVideoData);
+        }
+        else {
+            console.log('No WordPress video data found');
+            console.log('Debug - window.athleteDashboardData:', window.athleteDashboardData);
+            if (window.athleteDashboardData?.wpData) {
+                console.log('Debug - window.athleteDashboardData.wpData:', window.athleteDashboardData.wpData);
+            }
+        }
+    }, []);
+
+    // Get video details from WordPress data or use fallbacks
+    const getVideoDetails = () => {
+        // Try to get from wordpress data
+        const wpVideoUrl = wordpressVideoData?.personalTraining?.featuredTrainer?.url;
+        const wpVideoTitle = wordpressVideoData?.personalTraining?.featuredTrainer?.title;
+        const wpVideoImage = wordpressVideoData?.personalTraining?.featuredTrainer?.image;
+
+        // Try athleteDashboardData as a backup
+        const athleteVideoUrl = window.athleteDashboardData?.wpData?.videoData?.personalTraining?.featuredTrainer?.url;
+        const athleteVideoTitle = window.athleteDashboardData?.wpData?.videoData?.personalTraining?.featuredTrainer?.title;
+        const athleteVideoImage = window.athleteDashboardData?.wpData?.videoData?.personalTraining?.featuredTrainer?.image;
+
+        // Return the best available values, with fallbacks
+        return {
+            url: wpVideoUrl || athleteVideoUrl || "https://www.youtube.com/embed/L27wfHkk2O8",
+            title: wpVideoTitle || athleteVideoTitle || "High-Intensity Workout Demo",
+            image: wpVideoImage || athleteVideoImage || "/assets/trainers/workout-demo.jpg"
+        };
     };
 
     // Default trainer data if none provided
     const trainers: Trainer[] = propTrainers || [
         {
             id: "trainer-1",
-            name: "Alex Rivera",
+            name: "Justin Fassio",
             image: "/assets/trainers/trainer1.jpg",
             specialty: "Strength & Conditioning",
             specialtyIcon: <Dumbbell size={14} />,
@@ -42,9 +76,9 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             clients: 178,
             featured: true,
             videoCard: {
-                title: "High-Intensity Workout Demo",
-                image: "/assets/trainers/workout-demo.jpg",
-                videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1",
+                title: getVideoDetails().title,
+                image: getVideoDetails().image,
+                videoUrl: getVideoDetails().url
             }
         },
         {
@@ -143,77 +177,23 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                                 Schedule Session
                             </Button>
 
-                            {/* Flip Card for Featured Trainer */}
+                            {/* Video display - direct instead of flip card */}
                             {featuredTrainer.videoCard && (
                                 <div className="mt-6">
-                                    <div
-                                        className={`flip-card ${flippedCards[featuredTrainer.id] ? 'flipped' : ''}`}
-                                        onClick={() => flipCard(featuredTrainer.id)}
-                                    >
-                                        {/* Front of Card */}
-                                        <div className="flip-card-front bg-gray-800 flex items-center justify-center flex-col">
-                                            {featuredTrainer.videoCard.image && !featuredTrainer.videoCard.image.includes('assets') ? (
-                                                <img
-                                                    src={featuredTrainer.videoCard.image}
-                                                    alt={featuredTrainer.videoCard.title}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            ) : (
-                                                <div className="flex items-center justify-center flex-col">
-                                                    <Play size={64} className="text-white opacity-70 mb-4" />
-                                                    <h4 className="text-lg font-medium text-white">{featuredTrainer.videoCard.title}</h4>
-                                                    <p className="text-sm text-gray-400 flex items-center mt-2">
-                                                        Click to watch
-                                                        <Play size={16} className="ml-1" />
-                                                    </p>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* Back of Card */}
-                                        <div className="flip-card-back bg-gray-800">
-                                            <div className="flex-grow flex items-center justify-center p-4">
-                                                {flippedCards[featuredTrainer.id] && featuredTrainer.videoCard.videoUrl && (
-                                                    <iframe
-                                                        src={featuredTrainer.videoCard.videoUrl}
-                                                        title={featuredTrainer.videoCard.title}
-                                                        frameBorder="0"
-                                                        className="w-full h-full"
-                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                        allowFullScreen
-                                                    ></iframe>
-                                                )}
-                                            </div>
-                                            <div className="bg-gray-700 p-3 flex justify-between">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="small"
-                                                    themeContext="default"
-                                                    className="p-2 rounded-full bg-gray-600 text-white"
-                                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                        e.stopPropagation();
-                                                        flipCard(featuredTrainer.id);
-                                                    }}
-                                                    aria-label="Refresh video"
-                                                >
-                                                    <RefreshCw size={20} />
-                                                </Button>
-                                                <Button
-                                                    variant="ghost"
-                                                    size="small"
-                                                    themeContext="default"
-                                                    className="p-2 rounded-full bg-gray-600 text-white"
-                                                    onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                        e.stopPropagation();
-                                                        flipCard(featuredTrainer.id);
-                                                    }}
-                                                    aria-label="Close video"
-                                                >
-                                                    <X size={20} />
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <h4 className="text-lg font-medium text-white mb-3">{featuredTrainer.videoCard.title}</h4>
+                                    <MediaContainer
+                                        src={featuredTrainer.videoCard.videoUrl || ''}
+                                        type="video"
+                                        poster={featuredTrainer.videoCard.image || undefined}
+                                        muted={false}
+                                        autoPlay={false}
+                                        controls={true}
+                                        loop={false}
+                                        alt={`${featuredTrainer.name} training video`}
+                                        className="rounded-lg overflow-hidden"
+                                        theme="gym"
+                                        useWordPressData={true}
+                                    />
                                 </div>
                             )}
                         </div>

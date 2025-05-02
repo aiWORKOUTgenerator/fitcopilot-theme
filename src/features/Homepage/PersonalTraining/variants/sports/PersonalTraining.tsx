@@ -4,30 +4,46 @@ import {
     Calendar,
     Dumbbell,
     Heart,
-    Play,
     RefreshCw,
-    User,
-    X
+    User
 } from 'lucide-react';
-import React, { MouseEvent, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../../../../../components/UI/Button';
+import MediaContainer from '../../components/MediaContainer';
 import '../../PersonalTraining.scss';
 import { PersonalTrainingProps, Trainer } from '../../types';
+
+// Define the expected shape of the WordPress data
+interface WordPressVideoData {
+    personalTraining?: {
+        featuredTrainer?: {
+            url: string;
+            title: string;
+            image: string;
+        }
+    }
+}
+
+// Access the global WordPress data (declared in window)
+declare global {
+    interface Window {
+        fitcopilotVideoData?: WordPressVideoData;
+    }
+}
 
 /**
  * Sports variant of the Personal Training component
  */
 const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers }) => {
-    // Track flipped state for each trainer by ID
-    const [flippedCards, setFlippedCards] = useState<Record<string, boolean>>({});
+    // State to store WordPress video data
+    const [wordpressVideoData, setWordpressVideoData] = useState<WordPressVideoData | null>(null);
 
-    // Flip card handlers
-    const flipCard = (trainerId: string) => {
-        setFlippedCards(prev => ({
-            ...prev,
-            [trainerId]: !prev[trainerId]
-        }));
-    };
+    // Load WordPress video data on mount
+    useEffect(() => {
+        if (window.fitcopilotVideoData) {
+            setWordpressVideoData(window.fitcopilotVideoData);
+        }
+    }, []);
 
     // Trainer data
     const trainers: Trainer[] = propTrainers || [
@@ -42,8 +58,8 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             years: 8,
             featured: true,
             videoCard: {
-                title: 'Strength Training Introduction',
-                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+                title: wordpressVideoData?.personalTraining?.featuredTrainer?.title || 'Strength Training Introduction',
+                videoUrl: wordpressVideoData?.personalTraining?.featuredTrainer?.url || 'https://www.youtube.com/embed/dQw4w9WgXcQ'
             }
         },
         {
@@ -57,7 +73,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             years: 6,
             videoCard: {
                 title: 'HIIT Workout Demo',
-                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
             }
         },
         {
@@ -71,7 +87,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             years: 7,
             videoCard: {
                 title: 'Functional Training Basics',
-                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
             }
         },
         {
@@ -85,7 +101,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             years: 5,
             videoCard: {
                 title: 'Nutrition Fundamentals',
-                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1'
+                videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
             }
         }
     ];
@@ -147,41 +163,16 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                                     <h4 className="text-sm font-semibold mb-2 text-gray-900">{trainer.videoCard.title || "Watch Training Sample"}</h4>
 
                                     <div className="aspect-video relative rounded overflow-hidden bg-gray-200">
-                                        {flippedCards[trainer.id] ? (
-                                            <>
-                                                <iframe
-                                                    src={trainer.videoCard.videoUrl}
-                                                    title={trainer.videoCard.title || `${trainer.name} training sample`}
-                                                    className="w-full h-full absolute inset-0"
-                                                    frameBorder="0"
-                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                    allowFullScreen
-                                                ></iframe>
-                                                <div className="absolute bottom-2 right-2 z-10 flex space-x-1">
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="small"
-                                                        themeContext="sports"
-                                                        className="p-1 rounded-full bg-black/60 text-white"
-                                                        onClick={(e: MouseEvent<HTMLButtonElement>) => {
-                                                            e.stopPropagation();
-                                                            flipCard(trainer.id);
-                                                        }}
-                                                        aria-label="Close video"
-                                                    >
-                                                        <X size={16} />
-                                                    </Button>
-                                                </div>
-                                            </>
-                                        ) : (
-                                            <div
-                                                className="w-full h-full flex flex-col items-center justify-center cursor-pointer"
-                                                onClick={() => flipCard(trainer.id)}
-                                            >
-                                                <Play size={40} className="text-violet-600 mb-2" />
-                                                <span className="text-xs font-medium text-gray-700">Play Video</span>
-                                            </div>
-                                        )}
+                                        <MediaContainer
+                                            src={trainer.videoCard.videoUrl || ''}
+                                            type="video"
+                                            poster={trainer.image || undefined}
+                                            muted={false}
+                                            autoPlay={false}
+                                            controls={true}
+                                            loop={false}
+                                            alt={`${trainer.name} training video`}
+                                        />
                                     </div>
                                 </div>
                             )}

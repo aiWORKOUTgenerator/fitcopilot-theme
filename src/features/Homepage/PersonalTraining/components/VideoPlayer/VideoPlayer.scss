@@ -1,0 +1,400 @@
+// Import design system
+@import '../../../../../styles/design-system/index';
+
+.video-container {
+    position: relative;
+    border-radius: var(--vp-border-radius);
+    overflow: hidden;
+    background-color: var(--vp-color-bg);
+    display: flex;
+    flex-direction: column;
+    padding-bottom: var(--vp-container-padding-bottom);
+    height: 100%;
+    box-shadow: var(--vp-box-shadow);
+
+    // Video wrapper to maintain aspect ratio
+    .video-wrapper {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%; // 16:9 aspect ratio
+        overflow: hidden;
+    }
+
+    // Video element styling
+    video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    // Streaming video iframe
+    &.streaming-video {
+        .video-wrapper {
+            height: 0;
+            padding-bottom: 56.25%; // 16:9 aspect ratio
+            background-color: var(--vp-color-streaming-bg);
+        }
+
+        .streaming-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            z-index: 10; // Ensure iframe is on top
+        }
+
+        // Ensure padding-bottom is 0 to avoid extra space
+        padding-bottom: 0;
+
+        // Hide progress bar for streaming videos
+        .mt-3 {
+            display: none;
+        }
+    }
+
+    // Play/pause overlay
+    .video-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity var(--vp-transition-standard);
+        background-color: var(--vp-color-overlay-bg);
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
+        }
+
+        &.loading-state {
+            background-color: var(--vp-color-loading-bg);
+        }
+
+        &.error-state {
+            background-color: var(--vp-color-error-bg);
+
+            // Style the error message component specifically for video
+            .error-message-container {
+                max-width: 80%;
+                background-color: rgba(0, 0, 0, 0.7);
+                border-color: var(--color-gray-700);
+
+                .error-title {
+                    color: var(--color-text-primary);
+                }
+
+                .error-details {
+                    color: var(--color-text-secondary);
+                }
+
+                .error-action-button {
+                    background: var(--vp-control-button-bg);
+
+                    &:hover {
+                        background: var(--vp-gym-accent-gradient);
+                    }
+                }
+            }
+        }
+
+        &.controls-overlay {
+            background-color: var(--vp-color-overlay-bg);
+        }
+    }
+
+    // Control button
+    .control-button {
+        width: var(--vp-control-button-size);
+        height: var(--vp-control-button-size);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--vp-control-button-color);
+        background: var(--vp-control-button-bg);
+        transition: transform var(--vp-transition-standard), box-shadow var(--vp-transition-standard);
+        box-shadow: var(--vp-control-button-shadow);
+
+        &:hover {
+            transform: scale(1.05);
+            box-shadow: var(--vp-control-button-hover-shadow);
+        }
+
+        &:focus-visible {
+            outline: var(--vp-control-button-focus-outline);
+            outline-offset: var(--vp-control-button-focus-offset);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
+        }
+    }
+
+    // Video controls container
+    .video-controls-container {
+        position: absolute;
+        bottom: 0.5rem;
+        left: 0;
+        right: 0;
+        padding: 0 0.75rem;
+        z-index: 5;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        // Progress bar and times take full width
+        .video-progress,
+        .time-display {
+            width: 100%;
+        }
+    }
+
+    // Video progress bar
+    .video-progress {
+        width: 100%;
+        height: var(--vp-progress-height);
+        background-color: var(--vp-color-progress-bg);
+        border-radius: var(--vp-progress-radius);
+        overflow: hidden;
+        margin-bottom: 0.35rem;
+    }
+
+    .video-progress-bar {
+        height: 100%;
+        background: var(--vp-progress-bar-bg);
+        border-radius: var(--vp-progress-radius);
+        transition: width var(--vp-transition-fast);
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
+        }
+    }
+
+    // Quality indicator
+    .quality-indicator {
+        position: absolute;
+        top: -2rem;
+        right: 0.75rem;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 4px;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--color-text-primary);
+
+        .quality-label {
+            display: flex;
+            align-items: center;
+
+            &::before {
+                content: '';
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                background-color: var(--color-accent-400);
+                border-radius: 50%;
+                margin-right: 4px;
+            }
+        }
+    }
+
+    // Error state
+    .error-container {
+        text-align: center;
+
+        .error-icon {
+            color: var(--vp-color-error-icon);
+            margin-bottom: 0.5rem;
+        }
+
+        .error-message {
+            color: var(--vp-color-error-text);
+            font-size: 0.875rem;
+        }
+    }
+
+    // Time display
+    .time-display {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.75rem;
+        color: var(--vp-color-time-text);
+
+        span {
+            line-height: 1;
+        }
+    }
+
+    // Handle autoplay on scroll styles
+    &.autoplaying {
+        .video-overlay {
+            opacity: 0;
+
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+    }
+
+    // Theme variations
+    &.theme-gym {
+        .control-button {
+            background: var(--vp-gym-accent-gradient);
+
+            &:focus-visible {
+                outline-color: var(--color-accent-400);
+            }
+        }
+
+        .video-progress-bar {
+            background: var(--vp-gym-accent-gradient);
+        }
+
+        .loading-indicator {
+            color: var(--color-accent-400);
+        }
+
+        .quality-indicator .quality-label::before {
+            background-color: var(--color-accent-400);
+        }
+
+        .error-state .error-message-container .error-action-button {
+            background: var(--vp-gym-accent-gradient);
+        }
+    }
+
+    &.theme-sports {
+        .control-button {
+            background: var(--vp-sports-accent-gradient);
+
+            &:focus-visible {
+                outline-color: var(--color-accent-400);
+            }
+        }
+
+        .video-progress-bar {
+            background: var(--vp-sports-accent-gradient);
+        }
+
+        .loading-indicator {
+            color: var(--color-accent-400);
+        }
+
+        .quality-indicator .quality-label::before {
+            background-color: var(--color-accent-400);
+        }
+
+        .error-state .error-message-container .error-action-button {
+            background: var(--vp-sports-accent-gradient);
+        }
+    }
+
+    &.theme-wellness {
+        .control-button {
+            background: var(--vp-wellness-accent-gradient);
+
+            &:focus-visible {
+                outline-color: var(--color-accent-400);
+            }
+        }
+
+        .video-progress-bar {
+            background: var(--vp-wellness-accent-gradient);
+        }
+
+        .loading-indicator {
+            color: var(--color-accent-400);
+        }
+
+        .quality-indicator .quality-label::before {
+            background-color: var(--color-accent-400);
+        }
+
+        .error-state .error-message-container .error-action-button {
+            background: var(--vp-wellness-accent-gradient);
+        }
+    }
+
+    // Responsive adjustments
+    @media (max-width: 768px) {
+        .control-button {
+            width: var(--vp-control-button-mobile-size);
+            height: var(--vp-control-button-mobile-size);
+        }
+
+        .time-display {
+            font-size: 0.7rem;
+        }
+
+        .quality-indicator {
+            top: -1.5rem;
+            font-size: 0.65rem;
+            padding: 0.15rem 0.35rem;
+        }
+
+        .error-state .error-message-container {
+            max-width: 95%;
+
+            .error-title {
+                font-size: 0.8rem;
+            }
+
+            .error-details {
+                font-size: 0.7rem;
+            }
+        }
+    }
+}
+
+// Optimize for the PersonalTraining flip card
+.flip-card-front,
+.flip-card-back {
+    .video-container {
+        border-radius: 0.5rem;
+        height: 100%;
+        box-shadow: none;
+        padding-bottom: 0; // Remove extra padding for embedded videos
+
+        .video-wrapper {
+            padding-bottom: 56.25%; // Keep consistent 16:9 aspect ratio
+        }
+
+        // Hide progress bar in flip card
+        .mt-3 {
+            display: none;
+        }
+
+        .video-controls-container {
+            display: none;
+        }
+
+        // Show minimal error message in flip card
+        .error-state .error-message-container {
+            .error-details {
+                display: none;
+            }
+
+            .error-action-button {
+                margin-top: 0.25rem;
+                padding: 0.25rem 0.75rem;
+            }
+        }
+    }
+}
+
+// Animation keyframes
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
