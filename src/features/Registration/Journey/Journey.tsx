@@ -20,36 +20,43 @@ import {
     Trophy,
     Zap
 } from 'lucide-react';
-import React, { useState } from 'react';
-import { RegistrationStep, RegistrationStepProps } from '../types';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { RegistrationStep, RegistrationStepProps, WorkoutGoal } from '../types';
 import './Journey.scss';
+import { JourneyProvider, useJourney } from './components/JourneyContext';
+import JourneyStepCard, { JourneyStepData } from './components/JourneyStepCard';
+import SavingIndicator from './components/SavingIndicator';
+import { scrollToJourneyStep, throttle } from './components/scrollUtils';
 
-interface JourneyStep {
-    title: string;
-    description: string;
-    icon: React.ReactNode;
-    delay: number;
-    detailedFeatures: {
-        title: string;
-        description: string;
-        icon: React.ReactNode;
-    }[];
-    ctaText: string;
-    accentColor: string;
-    nextStep: RegistrationStep;
-}
+// Main component definition - this wraps the JourneyContent with JourneyProvider
+const JourneyComponent: React.FC<RegistrationStepProps & { currentStep: RegistrationStep }> = (props) => {
+    return (
+        <JourneyProvider initialData={props.data}>
+            <JourneyContent {...props} />
+            <SavingIndicator />
+        </JourneyProvider>
+    );
+};
 
-const JourneyComponent: React.FC<RegistrationStepProps & { currentStep: RegistrationStep }> = ({
+// Internal component that consumes the JourneyContext
+const JourneyContent: React.FC<RegistrationStepProps & { currentStep: RegistrationStep }> = ({
     data,
     updateData,
     onNext,
     onBack,
     currentStep
 }) => {
-    const [expandedStep, setExpandedStep] = useState<number | null>(null);
+    const {
+        expandedStep,
+        updateRegistrationData,
+        markStepComplete
+    } = useJourney();
+
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [lastScrollPosition, setLastScrollPosition] = useState(0);
 
     // Define the journey steps
-    const journeySteps: JourneyStep[] = [
+    const journeySteps: JourneyStepData[] = [
         {
             title: "Define Your Goals",
             description: "Tell us what you want to achieve - strength, muscle gain, fat loss, or general fitness.",
@@ -176,35 +183,69 @@ const JourneyComponent: React.FC<RegistrationStepProps & { currentStep: Registra
         }
     ];
 
-    // Toggle expanded step
-    const toggleStep = (index: number) => {
-        if (expandedStep === index) {
-            setExpandedStep(null);
-        } else {
-            setExpandedStep(index);
-        }
-    };
+    // Scroll restoration and tracking
+    useEffect(() => {
+        // Keep track of scroll position for restoration
+        const handleScroll = throttle(() => {
+            if (containerRef.current) {
+                setLastScrollPosition(window.scrollY);
+            }
+        }, 100);
+
+        window.addEventListener('scroll', handleScroll);
+
+        // Restore scroll position if refreshed
+        const restoreScroll = () => {
+            if (expandedStep !== null) {
+                scrollToJourneyStep(expandedStep);
+            } else if (lastScrollPosition > 0) {
+                window.scrollTo(0, lastScrollPosition);
+            }
+        };
+
+        // Wait for any animations to complete
+        setTimeout(restoreScroll, 100);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [expandedStep, lastScrollPosition]);
+
+    // Sync data with parent component
+    useEffect(() => {
+        // Whenever the parent's data changes, we should sync it with our context
+        updateRegistrationData(data);
+    }, [data, updateRegistrationData]);
 
     // Handle button click in a step
-    const handleStepAction = (index: number) => {
-        // Close the current step
-        setExpandedStep(null);
+    const handleStepAction = useCallback((index: number) => {
+        // Mark the step as complete
+        markStepComplete(index);
 
         // Update registration data with selected goal if needed
         if (index === 0) {
-            updateData({ goal: journeySteps[index].title });
+            // For the first step, set a default workout goal if none is selected
+            if (!data.goals || data.goals.length === 0) {
+                const updatedData = {
+                    ...data,
+                    goals: [WorkoutGoal.OVERALL_FITNESS]
+                };
+                updateData(updatedData);
+                updateRegistrationData(updatedData);
+            }
         }
 
-        // Proceed to next step in registration flow
-        if (onNext) {
-            setTimeout(() => {
+        // Proceed to next step in registration flow after a short delay
+        setTimeout(() => {
+            if (onNext) {
                 onNext();
-            }, 300);
-        }
-    };
+            }
+        }, 300);
+    }, [data, markStepComplete, onNext, updateData, updateRegistrationData]);
 
+    // Render the journey component
     return (
-        <div className="journey-step registration-step">
+        <div className="journey-step registration-step" ref={containerRef}>
             {/* Background animation with particles */}
             <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 z-0">
                 <div className="particles-container">
@@ -229,107 +270,12 @@ const JourneyComponent: React.FC<RegistrationStepProps & { currentStep: Registra
 
                 <div className="space-y-6">
                     {journeySteps.map((step, index) => (
-                        <div
+                        <JourneyStepCard
                             key={index}
-                            className={`relative journey-step-card transition-all duration-500 ease-in-out animate-fade-in-up delay-${index + 1}`}
-                        >
-                            {/* Main Step Card */}
-                            <div
-                                className={`relative p-6 md:p-8 rounded-2xl bg-gray-800/70 backdrop-blur-lg border ${expandedStep === index ? 'border-lime-300/50 shadow-lg shadow-lime-300/10' : 'border-gray-700'
-                                    } transition-all duration-300 cursor-pointer group ${step.accentColor.includes('lime') ? 'lime-glow' :
-                                        step.accentColor.includes('cyan') ? 'cyan-glow' :
-                                            step.accentColor.includes('violet') ? 'violet-glow' :
-                                                step.accentColor.includes('amber') ? 'amber-glow' : ''
-                                    }`}
-                                onClick={() => toggleStep(index)}
-                                role="button"
-                                tabIndex={0}
-                                aria-expanded={expandedStep === index}
-                                aria-controls={`step-content-${index}`}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        toggleStep(index);
-                                    }
-                                }}
-                            >
-                                <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-                                    {/* Step Icon & Number */}
-                                    <div className="relative">
-                                        <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${step.accentColor} flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}>
-                                            {step.icon}
-
-                                            {/* Pulsing ring - decorative */}
-                                            <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${step.accentColor} opacity-15 blur-[1px] group-hover:opacity-25 transition-opacity`} aria-hidden="true"></div>
-                                        </div>
-
-                                        {/* Step number */}
-                                        <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold bg-gradient-to-r from-lime-300 to-emerald-400 text-gray-900">
-                                            {index + 1}
-                                        </div>
-                                    </div>
-
-                                    {/* Step Information */}
-                                    <div className="flex-1">
-                                        <h3 className="text-xl md:text-2xl font-bold mb-2 text-white group-hover:text-lime-300 transition-colors flex items-center">
-                                            {step.title}
-                                        </h3>
-                                        <p className="text-gray-400 group-hover:text-gray-300 transition-colors md:pr-12">
-                                            {step.description}
-                                        </p>
-                                    </div>
-
-                                    {/* Expand/Collapse Button */}
-                                    <div className={`p-2 rounded-full border border-lime-300/30 bg-lime-300/10 transition-all duration-300 ${expandedStep === index ? 'rotate-90' : ''}`} aria-hidden="true">
-                                        <ChevronRight size={20} className="text-lime-300" />
-                                    </div>
-                                </div>
-
-                                {/* Progress connector */}
-                                {index < journeySteps.length - 1 && (
-                                    <div className="hidden md:block step-connector" aria-hidden="true"></div>
-                                )}
-                            </div>
-
-                            {/* Expanded Content */}
-                            <div
-                                id={`step-content-${index}`}
-                                className={`mt-2 rounded-2xl bg-gray-800/40 border border-gray-700 overflow-hidden transition-all duration-500 ease-in-out ${expandedStep === index ? 'max-h-[600px] opacity-100 p-6' : 'max-h-0 opacity-0 p-0 border-0'
-                                    }`}
-                                aria-hidden={expandedStep !== index}
-                            >
-                                <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 ${expandedStep === index ? 'animate-fade-slide-up' : ''
-                                    }`}>
-                                    {step.detailedFeatures.map((feature, featureIndex) => (
-                                        <div
-                                            key={featureIndex}
-                                            className="flex items-start gap-4 p-4 rounded-xl bg-gray-700/30 hover:bg-gray-700/50 transition-colors group/feature"
-                                        >
-                                            <div className="bg-gray-800 p-2 rounded-lg group-hover/feature:scale-110 transition-transform" aria-hidden="true">
-                                                {feature.icon}
-                                            </div>
-                                            <div>
-                                                <h4 className="font-semibold text-white mb-1">{feature.title}</h4>
-                                                <p className="text-sm text-gray-400 group-hover/feature:text-gray-300 transition-colors">{feature.description}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* CTA Button */}
-                                <div className={`text-center ${expandedStep === index ? 'animate-fade-in' : ''
-                                    }`}>
-                                    <button
-                                        onClick={() => handleStepAction(index)}
-                                        className="inline-flex items-center px-8 py-3 rounded-full text-sm font-bold transition-all duration-300 bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-md hover:shadow-lg hover:shadow-lime-300/30 hover:-translate-y-1"
-                                        aria-label={`${step.ctaText} for ${step.title}`}
-                                    >
-                                        {step.ctaText}
-                                        <ArrowRight size={16} className="ml-2" aria-hidden="true" />
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                            step={step}
+                            index={index}
+                            onStepAction={handleStepAction}
+                        />
                     ))}
                 </div>
 

@@ -8,15 +8,47 @@
     overflow: hidden;
     padding: 2rem 0;
     min-height: 100vh;
+    scroll-behavior: smooth;
 }
 
 /* Journey step cards styling */
 .journey-step-card {
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+
+    &.completed {
+        border-color: rgba(16, 185, 129, 0.5);
+    }
 
     &:hover {
         transform: translateY(-5px);
     }
+}
+
+/* Goal selection styling */
+[aria-pressed="true"] {
+    border-color: rgba(163, 230, 53, 0.8) !important;
+    box-shadow: 0 0 15px rgba(163, 230, 53, 0.2);
+
+    h4 {
+        color: rgba(163, 230, 53, 0.9);
+    }
+}
+
+.goal-selection-counter {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background-color: rgba(163, 230, 53, 0.1);
+    border: 1px solid rgba(163, 230, 53, 0.3);
+    color: rgba(163, 230, 53, 0.9);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    margin: 0.5rem 0;
 }
 
 /* Button styling */
@@ -37,6 +69,23 @@ button {
 
     &:hover:before {
         left: 100%;
+    }
+
+    &:active {
+        transform: translateY(1px);
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+
+        &:hover {
+            transform: none;
+        }
+
+        &:before {
+            display: none;
+        }
     }
 }
 
@@ -122,8 +171,51 @@ button:focus-visible {
 /* Navigation container */
 .navigation-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     margin-top: 2rem;
+    gap: 1rem;
+}
+
+/* Saving indicator animations */
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.saving-indicator {
+    animation: fadeInOut 2s ease-in-out;
 }
 
 /* Animations */
@@ -149,6 +241,18 @@ button:focus-visible {
     }
 }
 
+@keyframes scaleInCenter {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 .animate-fade-in {
     animation: fadeIn 0.8s ease-out forwards;
 }
@@ -157,25 +261,127 @@ button:focus-visible {
     animation: fadeInUp 0.8s ease-out forwards;
 }
 
+.animate-scale-in {
+    animation: scaleInCenter 0.4s ease-out forwards;
+}
+
+/* Completed step indicator */
+.step-completed-indicator {
+    background: linear-gradient(to right, #10b981, #34d399);
+    color: white;
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    margin-left: 0.5rem;
+}
+
 /* Background animation with particles - inherited from other steps */
 /* This ensures visual consistency with other registration steps */
+.particles-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(163, 230, 53, 0.8), rgba(163, 230, 53, 0));
+    animation: float 15s infinite;
+    opacity: 0.2;
+}
+
+.particle-1 {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.particle-2 {
+    width: 200px;
+    height: 200px;
+    top: 60%;
+    left: 80%;
+    animation-delay: 2s;
+    background: radial-gradient(circle at center, rgba(34, 211, 238, 0.8), rgba(34, 211, 238, 0));
+}
+
+.particle-3 {
+    width: 150px;
+    height: 150px;
+    top: 30%;
+    left: 70%;
+    animation-delay: 4s;
+    background: radial-gradient(circle at center, rgba(167, 139, 250, 0.8), rgba(167, 139, 250, 0));
+}
+
+.particle-4 {
+    width: 180px;
+    height: 180px;
+    top: 70%;
+    left: 20%;
+    animation-delay: 1s;
+    background: radial-gradient(circle at center, rgba(251, 191, 36, 0.8), rgba(251, 191, 36, 0));
+}
+
+.particle-5 {
+    width: 250px;
+    height: 250px;
+    top: 40%;
+    left: 40%;
+    animation-delay: 3s;
+    background: radial-gradient(circle at center, rgba(139, 92, 246, 0.8), rgba(139, 92, 246, 0));
+}
+
+@keyframes float {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    33% {
+        transform: translate(30px, -50px) scale(1.05);
+    }
+
+    66% {
+        transform: translate(-20px, 20px) scale(0.95);
+    }
+
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+}
 
 @media (prefers-reduced-motion: reduce) {
 
     .animate-fade-slide-up,
     .animate-fade-in,
     .animate-fade-in-up,
-    .journey-step-card {
-        animation: none;
-        transition: none;
-        opacity: 1;
+    .animate-scale-in,
+    .animate-pulse,
+    .journey-step-card,
+    .journey-step {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        scroll-behavior: auto !important;
     }
 
     .journey-step-card:hover {
-        transform: none;
+        transform: none !important;
     }
 
     [role="button"]:hover {
-        box-shadow: none;
+        box-shadow: none !important;
+    }
+
+    .particle {
+        display: none !important;
     }
 }
