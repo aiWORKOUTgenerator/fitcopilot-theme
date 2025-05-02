@@ -10,6 +10,7 @@ import {
     Video
 } from 'lucide-react';
 import React, { useState } from 'react';
+import MediaContainer from '../components/MediaContainer';
 import '../TrainingFeatures.scss';
 
 /**
@@ -26,9 +27,20 @@ const TrainingFeatures: React.FC = () => {
             description: "Real-time coaching and feedback from anywhere in the world.",
             gradient: "from-lime-300 to-emerald-400",
             flipFront: "Get expert coaching from anywhere with our high-quality video platform.",
+            media: {
+                type: 'video' as const,
+                src: '/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/media/videos/Drone Video 3.mp4',
+                poster: '/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/media/videos/drone-video-poster.jpg',
+                alt: 'Aerial drone footage showing fitness activities',
+                fallbackSrc: [
+                    {
+                        src: '/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/media/videos/Drone Video 3.webm',
+                        type: 'video/webm'
+                    }
+                ]
+            },
             flipBack: {
                 title: "Live Virtual Session",
-                image: "/assets/features/virtual-session.jpg", // Replace with actual image path
                 details: [
                     "HD video with crystal clear audio",
                     "Screen sharing for technique analysis",
@@ -43,9 +55,13 @@ const TrainingFeatures: React.FC = () => {
             description: "Book sessions when it works for you with easy rescheduling.",
             gradient: "from-cyan-300 to-blue-400",
             flipFront: "Life gets busy. Our flexible scheduling adapts to your changing needs.",
+            media: {
+                type: 'image' as const,
+                src: '/assets/features/calendar.jpg',
+                alt: 'Calendar scheduling interface showing workout appointments'
+            },
             flipBack: {
                 title: "Smart Calendar",
-                image: "/assets/features/calendar.jpg", // Replace with actual image path
                 details: [
                     "24/7 online booking system",
                     "Automated reminders and notifications",
@@ -60,9 +76,13 @@ const TrainingFeatures: React.FC = () => {
             description: "Detailed metrics and benchmarks to visualize your improvement.",
             gradient: "from-violet-300 to-purple-400",
             flipFront: "Track every aspect of your fitness journey with intuitive visualizations.",
+            media: {
+                type: 'image' as const,
+                src: '/assets/features/progress-tracking.jpg',
+                alt: 'Fitness progress dashboard with charts and metrics'
+            },
             flipBack: {
                 title: "Data Insights",
-                image: "/assets/features/progress-tracking.jpg", // Replace with actual image path
                 details: [
                     "Custom progress dashboards",
                     "Performance trend analysis",
@@ -77,9 +97,13 @@ const TrainingFeatures: React.FC = () => {
             description: "Direct messaging with your trainer between sessions.",
             gradient: "from-amber-300 to-orange-400",
             flipFront: "Questions between sessions? Your trainer is just a message away.",
+            media: {
+                type: 'image' as const,
+                src: '/assets/features/support.jpg',
+                alt: 'Trainer and client messaging interface'
+            },
             flipBack: {
                 title: "Always Connected",
-                image: "/assets/features/support.jpg", // Replace with actual image path
                 details: [
                     "Encrypted private messaging",
                     "Share photos and videos for form checks",
@@ -94,9 +118,13 @@ const TrainingFeatures: React.FC = () => {
             description: "Personalized training plans designed for your specific goals.",
             gradient: "from-lime-300 to-emerald-400",
             flipFront: "Every workout is designed specifically for your body, goals, and equipment.",
+            media: {
+                type: 'image' as const,
+                src: '/assets/features/custom-workout.jpg',
+                alt: 'Customized workout plan'
+            },
             flipBack: {
                 title: "Tailored Programs",
-                image: "/assets/features/custom-workout.jpg", // Replace with actual image path
                 details: [
                     "AI-assisted program design",
                     "Adapts to your progress rate",
@@ -111,9 +139,13 @@ const TrainingFeatures: React.FC = () => {
             description: "Access your training plan and resources on any device.",
             gradient: "from-cyan-300 to-blue-400",
             flipFront: "Your entire fitness plan in your pocket, accessible anywhere and anytime.",
+            media: {
+                type: 'image' as const,
+                src: '/assets/features/mobile.jpg',
+                alt: 'Mobile app interface showing workout details'
+            },
             flipBack: {
                 title: "Mobile-First Design",
-                image: "/assets/features/mobile.jpg", // Replace with actual image path
                 details: [
                     "Works offline for gym usage",
                     "Exercise video library",
@@ -179,27 +211,39 @@ const TrainingFeatures: React.FC = () => {
                             </div>
 
                             {/* Flip Card - Right Side */}
-                            <div className="md:w-1/2 h-64 relative perspective-container">
+                            <div className="md:w-1/2 h-80 relative perspective-container">
                                 <div
                                     className={`flip-card ${flippedCards[index] ? 'flipped' : ''}`}
                                     onClick={() => toggleFlip(index)}
                                 >
                                     {/* Front Side */}
                                     <div className="flip-front bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-r-xl">
-                                        {feature.flipBack.image && !feature.flipBack.image.includes('/assets/features') ? (
-                                            <img
-                                                src={feature.flipBack.image}
-                                                alt={feature.title}
-                                                className="mb-4"
-                                            />
+                                        {feature.media ? (
+                                            <>
+                                                <MediaContainer
+                                                    src={feature.media.src}
+                                                    type={feature.media.type}
+                                                    aspectRatio="16/9"
+                                                    alt={feature.media.alt || feature.title}
+                                                    poster={feature.media.type === 'video' ? feature.media.poster : undefined}
+                                                    fallbackSrc={feature.media.type === 'video' ? feature.media.fallbackSrc : undefined}
+                                                    controls={feature.media.type === 'video'}
+                                                    muted={true}
+                                                    autoPlay={false}
+                                                    autoPlayOnScroll={feature.media.type === 'video'}
+                                                />
+                                                <p className="text-gray-300 text-sm italic text-center">Click to explore feature details</p>
+                                            </>
                                         ) : (
-                                            <div className={`w-full h-140px bg-gradient-to-br ${feature.gradient} bg-opacity-20 rounded-lg mb-4 flex items-center justify-center`}>
-                                                <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center">
-                                                    {React.cloneElement(feature.icon, { size: 32, className: "text-white opacity-80" })}
+                                            <>
+                                                <div className={`w-full h-48 bg-gradient-to-br ${feature.gradient} bg-opacity-20 rounded-lg flex items-center justify-center`}>
+                                                    <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center">
+                                                        {React.cloneElement(feature.icon, { size: 32, className: "text-white opacity-80" })}
+                                                    </div>
                                                 </div>
-                                            </div>
+                                                <p className="text-gray-300 text-sm italic text-center mt-4">Click to explore feature details</p>
+                                            </>
                                         )}
-                                        <p className="text-gray-300 text-sm italic text-center">Click to explore feature details</p>
                                     </div>
 
                                     {/* Back Side */}

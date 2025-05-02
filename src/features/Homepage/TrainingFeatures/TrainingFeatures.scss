@@ -70,6 +70,8 @@
     // Flip card functionality
     .perspective-container {
         perspective: 1500px;
+        min-height: 20rem;
+        /* Ensure minimum height for video containers */
     }
 
     .flip-card {
@@ -97,8 +99,20 @@
             transform: rotateY(0deg);
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            justify-content: space-between;
+            /* Change to space-between to allow video to take needed space */
+
+            /* Ensure media container has proper height for video aspect ratio */
+            .media-container,
+            .video-container {
+                flex-grow: 1;
+                margin-bottom: 0.5rem;
+            }
+
+            /* Position the help text at the bottom */
+            .text-center {
+                margin-top: auto;
+            }
 
             img {
                 width: 100%;

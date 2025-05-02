@@ -305,3 +305,30 @@ a.inline-flex.items-center.text-gray-400 {
     transform: var(--transform-hero-none);
   }
 }
+
+// Hero video styles
+.hero-video {
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-ui-border-light);
+  overflow: hidden;
+
+  // Override some default video player styles to match Hero aesthetics
+  .control-button {
+    background-color: var(--color-accent-400-alpha-70);
+
+    &:hover {
+      background-color: var(--color-accent-400);
+    }
+  }
+
+  // Enhanced gradient for progress bar to match Hero
+  .video-progress-bar {
+    background: linear-gradient(to right, var(--color-lime-300), var(--color-emerald-400));
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    margin-top: 2rem;
+  }
+}

@@ -1,5 +1,6 @@
 import { Apple, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
+import { VideoPlayer } from './components';
 import './Hero.css';
 import { HeroProps } from './types';
 
@@ -50,6 +51,11 @@ const Hero: React.FC<HeroProps> = ({
   loginLink = "https://aigymengine.com/react-login",
   variant = "default",
   logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
+  videoSrc,
+  videoFallbackSrc,
+  videoPoster,
+  videoControls = true,
+  videoAutoPlay = true,
 }) => {
   // Animation states for tooltips
   const [tooltipStates, setTooltipStates] = useState({
@@ -268,6 +274,23 @@ const Hero: React.FC<HeroProps> = ({
             <span>Expert Guidance</span>
           </div>
         </div>
+
+        {/* Feature Video */}
+        {videoSrc && (
+          <div className="mt-10 max-w-3xl mx-auto">
+            <VideoPlayer
+              src={videoSrc}
+              fallbackSrc={videoFallbackSrc}
+              poster={videoPoster}
+              controls={videoControls}
+              autoPlay={videoAutoPlay}
+              muted={true}
+              loop={true}
+              ariaLabel="Demonstration of AI Workout Generator features"
+              className="hero-video"
+            />
+          </div>
+        )}
       </div>
     </section>
   );

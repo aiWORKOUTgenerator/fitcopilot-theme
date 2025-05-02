@@ -1,3 +1,4 @@
 export * from './HeroButton';
-export * from './HeroLogo';
+export * from './VideoPlayer';
+export { default as VideoPlayer } from './VideoPlayer';
 

@@ -13,6 +13,9 @@ export * from './variants';
 // Export types
 export * from './types';
 
+// Export component from the Hero feature
+export * from './components';
+
 // Default export is the function that returns the appropriate variant
 export default getHeroVariant();
 
