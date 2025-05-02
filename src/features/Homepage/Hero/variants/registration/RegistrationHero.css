@@ -138,14 +138,55 @@
     animation-delay: 0.8s;
 }
 
-/* Email capture form */
+/* Registration form styles */
 .registration-entry-form {
     position: relative;
     filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
 }
 
+.registration-entry-form input {
+    transition: all 0.3s ease;
+}
+
 .registration-entry-form input:focus {
     box-shadow: 0 0 0 3px rgba(132, 225, 188, 0.3);
+}
+
+.registration-entry-form button {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.registration-entry-form button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.registration-entry-form button:active {
+    transform: scale(0.98);
+}
+
+/* Add subtle shine effect on hover */
+.registration-entry-form button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(to bottom right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.1) 50%,
+            rgba(255, 255, 255, 0) 100%);
+    transform: rotate(30deg);
+    transition: transform 0.7s ease-in-out;
+    opacity: 0;
+}
+
+.registration-entry-form button:hover::after {
+    opacity: 1;
+    transform: rotate(30deg) translate(10%, 10%);
 }
 
 /* Loading dots animation */
@@ -228,6 +269,10 @@
     .feature-card {
         padding: 20px;
     }
+
+    .registration-entry-form .space-y-4>div {
+        margin-bottom: 12px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -239,11 +284,12 @@
         font-size: 1.125rem;
     }
 
-    .registration-entry-form input {
-        padding-right: 120px;
-    }
-
     .feature-card {
         padding: 16px;
+    }
+
+    .registration-entry-form button {
+        font-size: 1rem;
+        padding: 0.875rem 1.25rem;
     }
 }

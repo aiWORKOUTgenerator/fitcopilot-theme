@@ -11,38 +11,58 @@ const RegistrationHero: React.FC<HeroProps> = ({
     loginLink = "https://aigymengine.com/react-login",
     logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
 }) => {
-    // Initial email state
+    // Form state
+    const [firstName, setFirstName] = useState('');
     const [email, setEmail] = useState('');
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState<{ firstName?: string; email?: string }>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Handle firstName input change
+    const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFirstName(e.target.value);
+        if (errors.firstName) {
+            setErrors(prev => ({ ...prev, firstName: undefined }));
+        }
+    };
 
     // Handle email input change
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
-        if (error) setError('');
+        if (errors.email) {
+            setErrors(prev => ({ ...prev, email: undefined }));
+        }
     };
 
-    // Validate email and proceed to next section
+    // Validate form and proceed to next section
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        const newErrors: { firstName?: string; email?: string } = {};
 
-        // Basic email validation
-        if (!email) {
-            setError('Email is required');
-            return;
+        // Validate first name
+        if (!firstName.trim()) {
+            newErrors.firstName = 'First name is required';
         }
 
-        if (!/\S+@\S+\.\S+/.test(email)) {
-            setError('Please enter a valid email address');
+        // Validate email
+        if (!email) {
+            newErrors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+
+        // If there are errors, update state and don't proceed
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
             return;
         }
 
         // Show loading state
         setIsSubmitting(true);
 
-        // Simulate saving email to state/localStorage
+        // Simulate saving form data
         setTimeout(() => {
-            // Save email to localStorage for use in Features section
+            // Save data to localStorage for use in Features section
+            localStorage.setItem('registration_firstName', firstName);
             localStorage.setItem('registration_email', email);
 
             // Scroll to Features section
@@ -94,27 +114,52 @@ const RegistrationHero: React.FC<HeroProps> = ({
 
                 <div className="w-32 h-1 bg-gradient-to-r from-lime-300 to-emerald-400 mx-auto mb-8 rounded-full animate-fade-in"></div>
 
-                <p className="text-gray-300 mb-12 max-w-3xl mx-auto text-xl md:text-2xl leading-relaxed animate-fade-in-up delay-1">
-                    Get personalized workout plans created by AI and fitness experts
-                    that adapt to your specific goals, experience level, and preferences.
-                </p>
-
-                {/* Email capture form */}
+                {/* Registration form */}
                 <div className="max-w-lg mx-auto mb-12 animate-fade-in-up delay-2">
-                    <form onSubmit={handleSubmit} className="registration-entry-form">
-                        <div className="relative">
-                            <input
-                                type="email"
-                                className={`w-full px-6 py-5 rounded-full bg-gray-800/50 border ${error ? 'border-red-500' : 'border-gray-700'} backdrop-blur-lg text-white text-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-300/50 pr-36`}
-                                placeholder="Enter your email address"
-                                value={email}
-                                onChange={handleEmailChange}
-                                disabled={isSubmitting}
-                            />
+                    <form onSubmit={handleSubmit} className="registration-entry-form space-y-4">
+                        {/* First Name field */}
+                        <div>
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    className={`w-full px-6 py-5 rounded-full bg-gray-800/50 border ${errors.firstName ? 'border-red-500' : 'border-gray-700'} backdrop-blur-lg text-white text-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-300/50`}
+                                    placeholder="Enter your first name"
+                                    value={firstName}
+                                    onChange={handleFirstNameChange}
+                                    disabled={isSubmitting}
+                                />
+                            </div>
+                            {errors.firstName && (
+                                <div className="text-red-500 text-sm mt-2 text-left pl-4">
+                                    {errors.firstName}
+                                </div>
+                            )}
+                        </div>
 
+                        {/* Email field */}
+                        <div>
+                            <div className="relative">
+                                <input
+                                    type="email"
+                                    className={`w-full px-6 py-5 rounded-full bg-gray-800/50 border ${errors.email ? 'border-red-500' : 'border-gray-700'} backdrop-blur-lg text-white text-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-lime-300/50`}
+                                    placeholder="Enter your email address"
+                                    value={email}
+                                    onChange={handleEmailChange}
+                                    disabled={isSubmitting}
+                                />
+                            </div>
+                            {errors.email && (
+                                <div className="text-red-500 text-sm mt-2 text-left pl-4">
+                                    {errors.email}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Submit button (moved below the input fields) */}
+                        <div className="mt-6">
                             <button
                                 type="submit"
-                                className="absolute right-2 top-2 px-6 py-3 rounded-full bg-gradient-to-r from-lime-300 to-emerald-400 text-gray-900 font-bold flex items-center transition transform hover:translate-x-1 disabled:opacity-70"
+                                className="w-full px-8 py-5 rounded-full bg-gradient-to-r from-green-400 to-emerald-600 text-white font-bold text-lg flex items-center justify-center transition-all hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-70"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? (
@@ -124,20 +169,14 @@ const RegistrationHero: React.FC<HeroProps> = ({
                                     </span>
                                 ) : (
                                     <>
-                                        Start <ArrowRight className="ml-2 h-5 w-5" />
+                                        Get Started <ArrowRight className="ml-2 h-5 w-5" />
                                     </>
                                 )}
                             </button>
                         </div>
 
-                        {error && (
-                            <div className="text-red-500 text-sm mt-2 text-left pl-4">
-                                {error}
-                            </div>
-                        )}
-
                         <div className="text-gray-500 text-sm mt-2 text-center">
-                            We'll use this email to create your personal workout plan
+                            We'll use this information to create your personal workout plan
                         </div>
                     </form>
                 </div>
