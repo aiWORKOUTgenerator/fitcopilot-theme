@@ -17,6 +17,8 @@
     color: var(--color-text);
     background-color: var(--color-background-dark);
     overflow-x: hidden;
+    z-index: 1;
+    overflow: hidden;
 }
 
 // Grid pattern
@@ -30,11 +32,18 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    opacity: 0.05;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
     pointer-events: none;
+    opacity: 0.03;
+
+    &.bg-grid-pattern {
+        background-image: linear-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+        background-size: 20px 20px;
+        background-position: center center;
+    }
 }
 
 // Text gradient animation
@@ -453,5 +462,100 @@
         .cta-section {
             padding: 2rem 1rem;
         }
+    }
+}
+
+/* Homepage Component Styles */
+
+/** 
+ * Section Styles
+ */
+section {
+    position: relative;
+    z-index: 1;
+    padding: 5rem 0;
+    transition: opacity 0.4s ease-out, filter 0.4s ease-out;
+}
+
+/** 
+ * Registration Section Styles
+ */
+.registration-section {
+    position: relative;
+    z-index: 10;
+    min-height: 0;
+    width: 100%;
+    background-color: var(--color-background-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    animation: slideDown 0.4s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 3rem 1rem;
+    margin: 0;
+
+    @media (min-width: 768px) {
+        padding: 4rem 2rem;
+    }
+
+    .registration-component {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+}
+
+/** 
+ * Dimming Effect for Sections
+ */
+section.dimmed {
+    opacity: 0.3;
+    filter: blur(2px);
+    pointer-events: none;
+    transition: opacity 0.4s ease-out, filter 0.4s ease-out;
+}
+
+/**
+ * Demo Mode Styles
+ */
+.demo-mode-indicator {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 9999;
+}
+
+/** 
+ * Registration Integration Styles
+ */
+
+// Registration active state for body
+body.registration-active {
+    overflow-y: auto;
+}
+
+// Homepage with registration
+.homepage-container.with-registration {
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+// SlideDown animation for registration section
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

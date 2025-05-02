@@ -54,4 +54,9 @@ export interface HeroProps {
    * @default true
    */
   videoAutoPlay?: boolean;
+
+  /**
+   * Callback function to trigger when registration starts
+   */
+  onRegistrationStart?: () => void;
 } 

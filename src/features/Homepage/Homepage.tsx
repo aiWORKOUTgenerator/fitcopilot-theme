@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './styles/homepage.scss';
 
 // Import custom hooks
 import { useHomepageAnimation, useHomepageData } from './hooks';
 
 // Import feature components
+import Registration from '../Registration/Registration';
+import { RegistrationData } from '../Registration/types';
 import { Features } from './Features';
 import { Footer } from './Footer';
 import Hero from './Hero';
@@ -28,6 +30,11 @@ export interface HomepageProps {
  */
 const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  // Registration workflow state
+  const [showRegistration, setShowRegistration] = useState<boolean>(false);
+  const registrationRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+
   const data = useHomepageData();
 
   // Track variants for demo mode
@@ -62,6 +69,69 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
       document.body.classList.remove('demo-mode');
     };
   }, [demoMode, variants]);
+
+  // Registration workflow handlers
+  const handleRegistrationStart = () => {
+    setShowRegistration(true);
+
+    // Ensure smooth scrolling is available
+    document.body.classList.add('registration-active');
+
+    // Scroll to the registration section after a short delay to allow for DOM updates
+    setTimeout(() => {
+      if (registrationRef.current) {
+        registrationRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+
+        // Set focus to the registration container for accessibility
+        registrationRef.current.focus();
+      }
+    }, 100); // Reduced from 300ms to 100ms for faster response
+  };
+
+  const handleRegistrationComplete = (registrationData: RegistrationData) => {
+    // Handle successful registration 
+    console.log('Registration complete with data:', registrationData);
+
+    // Reset the UI state
+    setShowRegistration(false);
+    document.body.classList.remove('registration-active');
+
+    // Redirect to workout builder
+    window.location.href = 'https://builder.fitcopilot.ai';
+  };
+
+  const handleRegistrationCancel = () => {
+    // Reset UI state but use a fade out transition first
+    const registrationElement = registrationRef.current;
+
+    if (registrationElement) {
+      // Add a class to trigger fade-out animation
+      registrationElement.style.opacity = '0';
+      registrationElement.style.transform = 'translateY(-10px)';
+      registrationElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+
+      // After animation completes, hide the component
+      setTimeout(() => {
+        setShowRegistration(false);
+        document.body.classList.remove('registration-active');
+      }, 300);
+    } else {
+      // Fallback if ref isn't available
+      setShowRegistration(false);
+      document.body.classList.remove('registration-active');
+    }
+
+    // Scroll back to hero section
+    if (heroRef.current) {
+      heroRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   // Handle variant change in demo mode
   const handleVariantChange = (sectionKey: string, variant: VariantKey) => {
@@ -122,7 +192,7 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
 
   return (
     <main
-      className={`homepage-container bg-black text-white transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+      className={`homepage-container bg-black text-white transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${showRegistration ? 'with-registration' : ''}`}
     >
       {/* Demo Mode Navigation - only shown in demo mode */}
       {demoMode && (
@@ -143,53 +213,70 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
       <div className="global-grid-overlay bg-grid-pattern" aria-hidden="true"></div>
 
       {/* Hero Section - Using dynamic variant */}
-      <section id="hero">
+      <section id="hero" ref={heroRef} className={showRegistration ? 'dimmed' : ''}>
         <Hero
           registrationLink={data.siteLinks.registration}
           loginLink={data.siteLinks.login}
           logoUrl={data.assets.logo}
+          onRegistrationStart={handleRegistrationStart}
         />
       </section>
 
+      {/* Registration Section - inserted after Hero */}
+      {showRegistration && (
+        <div
+          ref={registrationRef}
+          id="registration"
+          className="registration-section"
+          tabIndex={-1}
+        >
+          <Registration
+            className="registration-component"
+            onComplete={handleRegistrationComplete}
+            onCancel={handleRegistrationCancel}
+          />
+        </div>
+      )}
+
       {/* Features Section */}
-      <section id="features">
+      <section id="features" className={showRegistration ? 'dimmed' : ''}>
         <Features
           variant={variants.features}
         />
       </section>
 
       {/* Journey Section */}
-      <section id="journey">
+      <section id="journey" className={showRegistration ? 'dimmed' : ''}>
         <Journey journey={data.journey} />
       </section>
 
       {/* Training Programs Section */}
-      <section id="training">
+      <section id="training" className={showRegistration ? 'dimmed' : ''}>
         <Training variant={variants.training} />
       </section>
 
       {/* Training Features Section */}
-      <section id="trainingFeatures">
+      <section id="trainingFeatures" className={showRegistration ? 'dimmed' : ''}>
         <TrainingFeatures variant={variants.trainingFeatures} />
       </section>
 
       {/* Personal Training Section */}
-      <section id="personalTraining">
+      <section id="personalTraining" className={showRegistration ? 'dimmed' : ''}>
         <PersonalTraining variant={variants.personalTraining} />
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials">
+      <section id="testimonials" className={showRegistration ? 'dimmed' : ''}>
         <Testimonials testimonials={data.testimonials} />
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing">
+      <section id="pricing" className={showRegistration ? 'dimmed' : ''}>
         <Pricing pricing={data.pricing} />
       </section>
 
       {/* Footer Section */}
-      <section id="footer">
+      <section id="footer" className={showRegistration ? 'dimmed' : ''}>
         <Footer links={data.footerLinks} />
       </section>
     </main>

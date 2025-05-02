@@ -1,7 +1,12 @@
+// Canonical design system import - MUST BE FIRST
+@import '../../../styles/design-system/index';
+
 .experience-level-step {
-    display: flex;
-    flex-direction: column;
-    padding: 2rem;
+    background-color: var(--color-bg-dark, #0f172a);
+    position: relative;
+    overflow: hidden;
+    padding: 2rem 0;
+    min-height: 100vh;
 
     // Cards container
     .level-cards {
@@ -15,31 +20,32 @@
         }
     }
 
-    // Level card styling in ExperienceLevel.scss
+    // Level card styling 
     .level-card {
         position: relative;
         min-height: 200px;
         padding: 1.5rem;
-        border-radius: var(--registration-radius);
-        background-color: var(--registration-card-bg);
-        box-shadow: var(--registration-shadow);
-        border: 2px solid transparent;
-        transition: var(--registration-transition);
+        border-radius: 16px;
+        background-color: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(8px);
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         cursor: pointer;
         display: flex;
         flex-direction: column;
 
         &:hover {
             transform: translateY(-5px);
-            border-color: var(--registration-border-color);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+                0 8px 10px -6px rgba(0, 0, 0, 0.1);
         }
 
         &--selected {
-            border-color: var(--registration-primary-color);
-            background-color: rgba(14, 165, 233, 0.05);
+            border-color: rgba(132, 225, 188, 0.5);
+            background-color: rgba(132, 225, 188, 0.05);
 
             .level-card__icon {
-                background-color: var(--registration-primary-color);
+                background-color: rgba(132, 225, 188, 0.3);
                 color: white;
             }
         }
@@ -50,9 +56,9 @@
             justify-content: center;
             width: 48px;
             height: 48px;
-            border-radius: 50%;
-            background-color: rgba(14, 165, 233, 0.1);
-            color: var(--registration-primary-color);
+            border-radius: 12px;
+            background-color: rgba(132, 225, 188, 0.1);
+            color: #84e1bc;
             margin-bottom: 1rem;
             transition: var(--registration-transition);
         }
@@ -61,21 +67,24 @@
             font-size: 1.25rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
+            color: white;
         }
 
         &__description {
             font-size: 0.875rem;
-            color: rgba(30, 41, 59, 0.8);
+            color: rgba(255, 255, 255, 0.7);
             flex-grow: 1;
         }
     }
 
     // Level comparison section
     .level-comparison {
-        background-color: var(--registration-card-bg);
-        border-radius: var(--registration-radius);
+        background-color: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
         padding: 1.5rem;
-        margin-bottom: 2rem;
+        margin: 1.5rem 0 2rem;
+        backdrop-filter: blur(8px);
 
         &__title {
             font-size: 1.125rem;
@@ -84,9 +93,10 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            color: white;
 
             svg {
-                color: var(--registration-primary-color);
+                color: #84e1bc;
             }
         }
 
@@ -106,7 +116,7 @@
             gap: 0.5rem;
 
             svg {
-                color: var(--registration-primary-color);
+                color: #84e1bc;
                 flex-shrink: 0;
                 margin-top: 0.25rem;
             }
@@ -114,6 +124,7 @@
             p {
                 margin: 0;
                 font-size: 0.875rem;
+                color: rgba(255, 255, 255, 0.8);
             }
         }
     }
@@ -124,4 +135,137 @@
         justify-content: space-between;
         margin-top: 2rem;
     }
+}
+
+/* Background animation with particles */
+.particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    background: radial-gradient(circle, rgba(132, 225, 188, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float 15s ease-in-out infinite;
+}
+
+.particle-1 {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.particle-2 {
+    width: 200px;
+    height: 200px;
+    top: 60%;
+    left: 15%;
+    animation-delay: 2s;
+}
+
+.particle-3 {
+    width: 350px;
+    height: 350px;
+    top: 40%;
+    left: 70%;
+    animation-delay: 1s;
+}
+
+.particle-4 {
+    width: 250px;
+    height: 250px;
+    top: 20%;
+    left: 80%;
+    animation-delay: 3s;
+}
+
+.particle-5 {
+    width: 180px;
+    height: 180px;
+    top: 80%;
+    left: 60%;
+    animation-delay: 5s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.4;
+    }
+
+    25% {
+        transform: translateY(-15px) translateX(15px);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: translateY(0) translateX(30px);
+        opacity: 0.4;
+    }
+
+    75% {
+        transform: translateY(15px) translateX(15px);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: translateY(0) translateX(0);
+        opacity: 0.4;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.delay-1 {
+    animation-delay: 0.2s;
+}
+
+.delay-2 {
+    animation-delay: 0.4s;
+}
+
+.delay-3 {
+    animation-delay: 0.6s;
+}
+
+.delay-4 {
+    animation-delay: 0.8s;
 }

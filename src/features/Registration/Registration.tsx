@@ -1,3 +1,4 @@
+import { X } from 'lucide-react';
 import React, { useCallback } from 'react';
 import { AnimatedTransition, RegistrationLayout } from './components';
 import ExperienceLevel from './ExperienceLevel';
@@ -14,7 +15,8 @@ import { RegistrationProps, RegistrationStep } from './types';
 const Registration: React.FC<RegistrationProps> = ({
     className = '',
     initialStep = RegistrationStep.SPLASH,
-    onComplete
+    onComplete,
+    onCancel
 }) => {
     // Get registration state and handlers from hooks
     const { data, updateData, resetData } = useRegistrationData();
@@ -26,6 +28,13 @@ const Registration: React.FC<RegistrationProps> = ({
             onComplete(data);
         }
     }, [onComplete, data]);
+
+    // Handle cancellation of registration
+    const handleCancel = useCallback(() => {
+        if (onCancel) {
+            onCancel();
+        }
+    }, [onCancel]);
 
     // Render the current step based on the current step value
     const renderCurrentStep = () => {
@@ -90,6 +99,18 @@ const Registration: React.FC<RegistrationProps> = ({
 
     return (
         <div className={`registration ${className}`}>
+            <div className="registration-header">
+                <div className="registration-header__progress">
+                    <div className="registration-progress-label">Registration Progress</div>
+                </div>
+                <button
+                    className="cancel-button"
+                    onClick={handleCancel}
+                    aria-label="Cancel registration"
+                >
+                    <X size={24} />
+                </button>
+            </div>
             <RegistrationLayout progress={progress}>
                 <AnimatedTransition key={currentStep}>
                     {renderCurrentStep()}

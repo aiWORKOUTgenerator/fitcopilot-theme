@@ -95,6 +95,7 @@ export interface RegistrationProps {
     className?: string;
     initialStep?: RegistrationStep;
     onComplete?: (data: RegistrationData) => void;
+    onCancel?: () => void;
 }
 
 /**

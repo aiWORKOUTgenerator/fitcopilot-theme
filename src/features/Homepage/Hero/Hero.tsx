@@ -1,6 +1,6 @@
 import { Apple, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
-import { VideoPlayer } from './components';
+import { HeroButton, VideoPlayer } from './components';
 import './Hero.css';
 import { HeroProps } from './types';
 
@@ -56,6 +56,7 @@ const Hero: React.FC<HeroProps> = ({
   videoPoster,
   videoControls = true,
   videoAutoPlay = true,
+  onRegistrationStart,
 }) => {
   // Animation states for tooltips
   const [tooltipStates, setTooltipStates] = useState({
@@ -125,6 +126,14 @@ const Hero: React.FC<HeroProps> = ({
     }));
   };
 
+  // Handle click for registration start
+  const handleFreeWorkoutClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onRegistrationStart) {
+      onRegistrationStart();
+    }
+  };
+
   return (
     <section
       className="w-full min-h-screen flex items-center justify-center py-20 px-4 relative overflow-hidden bg-gray-900"
@@ -186,13 +195,15 @@ const Hero: React.FC<HeroProps> = ({
               onMouseEnter={() => handleMouseEnter('freeWorkout')}
               onMouseLeave={() => handleMouseLeave('freeWorkout')}
             >
-              <a
+              <HeroButton
                 href="https://builder.fitcopilot.ai"
-                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-optimized hover:shadow-optimized-hover hover:-translate-y-1 w-full sm:w-auto button primary hero-button"
+                variant="primary"
+                leftIcon={<Zap className="h-5 w-5" />}
+                fullWidth
+                onClick={handleFreeWorkoutClick}
               >
-                <Zap className="mr-2 h-5 w-5" />
                 Get a Free Workout
-              </a>
+              </HeroButton>
 
               {/* Tooltip - Updated to match Pricing */}
               <div className="tooltip-container">
@@ -219,13 +230,14 @@ const Hero: React.FC<HeroProps> = ({
               onMouseEnter={() => handleMouseEnter('createAccount')}
               onMouseLeave={() => handleMouseLeave('createAccount')}
             >
-              <a
+              <HeroButton
                 href={registrationLink}
-                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gray-800 border-2 border-lime-300/30 text-white hover:bg-lime-300/10 hover:-translate-y-1 w-full sm:w-auto button secondary hero-button"
+                variant="secondary"
+                leftIcon={<UserPlus className="h-5 w-5 accent-text" />}
+                fullWidth
               >
-                <UserPlus className="mr-2 h-5 w-5 accent-text" />
                 Create Your Account
-              </a>
+              </HeroButton>
 
               {/* Tooltip - Updated to match Pricing */}
               <div className="tooltip-container">

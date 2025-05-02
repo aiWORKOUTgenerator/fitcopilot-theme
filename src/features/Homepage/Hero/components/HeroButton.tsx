@@ -11,6 +11,7 @@ interface HeroButtonProps {
   className?: string;
   fullWidth?: boolean;
   size?: 'small' | 'medium' | 'large';
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
 /**
@@ -24,7 +25,8 @@ export const HeroButton: React.FC<HeroButtonProps> = ({
   rightIcon,
   className,
   fullWidth = false,
-  size = 'large'
+  size = 'large',
+  onClick
 }) => {
   const buttonClasses = classNames(
     'hero-button',
@@ -38,10 +40,19 @@ export const HeroButton: React.FC<HeroButtonProps> = ({
     className
   );
 
+  // Add click handler logic
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (onClick) {
+      e.preventDefault();
+      onClick(e);
+    }
+  };
+
   return (
     <a
       href={href}
       className={buttonClasses}
+      onClick={handleClick}
     >
       {leftIcon && <span className="button__icon button__icon--left">{leftIcon}</span>}
       <span className="button__text">{children}</span>
