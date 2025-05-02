@@ -95,25 +95,37 @@ if (isset($manifest['homepage.js'])) {
             true
         );
         
+        // Prepare data for localization
+        $localized_data = [
+            'wpData' => [
+                'siteLinks' => [
+                    'registration' => site_url('/registration'),
+                    'login' => site_url('/login'),
+                    'workoutBuilder' => 'https://builder.aiworkoutgenerator.com',
+                ],
+                'assets' => [
+                    'logo' => get_theme_file_uri('/assets/images/logo.png')
+                ],
+                'restUrl' => esc_url_raw(rest_url()),
+                'nonce' => wp_create_nonce('wp_rest'),
+                'userId' => get_current_user_id(),
+                'themeVariants' => [
+                    'hero' => get_theme_mod('fitcopilot_theme_variant', 'default'),
+                    'features' => get_theme_mod('fitcopilot_theme_variant', 'default'),
+                    'testimonials' => get_theme_mod('fitcopilot_theme_variant', 'default'),
+                    'pricing' => get_theme_mod('fitcopilot_theme_variant', 'default')
+                ]
+            ]
+        ];
+        
+        // Allow plugins and theme components to modify the data
+        $localized_data = apply_filters('fitcopilot_localized_data', $localized_data);
+        
         // Pass data to JavaScript
         wp_localize_script(
             'athlete-dashboard-homepage',
             'athleteDashboardData',
-            [
-                'wpData' => [
-                    'siteLinks' => [
-                        'registration' => site_url('/registration'),
-                        'login' => site_url('/login'),
-                        'workoutBuilder' => 'https://builder.aiworkoutgenerator.com',
-                    ],
-                    'assets' => [
-                        'logo' => get_theme_file_uri('/assets/images/logo.png')
-                    ],
-                    'restUrl' => esc_url_raw(rest_url()),
-                    'nonce' => wp_create_nonce('wp_rest'),
-                    'userId' => get_current_user_id(),
-                ]
-            ]
+            $localized_data
         );
         
         // Add inline script to verify data is available

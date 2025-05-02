@@ -1,0 +1,353 @@
+.features--registration {
+    padding: 6rem 0;
+    background-color: var(--color-bg-light, #f8fafc);
+    position: relative;
+    overflow: hidden;
+
+    // Decorative elements for visual interest
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg,
+                rgba(226, 232, 240, 0) 0%,
+                rgba(226, 232, 240, 1) 50%,
+                rgba(226, 232, 240, 0) 100%);
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+}
+
+// Header styles
+.features__header {
+    text-align: center;
+    margin-bottom: 4rem;
+
+    .features__title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--color-text-dark, #1e293b);
+        margin-bottom: 1rem;
+    }
+
+    .features__subtitle {
+        font-size: 1.25rem;
+        color: var(--color-text-medium, #64748b);
+        max-width: 600px;
+        margin: 0 auto 2rem;
+    }
+}
+
+// Email display
+.registration-email-display {
+    display: inline-block;
+    background-color: rgba(var(--color-primary-rgb, 134, 239, 172), 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.95rem;
+    color: var(--color-text-medium, #64748b);
+
+    span {
+        font-weight: 600;
+        margin-right: 0.25rem;
+    }
+}
+
+// Experience cards container
+.experience-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 0 auto;
+    max-width: 1100px;
+}
+
+// Experience card with flip animation
+.experience-card {
+    perspective: 1000px;
+    height: 400px;
+    cursor: pointer;
+
+    &__inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        border-radius: 1rem;
+    }
+
+    &.is-flipped .experience-card__inner {
+        transform: rotateY(180deg);
+    }
+
+    &.is-selected .experience-card__inner {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        border: 2px solid var(--color-primary, #10b981);
+    }
+
+    &__face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        border-radius: 1rem;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__face--front {
+        background-color: white;
+    }
+
+    &__face--back {
+        background-color: white;
+        transform: rotateY(180deg);
+    }
+
+    &__icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        background-color: rgba(var(--color-primary-rgb, 134, 239, 172), 0.1);
+        color: var(--color-primary, #10b981);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+
+    &__title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--color-text-dark, #1e293b);
+        margin-bottom: 1rem;
+    }
+
+    &__description {
+        color: var(--color-text-medium, #64748b);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    &__action {
+        color: var(--color-primary, #10b981);
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    &__features {
+        list-style: none;
+        padding: 0;
+        margin: 1.5rem 0;
+        text-align: left;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            color: var(--color-text-medium, #64748b);
+
+            .feature-icon {
+                color: var(--color-primary, #10b981);
+                flex-shrink: 0;
+                margin-top: 0.2rem;
+            }
+        }
+    }
+
+    &__button {
+        background-color: var(--color-primary, #10b981);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.2s;
+
+        &:hover {
+            background-color: var(--color-primary-dark, #0d9488);
+            transform: translateY(-2px);
+        }
+    }
+}
+
+// Next steps component
+.next-steps-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+
+    .next-steps-header {
+        background: linear-gradient(to right, var(--color-primary, #10b981), var(--color-secondary, #14b8a6));
+        padding: 2rem;
+        color: white;
+        text-align: center;
+
+        h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            opacity: 0.9;
+        }
+    }
+
+    .next-steps-content {
+        padding: 2rem;
+    }
+
+    .next-steps-info {
+        margin-bottom: 2rem;
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-dark, #1e293b);
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 1rem;
+                padding-left: 0.5rem;
+
+                .list-icon {
+                    color: var(--color-primary, #10b981);
+                }
+            }
+        }
+    }
+
+    .next-steps-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        background-color: var(--color-primary, #10b981);
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        font-size: 1.125rem;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.2s;
+
+        &:hover {
+            background-color: var(--color-primary-dark, #0d9488);
+            transform: translateY(-2px);
+        }
+    }
+}
+
+// Animation
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+    .features--registration {
+        padding: 4rem 0;
+    }
+
+    .features__header {
+        margin-bottom: 3rem;
+
+        .features__title {
+            font-size: 2rem;
+        }
+
+        .features__subtitle {
+            font-size: 1.125rem;
+        }
+    }
+
+    .experience-cards-container {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .experience-card {
+        height: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .features--registration {
+        padding: 3rem 0;
+    }
+
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    .features__header {
+        .features__title {
+            font-size: 1.75rem;
+        }
+    }
+
+    .experience-card {
+        height: 330px;
+
+        &__title {
+            font-size: 1.25rem;
+        }
+    }
+
+    .next-steps-container {
+        .next-steps-header {
+            padding: 1.5rem;
+
+            h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .next-steps-content {
+            padding: 1.5rem;
+        }
+    }
+}

@@ -6,6 +6,7 @@ import ClassicVariant from './classic';
 import DefaultVariant from './default';
 import MinimalistVariant from './minimalist';
 import ModernVariant from './modern';
+import RegistrationVariant from './registration';
 import SportsVariant from './sports';
 import WellnessVariant from './wellness';
 
@@ -16,6 +17,7 @@ export const FeaturesMap: Record<string, React.ComponentType<any>> = {
     classic: ClassicVariant,
     minimalist: MinimalistVariant,
     modern: ModernVariant,
+    registration: RegistrationVariant,
     sports: SportsVariant,
     wellness: WellnessVariant,
 };
@@ -29,8 +31,11 @@ export const getFeaturesVariant = () => {
 // Export all variants
 export {
     BoutiqueVariant,
-    ClassicVariant, DefaultVariant, MinimalistVariant,
+    ClassicVariant,
+    DefaultVariant,
+    MinimalistVariant,
     ModernVariant,
+    RegistrationVariant,
     SportsVariant,
     WellnessVariant
 };

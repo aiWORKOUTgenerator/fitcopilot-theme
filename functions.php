@@ -96,6 +96,9 @@ require_once get_template_directory() . '/inc/react-enqueue.php';
 // Include theme variants functionality
 require_once get_template_directory() . '/includes/theme-variants.php';
 
+// Include component variants functionality
+require_once get_template_directory() . '/inc/component-variants.php';
+
 // Include admin dashboard
 require_once get_template_directory() . '/includes/admin-dashboard.php';
 

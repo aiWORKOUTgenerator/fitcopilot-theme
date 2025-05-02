@@ -64,6 +64,7 @@ function fitcopilot_get_theme_variants() {
         'minimalist'  => __('Minimalist', 'fitcopilot'),
         'sports'      => __('Sports', 'fitcopilot'),
         'wellness'    => __('Wellness', 'fitcopilot'),
+        'registration' => __('Registration', 'fitcopilot'),
     ));
 }
 
