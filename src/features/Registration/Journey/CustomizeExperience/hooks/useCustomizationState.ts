@@ -13,6 +13,7 @@ interface CustomizationState {
     markSectionComplete: (sectionId: string) => void;
     resetCustomizationState: () => void;
     isCustomizationValid: boolean;
+    syncWithStoredCompletedSections: (sections: string[]) => void;
 }
 
 /**
@@ -132,12 +133,25 @@ export const useCustomizationState = (): CustomizationState => {
         }
     }, [registrationData.completedCustomizationSections]);
 
+    // Sync with stored completed sections (useful for initialization)
+    const syncWithStoredCompletedSections = useCallback((sections: string[]) => {
+        if (sections.length > 0) {
+            setCompletedSections(sections);
+
+            // Also update registration data for consistency
+            updateRegistrationData({
+                completedCustomizationSections: sections
+            });
+        }
+    }, [updateRegistrationData]);
+
     return {
         validSections,
         completedSections,
         updateSectionValidity,
         markSectionComplete,
         resetCustomizationState,
-        isCustomizationValid
+        isCustomizationValid,
+        syncWithStoredCompletedSections
     };
 }; 

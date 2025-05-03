@@ -103,6 +103,12 @@ export const hasCustomizationData = (): boolean => {
 export const updateCustomizationSection = <T>(sectionKey: keyof CustomizationData, sectionData: T): boolean => {
     try {
         const currentData = loadCustomizationData() || { completedSections: [] };
+
+        // Make sure completedSections is preserved
+        if (!currentData.completedSections) {
+            currentData.completedSections = [];
+        }
+
         const updatedData = {
             ...currentData,
             [sectionKey]: sectionData,

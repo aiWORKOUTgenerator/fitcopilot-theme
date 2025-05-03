@@ -4,7 +4,7 @@ import AccordionSection, { AccordionSectionRef } from '../../../components/Accor
 import { useJourney } from '../../../components/JourneyContext';
 import { EQUIPMENT_CATEGORIES } from '../../constants/equipmentOptions';
 import { EquipmentSelectorProps } from '../../types';
-import { updateCustomizationSection } from '../../utils/customizationStorage';
+import { loadCustomizationData, updateCustomizationSection } from '../../utils/customizationStorage';
 import ConfirmButton from '../shared/ConfirmButton';
 import './EquipmentSelector.scss';
 
@@ -18,16 +18,27 @@ const EquipmentSelector = forwardRef<AccordionSectionRef, EquipmentSelectorProps
 }, ref) => {
     const { registrationData, updateRegistrationData } = useJourney();
 
-    // Initialize state from saved data
+    // Get stored data if available
+    const storedData = loadCustomizationData();
+    const storedEquipment = storedData?.equipment || {};
+
+    // Initialize state from stored data, falling back to registrationData if needed
     const [selectedEquipment, setSelectedEquipment] = useState<string[]>(
-        registrationData.equipmentList || []
+        storedEquipment.equipment || registrationData.equipmentList || []
     );
 
     const [otherEquipment, setOtherEquipment] = useState<string>(
-        registrationData.otherEquipment || ''
+        storedEquipment.otherEquipment || registrationData.otherEquipment || ''
     );
 
     const [isValid, setIsValid] = useState(false);
+
+    // Initial validation on component mount
+    useEffect(() => {
+        const valid = selectedEquipment.length > 0 || otherEquipment.trim().length > 0;
+        setIsValid(valid);
+        onValidChange(valid);
+    }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     // Update validation status when selections change
     useEffect(() => {

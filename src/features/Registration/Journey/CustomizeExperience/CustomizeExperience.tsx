@@ -10,6 +10,7 @@ import WorkoutPreferenceSelector from './components/WorkoutPreferenceSelector';
 import { SECTION_IDS } from './constants/sectionConstants';
 import './CustomizeExperience.scss';
 import { useCustomizationState } from './hooks/useCustomizationState';
+import { loadCustomizationData } from './utils/customizationStorage';
 
 interface CustomizeExperienceProps {
     onValidChange: (isValid: boolean) => void;
@@ -21,16 +22,34 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange
         completedSections,
         updateSectionValidity,
         markSectionComplete,
-        isCustomizationValid
+        isCustomizationValid,
+        syncWithStoredCompletedSections
     } = useCustomizationState();
 
-    const { registrationData } = useJourney();
+    const { registrationData, updateRegistrationData } = useJourney();
 
     // Refs for accordion sections
     const equipmentRef = useRef<AccordionSectionRef>(null);
     const timeCommitmentRef = useRef<AccordionSectionRef>(null);
     const workoutPreferenceRef = useRef<AccordionSectionRef>(null);
     const trainingFrequencyRef = useRef<AccordionSectionRef>(null);
+
+    // Sync with stored data on initial mount
+    useEffect(() => {
+        // Check for stored data
+        const storedData = loadCustomizationData();
+        if (storedData?.completedSections?.length) {
+            // Sync the completed sections from storage
+            syncWithStoredCompletedSections(storedData.completedSections);
+
+            // Also update the journey context if needed
+            if (!registrationData.completedCustomizationSections?.length) {
+                updateRegistrationData({
+                    completedCustomizationSections: storedData.completedSections
+                });
+            }
+        }
+    }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     // Effect to update parent validation state
     useEffect(() => {

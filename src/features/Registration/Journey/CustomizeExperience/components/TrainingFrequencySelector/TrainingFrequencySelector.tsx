@@ -53,6 +53,13 @@ const TrainingFrequencySelector = forwardRef<AccordionSectionRef, TrainingFreque
         return 0;
     };
 
+    // Initial validation on component mount
+    useEffect(() => {
+        const valid = !!frequencyOption;
+        setIsValid(valid);
+        onValidChange(valid);
+    }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+
     // Update validation status when selections change
     useEffect(() => {
         const valid = !!frequencyOption;

@@ -3,7 +3,7 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import AccordionSection, { AccordionSectionRef } from '../../../components/AccordionSection';
 import { useJourney } from '../../../components/JourneyContext';
 import { DURATION_OPTIONS, TIME_COMMITMENT_PACKAGES, TIME_OF_DAY_OPTIONS } from '../../constants/timeCommitmentOptions';
-import { updateCustomizationSection } from '../../utils/customizationStorage';
+import { loadCustomizationData, updateCustomizationSection } from '../../utils/customizationStorage';
 import ConfirmButton from '../shared/ConfirmButton';
 import './TimeCommitmentSelector.scss';
 
@@ -23,24 +23,38 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
 }, ref) => {
     const { registrationData, updateRegistrationData } = useJourney();
 
-    // Initialize state from saved data
+    // Get stored data if available
+    const storedData = loadCustomizationData();
+    const storedTimeCommitment = storedData?.timeCommitment || {};
+
+    // Initialize state from stored data, falling back to registrationData if needed
     const [timeOfDay, setTimeOfDay] = useState<string[]>(
-        registrationData.preferredTimeOfDay || []
+        storedTimeCommitment.preferredTimeOfDay || registrationData.preferredTimeOfDay || []
     );
 
     const [duration, setDuration] = useState<string>(
-        registrationData.preferredDuration || ''
+        storedTimeCommitment.preferredDuration || registrationData.preferredDuration || ''
     );
 
     const [otherDuration, setOtherDuration] = useState<string>(
-        registrationData.otherDuration || ''
+        storedTimeCommitment.otherDuration || registrationData.otherDuration || ''
     );
 
     const [selectedPackage, setSelectedPackage] = useState<string>(
-        registrationData.timeCommitmentPackage || ''
+        storedTimeCommitment.timeCommitmentPackage || registrationData.timeCommitmentPackage || ''
     );
 
     const [isValid, setIsValid] = useState(false);
+
+    // Initial validation on component mount
+    useEffect(() => {
+        const valid =
+            (timeOfDay.length > 0 && (duration || otherDuration.trim())) ||
+            !!selectedPackage;
+
+        setIsValid(valid);
+        onValidChange(valid);
+    }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     // Update validation status when selections change
     useEffect(() => {

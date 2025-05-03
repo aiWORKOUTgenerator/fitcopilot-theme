@@ -2,7 +2,7 @@ import { Check, Zap } from 'lucide-react';
 import React, { forwardRef, useEffect, useState } from 'react';
 import AccordionSection, { AccordionSectionRef } from '../../../components/AccordionSection';
 import { useJourney } from '../../../components/JourneyContext';
-import { updateCustomizationSection } from '../../utils/customizationStorage';
+import { loadCustomizationData, updateCustomizationSection } from '../../utils/customizationStorage';
 import ConfirmButton from '../shared/ConfirmButton';
 import './WorkoutPreferenceSelector.scss';
 
@@ -38,20 +38,31 @@ const WorkoutPreferenceSelector = forwardRef<AccordionSectionRef, WorkoutPrefere
 }, ref) => {
     const { registrationData, updateRegistrationData } = useJourney();
 
-    // Initialize state from saved data
+    // Get stored data if available
+    const storedData = loadCustomizationData();
+    const storedWorkoutPreference = storedData?.workoutPreference || {};
+
+    // Initialize state from stored data, falling back to registrationData if needed
     const [preferredExercises, setPreferredExercises] = useState<string[]>(
-        registrationData.preferredExerciseTypes || []
+        storedWorkoutPreference.preferredExerciseTypes || registrationData.preferredExerciseTypes || []
     );
 
     const [avoidExercises, setAvoidExercises] = useState<string[]>(
-        registrationData.avoidsExerciseTypes || []
+        storedWorkoutPreference.avoidsExerciseTypes || registrationData.avoidsExerciseTypes || []
     );
 
     const [otherPreferences, setOtherPreferences] = useState<string>(
-        registrationData.otherWorkoutPreferences || ''
+        storedWorkoutPreference.otherPreferences || registrationData.otherWorkoutPreferences || ''
     );
 
     const [isValid, setIsValid] = useState(false);
+
+    // Initial validation on component mount
+    useEffect(() => {
+        const valid = preferredExercises.length > 0 || otherPreferences.trim().length > 0;
+        setIsValid(valid);
+        onValidChange(valid);
+    }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     // Update validation status when selections change
     useEffect(() => {
