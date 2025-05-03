@@ -1,6 +1,6 @@
+import CustomizeExperience from './CustomizeExperience';
 import Journey from './Journey';
 import AccordionSection from './components/AccordionSection';
-import CustomizationContainer from './components/CustomizationContainer';
 import EquipmentSelector from './components/EquipmentSelector';
 import GoalSelector from './components/GoalSelector';
 import { JourneyProvider, useJourney } from './components/JourneyContext';
@@ -13,10 +13,19 @@ import WorkoutPreferenceSelector from './components/WorkoutPreferenceSelector';
 import * as scrollUtils from './components/scrollUtils';
 
 export {
-    AccordionSection, CustomizationContainer,
-    EquipmentSelector, GoalSelector, JourneyProvider,
+    AccordionSection,
+    CustomizeExperience,
+    EquipmentSelector,
+    GoalSelector,
+    JourneyProvider,
     JourneyStepCard,
-    SavingIndicator, scrollUtils, StepValidator, TimeManagementSelector, TrainingFrequencySelector, useJourney, WorkoutPreferenceSelector
+    SavingIndicator,
+    scrollUtils,
+    StepValidator,
+    TimeManagementSelector,
+    TrainingFrequencySelector,
+    useJourney,
+    WorkoutPreferenceSelector
 };
 
 export default Journey; 

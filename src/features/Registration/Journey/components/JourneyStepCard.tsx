@@ -1,9 +1,8 @@
 import { ArrowRight, ChevronRight } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
-import CustomizationContainer from './CustomizationContainer';
+import React, { useRef, useState } from 'react';
+import CustomizeExperience from '../CustomizeExperience';
 import GoalSelector from './GoalSelector';
 import { useJourney } from './JourneyContext';
-import { scrollToExpandedContent } from './scrollUtils';
 import StepValidator from './StepValidator';
 
 export interface JourneyStepFeature {
@@ -49,16 +48,6 @@ const JourneyStepCard: React.FC<JourneyStepCardProps> = ({
         return '';
     };
 
-    // Auto-scroll to expanded content when a step is expanded
-    useEffect(() => {
-        if (isExpanded && contentRef.current) {
-            // Add slight delay to allow for animation
-            setTimeout(() => {
-                scrollToExpandedContent(index, 80);
-            }, 300);
-        }
-    }, [isExpanded, index]);
-
     // Handle step toggle
     const handleToggle = () => {
         toggleStep(index);
@@ -91,7 +80,7 @@ const JourneyStepCard: React.FC<JourneyStepCardProps> = ({
         // Customization Step
         else if (index === 1) {
             return (
-                <CustomizationContainer onValidChange={handleValidityChange} />
+                <CustomizeExperience onValidChange={handleValidityChange} />
             );
         }
 

@@ -1,5 +1,6 @@
 /**
- * Utility functions for smooth scrolling in the Journey component
+ * Utility functions for scrolling in the Journey component
+ * These are provided as helpers but don't forcibly prevent user scrolling
  */
 
 /**
@@ -40,7 +41,8 @@ export const calculateDynamicOffset = (element: HTMLElement, minOffset = 20): nu
 };
 
 /**
- * Scroll to a specific element with smart positioning based on element size
+ * Helper function to optionally scroll to an element when needed.
+ * Uses auto behavior by default to avoid interfering with user scrolling.
  *
  * @param elementId - The ID of the element to scroll to
  * @param offset - Optional offset from the top of the element (in pixels)
@@ -49,7 +51,7 @@ export const calculateDynamicOffset = (element: HTMLElement, minOffset = 20): nu
 export const scrollToElement = (
     elementId: string,
     offset = 20,
-    behavior: ScrollBehavior = 'smooth'
+    behavior: ScrollBehavior = 'auto'
 ): void => {
     try {
         const element = document.getElementById(elementId);
@@ -80,7 +82,7 @@ export const scrollToElement = (
 };
 
 /**
- * Scroll to a journey step card
+ * Helper function to scroll to a journey step card
  *
  * @param stepIndex - The index of the step to scroll to
  * @param offset - Optional offset from the top of the step (in pixels)
@@ -90,7 +92,7 @@ export const scrollToJourneyStep = (stepIndex: number, offset = 20): void => {
 };
 
 /**
- * Scroll to expanded content within a step, ensuring it's properly visible
+ * Helper function to scroll to expanded content within a step
  *
  * @param stepIndex - The index of the step containing the content
  * @param offset - Optional offset from the top of the content (in pixels)
@@ -100,7 +102,7 @@ export const scrollToExpandedContent = (stepIndex: number, offset = 20): void =>
 };
 
 /**
- * Scroll to a specific accordion section with enhanced positioning
+ * Helper function to scroll to a specific accordion section
  * 
  * @param sectionId - The ID of the accordion section
  * @param offset - Optional offset from the top of the section (in pixels)

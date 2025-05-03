@@ -20,13 +20,12 @@ import {
     Trophy,
     Zap
 } from 'lucide-react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { RegistrationStep, RegistrationStepProps, WorkoutGoal } from '../types';
-import './Journey.scss';
 import { JourneyProvider, useJourney } from './components/JourneyContext';
 import JourneyStepCard, { JourneyStepData } from './components/JourneyStepCard';
 import SavingIndicator from './components/SavingIndicator';
-import { scrollToJourneyStep, throttle } from './components/scrollUtils';
+import './Journey.scss';
 
 // Main component definition - this wraps the JourneyContent with JourneyProvider
 const JourneyComponent: React.FC<RegistrationStepProps & { currentStep: RegistrationStep }> = (props) => {
@@ -53,7 +52,6 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
     } = useJourney();
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const [lastScrollPosition, setLastScrollPosition] = useState(0);
 
     // Define the journey steps
     const journeySteps: JourneyStepData[] = [
@@ -182,34 +180,6 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
             ]
         }
     ];
-
-    // Scroll restoration and tracking
-    useEffect(() => {
-        // Keep track of scroll position for restoration
-        const handleScroll = throttle(() => {
-            if (containerRef.current) {
-                setLastScrollPosition(window.scrollY);
-            }
-        }, 100);
-
-        window.addEventListener('scroll', handleScroll);
-
-        // Restore scroll position if refreshed
-        const restoreScroll = () => {
-            if (expandedStep !== null) {
-                scrollToJourneyStep(expandedStep);
-            } else if (lastScrollPosition > 0) {
-                window.scrollTo(0, lastScrollPosition);
-            }
-        };
-
-        // Wait for any animations to complete
-        setTimeout(restoreScroll, 100);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [expandedStep, lastScrollPosition]);
 
     // Sync data with parent component
     useEffect(() => {

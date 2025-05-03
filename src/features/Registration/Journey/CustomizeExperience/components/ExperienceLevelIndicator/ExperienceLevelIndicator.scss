@@ -1,0 +1,46 @@
+.experience-level-indicator {
+    display: flex;
+    align-items: center;
+    background-color: rgba(8, 145, 178, 0.1);
+    border: 1px solid rgba(14, 116, 144, 0.3);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+
+    .indicator-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        background-color: rgba(8, 145, 178, 0.2);
+        border-radius: 0.375rem;
+        margin-right: 0.75rem;
+        color: rgb(14, 165, 233);
+    }
+
+    .indicator-content {
+        flex: 1;
+
+        .indicator-label {
+            font-size: 0.75rem;
+            color: rgb(125, 211, 252);
+            text-transform: uppercase;
+            font-weight: 500;
+            letter-spacing: 0.025em;
+        }
+
+        .indicator-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            margin-top: 0.125rem;
+        }
+
+        .indicator-description {
+            font-size: 0.75rem;
+            color: rgb(186, 230, 253);
+            margin-top: 0.125rem;
+        }
+    }
+}

@@ -1,0 +1,96 @@
+@import '../../../../styles/variables';
+
+.customize-experience-container {
+    width: 100%;
+
+    .customize-experience-intro {
+        color: var(--gray-300);
+        font-size: 0.875rem;
+        margin-bottom: 1rem;
+
+        .customize-experience-instruction {
+            display: block;
+            margin-top: 0.25rem;
+            color: var(--cyan-400);
+        }
+    }
+
+    // Smooth transitions for accordions
+    .accordion-section {
+        transition: all 0.3s ease-in-out;
+        margin-bottom: 0.75rem;
+
+        &.completed {
+            border-color: var(--emerald-500);
+            background-color: rgba(6, 78, 59, 0.1);
+        }
+    }
+
+    // Animation for section transitions
+    .section-enter {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    .section-enter-active {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 300ms, transform 300ms;
+    }
+
+    .section-exit {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .section-exit-active {
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 300ms, transform 300ms;
+    }
+
+    // Progress indicator
+    .customization-progress {
+        margin-top: 1rem;
+        padding: 0.75rem;
+        background-color: rgba(8, 145, 178, 0.1);
+        border: 1px solid rgba(14, 116, 144, 0.3);
+        border-radius: 0.5rem;
+
+        p {
+            color: var(--cyan-300);
+            font-size: 0.875rem;
+        }
+
+        .progress-bar {
+            height: 0.25rem;
+            background-color: rgba(8, 145, 178, 0.2);
+            border-radius: 0.125rem;
+            margin: 0.5rem 0;
+            overflow: hidden;
+
+            .progress-fill {
+                height: 100%;
+                background-color: var(--cyan-500);
+                border-radius: 0.125rem;
+                transition: width 0.5s ease-in-out;
+            }
+        }
+    }
+
+    // Focus states for accessibility
+    button:focus,
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: 2px solid var(--cyan-400);
+        outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+        }
+    }
+}
