@@ -74,6 +74,16 @@ export interface RegistrationData {
     equipment?: EquipmentAvailability;
     timeCommitment?: TimeCommitment;
 
+    // Customization data
+    completedCustomizationSections?: string[];
+    frequencyOption?: string;
+    preferredTrainingDays?: string[];
+    daysPerWeek?: number;
+    timeCommitmentPackage?: string;
+    preferredTimeOfDay?: string[];
+    preferredDuration?: string;
+    otherDuration?: string;
+
     // Metrics
     age?: number;
     height?: number; // cm

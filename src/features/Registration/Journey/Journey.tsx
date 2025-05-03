@@ -92,7 +92,7 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
             icon: <Settings size={40} className="text-gray-900" />,
             delay: 200,
             accentColor: "from-cyan-300 to-blue-400",
-            ctaText: "Personalize",
+            ctaText: "Set Personalizations",
             nextStep: RegistrationStep.EXPERIENCE_LEVEL,
             detailedFeatures: [
                 {

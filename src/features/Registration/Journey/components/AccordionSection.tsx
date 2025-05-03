@@ -10,7 +10,7 @@ export interface AccordionSectionRef {
 }
 
 interface AccordionSectionProps {
-    title: string;
+    title: string | React.ReactElement;
     icon?: React.ReactNode;
     children: React.ReactNode;
     defaultOpen?: boolean;

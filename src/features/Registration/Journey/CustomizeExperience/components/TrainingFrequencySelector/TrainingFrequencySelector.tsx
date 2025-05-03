@@ -53,16 +53,23 @@ const TrainingFrequencySelector = forwardRef<AccordionSectionRef, TrainingFreque
         return 0;
     };
 
+    // Check if a time commitment package is already selected
+    const hasTimeCommitmentPackage = (): boolean => {
+        return !!registrationData.timeCommitmentPackage;
+    };
+
     // Initial validation on component mount
     useEffect(() => {
-        const valid = !!frequencyOption;
+        // Component is valid if frequency is selected OR a time commitment package is selected
+        const valid = !!frequencyOption || hasTimeCommitmentPackage();
         setIsValid(valid);
         onValidChange(valid);
     }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     // Update validation status when selections change
     useEffect(() => {
-        const valid = !!frequencyOption;
+        // Component is valid if frequency is selected OR a time commitment package is selected
+        const valid = !!frequencyOption || hasTimeCommitmentPackage();
         setIsValid(valid);
         onValidChange(valid);
 
@@ -78,7 +85,7 @@ const TrainingFrequencySelector = forwardRef<AccordionSectionRef, TrainingFreque
             daysPerWeek: getDaysPerWeek(frequencyOption),
             preferredDays: selectedDays
         });
-    }, [frequencyOption, selectedDays, onValidChange, updateRegistrationData]);
+    }, [frequencyOption, selectedDays, onValidChange, updateRegistrationData, registrationData.timeCommitmentPackage]);
 
     // Handle frequency selection
     const handleFrequencyChange = (option: string) => {
@@ -127,6 +134,14 @@ const TrainingFrequencySelector = forwardRef<AccordionSectionRef, TrainingFreque
         </div>
     ) : 'Training Frequency';
 
+    // Generate validation message based on whether a package is selected
+    const getValidationMessage = () => {
+        if (hasTimeCommitmentPackage()) {
+            return "Training frequency is already configured via your time commitment package. You can customize it here if you prefer.";
+        }
+        return "Please select your weekly training frequency";
+    };
+
     return (
         <AccordionSection
             ref={ref}
@@ -135,6 +150,15 @@ const TrainingFrequencySelector = forwardRef<AccordionSectionRef, TrainingFreque
             defaultOpen={false}
         >
             <div className="training-frequency-selector">
+                {hasTimeCommitmentPackage() && (
+                    <div className="mb-4 p-3 bg-cyan-900/20 border border-cyan-800/40 rounded-lg">
+                        <p className="text-cyan-300 text-sm">
+                            You've already selected a time commitment package that includes frequency preferences.
+                            You can skip this section or customize it further.
+                        </p>
+                    </div>
+                )}
+
                 <p className="section-description">
                     How often would you like to train each week?
                 </p>
@@ -208,7 +232,7 @@ const TrainingFrequencySelector = forwardRef<AccordionSectionRef, TrainingFreque
                 <ConfirmButton
                     isValid={isValid}
                     onConfirm={onConfirm}
-                    validationMessage="Please select your weekly training frequency"
+                    validationMessage={getValidationMessage()}
                 />
             </div>
         </AccordionSection>
