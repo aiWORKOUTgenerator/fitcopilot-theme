@@ -118,7 +118,7 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
             ]
         },
         {
-            title: "Receive Your Personalized Plan",
+            title: "Injuries and Medical Clearance",
             description: "Our AI generates a tailored workout program specific to your needs and capabilities.",
             icon: <Package size={40} className="text-gray-900" />,
             delay: 300,
