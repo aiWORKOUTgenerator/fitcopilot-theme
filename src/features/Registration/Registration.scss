@@ -18,31 +18,68 @@
     background-color: var(--registration-bg-color);
     display: flex;
     flex-direction: column;
+    position: relative;
     color: var(--registration-text-color);
     animation: fadeIn 0.5s ease-in-out;
 
     // Registration header styles
     .registration-header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        padding: 1rem 2rem;
-        background-color: var(--registration-bg-color);
-        border-bottom: 1px solid var(--registration-border-color);
+        padding: 1rem;
+        background-color: #151b29;
+        width: 100%;
         position: sticky;
         top: 0;
         z-index: 10;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
-        &__progress {
-            flex: 1;
+        .registration-close {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-right: 0.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--registration-transition);
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: white;
+            }
         }
 
-        .registration-progress-label {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--registration-text-color);
-            opacity: 0.7;
-            margin-bottom: 0.25rem;
+        .registration-progress {
+            flex: 1;
+            margin: 0 1rem;
+        }
+
+        .progress-indicator {
+            margin: 0;
+
+            .section-indicators {
+                @media (max-width: 768px) {
+                    display: none; // Hide section markers on mobile
+                }
+            }
+
+            // Override section label placement for header
+            &.detailed .section-marker .section-label {
+                display: none;
+
+                @media (min-width: 1024px) {
+                    display: block;
+                    white-space: nowrap;
+                    font-size: 0.7rem;
+                    transform: translateX(-50%) rotate(-45deg);
+                    transform-origin: top center;
+                    margin-top: 0.75rem;
+                }
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
+import ProgressIndicator from '../../components/ProgressIndicator';
 import { AccordionSectionRef } from '../components/AccordionSection';
 import { useJourney } from '../components/JourneyContext';
-import CustomizationProgress from './components/CustomizationProgress';
 import EquipmentSelector from './components/EquipmentSelector';
 import ExperienceLevelIndicator from './components/ExperienceLevelIndicator';
 import TimeCommitmentSelector from './components/TimeCommitmentSelector';
@@ -177,9 +177,16 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange
             </div>
 
             {/* Progress indicator */}
-            <CustomizationProgress
+            <ProgressIndicator
                 completedSections={completedSections}
                 totalSections={Object.keys(SECTION_IDS).length}
+                sectionLabels={Object.entries(SECTION_IDS).reduce((acc, [key, value]) => {
+                    acc[value] = value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
+                    return acc;
+                }, {} as Record<string, string>)}
+                variant="default"
+                showLabels={true}
+                accentColor="purple"
             />
         </div>
     );

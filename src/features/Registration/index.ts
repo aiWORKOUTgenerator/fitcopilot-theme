@@ -14,10 +14,10 @@ export * from './hooks';
 export * from './utils';
 
 // Export sections as named exports
-export { default as Splash } from './Splash';
 export { default as ExperienceLevel } from './ExperienceLevel';
 export { default as Journey } from './Journey';
 export { default as Pricing } from './Pricing';
+export { default as Splash } from './Splash';
 
 // Export shared components
-export * from './components'; 
+export * from './components';

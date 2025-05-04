@@ -3,7 +3,7 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import AccordionSection, { AccordionSectionRef } from '../../../components/AccordionSection';
 import { useJourney } from '../../../components/JourneyContext';
 import { EQUIPMENT_CATEGORIES } from '../../constants/equipmentOptions';
-import { EquipmentSelectorProps } from '../../types';
+import { EquipmentSelectionData, EquipmentSelectorProps } from '../../types';
 import { loadCustomizationData, updateCustomizationSection } from '../../utils/customizationStorage';
 import ConfirmButton from '../shared/ConfirmButton';
 import './EquipmentSelector.scss';
@@ -20,7 +20,7 @@ const EquipmentSelector = forwardRef<AccordionSectionRef, EquipmentSelectorProps
 
     // Get stored data if available
     const storedData = loadCustomizationData();
-    const storedEquipment = storedData?.equipment || {};
+    const storedEquipment = storedData?.equipment as EquipmentSelectionData || { equipment: [], otherEquipment: '' };
 
     // Initialize state from stored data, falling back to registrationData if needed
     const [selectedEquipment, setSelectedEquipment] = useState<string[]>(
@@ -46,13 +46,13 @@ const EquipmentSelector = forwardRef<AccordionSectionRef, EquipmentSelectorProps
         setIsValid(valid);
         onValidChange(valid);
 
-        // Update registration data
+        // Update registration data with consistent field names
         updateRegistrationData({
             equipmentList: selectedEquipment,
             otherEquipment
         });
 
-        // Persist to local storage
+        // Persist to local storage with the field names matching the EquipmentSelectionData interface
         updateCustomizationSection('equipment', {
             equipment: selectedEquipment,
             otherEquipment

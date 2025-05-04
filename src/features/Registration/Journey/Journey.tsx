@@ -43,10 +43,11 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
     updateData,
     onNext,
     onBack,
+    // currentStep not directly used but needed for parent component type validation
     currentStep
 }) => {
     const {
-        expandedStep,
+        // expandedStep is used by the CompletionContext integration planned in the future
         updateRegistrationData,
         markStepComplete
     } = useJourney();
@@ -154,7 +155,7 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
             icon: <BarChart2 size={40} className="text-gray-900" />,
             delay: 400,
             accentColor: "from-amber-300 to-orange-400",
-            ctaText: "View Analytics",
+            ctaText: "Set Tracking Preferences",
             nextStep: RegistrationStep.PRICING,
             detailedFeatures: [
                 {
@@ -203,6 +204,74 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
                 updateData(updatedData);
                 updateRegistrationData(updatedData);
             }
+        } else if (index === 1) {
+            // For the CustomizeExperience step, ensure we update the parent registration data
+            // Get completedCustomizationSections from the section data 
+            // or use a default value representing this step is completed
+            const customizationSections = data.completedCustomizationSections || [];
+            const stepIdentifier = `customize_experience_completed`;
+            const timeCommitmentIdentifier = `time_commitment_completed`;
+
+            const updatedSections = [...customizationSections];
+
+            // Add the customize_experience_completed identifier if not already present
+            if (!updatedSections.includes(stepIdentifier)) {
+                updatedSections.push(stepIdentifier);
+            }
+
+            // Add the time_commitment_completed identifier if not already present
+            if (!updatedSections.includes(timeCommitmentIdentifier)) {
+                updatedSections.push(timeCommitmentIdentifier);
+            }
+
+            const updatedData = {
+                ...data,
+                completedCustomizationSections: updatedSections
+            };
+            updateData(updatedData);
+            updateRegistrationData(updatedData);
+        } else if (index === 2) {
+            // For the CustomizedMedical step, we'll use completedCustomizationSections since
+            // there's no specific completedMedicalSections in RegistrationData
+            const customizationSections = data.completedCustomizationSections || [];
+            const stepIdentifier = `medical_information_completed`;
+
+            if (!customizationSections.includes(stepIdentifier)) {
+                const updatedData = {
+                    ...data,
+                    completedCustomizationSections: [...customizationSections, stepIdentifier]
+                };
+                updateData(updatedData);
+                updateRegistrationData(updatedData);
+            }
+        } else if (index === 3) {
+            // For the "Track Your Progress" step, we want to store analytics preferences
+            // and then go directly to the PRICING step
+            const customizationSections = data.completedCustomizationSections || [];
+            const stepIdentifier = `track_progress_completed`;
+
+            // Check if the step is already marked as complete
+            if (!customizationSections.includes(stepIdentifier)) {
+                // Ensure we have the latest analytics features from the context
+                // before updating the parent component's data
+                const updatedData = {
+                    ...data,
+                    completedCustomizationSections: [...customizationSections, stepIdentifier],
+                };
+
+                // Update parent component data
+                updateData(updatedData);
+                updateRegistrationData(updatedData);
+            }
+
+            // Use the proper registered transition flow via goToStep
+            // This will follow our STEP_TRANSITION_MAP:
+            // TIME_COMMITMENT → PRICING
+            if (onNext) {
+                onNext();
+            }
+
+            return; // Skip the general setTimeout below
         }
 
         // Proceed to next step in registration flow after a short delay

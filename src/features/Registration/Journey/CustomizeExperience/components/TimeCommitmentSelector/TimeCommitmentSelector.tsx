@@ -3,6 +3,7 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import AccordionSection, { AccordionSectionRef } from '../../../components/AccordionSection';
 import { useJourney } from '../../../components/JourneyContext';
 import { DURATION_OPTIONS, TIME_COMMITMENT_PACKAGES, TIME_OF_DAY_OPTIONS } from '../../constants/timeCommitmentOptions';
+import { TimeCommitmentData } from '../../types';
 import { loadCustomizationData, updateCustomizationSection } from '../../utils/customizationStorage';
 import ConfirmButton from '../shared/ConfirmButton';
 import './TimeCommitmentSelector.scss';
@@ -25,7 +26,12 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
 
     // Get stored data if available
     const storedData = loadCustomizationData();
-    const storedTimeCommitment = storedData?.timeCommitment || {};
+    const storedTimeCommitment = storedData?.timeCommitment as TimeCommitmentData || {
+        preferredTimeOfDay: [],
+        preferredDuration: '',
+        otherDuration: '',
+        timeCommitmentPackage: ''
+    };
 
     // Initialize state from stored data, falling back to registrationData if needed
     const [timeOfDay, setTimeOfDay] = useState<string[]>(
@@ -48,22 +54,20 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
 
     // Initial validation on component mount
     useEffect(() => {
-        const valid =
-            (timeOfDay.length > 0 && (duration || otherDuration.trim())) ||
-            !!selectedPackage;
+        const timeValid = timeOfDay.length > 0 && (!!duration || !!otherDuration.trim());
+        const valid = timeValid || !!selectedPackage;
 
-        setIsValid(valid);
-        onValidChange(valid);
+        setIsValid(!!valid);
+        onValidChange(!!valid);
     }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     // Update validation status when selections change
     useEffect(() => {
-        const valid =
-            (timeOfDay.length > 0 && (duration || otherDuration.trim())) ||
-            !!selectedPackage;
+        const timeValid = timeOfDay.length > 0 && (!!duration || !!otherDuration.trim());
+        const valid = timeValid || !!selectedPackage;
 
-        setIsValid(valid);
-        onValidChange(valid);
+        setIsValid(!!valid);
+        onValidChange(!!valid);
 
         // Update registration data
         updateRegistrationData({
@@ -145,6 +149,22 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
         if (selectedPackage) {
             setSelectedPackage('');
         }
+    };
+
+    // Handle confirm action
+    const handleConfirm = () => {
+        // First update the registration data to specifically mark time commitment as completed
+        const currentCustomizationSections = registrationData.completedCustomizationSections || [];
+        const timeCommitmentIdentifier = 'time_commitment_completed';
+
+        if (!currentCustomizationSections.includes(timeCommitmentIdentifier)) {
+            updateRegistrationData({
+                completedCustomizationSections: [...currentCustomizationSections, timeCommitmentIdentifier]
+            });
+        }
+
+        // Then call the parent's onConfirm
+        onConfirm();
     };
 
     // Prepare accordion title with completion indicator
@@ -311,7 +331,7 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
                 {/* Confirm button */}
                 <ConfirmButton
                     isValid={isValid}
-                    onConfirm={onConfirm}
+                    onConfirm={handleConfirm}
                     validationMessage="Please select a package or specify your time preferences"
                 />
             </div>

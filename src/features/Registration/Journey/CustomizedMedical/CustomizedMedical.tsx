@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
+import ProgressIndicator from '../../components/ProgressIndicator';
 import { AccordionSectionRef } from '../components/AccordionSection';
 import { useJourney } from '../components/JourneyContext';
 import AnthropometricsSelector from './components/AnthropometricsSelector';
 import InjuriesSelector from './components/InjuriesSelector';
 import LiabilityWaiverSelector from './components/LiabilityWaiverSelector';
 import MedicalClearanceSelector from './components/MedicalClearanceSelector';
-import CustomizationProgress from './components/shared/CustomizationProgress';
 import { SECTION_IDS } from './constants/sectionConstants';
 import './CustomizedMedical.scss';
 import { useMedicalCustomizationState } from './hooks/useMedicalCustomizationState';
@@ -171,9 +171,16 @@ const CustomizedMedical: React.FC<CustomizedMedicalProps> = ({ onValidChange }) 
             </div>
 
             {/* Progress indicator */}
-            <CustomizationProgress
+            <ProgressIndicator
                 completedSections={completedSections}
                 totalSections={Object.keys(SECTION_IDS).length}
+                sectionLabels={Object.entries(SECTION_IDS).reduce((acc, [key, value]) => {
+                    acc[value] = value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
+                    return acc;
+                }, {} as Record<string, string>)}
+                variant="default"
+                showLabels={true}
+                accentColor="purple"
             />
         </div>
     );

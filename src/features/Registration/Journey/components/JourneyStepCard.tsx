@@ -2,6 +2,7 @@ import { ArrowRight, ChevronRight } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 import CustomizeExperience from '../CustomizeExperience';
 import CustomizedMedical from '../CustomizedMedical';
+import AnalyticsSelector from './AnalyticsSelector';
 import GoalSelector from './GoalSelector';
 import { useJourney } from './JourneyContext';
 import StepValidator from './StepValidator';
@@ -56,6 +57,7 @@ const JourneyStepCard: React.FC<JourneyStepCardProps> = ({
 
     // Handle action button click
     const handleAction = () => {
+        // Original logic for all steps - use the step transition system
         onStepAction(index);
     };
 
@@ -89,6 +91,16 @@ const JourneyStepCard: React.FC<JourneyStepCardProps> = ({
         else if (index === 2) {
             return (
                 <CustomizedMedical onValidChange={handleValidityChange} />
+            );
+        }
+
+        // Analytics/Progress Tracking Step
+        else if (index === 3) {
+            return (
+                <AnalyticsSelector
+                    features={step.detailedFeatures}
+                    onValidChange={handleValidityChange}
+                />
             );
         }
 
@@ -205,7 +217,7 @@ const JourneyStepCard: React.FC<JourneyStepCardProps> = ({
                 {renderStepContent()}
 
                 {/* CTA Button - Only enable when valid */}
-                {(index === 0 || index === 1 || index === 2) ? (
+                {(index === 0 || index === 1 || index === 2 || index === 3) ? (
                     <div className={`text-center mt-6 ${isExpanded ? 'animate-fade-in' : ''}`}>
                         <button
                             onClick={handleAction}
@@ -220,6 +232,7 @@ const JourneyStepCard: React.FC<JourneyStepCardProps> = ({
                             {step.ctaText}
                             <ArrowRight size={16} className="ml-2" aria-hidden="true" />
                         </button>
+
                         {!isStepValid && index === 0 && (
                             <p className="text-sm text-amber-400 mt-2">Please select at least one goal to continue</p>
                         )}
@@ -228,6 +241,9 @@ const JourneyStepCard: React.FC<JourneyStepCardProps> = ({
                         )}
                         {!isStepValid && index === 2 && (
                             <p className="text-sm text-amber-400 mt-2">Please provide your medical information to continue</p>
+                        )}
+                        {!isStepValid && index === 3 && (
+                            <p className="text-sm text-amber-400 mt-2">Please select at least one progress tracking feature</p>
                         )}
                     </div>
                 ) : (

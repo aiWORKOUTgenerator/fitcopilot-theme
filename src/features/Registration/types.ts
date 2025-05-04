@@ -11,7 +11,6 @@ export enum RegistrationStep {
     GOALS = 'goals',
     EQUIPMENT = 'equipment',
     TIME_COMMITMENT = 'time_commitment',
-    ACCOUNT_DETAILS = 'account_details',
     PRICING = 'pricing',
     PAYMENT = 'payment',
     CONFIRMATION = 'confirmation'
@@ -72,6 +71,8 @@ export interface RegistrationData {
     experienceLevel?: ExperienceLevel;
     goals?: WorkoutGoal[];
     equipment?: EquipmentAvailability;
+    equipmentList?: string[];  // List of selected equipment items
+    otherEquipment?: string;   // User-specified equipment not in predefined list
     timeCommitment?: TimeCommitment;
 
     // Customization data
@@ -83,6 +84,9 @@ export interface RegistrationData {
     preferredTimeOfDay?: string[];
     preferredDuration?: string;
     otherDuration?: string;
+
+    // Analytics preferences
+    analyticsFeatures?: string[];
 
     // Metrics
     age?: number;

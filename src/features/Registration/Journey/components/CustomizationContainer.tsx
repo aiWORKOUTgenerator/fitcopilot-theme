@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import EquipmentSelector from '../CustomizeExperience/components/EquipmentSelector';
+import TimeCommitmentSelector from '../CustomizeExperience/components/TimeCommitmentSelector';
 import { AccordionSectionRef } from './AccordionSection';
-import EquipmentSelector from './EquipmentSelector';
 import { useJourney } from './JourneyContext';
 import { scrollToAccordionSection } from './scrollUtils';
-import TimeManagementSelector from './TimeManagementSelector';
 import TrainingFrequencySelector from './TrainingFrequencySelector';
 import WorkoutPreferenceSelector from './WorkoutPreferenceSelector';
 
@@ -23,6 +23,8 @@ const CustomizationContainer: React.FC<CustomizationContainerProps> = ({ onValid
     const { registrationData, updateRegistrationData } = useJourney();
 
     // Track valid sections and completed sections
+    // validSections will be used with the planned CompletionContext integration
+    // to track validation state of each section before allowing completion
     const [validSections, setValidSections] = useState({
         [SECTION_IDS.equipment]: false,
         [SECTION_IDS.timeManagement]: false,
@@ -167,7 +169,7 @@ const CustomizationContainer: React.FC<CustomizationContainerProps> = ({ onValid
             </div>
 
             <div id={`accordion-section-${SECTION_IDS.timeManagement}`}>
-                <TimeManagementSelector
+                <TimeCommitmentSelector
                     ref={timeManagementRef}
                     onValidChange={(isValid) => handleSectionValidChange(SECTION_IDS.timeManagement, isValid)}
                     isCompleted={completedSections.includes(SECTION_IDS.timeManagement)}

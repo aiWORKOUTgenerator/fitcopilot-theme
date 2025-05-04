@@ -106,6 +106,7 @@ const AnthropometricsSelector = forwardRef<AccordionSectionRef, AnthropometricsS
             height: heightValueNumeric ? {
                 value: heightValueNumeric,
                 unit: heightUnit as 'cm' | 'ft',
+                inches: heightUnit === 'ft' ? heightInchesNumeric : undefined
             } : undefined,
             weight: weightValueNumeric ? {
                 value: weightValueNumeric,

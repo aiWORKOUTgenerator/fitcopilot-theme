@@ -1,6 +1,5 @@
 import { ArrowRight, Check, Shield, Sparkles, Zap } from 'lucide-react';
 import React from 'react';
-import { useRegistrationData } from '../hooks';
 import { RegistrationStepProps } from '../types';
 import './Pricing.scss';
 
@@ -21,8 +20,7 @@ const Pricing: React.FC<RegistrationStepProps & { onComplete?: () => void }> = (
             // Update registration data to indicate free plan selection
             updateData({
                 ...data,
-                selectedPlan: 'free',
-                subscriptionType: 'free'
+                selectedPlan: 'free_trial' as 'free_trial'
             });
 
             // Trigger completion callback
@@ -38,8 +36,7 @@ const Pricing: React.FC<RegistrationStepProps & { onComplete?: () => void }> = (
         // Update registration data to indicate paid plan selection
         updateData({
             ...data,
-            selectedPlan: 'pro',
-            subscriptionType: 'paid'
+            selectedPlan: 'monthly' as 'monthly'
         });
 
         // Move to payment processing or completion
@@ -197,37 +194,4 @@ const Pricing: React.FC<RegistrationStepProps & { onComplete?: () => void }> = (
     );
 };
 
-/**
- * Standalone pricing page that can be accessed directly
- */
-const PricingPage: React.FC = () => {
-    // Get registration state and handlers from hooks
-    const { data, updateData } = useRegistrationData();
-
-    // Handle completion of the registration flow
-    const handleComplete = () => {
-        // Redirect to the workout generation or dashboard
-        window.location.href = '/dashboard';
-    };
-
-    // Navigation handler (not used in standalone but required for component)
-    const handleNext = () => { };
-
-    // Navigation handler (not used in standalone but required for component)
-    const handleBack = () => {
-        // Go back to previous page
-        window.history.back();
-    };
-
-    return (
-        <Pricing
-            data={data}
-            updateData={updateData}
-            onNext={handleNext}
-            onBack={handleBack}
-            onComplete={handleComplete}
-        />
-    );
-};
-
-export default PricingPage; 
+export default Pricing; 

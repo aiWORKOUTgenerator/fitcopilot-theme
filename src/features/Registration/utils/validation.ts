@@ -96,16 +96,6 @@ export const isStepDataValid = (data: RegistrationData, step: RegistrationStep):
         case RegistrationStep.TIME_COMMITMENT:
             return !!data.timeCommitment;
 
-        case RegistrationStep.ACCOUNT_DETAILS:
-            return (
-                !!data.firstName &&
-                !!data.lastName &&
-                !!data.email &&
-                isValidEmail(data.email) &&
-                !!data.password &&
-                validatePassword(data.password).isValid
-            );
-
         case RegistrationStep.PRICING:
             return !!data.selectedPlan;
 

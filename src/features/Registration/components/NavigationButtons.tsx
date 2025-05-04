@@ -9,7 +9,6 @@ interface NavigationButtonsProps {
     nextDisabled?: boolean;
     backDisabled?: boolean;
     className?: string;
-    isFinalStep?: boolean;
 }
 
 /**
@@ -23,37 +22,34 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
     nextDisabled = false,
     backDisabled = false,
     className = '',
-    isFinalStep = false,
 }) => {
     return (
-        <div className={`navigation-buttons flex gap-4 items-center justify-between mt-8 ${className}`}>
+        <div className={`navigation-buttons-container ${className}`}>
             {onBack && (
                 <button
-                    type="button"
-                    className="px-6 py-3 rounded-full border border-gray-600 text-gray-300 hover:text-white hover:border-gray-400 transition-all flex items-center gap-2"
+                    className="navigation-button navigation-button--back"
                     onClick={onBack}
                     disabled={backDisabled}
                     aria-label={backLabel}
                 >
-                    <ChevronLeft size={20} />
+                    <ChevronLeft size={18} className="button-icon" />
                     <span>{backLabel}</span>
                 </button>
             )}
 
             {onNext && (
                 <button
-                    type="button"
-                    className={`px-8 py-4 rounded-full bg-gradient-to-r from-green-400 to-emerald-600 text-white font-bold text-lg flex items-center justify-center transition-all hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-70 ${!onBack ? 'w-full' : ''}`}
+                    className="navigation-button navigation-button--next"
                     onClick={onNext}
                     disabled={nextDisabled}
                     aria-label={nextLabel}
                 >
                     <span>{nextLabel}</span>
-                    <ChevronRight size={20} className="ml-2" />
+                    <ChevronRight size={18} className="button-icon" />
                 </button>
             )}
         </div>
     );
 };
 
-export default NavigationButtons; 
+export default NavigationButtons;

@@ -53,6 +53,7 @@ export interface TimeCommitmentData {
     preferredTimeOfDay: string[];
     preferredDuration: string;
     otherDuration?: string;
+    timeCommitmentPackage?: string;
 }
 
 /**

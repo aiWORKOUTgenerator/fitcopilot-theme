@@ -1,28 +1,22 @@
 import React from 'react';
-import ProgressBar from './ProgressBar';
 
 interface RegistrationLayoutProps {
     children: React.ReactNode;
-    progress: number;
     className?: string;
 }
 
 /**
  * Layout wrapper for all registration pages
- * Provides consistent layout structure and progress bar
+ * Provides consistent layout structure
  */
 const RegistrationLayout: React.FC<RegistrationLayoutProps> = ({
     children,
-    progress,
     className = '',
 }) => {
     return (
         <div className={`registration-layout ${className}`}>
             <div className="registration-layout__header">
-                <div className="registration-layout__logo">
-                    <img src="/wp-content/themes/fitcopilot/src/assets/images/logo.svg" alt="FitCopilot" />
-                </div>
-                <ProgressBar progress={progress} />
+                {/* Progress indicator now moved to parent component */}
             </div>
 
             <div className="registration-layout__content">

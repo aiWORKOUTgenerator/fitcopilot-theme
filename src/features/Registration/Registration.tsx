@@ -1,8 +1,10 @@
 import { X } from 'lucide-react';
-import React, { useCallback } from 'react';
-import { AnimatedTransition, RegistrationLayout } from './components';
+import React, { useCallback, useEffect } from 'react';
+import { AnimatedTransition, ProgressIndicator, RegistrationLayout } from './components';
+import { useTransitionAnalytics } from './events/analyticsIntegration';
 import ExperienceLevel from './ExperienceLevel';
 import { useRegistrationData, useRegistrationProgress } from './hooks';
+import { REGISTRATION_STEPS } from './hooks/useRegistrationProgress';
 import Journey from './Journey';
 import Pricing from './Pricing';
 import './Registration.scss';
@@ -18,23 +20,49 @@ const Registration: React.FC<RegistrationProps> = ({
     onComplete,
     onCancel
 }) => {
+    // Initialize analytics tracking for registration flow
+    const { trackCustomEvent } = useTransitionAnalytics();
+
     // Get registration state and handlers from hooks
-    const { data, updateData, resetData } = useRegistrationData();
-    const { currentStep, nextStep, previousStep, goToStep, progress } = useRegistrationProgress(initialStep);
+    const { data, updateData } = useRegistrationData();
+    const { currentStep, nextStep, previousStep, goToStep } = useRegistrationProgress(initialStep);
+
+    // Calculate the current step index from the current step
+    const currentStepIndex = REGISTRATION_STEPS.indexOf(currentStep);
+
+    // Track registration flow initialization
+    useEffect(() => {
+        trackCustomEvent('registration_flow_initiated', {
+            initial_step: initialStep,
+            timestamp: new Date().toISOString()
+        });
+    }, [trackCustomEvent, initialStep]);
 
     // Handle completion of the registration flow
     const handleComplete = useCallback(() => {
+        // Track registration completion
+        trackCustomEvent('registration_completed', {
+            final_step: currentStep,
+            timestamp: new Date().toISOString()
+        });
+
         if (onComplete && data) {
             onComplete(data);
         }
-    }, [onComplete, data]);
+    }, [onComplete, data, currentStep, trackCustomEvent]);
 
     // Handle cancellation of registration
     const handleCancel = useCallback(() => {
+        // Track registration cancellation
+        trackCustomEvent('registration_cancelled', {
+            cancelled_at_step: currentStep,
+            timestamp: new Date().toISOString()
+        });
+
         if (onCancel) {
             onCancel();
         }
-    }, [onCancel]);
+    }, [onCancel, currentStep, trackCustomEvent]);
 
     // Render the current step based on the current step value
     const renderCurrentStep = () => {
@@ -86,13 +114,13 @@ const Registration: React.FC<RegistrationProps> = ({
 
             default:
                 return (
-                    <div className="registration-error">
-                        <h2>Oops! Something went wrong</h2>
-                        <p>We couldn't find the registration step you're looking for.</p>
-                        <button onClick={() => goToStep(RegistrationStep.SPLASH)}>
-                            Start Over
-                        </button>
-                    </div>
+                    <Pricing
+                        data={data}
+                        updateData={updateData}
+                        onNext={nextStep}
+                        onBack={previousStep}
+                        onComplete={handleComplete}
+                    />
                 );
         }
     };
@@ -100,18 +128,55 @@ const Registration: React.FC<RegistrationProps> = ({
     return (
         <div className={`registration ${className}`}>
             <div className="registration-header">
-                <div className="registration-header__progress">
-                    <div className="registration-progress-label">Registration Progress</div>
-                </div>
-                <button
-                    className="cancel-button"
-                    onClick={handleCancel}
-                    aria-label="Cancel registration"
-                >
+                <button className="registration-close" onClick={handleCancel} aria-label="Close">
                     <X size={24} />
                 </button>
+                <div className="registration-progress">
+                    <ProgressIndicator
+                        completedSections={(() => {
+                            // Start with the current step and all previous steps
+                            const baseCompletedSections = REGISTRATION_STEPS.slice(0, currentStepIndex + 1).map(step => step.toString());
+
+                            // Add any additional completed sections based on the data
+                            const additionalSections = [];
+
+                            // If we have completed customization sections, mark EQUIPMENT and TIME_COMMITMENT as completed
+                            if (data.completedCustomizationSections?.includes('customize_experience_completed')) {
+                                additionalSections.push(RegistrationStep.EQUIPMENT.toString());
+                            }
+
+                            // Specifically check for time commitment completion
+                            if (data.completedCustomizationSections?.includes('time_commitment_completed')) {
+                                additionalSections.push(RegistrationStep.TIME_COMMITMENT.toString());
+                            }
+
+                            // If we have completed medical information, mark MEDICAL as completed if it exists
+                            if (data.completedCustomizationSections?.includes('medical_information_completed')) {
+                                // Medical doesn't have a specific step in REGISTRATION_STEPS, but we can
+                                // consider it as part of the journey
+                                // No op for now
+                            }
+
+                            // Combine and deduplicate
+                            return [...new Set([...baseCompletedSections, ...additionalSections])];
+                        })()}
+                        totalSections={REGISTRATION_STEPS.length}
+                        sectionLabels={REGISTRATION_STEPS.reduce((acc, step) => {
+                            // Convert enum value to display name (e.g. EXPERIENCE_LEVEL -> Experience Level)
+                            const displayName = step.toString()
+                                .split('_')
+                                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                                .join(' ');
+                            acc[step.toString()] = displayName;
+                            return acc;
+                        }, {} as Record<string, string>)}
+                        variant="detailed"
+                        showLabels={true}
+                        accentColor="purple"
+                    />
+                </div>
             </div>
-            <RegistrationLayout progress={progress}>
+            <RegistrationLayout>
                 <AnimatedTransition key={currentStep}>
                     {renderCurrentStep()}
                 </AnimatedTransition>
