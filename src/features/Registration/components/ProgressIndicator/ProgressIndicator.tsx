@@ -13,7 +13,10 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
     className = '',
     onSectionClick
 }) => {
-    const completionPercentage = (completedSections.length / totalSections) * 100;
+    // Ensure we never report more completed sections than total sections
+    const validCompletedSections = completedSections.slice(0, totalSections);
+    const completionCount = Math.min(validCompletedSections.length, totalSections);
+    const completionPercentage = Math.min((completionCount / totalSections) * 100, 100);
 
     // Handle variant-specific configurations
     // isCompact will be used in the future compact variant implementation 
@@ -29,7 +32,7 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
             {showLabels && (
                 <div className="progress-summary">
                     <span className="progress-label">
-                        {completedSections.length} of {totalSections} sections complete
+                        {completionCount} of {totalSections} sections complete
                     </span>
                     <span className="progress-percentage">
                         {Math.round(completionPercentage)}%
@@ -52,7 +55,7 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
                 <div className="section-indicators">
                     {[...Array(totalSections)].map((_, index) => {
                         const sectionId = Object.keys(sectionLabels)[index] || `section-${index}`;
-                        const isCompleted = completedSections.includes(sectionId);
+                        const isCompleted = validCompletedSections.includes(sectionId);
 
                         return (
                             <div

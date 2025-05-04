@@ -1,0 +1,61 @@
+.selectable-option {
+    display: flex;
+    align-items: center;
+    background-color: rgba(51, 65, 85, 0.4);
+    border-radius: 0.375rem;
+    padding: 0.625rem 1rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+
+    &:hover:not(.disabled) {
+        background-color: rgba(51, 65, 85, 0.6);
+    }
+
+    &:focus {
+        outline: 2px solid rgba(139, 92, 246, 0.5);
+        outline-offset: 2px;
+    }
+
+    &.selected {
+        background-color: rgba(139, 92, 246, 0.2);
+        border: 1px solid rgba(139, 92, 246, 0.4);
+
+        &:hover:not(.disabled) {
+            background-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .option-label {
+            color: #c4b5fd;
+        }
+    }
+
+    &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .option-checkbox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 0.25rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        margin-right: 0.75rem;
+        flex-shrink: 0;
+
+        .selected & {
+            background-color: #8b5cf6;
+            color: white;
+        }
+    }
+
+    .option-label {
+        color: #f8f8f8;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+}

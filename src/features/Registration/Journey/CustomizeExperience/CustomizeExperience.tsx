@@ -1,16 +1,19 @@
 import { Clock, Dumbbell, Target } from 'lucide-react';
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ProgressIndicator from '../../components/ProgressIndicator';
 import { AccordionSectionRef } from '../components/AccordionSection';
 import { useJourney } from '../components/JourneyContext';
 import StandardSection from '../components/StandardSection';
 import EquipmentSelector from './components/EquipmentSelector';
 import ExperienceLevelIndicator from './components/ExperienceLevelIndicator';
+import SectionErrorState from './components/SectionErrorState';
 import TimeCommitmentSelector from './components/TimeCommitmentSelector';
 import WorkoutPreferenceSelector from './components/WorkoutPreferenceSelector';
 import { SECTION_IDS } from './constants/sectionConstants';
 import { CustomizationProvider, useCustomization } from './context/CustomizationContext';
 import './CustomizeExperience.scss';
+import { announceToScreenReader } from './utils/a11y';
+import { saveWithRetry } from './utils/validators';
 
 interface CustomizeExperienceProps {
     onValidChange: (isValid: boolean) => void;
@@ -30,7 +33,7 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange
 /**
  * Inner component that consumes the CustomizationContext
  */
-const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = ({ onValidChange }) => {
+const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = React.memo(({ onValidChange }) => {
     const {
         validSections,
         completedSections,
@@ -38,10 +41,16 @@ const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = ({ onVali
         isLoading,
         error,
         markSectionComplete,
-        updateSectionValidity
+        updateSectionValidity,
+        saveAllData,
+        syncWithStoredData
     } = useCustomization();
 
     const { registrationData } = useJourney();
+
+    // Add state for tracking save errors to handle retries
+    const [sectionErrors, setSectionErrors] = useState<Record<string, string | null>>({});
+    const [isSaving, setIsSaving] = useState<boolean>(false);
 
     // Refs for accordion sections
     const equipmentRef = useRef<AccordionSectionRef>(null);
@@ -54,7 +63,7 @@ const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = ({ onVali
     }, [isCustomizationValid, onValidChange]);
 
     // Get ref by section ID
-    const getSectionRef = (sectionId: string): React.RefObject<AccordionSectionRef> => {
+    const getSectionRef = useCallback((sectionId: string): React.RefObject<AccordionSectionRef> => {
         switch (sectionId) {
             case SECTION_IDS.equipment:
                 return equipmentRef;
@@ -65,40 +74,79 @@ const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = ({ onVali
             default:
                 return equipmentRef;
         }
-    };
+    }, []);
 
     // Get the next section ID
-    const getNextSectionId = (currentSectionId: string): string | null => {
+    const getNextSectionId = useCallback((currentSectionId: string): string | null => {
         const sections = Object.values(SECTION_IDS);
         const currentIndex = sections.indexOf(currentSectionId);
         if (currentIndex < sections.length - 1) {
             return sections[currentIndex + 1];
         }
         return null;
-    };
+    }, []);
 
     // Handle section confirmation and transition to next section
-    const handleConfirmSection = (sectionId: string) => {
-        // Mark section as complete
-        markSectionComplete(sectionId);
+    const handleConfirmSection = useCallback(async (sectionId: string) => {
+        // Set saving state
+        setIsSaving(true);
+        setSectionErrors(prev => ({ ...prev, [sectionId]: null }));
 
-        // Close current section
-        const currentSectionRef = getSectionRef(sectionId);
-        if (currentSectionRef.current) {
-            currentSectionRef.current.close();
-        }
+        try {
+            // Try to save all data
+            const result = await saveWithRetry(saveAllData, {}, 2);
 
-        // Open next section with smooth transition
-        const nextSectionId = getNextSectionId(sectionId);
-        if (nextSectionId) {
-            const nextSectionRef = getSectionRef(nextSectionId);
-            if (nextSectionRef.current) {
-                setTimeout(() => {
-                    nextSectionRef.current?.open();
-                }, 400);
+            if (!result.success) {
+                // Update section error state
+                setSectionErrors(prev => ({ ...prev, [sectionId]: result.error || 'Failed to save' }));
+                setIsSaving(false);
+                return;
             }
+
+            // Mark section as complete
+            markSectionComplete(sectionId);
+
+            // Announce for screen readers
+            const sectionTitle = sectionId.charAt(0).toUpperCase() + sectionId.slice(1).replace(/-/g, ' ');
+            announceToScreenReader(`${sectionTitle} section completed`);
+
+            // Close current section
+            const currentSectionRef = getSectionRef(sectionId);
+            if (currentSectionRef.current) {
+                currentSectionRef.current.close();
+            }
+
+            // Open next section with smooth transition
+            const nextSectionId = getNextSectionId(sectionId);
+            if (nextSectionId) {
+                const nextSectionRef = getSectionRef(nextSectionId);
+                if (nextSectionRef.current) {
+                    setTimeout(() => {
+                        nextSectionRef.current?.open();
+                    }, 400);
+                }
+            } else {
+                // Announce completion if this was the last section
+                announceToScreenReader('All sections completed. You can now proceed to the next step.');
+            }
+        } catch (error) {
+            setSectionErrors(prev => ({
+                ...prev,
+                [sectionId]: error instanceof Error ? error.message : 'An unknown error occurred'
+            }));
+        } finally {
+            setIsSaving(false);
         }
-    };
+    }, [getSectionRef, getNextSectionId, markSectionComplete, saveAllData]);
+
+    // Handle retry for a section with error
+    const handleRetry = useCallback((sectionId: string) => {
+        // Clear error for this section
+        setSectionErrors(prev => ({ ...prev, [sectionId]: null }));
+
+        // Try to save again
+        handleConfirmSection(sectionId);
+    }, [handleConfirmSection]);
 
     // Initialize first section or restore from saved state
     useEffect(() => {
@@ -117,10 +165,12 @@ const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = ({ onVali
                 sectionRef.current.open();
             }
         }, 600);
-    }, [completedSections, isLoading]);
+    }, [completedSections, isLoading, getSectionRef]);
 
     return (
         <div className="customize-experience-container">
+            <h2 className="sr-only">Customize Your Workout Experience</h2>
+
             <p className="customize-experience-intro">
                 Customize your workout experience by selecting your preferences below.
                 <span className="customize-experience-instruction">
@@ -143,10 +193,17 @@ const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = ({ onVali
                 onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.equipment, isValid)}
                 isCompleted={completedSections.includes(SECTION_IDS.equipment)}
                 onConfirm={() => handleConfirmSection(SECTION_IDS.equipment)}
-                isLoading={isLoading}
-                error={error}
+                isLoading={isLoading || (isSaving && !sectionErrors[SECTION_IDS.equipment])}
+                error={sectionErrors[SECTION_IDS.equipment] || error}
             >
-                <EquipmentSelector />
+                {sectionErrors[SECTION_IDS.equipment] ? (
+                    <SectionErrorState
+                        message={sectionErrors[SECTION_IDS.equipment] || ''}
+                        onRetry={() => handleRetry(SECTION_IDS.equipment)}
+                    />
+                ) : (
+                    <EquipmentSelector />
+                )}
             </StandardSection>
 
             {/* Time Commitment Selection */}
@@ -159,10 +216,17 @@ const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = ({ onVali
                 onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.timeCommitment, isValid)}
                 isCompleted={completedSections.includes(SECTION_IDS.timeCommitment)}
                 onConfirm={() => handleConfirmSection(SECTION_IDS.timeCommitment)}
-                isLoading={isLoading}
-                error={error}
+                isLoading={isLoading || (isSaving && !sectionErrors[SECTION_IDS.timeCommitment])}
+                error={sectionErrors[SECTION_IDS.timeCommitment] || error}
             >
-                <TimeCommitmentSelector />
+                {sectionErrors[SECTION_IDS.timeCommitment] ? (
+                    <SectionErrorState
+                        message={sectionErrors[SECTION_IDS.timeCommitment] || ''}
+                        onRetry={() => handleRetry(SECTION_IDS.timeCommitment)}
+                    />
+                ) : (
+                    <TimeCommitmentSelector />
+                )}
             </StandardSection>
 
             {/* Workout Preference Selection */}
@@ -175,15 +239,22 @@ const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = ({ onVali
                 onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.workoutPreference, isValid)}
                 isCompleted={completedSections.includes(SECTION_IDS.workoutPreference)}
                 onConfirm={() => handleConfirmSection(SECTION_IDS.workoutPreference)}
-                isLoading={isLoading}
-                error={error}
+                isLoading={isLoading || (isSaving && !sectionErrors[SECTION_IDS.workoutPreference])}
+                error={sectionErrors[SECTION_IDS.workoutPreference] || error}
             >
-                <WorkoutPreferenceSelector />
+                {sectionErrors[SECTION_IDS.workoutPreference] ? (
+                    <SectionErrorState
+                        message={sectionErrors[SECTION_IDS.workoutPreference] || ''}
+                        onRetry={() => handleRetry(SECTION_IDS.workoutPreference)}
+                    />
+                ) : (
+                    <WorkoutPreferenceSelector />
+                )}
             </StandardSection>
 
             {/* Progress indicator */}
             <ProgressIndicator
-                completedSections={completedSections}
+                completedSections={completedSections.filter(section => Object.values(SECTION_IDS).includes(section))}
                 totalSections={Object.keys(SECTION_IDS).length}
                 sectionLabels={Object.entries(SECTION_IDS).reduce((acc, [key, value]) => {
                     acc[value] = value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
@@ -195,6 +266,8 @@ const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = ({ onVali
             />
         </div>
     );
-};
+});
+
+CustomizeExperienceContent.displayName = 'CustomizeExperienceContent';
 
 export default CustomizeExperience; 

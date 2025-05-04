@@ -1,14 +1,16 @@
-import { Check } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { EQUIPMENT_CATEGORIES } from '../../constants/equipmentOptions';
 import { useCustomization } from '../../context/CustomizationContext';
+import { getValidationMessage, validators } from '../../utils/validators';
+import SelectableOption from '../SelectableOption';
+import ValidationSummary from '../ValidationSummary';
 import './EquipmentSelector.scss';
 
 /**
- * Enhanced equipment selector with categorized options and animations
+ * Enhanced equipment selector with categorized options and accessibility improvements
  * using the centralized CustomizationContext
  */
-const EquipmentSelector: React.FC<{ setIsValid?: (isValid: boolean) => void }> = ({
+const EquipmentSelector: React.FC<{ setIsValid?: (isValid: boolean) => void }> = React.memo(({
     setIsValid
 }) => {
     const {
@@ -26,13 +28,28 @@ const EquipmentSelector: React.FC<{ setIsValid?: (isValid: boolean) => void }> =
         equipmentData?.otherEquipment || ''
     );
 
+    // State for validation
+    const [showValidation, setShowValidation] = useState<boolean>(false);
+    const [isTouched, setIsTouched] = useState<boolean>(false);
+
+    // Check if the form is valid based on validators
+    const isValid = validators.equipment({
+        selectedEquipment,
+        otherEquipment,
+        hasNoEquipment: selectedEquipment.includes('No Equipment')
+    });
+
     // Update validation status when selections change
     useEffect(() => {
-        const valid = selectedEquipment.length > 0 || otherEquipment.trim().length > 0;
+        // Only validate if the form has been touched
+        if (isTouched) {
+            // Show validation message if form is invalid
+            setShowValidation(!isValid);
+        }
 
         // Update parent StandardSection via prop
         if (setIsValid) {
-            setIsValid(valid);
+            setIsValid(isValid);
         }
 
         // Update context data
@@ -44,20 +61,41 @@ const EquipmentSelector: React.FC<{ setIsValid?: (isValid: boolean) => void }> =
 
         // Save all data to storage
         saveAllData();
-    }, [selectedEquipment, otherEquipment, updateEquipmentData, saveAllData, setIsValid]);
+    }, [selectedEquipment, otherEquipment, updateEquipmentData, saveAllData, setIsValid, isValid, isTouched]);
 
-    // Toggle equipment selection
-    const toggleEquipment = (equipment: string) => {
+    // Toggle equipment selection with memoized callback
+    const toggleEquipment = useCallback((equipment: string) => {
+        // Mark form as touched when user interacts
+        if (!isTouched) {
+            setIsTouched(true);
+        }
+
         setSelectedEquipment(prev => {
             if (prev.includes(equipment)) {
                 return prev.filter(e => e !== equipment);
             }
             return [...prev, equipment];
         });
-    };
+    }, [isTouched]);
+
+    // Handle text input change with memoized callback
+    const handleOtherEquipmentChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        // Mark form as touched when user interacts
+        if (!isTouched) {
+            setIsTouched(true);
+        }
+
+        setOtherEquipment(e.target.value);
+    }, [isTouched]);
 
     return (
         <div className="equipment-selector">
+            {/* Validation summary */}
+            <ValidationSummary
+                isValid={!showValidation}
+                message={getValidationMessage('equipment')}
+            />
+
             {/* Equipment selection by category */}
             <div className="equipment-categories">
                 {Object.entries(EQUIPMENT_CATEGORIES).map(([categoryKey, category]) => (
@@ -65,26 +103,13 @@ const EquipmentSelector: React.FC<{ setIsValid?: (isValid: boolean) => void }> =
                         <h4 className="category-title">{category.label}</h4>
 
                         <div className="category-options">
-                            {category.options.map((equipment, index) => (
-                                <div
-                                    key={index}
-                                    className={`equipment-option ${selectedEquipment.includes(equipment) ? 'selected' : ''}`}
-                                    onClick={() => toggleEquipment(equipment)}
-                                    role="checkbox"
-                                    aria-checked={selectedEquipment.includes(equipment)}
-                                    tabIndex={0}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' || e.key === ' ') {
-                                            e.preventDefault();
-                                            toggleEquipment(equipment);
-                                        }
-                                    }}
-                                >
-                                    <div className="option-checkbox">
-                                        {selectedEquipment.includes(equipment) && <Check size={14} />}
-                                    </div>
-                                    <span className="option-label">{equipment}</span>
-                                </div>
+                            {category.options.map((equipment) => (
+                                <SelectableOption
+                                    key={equipment}
+                                    label={equipment}
+                                    selected={selectedEquipment.includes(equipment)}
+                                    onSelect={() => toggleEquipment(equipment)}
+                                />
                             ))}
                         </div>
                     </div>
@@ -102,13 +127,14 @@ const EquipmentSelector: React.FC<{ setIsValid?: (isValid: boolean) => void }> =
                     placeholder="Please list any other equipment you have"
                     rows={2}
                     value={otherEquipment}
-                    onChange={(e) => setOtherEquipment(e.target.value)}
+                    onChange={handleOtherEquipmentChange}
+                    aria-describedby={!isValid ? "equipment-validation" : undefined}
                 />
             </div>
 
             {/* Selection summary */}
             {selectedEquipment.length > 0 && (
-                <div className="selection-summary">
+                <div className="selection-summary" aria-live="polite">
                     <div className="summary-text">
                         {selectedEquipment.length} {selectedEquipment.length === 1 ? 'item' : 'items'} selected
                     </div>
@@ -116,6 +142,8 @@ const EquipmentSelector: React.FC<{ setIsValid?: (isValid: boolean) => void }> =
             )}
         </div>
     );
-};
+});
+
+EquipmentSelector.displayName = 'EquipmentSelector';
 
 export default EquipmentSelector; 

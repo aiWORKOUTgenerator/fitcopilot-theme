@@ -37,4 +37,8 @@ export interface StandardSectionProps extends SectionProps {
     ref?: React.Ref<AccordionSectionRef>;
     /** Children content */
     children: React.ReactNode;
+    /** Callback when section is opened */
+    onOpen?: () => void;
+    /** Callback when section is closed */
+    onClose?: () => void;
 } 
