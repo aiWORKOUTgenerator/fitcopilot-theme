@@ -45,33 +45,45 @@ export const updateCustomizationSection = (
 };
 
 /**
- * Retrieves all medical customization data
+ * Save medical customization data with basic error handling
  */
-export const getMedicalCustomizationData = (): MedicalCustomizationData => {
+export const saveMedicalCustomizationData = async (
+    data: MedicalCustomizationData
+): Promise<{ success: boolean; error?: string }> => {
     try {
-        const storedData = sessionStorage.getItem(STORAGE_KEY);
-        if (storedData) {
-            const parsedData = JSON.parse(storedData);
+        const dataToStore = {
+            ...data,
+            timestamp: new Date().toISOString()
+        };
 
-            // If we have completed sections in the stored data, use them
-            if (!parsedData.completedSections) {
-                parsedData.completedSections = [];
-            }
-
-            return parsedData;
-        }
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
+        return { success: true };
     } catch (error) {
-        console.error('Failed to retrieve medical customization data:', error);
+        console.error('Failed to save medical customization data:', error);
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : 'Failed to save your medical information'
+        };
     }
-
-    // Return empty data structure if nothing is found
-    return {
-        completedSections: []
-    };
 };
 
 /**
- * Clears all stored medical customization data
+ * Load medical customization data with error handling
+ */
+export const getMedicalCustomizationData = (): MedicalCustomizationData | null => {
+    try {
+        const storedData = sessionStorage.getItem(STORAGE_KEY);
+        if (!storedData) return null;
+
+        return JSON.parse(storedData);
+    } catch (error) {
+        console.error('Failed to load medical customization data:', error);
+        return null;
+    }
+};
+
+/**
+ * Clear all medical customization data
  */
 export const clearMedicalCustomizationData = (): void => {
     try {
@@ -79,4 +91,37 @@ export const clearMedicalCustomizationData = (): void => {
     } catch (error) {
         console.error('Failed to clear medical customization data:', error);
     }
+};
+
+/**
+ * Simple retry utility for operations that might fail
+ */
+export const withRetry = async <T>(
+    operation: () => Promise<T>,
+    maxRetries: number = 2
+): Promise<{ success: boolean; result?: T; error?: string }> => {
+    let attempts = 0;
+
+    const attempt = async (): Promise<{ success: boolean; result?: T; error?: string }> => {
+        try {
+            const result = await operation();
+            return { success: true, result };
+        } catch (error) {
+            attempts++;
+            console.error(`Operation failed (attempt ${attempts}/${maxRetries + 1}):`, error);
+
+            if (attempts <= maxRetries) {
+                // Simple linear backoff
+                await new Promise(resolve => setTimeout(resolve, 300 * attempts));
+                return attempt();
+            }
+
+            return {
+                success: false,
+                error: error instanceof Error ? error.message : 'Operation failed after multiple attempts'
+            };
+        }
+    };
+
+    return attempt();
 }; 
