@@ -5,7 +5,6 @@ import { useJourney } from '../components/JourneyContext';
 import EquipmentSelector from './components/EquipmentSelector';
 import ExperienceLevelIndicator from './components/ExperienceLevelIndicator';
 import TimeCommitmentSelector from './components/TimeCommitmentSelector';
-import TrainingFrequencySelector from './components/TrainingFrequencySelector';
 import WorkoutPreferenceSelector from './components/WorkoutPreferenceSelector';
 import { SECTION_IDS } from './constants/sectionConstants';
 import './CustomizeExperience.scss';
@@ -32,7 +31,6 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange
     const equipmentRef = useRef<AccordionSectionRef>(null);
     const timeCommitmentRef = useRef<AccordionSectionRef>(null);
     const workoutPreferenceRef = useRef<AccordionSectionRef>(null);
-    const trainingFrequencyRef = useRef<AccordionSectionRef>(null);
 
     // Sync with stored data on initial mount
     useEffect(() => {
@@ -65,8 +63,6 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange
                 return timeCommitmentRef;
             case SECTION_IDS.workoutPreference:
                 return workoutPreferenceRef;
-            case SECTION_IDS.trainingFrequency:
-                return trainingFrequencyRef;
             default:
                 return equipmentRef;
         }
@@ -163,16 +159,6 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange
                     onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.workoutPreference, isValid)}
                     isCompleted={completedSections.includes(SECTION_IDS.workoutPreference)}
                     onConfirm={() => handleConfirmSection(SECTION_IDS.workoutPreference)}
-                />
-            </div>
-
-            {/* Training Frequency Selection */}
-            <div id={`accordion-section-${SECTION_IDS.trainingFrequency}`}>
-                <TrainingFrequencySelector
-                    ref={trainingFrequencyRef}
-                    onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.trainingFrequency, isValid)}
-                    isCompleted={completedSections.includes(SECTION_IDS.trainingFrequency)}
-                    onConfirm={() => handleConfirmSection(SECTION_IDS.trainingFrequency)}
                 />
             </div>
 

@@ -54,6 +54,9 @@ export interface TimeCommitmentData {
     preferredDuration: string;
     otherDuration?: string;
     timeCommitmentPackage?: string;
+    daysPerWeek?: number;
+    preferredDays?: string[];
+    trainingFrequency?: string;
 }
 
 /**

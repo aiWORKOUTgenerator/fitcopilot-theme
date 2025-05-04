@@ -8,7 +8,6 @@ import { JourneyProvider, useJourney } from './components/JourneyContext';
 import JourneyStepCard from './components/JourneyStepCard';
 import SavingIndicator from './components/SavingIndicator';
 import StepValidator from './components/StepValidator';
-import TrainingFrequencySelector from './components/TrainingFrequencySelector';
 import WorkoutPreferenceSelector from './components/WorkoutPreferenceSelector';
 import * as scrollUtils from './components/scrollUtils';
 
@@ -23,7 +22,6 @@ export {
     scrollUtils,
     StepValidator,
     TimeCommitmentSelector,
-    TrainingFrequencySelector,
     useJourney,
     WorkoutPreferenceSelector
 };

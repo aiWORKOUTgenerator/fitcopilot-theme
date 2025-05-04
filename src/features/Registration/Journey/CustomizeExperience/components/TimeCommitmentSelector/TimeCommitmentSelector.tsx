@@ -2,7 +2,7 @@ import { Check, Clock } from 'lucide-react';
 import React, { forwardRef, useEffect, useState } from 'react';
 import AccordionSection, { AccordionSectionRef } from '../../../components/AccordionSection';
 import { useJourney } from '../../../components/JourneyContext';
-import { DURATION_OPTIONS, TIME_COMMITMENT_PACKAGES, TIME_OF_DAY_OPTIONS } from '../../constants/timeCommitmentOptions';
+import { DAYS_OF_WEEK, DURATION_OPTIONS, FREQUENCY_OPTIONS, TIME_COMMITMENT_PACKAGES, TIME_OF_DAY_OPTIONS } from '../../constants/timeCommitmentOptions';
 import { TimeCommitmentData } from '../../types';
 import { loadCustomizationData, updateCustomizationSection } from '../../utils/customizationStorage';
 import ConfirmButton from '../shared/ConfirmButton';
@@ -15,7 +15,7 @@ interface TimeCommitmentSelectorProps {
 }
 
 /**
- * Enhanced time commitment selector component with smart option linking
+ * Enhanced time commitment selector component with smart option linking and training frequency
  */
 const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSelectorProps>(({
     onValidChange,
@@ -30,7 +30,9 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
         preferredTimeOfDay: [],
         preferredDuration: '',
         otherDuration: '',
-        timeCommitmentPackage: ''
+        timeCommitmentPackage: '',
+        preferredDays: [],
+        trainingFrequency: ''
     };
 
     // Initialize state from stored data, falling back to registrationData if needed
@@ -50,12 +52,32 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
         storedTimeCommitment.timeCommitmentPackage || registrationData.timeCommitmentPackage || ''
     );
 
+    // Training frequency state
+    const [selectedDays, setSelectedDays] = useState<string[]>(
+        storedTimeCommitment.preferredDays || registrationData.preferredDays || []
+    );
+
+    // Get the frequency from the stored package if available
+    const getInitialFrequency = (): string => {
+        const packageId = storedTimeCommitment.timeCommitmentPackage || registrationData.timeCommitmentPackage;
+        if (packageId) {
+            const pkg = TIME_COMMITMENT_PACKAGES.find(p => p.id === packageId);
+            if (pkg) {
+                return pkg.frequencyRange;
+            }
+        }
+        return storedTimeCommitment.trainingFrequency || registrationData.trainingFrequency || '';
+    };
+
+    const [frequency, setFrequency] = useState<string>(getInitialFrequency());
+
     const [isValid, setIsValid] = useState(false);
 
     // Initial validation on component mount
     useEffect(() => {
         const timeValid = timeOfDay.length > 0 && (!!duration || !!otherDuration.trim());
-        const valid = timeValid || !!selectedPackage;
+        const frequencyValid = selectedDays.length > 0 || !!frequency;
+        const valid = (timeValid && frequencyValid) || !!selectedPackage;
 
         setIsValid(!!valid);
         onValidChange(!!valid);
@@ -64,7 +86,8 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
     // Update validation status when selections change
     useEffect(() => {
         const timeValid = timeOfDay.length > 0 && (!!duration || !!otherDuration.trim());
-        const valid = timeValid || !!selectedPackage;
+        const frequencyValid = selectedDays.length > 0 || !!frequency;
+        const valid = (timeValid && frequencyValid) || !!selectedPackage;
 
         setIsValid(!!valid);
         onValidChange(!!valid);
@@ -74,7 +97,9 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
             preferredTimeOfDay: timeOfDay,
             preferredDuration: duration,
             otherDuration,
-            timeCommitmentPackage: selectedPackage
+            timeCommitmentPackage: selectedPackage,
+            preferredDays: selectedDays,
+            trainingFrequency: frequency
         });
 
         // Persist to local storage
@@ -82,9 +107,11 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
             preferredTimeOfDay: timeOfDay,
             preferredDuration: duration,
             otherDuration,
-            timeCommitmentPackage: selectedPackage
+            timeCommitmentPackage: selectedPackage,
+            preferredDays: selectedDays,
+            trainingFrequency: frequency
         });
-    }, [timeOfDay, duration, otherDuration, selectedPackage, onValidChange, updateRegistrationData]);
+    }, [timeOfDay, duration, otherDuration, selectedPackage, selectedDays, frequency, onValidChange, updateRegistrationData]);
 
     // Toggle time of day selection
     const toggleTimeOfDay = (time: string) => {
@@ -94,6 +121,21 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
             }
             return [...prev, time];
         });
+    };
+
+    // Toggle training day selection
+    const toggleDay = (day: string) => {
+        setSelectedDays(prev => {
+            if (prev.includes(day)) {
+                return prev.filter(d => d !== day);
+            }
+            return [...prev, day];
+        });
+
+        // Clear package selection if user is customizing
+        if (selectedPackage) {
+            setSelectedPackage('');
+        }
     };
 
     // Handle package selection
@@ -106,10 +148,10 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
 
         setSelectedPackage(packageId);
 
-        // Auto-select corresponding duration based on package
+        // Get the selected package
         const selectedPkg = TIME_COMMITMENT_PACKAGES.find(pkg => pkg.id === packageId);
         if (selectedPkg) {
-            // Find closest matching duration option
+            // Auto-select corresponding duration based on package
             const durationMatch = DURATION_OPTIONS.find(opt =>
                 opt.includes(selectedPkg.durationRange)
             );
@@ -117,6 +159,21 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
             if (durationMatch) {
                 setDuration(durationMatch);
                 setOtherDuration('');
+            }
+
+            // Auto-select corresponding training frequency based on package
+            // Use exact matching to ensure selection works properly
+            const frequencyMatch = FREQUENCY_OPTIONS.find(opt =>
+                opt === selectedPkg.frequencyRange
+            );
+
+            if (frequencyMatch) {
+                setFrequency(frequencyMatch);
+            }
+
+            // Auto-select suggested training days
+            if (selectedPkg.suggestedDays) {
+                setSelectedDays(selectedPkg.suggestedDays);
             }
         }
     };
@@ -151,6 +208,16 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
         }
     };
 
+    // Handle frequency change
+    const handleFrequencyChange = (newFrequency: string) => {
+        setFrequency(newFrequency);
+
+        // Clear package selection since user is customizing
+        if (selectedPackage) {
+            setSelectedPackage('');
+        }
+    };
+
     // Handle confirm action
     const handleConfirm = () => {
         // First update the registration data to specifically mark time commitment as completed
@@ -170,13 +237,13 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
     // Prepare accordion title with completion indicator
     const sectionTitle = isCompleted ? (
         <div className="flex items-center">
-            Time Management
+            Time Management & Frequency
             <span className="ml-2 text-xs bg-emerald-800/30 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-700/50 flex items-center">
                 <Check size={12} className="mr-1" />
                 Completed
             </span>
         </div>
-    ) : 'Time Management';
+    ) : 'Time Management & Frequency';
 
     return (
         <AccordionSection
@@ -313,26 +380,103 @@ const TimeCommitmentSelector = forwardRef<AccordionSectionRef, TimeCommitmentSel
                     </div>
                 </div>
 
-                {/* Selection summary */}
-                {(timeOfDay.length > 0 || selectedPackage) && (
-                    <div className="selection-summary">
-                        {selectedPackage ? (
-                            <div className="summary-text">
-                                Package selected: {TIME_COMMITMENT_PACKAGES.find(pkg => pkg.id === selectedPackage)?.label || selectedPackage}
+                {/* Training Frequency Section */}
+                <div className="training-frequency-section">
+                    <h4 className="section-subtitle">Training Frequency</h4>
+                    <p className="section-description">
+                        How often would you like to train each week?
+                    </p>
+
+                    {selectedPackage ? (
+                        <div className="package-message">
+                            <p>You've already selected a time commitment package that includes frequency preferences. You can skip this section or customize it further.</p>
+                        </div>
+                    ) : null}
+
+                    <div className="frequency-options">
+                        {FREQUENCY_OPTIONS.map((option, index) => (
+                            <div key={index} className="frequency-option">
+                                <input
+                                    type="radio"
+                                    id={`frequency-${index}`}
+                                    name="frequency"
+                                    className="radio-input"
+                                    checked={frequency === option}
+                                    onChange={() => handleFrequencyChange(option)}
+                                />
+                                <label
+                                    htmlFor={`frequency-${index}`}
+                                    className="radio-label"
+                                >
+                                    {option}
+                                </label>
                             </div>
-                        ) : timeOfDay.length > 0 && (
-                            <div className="summary-text">
-                                {timeOfDay.length} time preference{timeOfDay.length !== 1 ? 's' : ''} selected
-                            </div>
-                        )}
+                        ))}
                     </div>
-                )}
+                </div>
+
+                {/* Preferred Days Selection */}
+                <div className="preferred-days-section">
+                    <h4 className="section-subtitle">Preferred Training Days</h4>
+                    <p className="section-description">
+                        Which days do you prefer to train? (Select all that apply)
+                    </p>
+
+                    {selectedPackage ? (
+                        <div className="package-message">
+                            <p>You've already selected a time commitment package that includes suggested training days. You can skip this section or customize it further.</p>
+                        </div>
+                    ) : null}
+
+                    <div className="days-grid">
+                        {DAYS_OF_WEEK.map((day, index) => (
+                            <div
+                                key={index}
+                                className={`day-chip ${selectedDays.includes(day) ? 'selected' : ''}`}
+                                onClick={() => toggleDay(day)}
+                                role="checkbox"
+                                aria-checked={selectedDays.includes(day)}
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        toggleDay(day);
+                                    }
+                                }}
+                            >
+                                {day.substring(0, 3)}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Selection summary */}
+                <div className="selection-summary">
+                    {selectedPackage ? (
+                        <div className="summary-text">
+                            Package selected: {TIME_COMMITMENT_PACKAGES.find(pkg => pkg.id === selectedPackage)?.label || selectedPackage}
+                        </div>
+                    ) : (
+                        <>
+                            {timeOfDay.length > 0 && (
+                                <div className="summary-text">
+                                    {timeOfDay.length} time preference{timeOfDay.length !== 1 ? 's' : ''} selected
+                                </div>
+                            )}
+                            {selectedDays.length > 0 && (
+                                <div className="summary-text">
+                                    {selectedDays.length} training day{selectedDays.length !== 1 ? 's' : ''} selected
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
 
                 {/* Confirm button */}
                 <ConfirmButton
                     isValid={isValid}
                     onConfirm={handleConfirm}
-                    validationMessage="Please select a package or specify your time preferences"
+                    validationMessage="Please select a package or specify your time preferences and training frequency"
                 />
             </div>
         </AccordionSection>

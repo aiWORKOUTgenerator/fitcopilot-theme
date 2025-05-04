@@ -84,6 +84,8 @@ export interface RegistrationData {
     preferredTimeOfDay?: string[];
     preferredDuration?: string;
     otherDuration?: string;
+    preferredDays?: string[];  // Preferred days of the week for training
+    trainingFrequency?: string; // Training frequency selection
 
     // Analytics preferences
     analyticsFeatures?: string[];

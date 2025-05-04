@@ -4,6 +4,5 @@
 export const SECTION_IDS = {
     equipment: 'equipment',
     timeCommitment: 'time-commitment',
-    workoutPreference: 'workout-preference',
-    trainingFrequency: 'training-frequency'
+    workoutPreference: 'workout-preference'
 }; 

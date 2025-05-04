@@ -25,12 +25,26 @@ export const DURATION_OPTIONS = [
 
 /**
  * Options for workout frequency
+ * IMPORTANT: These must match exactly with the frequencyRange values in the packages
  */
 export const FREQUENCY_OPTIONS = [
     '1-2 days per week',
     '3-4 days per week',
     '5-6 days per week',
     'Every day'
+];
+
+/**
+ * Days of the week for training day selection
+ */
+export const DAYS_OF_WEEK = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
 ];
 
 /**
@@ -44,7 +58,9 @@ export const TIME_COMMITMENT_PACKAGES = [
         frequencyRange: '1-2 days per week',
         durationRange: '20-30 minutes',
         totalWeeklyTime: '20-60 minutes per week',
-        icon: 'clock'
+        icon: 'clock',
+        daysPerWeek: 2,
+        suggestedDays: ['Monday', 'Thursday']
     },
     {
         id: 'moderate',
@@ -53,24 +69,30 @@ export const TIME_COMMITMENT_PACKAGES = [
         frequencyRange: '3-4 days per week',
         durationRange: '30-45 minutes',
         totalWeeklyTime: '90-180 minutes per week',
-        icon: 'clock'
+        icon: 'clock',
+        daysPerWeek: 3,
+        suggestedDays: ['Monday', 'Wednesday', 'Friday']
     },
     {
         id: 'dedicated',
         label: 'Dedicated',
-        description: '4-5 sessions per week, 45-60 minutes',
-        frequencyRange: '4-5 days per week',
+        description: '5-6 sessions per week, 45-60 minutes',
+        frequencyRange: '5-6 days per week',
         durationRange: '45-60 minutes',
-        totalWeeklyTime: '180-300 minutes per week',
-        icon: 'clock'
+        totalWeeklyTime: '225-360 minutes per week',
+        icon: 'clock',
+        daysPerWeek: 5,
+        suggestedDays: ['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday']
     },
     {
         id: 'extensive',
         label: 'Extensive',
-        description: '5+ sessions per week, 60+ minutes',
-        frequencyRange: '5+ days per week',
+        description: 'Daily workouts, 60+ minutes',
+        frequencyRange: 'Every day',
         durationRange: '60+ minutes',
-        totalWeeklyTime: '300+ minutes per week',
-        icon: 'clock'
+        totalWeeklyTime: '420+ minutes per week',
+        icon: 'clock',
+        daysPerWeek: 7,
+        suggestedDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     }
 ]; 

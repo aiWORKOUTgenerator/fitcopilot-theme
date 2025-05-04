@@ -4,7 +4,6 @@ import TimeCommitmentSelector from '../CustomizeExperience/components/TimeCommit
 import { AccordionSectionRef } from './AccordionSection';
 import { useJourney } from './JourneyContext';
 import { scrollToAccordionSection } from './scrollUtils';
-import TrainingFrequencySelector from './TrainingFrequencySelector';
 import WorkoutPreferenceSelector from './WorkoutPreferenceSelector';
 
 interface CustomizationContainerProps {
@@ -15,8 +14,7 @@ interface CustomizationContainerProps {
 export const SECTION_IDS = {
     equipment: 'equipment',
     timeManagement: 'time-management',
-    workoutPreference: 'workout-preference',
-    trainingFrequency: 'training-frequency'
+    workoutPreference: 'workout-preference'
 };
 
 const CustomizationContainer: React.FC<CustomizationContainerProps> = ({ onValidChange }) => {
@@ -28,8 +26,7 @@ const CustomizationContainer: React.FC<CustomizationContainerProps> = ({ onValid
     const [validSections, setValidSections] = useState({
         [SECTION_IDS.equipment]: false,
         [SECTION_IDS.timeManagement]: false,
-        [SECTION_IDS.workoutPreference]: false,
-        [SECTION_IDS.trainingFrequency]: false
+        [SECTION_IDS.workoutPreference]: false
     });
 
     const [completedSections, setCompletedSections] = useState<string[]>(
@@ -40,7 +37,6 @@ const CustomizationContainer: React.FC<CustomizationContainerProps> = ({ onValid
     const equipmentRef = useRef<AccordionSectionRef>(null);
     const timeManagementRef = useRef<AccordionSectionRef>(null);
     const workoutPreferenceRef = useRef<AccordionSectionRef>(null);
-    const trainingFrequencyRef = useRef<AccordionSectionRef>(null);
 
     // Get ref by section ID
     const getSectionRef = (sectionId: string): React.RefObject<AccordionSectionRef> => {
@@ -51,8 +47,6 @@ const CustomizationContainer: React.FC<CustomizationContainerProps> = ({ onValid
                 return timeManagementRef;
             case SECTION_IDS.workoutPreference:
                 return workoutPreferenceRef;
-            case SECTION_IDS.trainingFrequency:
-                return trainingFrequencyRef;
             default:
                 return equipmentRef;
         }
@@ -183,15 +177,6 @@ const CustomizationContainer: React.FC<CustomizationContainerProps> = ({ onValid
                     onValidChange={(isValid) => handleSectionValidChange(SECTION_IDS.workoutPreference, isValid)}
                     isCompleted={completedSections.includes(SECTION_IDS.workoutPreference)}
                     onConfirm={() => handleConfirmSection(SECTION_IDS.workoutPreference)}
-                />
-            </div>
-
-            <div id={`accordion-section-${SECTION_IDS.trainingFrequency}`}>
-                <TrainingFrequencySelector
-                    ref={trainingFrequencyRef}
-                    onValidChange={(isValid) => handleSectionValidChange(SECTION_IDS.trainingFrequency, isValid)}
-                    isCompleted={completedSections.includes(SECTION_IDS.trainingFrequency)}
-                    onConfirm={() => handleConfirmSection(SECTION_IDS.trainingFrequency)}
                 />
             </div>
 
