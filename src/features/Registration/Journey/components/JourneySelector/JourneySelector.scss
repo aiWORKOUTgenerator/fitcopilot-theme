@@ -1,0 +1,202 @@
+.journey-selector {
+    margin-bottom: 1rem;
+
+    &.lime-accent {
+        .selector-title {
+            color: rgb(190, 242, 100);
+        }
+
+        .completed-badge {
+            background-color: rgba(163, 230, 53, 0.2);
+            color: rgb(190, 242, 100);
+        }
+
+        .required-badge {
+            background-color: rgba(163, 230, 53, 0.1);
+            color: rgb(163, 230, 53);
+        }
+
+        .confirm-button.active {
+            background-color: rgb(132, 204, 22);
+            color: rgb(0, 0, 0);
+
+            &:hover {
+                background-color: rgb(163, 230, 53);
+            }
+        }
+    }
+
+    &.amber-accent {
+        .selector-title {
+            color: rgb(252, 211, 77);
+        }
+
+        .completed-badge {
+            background-color: rgba(251, 191, 36, 0.2);
+            color: rgb(252, 211, 77);
+        }
+
+        .required-badge {
+            background-color: rgba(251, 191, 36, 0.1);
+            color: rgb(251, 191, 36);
+        }
+
+        .confirm-button.active {
+            background-color: rgb(245, 158, 11);
+            color: rgb(0, 0, 0);
+
+            &:hover {
+                background-color: rgb(251, 191, 36);
+            }
+        }
+    }
+
+    &.cyan-accent {
+        .selector-title {
+            color: rgb(103, 232, 249);
+        }
+
+        .completed-badge {
+            background-color: rgba(34, 211, 238, 0.2);
+            color: rgb(103, 232, 249);
+        }
+
+        .required-badge {
+            background-color: rgba(34, 211, 238, 0.1);
+            color: rgb(34, 211, 238);
+        }
+
+        .confirm-button.active {
+            background-color: rgb(6, 182, 212);
+            color: rgb(0, 0, 0);
+
+            &:hover {
+                background-color: rgb(34, 211, 238);
+            }
+        }
+    }
+
+    &.violet-accent {
+        .selector-title {
+            color: rgb(196, 181, 253);
+        }
+
+        .completed-badge {
+            background-color: rgba(167, 139, 250, 0.2);
+            color: rgb(196, 181, 253);
+        }
+
+        .required-badge {
+            background-color: rgba(167, 139, 250, 0.1);
+            color: rgb(167, 139, 250);
+        }
+
+        .confirm-button.active {
+            background-color: rgb(124, 58, 237);
+            color: rgb(255, 255, 255);
+
+            &:hover {
+                background-color: rgb(139, 92, 246);
+            }
+        }
+    }
+
+    .journey-selector-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+
+        .selector-title-area {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .selector-icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 2rem;
+                height: 2rem;
+                background-color: rgba(31, 41, 55, 0.5);
+                border-radius: 0.5rem;
+                padding: 0.5rem;
+            }
+
+            .selector-title {
+                font-size: 1.125rem;
+                font-weight: 600;
+                margin: 0;
+            }
+
+            .required-badge {
+                font-size: 0.75rem;
+                padding: 0.125rem 0.5rem;
+                border-radius: 0.25rem;
+                font-weight: 500;
+            }
+
+            .completed-badge {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+                font-size: 0.75rem;
+                padding: 0.125rem 0.5rem;
+                border-radius: 0.25rem;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .journey-selector-content {
+        .selector-description {
+            color: rgb(156, 163, 175);
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .selector-error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: rgb(252, 165, 165);
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .selector-loading {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+            color: rgb(156, 163, 175);
+        }
+
+        .selector-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .selector-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(75, 85, 99, 0.3);
+
+            .confirm-button {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.5rem 1rem;
+                border-radius: 0.375rem;
+                font-size: 0.875rem;
+                font-weight: 500;
+                transition: all 0.2s ease;
+
+                &.disabled {
+                    background-color: rgb(55, 65, 81);
+                    color: rgb(156, 163, 175);
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+}
