@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useJourney } from '../../components/JourneyContext';
 import { SECTION_IDS } from '../constants/sectionConstants';
+import { MedicalCustomizationData } from '../types';
 import { getMedicalCustomizationData, saveMedicalCustomizationData } from '../utils/customizationStorage';
 
 // Context value interface - deliberately simple
@@ -28,7 +29,6 @@ interface MedicalCustomizationContextValue {
     updateSectionData: (sectionId: string, data: any) => void;
     updateSectionValidity: (sectionId: string, isValid: boolean) => void;
     markSectionComplete: (sectionId: string) => void;
-    saveAllData: () => Promise<{ success: boolean; error?: string }>;
 }
 
 // Create the context
@@ -102,27 +102,6 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
         });
     }, [updateRegistrationData]);
 
-    // Save all data
-    const saveAllData = useCallback(async (): Promise<{ success: boolean; error?: string }> => {
-        try {
-            const result = await saveMedicalCustomizationData({
-                anthropometrics: state.anthropometrics,
-                injuries: state.injuries,
-                medicalClearance: state.medicalClearance,
-                liabilityWaiver: state.liabilityWaiver,
-                completedSections: state.meta.completedSections
-            });
-
-            return result;
-        } catch (error) {
-            console.error('Error saving medical data:', error);
-            return {
-                success: false,
-                error: error instanceof Error ? error.message : 'Unknown error saving data'
-            };
-        }
-    }, [state]);
-
     // Load data on mount
     useEffect(() => {
         const loadData = async () => {
@@ -176,14 +155,22 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
                 state.medicalClearance || state.liabilityWaiver ||
                 state.meta.completedSections.length > 0) {
 
-                saveAllData().catch(err => {
-                    console.error('Error automatically saving medical data:', err);
+                const medicalData: MedicalCustomizationData = {
+                    anthropometrics: state.anthropometrics,
+                    injuries: state.injuries,
+                    medicalClearance: state.medicalClearance,
+                    liabilityWaiver: state.liabilityWaiver,
+                    completedSections: state.meta.completedSections
+                };
+
+                saveMedicalCustomizationData(medicalData).catch(err => {
+                    console.error('Error saving medical data:', err);
                 });
             }
         }, 500);
 
         return () => clearTimeout(timeoutId);
-    }, [state, isLoading, saveAllData]);
+    }, [state, isLoading]);
 
     const contextValue = {
         state,
@@ -192,8 +179,7 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
         isCustomizationValid,
         updateSectionData,
         updateSectionValidity,
-        markSectionComplete,
-        saveAllData
+        markSectionComplete
     };
 
     return (
@@ -210,6 +196,4 @@ export const useMedicalCustomization = (): MedicalCustomizationContextValue => {
         throw new Error('useMedicalCustomization must be used within a MedicalCustomizationProvider');
     }
     return context;
-};
-
-export default MedicalCustomizationContext; 
+}; 

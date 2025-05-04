@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import ProgressIndicator from '../../components/ProgressIndicator';
 import { AccordionSectionRef } from '../components/AccordionSection';
 import { SECTION_IDS } from './constants/sectionConstants';
@@ -20,17 +20,15 @@ interface CustomizedMedicalContentProps {
  */
 const CustomizedMedicalContent: React.FC<CustomizedMedicalContentProps> = ({ onValidChange }) => {
     const {
-        state,
         isCustomizationValid,
         isLoading,
         error,
+        state,
         updateSectionValidity,
         markSectionComplete
     } = useMedicalCustomization();
 
-    const { completedSections } = state.meta;
-
-    // Section refs - needed for accordion behavior
+    // Section refs - needed for accordion functionality
     const anthropometricsRef = useRef<AccordionSectionRef>(null);
     const injuriesRef = useRef<AccordionSectionRef>(null);
     const medicalClearanceRef = useRef<AccordionSectionRef>(null);
@@ -41,8 +39,8 @@ const CustomizedMedicalContent: React.FC<CustomizedMedicalContentProps> = ({ onV
         onValidChange(isCustomizationValid);
     }, [isCustomizationValid, onValidChange]);
 
-    // Get section ref by ID
-    const getSectionRef = useCallback((sectionId: string): React.RefObject<AccordionSectionRef> => {
+    // Get ref by section ID
+    const getSectionRef = (sectionId: string): React.RefObject<AccordionSectionRef> => {
         switch (sectionId) {
             case SECTION_IDS.anthropometrics:
                 return anthropometricsRef;
@@ -55,20 +53,20 @@ const CustomizedMedicalContent: React.FC<CustomizedMedicalContentProps> = ({ onV
             default:
                 return anthropometricsRef;
         }
-    }, []);
+    };
 
     // Get the next section ID
-    const getNextSectionId = useCallback((currentSectionId: string): string | null => {
+    const getNextSectionId = (currentSectionId: string): string | null => {
         const sections = Object.values(SECTION_IDS);
         const currentIndex = sections.indexOf(currentSectionId);
         if (currentIndex < sections.length - 1) {
             return sections[currentIndex + 1];
         }
         return null;
-    }, []);
+    };
 
     // Handle section confirmation and transition to next section
-    const handleConfirmSection = useCallback((sectionId: string) => {
+    const handleConfirmSection = (sectionId: string) => {
         // Mark section as complete
         markSectionComplete(sectionId);
 
@@ -88,16 +86,17 @@ const CustomizedMedicalContent: React.FC<CustomizedMedicalContentProps> = ({ onV
                 }, 400);
             }
         }
-    }, [markSectionComplete, getSectionRef, getNextSectionId]);
+    };
 
-    // Initialize first section or restore from saved state
+    // Initialize first section or restore from saved state 
     useEffect(() => {
+        // Skip during loading
         if (isLoading) return;
 
         // Find first incomplete section or default to anthropometrics
         const sections = Object.values(SECTION_IDS);
         const firstIncompleteSection = sections.find(section =>
-            !completedSections.includes(section)
+            !state.meta.completedSections.includes(section)
         ) || SECTION_IDS.anthropometrics;
 
         // Open appropriate section with delay for DOM to be ready
@@ -107,7 +106,7 @@ const CustomizedMedicalContent: React.FC<CustomizedMedicalContentProps> = ({ onV
                 sectionRef.current.open();
             }
         }, 600);
-    }, [completedSections, isLoading, getSectionRef]);
+    }, [isLoading, state.meta.completedSections]);
 
     // Simple loading state
     if (isLoading) {
@@ -138,7 +137,7 @@ const CustomizedMedicalContent: React.FC<CustomizedMedicalContentProps> = ({ onV
                 <AnthropometricsSelector
                     ref={anthropometricsRef}
                     onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.anthropometrics, isValid)}
-                    isCompleted={completedSections.includes(SECTION_IDS.anthropometrics)}
+                    isCompleted={state.meta.completedSections.includes(SECTION_IDS.anthropometrics)}
                     onConfirm={() => handleConfirmSection(SECTION_IDS.anthropometrics)}
                 />
             </div>
@@ -148,7 +147,7 @@ const CustomizedMedicalContent: React.FC<CustomizedMedicalContentProps> = ({ onV
                 <InjuriesSelector
                     ref={injuriesRef}
                     onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.injuries, isValid)}
-                    isCompleted={completedSections.includes(SECTION_IDS.injuries)}
+                    isCompleted={state.meta.completedSections.includes(SECTION_IDS.injuries)}
                     onConfirm={() => handleConfirmSection(SECTION_IDS.injuries)}
                 />
             </div>
@@ -158,7 +157,7 @@ const CustomizedMedicalContent: React.FC<CustomizedMedicalContentProps> = ({ onV
                 <MedicalClearanceSelector
                     ref={medicalClearanceRef}
                     onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.medicalClearance, isValid)}
-                    isCompleted={completedSections.includes(SECTION_IDS.medicalClearance)}
+                    isCompleted={state.meta.completedSections.includes(SECTION_IDS.medicalClearance)}
                     onConfirm={() => handleConfirmSection(SECTION_IDS.medicalClearance)}
                 />
             </div>
@@ -168,14 +167,14 @@ const CustomizedMedicalContent: React.FC<CustomizedMedicalContentProps> = ({ onV
                 <LiabilityWaiverSelector
                     ref={liabilityWaiverRef}
                     onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.liabilityWaiver, isValid)}
-                    isCompleted={completedSections.includes(SECTION_IDS.liabilityWaiver)}
+                    isCompleted={state.meta.completedSections.includes(SECTION_IDS.liabilityWaiver)}
                     onConfirm={() => handleConfirmSection(SECTION_IDS.liabilityWaiver)}
                 />
             </div>
 
             {/* Progress indicator */}
             <ProgressIndicator
-                completedSections={completedSections}
+                completedSections={state.meta.completedSections}
                 totalSections={Object.keys(SECTION_IDS).length}
                 sectionLabels={Object.entries(SECTION_IDS).reduce((acc, [key, value]) => {
                     acc[value] = value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');

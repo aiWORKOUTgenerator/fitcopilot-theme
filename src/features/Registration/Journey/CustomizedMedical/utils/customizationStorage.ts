@@ -75,15 +75,23 @@ export const getMedicalCustomizationData = (): MedicalCustomizationData | null =
         const storedData = sessionStorage.getItem(STORAGE_KEY);
         if (!storedData) return null;
 
-        return JSON.parse(storedData);
+        const parsedData = JSON.parse(storedData);
+
+        // Ensure completedSections exists for backward compatibility
+        if (!parsedData.completedSections) {
+            parsedData.completedSections = [];
+        }
+
+        return parsedData;
     } catch (error) {
         console.error('Failed to load medical customization data:', error);
-        return null;
+        // Return minimal valid data structure for graceful degradation
+        return { completedSections: [] };
     }
 };
 
 /**
- * Clear all medical customization data
+ * Clears all stored medical customization data
  */
 export const clearMedicalCustomizationData = (): void => {
     try {

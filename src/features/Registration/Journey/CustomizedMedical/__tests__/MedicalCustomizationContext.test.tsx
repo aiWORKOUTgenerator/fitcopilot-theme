@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import React from 'react';
 import { MedicalCustomizationProvider, useMedicalCustomization } from '../context/MedicalCustomizationContext';
-import { getMedicalCustomizationData } from '../utils/customizationStorage';
+import { getMedicalCustomizationData, saveMedicalCustomizationData } from '../utils/customizationStorage';
 
 // Mock the storage module
 jest.mock('../utils/customizationStorage', () => ({
@@ -71,7 +71,7 @@ describe('MedicalCustomizationContext', () => {
         expect(parsedState.meta.validSections).toBeDefined();
     });
 
-    test('updates section data', async () => {
+    test('updates section data and persists changes', async () => {
         render(
             <MedicalCustomizationProvider>
                 <TestComponent />
@@ -91,6 +91,13 @@ describe('MedicalCustomizationContext', () => {
         const parsedState = JSON.parse(stateEl.textContent || '{}');
 
         expect(parsedState.anthropometrics).toEqual({ height: { value: 180, unit: 'cm' } });
+
+        // Verify persistence is called (with debounce)
+        await act(async () => {
+            jest.advanceTimersByTime(600);
+        });
+
+        expect(saveMedicalCustomizationData).toHaveBeenCalled();
     });
 
     test('marks section as complete', async () => {
