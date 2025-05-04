@@ -1,9 +1,9 @@
 /**
- * Section ID constants for the CustomizedMedical component
+ * Section ID constants for CustomizedMedical
  */
 export const SECTION_IDS = {
     anthropometrics: 'anthropometrics',
     injuries: 'injuries',
-    medicalClearance: 'medical-clearance',
-    liabilityWaiver: 'liability-waiver'
-}; 
+    medicalClearance: 'medicalClearance',
+    liabilityWaiver: 'liabilityWaiver',
+} as const; 

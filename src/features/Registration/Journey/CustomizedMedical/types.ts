@@ -1,3 +1,4 @@
+import React from 'react';
 import { AccordionSectionRef } from "../components/AccordionSection";
 
 /**
@@ -7,6 +8,15 @@ export interface SelectorProps {
     onValidChange: (isValid: boolean) => void;
     isCompleted?: boolean;
     onConfirm: () => void;
+}
+
+/**
+ * Props for section components using the new pattern
+ */
+export interface SectionComponentProps {
+    // For the new pattern
+    setIsValid?: (isValid: boolean) => void;
+    isValid?: boolean;
 }
 
 /* Define props for each selector component */
@@ -36,6 +46,7 @@ export interface AnthropometricsData {
     height?: {
         value: number;
         unit: 'cm' | 'ft';
+        inches?: number; // Required when unit is 'ft'
     };
     weight?: {
         value: number;
@@ -46,17 +57,18 @@ export interface AnthropometricsData {
 }
 
 export interface InjuriesData {
-    selectedInjuries: string[];
+    hasInjuries?: boolean;
+    selectedInjuries?: string[];
     otherInjuries?: string;
 }
 
 export interface MedicalClearanceData {
-    hasDisease: 'yes' | 'no' | 'not-sure';
-    additionalDetails?: string;
+    hasMedicalCondition?: boolean;
+    medicalDetails?: string;
 }
 
 export interface LiabilityWaiverData {
-    hasAgreed: boolean;
+    hasAcceptedWaiver?: boolean;
     agreementDate?: string;
 }
 
@@ -69,4 +81,41 @@ export interface MedicalCustomizationData {
     medicalClearance?: MedicalClearanceData;
     liabilityWaiver?: LiabilityWaiverData;
     completedSections: string[];
+}
+
+/**
+ * Section error state component props
+ */
+export interface SectionErrorStateProps {
+    message: string;
+    onRetry: () => void;
+}
+
+/**
+ * Interface for section validation results
+ */
+export interface ValidationResult {
+    isValid: boolean;
+    errors: string[];
+}
+
+/**
+ * Props for the StandardSection component
+ */
+export interface StandardSectionProps {
+    sectionId: string;
+    title: string;
+    icon: React.ReactNode;
+    description?: string;
+    children: React.ReactNode;
+    isCompleted?: boolean;
+    isValid?: boolean;
+    isLoading?: boolean;
+    error?: string | null;
+    onOpen?: () => void;
+    onClose?: () => void;
+    onConfirm?: () => void;
+    onValidChange?: (isValid: boolean) => void;
+    validationMessage?: string;
+    confirmButtonText?: string;
 } 

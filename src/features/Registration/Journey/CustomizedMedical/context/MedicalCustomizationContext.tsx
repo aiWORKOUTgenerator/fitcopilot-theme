@@ -1,17 +1,18 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useJourney } from '../../components/JourneyContext';
 import { SECTION_IDS } from '../constants/sectionConstants';
-import { MedicalCustomizationData } from '../types';
+import { AnthropometricsData, InjuriesData, LiabilityWaiverData, MedicalClearanceData, MedicalCustomizationData } from '../types';
 import { getMedicalCustomizationData, saveMedicalCustomizationData } from '../utils/customizationStorage';
+import { validators } from '../utils/validators';
 
-// Context value interface - deliberately simple
+// Context value interface with proper typing
 interface MedicalCustomizationContextValue {
-    // State
+    // State with proper types
     state: {
-        anthropometrics: any;
-        injuries: any;
-        medicalClearance: any;
-        liabilityWaiver: any;
+        anthropometrics: AnthropometricsData | null;
+        injuries: InjuriesData | null;
+        medicalClearance: MedicalClearanceData | null;
+        liabilityWaiver: LiabilityWaiverData | null;
         meta: {
             completedSections: string[];
             validSections: Record<string, boolean>;
@@ -24,11 +25,18 @@ interface MedicalCustomizationContextValue {
 
     // Computed properties
     isCustomizationValid: boolean;
+    validSections: string[];
+    completedSections: string[];
 
     // Actions
-    updateSectionData: (sectionId: string, data: any) => void;
+    updateSectionData: <T extends keyof MedicalCustomizationData>(
+        sectionId: T,
+        data: Partial<MedicalCustomizationData[T]>
+    ) => void;
     updateSectionValidity: (sectionId: string, isValid: boolean) => void;
     markSectionComplete: (sectionId: string) => void;
+    saveAllData: () => Promise<boolean>;
+    validateSection: (sectionId: string) => boolean;
 }
 
 // Create the context
@@ -38,8 +46,8 @@ const MedicalCustomizationContext = createContext<MedicalCustomizationContextVal
 export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { registrationData, updateRegistrationData } = useJourney();
 
-    // Initialize state
-    const [state, setState] = useState({
+    // Initialize state with proper typing
+    const [state, setState] = useState<MedicalCustomizationContextValue['state']>({
         anthropometrics: null,
         injuries: null,
         medicalClearance: null,
@@ -53,19 +61,29 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Computed property
-    const isCustomizationValid = state.meta.completedSections.length > 0;
+    // Computed properties
+    const validSections = Object.entries(state.meta.validSections)
+        .filter(([_, isValid]) => isValid)
+        .map(([sectionId]) => sectionId);
 
-    // Update section data
-    const updateSectionData = useCallback((sectionId: string, data: any) => {
+    const completedSections = state.meta.completedSections;
+
+    const isCustomizationValid = completedSections.length > 0 &&
+        Object.values(SECTION_IDS).some(id => completedSections.includes(id));
+
+    // Update section data with proper typing
+    const updateSectionData = useCallback(<T extends keyof MedicalCustomizationData>(
+        sectionId: T,
+        data: Partial<MedicalCustomizationData[T]>
+    ): void => {
         setState(prev => ({
             ...prev,
-            [sectionId]: { ...prev[sectionId], ...data }
+            [sectionId]: { ...(prev[sectionId] || {}), ...data }
         }));
     }, []);
 
     // Update section validity
-    const updateSectionValidity = useCallback((sectionId: string, isValid: boolean) => {
+    const updateSectionValidity = useCallback((sectionId: string, isValid: boolean): void => {
         setState(prev => ({
             ...prev,
             meta: {
@@ -79,7 +97,7 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
     }, []);
 
     // Mark section as complete
-    const markSectionComplete = useCallback((sectionId: string) => {
+    const markSectionComplete = useCallback((sectionId: string): void => {
         setState(prev => {
             // Skip if already completed
             if (prev.meta.completedSections.includes(sectionId)) return prev;
@@ -88,7 +106,12 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
 
             // Update journey context data
             updateRegistrationData({
-                completedMedicalSections: updatedSections
+                completedMedicalSections: updatedSections,
+                // Special flag for registration progress
+                completedCustomizationSections: [
+                    ...(registrationData.completedCustomizationSections || []),
+                    'medical_information_completed'
+                ]
             });
 
             // Update state
@@ -100,7 +123,34 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
                 }
             };
         });
-    }, [updateRegistrationData]);
+    }, [registrationData.completedCustomizationSections, updateRegistrationData]);
+
+    // Validate a section based on its data
+    const validateSection = useCallback((sectionId: string): boolean => {
+        const validatorFn = validators[sectionId as keyof typeof validators];
+        if (!validatorFn) return false;
+
+        return validatorFn(state[sectionId as keyof MedicalCustomizationData]);
+    }, [state]);
+
+    // Save all data to storage
+    const saveAllData = useCallback(async (): Promise<boolean> => {
+        try {
+            const medicalData: MedicalCustomizationData = {
+                anthropometrics: state.anthropometrics || undefined,
+                injuries: state.injuries || undefined,
+                medicalClearance: state.medicalClearance || undefined,
+                liabilityWaiver: state.liabilityWaiver || undefined,
+                completedSections: state.meta.completedSections
+            };
+
+            await saveMedicalCustomizationData(medicalData);
+            return true;
+        } catch (error) {
+            console.error('Error saving medical data:', error);
+            throw error;
+        }
+    }, [state]);
 
     // Load data on mount
     useEffect(() => {
@@ -128,7 +178,12 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
                     // Update registration data if needed
                     if (data.completedSections?.length && !registrationData.completedMedicalSections?.length) {
                         updateRegistrationData({
-                            completedMedicalSections: data.completedSections
+                            completedMedicalSections: data.completedSections,
+                            // Special flag for registration progress
+                            completedCustomizationSections: [
+                                ...(registrationData.completedCustomizationSections || []),
+                                'medical_information_completed'
+                            ]
                         });
                     }
                 }
@@ -141,7 +196,7 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
         };
 
         loadData();
-    }, [registrationData.completedMedicalSections, updateRegistrationData]);
+    }, [registrationData.completedMedicalSections, registrationData.completedCustomizationSections, updateRegistrationData]);
 
     // Persist state changes
     useEffect(() => {
@@ -156,10 +211,10 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
                 state.meta.completedSections.length > 0) {
 
                 const medicalData: MedicalCustomizationData = {
-                    anthropometrics: state.anthropometrics,
-                    injuries: state.injuries,
-                    medicalClearance: state.medicalClearance,
-                    liabilityWaiver: state.liabilityWaiver,
+                    anthropometrics: state.anthropometrics || undefined,
+                    injuries: state.injuries || undefined,
+                    medicalClearance: state.medicalClearance || undefined,
+                    liabilityWaiver: state.liabilityWaiver || undefined,
                     completedSections: state.meta.completedSections
                 };
 
@@ -177,9 +232,13 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
         isLoading,
         error,
         isCustomizationValid,
+        validSections,
+        completedSections,
         updateSectionData,
         updateSectionValidity,
-        markSectionComplete
+        markSectionComplete,
+        saveAllData,
+        validateSection
     };
 
     return (

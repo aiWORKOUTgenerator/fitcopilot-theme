@@ -1,63 +1,50 @@
 import { ActivitySquare, Check } from 'lucide-react';
 import React, { forwardRef, useEffect, useState } from 'react';
-import AccordionSection, { AccordionSectionRef } from '../../../components/AccordionSection';
-import { useJourney } from '../../../components/JourneyContext';
+import { AccordionSectionRef } from '../../../components/AccordionSection';
 import { INJURY_CATEGORIES } from '../../constants/injuriesOptions';
-import { InjuriesSelectorProps } from '../../types';
-import { getMedicalCustomizationData, updateCustomizationSection } from '../../utils/customizationStorage';
-import ConfirmButton from '../shared/ConfirmButton';
+import { SECTION_IDS } from '../../constants/sectionConstants';
+import { useMedicalCustomization } from '../../context/MedicalCustomizationContext';
+import { InjuriesSelectorProps, SectionComponentProps } from '../../types';
+import { announceToScreenReader } from '../../utils/a11y';
+import StandardSection from '../StandardSection';
 import './InjuriesSelector.scss';
 
 /**
- * InjuriesSelector component for selecting injuries and limitations
+ * InjuriesInnerForm component handles the form fields and validation
  */
-const InjuriesSelector = forwardRef<AccordionSectionRef, InjuriesSelectorProps>(({
-    onValidChange,
-    isCompleted = false,
-    onConfirm
-}, ref) => {
-    const { registrationData, updateRegistrationData } = useJourney();
+const InjuriesInnerForm: React.FC<SectionComponentProps> = ({
+    setIsValid,
+    isValid
+}) => {
+    const { state, updateSectionData } = useMedicalCustomization();
+    const injuries = state.injuries || {};
 
-    // Get stored data if available
-    const storedData = getMedicalCustomizationData();
-    const storedInjuries = storedData.injuries || {};
-
-    // Initialize state from stored data, falling back to registrationData if needed
+    // Initialize state from context data
     const [selectedInjuries, setSelectedInjuries] = useState<string[]>(
-        storedInjuries.selectedInjuries || registrationData.selectedInjuries || []
+        injuries.selectedInjuries || []
     );
 
     const [otherInjuries, setOtherInjuries] = useState<string>(
-        storedInjuries.otherInjuries || registrationData.otherInjuries || ''
+        injuries.otherInjuries || ''
     );
 
     // Always valid even if no injuries selected (user might not have any)
-    const [isValid, setIsValid] = useState(true);
-
-    // Initial validation on component mount - always valid for injuries
     useEffect(() => {
-        setIsValid(true);
-        onValidChange(true);
-    }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+        // Injuries selector is always valid - user can have no injuries
+        if (setIsValid) {
+            setIsValid(true);
+        }
 
-    // Update registration data when selections change
-    useEffect(() => {
-        // Update registration data
-        updateRegistrationData({
-            selectedInjuries,
-            otherInjuries
-        });
+        // Update context with debouncing
+        const timeoutId = setTimeout(() => {
+            updateSectionData('injuries', {
+                selectedInjuries,
+                otherInjuries: otherInjuries || undefined
+            });
+        }, 300);
 
-        // Persist to local storage
-        updateCustomizationSection('injuries', {
-            selectedInjuries,
-            otherInjuries: otherInjuries || undefined
-        });
-
-        // Always valid - user can have no injuries
-        setIsValid(true);
-        onValidChange(true);
-    }, [selectedInjuries, otherInjuries, onValidChange, updateRegistrationData]);
+        return () => clearTimeout(timeoutId);
+    }, [selectedInjuries, otherInjuries, setIsValid, updateSectionData]);
 
     // Toggle injury selection
     const toggleInjury = (injury: string) => {
@@ -69,92 +56,109 @@ const InjuriesSelector = forwardRef<AccordionSectionRef, InjuriesSelectorProps>(
         });
     };
 
-    // Prepare accordion title with completion indicator
-    const sectionTitle = isCompleted ? (
-        <div className="flex items-center">
-            Injuries & Limitations
-            <span className="ml-2 text-xs bg-emerald-800/30 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-700/50 flex items-center">
-                <Check size={12} className="mr-1" />
-                Completed
-            </span>
-        </div>
-    ) : 'Injuries & Limitations';
-
     return (
-        <AccordionSection
-            ref={ref}
-            title={sectionTitle}
-            icon={<ActivitySquare size={18} className={isCompleted ? 'text-emerald-400' : 'text-purple-300'} />}
-            defaultOpen={false}
-        >
-            <div className="injuries-selector">
-                <p className="section-description">
-                    Select any injuries or physical limitations that apply to you. This helps us customize your workout to avoid exercises that might cause discomfort or aggravate existing conditions.
-                </p>
+        <div className="injuries-selector">
+            <p className="section-description">
+                Select any injuries or physical limitations that apply to you. This helps us customize your workout to avoid exercises that might cause discomfort or aggravate existing conditions.
+            </p>
 
-                {/* Injuries by category */}
-                {Object.entries(INJURY_CATEGORIES).map(([categoryKey, category]) => (
-                    <div key={categoryKey} className="injury-category">
-                        <h4 className="category-title">{category.label}</h4>
-                        <div className="category-items">
-                            {category.options.map((injury, index) => (
-                                <div
-                                    key={index}
-                                    className={`injury-item ${selectedInjuries.includes(injury) ? 'selected' : ''}`}
-                                    onClick={() => toggleInjury(injury)}
-                                    role="checkbox"
-                                    aria-checked={selectedInjuries.includes(injury)}
-                                    tabIndex={0}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' || e.key === ' ') {
-                                            e.preventDefault();
-                                            toggleInjury(injury);
-                                        }
-                                    }}
-                                >
-                                    <div className="item-checkbox">
-                                        {selectedInjuries.includes(injury) && <Check size={14} />}
-                                    </div>
-                                    <span className="item-label">{injury}</span>
+            {/* Injuries by category */}
+            {Object.entries(INJURY_CATEGORIES).map(([categoryKey, category]) => (
+                <div key={categoryKey} className="injury-category">
+                    <h4 className="category-title">{category.label}</h4>
+                    <div className="category-items">
+                        {category.options.map((injury, index) => (
+                            <div
+                                key={index}
+                                className={`injury-item ${selectedInjuries.includes(injury) ? 'selected' : ''}`}
+                                onClick={() => toggleInjury(injury)}
+                                role="checkbox"
+                                aria-checked={selectedInjuries.includes(injury)}
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        toggleInjury(injury);
+                                    }
+                                }}
+                            >
+                                <div className="item-checkbox">
+                                    {selectedInjuries.includes(injury) && <Check size={14} />}
                                 </div>
-                            ))}
-                        </div>
+                                <span className="item-label">{injury}</span>
+                            </div>
+                        ))}
                     </div>
-                ))}
-
-                {/* Other injuries input */}
-                <div className="other-injuries">
-                    <label htmlFor="other-injuries" className="other-label">
-                        Other injuries or limitations not listed
-                    </label>
-                    <textarea
-                        id="other-injuries"
-                        className="other-input"
-                        placeholder="Please describe any other injuries or limitations not listed above"
-                        rows={3}
-                        value={otherInjuries}
-                        onChange={(e) => setOtherInjuries(e.target.value)}
-                    />
                 </div>
+            ))}
 
-                {/* Selection summary */}
-                {selectedInjuries.length > 0 && (
-                    <div className="selection-summary">
-                        <div className="summary-text">
-                            {selectedInjuries.length} {selectedInjuries.length === 1 ? 'injury' : 'injuries'} selected
-                        </div>
-                    </div>
-                )}
-
-                {/* Confirm button */}
-                <ConfirmButton
-                    isValid={isValid}
-                    onConfirm={onConfirm}
-                    validationMessage="Click confirm to continue (no injuries is allowed)"
-                    buttonText="Confirm Injuries"
+            {/* Other injuries input */}
+            <div className="other-injuries">
+                <label htmlFor="other-injuries" className="other-label">
+                    Other injuries or limitations not listed
+                </label>
+                <textarea
+                    id="other-injuries"
+                    className="other-input"
+                    placeholder="Please describe any other injuries or limitations not listed above"
+                    rows={3}
+                    value={otherInjuries}
+                    onChange={(e) => setOtherInjuries(e.target.value)}
+                    aria-label="Describe other injuries or limitations"
                 />
             </div>
-        </AccordionSection>
+
+            {/* Selection summary */}
+            {selectedInjuries.length > 0 && (
+                <div className="selection-summary">
+                    <div className="summary-text" aria-live="polite">
+                        {selectedInjuries.length} {selectedInjuries.length === 1 ? 'injury' : 'injuries'} selected
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+/**
+ * InjuriesSelector component for selecting injuries and limitations
+ * Refactored to use StandardSection and MedicalCustomizationContext
+ */
+const InjuriesSelector = forwardRef<AccordionSectionRef, InjuriesSelectorProps>(({
+    onValidChange,
+    isCompleted = false,
+    onConfirm
+}, ref) => {
+    const { updateSectionValidity, error, isLoading, markSectionComplete } = useMedicalCustomization();
+
+    // Handle validity change - always valid for injuries
+    const handleValidChange = (isValid: boolean) => {
+        updateSectionValidity(SECTION_IDS.injuries, isValid);
+        onValidChange(isValid);
+    };
+
+    // Handle confirmation
+    const handleConfirm = () => {
+        markSectionComplete(SECTION_IDS.injuries);
+        announceToScreenReader('Injuries information saved successfully');
+        onConfirm();
+    };
+
+    return (
+        <StandardSection
+            ref={ref}
+            sectionId={SECTION_IDS.injuries}
+            title="Injuries & Limitations"
+            icon={<ActivitySquare size={18} />}
+            description="Tell us about any injuries or limitations so we can customize your workout plan"
+            isCompleted={isCompleted}
+            onValidChange={handleValidChange}
+            onConfirm={handleConfirm}
+            error={error}
+            isLoading={isLoading}
+        >
+            <InjuriesInnerForm />
+        </StandardSection>
     );
 });
 

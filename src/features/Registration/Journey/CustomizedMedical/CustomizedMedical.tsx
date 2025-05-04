@@ -8,6 +8,8 @@ interface CustomizedMedicalProps {
 
 /**
  * Main container component with context provider
+ * This component follows the pattern from CustomizeExperience
+ * by separating provider and consumer components
  */
 const CustomizedMedical: React.FC<CustomizedMedicalProps> = ({ onValidChange }) => {
     return (
