@@ -1,53 +1,52 @@
+import { Clock, Dumbbell, Target } from 'lucide-react';
 import React, { useEffect, useRef } from 'react';
 import ProgressIndicator from '../../components/ProgressIndicator';
 import { AccordionSectionRef } from '../components/AccordionSection';
 import { useJourney } from '../components/JourneyContext';
+import StandardSection from '../components/StandardSection';
 import EquipmentSelector from './components/EquipmentSelector';
 import ExperienceLevelIndicator from './components/ExperienceLevelIndicator';
 import TimeCommitmentSelector from './components/TimeCommitmentSelector';
 import WorkoutPreferenceSelector from './components/WorkoutPreferenceSelector';
 import { SECTION_IDS } from './constants/sectionConstants';
+import { CustomizationProvider, useCustomization } from './context/CustomizationContext';
 import './CustomizeExperience.scss';
-import { useCustomizationState } from './hooks/useCustomizationState';
-import { loadCustomizationData } from './utils/customizationStorage';
 
 interface CustomizeExperienceProps {
     onValidChange: (isValid: boolean) => void;
 }
 
+/**
+ * Main CustomizeExperience component with context provider
+ */
 const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange }) => {
+    return (
+        <CustomizationProvider>
+            <CustomizeExperienceContent onValidChange={onValidChange} />
+        </CustomizationProvider>
+    );
+};
+
+/**
+ * Inner component that consumes the CustomizationContext
+ */
+const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = ({ onValidChange }) => {
     const {
         validSections,
         completedSections,
-        updateSectionValidity,
-        markSectionComplete,
         isCustomizationValid,
-        syncWithStoredCompletedSections
-    } = useCustomizationState();
+        isLoading,
+        error,
+        markSectionComplete,
+        updateSectionValidity
+    } = useCustomization();
 
-    const { registrationData, updateRegistrationData } = useJourney();
+    const { registrationData } = useJourney();
 
     // Refs for accordion sections
     const equipmentRef = useRef<AccordionSectionRef>(null);
     const timeCommitmentRef = useRef<AccordionSectionRef>(null);
     const workoutPreferenceRef = useRef<AccordionSectionRef>(null);
-
-    // Sync with stored data on initial mount
-    useEffect(() => {
-        // Check for stored data
-        const storedData = loadCustomizationData();
-        if (storedData?.completedSections?.length) {
-            // Sync the completed sections from storage
-            syncWithStoredCompletedSections(storedData.completedSections);
-
-            // Also update the journey context if needed
-            if (!registrationData.completedCustomizationSections?.length) {
-                updateRegistrationData({
-                    completedCustomizationSections: storedData.completedSections
-                });
-            }
-        }
-    }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     // Effect to update parent validation state
     useEffect(() => {
@@ -103,6 +102,8 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange
 
     // Initialize first section or restore from saved state
     useEffect(() => {
+        if (isLoading) return;
+
         // Find first incomplete section or default to equipment
         const sections = Object.values(SECTION_IDS);
         const firstIncompleteSection = sections.find(section =>
@@ -116,7 +117,7 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange
                 sectionRef.current.open();
             }
         }, 600);
-    }, [completedSections]);
+    }, [completedSections, isLoading]);
 
     return (
         <div className="customize-experience-container">
@@ -133,34 +134,52 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange
             />
 
             {/* Equipment Selection */}
-            <div id={`accordion-section-${SECTION_IDS.equipment}`}>
-                <EquipmentSelector
-                    ref={equipmentRef}
-                    onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.equipment, isValid)}
-                    isCompleted={completedSections.includes(SECTION_IDS.equipment)}
-                    onConfirm={() => handleConfirmSection(SECTION_IDS.equipment)}
-                />
-            </div>
+            <StandardSection
+                ref={equipmentRef}
+                sectionId={SECTION_IDS.equipment}
+                title="Equipment Selection"
+                icon={<Dumbbell size={18} />}
+                description="Select the equipment you have available for your workouts."
+                onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.equipment, isValid)}
+                isCompleted={completedSections.includes(SECTION_IDS.equipment)}
+                onConfirm={() => handleConfirmSection(SECTION_IDS.equipment)}
+                isLoading={isLoading}
+                error={error}
+            >
+                <EquipmentSelector />
+            </StandardSection>
 
             {/* Time Commitment Selection */}
-            <div id={`accordion-section-${SECTION_IDS.timeCommitment}`}>
-                <TimeCommitmentSelector
-                    ref={timeCommitmentRef}
-                    onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.timeCommitment, isValid)}
-                    isCompleted={completedSections.includes(SECTION_IDS.timeCommitment)}
-                    onConfirm={() => handleConfirmSection(SECTION_IDS.timeCommitment)}
-                />
-            </div>
+            <StandardSection
+                ref={timeCommitmentRef}
+                sectionId={SECTION_IDS.timeCommitment}
+                title="Time Management & Frequency"
+                icon={<Clock size={18} />}
+                description="Choose how much time you can dedicate to your workouts and how often you want to train."
+                onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.timeCommitment, isValid)}
+                isCompleted={completedSections.includes(SECTION_IDS.timeCommitment)}
+                onConfirm={() => handleConfirmSection(SECTION_IDS.timeCommitment)}
+                isLoading={isLoading}
+                error={error}
+            >
+                <TimeCommitmentSelector />
+            </StandardSection>
 
             {/* Workout Preference Selection */}
-            <div id={`accordion-section-${SECTION_IDS.workoutPreference}`}>
-                <WorkoutPreferenceSelector
-                    ref={workoutPreferenceRef}
-                    onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.workoutPreference, isValid)}
-                    isCompleted={completedSections.includes(SECTION_IDS.workoutPreference)}
-                    onConfirm={() => handleConfirmSection(SECTION_IDS.workoutPreference)}
-                />
-            </div>
+            <StandardSection
+                ref={workoutPreferenceRef}
+                sectionId={SECTION_IDS.workoutPreference}
+                title="Workout Preferences"
+                icon={<Target size={18} />}
+                description="Tell us about your workout preferences and areas you want to focus on."
+                onValidChange={(isValid) => updateSectionValidity(SECTION_IDS.workoutPreference, isValid)}
+                isCompleted={completedSections.includes(SECTION_IDS.workoutPreference)}
+                onConfirm={() => handleConfirmSection(SECTION_IDS.workoutPreference)}
+                isLoading={isLoading}
+                error={error}
+            >
+                <WorkoutPreferenceSelector />
+            </StandardSection>
 
             {/* Progress indicator */}
             <ProgressIndicator

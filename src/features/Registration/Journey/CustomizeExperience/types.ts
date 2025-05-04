@@ -1,7 +1,8 @@
+import React from 'react';
 import { AccordionSectionRef } from "../components/AccordionSection";
 
 /**
- * Common props for all selector components
+ * Base props interface for all selector/section components
  */
 export interface SelectorProps {
     onValidChange: (isValid: boolean) => void;
@@ -39,42 +40,49 @@ export interface ExperienceLevelIndicatorProps {
 }
 
 /**
- * Equipment selection data
+ * Props for the WorkoutPreferenceSelector component
  */
-export interface EquipmentSelectionData {
-    equipment: string[];
-    otherEquipment?: string;
+export interface WorkoutPreferenceSelectorProps extends SelectorProps {
+    ref: React.RefObject<AccordionSectionRef>;
 }
 
 /**
- * Time commitment data
+ * Equipment selection data
+ */
+export interface EquipmentSelectionData {
+    selectedEquipment: string[];
+    otherEquipment?: string;
+    hasNoEquipment: boolean;
+}
+
+/**
+ * Time commitment and training frequency data
  */
 export interface TimeCommitmentData {
     preferredTimeOfDay: string[];
     preferredDuration: string;
-    otherDuration?: string;
-    timeCommitmentPackage?: string;
-    daysPerWeek?: number;
-    preferredDays?: string[];
-    trainingFrequency?: string;
-}
-
-/**
- * Workout preference data
- */
-export interface WorkoutPreferenceData {
-    preferredExerciseTypes: string[];
-    avoidsExerciseTypes: string[];
-    otherPreferences?: string;
+    otherDuration: string;
+    timeCommitmentPackage: string;
+    preferredDays: string[];
+    trainingFrequency: string;
 }
 
 /**
  * Training frequency data
  */
 export interface TrainingFrequencyData {
-    daysPerWeek: number;
-    sessionsPerDay?: number;
-    preferredDays?: string[];
+    preferredDays: string[];
+    trainingFrequency: string;
+}
+
+/**
+ * Workout preference data
+ */
+export interface WorkoutPreferenceData {
+    preferredExercises: string[];
+    preferredWorkoutTypes: string[];
+    avoidedExercises: string[];
+    focusAreas: string[];
 }
 
 /**
@@ -84,6 +92,5 @@ export interface CustomizationData {
     equipment?: EquipmentSelectionData;
     timeCommitment?: TimeCommitmentData;
     workoutPreference?: WorkoutPreferenceData;
-    trainingFrequency?: TrainingFrequencyData;
     completedSections: string[];
 } 

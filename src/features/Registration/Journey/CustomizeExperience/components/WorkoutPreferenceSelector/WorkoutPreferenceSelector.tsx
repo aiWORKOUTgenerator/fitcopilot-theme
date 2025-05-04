@@ -1,254 +1,212 @@
-import { Check, Zap } from 'lucide-react';
-import React, { forwardRef, useEffect, useState } from 'react';
-import AccordionSection, { AccordionSectionRef } from '../../../components/AccordionSection';
-import { useJourney } from '../../../components/JourneyContext';
-import { loadCustomizationData, updateCustomizationSection } from '../../utils/customizationStorage';
-import ConfirmButton from '../shared/ConfirmButton';
+import { Check } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { EXERCISE_TYPES, ExerciseType, FOCUS_AREAS, WORKOUT_TYPES } from '../../constants/workoutOptions';
+import { useCustomization } from '../../context/CustomizationContext';
 import './WorkoutPreferenceSelector.scss';
 
-// Exercise types for preferences
-const EXERCISE_TYPES = [
-    'Barbell Compound Exercises',
-    'Dumbbell Exercises',
-    'Kettlebell Movements',
-    'Bodyweight Exercises',
-    'Machine Exercises',
-    'Cardio Sessions',
-    'HIIT Workouts',
-    'Mobility & Flexibility Work',
-    'Olympic Lifts',
-    'Pilates-Based Movements',
-    'Plyometrics',
-    'Core-Focused Exercises'
-];
-
-interface WorkoutPreferenceSelectorProps {
-    onValidChange: (isValid: boolean) => void;
-    isCompleted?: boolean;
-    onConfirm: () => void;
-}
-
 /**
- * Component for selecting workout exercise preferences
+ * Enhanced workout preference selector component using the centralized CustomizationContext
  */
-const WorkoutPreferenceSelector = forwardRef<AccordionSectionRef, WorkoutPreferenceSelectorProps>(({
-    onValidChange,
-    isCompleted = false,
-    onConfirm
-}, ref) => {
-    const { registrationData, updateRegistrationData } = useJourney();
+const WorkoutPreferenceSelector: React.FC<{ setIsValid?: (isValid: boolean) => void }> = ({
+    setIsValid
+}) => {
+    const {
+        workoutPreferenceData,
+        updateWorkoutPreferenceData,
+        saveAllData
+    } = useCustomization();
 
-    // Get stored data if available
-    const storedData = loadCustomizationData();
-    const storedWorkoutPreference = storedData?.workoutPreference || {};
-
-    // Initialize state from stored data, falling back to registrationData if needed
+    // Initialize state from context data
     const [preferredExercises, setPreferredExercises] = useState<string[]>(
-        storedWorkoutPreference.preferredExerciseTypes || registrationData.preferredExerciseTypes || []
+        workoutPreferenceData?.preferredExercises || []
     );
 
-    const [avoidExercises, setAvoidExercises] = useState<string[]>(
-        storedWorkoutPreference.avoidsExerciseTypes || registrationData.avoidsExerciseTypes || []
+    const [preferredWorkoutTypes, setPreferredWorkoutTypes] = useState<string[]>(
+        workoutPreferenceData?.preferredWorkoutTypes || []
     );
 
-    const [otherPreferences, setOtherPreferences] = useState<string>(
-        storedWorkoutPreference.otherPreferences || registrationData.otherWorkoutPreferences || ''
+    const [avoidedExercises, setAvoidedExercises] = useState<string[]>(
+        workoutPreferenceData?.avoidedExercises || []
     );
 
-    const [isValid, setIsValid] = useState(false);
+    const [focusAreas, setFocusAreas] = useState<string[]>(
+        workoutPreferenceData?.focusAreas || []
+    );
 
-    // Initial validation on component mount
+    // Update validation status and context when selections change
     useEffect(() => {
-        const valid = preferredExercises.length > 0 || otherPreferences.trim().length > 0;
-        setIsValid(valid);
-        onValidChange(valid);
-    }, []);  // eslint-disable-line react-hooks/exhaustive-deps
+        // Valid if at least one preference or focus area is selected
+        const isValid = preferredExercises.length > 0 ||
+            preferredWorkoutTypes.length > 0 ||
+            focusAreas.length > 0;
 
-    // Update validation status when selections change
-    useEffect(() => {
-        const valid = preferredExercises.length > 0 || otherPreferences.trim().length > 0;
-        setIsValid(valid);
-        onValidChange(valid);
+        if (setIsValid) {
+            setIsValid(isValid);
+        }
 
-        // Update registration data
-        updateRegistrationData({
-            preferredExerciseTypes: preferredExercises,
-            avoidsExerciseTypes: avoidExercises,
-            otherWorkoutPreferences: otherPreferences
+        // Update context data
+        updateWorkoutPreferenceData({
+            preferredExercises,
+            preferredWorkoutTypes,
+            avoidedExercises,
+            focusAreas
         });
 
-        // Persist to local storage
-        updateCustomizationSection('workoutPreference', {
-            preferredExerciseTypes: preferredExercises,
-            avoidsExerciseTypes: avoidExercises,
-            otherPreferences
-        });
-    }, [preferredExercises, avoidExercises, otherPreferences, onValidChange, updateRegistrationData]);
+        // Save to storage
+        saveAllData();
+    }, [preferredExercises, preferredWorkoutTypes, avoidedExercises, focusAreas, updateWorkoutPreferenceData, saveAllData, setIsValid]);
 
-    // Toggle preferred exercise
-    const togglePreferredExercise = (exercise: string) => {
-        setPreferredExercises(prev => {
-            if (prev.includes(exercise)) {
-                return prev.filter(e => e !== exercise);
+    // Toggle exercise type selection
+    const toggleExerciseType = (exerciseType: string, listType: 'preferred' | 'avoided') => {
+        if (listType === 'preferred') {
+            setPreferredExercises(prev => {
+                if (prev.includes(exerciseType)) {
+                    return prev.filter(type => type !== exerciseType);
+                }
+
+                // Remove from avoided list if it's being added to preferred
+                if (avoidedExercises.includes(exerciseType)) {
+                    setAvoidedExercises(prev => prev.filter(type => type !== exerciseType));
+                }
+
+                return [...prev, exerciseType];
+            });
+        } else {
+            setAvoidedExercises(prev => {
+                if (prev.includes(exerciseType)) {
+                    return prev.filter(type => type !== exerciseType);
+                }
+
+                // Remove from preferred list if it's being added to avoided
+                if (preferredExercises.includes(exerciseType)) {
+                    setPreferredExercises(prev => prev.filter(type => type !== exerciseType));
+                }
+
+                return [...prev, exerciseType];
+            });
+        }
+    };
+
+    // Toggle focus area selection
+    const toggleFocusArea = (area: string) => {
+        setFocusAreas(prev => {
+            if (prev.includes(area)) {
+                return prev.filter(a => a !== area);
             }
-
-            // If adding to preferred, remove from avoid if present
-            if (avoidExercises.includes(exercise)) {
-                setAvoidExercises(prev => prev.filter(e => e !== exercise));
-            }
-
-            return [...prev, exercise];
+            return [...prev, area];
         });
     };
 
-    // Toggle avoided exercise
-    const toggleAvoidExercise = (exercise: string) => {
-        setAvoidExercises(prev => {
-            if (prev.includes(exercise)) {
-                return prev.filter(e => e !== exercise);
+    // Toggle workout type selection
+    const toggleWorkoutType = (type: string) => {
+        setPreferredWorkoutTypes(prev => {
+            if (prev.includes(type)) {
+                return prev.filter(t => t !== type);
             }
-
-            // If adding to avoid, remove from preferred if present
-            if (preferredExercises.includes(exercise)) {
-                setPreferredExercises(prev => prev.filter(e => e !== exercise));
-            }
-
-            return [...prev, exercise];
+            return [...prev, type];
         });
     };
-
-    // Prepare accordion title with completion indicator
-    const sectionTitle = isCompleted ? (
-        <div className="flex items-center">
-            Workout Preferences
-            <span className="ml-2 text-xs bg-emerald-800/30 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-700/50 flex items-center">
-                <Check size={12} className="mr-1" />
-                Completed
-            </span>
-        </div>
-    ) : 'Workout Preferences';
 
     return (
-        <AccordionSection
-            ref={ref}
-            title={sectionTitle}
-            icon={<Zap size={18} className={isCompleted ? 'text-emerald-400' : 'text-cyan-300'} />}
-            defaultOpen={false}
-        >
-            <div className="workout-preference-selector">
+        <div className="workout-preference-selector">
+            {/* Preferred exercise types */}
+            <div className="section-group">
+                <h4 className="section-subtitle">Preferred Exercise Types</h4>
                 <p className="section-description">
-                    Select the types of exercises you prefer and those you'd like to avoid
+                    Select exercises you enjoy or prefer (optional)
                 </p>
 
-                {/* Exercise type preferences */}
-                <div className="preference-sections">
-                    <div className="preference-section">
-                        <h4 className="section-subtitle">Preferred Exercise Types</h4>
-                        <p className="section-subdescription">
-                            Select exercises you enjoy and would like to include
-                        </p>
-
-                        <div className="exercise-options">
-                            {EXERCISE_TYPES.map((exercise, index) => (
-                                <div
-                                    key={`prefer-${index}`}
-                                    className={`exercise-option prefer ${preferredExercises.includes(exercise) ? 'selected' : ''}`}
-                                    onClick={() => togglePreferredExercise(exercise)}
-                                    role="checkbox"
-                                    aria-checked={preferredExercises.includes(exercise)}
-                                    tabIndex={0}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' || e.key === ' ') {
-                                            e.preventDefault();
-                                            togglePreferredExercise(exercise);
-                                        }
-                                    }}
+                <div className="exercise-grid">
+                    {EXERCISE_TYPES.map((exercise: ExerciseType, index: number) => (
+                        <div
+                            key={index}
+                            className={`exercise-option ${preferredExercises.includes(exercise.name) ? 'preferred' : ''} ${avoidedExercises.includes(exercise.name) ? 'avoided' : ''}`}
+                        >
+                            <div className="exercise-name">{exercise.name}</div>
+                            <div className="preference-actions">
+                                <button
+                                    className={`prefer-btn ${preferredExercises.includes(exercise.name) ? 'selected' : ''}`}
+                                    onClick={() => toggleExerciseType(exercise.name, 'preferred')}
+                                    aria-label={`Prefer ${exercise.name}`}
+                                    title="I like this"
                                 >
-                                    <div className="option-checkbox">
-                                        {preferredExercises.includes(exercise) && <Check size={14} />}
-                                    </div>
-                                    <span className="option-label">{exercise}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="preference-section">
-                        <h4 className="section-subtitle">Exercises to Avoid</h4>
-                        <p className="section-subdescription">
-                            Select exercises you dislike or want to exclude
-                        </p>
-
-                        <div className="exercise-options">
-                            {EXERCISE_TYPES.map((exercise, index) => (
-                                <div
-                                    key={`avoid-${index}`}
-                                    className={`exercise-option avoid ${avoidExercises.includes(exercise) ? 'selected' : ''}`}
-                                    onClick={() => toggleAvoidExercise(exercise)}
-                                    role="checkbox"
-                                    aria-checked={avoidExercises.includes(exercise)}
-                                    tabIndex={0}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' || e.key === ' ') {
-                                            e.preventDefault();
-                                            toggleAvoidExercise(exercise);
-                                        }
-                                    }}
+                                    {preferredExercises.includes(exercise.name) && <Check size={14} />}
+                                    <span>Like</span>
+                                </button>
+                                <button
+                                    className={`avoid-btn ${avoidedExercises.includes(exercise.name) ? 'selected' : ''}`}
+                                    onClick={() => toggleExerciseType(exercise.name, 'avoided')}
+                                    aria-label={`Avoid ${exercise.name}`}
+                                    title="I prefer to avoid this"
                                 >
-                                    <div className="option-checkbox">
-                                        {avoidExercises.includes(exercise) && <Check size={14} />}
-                                    </div>
-                                    <span className="option-label">{exercise}</span>
-                                </div>
-                            ))}
+                                    {avoidedExercises.includes(exercise.name) && <Check size={14} />}
+                                    <span>Avoid</span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    ))}
                 </div>
-
-                {/* Other preferences input */}
-                <div className="other-preferences">
-                    <label htmlFor="other-preferences" className="other-label">
-                        Additional exercise preferences or restrictions
-                    </label>
-                    <textarea
-                        id="other-preferences"
-                        className="other-input"
-                        placeholder="Any specific exercises you love/hate or any physical restrictions we should know about?"
-                        rows={3}
-                        value={otherPreferences}
-                        onChange={(e) => setOtherPreferences(e.target.value)}
-                    />
-                </div>
-
-                {/* Selection summary */}
-                {(preferredExercises.length > 0 || avoidExercises.length > 0) && (
-                    <div className="selection-summary">
-                        <div className="summary-text">
-                            {preferredExercises.length > 0 && (
-                                <span className="mr-2">
-                                    {preferredExercises.length} preferred exercise type{preferredExercises.length !== 1 ? 's' : ''}
-                                </span>
-                            )}
-                            {avoidExercises.length > 0 && (
-                                <span>
-                                    {avoidExercises.length} exercise type{avoidExercises.length !== 1 ? 's' : ''} to avoid
-                                </span>
-                            )}
-                        </div>
-                    </div>
-                )}
-
-                {/* Confirm button */}
-                <ConfirmButton
-                    isValid={isValid}
-                    onConfirm={onConfirm}
-                    validationMessage="Please select at least one preferred exercise type or specify your preferences"
-                />
             </div>
-        </AccordionSection>
-    );
-});
 
-WorkoutPreferenceSelector.displayName = 'WorkoutPreferenceSelector';
+            {/* Workout types */}
+            <div className="section-group">
+                <h4 className="section-subtitle">Workout Types</h4>
+                <p className="section-description">
+                    Select the types of workouts you prefer
+                </p>
+
+                <div className="workout-types">
+                    {WORKOUT_TYPES.map((type: string, index: number) => (
+                        <div
+                            key={index}
+                            className={`workout-type ${preferredWorkoutTypes.includes(type) ? 'selected' : ''}`}
+                            onClick={() => toggleWorkoutType(type)}
+                            role="checkbox"
+                            aria-checked={preferredWorkoutTypes.includes(type)}
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    toggleWorkoutType(type);
+                                }
+                            }}
+                        >
+                            {type}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            {/* Focus areas */}
+            <div className="section-group">
+                <h4 className="section-subtitle">Focus Areas</h4>
+                <p className="section-description">
+                    Select body areas you want to focus on
+                </p>
+
+                <div className="focus-areas">
+                    {FOCUS_AREAS.map((area: string, index: number) => (
+                        <div
+                            key={index}
+                            className={`focus-area ${focusAreas.includes(area) ? 'selected' : ''}`}
+                            onClick={() => toggleFocusArea(area)}
+                            role="checkbox"
+                            aria-checked={focusAreas.includes(area)}
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    toggleFocusArea(area);
+                                }
+                            }}
+                        >
+                            {area}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default WorkoutPreferenceSelector; 

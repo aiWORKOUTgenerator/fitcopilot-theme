@@ -5,13 +5,18 @@ const STORAGE_KEY = 'fitcopilot_customization_data';
 const LAST_ACTIVE_SECTION_KEY = 'fitcopilot_last_active_section';
 
 /**
- * Save customization data to session storage
+ * Save customization data to session storage with enhanced error handling
  * 
  * @param data Customization data to save
  * @returns True if successfully saved
  */
 export const saveCustomizationData = (data: CustomizationData): boolean => {
     try {
+        if (!data) {
+            console.error('Cannot save empty customization data');
+            return false;
+        }
+
         const dataToStore = {
             ...data,
             timestamp: new Date().toISOString()
@@ -21,32 +26,107 @@ export const saveCustomizationData = (data: CustomizationData): boolean => {
         return true;
     } catch (error) {
         console.error('Failed to save customization data:', error);
+
+        // Check for storage quota exceeded
+        if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+            console.warn('Storage quota exceeded. Attempting to clear old data...');
+            try {
+                // Try to remove non-essential data
+                clearOldStorageData();
+
+                // Try saving again
+                const dataToStore = {
+                    ...data,
+                    timestamp: new Date().toISOString()
+                };
+                sessionStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
+                return true;
+            } catch (retryError) {
+                console.error('Failed to save after clearing storage:', retryError);
+                return false;
+            }
+        }
+
         return false;
     }
 };
 
 /**
- * Load customization data from session storage
+ * Update a specific section of customization data without overwriting others
  * 
- * @returns Stored customization data or null if not found
+ * @param sectionKey The section key to update ('equipment', 'timeCommitment', etc.)
+ * @param sectionData The data for that section
+ * @returns True if successful
+ */
+export const updateCustomizationSection = <T>(sectionKey: string, sectionData: T): boolean => {
+    try {
+        const existingData = loadCustomizationData() || {
+            completedSections: []
+        };
+
+        // Type safety check
+        if (typeof existingData !== 'object') {
+            console.error('Invalid customization data format in storage');
+            return false;
+        }
+
+        // Update specific section
+        const updatedData = {
+            ...existingData,
+            [sectionKey]: sectionData,
+            timestamp: new Date().toISOString()
+        };
+
+        return saveCustomizationData(updatedData);
+    } catch (error) {
+        console.error(`Failed to update section ${sectionKey}:`, error);
+        return false;
+    }
+};
+
+/**
+ * Load customization data from session storage with enhanced error handling
+ * 
+ * @returns Stored customization data or null if not found/invalid
  */
 export const loadCustomizationData = (): CustomizationData | null => {
     try {
         const storedData = sessionStorage.getItem(STORAGE_KEY);
         if (!storedData) return null;
 
-        return JSON.parse(storedData) as CustomizationData;
+        const parsedData = JSON.parse(storedData) as CustomizationData;
+
+        // Validate data has required structure
+        if (!parsedData || typeof parsedData !== 'object') {
+            console.warn('Invalid customization data format');
+            return null;
+        }
+
+        // Ensure completedSections always exists
+        if (!Array.isArray(parsedData.completedSections)) {
+            parsedData.completedSections = [];
+        }
+
+        return parsedData;
     } catch (error) {
         console.error('Failed to load customization data:', error);
+
+        // Attempt to recover corrupt data by clearing it
+        try {
+            sessionStorage.removeItem(STORAGE_KEY);
+        } catch (clearError) {
+            console.error('Failed to clear corrupted storage:', clearError);
+        }
+
         return null;
     }
 };
 
 /**
- * Save the last active section to restore on page refresh
+ * Save the last active section ID
  * 
- * @param sectionId ID of the last active section
- * @returns True if successfully saved
+ * @param sectionId Section ID to save
+ * @returns True if successful
  */
 export const saveLastActiveSection = (sectionId: string): boolean => {
     try {
@@ -59,9 +139,9 @@ export const saveLastActiveSection = (sectionId: string): boolean => {
 };
 
 /**
- * Get the last active section from storage
+ * Get the last active section ID
  * 
- * @returns Last active section ID or null if not found
+ * @returns Last active section ID or null
  */
 export const getLastActiveSection = (): string | null => {
     try {
@@ -74,50 +154,51 @@ export const getLastActiveSection = (): string | null => {
 
 /**
  * Clear all customization data from storage
+ * 
+ * @returns True if successfully cleared
  */
-export const clearCustomizationData = (): void => {
+export const clearCustomizationData = (): boolean => {
     try {
         sessionStorage.removeItem(STORAGE_KEY);
         sessionStorage.removeItem(LAST_ACTIVE_SECTION_KEY);
+        return true;
     } catch (error) {
         console.error('Failed to clear customization data:', error);
+        return false;
     }
 };
 
 /**
  * Check if customization data exists in storage
  * 
- * @returns True if data exists
+ * @returns True if data exists and is valid
  */
 export const hasCustomizationData = (): boolean => {
-    return !!sessionStorage.getItem(STORAGE_KEY);
+    try {
+        const data = loadCustomizationData();
+        return !!data;
+    } catch (error) {
+        console.error('Error checking customization data:', error);
+        return false;
+    }
 };
 
 /**
- * Update a specific section of the customization data
- * 
- * @param sectionKey Key of the section to update
- * @param sectionData Data for the section
- * @returns True if successfully updated
+ * Clear old or non-essential storage data to free up space
  */
-export const updateCustomizationSection = <T>(sectionKey: keyof CustomizationData, sectionData: T): boolean => {
+const clearOldStorageData = (): void => {
     try {
-        const currentData = loadCustomizationData() || { completedSections: [] };
+        // List of keys that might be safely cleared if needed
+        const nonEssentialKeys = [
+            'fitcopilot_session_analytics',
+            'fitcopilot_ui_preferences',
+            'fitcopilot_recent_views'
+        ];
 
-        // Make sure completedSections is preserved
-        if (!currentData.completedSections) {
-            currentData.completedSections = [];
+        for (const key of nonEssentialKeys) {
+            sessionStorage.removeItem(key);
         }
-
-        const updatedData = {
-            ...currentData,
-            [sectionKey]: sectionData,
-            timestamp: new Date().toISOString()
-        };
-
-        return saveCustomizationData(updatedData);
     } catch (error) {
-        console.error(`Failed to update ${sectionKey} section:`, error);
-        return false;
+        console.error('Failed to clear old storage data:', error);
     }
 }; 

@@ -1,63 +1,50 @@
-import { Check, Dumbbell } from 'lucide-react';
-import React, { forwardRef, useEffect, useState } from 'react';
-import AccordionSection, { AccordionSectionRef } from '../../../components/AccordionSection';
-import { useJourney } from '../../../components/JourneyContext';
+import { Check } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { EQUIPMENT_CATEGORIES } from '../../constants/equipmentOptions';
-import { EquipmentSelectionData, EquipmentSelectorProps } from '../../types';
-import { loadCustomizationData, updateCustomizationSection } from '../../utils/customizationStorage';
-import ConfirmButton from '../shared/ConfirmButton';
+import { useCustomization } from '../../context/CustomizationContext';
 import './EquipmentSelector.scss';
 
 /**
  * Enhanced equipment selector with categorized options and animations
+ * using the centralized CustomizationContext
  */
-const EquipmentSelector = forwardRef<AccordionSectionRef, EquipmentSelectorProps>(({
-    onValidChange,
-    isCompleted = false,
-    onConfirm
-}, ref) => {
-    const { registrationData, updateRegistrationData } = useJourney();
+const EquipmentSelector: React.FC<{ setIsValid?: (isValid: boolean) => void }> = ({
+    setIsValid
+}) => {
+    const {
+        equipmentData,
+        updateEquipmentData,
+        saveAllData
+    } = useCustomization();
 
-    // Get stored data if available
-    const storedData = loadCustomizationData();
-    const storedEquipment = storedData?.equipment as EquipmentSelectionData || { equipment: [], otherEquipment: '' };
-
-    // Initialize state from stored data, falling back to registrationData if needed
+    // Initialize state from context data
     const [selectedEquipment, setSelectedEquipment] = useState<string[]>(
-        storedEquipment.equipment || registrationData.equipmentList || []
+        equipmentData?.selectedEquipment || []
     );
 
     const [otherEquipment, setOtherEquipment] = useState<string>(
-        storedEquipment.otherEquipment || registrationData.otherEquipment || ''
+        equipmentData?.otherEquipment || ''
     );
-
-    const [isValid, setIsValid] = useState(false);
-
-    // Initial validation on component mount
-    useEffect(() => {
-        const valid = selectedEquipment.length > 0 || otherEquipment.trim().length > 0;
-        setIsValid(valid);
-        onValidChange(valid);
-    }, []);  // eslint-disable-line react-hooks/exhaustive-deps
 
     // Update validation status when selections change
     useEffect(() => {
         const valid = selectedEquipment.length > 0 || otherEquipment.trim().length > 0;
-        setIsValid(valid);
-        onValidChange(valid);
 
-        // Update registration data with consistent field names
-        updateRegistrationData({
-            equipmentList: selectedEquipment,
-            otherEquipment
+        // Update parent StandardSection via prop
+        if (setIsValid) {
+            setIsValid(valid);
+        }
+
+        // Update context data
+        updateEquipmentData({
+            selectedEquipment,
+            otherEquipment,
+            hasNoEquipment: selectedEquipment.includes('No Equipment')
         });
 
-        // Persist to local storage with the field names matching the EquipmentSelectionData interface
-        updateCustomizationSection('equipment', {
-            equipment: selectedEquipment,
-            otherEquipment
-        });
-    }, [selectedEquipment, otherEquipment, onValidChange, updateRegistrationData]);
+        // Save all data to storage
+        saveAllData();
+    }, [selectedEquipment, otherEquipment, updateEquipmentData, saveAllData, setIsValid]);
 
     // Toggle equipment selection
     const toggleEquipment = (equipment: string) => {
@@ -69,97 +56,66 @@ const EquipmentSelector = forwardRef<AccordionSectionRef, EquipmentSelectorProps
         });
     };
 
-    // Prepare accordion title with completion indicator
-    const sectionTitle = isCompleted ? (
-        <div className="flex items-center">
-            Equipment Selection
-            <span className="ml-2 text-xs bg-emerald-800/30 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-700/50 flex items-center">
-                <Check size={12} className="mr-1" />
-                Completed
-            </span>
-        </div>
-    ) : 'Equipment Selection';
-
     return (
-        <AccordionSection
-            ref={ref}
-            title={sectionTitle}
-            icon={<Dumbbell size={18} className={isCompleted ? 'text-emerald-400' : 'text-cyan-300'} />}
-            defaultOpen={false}
-        >
-            <div className="equipment-selector">
-                <p className="section-description">
-                    Select the equipment you have access to for your workouts
-                </p>
+        <div className="equipment-selector">
+            {/* Equipment selection by category */}
+            <div className="equipment-categories">
+                {Object.entries(EQUIPMENT_CATEGORIES).map(([categoryKey, category]) => (
+                    <div key={categoryKey} className="equipment-category">
+                        <h4 className="category-title">{category.label}</h4>
 
-                {/* Equipment selection by category */}
-                <div className="equipment-categories">
-                    {Object.entries(EQUIPMENT_CATEGORIES).map(([categoryKey, category]) => (
-                        <div key={categoryKey} className="equipment-category">
-                            <h4 className="category-title">{category.label}</h4>
-
-                            <div className="category-options">
-                                {category.options.map((equipment, index) => (
-                                    <div
-                                        key={index}
-                                        className={`equipment-option ${selectedEquipment.includes(equipment) ? 'selected' : ''}`}
-                                        onClick={() => toggleEquipment(equipment)}
-                                        role="checkbox"
-                                        aria-checked={selectedEquipment.includes(equipment)}
-                                        tabIndex={0}
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Enter' || e.key === ' ') {
-                                                e.preventDefault();
-                                                toggleEquipment(equipment);
-                                            }
-                                        }}
-                                    >
-                                        <div className="option-checkbox">
-                                            {selectedEquipment.includes(equipment) && <Check size={14} />}
-                                        </div>
-                                        <span className="option-label">{equipment}</span>
+                        <div className="category-options">
+                            {category.options.map((equipment, index) => (
+                                <div
+                                    key={index}
+                                    className={`equipment-option ${selectedEquipment.includes(equipment) ? 'selected' : ''}`}
+                                    onClick={() => toggleEquipment(equipment)}
+                                    role="checkbox"
+                                    aria-checked={selectedEquipment.includes(equipment)}
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            toggleEquipment(equipment);
+                                        }
+                                    }}
+                                >
+                                    <div className="option-checkbox">
+                                        {selectedEquipment.includes(equipment) && <Check size={14} />}
                                     </div>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Other equipment input */}
-                <div className="other-equipment">
-                    <label htmlFor="other-equipment" className="other-label">
-                        Other equipment not listed
-                    </label>
-                    <textarea
-                        id="other-equipment"
-                        className="other-input"
-                        placeholder="Please list any other equipment you have"
-                        rows={2}
-                        value={otherEquipment}
-                        onChange={(e) => setOtherEquipment(e.target.value)}
-                    />
-                </div>
-
-                {/* Selection summary */}
-                {selectedEquipment.length > 0 && (
-                    <div className="selection-summary">
-                        <div className="summary-text">
-                            {selectedEquipment.length} {selectedEquipment.length === 1 ? 'item' : 'items'} selected
+                                    <span className="option-label">{equipment}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                )}
+                ))}
+            </div>
 
-                {/* Confirm button */}
-                <ConfirmButton
-                    isValid={isValid}
-                    onConfirm={onConfirm}
-                    validationMessage="Please select at least one equipment item or specify other equipment"
+            {/* Other equipment input */}
+            <div className="other-equipment">
+                <label htmlFor="other-equipment" className="other-label">
+                    Other equipment not listed
+                </label>
+                <textarea
+                    id="other-equipment"
+                    className="other-input"
+                    placeholder="Please list any other equipment you have"
+                    rows={2}
+                    value={otherEquipment}
+                    onChange={(e) => setOtherEquipment(e.target.value)}
                 />
             </div>
-        </AccordionSection>
-    );
-});
 
-EquipmentSelector.displayName = 'EquipmentSelector';
+            {/* Selection summary */}
+            {selectedEquipment.length > 0 && (
+                <div className="selection-summary">
+                    <div className="summary-text">
+                        {selectedEquipment.length} {selectedEquipment.length === 1 ? 'item' : 'items'} selected
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
 
 export default EquipmentSelector; 

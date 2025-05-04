@@ -1,31 +1,26 @@
 /**
- * Options for preferred time of day for workouts
+ * Time of day options
  */
 export const TIME_OF_DAY_OPTIONS = [
     'Morning',
-    'Midday',
     'Afternoon',
     'Evening',
-    'Late Night'
+    'Night',
+    'Flexible'
 ];
 
 /**
- * Options for workout duration
+ * Duration options
  */
 export const DURATION_OPTIONS = [
-    '5–10 minutes (Quick session)',
-    '15 minutes',
-    '30 minutes',
-    '45 minutes',
-    '60 minutes',
-    '90 minutes',
-    '120 minutes',
-    '180 minutes (Marathon/Endurance)'
+    'Less than 30 minutes',
+    '30-45 minutes',
+    '45-60 minutes',
+    '60+ minutes'
 ];
 
 /**
- * Options for workout frequency
- * IMPORTANT: These must match exactly with the frequencyRange values in the packages
+ * Training frequency options
  */
 export const FREQUENCY_OPTIONS = [
     '1-2 days per week',
@@ -35,7 +30,7 @@ export const FREQUENCY_OPTIONS = [
 ];
 
 /**
- * Days of the week for training day selection
+ * Days of the week
  */
 export const DAYS_OF_WEEK = [
     'Monday',
@@ -48,51 +43,51 @@ export const DAYS_OF_WEEK = [
 ];
 
 /**
+ * Interface for time commitment packages
+ */
+export interface TimeCommitmentPackage {
+    name: string;
+    description: string;
+    duration: string;
+    frequency: string;
+    totalWeeklyTime: string;
+    days: string[];
+}
+
+/**
  * Workout time commitment packages with predefined configurations
  */
-export const TIME_COMMITMENT_PACKAGES = [
-    {
-        id: 'minimal',
-        label: 'Minimal',
+export const TIME_COMMITMENT_PACKAGES: Record<string, TimeCommitmentPackage> = {
+    minimal: {
+        name: 'Minimal',
         description: '1-2 sessions per week, 20-30 minutes',
-        frequencyRange: '1-2 days per week',
-        durationRange: '20-30 minutes',
+        duration: 'Less than 30 minutes',
+        frequency: '1-2 days per week',
         totalWeeklyTime: '20-60 minutes per week',
-        icon: 'clock',
-        daysPerWeek: 2,
-        suggestedDays: ['Monday', 'Thursday']
+        days: ['Monday', 'Thursday']
     },
-    {
-        id: 'moderate',
-        label: 'Moderate',
+    moderate: {
+        name: 'Moderate',
         description: '3-4 sessions per week, 30-45 minutes',
-        frequencyRange: '3-4 days per week',
-        durationRange: '30-45 minutes',
+        duration: '30-45 minutes',
+        frequency: '3-4 days per week',
         totalWeeklyTime: '90-180 minutes per week',
-        icon: 'clock',
-        daysPerWeek: 3,
-        suggestedDays: ['Monday', 'Wednesday', 'Friday']
+        days: ['Monday', 'Wednesday', 'Friday']
     },
-    {
-        id: 'dedicated',
-        label: 'Dedicated',
+    dedicated: {
+        name: 'Dedicated',
         description: '5-6 sessions per week, 45-60 minutes',
-        frequencyRange: '5-6 days per week',
-        durationRange: '45-60 minutes',
+        duration: '45-60 minutes',
+        frequency: '5-6 days per week',
         totalWeeklyTime: '225-360 minutes per week',
-        icon: 'clock',
-        daysPerWeek: 5,
-        suggestedDays: ['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday']
+        days: ['Monday', 'Tuesday', 'Wednesday', 'Friday', 'Saturday']
     },
-    {
-        id: 'extensive',
-        label: 'Extensive',
+    extensive: {
+        name: 'Extensive',
         description: 'Daily workouts, 60+ minutes',
-        frequencyRange: 'Every day',
-        durationRange: '60+ minutes',
+        duration: '60+ minutes',
+        frequency: 'Every day',
         totalWeeklyTime: '420+ minutes per week',
-        icon: 'clock',
-        daysPerWeek: 7,
-        suggestedDays: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
     }
-]; 
+}; 
