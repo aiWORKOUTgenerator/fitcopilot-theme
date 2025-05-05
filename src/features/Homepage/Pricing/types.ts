@@ -1,31 +1,8 @@
-import { ReactNode } from 'react';
+import { PlanFeature as SharedPlanFeature, PricingPlan as SharedPricingPlan } from '../../../components/UI/PricingCard';
 
-export interface PlanFeature {
-  id: number;
-  text: string;
-  included: boolean;
-  isHighlighted?: boolean;
-  tooltip?: string;
-}
-
-export interface PricingPlan {
-  id: number;
-  name: string;
-  description: string;
-  price: string;
-  betaPrice?: string;
-  period: string;
-  features: PlanFeature[];
-  ctaText: string;
-  ctaLink: string;
-  popular?: boolean;
-  accentColors?: string;
-  titleTextColors?: string;
-  priceTextColors?: string;
-  accentTextColor?: string;
-  icon?: ReactNode;
-  badge?: string;
-}
+// Re-export the shared types
+export type PlanFeature = SharedPlanFeature;
+export type PricingPlan = SharedPricingPlan;
 
 export interface PricingProps {
   pricing?: PricingPlan[];

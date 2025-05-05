@@ -1,11 +1,13 @@
-import { ArrowRight, Check, Shield, Sparkles, Zap } from 'lucide-react';
-import React from 'react';
+import { Check, ChevronDown, ChevronUp, Clock, Crown, Shield, Star, X } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { PricingCard } from '../../../components/UI/PricingCard';
 import { useRegistrationData } from '../hooks';
 import { RegistrationStepProps } from '../types';
 import './Pricing.scss';
 
 /**
  * Pricing page component that displays subscription options in the registration flow
+ * Matches homepage pricing component in styling and functionality
  */
 const PricingComponent: React.FC<RegistrationStepProps & { onComplete?: () => void }> = ({
     data,
@@ -15,34 +17,169 @@ const PricingComponent: React.FC<RegistrationStepProps & { onComplete?: () => vo
     onComplete,
     className = '',
 }) => {
-    // Handle complete registration with free plan
-    const handleComplete = () => {
-        if (onComplete) {
-            // Update registration data to indicate free plan selection
-            updateData({
-                ...data,
-                selectedPlan: 'free',
-                subscriptionType: 'free'
-            });
+    const [isYearly, setIsYearly] = useState(true);
+    const [animationState, setAnimationState] = useState<'normal' | 'exploding' | 'transitioning' | 'betaPrice'>('normal');
+    const [expandedFeatures, setExpandedFeatures] = useState<Record<string, boolean>>({});
+    const [showBetaTooltip, setShowBetaTooltip] = useState(false);
+    const [showEliteTooltip, setShowEliteTooltip] = useState(false);
 
-            // Trigger completion callback
+    // Animation timeline references
+    const timeoutsRef = useRef<number[]>([]);
+
+    // Clear all timeouts on cleanup
+    const clearAllTimeouts = () => {
+        timeoutsRef.current.forEach(timeoutId => window.clearTimeout(timeoutId));
+        timeoutsRef.current = [];
+    };
+
+    // Animation loop effect for price change
+    useEffect(() => {
+        // Start animation sequence
+        const startAnimation = () => {
+            // Show regular price
+            setAnimationState('normal');
+
+            // After delay, start explosion
+            const explodeTimer = window.setTimeout(() => {
+                setAnimationState('exploding');
+            }, 5000);
+
+            // After explosion, prepare for fade transition
+            const prepTransitionTimer = window.setTimeout(() => {
+                setAnimationState('transitioning');
+            }, 6000);
+
+            // After short transition, show beta price
+            const betaPriceTimer = window.setTimeout(() => {
+                setAnimationState('betaPrice');
+            }, 6500);
+
+            // Reset to beginning after showing beta price for a while
+            const resetTimer = window.setTimeout(() => {
+                startAnimation(); // Restart the sequence
+            }, 12000);
+
+            timeoutsRef.current.push(explodeTimer, prepTransitionTimer, betaPriceTimer, resetTimer);
+
+            return () => {
+                clearTimeout(explodeTimer);
+                clearTimeout(prepTransitionTimer);
+                clearTimeout(betaPriceTimer);
+                clearTimeout(resetTimer);
+            };
+        };
+
+        // Start the animation loop
+        const cleanup = startAnimation();
+        return () => {
+            cleanup();
+            clearAllTimeouts();
+        };
+    }, []);
+
+    // Handlers for card hover effects
+    const handleCardMouseEnter = (planName: string) => {
+        if (planName === 'Pro') {
+            setShowBetaTooltip(true);
+        } else if (planName === 'Elite') {
+            setShowEliteTooltip(true);
+        }
+    };
+
+    const handleCardMouseLeave = (planName: string) => {
+        if (planName === 'Pro') {
+            setShowBetaTooltip(false);
+        } else if (planName === 'Elite') {
+            setShowEliteTooltip(false);
+        }
+    };
+
+    // Handle Pro Plan click with animation sequence
+    const handleProClick = () => {
+        if (animationState === 'normal') {
+            // Start animation sequence
+            setAnimationState('exploding');
+            window.setTimeout(() => {
+                setAnimationState('transitioning');
+                window.setTimeout(() => {
+                    setAnimationState('betaPrice');
+                }, 500);
+            }, 1000);
+        } else {
+            // Reset to normal if clicked again
+            setAnimationState('normal');
+        }
+    };
+
+    const toggleFeatures = (planName: string) => {
+        setExpandedFeatures(prev => ({
+            ...prev,
+            [planName]: !prev[planName]
+        }));
+    };
+
+    // Function to generate explosion particles
+    const renderExplosionParticles = () => {
+        const particles = [];
+        const particleCount = 10;
+
+        for (let i = 0; i < particleCount; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 80;
+            const x = Math.cos(angle) * distance;
+            const y = Math.sin(angle) * distance;
+            const size = Math.random() * 4 + 2;
+
+            particles.push(
+                <div
+                    key={i}
+                    className="price-particle"
+                    style={{
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        left: '50%',
+                        top: '50%',
+                        opacity: 0,
+                        transform: 'translate(-50%, -50%)',
+                        '--tx': `${x}px`,
+                        '--ty': `${y}px`
+                    } as React.CSSProperties}
+                />
+            );
+        }
+
+        return particles;
+    };
+
+    // Handle selection of free plan
+    const handleSelectFreePlan = () => {
+        // Update registration data to indicate free plan selection
+        updateData({
+            ...data,
+            selectedPlan: 'free',
+            subscriptionType: 'free'
+        });
+
+        // Proceed with completion or next step
+        if (onComplete) {
             onComplete();
         } else if (onNext) {
-            // If there's no completion callback, move to next step
             onNext();
         }
     };
 
-    // Handle selection of paid subscription
-    const handleSelectPaidPlan = () => {
-        // Update registration data to indicate paid plan selection
+    // Handle selection of pro plan
+    const handleSelectProPlan = () => {
+        // Update registration data to indicate pro plan selection
         updateData({
             ...data,
             selectedPlan: 'pro',
-            subscriptionType: 'paid'
+            subscriptionType: 'paid',
+            paymentPlan: isYearly ? 'yearly' : 'monthly',
+            paymentAmount: isYearly ? (animationState === 'betaPrice' ? '59' : '79') : (animationState === 'betaPrice' ? '6.99' : '9.99')
         });
 
-        // Move to payment processing or completion
+        // Proceed with completion or next step
         if (onComplete) {
             onComplete();
         } else if (onNext) {
@@ -50,172 +187,429 @@ const PricingComponent: React.FC<RegistrationStepProps & { onComplete?: () => vo
         }
     };
 
-    return (
-        <div className={`pricing-step registration-step ${className}`}>
-            {/* Background animation with particles */}
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 z-0">
-                <div className="particles-container">
-                    <div className="particle particle-1"></div>
-                    <div className="particle particle-2"></div>
-                    <div className="particle particle-3"></div>
-                    <div className="particle particle-4"></div>
-                    <div className="particle particle-5"></div>
-                </div>
-            </div>
+    // Handle selection of elite plan
+    const handleSelectElitePlan = () => {
+        // Update registration data to indicate elite plan selection
+        updateData({
+            ...data,
+            selectedPlan: 'elite',
+            subscriptionType: 'premium',
+            paymentPlan: isYearly ? 'yearly' : 'monthly',
+            paymentAmount: isYearly ? '199' : '19.99'
+        });
 
-            <div className="max-w-6xl mx-auto relative z-20 px-4 py-8">
-                <div className="text-center mb-12 animate-fade-in-up">
-                    <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-                        Upgrade to <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">Premium</span>
+        // Proceed with completion or next step
+        if (onComplete) {
+            onComplete();
+        } else if (onNext) {
+            onNext();
+        }
+    };
+
+    // Floating particles in background
+    const renderBackgroundParticles = () => {
+        return Array.from({ length: 12 }).map((_, i) => (
+            <div
+                key={i}
+                className="price-particle"
+                style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    width: `${Math.random() * 4 + 2}px`,
+                    height: `${Math.random() * 4 + 2}px`,
+                    animationDelay: `${Math.random() * 4}s`,
+                    animationDuration: `${Math.random() * 8 + 10}s`
+                }}
+            />
+        ));
+    };
+
+    // Define the pricing plans
+    const pricingPlans = [
+        {
+            id: 1,
+            name: 'Basic',
+            description: 'Perfect for getting started with AI workouts',
+            price: '0',
+            period: 'forever',
+            features: [
+                { id: 1, text: '5 AI workouts per month', included: true, isHighlighted: true },
+                { id: 2, text: 'Basic exercise library', included: true },
+                { id: 3, text: 'Progress tracking', included: true },
+                { id: 4, text: 'Advanced analytics', included: false },
+                { id: 5, text: 'Custom workout templates', included: false },
+                { id: 6, text: 'Personal coach assistance', included: false }
+            ],
+            ctaText: 'Get Started',
+            onClick: handleSelectFreePlan,
+            accentColors: 'from-blue-300 to-cyan-400',
+            titleTextColors: 'from-lime-300 to-emerald-400',
+            priceTextColors: 'from-lime-300 to-emerald-400',
+            accentTextColor: 'blue-300',
+            badge: 'Starter',
+            icon: <Shield className="h-6 w-6 text-blue-300" />
+        },
+        {
+            id: 2,
+            name: 'Pro',
+            description: 'Advanced features for dedicated fitness enthusiasts',
+            price: isYearly ? '79' : '9.99',
+            betaPrice: isYearly ? '59' : '6.99',
+            period: isYearly ? 'year' : 'month',
+            features: [
+                { id: 1, text: 'Unlimited AI workouts', included: true, isHighlighted: true },
+                { id: 2, text: 'Full exercise library', included: true },
+                { id: 3, text: 'Progress tracking', included: true },
+                { id: 4, text: 'Advanced analytics', included: true, isHighlighted: true },
+                { id: 5, text: 'Custom workout templates', included: true },
+                { id: 6, text: 'Multiple format exports', included: true },
+                { id: 7, text: 'Priority support', included: true },
+                { id: 8, text: 'Earlybird beta features', included: true, tooltip: 'Get access to new features before they are released to the public' },
+                { id: 9, text: 'Personal coach assistance', included: false }
+            ],
+            ctaText: 'Upgrade Now',
+            onClick: handleSelectProPlan,
+            popular: true,
+            accentColors: 'from-lime-300 to-emerald-400',
+            titleTextColors: 'from-purple-300 to-indigo-400',
+            priceTextColors: 'from-purple-300 to-indigo-400',
+            accentTextColor: 'lime-300',
+            badge: 'Most Popular',
+            icon: <Star className="h-6 w-6 text-lime-300" />
+        },
+        {
+            id: 3,
+            name: 'Elite',
+            description: 'The ultimate fitness experience with personal coaching',
+            price: isYearly ? '199' : '19.99',
+            period: isYearly ? 'year' : 'month',
+            features: [
+                { id: 1, text: 'Everything in Pro', included: true, isHighlighted: true },
+                { id: 2, text: 'Live coaching sessions', included: true, isHighlighted: true },
+                { id: 3, text: 'Advanced AI programming', included: true },
+                { id: 4, text: 'Personalized nutrition guidance', included: true },
+                { id: 5, text: 'Video form checks & feedback', included: true },
+                { id: 6, text: 'Dedicated trainer support', included: true },
+                { id: 7, text: 'Customized workout plan design', included: true },
+                { id: 8, text: 'Direct trainer email support', included: true, tooltip: 'Get direct access to certified fitness trainers via email' }
+            ],
+            ctaText: 'Get Elite Access',
+            onClick: handleSelectElitePlan,
+            accentColors: 'from-purple-300 to-indigo-400',
+            titleTextColors: 'from-lime-300 to-emerald-400',
+            priceTextColors: 'from-lime-300 to-emerald-400',
+            accentTextColor: 'purple-300',
+            badge: 'Premium',
+            icon: <Crown className="h-6 w-6 text-purple-300" />
+        }
+    ];
+
+    return (
+        <section className={`pricing-section py-24 bg-[#0B1121] ${className}`}>
+            <div className="container mx-auto px-4 relative">
+                {/* Floating particles in background */}
+                <div className="price-particles pointer-events-none">
+                    {renderBackgroundParticles()}
+                </div>
+
+                <div className="text-center mb-12">
+                    <h2 className="text-4xl font-bold mb-4 text-white">
+                        Choose Your <span className="text-[#CCFF00]">Plan</span>
                     </h2>
-                    <div className="w-32 h-1 bg-gradient-to-r from-lime-300 to-emerald-400 mx-auto mb-6 rounded-full"></div>
-                    <p className="text-gray-300 max-w-2xl mx-auto text-lg">
-                        Get unlimited workout plans and advanced features for optimal fitness results
+                    <p className="text-gray-400 max-w-2xl mx-auto">
+                        Select the plan that works best for your fitness goals. All plans include access to our AI workout generator.
+                    </p>
+
+                    {/* Billing toggle */}
+                    <div className="mt-8 flex items-center justify-center">
+                        <span className={`mr-4 ${!isYearly ? 'text-white font-semibold' : 'text-gray-400'}`}>
+                            Monthly
+                        </span>
+
+                        <button
+                            onClick={() => setIsYearly(!isYearly)}
+                            className="relative inline-flex h-7 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[#151F38] transition-colors duration-200 ease-in-out focus:outline-none"
+                            role="switch"
+                            aria-checked={isYearly}
+                        >
+                            <span
+                                className={`pointer-events-none block h-6 w-6 transform rounded-full bg-[#CCFF00] shadow-lg ring-0 transition duration-200 ease-in-out ${isYearly ? 'translate-x-7' : 'translate-x-0'}`}
+                            />
+                        </button>
+
+                        <span className={`ml-4 flex items-center ${isYearly ? 'text-white font-semibold' : 'text-gray-400'}`}>
+                            Yearly
+                            <span className="ml-2 text-xs bg-[#CCFF00] text-[#0B1121] px-2 py-0.5 rounded-full font-medium">
+                                Save 20%
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                {/* Pricing cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {/* Basic Plan */}
+                    <div
+                        className="pricing-card-wrapper relative"
+                        onMouseEnter={() => handleCardMouseEnter('Basic')}
+                        onMouseLeave={() => handleCardMouseLeave('Basic')}
+                    >
+                        <div className="card-icon-wrapper absolute -top-5 left-8 z-10">
+                            <div className={`p-3 rounded-full bg-gradient-to-br ${pricingPlans[0].accentColors}`}>
+                                <Shield className="h-6 w-6 text-black" />
+                            </div>
+                        </div>
+
+                        <PricingCard
+                            name={pricingPlans[0].name}
+                            description={pricingPlans[0].description}
+                            price={pricingPlans[0].price}
+                            period={pricingPlans[0].period}
+                            features={pricingPlans[0].features.map(feature => ({
+                                ...feature,
+                                renderFeature: () => (
+                                    <div className="flex items-start">
+                                        <div className="relative mr-3 mt-0.5">
+                                            {feature.included ? (
+                                                <>
+                                                    <div className="bg-gray-800/70 p-1 rounded-lg">
+                                                        <Check className="h-3 w-3 text-blue-300" />
+                                                    </div>
+                                                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-300 rounded-full flex items-center justify-center">
+                                                        <Check size={10} className="text-gray-900" />
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <X className="h-5 w-5 text-gray-500" />
+                                            )}
+                                        </div>
+                                        <span className={`${feature.isHighlighted ? 'text-white font-medium' : feature.included ? 'text-gray-300' : 'text-gray-500'}`}>
+                                            {feature.text}
+                                        </span>
+                                    </div>
+                                )
+                            }))}
+                            ctaText={pricingPlans[0].ctaText}
+                            onClick={handleSelectFreePlan}
+                        />
+
+                        {/* View all features toggle */}
+                        <button
+                            className="toggle-features mt-4 text-gray-400 flex items-center text-sm hover:text-white"
+                            onClick={() => toggleFeatures('Basic')}
+                        >
+                            {expandedFeatures['Basic'] ? (
+                                <>
+                                    <span>Hide details</span>
+                                    <ChevronUp className="h-4 w-4 ml-1" />
+                                </>
+                            ) : (
+                                <>
+                                    <span>View details</span>
+                                    <ChevronDown className="h-4 w-4 ml-1" />
+                                </>
+                            )}
+                        </button>
+                    </div>
+
+                    {/* Pro Plan */}
+                    <div
+                        className="pricing-card-wrapper relative"
+                        onMouseEnter={() => handleCardMouseEnter('Pro')}
+                        onMouseLeave={() => handleCardMouseLeave('Pro')}
+                        onClick={handleProClick}
+                    >
+                        <div className="card-icon-wrapper absolute -top-5 left-8 z-10">
+                            <div className={`p-3 rounded-full bg-gradient-to-br ${pricingPlans[1].accentColors}`}>
+                                <Star className="h-6 w-6 text-black" />
+                            </div>
+                        </div>
+
+                        <div className="relative">
+                            {/* Price explosion animation */}
+                            {animationState === 'exploding' && (
+                                <div className="explosion-container absolute inset-0 pointer-events-none">
+                                    {renderExplosionParticles()}
+                                </div>
+                            )}
+
+                            <PricingCard
+                                name={pricingPlans[1].name}
+                                description={pricingPlans[1].description}
+                                price={animationState === 'betaPrice' ? (isYearly ? '59' : '6.99') : (isYearly ? '79' : '9.99')}
+                                period={pricingPlans[1].period}
+                                features={pricingPlans[1].features.map(feature => ({
+                                    ...feature,
+                                    renderFeature: () => (
+                                        <div className="flex items-start">
+                                            <div className="relative mr-3 mt-0.5">
+                                                {feature.included ? (
+                                                    <>
+                                                        <div className="bg-gray-800/70 p-1 rounded-lg">
+                                                            <Check className="h-3 w-3 text-lime-300" />
+                                                        </div>
+                                                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-lime-300 rounded-full flex items-center justify-center">
+                                                            <Check size={10} className="text-gray-900" />
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <X className="h-5 w-5 text-gray-500" />
+                                                )}
+                                            </div>
+                                            <span className={`${feature.isHighlighted ? 'text-white font-medium' : feature.included ? 'text-gray-300' : 'text-gray-500'}`}>
+                                                {feature.text}
+                                            </span>
+                                        </div>
+                                    )
+                                }))}
+                                ctaText={pricingPlans[1].ctaText}
+                                onClick={handleSelectProPlan}
+                                popular={true}
+                            />
+
+                            {/* Beta tooltip */}
+                            {showBetaTooltip && animationState === 'betaPrice' && (
+                                <div className="beta-tooltip absolute -top-10 left-1/2 transform -translate-x-1/2 bg-lime-400 text-black text-sm px-3 py-1 rounded">
+                                    Early bird pricing!
+                                </div>
+                            )}
+                        </div>
+
+                        {/* View all features toggle */}
+                        <button
+                            className="toggle-features mt-4 text-gray-400 flex items-center text-sm hover:text-white"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                toggleFeatures('Pro');
+                            }}
+                        >
+                            {expandedFeatures['Pro'] ? (
+                                <>
+                                    <span>Hide details</span>
+                                    <ChevronUp className="h-4 w-4 ml-1" />
+                                </>
+                            ) : (
+                                <>
+                                    <span>View details</span>
+                                    <ChevronDown className="h-4 w-4 ml-1" />
+                                </>
+                            )}
+                        </button>
+                    </div>
+
+                    {/* Elite Plan */}
+                    <div
+                        className="pricing-card-wrapper relative"
+                        onMouseEnter={() => handleCardMouseEnter('Elite')}
+                        onMouseLeave={() => handleCardMouseLeave('Elite')}
+                    >
+                        <div className="card-icon-wrapper absolute -top-5 left-8 z-10">
+                            <div className={`p-3 rounded-full bg-gradient-to-br ${pricingPlans[2].accentColors}`}>
+                                <Crown className="h-6 w-6 text-black" />
+                            </div>
+                        </div>
+
+                        <PricingCard
+                            name={pricingPlans[2].name}
+                            description={pricingPlans[2].description}
+                            price={pricingPlans[2].price}
+                            period={pricingPlans[2].period}
+                            features={pricingPlans[2].features.map(feature => ({
+                                ...feature,
+                                renderFeature: () => (
+                                    <div className="flex items-start">
+                                        <div className="relative mr-3 mt-0.5">
+                                            {feature.included ? (
+                                                <>
+                                                    <div className="bg-gray-800/70 p-1 rounded-lg">
+                                                        <Check className="h-3 w-3 text-purple-300" />
+                                                    </div>
+                                                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-purple-300 rounded-full flex items-center justify-center">
+                                                        <Check size={10} className="text-gray-900" />
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <X className="h-5 w-5 text-gray-500" />
+                                            )}
+                                        </div>
+                                        <span className={`${feature.isHighlighted ? 'text-white font-medium' : feature.included ? 'text-gray-300' : 'text-gray-500'}`}>
+                                            {feature.text}
+                                        </span>
+                                    </div>
+                                )
+                            }))}
+                            ctaText={pricingPlans[2].ctaText}
+                            onClick={handleSelectElitePlan}
+                        />
+
+                        {/* Elite tooltip */}
+                        {showEliteTooltip && (
+                            <div className="elite-tooltip absolute -top-10 right-4 bg-purple-300 text-black text-sm px-3 py-1 rounded">
+                                <div className="flex items-center">
+                                    <Clock className="h-4 w-4 mr-1" />
+                                    <span>Live Training</span>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* View all features toggle */}
+                        <button
+                            className="toggle-features mt-4 text-gray-400 flex items-center text-sm hover:text-white"
+                            onClick={() => toggleFeatures('Elite')}
+                        >
+                            {expandedFeatures['Elite'] ? (
+                                <>
+                                    <span>Hide details</span>
+                                    <ChevronUp className="h-4 w-4 ml-1" />
+                                </>
+                            ) : (
+                                <>
+                                    <span>View details</span>
+                                    <ChevronDown className="h-4 w-4 ml-1" />
+                                </>
+                            )}
+                        </button>
+                    </div>
+                </div>
+
+                {/* Money-back guarantee */}
+                <div className="text-center mt-12">
+                    <p className="text-gray-400 text-sm flex items-center justify-center">
+                        <Shield className="h-4 w-4 mr-2 text-lime-400" />
+                        30-day money-back guarantee. No questions asked.
                     </p>
                 </div>
 
-                {/* Pricing plan card */}
-                <div className="max-w-lg mx-auto mb-12 animate-fade-in-up">
-                    <div className="pricing-card bg-gray-800/50 border border-gray-700 backdrop-blur-lg rounded-2xl overflow-hidden transition-all hover:shadow-lg hover:border-lime-500/30">
-                        <div className="bg-gradient-to-r from-lime-500/20 to-emerald-500/20 text-white p-1 text-center">
-                            <span className="text-xs font-semibold uppercase tracking-wider">Limited Time Offer</span>
-                        </div>
-
-                        <div className="p-8">
-                            <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-2xl font-bold text-white">Premium Plan</h3>
-                                <div className="bg-gradient-to-r from-lime-300 to-emerald-400 text-gray-900 text-xs font-bold uppercase px-3 py-1 rounded-full">
-                                    Best Value
-                                </div>
-                            </div>
-
-                            <div className="flex items-end mb-6">
-                                <span className="text-4xl font-bold text-white">$6.99</span>
-                                <span className="text-gray-400 ml-2 mb-1">/month</span>
-                            </div>
-
-                            <ul className="space-y-3 mb-8">
-                                <li className="flex items-start">
-                                    <Check className="h-5 w-5 text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
-                                    <span className="text-gray-300">Unlimited AI workout generation</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <Check className="h-5 w-5 text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
-                                    <span className="text-gray-300">Advanced progress tracking tools</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <Check className="h-5 w-5 text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
-                                    <span className="text-gray-300">Personalized nutrition guidance</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <Check className="h-5 w-5 text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
-                                    <span className="text-gray-300">Export and share your workouts</span>
-                                </li>
-                                <li className="flex items-start">
-                                    <Check className="h-5 w-5 text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
-                                    <span className="text-gray-300">Early access to new features</span>
-                                </li>
-                            </ul>
-
-                            <button
-                                className="w-full py-4 rounded-full font-bold transition-all duration-300 bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-lg shadow-lime-300/30 hover:shadow-xl hover:shadow-lime-300/40 hover:-translate-y-1 flex items-center justify-center"
-                                onClick={handleSelectPaidPlan}
-                            >
-                                Upgrade Now <ArrowRight className="ml-2 h-5 w-5" />
-                            </button>
-
-                            <div className="text-gray-500 text-xs text-center mt-3">
-                                Cancel anytime. No hidden fees.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* No Thanks CTA */}
-                <div className="text-center animate-fade-in-up">
+                {/* Back button */}
+                <div className="text-center mt-8">
                     <button
-                        className="px-8 py-4 rounded-full font-semibold transition-all duration-300 border border-gray-700 hover:border-gray-500 text-gray-300 hover:text-white flex items-center justify-center mx-auto"
-                        onClick={handleComplete}
+                        onClick={onBack}
+                        className="text-gray-400 hover:text-white py-2 px-4 rounded-md"
                     >
-                        No Thank You, Generate Workout
+                        Go Back
                     </button>
                 </div>
-
-                {/* Feature highlights */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 mb-10 animate-fade-in-up">
-                    <div className="feature-card">
-                        <div className="feature-icon">
-                            <Zap className="h-6 w-6 text-lime-300" />
-                        </div>
-                        <h3 className="text-white text-xl font-bold mb-2">
-                            Premium Algorithms
-                        </h3>
-                        <p className="text-gray-400">
-                            Access our most advanced AI models for optimal workout design
-                        </p>
-                    </div>
-
-                    <div className="feature-card">
-                        <div className="feature-icon">
-                            <Shield className="h-6 w-6 text-lime-300" />
-                        </div>
-                        <h3 className="text-white text-xl font-bold mb-2">
-                            Priority Support
-                        </h3>
-                        <p className="text-gray-400">
-                            Get help when you need it with dedicated customer service
-                        </p>
-                    </div>
-
-                    <div className="feature-card">
-                        <div className="feature-icon">
-                            <Sparkles className="h-6 w-6 text-lime-300" />
-                        </div>
-                        <h3 className="text-white text-xl font-bold mb-2">
-                            Early Access
-                        </h3>
-                        <p className="text-gray-400">
-                            Be the first to try new features and improvements
-                        </p>
-                    </div>
-                </div>
-
-                {/* Navigation buttons */}
-                <div className="navigation-container mt-12 text-center">
-                    {onBack && (
-                        <button
-                            onClick={onBack}
-                            className="inline-flex items-center px-6 py-3 mr-4 rounded-full border border-gray-600 text-gray-300 hover:text-white hover:border-gray-400 transition-all"
-                            aria-label="Go back to previous step"
-                        >
-                            Back
-                        </button>
-                    )}
-                </div>
             </div>
-        </div>
+        </section>
     );
 };
 
 /**
- * Standalone pricing page that can be accessed directly
+ * Registration Pricing step wrapper component
  */
 const Pricing: React.FC = () => {
-    // Get registration state and handlers from hooks
     const { data, updateData } = useRegistrationData();
 
-    // Handle completion of the registration flow
     const handleComplete = () => {
-        // Redirect to the workout generation or dashboard
-        window.location.href = '/dashboard';
+        // Handle any completion logic here
+        // This would typically redirect to checkout or the next registration step
+        console.log('Pricing selection complete');
     };
 
-    // Navigation handler (not used in standalone but required for component)
-    const handleNext = () => { };
+    const handleNext = () => { }; // Not used in this implementation
 
-    // Navigation handler (not used in standalone but required for component)
     const handleBack = () => {
-        // Go back to previous page
+        // Navigate back to previous registration step
         window.history.back();
     };
 
@@ -223,9 +617,9 @@ const Pricing: React.FC = () => {
         <PricingComponent
             data={data}
             updateData={updateData}
+            onComplete={handleComplete}
             onNext={handleNext}
             onBack={handleBack}
-            onComplete={handleComplete}
         />
     );
 };

@@ -1,0 +1,54 @@
+@import '../../../styles/design-system/index';
+
+.pricing-card {
+    background: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        border-color: rgba(132, 204, 22, 0.5);
+    }
+
+    .plan-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .price {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1;
+    }
+
+    .feature-text {
+        &.highlighted {
+            font-weight: 600;
+            color: rgba(132, 204, 22, 0.9) !important;
+        }
+    }
+
+    &.popular {
+        background: rgba(24, 31, 41, 0.7);
+        box-shadow: 0 0 30px rgba(132, 204, 22, 0.15);
+
+        .plan-name {
+            background: linear-gradient(90deg, #84cc16 0%, #65a30d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    }
+
+    .popular-badge {
+        transform-origin: top right;
+    }
+
+    @media (max-width: 640px) {
+        .popular-badge {
+            font-size: 0.7rem;
+            padding: 0.1rem 0.75rem;
+        }
+    }
+}
