@@ -4,7 +4,7 @@ import TimeCommitmentSelector from './CustomizeExperience/components/TimeCommitm
 import Journey from './Journey';
 import AccordionSection from './components/AccordionSection';
 import AnalyticsSelector from './components/AnalyticsSelector';
-import GoalSelector from './components/GoalSelector';
+import GoalSelector from './components/GoalSelector/GoalSelector';
 import { JourneyProvider, useJourney } from './components/JourneyContext';
 import JourneySelector from './components/JourneySelector';
 import JourneyStepCard from './components/JourneyStepCard';

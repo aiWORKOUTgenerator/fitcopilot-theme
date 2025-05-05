@@ -63,7 +63,7 @@ const GoalSelector = forwardRef<AccordionSectionRef, GoalSelectorProps>(({
 
         // Sync with context and storage
         if (selectedGoals.length > 0) {
-            storage.syncWithContext(selectedGoals);
+            storage.syncWithContext({ selectedGoals });
 
             // You can also update directly if needed for compatibility
             updateRegistrationData({ goals: selectedGoals });

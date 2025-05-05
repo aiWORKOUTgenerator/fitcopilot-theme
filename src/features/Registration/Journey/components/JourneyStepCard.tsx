@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import CustomizeExperience from '../CustomizeExperience';
 import CustomizedMedical from '../CustomizedMedical';
 import AnalyticsSelector from './AnalyticsSelector';
-import GoalSelector from './GoalSelector';
+import GoalSelector from './GoalSelector/GoalSelector';
 import { useJourney } from './JourneyContext';
 import StepValidator from './StepValidator';
 
