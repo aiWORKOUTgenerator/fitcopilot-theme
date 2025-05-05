@@ -1,5 +1,6 @@
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import React, { useRef, useState } from 'react';
+import { RegistrationButton } from '../../components';
 import CustomizeExperience from '../CustomizeExperience';
 import CustomizedMedical from '../CustomizedMedical';
 import AnalyticsSelector from './AnalyticsSelector';
@@ -219,19 +220,16 @@ const JourneyStepCard: React.FC<JourneyStepCardProps> = ({
                 {/* CTA Button - Only enable when valid */}
                 {(index === 0 || index === 1 || index === 2 || index === 3) ? (
                     <div className={`text-center mt-6 ${isExpanded ? 'animate-fade-in' : ''}`}>
-                        <button
+                        <RegistrationButton
                             onClick={handleAction}
                             disabled={!isStepValid}
-                            className={`inline-flex items-center px-8 py-3 rounded-full text-sm font-bold transition-all duration-300
-                            ${isStepValid
-                                    ? 'bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-md hover:shadow-lg hover:shadow-lime-300/30 hover:-translate-y-1'
-                                    : 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                                }`}
-                            aria-label={`${step.ctaText} for ${step.title}`}
+                            variant="primary"
+                            size="large"
+                            rightIcon={<ArrowRight className="h-5 w-5" />}
+                            fullWidth
                         >
                             {step.ctaText}
-                            <ArrowRight size={16} className="ml-2" aria-hidden="true" />
-                        </button>
+                        </RegistrationButton>
 
                         {!isStepValid && index === 0 && (
                             <p className="text-sm text-amber-400 mt-2">Please select at least one goal to continue</p>

@@ -1,5 +1,6 @@
 import { ArrowRight, Shield, UserPlus, Zap } from 'lucide-react';
 import React, { useState } from 'react';
+import { RegistrationButton } from '../components';
 import { RegistrationStepProps } from '../types';
 import './Splash.scss';
 
@@ -157,22 +158,16 @@ const SplashComponent: React.FC<RegistrationStepProps> = ({
 
                         {/* Submit button */}
                         <div className="mt-6">
-                            <button
+                            <RegistrationButton
                                 type="submit"
-                                className="w-full px-8 py-5 rounded-full bg-gradient-to-r from-green-400 to-emerald-600 text-white font-bold text-lg flex items-center justify-center transition-all hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 disabled:opacity-70"
-                                disabled={isSubmitting}
+                                size="large"
+                                variant="primary"
+                                isLoading={isSubmitting}
+                                rightIcon={<ArrowRight className="h-5 w-5" />}
+                                fullWidth
                             >
-                                {isSubmitting ? (
-                                    <span className="flex items-center">
-                                        <span className="animate-pulse mr-2">Processing</span>
-                                        <span className="loading-dots"></span>
-                                    </span>
-                                ) : (
-                                    <>
-                                        Get Started <ArrowRight className="ml-2 h-5 w-5" />
-                                    </>
-                                )}
-                            </button>
+                                Get Started
+                            </RegistrationButton>
                         </div>
 
                         <div className="text-gray-500 text-sm mt-2 text-center">

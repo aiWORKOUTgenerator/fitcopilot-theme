@@ -13,3 +13,35 @@
         }
     }
 }
+
+.goal-selector-navigation {
+    margin-top: 2rem;
+
+    &__buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+
+        @media (max-width: 639px) {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+
+    &__button {
+        width: 75%; // 75% of the standard button width
+
+        @media (max-width: 639px) {
+            width: 100%;
+        }
+
+        &--back {
+            justify-self: flex-start;
+        }
+
+        &--next {
+            justify-self: flex-end;
+        }
+    }
+}

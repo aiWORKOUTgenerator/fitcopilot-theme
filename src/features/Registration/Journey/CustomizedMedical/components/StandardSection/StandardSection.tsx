@@ -1,5 +1,6 @@
 import { AlertCircle, Check, Loader2 } from 'lucide-react';
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { RegistrationButton } from '../../../../components';
 import AccordionSection, { AccordionSectionRef } from '../../../components/AccordionSection';
 import { announceToScreenReader, focusFirstTabbableElement } from '../../utils/a11y';
 import './StandardSection.scss';
@@ -128,15 +129,16 @@ const StandardSection = forwardRef<AccordionSectionRef, StandardSectionProps>(
                     {/* Confirm button shown only if not loading and not completed */}
                     {!isLoading && !isCompleted && (
                         <div className="section-actions">
-                            <button
-                                className={`section-confirm-btn ${isValid ? 'valid' : 'disabled'}`}
+                            <RegistrationButton
                                 onClick={onConfirm}
                                 disabled={!isValid}
-                                aria-disabled={!isValid}
+                                variant="primary"
+                                size="medium"
+                                rightIcon={<Check className="h-5 w-5" />}
+                                className="section-confirm-btn"
                             >
-                                <Check size={16} aria-hidden="true" />
-                                <span>Confirm Selection</span>
-                            </button>
+                                Confirm Selection
+                            </RegistrationButton>
                         </div>
                     )}
                 </AccordionSection>

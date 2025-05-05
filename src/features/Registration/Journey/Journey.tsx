@@ -21,6 +21,7 @@ import {
     Zap
 } from 'lucide-react';
 import React, { useCallback, useEffect, useRef } from 'react';
+import { RegistrationButton } from '../components';
 import { RegistrationStep, RegistrationStepProps, WorkoutGoal } from '../types';
 import { JourneyProvider, useJourney } from './components/JourneyContext';
 import JourneyStepCard, { JourneyStepData } from './components/JourneyStepCard';
@@ -49,7 +50,9 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
     const {
         // expandedStep is used by the CompletionContext integration planned in the future
         updateRegistrationData,
-        markStepComplete
+        markStepComplete,
+        toggleStep,
+        completedSteps
     } = useJourney();
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -124,8 +127,8 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
             icon: <Package size={40} className="text-gray-900" />,
             delay: 300,
             accentColor: "from-violet-300 to-purple-400",
-            ctaText: "See Sample Plan",
-            nextStep: RegistrationStep.PRICING,
+            ctaText: "Confirm Medical Clearance",
+            nextStep: RegistrationStep.EXPERIENCE_LEVEL,
             detailedFeatures: [
                 {
                     title: "AI-Powered Design",
@@ -244,6 +247,10 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
                 updateData(updatedData);
                 updateRegistrationData(updatedData);
             }
+
+            // After completing medical clearance, expand the analytics step
+            toggleStep(3); // Expand the analytics step (index 3)
+            return; // Prevent default navigation to next step
         } else if (index === 3) {
             // For the "Track Your Progress" step, we want to store analytics preferences
             // and then go directly to the PRICING step
@@ -280,7 +287,7 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
                 onNext();
             }
         }, 300);
-    }, [data, markStepComplete, onNext, updateData, updateRegistrationData]);
+    }, [data, markStepComplete, onNext, updateData, updateRegistrationData, toggleStep]);
 
     // Render the journey component
     return (
@@ -329,13 +336,36 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
                             Back
                         </button>
                     )}
-                    <button
-                        onClick={onNext}
-                        className="inline-flex items-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-lg shadow-lime-300/30 hover:shadow-xl hover:shadow-lime-300/40 hover:-translate-y-1"
+                    <RegistrationButton
+                        onClick={() => {
+                            // Get required step sections
+                            const requiredSteps = [0, 1, 2, 3]; // All journey steps are required
+                            // Check which steps are completed
+                            const incompleteSteps = requiredSteps.filter(step => !completedSteps.includes(step));
+
+                            // If there are incomplete steps, find the first one and scroll to it
+                            if (incompleteSteps.length > 0) {
+                                const firstIncompleteStep = incompleteSteps[0];
+                                // Expand the step
+                                toggleStep(firstIncompleteStep);
+                                // Scroll to the step
+                                const stepElement = document.getElementById(`journey-step-${firstIncompleteStep}`);
+                                if (stepElement) {
+                                    stepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                }
+                            } else {
+                                // All required steps are complete, navigate to pricing
+                                if (onNext) {
+                                    onNext();
+                                }
+                            }
+                        }}
+                        variant="primary"
+                        size="large"
+                        rightIcon={<ArrowRight size={20} />}
                     >
                         Continue Your Journey
-                        <ArrowRight size={20} className="ml-2" aria-hidden="true" />
-                    </button>
+                    </RegistrationButton>
                 </div>
             </div>
         </div>

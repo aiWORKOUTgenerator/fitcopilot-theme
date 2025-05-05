@@ -1,6 +1,6 @@
-import { Award, Dumbbell, Zap } from 'lucide-react';
+import { Award, ChevronLeft, ChevronRight, Dumbbell, Zap } from 'lucide-react';
 import React, { useState } from 'react';
-import { NavigationButtons, SectionTitle } from '../components';
+import { RegistrationButton, SectionTitle } from '../components';
 import { ExperienceLevel as ExperienceLevelEnum, RegistrationStepProps } from '../types';
 import { experienceLevelToText } from '../utils';
 import LevelCard from './components/LevelCard';
@@ -91,11 +91,28 @@ const ExperienceLevelComponent: React.FC<ExperienceLevelComponentProps> = ({
                 )}
 
                 <div className="experience-level-navigation animate-fade-in">
-                    <NavigationButtons
-                        onNext={onNext}
-                        onBack={onBack}
-                        nextDisabled={!isNextEnabled}
-                    />
+                    <div className="experience-level-navigation__buttons">
+                        <RegistrationButton
+                            onClick={onBack}
+                            variant="secondary"
+                            size="medium"
+                            leftIcon={<ChevronLeft className="h-5 w-5" />}
+                            className="experience-level-navigation__button experience-level-navigation__button--back"
+                        >
+                            Back
+                        </RegistrationButton>
+
+                        <RegistrationButton
+                            onClick={onNext}
+                            variant="primary"
+                            size="medium"
+                            rightIcon={<ChevronRight className="h-5 w-5" />}
+                            disabled={!isNextEnabled}
+                            className="experience-level-navigation__button experience-level-navigation__button--next"
+                        >
+                            Next
+                        </RegistrationButton>
+                    </div>
                 </div>
             </div>
         </div>
