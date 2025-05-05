@@ -65,6 +65,11 @@ export interface JourneySelectorProps {
     isLoading?: boolean;
 
     /**
+     * Whether to show the confirm button
+     */
+    showConfirmButton?: boolean;
+
+    /**
      * Children content
      */
     children: React.ReactNode;
@@ -86,6 +91,7 @@ const JourneySelector = forwardRef<AccordionSectionRef, JourneySelectorProps>(({
     className = '',
     error = null,
     isLoading = false,
+    showConfirmButton = true,
     children
 }, ref) => {
     const [isValid, setIsValid] = useState(false);
@@ -146,7 +152,7 @@ const JourneySelector = forwardRef<AccordionSectionRef, JourneySelectorProps>(({
                     </div>
                 )}
 
-                {!isLoading && !isCompleted && (
+                {!isLoading && !isCompleted && showConfirmButton && (
                     <div className="selector-actions">
                         <button
                             className={`confirm-button ${isValid ? 'active' : 'disabled'}`}

@@ -5,7 +5,7 @@ import { SectionCard, SelectionSummary } from '../../shared/components';
 import { selectorStorage, validationUtils } from '../../shared/utils';
 import { AccordionSectionRef } from '../AccordionSection';
 import { useJourney } from '../JourneyContext';
-import JourneySelector from '../JourneySelector';
+import JourneySelector from '../JourneySelector/JourneySelector';
 import { GOAL_OPTIONS, MAX_GOALS, MIN_GOALS, STORAGE_KEY } from './constants';
 import './GoalSelector.scss';
 import { GoalSelectorProps, GoalSelectorState } from './types';
@@ -104,6 +104,7 @@ const GoalSelector = forwardRef<AccordionSectionRef, GoalSelectorProps>(({
             isCompleted={isCompleted}
             onValidChange={onValidChange}
             onConfirm={onConfirm}
+            showConfirmButton={false}
         >
             <div className="goal-options">
                 <div className="goal-options-grid">

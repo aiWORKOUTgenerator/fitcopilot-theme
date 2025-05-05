@@ -1,5 +1,7 @@
+// Canonical design system import - MUST BE FIRST
 @import '../../../styles/design-system/index';
 
+/* Pricing component styles */
 .pricing-step {
     position: relative;
     min-height: 100vh;
@@ -190,6 +192,24 @@
 
         66% {
             content: '...';
+        }
+    }
+
+    // Media queries for responsive design
+    @media (min-width: 768px) {
+        .feature-card {
+            padding: 32px;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .navigation-container {
+            flex-direction: column;
+            gap: 1rem;
+
+            button {
+                width: 100%;
+            }
         }
     }
 }

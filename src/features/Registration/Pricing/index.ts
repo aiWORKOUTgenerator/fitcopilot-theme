@@ -1,4 +1,4 @@
-import Pricing, { default as PricingComponent } from './Pricing';
+import Pricing from './Pricing';
 
 export default Pricing;
-export { PricingComponent as Pricing };
+export * from './components';
