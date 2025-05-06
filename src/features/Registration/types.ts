@@ -3,7 +3,19 @@
  */
 
 /**
- * Registration steps enum
+ * Top-level registration steps
+ */
+export enum RegistrationStepId {
+    SPLASH = "splash",
+    EXPERIENCE_LEVEL = "experienceLevel",
+    JOURNEY = "journey",
+    PRICING = "pricing",
+    PAYMENT = "payment",
+    CONFIRMATION = "confirmation"
+}
+
+/**
+ * @deprecated Use RegistrationStepId instead - kept for backward compatibility during migration
  */
 export enum RegistrationStep {
     SPLASH = 'splash',
@@ -15,6 +27,72 @@ export enum RegistrationStep {
     PAYMENT = 'payment',
     CONFIRMATION = 'confirmation'
 }
+
+/**
+ * Journey sub-steps
+ */
+export enum JourneySubstepId {
+    GOALS = "goals",
+    EQUIPMENT = "equipment",
+    TIME_COMMITMENT = "timeCommitment",
+    MEDICAL = "medical",
+    ANALYTICS = "analytics"
+}
+
+/**
+ * Component sections within sub-steps
+ */
+export enum SectionId {
+    // Equipment sections
+    EQUIPMENT_HOME = "equipmentHome",
+    EQUIPMENT_GYM = "equipmentGym",
+    EQUIPMENT_TRAVEL = "equipmentTravel",
+
+    // Time commitment sections
+    TIME_DAYS = "timeDays",
+    TIME_DURATION = "timeDuration",
+
+    // Medical sections
+    MEDICAL_CONDITIONS = "medicalConditions",
+    MEDICAL_INJURIES = "medicalInjuries",
+    MEDICAL_LIMITATIONS = "medicalLimitations"
+}
+
+/**
+ * Hierarchical relationship map
+ */
+export const NAVIGATION_HIERARCHY = {
+    steps: {
+        [RegistrationStepId.SPLASH]: null,
+        [RegistrationStepId.EXPERIENCE_LEVEL]: null,
+        [RegistrationStepId.JOURNEY]: [
+            JourneySubstepId.GOALS,
+            JourneySubstepId.EQUIPMENT,
+            JourneySubstepId.TIME_COMMITMENT,
+            JourneySubstepId.MEDICAL,
+            JourneySubstepId.ANALYTICS
+        ],
+        [RegistrationStepId.PRICING]: null,
+        [RegistrationStepId.PAYMENT]: null,
+        [RegistrationStepId.CONFIRMATION]: null
+    },
+    sections: {
+        [JourneySubstepId.EQUIPMENT]: [
+            SectionId.EQUIPMENT_HOME,
+            SectionId.EQUIPMENT_GYM,
+            SectionId.EQUIPMENT_TRAVEL
+        ],
+        [JourneySubstepId.TIME_COMMITMENT]: [
+            SectionId.TIME_DAYS,
+            SectionId.TIME_DURATION
+        ],
+        [JourneySubstepId.MEDICAL]: [
+            SectionId.MEDICAL_CONDITIONS,
+            SectionId.MEDICAL_INJURIES,
+            SectionId.MEDICAL_LIMITATIONS
+        ]
+    }
+};
 
 /**
  * Experience level enum
@@ -61,47 +139,37 @@ export enum TimeCommitment {
  * Main registration data interface
  */
 export interface RegistrationData {
-    // Personal data
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    password?: string;
+    // User information
+    experienceLevel?: string;
+    goals?: string[];
 
-    // Profile data
-    experienceLevel?: ExperienceLevel;
-    goals?: WorkoutGoal[];
-    equipment?: EquipmentAvailability;
-    equipmentList?: string[];  // List of selected equipment items
-    otherEquipment?: string;   // User-specified equipment not in predefined list
-    timeCommitment?: TimeCommitment;
+    // Equipment data
+    [SectionId.EQUIPMENT_HOME]?: any;
+    [SectionId.EQUIPMENT_GYM]?: any;
+    [SectionId.EQUIPMENT_TRAVEL]?: any;
 
-    // Customization data
-    completedCustomizationSections?: string[];
-    frequencyOption?: string;
-    preferredTrainingDays?: string[];
-    daysPerWeek?: number;
-    timeCommitmentPackage?: string;
-    preferredTimeOfDay?: string[];
-    preferredDuration?: string;
-    otherDuration?: string;
-    preferredDays?: string[];  // Preferred days of the week for training
-    trainingFrequency?: string; // Training frequency selection
+    // Time commitment data
+    [SectionId.TIME_DAYS]?: any;
+    [SectionId.TIME_DURATION]?: any;
+
+    // Medical data
+    [SectionId.MEDICAL_CONDITIONS]?: any;
+    [SectionId.MEDICAL_INJURIES]?: any;
+    [SectionId.MEDICAL_LIMITATIONS]?: any;
 
     // Analytics preferences
-    analyticsFeatures?: string[];
+    analyticsConsent?: boolean;
 
-    // Metrics
-    age?: number;
-    height?: number; // cm
-    weight?: number; // kg
-    gender?: 'male' | 'female' | 'other' | 'prefer_not_to_say';
+    // Payment information
+    selectedPlan?: string;
+    paymentDetails?: any;
 
-    // Subscription
-    selectedPlan?: 'monthly' | 'yearly' | 'free_trial';
-    paymentDetails?: {
-        cardholderName?: string;
-        // We'll use a payment processor, so we don't directly handle card details
-    };
+    // Registration status
+    registrationCompleted?: boolean;
+    registrationDate?: string;
+
+    // Section completion tracking
+    completedCustomizationSections?: string[];
 }
 
 /**
@@ -109,7 +177,7 @@ export interface RegistrationData {
  */
 export interface RegistrationProps {
     className?: string;
-    initialStep?: RegistrationStep;
+    initialStep?: RegistrationStepId;
     onComplete?: (data: RegistrationData) => void;
     onCancel?: () => void;
 }

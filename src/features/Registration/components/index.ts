@@ -6,3 +6,6 @@ export { default as RegistrationButton } from './RegistrationButton';
 export { default as RegistrationLayout } from './RegistrationLayout';
 export { default as SectionTitle } from './SectionTitle';
 
+// Export the test component
+export { default as RegistrationNavigationTest } from './RegistrationNavigationTest';
+

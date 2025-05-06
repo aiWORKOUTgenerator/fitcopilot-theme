@@ -1,21 +1,54 @@
 import { ArrowRight, Shield, UserPlus, Zap } from 'lucide-react';
 import React, { useState } from 'react';
 import { RegistrationButton } from '../components';
+import { useNavigation } from '../context/NavigationContext';
 import { RegistrationStepProps } from '../types';
 import './Splash.scss';
 
 /**
  * Splash page component that serves as the entry point for the registration flow
+ * Legacy version that accepts props for backward compatibility
  */
-const SplashComponent: React.FC<RegistrationStepProps> = ({
+const SplashWithProps: React.FC<RegistrationStepProps> = ({
     data,
     updateData,
     onNext,
     className = '',
 }) => {
+    // Initialize with props data
+    return <SplashComponent
+        initialFirstName={data?.firstName}
+        initialEmail={data?.email}
+        onLegacyNext={onNext}
+        updateLegacyData={updateData}
+        className={className}
+    />;
+};
+
+interface SplashComponentProps {
+    initialFirstName?: string;
+    initialEmail?: string;
+    onLegacyNext?: () => void;
+    updateLegacyData?: (data: any) => void;
+    className?: string;
+}
+
+/**
+ * Modern version of the Splash component that uses NavigationContext directly
+ */
+const SplashComponent: React.FC<SplashComponentProps> = ({
+    initialFirstName = '',
+    initialEmail = '',
+    onLegacyNext,
+    updateLegacyData,
+    className = '',
+}) => {
+    // Get navigation context
+    const { nextStep, updateRegistrationData, state } = useNavigation();
+
     // Form state
-    const [firstName, setFirstName] = useState(data?.firstName || '');
-    const [email, setEmail] = useState(data?.email || '');
+    const [firstName, setFirstName] = useState(initialFirstName || state.registrationData?.firstName || '');
+    const [email, setEmail] = useState(initialEmail || state.registrationData?.email || '');
     const [errors, setErrors] = useState<{ firstName?: string; email?: string }>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -63,16 +96,28 @@ const SplashComponent: React.FC<RegistrationStepProps> = ({
 
         // Save the data and proceed to next step
         setTimeout(() => {
-            // Update registration data
-            updateData({
-                ...data,
+            const userData = {
                 firstName,
                 email
-            });
+            };
+
+            // Update context data
+            updateRegistrationData(userData);
+
+            // For backward compatibility
+            if (updateLegacyData) {
+                updateLegacyData(userData);
+            }
+
+            console.log("Splash: Proceeding to next step");
 
             // Move to next step in registration flow
-            if (onNext) {
-                onNext();
+            if (onLegacyNext) {
+                console.log("Splash: Using legacy navigation");
+                onLegacyNext();
+            } else {
+                console.log("Splash: Using direct navigation context");
+                nextStep();
             }
 
             setIsSubmitting(false);
@@ -219,4 +264,5 @@ const SplashComponent: React.FC<RegistrationStepProps> = ({
     );
 };
 
-export default SplashComponent; 
+// Export both the legacy and modern versions
+export default SplashWithProps; 

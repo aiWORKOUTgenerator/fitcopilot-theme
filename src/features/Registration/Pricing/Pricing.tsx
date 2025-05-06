@@ -1,13 +1,26 @@
 import { Check, ChevronDown, ChevronUp, Clock, Crown, Shield, Star, X } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { PricingCard } from '../../../components/UI/PricingCard';
+import { useNavigation } from '../context/NavigationContext';
 import { useRegistrationData } from '../hooks';
-import { RegistrationStepProps } from '../types';
+import { RegistrationStepId, RegistrationStepProps } from '../types';
 import './Pricing.scss';
 
 /**
- * Pricing page component that displays subscription options in the registration flow
- * Matches homepage pricing component in styling and functionality
+ * Pricing component in the registration flow
+ * 
+ * This component has been fully integrated with the NavigationContext system and displays
+ * different pricing plan options to the user:
+ * 
+ * - Basic: Free tier with limited features
+ * - Pro: Premium tier with most features
+ * - Elite: Top tier with all features and coaching
+ * 
+ * The component handles transitions from Journey step and properly validates/completes
+ * both the Journey and Pricing steps to ensure correct navigation flow.
+ * 
+ * When a plan is selected, the data is stored in the registration data object
+ * using the standardized structure of the RegistrationData interface.
  */
 const PricingComponent: React.FC<RegistrationStepProps & { onComplete?: () => void }> = ({
     data,
@@ -157,7 +170,9 @@ const PricingComponent: React.FC<RegistrationStepProps & { onComplete?: () => vo
         updateData({
             ...data,
             selectedPlan: 'free',
-            subscriptionType: 'free'
+            paymentDetails: {
+                type: 'free'
+            }
         });
 
         // Proceed with completion or next step
@@ -174,9 +189,11 @@ const PricingComponent: React.FC<RegistrationStepProps & { onComplete?: () => vo
         updateData({
             ...data,
             selectedPlan: 'pro',
-            subscriptionType: 'paid',
-            paymentPlan: isYearly ? 'yearly' : 'monthly',
-            paymentAmount: isYearly ? (animationState === 'betaPrice' ? '59' : '79') : (animationState === 'betaPrice' ? '6.99' : '9.99')
+            paymentDetails: {
+                type: 'paid',
+                plan: isYearly ? 'yearly' : 'monthly',
+                amount: isYearly ? (animationState === 'betaPrice' ? '59' : '79') : (animationState === 'betaPrice' ? '6.99' : '9.99')
+            }
         });
 
         // Proceed with completion or next step
@@ -193,9 +210,11 @@ const PricingComponent: React.FC<RegistrationStepProps & { onComplete?: () => vo
         updateData({
             ...data,
             selectedPlan: 'elite',
-            subscriptionType: 'premium',
-            paymentPlan: isYearly ? 'yearly' : 'monthly',
-            paymentAmount: isYearly ? '199' : '19.99'
+            paymentDetails: {
+                type: 'premium',
+                plan: isYearly ? 'yearly' : 'monthly',
+                amount: isYearly ? '199' : '19.99'
+            }
         });
 
         // Proceed with completion or next step
@@ -595,31 +614,70 @@ const PricingComponent: React.FC<RegistrationStepProps & { onComplete?: () => vo
 };
 
 /**
- * Registration Pricing step wrapper component
+ * Pricing component that integrates with the NavigationContext
+ * 
+ * This component wraps the PricingComponent and provides NavigationContext integration:
+ * - Handles step transitions (next/previous)
+ * - Manages step completion status
+ * - Ensures proper Journey step completion when transitioning
+ * - Validates the Pricing step to enable forward navigation
  */
 const Pricing: React.FC = () => {
+    // Get navigation context
+    const {
+        state,
+        nextStep,
+        previousStep,
+        goToStep,
+        dispatch
+    } = useNavigation();
+
+    // Check if this step is active
+    const isActive = state.currentStep === RegistrationStepId.PRICING;
+
+    // Get registration data
     const { data, updateData } = useRegistrationData();
 
+    // Check if Journey step is completed when component mounts
+    useEffect(() => {
+        if (isActive) {
+            // Ensure Journey step is marked as completed
+            const isJourneyCompleted = state.completedSteps.has(RegistrationStepId.JOURNEY);
+
+            // If Journey step is not marked as completed yet, mark it
+            if (!isJourneyCompleted) {
+                console.log('Marking Journey step as completed from Pricing');
+                dispatch({ type: 'COMPLETE_STEP', payload: { stepId: RegistrationStepId.JOURNEY } });
+            }
+        }
+    }, [isActive, state.completedSteps, dispatch]);
+
+    // Handle completion
     const handleComplete = () => {
-        // Handle any completion logic here
-        // This would typically redirect to checkout or the next registration step
-        console.log('Pricing selection complete');
+        // Mark current step as completed
+        dispatch({ type: 'COMPLETE_STEP', payload: { stepId: RegistrationStepId.PRICING } });
+
+        // Navigate to the next step
+        nextStep();
     };
 
-    const handleNext = () => { }; // Not used in this implementation
-
+    // Handle going back
     const handleBack = () => {
-        // Navigate back to previous registration step
-        window.history.back();
+        previousStep();
     };
+
+    // Early return if not active
+    if (!isActive) {
+        return null;
+    }
 
     return (
         <PricingComponent
             data={data}
             updateData={updateData}
-            onComplete={handleComplete}
-            onNext={handleNext}
+            onNext={handleComplete}
             onBack={handleBack}
+            className="pricing-step"
         />
     );
 };

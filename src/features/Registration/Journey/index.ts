@@ -1,7 +1,9 @@
 import CustomizeExperience from './CustomizeExperience';
 import EquipmentSelector from './CustomizeExperience/components/EquipmentSelector';
 import TimeCommitmentSelector from './CustomizeExperience/components/TimeCommitmentSelector';
+import Goals from './Goals';
 import Journey from './Journey';
+import JourneyContainer from './JourneyContainer';
 import AccordionSection from './components/AccordionSection';
 import AnalyticsSelector from './components/AnalyticsSelector';
 import GoalSelector from './components/GoalSelector/GoalSelector';
@@ -18,9 +20,9 @@ export {
     AccordionSection,
     AnalyticsSelector,
     CustomizeExperience,
-    EquipmentSelector,
-    GoalSelector,
+    EquipmentSelector, Goals, GoalSelector,
     Journey,
+    JourneyContainer,
     JourneyProvider,
     JourneySelector,
     JourneyStepCard,

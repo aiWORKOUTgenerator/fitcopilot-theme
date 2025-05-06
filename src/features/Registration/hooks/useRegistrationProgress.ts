@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
-import { RegistrationStep } from '../types';
+import { JourneySubstepId, RegistrationStep, RegistrationStepId } from '../types';
 import useNavigationOverrides from './useNavigationOverrides';
 import { useRegistrationEvents } from './useRegistrationEvents';
 
-// Define the order of steps
+// Keep the original REGISTRATION_STEPS for backward compatibility
 export const REGISTRATION_STEPS: RegistrationStep[] = [
     RegistrationStep.SPLASH,
     RegistrationStep.EXPERIENCE_LEVEL,
@@ -20,13 +20,31 @@ export const STEP_TRANSITION_MAP: Partial<Record<RegistrationStep, RegistrationS
     [RegistrationStep.TIME_COMMITMENT]: RegistrationStep.PRICING,
 };
 
+// Define the initial substep for the Journey
+export const INITIAL_JOURNEY_SUBSTEP = JourneySubstepId.GOALS;
+
+// The new registration steps structure
+export const NEW_REGISTRATION_STEPS: RegistrationStepId[] = [
+    RegistrationStepId.SPLASH,
+    RegistrationStepId.EXPERIENCE_LEVEL,
+    RegistrationStepId.JOURNEY,
+    RegistrationStepId.PRICING,
+    RegistrationStepId.PAYMENT,
+    RegistrationStepId.CONFIRMATION
+];
+
 /**
- * Hook for managing registration progress
+ * WARNING: This hook is being migrated to the new NavigationContext.
+ * Please use useNavigationBridge for new components, which provides the same API
+ * but uses the NavigationContext internally.
  * 
+ * @deprecated Use useNavigationBridge instead which leverages the NavigationContext
+ * 
+ * Hook for managing registration progress
  * @param initialStep - The initial registration step
  * @returns Object containing progress tracking and navigation methods
  */
-export const useRegistrationProgress = (initialStep: RegistrationStep = RegistrationStep.SPLASH) => {
+export const useRegistrationProgress = (initialStep = RegistrationStep.SPLASH) => {
     // Get event tracking methods
     const {
         trackStandardTransition,
@@ -127,17 +145,31 @@ export const useRegistrationProgress = (initialStep: RegistrationStep = Registra
                 return destinationStep;
             }
 
-            // For standard steps, move backward in the array
+            // Use the session storage fallback for direct navigation if available
+            if (typeof window !== 'undefined') {
+                const storedPrevStep = window.sessionStorage.getItem('PREVIOUS_STEP');
+                if (storedPrevStep && REGISTRATION_STEPS.includes(storedPrevStep as RegistrationStep)) {
+                    destinationStep = storedPrevStep as RegistrationStep;
+                    console.log(`[Registration] Back navigation: ${prevStep} -> ${destinationStep} (via session storage)`);
+                    trackBackNavigation(prevStep, destinationStep, {
+                        via: 'sessionStorage'
+                    });
+                    return destinationStep;
+                }
+            }
+
+            // Standard backward navigation
             const currentIndex = REGISTRATION_STEPS.indexOf(prevStep);
             if (currentIndex <= 0) {
+                console.log(`[Registration] Already at first step: ${prevStep}`);
                 return prevStep; // Stay on first step
             }
 
             destinationStep = REGISTRATION_STEPS[currentIndex - 1];
+            console.log(`[Registration] Back navigation: ${prevStep} -> ${destinationStep} (standard)`);
             trackBackNavigation(prevStep, destinationStep, {
-                standardBackNavigation: true,
-                fromIndex: currentIndex,
-                toIndex: currentIndex - 1
+                standard: true,
+                stepIndex: currentIndex - 1
             });
             return destinationStep;
         });
@@ -177,6 +209,9 @@ export const useRegistrationProgress = (initialStep: RegistrationStep = Registra
     const hasPreviousStep = useMemo(() => {
         return currentStepIndex > 0;
     }, [currentStepIndex]);
+
+    // Add a console warning about deprecation
+    console.warn('useRegistrationProgress is deprecated. Please use useNavigationBridge instead which leverages the NavigationContext.');
 
     return {
         currentStep,

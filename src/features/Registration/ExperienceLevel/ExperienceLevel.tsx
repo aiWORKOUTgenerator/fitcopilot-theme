@@ -1,37 +1,92 @@
 import { Award, ChevronLeft, ChevronRight, Dumbbell, Zap } from 'lucide-react';
 import React, { useState } from 'react';
 import { RegistrationButton, SectionTitle } from '../components';
+import { useNavigation } from '../context/NavigationContext';
 import { ExperienceLevel as ExperienceLevelEnum, RegistrationStepProps } from '../types';
 import { experienceLevelToText } from '../utils';
 import LevelCard from './components/LevelCard';
 import LevelComparison from './components/LevelComparison';
 import './ExperienceLevel.scss';
 
-interface ExperienceLevelComponentProps extends RegistrationStepProps { }
-
 /**
- * Experience level selection component
+ * Legacy ExperienceLevel component that accepts props for backward compatibility
  */
-const ExperienceLevelComponent: React.FC<ExperienceLevelComponentProps> = ({
+const ExperienceLevelWithProps: React.FC<RegistrationStepProps> = ({
     data,
     updateData,
     onNext,
     onBack,
     className = '',
 }) => {
+    // Initialize with props data
+    return <ExperienceLevelComponent
+        initialExperienceLevel={data?.experienceLevel as ExperienceLevelEnum}
+        onLegacyNext={onNext}
+        onLegacyBack={onBack}
+        updateLegacyData={updateData}
+        className={className}
+    />;
+};
+
+interface ExperienceLevelComponentProps {
+    initialExperienceLevel?: ExperienceLevelEnum;
+    onLegacyNext?: () => void;
+    onLegacyBack?: () => void;
+    updateLegacyData?: (data: any) => void;
+    className?: string;
+}
+
+/**
+ * Modern version of the ExperienceLevel component that uses NavigationContext directly
+ */
+const ExperienceLevelComponent: React.FC<ExperienceLevelComponentProps> = ({
+    initialExperienceLevel,
+    onLegacyNext,
+    onLegacyBack,
+    updateLegacyData,
+    className = '',
+}) => {
+    // Get navigation context
+    const { nextStep, previousStep, updateRegistrationData, state } = useNavigation();
+
     // Track which level has focus for comparison display
     const [focusedLevel, setFocusedLevel] = useState<ExperienceLevelEnum | null>(
-        data.experienceLevel || null
+        initialExperienceLevel || state.registrationData?.experienceLevel as ExperienceLevelEnum || null
     );
 
     // Handle selecting a level
     const handleSelectLevel = (level: ExperienceLevelEnum) => {
-        updateData({ experienceLevel: level });
+        // Update context data
+        updateRegistrationData({ experienceLevel: level });
+
+        // For backward compatibility
+        if (updateLegacyData) {
+            updateLegacyData({ experienceLevel: level });
+        }
+
         setFocusedLevel(level);
     };
 
+    // Handle next button click
+    const handleNext = () => {
+        if (onLegacyNext) {
+            onLegacyNext();
+        } else {
+            nextStep();
+        }
+    };
+
+    // Handle back button click
+    const handleBack = () => {
+        if (onLegacyBack) {
+            onLegacyBack();
+        } else {
+            previousStep();
+        }
+    };
+
     // Determine if next button should be enabled
-    const isNextEnabled = !!data.experienceLevel;
+    const isNextEnabled = !!state.registrationData?.experienceLevel || !!initialExperienceLevel;
 
     return (
         <div className={`experience-level-step registration-step ${className}`}>
@@ -58,7 +113,7 @@ const ExperienceLevelComponent: React.FC<ExperienceLevelComponentProps> = ({
                         title={experienceLevelToText(ExperienceLevelEnum.BEGINNER)}
                         description="Just getting started or returning after a long break"
                         icon={<Dumbbell size={24} />}
-                        isSelected={data.experienceLevel === ExperienceLevelEnum.BEGINNER}
+                        isSelected={state.registrationData?.experienceLevel === ExperienceLevelEnum.BEGINNER || initialExperienceLevel === ExperienceLevelEnum.BEGINNER}
                         onSelect={() => handleSelectLevel(ExperienceLevelEnum.BEGINNER)}
                         onFocus={() => setFocusedLevel(ExperienceLevelEnum.BEGINNER)}
                     />
@@ -68,7 +123,7 @@ const ExperienceLevelComponent: React.FC<ExperienceLevelComponentProps> = ({
                         title={experienceLevelToText(ExperienceLevelEnum.INTERMEDIATE)}
                         description="Consistent exercise for at least a few months"
                         icon={<Award size={24} />}
-                        isSelected={data.experienceLevel === ExperienceLevelEnum.INTERMEDIATE}
+                        isSelected={state.registrationData?.experienceLevel === ExperienceLevelEnum.INTERMEDIATE || initialExperienceLevel === ExperienceLevelEnum.INTERMEDIATE}
                         onSelect={() => handleSelectLevel(ExperienceLevelEnum.INTERMEDIATE)}
                         onFocus={() => setFocusedLevel(ExperienceLevelEnum.INTERMEDIATE)}
                     />
@@ -78,7 +133,7 @@ const ExperienceLevelComponent: React.FC<ExperienceLevelComponentProps> = ({
                         title={experienceLevelToText(ExperienceLevelEnum.ADVANCED)}
                         description="Regular training for years with good technique"
                         icon={<Zap size={24} />}
-                        isSelected={data.experienceLevel === ExperienceLevelEnum.ADVANCED}
+                        isSelected={state.registrationData?.experienceLevel === ExperienceLevelEnum.ADVANCED || initialExperienceLevel === ExperienceLevelEnum.ADVANCED}
                         onSelect={() => handleSelectLevel(ExperienceLevelEnum.ADVANCED)}
                         onFocus={() => setFocusedLevel(ExperienceLevelEnum.ADVANCED)}
                     />
@@ -93,7 +148,7 @@ const ExperienceLevelComponent: React.FC<ExperienceLevelComponentProps> = ({
                 <div className="experience-level-navigation animate-fade-in">
                     <div className="experience-level-navigation__buttons">
                         <RegistrationButton
-                            onClick={onBack}
+                            onClick={handleBack}
                             variant="secondary"
                             size="medium"
                             leftIcon={<ChevronLeft className="h-5 w-5" />}
@@ -103,7 +158,7 @@ const ExperienceLevelComponent: React.FC<ExperienceLevelComponentProps> = ({
                         </RegistrationButton>
 
                         <RegistrationButton
-                            onClick={onNext}
+                            onClick={handleNext}
                             variant="primary"
                             size="medium"
                             rightIcon={<ChevronRight className="h-5 w-5" />}
@@ -119,4 +174,5 @@ const ExperienceLevelComponent: React.FC<ExperienceLevelComponentProps> = ({
     );
 };
 
-export default ExperienceLevelComponent; 
+// Export the legacy component as default for backward compatibility
+export default ExperienceLevelWithProps; 

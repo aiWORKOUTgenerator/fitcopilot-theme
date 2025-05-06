@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
+import NavigationTest from './debug/NavigationTest';
 import App from './Homepage'; // Always point at real root
 import './styles/homepage.scss'; // Global styles
 import debug from './utils/debug';
@@ -187,5 +189,13 @@ function notifyMountSuccess(mountElement: HTMLElement) {
     } catch (err) {
       console.error('Error calling mount notification function:', err);
     }
+  }
+}
+
+// Add this somewhere in your routes or rendering logic:
+if (window.location.pathname === '/navigation-test') {
+  const rootElement = document.getElementById('root');
+  if (rootElement) {
+    ReactDOM.render(<NavigationTest />, rootElement);
   }
 } 

@@ -1,0 +1,214 @@
+.confirmation-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    color: #f8f9fa;
+}
+
+.confirmation-success {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 1.5rem;
+        background: linear-gradient(135deg, #4ade80, #22c55e);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
+
+        svg {
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+    }
+}
+
+.confirmation-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #4ade80, #22c55e);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.confirmation-message {
+    font-size: 1.125rem;
+    color: #d1d5db;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.confirmation-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.details-section {
+    background-color: rgba(15, 23, 42, 0.6);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(75, 85, 99, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1.25rem;
+        color: #f8f9fa;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(75, 85, 99, 0.3);
+    }
+}
+
+.details-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .detail-label {
+        color: #9ca3af;
+        font-size: 0.875rem;
+    }
+
+    .detail-value {
+        font-weight: 500;
+        color: #f8f9fa;
+    }
+}
+
+.next-steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.next-step-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background-color: rgba(30, 41, 59, 0.4);
+    border-radius: 0.5rem;
+    border: 1px solid rgba(75, 85, 99, 0.2);
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .step-number {
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, #4ade80, #22c55e);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+    .step-text {
+        font-size: 0.9375rem;
+    }
+}
+
+.email-notification {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding: 1.25rem;
+    background-color: rgba(30, 41, 59, 0.4);
+    border-radius: 0.75rem;
+    border: 1px solid rgba(75, 85, 99, 0.3);
+
+    .email-icon {
+        margin-right: 1rem;
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 0.9375rem;
+        color: #d1d5db;
+        margin: 0;
+    }
+}
+
+.confirmation-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    max-width: 400px;
+
+    &.primary {
+        background: linear-gradient(to right, #22c55e, #16a34a);
+        color: white;
+
+        &:hover {
+            background: linear-gradient(to right, #16a34a, #15803d);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        &:active {
+            transform: translateY(1px);
+        }
+    }
+
+    &.secondary {
+        background: rgba(30, 41, 59, 0.6);
+        color: #e5e7eb;
+        border: 1px solid rgba(75, 85, 99, 0.5);
+
+        &:hover {
+            background: rgba(30, 41, 59, 0.8);
+        }
+    }
+}
+
+.help-link {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+
+    &:hover {
+        color: #d1d5db;
+        text-decoration: underline;
+    }
+}

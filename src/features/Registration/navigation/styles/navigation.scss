@@ -1,0 +1,264 @@
+/**
+ * Styles for the registration navigation components
+ */
+
+// Main container for the registration flow
+.registration-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+
+    .registration-content {
+        margin-top: 2rem;
+    }
+}
+
+// Progress indicator styles
+.registration-progress {
+    width: 100%;
+
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+
+        .progress-fill {
+            height: 100%;
+            background-color: #2a9d8f;
+            transition: width 0.3s ease;
+        }
+    }
+
+    .step-indicators {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 2rem;
+
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+
+            &.active {
+                .step-number {
+                    background-color: #2a9d8f;
+                    color: white;
+                }
+
+                .step-label {
+                    color: #2a9d8f;
+                    font-weight: 600;
+                }
+            }
+
+            &.completed {
+                .step-number {
+                    background-color: #2a9d8f;
+                    color: white;
+
+                    &:after {
+                        content: '✓';
+                    }
+                }
+            }
+
+            .step-number {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background-color: #f0f0f0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 0.5rem;
+                transition: all 0.2s ease;
+            }
+
+            .step-label {
+                font-size: 0.875rem;
+                color: #666;
+                transition: all 0.2s ease;
+            }
+        }
+    }
+}
+
+// Registration step styles
+.registration-step {
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .step-content {
+        margin: 2rem 0;
+        min-height: 300px;
+    }
+
+    .step-controls {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+    }
+}
+
+// Registration button styles
+.registration-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    outline: none;
+
+    &.next-button {
+        background-color: #2a9d8f;
+        color: white;
+
+        &:hover:not(.disabled) {
+            background-color: #238b7e;
+        }
+    }
+
+    &.back-button {
+        background-color: #f0f0f0;
+        color: #666;
+
+        &:hover:not(.disabled) {
+            background-color: #e0e0e0;
+        }
+    }
+
+    &.custom-button {
+        background-color: #2a9d8f;
+        color: white;
+
+        &:hover:not(.disabled) {
+            background-color: #238b7e;
+        }
+    }
+
+    &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+// Journey step styles
+.journey-step {
+    .journey-progress {
+        display: flex;
+        border-bottom: 1px solid #f0f0f0;
+        margin-bottom: 1.5rem;
+
+        .journey-progress-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            position: relative;
+
+            &.active {
+                color: #2a9d8f;
+                font-weight: 600;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    bottom: -1px;
+                    left: 0;
+                    width: 100%;
+                    height: 3px;
+                    background-color: #2a9d8f;
+                }
+            }
+
+            &.completed {
+                color: #2a9d8f;
+            }
+        }
+    }
+}
+
+// Accordion section styles
+.accordion-section {
+    margin-bottom: 1rem;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+
+    &.expanded {
+        border-color: #2a9d8f;
+    }
+
+    &.active {
+        border-color: #2a9d8f;
+    }
+
+    &.completed {
+        .accordion-header {
+            background-color: rgba(42, 157, 143, 0.1);
+        }
+    }
+
+    .accordion-header {
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        background-color: #fafafa;
+
+        .accordion-title {
+            font-weight: 600;
+        }
+
+        .accordion-status {
+            display: flex;
+            align-items: center;
+
+            .status-icon {
+                margin-right: 0.5rem;
+
+                &.completed {
+                    color: #2a9d8f;
+                }
+            }
+
+            .accordion-toggle {
+                font-size: 1.25rem;
+                width: 20px;
+                text-align: center;
+            }
+        }
+    }
+
+    .accordion-content {
+        padding: 1.5rem;
+
+        .section-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+
+            .section-complete-button {
+                padding: 0.5rem 1rem;
+                background-color: #2a9d8f;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: 600;
+
+                &:hover {
+                    background-color: #238b7e;
+                }
+            }
+        }
+    }
+}

@@ -1,22 +1,25 @@
 import { X } from 'lucide-react';
 import React, { useCallback, useEffect } from 'react';
 import { AnimatedTransition, ProgressIndicator, RegistrationLayout } from './components';
+import Confirmation from './Confirmation';
+import { NavigationProvider } from './context/NavigationContext';
 import { useTransitionAnalytics } from './events/analyticsIntegration';
 import ExperienceLevel from './ExperienceLevel';
-import { useRegistrationData, useRegistrationProgress } from './hooks';
+import { useRegistrationData } from './hooks';
+import { useNavigationBridge } from './hooks/useNavigationBridge';
 import { REGISTRATION_STEPS } from './hooks/useRegistrationProgress';
-import Journey from './Journey';
+import JourneyContainer from './Journey/JourneyContainer';
+import Payment from './Payment';
 import Pricing from './Pricing';
 import './Registration.scss';
 import Splash from './Splash';
-import { RegistrationProps, RegistrationStep } from './types';
+import { RegistrationProps, RegistrationStep, RegistrationStepId } from './types';
 
 /**
  * Main Registration component that orchestrates the multi-step registration flow
  */
-const Registration: React.FC<RegistrationProps> = ({
+const RegistrationContent: React.FC<RegistrationProps> = ({
     className = '',
-    initialStep = RegistrationStep.SPLASH,
     onComplete,
     onCancel
 }) => {
@@ -25,18 +28,15 @@ const Registration: React.FC<RegistrationProps> = ({
 
     // Get registration state and handlers from hooks
     const { data, updateData } = useRegistrationData();
-    const { currentStep, nextStep, previousStep, goToStep } = useRegistrationProgress(initialStep);
-
-    // Calculate the current step index from the current step
-    const currentStepIndex = REGISTRATION_STEPS.indexOf(currentStep);
+    const { currentStep, nextStep, previousStep, goToStep, currentStepIndex } = useNavigationBridge();
 
     // Track registration flow initialization
     useEffect(() => {
         trackCustomEvent('registration_flow_initiated', {
-            initial_step: initialStep,
+            initial_step: currentStep,
             timestamp: new Date().toISOString()
         });
-    }, [trackCustomEvent, initialStep]);
+    }, [trackCustomEvent, currentStep]);
 
     // Handle completion of the registration flow
     const handleComplete = useCallback(() => {
@@ -89,39 +89,32 @@ const Registration: React.FC<RegistrationProps> = ({
             case RegistrationStep.GOALS:
             case RegistrationStep.EQUIPMENT:
             case RegistrationStep.TIME_COMMITMENT:
+                // Use the new JourneyContainer for all journey-related steps
                 return (
-                    <Journey
+                    <JourneyContainer
                         data={data}
                         updateData={updateData}
                         onNext={nextStep}
                         onBack={previousStep}
-                        currentStep={currentStep}
                     />
                 );
 
             case RegistrationStep.PRICING:
-                return (
-                    <Pricing
-                        data={data}
-                        updateData={updateData}
-                        onNext={nextStep}
-                        onBack={previousStep}
-                        onComplete={handleComplete}
-                    />
-                );
+                // Use the navigationContext-aware Pricing component
+                return <Pricing />;
+
+            case RegistrationStep.PAYMENT:
+                // Use the Payment component
+                return <Payment />;
+
+            case RegistrationStep.CONFIRMATION:
+                // Use the Confirmation component
+                return <Confirmation />;
 
             // Add additional steps as needed
 
             default:
-                return (
-                    <Pricing
-                        data={data}
-                        updateData={updateData}
-                        onNext={nextStep}
-                        onBack={previousStep}
-                        onComplete={handleComplete}
-                    />
-                );
+                return <Pricing />;
         }
     };
 
@@ -182,6 +175,44 @@ const Registration: React.FC<RegistrationProps> = ({
                 </AnimatedTransition>
             </RegistrationLayout>
         </div>
+    );
+};
+
+/**
+ * Wrapper component that provides the NavigationContext to the registration flow
+ */
+const Registration: React.FC<RegistrationProps> = (props) => {
+    // Convert initialStep from RegistrationStep to RegistrationStepId if needed
+    const mapInitialStep = (): RegistrationStepId => {
+        if (!props.initialStep) return RegistrationStepId.SPLASH;
+
+        // Map from legacy RegistrationStep to new RegistrationStepId using string values
+        const stepValue = props.initialStep.toString();
+
+        switch (stepValue) {
+            case 'splash':
+                return RegistrationStepId.SPLASH;
+            case 'experience_level':
+                return RegistrationStepId.EXPERIENCE_LEVEL;
+            case 'goals':
+            case 'equipment':
+            case 'time_commitment':
+                return RegistrationStepId.JOURNEY;
+            case 'pricing':
+                return RegistrationStepId.PRICING;
+            case 'payment':
+                return RegistrationStepId.PAYMENT;
+            case 'confirmation':
+                return RegistrationStepId.CONFIRMATION;
+            default:
+                return RegistrationStepId.SPLASH;
+        }
+    };
+
+    return (
+        <NavigationProvider initialStep={mapInitialStep()}>
+            <RegistrationContent {...props} />
+        </NavigationProvider>
     );
 };
 
