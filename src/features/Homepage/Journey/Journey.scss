@@ -2,90 +2,110 @@
 
 /* Journey Section Styles */
 .journey-section {
-  position: var(--pos-jr-relative);
-  overflow: var(--overflow-jr-hidden);
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(10, 16, 27, 1);
+  /* Match the bottom color of Features gradient */
+  margin-top: -4rem;
+  /* Create slight overlap with Features section */
+  padding-top: 4rem;
+  /* Add padding to compensate for negative margin */
 
-  .journey-path {
-    position: var(--pos-jr-absolute);
-    top: var(--top-jr-path);
-    left: var(--left-jr-path-center);
-    width: var(--width-jr-path);
-    height: var(--height-jr-path);
-    background: var(--bg-jr-path);
-    transform: var(--transform-jr-center-x);
-    z-index: var(--z-jr-path);
-
-    @media (max-width: var(--breakpoint-md)) {
-      display: none;
-    }
+  // Grid pattern background
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    background-position: center center;
+    z-index: -1;
+    pointer-events: none;
   }
 }
 
 /* Step connector - vertical line connecting the steps */
 .step-connector {
-  position: var(--pos-jr-absolute);
-  top: var(--top-jr-connector);
-  left: var(--left-jr-connector);
-  width: var(--width-jr-connector);
-  height: var(--height-jr-connector);
-  background: var(--bg-jr-connector);
-  z-index: var(--z-jr-connector);
+  position: absolute;
+  background: linear-gradient(to bottom, rgba(204, 255, 0, 0.5), rgba(204, 255, 0, 0.1));
+  z-index: 1;
 }
 
-/* Glow effects for different card types */
+/* Journey timeline - additional visual container for steps */
+.journey-timeline {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 31px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(204, 255, 0, 0.15), rgba(204, 255, 0, 0.05));
+    z-index: 0;
+  }
+}
+
+/* Glow effects for different card types - Visual styling that extends Tailwind */
 .lime-glow:hover {
-  box-shadow: var(--shadow-jr-lime-glow);
+  box-shadow: 0 0 20px 0 rgba(204, 255, 0, 0.15);
 }
 
 .cyan-glow:hover {
-  box-shadow: var(--shadow-jr-cyan-glow);
+  box-shadow: 0 0 20px 0 rgba(34, 211, 238, 0.15);
 }
 
 .violet-glow:hover {
-  box-shadow: var(--shadow-jr-violet-glow);
+  box-shadow: 0 0 20px 0 rgba(167, 139, 250, 0.15);
 }
 
 .amber-glow:hover {
-  box-shadow: var(--shadow-jr-amber-glow);
+  box-shadow: 0 0 20px 0 rgba(251, 191, 36, 0.15);
 }
 
 /* Animation classes */
 .animate-fade-slide-up {
-  animation: fadeSlideUp var(--animation-duration-md) var(--animation-ease) var(--animation-fill-forwards);
+  animation: fadeSlideUp 0.4s ease-out forwards;
 }
 
 .animate-fade-in {
-  animation: fadeIn var(--animation-duration-md) var(--animation-ease) var(--animation-fill-forwards);
+  animation: fadeIn 0.4s ease-out forwards;
 }
 
 @keyframes fadeSlideUp {
   from {
-    opacity: var(--opacity-jr-hidden);
-    transform: var(--transform-jr-slide-from);
+    opacity: 0;
+    transform: translateY(10px);
   }
 
   to {
-    opacity: var(--opacity-jr-visible);
-    transform: var(--transform-jr-slide-to);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes fadeIn {
   from {
-    opacity: var(--opacity-jr-hidden);
+    opacity: 0;
   }
 
   to {
-    opacity: var(--opacity-jr-visible);
+    opacity: 1;
   }
 }
 
-/* Text gradient effect */
+/* Text gradient effect - Used globally in multiple components */
 .text-gradient {
-  background-size: var(--bg-size-jr-text-gradient);
-  background-clip: var(--bg-clip-jr-text);
-  -webkit-background-clip: var(--bg-clip-jr-text);
-  -moz-background-clip: var(--bg-clip-jr-text);
-  -webkit-text-fill-color: var(--color-jr-transparent);
-  -moz-text-fill-color: var(--color-jr-transparent);
+  background-size: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
 }

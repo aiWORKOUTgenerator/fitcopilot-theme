@@ -1,22 +1,7 @@
 @import "../../../../styles/design-system/index.scss";
 
+/* Minimal styling for JourneyStep - most styles now use Tailwind directly in the component */
 .journey-step {
-  position: var(--pos-jr-relative);
-  z-index: var(--z-jr-step);
-
-  &__number {
-    width: var(--width-jr-step-number);
-    height: var(--height-jr-step-number);
-    border-radius: var(--radius-jr-step-number);
-    background: var(--bg-jr-step-number);
-    display: var(--display-jr-flex);
-    align-items: var(--align-jr-center);
-    justify-content: var(--justify-jr-center);
-
-    span {
-      font-weight: var(--weight-jr-step-number);
-      color: var(--color-jr-step-number);
-      font-size: var(--size-jr-step-number);
-    }
-  }
+  position: relative;
+  z-index: 1;
 }

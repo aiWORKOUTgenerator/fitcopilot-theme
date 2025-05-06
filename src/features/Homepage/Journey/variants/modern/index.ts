@@ -1,2 +1,2 @@
-import Journey from '../../Journey';
-export default Journey; 
+import ModernJourney from './Journey';
+export default ModernJourney; 

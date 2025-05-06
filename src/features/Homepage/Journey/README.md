@@ -114,4 +114,48 @@ export const JourneyMap = {
   // ...existing variants
   premium: PremiumVariant,
 };
-``` 
+```
+
+## Spacing Standards
+
+### Tailwind Spacing Scale
+- Extra Small (XS): `space-y-2` (0.5rem, 8px) - Minimal spacing between closely related elements
+- Small (SM): `space-y-4` (1rem, 16px) - Standard spacing between related content
+- Medium (MD): `space-y-6` (1.5rem, 24px) - Spacing between distinct content groups
+- Large (LG): `space-y-8` (2rem, 32px) - Major section spacing
+- Extra Large (XL): `space-y-12` (3rem, 48px) - Separation between major components
+- 2XL: `space-y-16` (4rem, 64px) - Section-level separation
+
+### Standard Padding/Margin Classes
+- Section padding: `py-16 md:py-24`
+- Container padding: `px-4 md:px-6 lg:px-8`
+- Card padding: `p-4 md:p-6 lg:p-8`
+- Content margins:
+  - Section headings: `mb-12 md:mb-16`
+  - Component headings: `mb-6 md:mb-8`
+  - Element headings: `mb-2 md:mb-3`
+  - Bottom CTA: `mt-12 md:mt-16`
+- Element gaps:
+  - Large groups: `gap-6 md:gap-8`
+  - Medium groups: `gap-4 md:gap-6`
+  - Small groups: `gap-3 md:gap-4`
+  - Icon gaps: `gap-2 md:gap-3`
+
+### Journey Component Utility Class Map
+- Section Container:
+  - Root: `py-16 md:py-24 bg-[#0B1121]`
+  - Container: `container mx-auto px-4 md:px-6 lg:px-8`
+- Content Areas:
+  - Header: `text-center mb-12 md:mb-16`
+  - Steps: `space-y-6 md:space-y-8`
+  - CTA: `text-center mt-12 md:mt-16`
+- Cards:
+  - Step Card: `p-4 md:p-6 lg:p-8 rounded-2xl`
+  - Feature: `p-3 md:p-4 rounded-xl`
+- Layouts:
+  - Step Layout: `flex flex-col md:flex-row gap-4 md:gap-6`
+  - Feature Grid: `grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6`
+  - Feature Content: `flex items-start gap-3 md:gap-4`
+- Text Spacing:
+  - Title: `mb-2 md:mb-3`
+  - Paragraph: `md:pr-12` 

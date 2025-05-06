@@ -24,6 +24,26 @@
     pointer-events: none;
   }
 
+  // Gradient overlay for transition to Journey section
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 60%;
+    /* Increased from 50% to cover more of the section */
+    background: linear-gradient(to bottom,
+        rgba(10, 16, 27, 0) 0%,
+        rgba(10, 16, 27, 0.6) 40%,
+        /* Darker middle gradient */
+        rgba(10, 16, 27, 0.9) 70%,
+        /* Darker transition */
+        rgba(10, 16, 27, 1) 100%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
   // Card flip animations
   .flip-card {
     perspective: 1000px;

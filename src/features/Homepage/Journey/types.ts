@@ -21,4 +21,26 @@ export interface JourneyStep {
 
 export interface JourneyProps {
   journey?: JourneyStep[];
+}
+
+export interface JourneyStepProps {
+  step: JourneyStep;
+  index: number;
+  isExpanded: boolean;
+  onToggle: () => void;
+  isLast: boolean;
+}
+
+export interface JourneyFeatureCardProps {
+  feature: DetailedFeature;
+}
+
+export interface JourneyCTAProps {
+  text?: string;
+  href?: string;
+}
+
+export interface SectionHeaderProps {
+  title?: ReactNode;
+  description?: string;
 } 
