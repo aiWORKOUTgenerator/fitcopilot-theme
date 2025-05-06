@@ -1,12 +1,10 @@
 // src/features/Homepage/Features/Features.tsx
 
-import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, Medal, Timer } from 'lucide-react';
-import React, { useRef, useState } from 'react';
-import { Section } from '../../../components/shared';
-import './Features.scss';
+import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, LucideIcon, Medal, Pause, Play, Timer } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import RegistrationButton from '../../../features/Registration/components/RegistrationButton';
 import FeatureCard from './components/FeatureCard';
-import VideoPlayer, { VideoSource } from './components/VideoPlayer';
-import { FeaturesProps, VariantKey } from './types';
+import './Features.scss';
 
 /**
  * Interface for floating icon props
@@ -41,7 +39,7 @@ const FloatingIcon: React.FC<FloatingIconProps> = ({ children, delay, speed, lef
 /**
  * Sample workout component for the Customized Workouts feature
  */
-export const SampleWorkout: React.FC = () => {
+const SampleWorkout: React.FC = () => {
   return (
     <div className="text-white h-full w-full flex flex-col overflow-hidden">
       <ul className="space-y-2 text-xs flex-1 overflow-y-auto pr-2">
@@ -91,7 +89,7 @@ export const SampleWorkout: React.FC = () => {
 /**
  * Progress chart component for the Real-Time Tracking feature
  */
-export const ProgressChart: React.FC = () => {
+const ProgressChart: React.FC = () => {
   return (
     <div className="text-white h-full w-full flex flex-col">
       <h4 className="text-cyan-300 text-sm font-bold mb-3">Weekly Progress</h4>
@@ -188,21 +186,133 @@ export const ProgressChart: React.FC = () => {
 };
 
 /**
- * Interface for feature data
+ * Video player component for the Expert Advice feature
  */
-interface Feature {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  gradient: string;
-  demoComponent: React.ReactNode;
-}
+const VideoPlayer: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> = ({ videoRef }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  // Update play state when video state changes
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    videoRef.current.addEventListener('play', handlePlay);
+    videoRef.current.addEventListener('pause', handlePause);
+
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('play', handlePlay);
+        videoRef.current.removeEventListener('pause', handlePause);
+      }
+    };
+  }, [videoRef]);
+
+  return (
+    <div className="relative h-full w-full flex flex-col">
+      <div className="flex-1 relative">
+        <video
+          ref={videoRef}
+          src="/wp-content/themes/athlete-dashboard-gym-engine/assets/videos/Mission-Bay-Footage.mp4"
+          className="h-full w-full object-cover rounded-md"
+          muted
+          loop
+          playsInline
+        />
+
+        {/* Overlay with play/pause button */}
+        <div className={`absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity ${isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-100'}`}>
+          <button
+            className="h-12 w-12 rounded-full bg-violet-500/80 flex items-center justify-center hover:bg-violet-600/80 transition-colors"
+            onClick={() => {
+              if (videoRef.current) {
+                if (isPlaying) {
+                  videoRef.current.pause();
+                } else {
+                  videoRef.current.play().catch(console.error);
+                }
+              }
+            }}
+          >
+            {isPlaying ? (
+              <Pause size={24} className="text-white" />
+            ) : (
+              <Play size={24} className="text-white ml-1" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      <div className="mt-3">
+        <div className="video-progress">
+          <div
+            className={`video-progress-bar ${isPlaying ? 'animate-progress' : ''}`}
+            style={{
+              width: isPlaying ? 'auto' : '0%'
+            }}
+          ></div>
+        </div>
+        <div className="flex justify-between mt-2 text-xs text-gray-400">
+          <span>{isPlaying ? "2:34" : "0:00"}</span>
+          <span>5:00</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Background video player component
+ */
+const BackgroundVideoPlayer: React.FC = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Auto-play video when component mounts
+    if (videoRef.current) {
+      videoRef.current.play().catch(e => {
+        console.error("Background video autoplay failed:", e);
+      });
+    }
+  }, []);
+
+  return (
+    <div className="video-background relative w-full h-80 md:h-[500px] mt-20 mb-20 overflow-hidden rounded-xl">
+      <video
+        ref={videoRef}
+        src="/wp-content/themes/fitcopilot/src/features/Homepage/Features/media/videos/Mission-Bay-Footage.mp4"
+        className="absolute inset-0 w-full h-full object-cover"
+        muted
+        loop
+        playsInline
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/30 flex items-center justify-center">
+        <div className="text-center max-w-xl px-4">
+          <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Experience Fitness Evolution</h3>
+          <p className="text-gray-300 mb-6">Our technology adapts to your unique fitness journey, helping you achieve optimal results safely and efficiently.</p>
+
+          <div className="inline-block w-3/4 mx-auto">
+            <RegistrationButton
+              leftIcon={<Play size={20} />}
+              variant="primary"
+              size="medium"
+              className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 w-full"
+            >
+              Watch Full Demo
+            </RegistrationButton>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 /**
  * Interface for floating icon data
  */
 interface FloatingIconData {
-  Icon: React.ComponentType<any>;
+  Icon: LucideIcon;
   size: number;
   left: number;
   top: number;
@@ -211,161 +321,143 @@ interface FloatingIconData {
 }
 
 /**
- * Features component displaying key application capabilities
+ * Features section component
  */
-export const Features: React.FC<FeaturesProps> = ({
-  features: _features = [],
-  variant: _variant = 'default'
-}) => {
-  const [activeFeature, setActiveFeature] = useState<number | null>(null);
+interface FeaturesProps {
+  variant?: string;
+}
+
+const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
+  const [activeFeatureIndex, setActiveFeatureIndex] = useState<number | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Multiple video sources for better browser compatibility
-  const primaryVideoSrc = './wp-content/uploads/2023/videos/Mission-Bay-Footage.mp4';
-
-  // Formatted fallback sources with proper types
-  const fallbackSources: VideoSource[] = [
+  const features = [
     {
-      src: '/wp-content/themes/fitcopilot/src/features/Homepage/Features/media/videos/Mission-Bay-Footage.mp4',
-      type: 'video/mp4'
-    },
-    {
-      src: '/wp-content/themes/fitcopilot/public/videos/Mission-Bay-Footage.mp4',
-      type: 'video/mp4'
-    }
-  ];
-
-  // Predefined features if none provided
-  const defaultFeatures: Feature[] = [
-    {
-      icon: <Dumbbell size={32} className="text-white feature-icon" />,
-      title: "AI Workout Generation",
-      description: "Get personalized workout routines based on your goals, equipment, and fitness level.",
-      gradient: "from-lime-400 to-emerald-600",
+      icon: <BarChart3 />,
+      title: "Customized Workouts",
+      description: "Dynamic plans personalized to your fitness goals and equipment.",
+      gradient: "from-lime-300/20 to-emerald-500/20",
       demoComponent: <SampleWorkout />
     },
     {
-      icon: <BarChart3 size={32} className="text-white feature-icon" />,
-      title: "Real-Time Progress Tracking",
-      description: "Track your fitness journey with detailed analytics and visualizations of your progress.",
-      gradient: "from-cyan-400 to-blue-600",
+      icon: <Activity />,
+      title: "Real-Time Tracking",
+      description: "Instantly monitor and visualize your progress and achievements.",
+      gradient: "from-lime-300/20 to-cyan-500/20",
       demoComponent: <ProgressChart />
     },
     {
-      icon: <HeartHandshake size={32} className="text-white feature-icon" />,
-      title: "Expert Advice & Form Tips",
-      description: "Access professional guidance with video demonstrations and personalized form feedback.",
-      gradient: "from-violet-400 to-purple-600",
-      demoComponent: (
-        <VideoPlayer
-          ref={videoRef}
-          src={primaryVideoSrc}
-          fallbackSrc={fallbackSources}
-          autoPlay={true}
-          loop={true}
-          muted={true}
-        />
-      )
-    },
+      icon: <HeartHandshake />,
+      title: "Expert Advice",
+      description: "Receive guidance and tips from professional fitness experts.",
+      gradient: "from-lime-300/20 to-purple-500/20",
+      demoComponent: <VideoPlayer videoRef={videoRef} />
+    }
   ];
 
-  // Use features from props if available, otherwise use default features
-  const features = _features.length > 0 ? _features.map(feature => ({
-    ...feature,
-    gradient: feature.gradient || "from-accent-400 to-accent-600" // Default gradient if not provided
-  })) : defaultFeatures;
-
-  // Determine theme variant from props
-  const variant = (_variant || 'default') as VariantKey;
-
-  // Floating icon data
   const floatingIcons: FloatingIconData[] = [
-    { Icon: Dumbbell, size: 24, left: 10, top: 20, delay: 0, speed: 5 },
-    { Icon: Flame, size: 28, left: 85, top: 15, delay: 1.5, speed: 6 },
-    { Icon: Footprints, size: 24, left: 75, top: 85, delay: 0.7, speed: 7 },
-    { Icon: Medal, size: 20, left: 15, top: 70, delay: 2, speed: 5.5 },
-    { Icon: Heart, size: 16, left: 45, top: 10, delay: 1, speed: 4 },
-    { Icon: Bike, size: 28, left: 90, top: 50, delay: 0.5, speed: 6.5 },
-    { Icon: Apple, size: 20, left: 5, top: 40, delay: 1.8, speed: 5 },
-    { Icon: Activity, size: 24, left: 60, top: 95, delay: 1.3, speed: 7 },
-    { Icon: Coffee, size: 18, left: 25, top: 5, delay: 0.3, speed: 4.5 },
-    { Icon: Timer, size: 22, left: 80, top: 80, delay: 2.5, speed: 5.8 },
+    { Icon: Dumbbell, size: 24, left: 5, top: 15, delay: 0, speed: 8 },
+    { Icon: Timer, size: 32, left: 15, top: 60, delay: 1.5, speed: 10 },
+    { Icon: Medal, size: 28, left: 25, top: 25, delay: 0.8, speed: 12 },
+    { Icon: Flame, size: 36, left: 80, top: 20, delay: 2, speed: 9 },
+    { Icon: Heart, size: 28, left: 85, top: 65, delay: 1, speed: 11 },
+    { Icon: Apple, size: 24, left: 10, top: 80, delay: 2.5, speed: 10 },
+    { Icon: Coffee, size: 20, left: 70, top: 10, delay: 0.5, speed: 7 },
+    { Icon: Footprints, size: 32, left: 90, top: 40, delay: 1.2, speed: 9 },
+    { Icon: Bike, size: 36, left: 30, top: 70, delay: 1.8, speed: 13 }
   ];
 
-  // Handlers for feature interactions
+  // Handle hover over features
   const handleFeatureHover = (index: number) => {
-    setActiveFeature(index);
-    // Additional logic can be added here
+    setActiveFeatureIndex(index);
+
+    // Auto-play video when hovering Expert Advice
+    if (index === 2 && videoRef.current) {
+      videoRef.current.play().catch(e => {
+        console.error("Video autoplay failed:", e);
+      });
+    }
   };
 
+  // Handle mouse leave
   const handleMouseLeave = () => {
-    setActiveFeature(null);
-    // Additional logic can be added here
+    setActiveFeatureIndex(null);
+
+    // Pause video when no longer hovering
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
   };
 
   return (
-    <Section
-      id="features"
-      className="features-section"
-      backgroundColor="primary"
-      backgroundVariant="grid"
-      spacing="lg"
-      variant={variant}
+    <section
+      className="features-section w-full py-16 md:pt-8 md:pb-24 px-4 bg-gray-900 overflow-hidden relative"
+      aria-labelledby="features-heading"
+      data-theme={variant}
     >
-      <div className="text-center mb-16 relative z-10">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-          AI-Powered <span className="text-accent-400">Fitness</span> Experience
-        </h2>
-        <p className="text-text-secondary text-lg md:text-xl max-w-3xl mx-auto">
-          Our AI-driven platform personalizes every aspect of your fitness journey,
-          from workout creation to progress tracking.
-        </p>
-      </div>
+      {/* Create a visual connector from Hero to Features */}
+      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-gray-900 to-transparent z-0"></div>
 
-      <div className="relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <FeatureCard
-              key={index}
-              title={feature.title}
-              description={feature.description}
-              icon={feature.icon}
-              gradient={feature.gradient}
-              demoComponent={feature.demoComponent}
-              onMouseEnter={() => handleFeatureHover(index)}
-              onMouseLeave={handleMouseLeave}
-              isActive={activeFeature === index}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="video-background">
-        <VideoPlayer
-          ref={videoRef}
-          src={primaryVideoSrc}
-          fallbackSrc={fallbackSources}
-          autoPlay={true}
-          loop={true}
-          muted={true}
-        />
-      </div>
-
-      {/* Floating icons for decorative background */}
-      <div className="floating-icons-container" aria-hidden="true">
+      {/* Floating fitness icons - decorative */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         {floatingIcons.map((icon, index) => (
           <FloatingIcon
             key={index}
-            delay={icon.delay}
-            speed={icon.speed}
             left={icon.left}
             top={icon.top}
+            delay={icon.delay}
+            speed={icon.speed}
           >
-            <icon.Icon size={icon.size} className="text-gray-700" />
+            <icon.Icon size={icon.size} />
           </FloatingIcon>
         ))}
       </div>
-    </Section>
+
+      {/* Main content */}
+      <div className="max-w-6xl mx-auto text-center relative z-10">
+        <div className="inline-block mb-16">
+          <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">Fitness Evolution</span>
+          <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white">
+            Innovative Features <br />
+            <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text" data-text="Tailored for You">Tailored for You</span>
+          </h2>
+        </div>
+
+        {/* Feature cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              icon={feature.icon}
+              title={feature.title}
+              description={feature.description}
+              gradient={feature.gradient}
+              demoComponent={feature.demoComponent}
+              isActive={activeFeatureIndex === index}
+              onMouseEnter={() => handleFeatureHover(index)}
+              onMouseLeave={handleMouseLeave}
+              variant={variant as any}
+            />
+          ))}
+        </div>
+
+        {/* Background video player */}
+        <BackgroundVideoPlayer />
+
+        {/* CTA Button */}
+        <div className="mt-16">
+          <div className="inline-block w-3/4 md:w-1/2 mx-auto">
+            <RegistrationButton
+              variant="primary"
+              size="large"
+              className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 shadow-lg hover:shadow-xl hover:-translate-y-1 w-full border-[4px] border-orange-500"
+            >
+              Start Your Fitness Journey
+            </RegistrationButton>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

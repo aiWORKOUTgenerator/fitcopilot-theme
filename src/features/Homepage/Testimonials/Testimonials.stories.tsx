@@ -1,28 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import GlobalBackground from '../../../components/shared/GlobalBackground';
 import { Testimonials } from './Testimonials';
 
 /**
  * Testimonials component documentation
  */
 const meta: Meta<typeof Testimonials> = {
-  title: 'features/Homepage/Testimonials',
+  title: 'Features/Homepage/Testimonials',
   component: Testimonials,
-  tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
-    backgrounds: {
-      default: 'dark',
-    },
-    docs: {
-      description: {
-        component: 'The Testimonials component displays a carousel of user testimonials with navigation controls. It can use default testimonials or accept custom testimonials via props.',
-      },
-    },
   },
+  decorators: [
+    (Story) => (
+      <div className="relative min-h-screen">
+        <GlobalBackground variant="default" />
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
-    testimonials: {
-      control: 'object',
-      description: 'Array of testimonial objects to display. If not provided, default testimonials will be used.',
+    variant: {
+      control: 'select',
+      options: ['default', 'gym', 'sports', 'wellness', 'modern', 'classic', 'minimalist'],
     },
   },
 };
@@ -93,4 +93,74 @@ export const CustomTestimonials: Story = {
       },
     },
   },
+};
+
+// Sample testimonials data
+const sampleTestimonials = [
+  {
+    id: 1,
+    name: 'Sarah Johnson',
+    role: 'Marathon Runner',
+    quote: 'This AI workout generator transformed my training routine. I\'ve seen more progress in 3 months than in my previous year of self-guided workouts.',
+    rating: 5
+  },
+  {
+    id: 2,
+    name: 'Mike Reynolds',
+    role: 'Busy Professional',
+    quote: 'With my hectic schedule, I never had time to plan effective workouts. Now I get personalized routines that fit perfectly into my day.',
+    rating: 5
+  },
+  {
+    id: 3,
+    name: 'Emma Chen',
+    role: 'Fitness Enthusiast',
+    quote: 'The variety keeps me engaged and motivated. I\'ve discovered exercises I never would have tried on my own, and my results speak for themselves.',
+    rating: 4
+  }
+];
+
+export const GymTheme: Story = {
+  args: {
+    testimonials: sampleTestimonials,
+    variant: 'gym',
+  },
+  decorators: [
+    (Story) => (
+      <div className="relative min-h-screen">
+        <GlobalBackground variant="gym" />
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const SportsTheme: Story = {
+  args: {
+    testimonials: sampleTestimonials,
+    variant: 'sports',
+  },
+  decorators: [
+    (Story) => (
+      <div className="relative min-h-screen">
+        <GlobalBackground variant="sports" />
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const WellnessTheme: Story = {
+  args: {
+    testimonials: sampleTestimonials,
+    variant: 'wellness',
+  },
+  decorators: [
+    (Story) => (
+      <div className="relative min-h-screen">
+        <GlobalBackground variant="wellness" />
+        <Story />
+      </div>
+    ),
+  ],
 };

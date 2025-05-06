@@ -1,2 +1,2 @@
-export { Testimonials } from './Testimonials';
-export * from './types'; 
+export { default as Testimonials } from './Testimonials';
+export * from './types';

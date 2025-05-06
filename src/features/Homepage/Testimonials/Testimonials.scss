@@ -1,35 +1,114 @@
 // Canonical design system import - MUST BE FIRST
 @import '../../../styles/design-system/index';
 
-.testimonials-section {
-  position: relative;
-  overflow: hidden;
+/* Add high-specificity selector to ensure our styles take precedence */
+body .testimonials-section {
+  position: relative !important;
+  overflow: hidden !important;
 
+  // Create a theme-aware pattern using pseudo-elements instead of SVG data URL
   &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23CCFF00' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: 0.5;
-    z-index: 0;
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px) !important;
+    background-size: 20px 20px !important;
+    z-index: 0 !important;
+    opacity: 0.7 !important;
+  }
+
+  // Subtle gradient overlay for depth
+  &::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%) !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+  }
+
+  // Make sure content is above the background layers
+  .container {
+    position: relative !important;
+    z-index: 2 !important;
   }
 
   @media (max-width: 768px) {
     .grid {
-      gap: 1.5rem;
+      gap: 1.5rem !important;
+    }
+  }
+
+  /* Style for SUCCESS STORIES text - override with !important */
+  .testimonials-section span.uppercase {
+    color: #ddff0e !important;
+    /* Citron color */
+  }
+
+  /* Style for subtitle text - ensure centering */
+  p.max-w-2xl {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+  }
+
+  /* Style for Read More link - ensure lighter color */
+  a.inline-flex {
+    color: #d1d5db !important;
+
+    /* gray-300 */
+    &:hover {
+      color: #ddff0e !important;
+      /* Citron color on hover */
     }
   }
 
   a {
     &:hover svg {
-      transform: translateX(5px);
+      transform: translateX(5px) !important;
     }
 
     svg {
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease !important;
+    }
+  }
+
+  // Theme variant specific styling
+  &[data-variant="gym"] {
+    &::before {
+      background-image: radial-gradient(rgba(132, 204, 22, 0.03) 1px, transparent 1px) !important;
+      background-size: 20px 20px !important;
+    }
+  }
+
+  &[data-variant="sports"] {
+    &::before {
+      background-image: linear-gradient(45deg, rgba(34, 211, 238, 0.03) 25%, transparent 25%, transparent 50%,
+          rgba(34, 211, 238, 0.03) 50%, rgba(34, 211, 238, 0.03) 75%, transparent 75%, transparent) !important;
+      background-size: 20px 20px !important;
+    }
+  }
+
+  &[data-variant="wellness"] {
+    &::before {
+      background-image: radial-gradient(circle at center, rgba(167, 139, 250, 0.03) 0%, transparent 60%) !important;
+      background-size: 80px 80px !important;
+    }
+  }
+
+  &[data-variant="modern"] {
+    &::before {
+      background-image: linear-gradient(rgba(251, 191, 36, 0.03) 1px, transparent 1px) !important;
+      background-size: 20px 20px !important;
     }
   }
 }

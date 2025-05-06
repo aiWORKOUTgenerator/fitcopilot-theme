@@ -1,4 +1,5 @@
 import React from 'react';
+import Section from '../../../components/UI/Section';
 import { TestimonialCard } from './components/TestimonialCard';
 import './Testimonials.scss';
 import { TestimonialsProps } from './types';
@@ -6,7 +7,12 @@ import { TestimonialsProps } from './types';
 /**
  * Testimonials component - Displays user testimonials in a grid layout
  */
-export const Testimonials: React.FC<TestimonialsProps> = ({ testimonials = [] }) => {
+export const Testimonials: React.FC<TestimonialsProps> = ({
+  testimonials = [],
+  variant = 'default',
+  id = 'testimonials',
+  className = ''
+}) => {
   // Default testimonials if none provided from props
   const defaultTestimonials = testimonials.length > 0 ? testimonials : [
     {
@@ -32,46 +38,93 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ testimonials = [] })
     }
   ];
 
+  // Generate variant-specific accent color
+  const getAccentClass = () => {
+    switch (variant) {
+      case 'gym':
+        return 'text-lime-300';
+      case 'sports':
+        return 'text-cyan-300';
+      case 'wellness':
+        return 'text-violet-300';
+      case 'modern':
+        return 'text-amber-300';
+      default:
+        return 'text-accent-500';
+    }
+  };
+
+  // Convert our variant to the Section component's accepted VariantKey type
+  const getSectionVariant = () => {
+    switch (variant) {
+      case 'wellness':
+      case 'classic':
+      case 'minimalist':
+        return 'default';
+      default:
+        return variant;
+    }
+  };
+
   return (
-    <section className="testimonials-section py-24 bg-[#151F38]" id="testimonials">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16" data-aos="fade-up">
-          <span className="text-xs font-bold tracking-widest uppercase text-[#CCFF00] mb-2 block">Success Stories</span>
-          <h2 className="text-4xl font-bold mb-4 text-white">
-            What Our <span className="text-[#CCFF00]">Athletes</span> Say
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Real results from everyday athletes like you
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {defaultTestimonials.map((testimonial, index) => (
-            <div
-              key={testimonial.id}
-              data-aos="fade-up"
-              data-aos-delay={index * 100}
-            >
-              <TestimonialCard
-                name={testimonial.name}
-                role={testimonial.role}
-                quote={testimonial.quote}
-                avatar={testimonial.avatar}
-              />
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
-          <a href="#" className="inline-flex items-center text-[#CCFF00] hover:text-[#d9ff66] font-medium transition-colors">
-            Read More Success Stories
-            <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-            </svg>
-          </a>
-        </div>
+    <Section
+      id={id}
+      className={`testimonials-section ${className}`}
+      variant={getSectionVariant()}
+      spacing="lg"
+      backgroundVariant="default"
+      backgroundClass="bg-gray-900"
+    >
+      <div className="text-center mb-16" data-aos="fade-up">
+        <span
+          className="text-xs font-bold tracking-widest uppercase mb-2 block"
+          style={{ color: '#ddff0e' }}
+        >
+          SUCCESS STORIES
+        </span>
+        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+          What Our <span className={getAccentClass()}>Athletes</span> Say
+        </h2>
+        <p
+          className="text-gray-300 max-w-2xl mx-auto text-center mb-0"
+          style={{ marginLeft: 'auto', marginRight: 'auto', textAlign: 'center' }}
+        >
+          Real results from everyday athletes like you
+        </p>
       </div>
-    </section>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {defaultTestimonials.map((testimonial, index) => (
+          <div
+            key={testimonial.id}
+            data-aos="fade-up"
+            data-aos-delay={index * 100}
+          >
+            <TestimonialCard
+              name={testimonial.name}
+              role={testimonial.role}
+              quote={testimonial.quote}
+              avatar={testimonial.avatar}
+              variant={variant}
+              index={index}
+            />
+          </div>
+        ))}
+      </div>
+
+      <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
+        <a
+          href="#"
+          className="inline-flex items-center font-medium transition-colors"
+          style={{ color: '#d1d5db' }}
+        >
+          Read More Success Stories
+          <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </a>
+      </div>
+    </Section>
   );
 };
 
