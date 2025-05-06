@@ -2,10 +2,11 @@
 
 import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, Medal, Timer } from 'lucide-react';
 import React, { useRef, useState } from 'react';
+import { Section } from '../../../components/shared';
 import './Features.scss';
 import FeatureCard from './components/FeatureCard';
 import VideoPlayer, { VideoSource } from './components/VideoPlayer';
-import { FeaturesProps } from './types';
+import { FeaturesProps, VariantKey } from './types';
 
 /**
  * Interface for floating icon props
@@ -260,20 +261,22 @@ export const Features: React.FC<FeaturesProps> = ({
           ref={videoRef}
           src={primaryVideoSrc}
           fallbackSrc={fallbackSources}
-          poster="/wp-content/uploads/2023/featured-images/fitness-video-poster.jpg"
-          ariaLabel="Fitness expert demonstrating proper form techniques"
+          autoPlay={true}
+          loop={true}
+          muted={true}
         />
       )
     },
   ];
 
-  // Choose features to display - ensure all required props are provided if from props
-  const features = _features.length > 0
-    ? _features.map(feature => ({
-      ...feature,
-      gradient: feature.gradient || "from-accent-400 to-accent-600", // Default gradient if not provided
-    }))
-    : defaultFeatures;
+  // Use features from props if available, otherwise use default features
+  const features = _features.length > 0 ? _features.map(feature => ({
+    ...feature,
+    gradient: feature.gradient || "from-accent-400 to-accent-600" // Default gradient if not provided
+  })) : defaultFeatures;
+
+  // Determine theme variant from props
+  const variant = (_variant || 'default') as VariantKey;
 
   // Floating icon data
   const floatingIcons: FloatingIconData[] = [
@@ -289,41 +292,67 @@ export const Features: React.FC<FeaturesProps> = ({
     { Icon: Timer, size: 22, left: 80, top: 80, delay: 2.5, speed: 5.8 },
   ];
 
-  // Handle feature hover
+  // Handlers for feature interactions
   const handleFeatureHover = (index: number) => {
     setActiveFeature(index);
-
-    // Auto-play video when hovering Expert Advice
-    if (index === 2 && videoRef.current) {
-      videoRef.current.play().catch(e => {
-        console.error("Video autoplay failed:", e);
-      });
-    }
+    // Additional logic can be added here
   };
 
-  // Handle mouse leave
   const handleMouseLeave = () => {
     setActiveFeature(null);
-
-    // Pause video when no longer hovering
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
+    // Additional logic can be added here
   };
 
   return (
-    <section className="features-section py-20 bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Transform Your Fitness With <span className="text-gradient">AI-Powered</span> Tools
-          </h2>
-          <p className="text-gray-300 text-lg">
-            Our platform combines artificial intelligence with exercise science to deliver a personalized fitness experience.
-          </p>
-        </div>
+    <Section
+      id="features"
+      className="features-section"
+      backgroundColor="primary"
+      backgroundVariant="grid"
+      spacing="lg"
+      variant={variant}
+    >
+      <div className="text-center mb-16 relative z-10">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          AI-Powered <span className="text-accent-400">Fitness</span> Experience
+        </h2>
+        <p className="text-text-secondary text-lg md:text-xl max-w-3xl mx-auto">
+          Our AI-driven platform personalizes every aspect of your fitness journey,
+          from workout creation to progress tracking.
+        </p>
+      </div>
 
-        {/* Floating icons (decorative) */}
+      <div className="relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              title={feature.title}
+              description={feature.description}
+              icon={feature.icon}
+              gradient={feature.gradient}
+              demoComponent={feature.demoComponent}
+              onMouseEnter={() => handleFeatureHover(index)}
+              onMouseLeave={handleMouseLeave}
+              isActive={activeFeature === index}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="video-background">
+        <VideoPlayer
+          ref={videoRef}
+          src={primaryVideoSrc}
+          fallbackSrc={fallbackSources}
+          autoPlay={true}
+          loop={true}
+          muted={true}
+        />
+      </div>
+
+      {/* Floating icons for decorative background */}
+      <div className="floating-icons-container" aria-hidden="true">
         {floatingIcons.map((icon, index) => (
           <FloatingIcon
             key={index}
@@ -332,28 +361,11 @@ export const Features: React.FC<FeaturesProps> = ({
             left={icon.left}
             top={icon.top}
           >
-            <icon.Icon size={icon.size} />
+            <icon.Icon size={icon.size} className="text-gray-700" />
           </FloatingIcon>
         ))}
-
-        {/* Features grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
-          {features.map((feature, index) => (
-            <FeatureCard
-              key={index}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-              gradient={feature.gradient}
-              demoComponent={feature.demoComponent}
-              isActive={activeFeature === index}
-              onMouseEnter={() => handleFeatureHover(index)}
-              onMouseLeave={handleMouseLeave}
-            />
-          ))}
-        </div>
       </div>
-    </section>
+    </Section>
   );
 };
 

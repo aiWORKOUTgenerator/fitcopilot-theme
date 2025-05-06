@@ -21,6 +21,9 @@ import TrainingFeatures, { getTrainingFeaturesVariant } from './TrainingFeatures
 import { DemoNav } from './components';
 import { VariantKey } from './Hero/types';
 
+// Import shared components
+import { GlobalBackground } from '../../components/shared';
+
 export interface HomepageProps {
   demoMode?: boolean;
 }
@@ -39,7 +42,9 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
 
   // Track variants for demo mode
   const [variants, setVariants] = useState<Record<string, VariantKey>>({
+    hero: 'default',
     features: 'default',
+    journey: 'default',
     training: getTrainingVariant(),
     personalTraining: getPersonalTrainingVariant(),
     trainingFeatures: getTrainingFeaturesVariant(),
@@ -129,17 +134,21 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
   const demoSections = [
     {
       id: 'hero',
-      label: 'Hero'
+      label: 'Hero',
+      variantKey: 'hero',
+      variants: ['default', 'gym', 'sports', 'wellness'] as VariantKey[]
     },
     {
       id: 'features',
       label: 'Features',
       variantKey: 'features',
-      variants: ['default'] as VariantKey[]
+      variants: ['default', 'gym', 'sports', 'wellness'] as VariantKey[]
     },
     {
       id: 'journey',
-      label: 'Journey'
+      label: 'Journey',
+      variantKey: 'journey',
+      variants: ['default', 'gym', 'sports', 'wellness'] as VariantKey[]
     },
     {
       id: 'training',
@@ -173,10 +182,17 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
     }
   ];
 
+  // Determine the active theme for the entire page
+  // In a real app, this might come from user preferences or context
+  const activeTheme = variants.hero;
+
   return (
     <main
-      className={`homepage-container bg-black text-white transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${showRegistration ? 'with-registration' : ''}`}
+      className={`homepage-container text-white transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${showRegistration ? 'with-registration' : ''}`}
     >
+      {/* Global theme-aware background */}
+      <GlobalBackground variant={activeTheme} pattern="grid" />
+
       {/* Demo Mode Navigation - only shown in demo mode */}
       {demoMode && (
         <>
@@ -192,9 +208,6 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
         </>
       )}
 
-      {/* Global Grid Pattern */}
-      <div className="global-grid-overlay bg-grid-pattern" aria-hidden="true"></div>
-
       {/* Hero Section - Using dynamic variant */}
       <section id="hero" ref={heroRef} className={showRegistration ? 'dimmed' : ''}>
         <Hero
@@ -202,6 +215,7 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
           loginLink={data.siteLinks.login}
           logoUrl={data.assets.logo}
           onRegistrationStart={handleRegistrationStart}
+          variant={variants.hero}
         />
       </section>
 
@@ -222,46 +236,51 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
       )}
 
       {/* Features Section */}
-      <section id="features" className={showRegistration ? 'dimmed' : ''}>
+      <div id="features" className={showRegistration ? 'dimmed' : ''}>
         <Features
           variant={variants.features}
         />
-      </section>
+      </div>
 
       {/* Journey Section */}
-      <section id="journey" className={showRegistration ? 'dimmed' : ''}>
+      <div id="journey" className={showRegistration ? 'dimmed' : ''}>
         <Journey journey={data.journey} />
-      </section>
+      </div>
 
       {/* Training Programs Section */}
-      <section id="training" className={showRegistration ? 'dimmed' : ''}>
+      <div id="training" className={showRegistration ? 'dimmed' : ''}>
         <Training variant={variants.training} />
-      </section>
+      </div>
 
       {/* Training Features Section */}
-      <section id="trainingFeatures" className={showRegistration ? 'dimmed' : ''}>
+      <div id="trainingFeatures" className={showRegistration ? 'dimmed' : ''}>
         <TrainingFeatures variant={variants.trainingFeatures} />
-      </section>
+      </div>
 
       {/* Personal Training Section */}
-      <section id="personalTraining" className={showRegistration ? 'dimmed' : ''}>
+      <div id="personalTraining" className={showRegistration ? 'dimmed' : ''}>
         <PersonalTraining variant={variants.personalTraining} />
-      </section>
+      </div>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className={showRegistration ? 'dimmed' : ''}>
-        <Testimonials testimonials={data.testimonials} />
-      </section>
+      <div id="testimonials" className={showRegistration ? 'dimmed' : ''}>
+        <Testimonials />
+      </div>
 
       {/* Pricing Section */}
-      <section id="pricing" className={showRegistration ? 'dimmed' : ''}>
-        <Pricing pricing={data.pricing} />
-      </section>
+      <div id="pricing" className={showRegistration ? 'dimmed' : ''}>
+        <Pricing />
+      </div>
 
-      {/* Footer Section */}
-      <section id="footer" className={showRegistration ? 'dimmed' : ''}>
-        <Footer links={data.footerLinks} />
-      </section>
+      {/* Footer */}
+      <div id="footer" className={showRegistration ? 'dimmed' : ''}>
+        <Footer
+          logoUrl={data.assets.logo}
+          socialLinks={data.socialLinks}
+          legalLinks={data.legalLinks}
+          mainLinks={data.mainLinks}
+        />
+      </div>
     </main>
   );
 };

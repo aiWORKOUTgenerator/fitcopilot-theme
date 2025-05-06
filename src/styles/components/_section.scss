@@ -1,0 +1,156 @@
+// Section component styles
+.section-component {
+    position: relative;
+
+    // Use enhanced color variables
+    background-color: var(--color-background-primary);
+    color: var(--color-text-primary);
+
+    // Grid background pattern
+    &.section-bg-grid {
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--color-grid-pattern) 1px, transparent 1px),
+                linear-gradient(90deg, var(--color-grid-pattern) 1px, transparent 1px);
+            background-size: 30px 30px;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.05;
+        }
+    }
+
+    // Gradient overlay
+    &.section-bg-gradient {
+        &::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 50%;
+            background: linear-gradient(to bottom,
+                    transparent 0%,
+                    var(--color-background-primary) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+    }
+
+    // Seamless section (no visual breaks between sections)
+    &.section-seamless {
+        margin-top: -1px;
+        padding-top: 1px;
+    }
+
+    // Theme variants support
+    &[data-theme="gym"] {
+        background-color: var(--color-background-primary);
+        // Using the theme's variables from _colors-enhanced.scss
+    }
+
+    &[data-theme="sports"] {
+        background-color: var(--color-background-primary);
+        // Using the theme's variables from _colors-enhanced.scss
+    }
+
+    &[data-theme="wellness"] {
+        background-color: var(--color-background-primary);
+        // Using the theme's variables from _colors-enhanced.scss
+    }
+
+    &[data-theme="modern"] {
+        --color-background-primary: #121212;
+        --color-background-secondary: #1e1e1e;
+        --color-background-tertiary: #2d2d2d;
+        --color-text-accent: var(--color-blue-400, #60a5fa);
+    }
+
+    &[data-theme="classic"] {
+        --color-background-primary: #2c3e50;
+        --color-background-secondary: #34495e;
+        --color-background-tertiary: #3d556e;
+        --color-text-accent: var(--color-yellow-400, #facc15);
+    }
+
+    &[data-theme="minimalist"] {
+        --color-background-primary: #fafafa;
+        --color-background-secondary: #f5f5f5;
+        --color-background-tertiary: #e5e5e5;
+        --color-text-primary: #121212;
+        --color-text-secondary: #555555;
+        --color-text-accent: var(--color-indigo-500, #6366f1);
+    }
+}
+
+// Utility classes for background styles using the enhanced color system
+.bg-background-primary {
+    background-color: var(--color-background-primary);
+}
+
+.bg-background-secondary {
+    background-color: var(--color-background-secondary);
+}
+
+.bg-background-tertiary {
+    background-color: var(--color-background-tertiary);
+}
+
+.bg-surface-primary {
+    background-color: var(--color-surface-primary);
+}
+
+// Border color utilities
+.border-border-light {
+    border-color: var(--color-border-light);
+}
+
+.border-border-medium {
+    border-color: var(--color-border-medium);
+}
+
+// Global background component styles
+.global-background {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--color-background-primary);
+    overflow: hidden;
+
+    // Theme variant support
+    &[data-theme] {
+        // Theme styles will inherit from body[data-theme] in _colors-enhanced.scss
+    }
+}
+
+// Grid pattern for global background
+.global-background-grid {
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image:
+            linear-gradient(var(--color-grid-pattern) 1px, transparent 1px),
+            linear-gradient(90deg, var(--color-grid-pattern) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.03;
+    }
+}
+
+// Dots pattern for global background
+.global-background-dots {
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(var(--color-grid-pattern) 1px, transparent 1px);
+        background-size: 20px 20px;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.03;
+    }
+}

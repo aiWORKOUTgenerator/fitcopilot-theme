@@ -1,14 +1,16 @@
 import { Activity, Apple, BarChart3, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, Medal, Timer } from 'lucide-react';
 import React, { useRef, useState } from 'react';
+import { Section } from '../../../../components/shared';
 import { FloatingIconData, renderFloatingIcon } from '../components';
 import FeatureCard from '../components/FeatureCard';
 import { ProgressChart, SampleWorkout, VideoPlayer } from '../components/FeatureCardDemos';
 import '../Features.scss';
+import { FeaturesProps } from '../types';
 
 /**
  * Default Features component with flip cards
  */
-const Features: React.FC = () => {
+const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
     const [activeFeatureIndex, setActiveFeatureIndex] = useState<number | null>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -71,9 +73,14 @@ const Features: React.FC = () => {
     };
 
     return (
-        <section
-            className="features-section w-full py-16 md:pt-8 md:pb-24 px-4 bg-gray-900 overflow-hidden relative"
+        <Section
+            id="features"
+            variant={variant}
+            backgroundVariant="grid"
+            spacing="lg"
+            className="features-section"
             aria-labelledby="features-heading"
+            containerClassName="max-w-6xl text-center"
         >
             {/* Create a visual connector from Hero to Features */}
             <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-gray-900 to-transparent z-0"></div>
@@ -83,47 +90,44 @@ const Features: React.FC = () => {
                 {floatingIcons.map((icon, index) => renderFloatingIcon(icon, index))}
             </div>
 
-            {/* Main content */}
-            <div className="max-w-6xl mx-auto text-center relative z-10">
-                <div className="inline-block mb-16">
-                    <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">Fitness Evolution</span>
-                    <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white">
-                        Innovative Features <br />
-                        <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text text-gradient" data-text="Tailored for You">Tailored for You</span>
-                    </h2>
-                </div>
-
-                {/* Feature cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {/* Map through features */}
-                    {features.map((feature, index) => (
-                        <div key={`feature-wrapper-${index}`}>
-                            <FeatureCard
-                                icon={feature.icon}
-                                title={feature.title}
-                                description={feature.description}
-                                gradient={feature.gradient}
-                                demoComponent={index === 2 ? <VideoPlayer ref={videoRef} /> : feature.demoComponent}
-                                isActive={activeFeatureIndex === index}
-                                onMouseEnter={() => handleFeatureHover(index)}
-                                onMouseLeave={handleMouseLeave}
-                            />
-                        </div>
-                    ))}
-                </div>
-
-                {/* CTA Button */}
-                <div className="mt-16">
-                    <a
-                        href="https://aigymengine.com/workout-generator-registration"
-                        className="inline-flex items-center justify-center bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 font-bold py-4 px-8 rounded-full shadow-lg shadow-lime-300/30 transition-all duration-300 hover:shadow-xl hover:shadow-lime-300/40 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-offset-2 focus:ring-offset-gray-900 button primary"
-                        aria-label="Start your fitness journey"
-                    >
-                        Start Your Fitness Journey
-                    </a>
-                </div>
+            <div className="inline-block mb-16">
+                <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">Fitness Evolution</span>
+                <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white">
+                    Innovative Features <br />
+                    <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text text-gradient" data-text="Tailored for You">Tailored for You</span>
+                </h2>
             </div>
-        </section>
+
+            {/* Feature cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Map through features */}
+                {features.map((feature, index) => (
+                    <div key={`feature-wrapper-${index}`}>
+                        <FeatureCard
+                            icon={feature.icon}
+                            title={feature.title}
+                            description={feature.description}
+                            gradient={feature.gradient}
+                            demoComponent={index === 2 ? <VideoPlayer ref={videoRef} /> : feature.demoComponent}
+                            isActive={activeFeatureIndex === index}
+                            onMouseEnter={() => handleFeatureHover(index)}
+                            onMouseLeave={handleMouseLeave}
+                        />
+                    </div>
+                ))}
+            </div>
+
+            {/* CTA Button */}
+            <div className="mt-16">
+                <a
+                    href="https://aigymengine.com/workout-generator-registration"
+                    className="inline-flex items-center justify-center bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 font-bold py-4 px-8 rounded-full shadow-lg shadow-lime-300/30 transition-all duration-300 hover:shadow-xl hover:shadow-lime-300/40 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-offset-2 focus:ring-offset-gray-900 button primary"
+                    aria-label="Start your fitness journey"
+                >
+                    Start Your Fitness Journey
+                </a>
+            </div>
+        </Section>
     );
 };
 

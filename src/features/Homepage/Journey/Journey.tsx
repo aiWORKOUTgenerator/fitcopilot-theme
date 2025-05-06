@@ -19,8 +19,8 @@ import {
   Zap
 } from 'lucide-react';
 import React, { useState } from 'react';
+import { Section } from '../../../components/shared';
 import { JourneyCTA, JourneyStep, SectionHeader } from './components';
-import SPACING from './constants';
 import './Journey.scss';
 import { JourneyProps } from './types';
 
@@ -312,32 +312,37 @@ export const Journey: React.FC<JourneyProps> = ({ journey = [] }) => {
   }
 
   return (
-    <section className={`journey-section ${SPACING.PADDING.SECTION} bg-[#0B1121]`} id="how-it-works">
-      <div className={SPACING.LAYOUT.SECTION_CONTAINER}>
-        <SectionHeader
-          title={<>How We <span className="text-[#CCFF00]">Build</span> Your Fitness</>}
-          description="Our AI-powered system creates personalized workout programs tailored to your specific goals and needs."
-        />
+    <Section
+      id="how-it-works"
+      className="journey-section"
+      backgroundColor="secondary"
+      backgroundVariant="grid"
+      spacing="lg"
+      seamless={true}
+    >
+      <SectionHeader
+        title="Your Fitness Journey"
+        description="Four simple steps to transform your fitness routine with AI-powered workouts"
+      />
 
-        <div className="space-y-6 mt-12">
-          {journeySteps.map((step, index) => (
-            <JourneyStep
-              key={step.id}
-              step={step}
-              index={index}
-              isExpanded={expandedStep === index}
-              onToggle={() => toggleStep(index)}
-              isLast={index === journeySteps.length - 1}
-            />
-          ))}
-        </div>
-
-        <JourneyCTA
-          text="Start Your Fitness Journey"
-          href="https://builder.fitcopilot.ai"
-        />
+      <div className="journey-steps mt-16">
+        {journeySteps.map((step, index) => (
+          <JourneyStep
+            key={step.id}
+            step={step}
+            index={index}
+            isExpanded={expandedStep === index}
+            onToggle={() => toggleStep(index)}
+            isLast={index === journeySteps.length - 1}
+          />
+        ))}
       </div>
-    </section>
+
+      <JourneyCTA
+        text="Start Your Fitness Journey"
+        href="https://builder.fitcopilot.ai"
+      />
+    </Section>
   );
 };
 

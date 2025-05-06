@@ -1,5 +1,176 @@
 # FitCopilot Design System
 
+This directory contains the core design system components, tokens, and utilities for the FitCopilot theme.
+
+## Enhanced Color System
+
+### Overview
+
+The enhanced color system provides a standardized approach to colors throughout the application with:
+
+1. **Semantic naming:** Colors are named by their purpose, not their appearance
+2. **Theme variant support:** Colors automatically adapt to theme changes
+3. **Consistent application:** Standardized utilities for applying colors
+4. **Hierarchical structure:** Base colors → semantic colors → component-specific colors
+
+### Usage
+
+#### CSS Variables
+
+The color system is built on CSS custom properties (variables):
+
+```scss
+// Base color reference
+.my-component {
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-light);
+}
+```
+
+#### Tailwind Classes
+
+Utility classes are available for common color uses:
+
+```html
+<div class="bg-background-primary text-text-primary border-border-light">
+  <!-- Content -->
+</div>
+```
+
+#### Theme Variants
+
+Themes can be applied at the body level:
+
+```html
+<!-- Default theme -->
+<body>...</body>
+
+<!-- Gym theme -->
+<body data-theme="gym">...</body>
+
+<!-- Sports theme -->
+<body data-theme="sports">...</body>
+
+<!-- Wellness theme -->
+<body data-theme="wellness">...</body>
+```
+
+Or at the component level:
+
+```html
+<section class="section-component" data-theme="gym">
+  <!-- Content with gym theme colors -->
+</section>
+```
+
+### Available Color Tokens
+
+#### Background Colors
+
+| Token | Purpose |
+|-------|---------|
+| `--color-background-primary` | Main background (darkest) |
+| `--color-background-secondary` | Secondary background (medium) |
+| `--color-background-tertiary` | Tertiary background (lightest) |
+
+#### Surface Colors
+
+| Token | Purpose |
+|-------|---------|
+| `--color-surface-primary` | Card and element backgrounds |
+| `--color-surface-secondary` | Alternative surface with transparency |
+
+#### Text Colors
+
+| Token | Purpose |
+|-------|---------|
+| `--color-text-primary` | Main text color |
+| `--color-text-secondary` | Secondary/supporting text |
+| `--color-text-accent` | Accent/highlighted text |
+
+#### Border Colors
+
+| Token | Purpose |
+|-------|---------|
+| `--color-border-light` | Light borders (subtle) |
+| `--color-border-medium` | Medium borders (more visible) |
+
+#### Overlay Colors
+
+| Token | Purpose |
+|-------|---------|
+| `--color-overlay-light` | Light overlays (subtle darkening) |
+| `--color-overlay-medium` | Medium overlays (moderate darkening) |
+| `--color-overlay-dark` | Dark overlays (significant darkening) |
+
+#### Special Purpose
+
+| Token | Purpose |
+|-------|---------|
+| `--color-grid-pattern` | Color for grid patterns |
+
+## Section Component
+
+The Section component provides a standardized way to create page sections with consistent styling, spacing, and theme support.
+
+### Basic Usage
+
+```tsx
+import { Section } from 'components/shared';
+
+<Section 
+  id="features"
+  backgroundColor="primary"
+  backgroundVariant="grid"
+  spacing="lg"
+  variant="gym"
+>
+  <h2>Section Content</h2>
+  {/* ... */}
+</Section>
+```
+
+See [Section Component Documentation](../../components/shared/README.md) for complete details.
+
+## GlobalBackground Component
+
+The GlobalBackground component provides a consistent, theme-aware background for the entire application.
+
+### Basic Usage
+
+```tsx
+import { GlobalBackground } from 'components/shared';
+
+// In your app's root component
+<div className="app">
+  <GlobalBackground variant="sports" pattern="grid" />
+  {/* App content */}
+</div>
+```
+
+## Design Principles
+
+1. **Consistency First:** Use the standard components and tokens for consistent UI
+2. **Theme Adaptability:** All visual elements should adapt to theme changes
+3. **Semantic Naming:** Name by purpose, not appearance
+4. **Composition Over Inheritance:** Combine small, focused components
+5. **Responsive By Default:** All components should work across device sizes
+
+## Contribution Guidelines
+
+1. Never use raw color values - always reference tokens
+2. Extend the system with new tokens when needed - don't create one-offs
+3. Test new components with all theme variants
+4. Ensure all components are responsive
+5. Document new additions to the design system
+
+## References
+
+- [Color System Architecture](./COLOR-SYSTEM.md)
+- [Component Tokens](./component-tokens.scss)
+- [Spacing System](./spacing.md)
+
 ## Token Usage Guidelines
 
 This document outlines the design token system for the FitCopilot theme, including naming conventions, usage patterns, and best practices.
