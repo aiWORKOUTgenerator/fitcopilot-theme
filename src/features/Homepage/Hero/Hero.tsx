@@ -16,7 +16,7 @@ interface HeroProps {
 const Hero: React.FC<HeroProps> = ({
   registrationLink = "#splash-section",
   loginLink = "#login",
-  logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
+  logoUrl = '/wp-content/themes/fitcopilot/assets/images/logo.png',
   onRegistrationStart
 }) => {
   // State for controlling tooltips visibility
@@ -77,11 +77,21 @@ const Hero: React.FC<HeroProps> = ({
           {/* Content Card with Backdrop Blur */}
           <div className="bg-gray-800/30 backdrop-blur-lg rounded-3xl p-8 shadow-xl border border-gray-700 mb-6">
             {/* Logo */}
-            <div className="mb-8 flex justify-center">
+            <div className="mb-4 flex justify-center">
               <img
-                src={logoUrl}
+                src="/assets/media/images/logo.png"
                 alt="AI Workout Generator Logo"
-                className="h-48 md:h-56 w-auto"
+                className="h-3 sm:h-4 md:h-6 lg:h-8 w-auto max-h-[25%]"
+                style={{ maxWidth: '25%' }}
+                onError={(e) => {
+                  // Fallback mechanism if the direct path fails
+                  const target = e.target as HTMLImageElement;
+                  // Try alternative paths
+                  if (target.src.includes('/assets/media/images/logo.png')) {
+                    console.log('Trying alternative path for logo');
+                    target.src = '/wp-content/themes/fitcopilot/assets/media/images/logo.png';
+                  }
+                }}
               />
             </div>
 
