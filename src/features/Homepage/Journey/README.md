@@ -1,6 +1,243 @@
 # Journey Component
 
-The Journey component is a feature component that displays the user journey/progression section on the homepage. It supports multiple theme variants through a structured directory organization.
+The Journey component displays a step-by-step process flow with expandable steps. It shows users the journey they will take with our product, highlighting key features and benefits at each step.
+
+## Features
+
+- Responsive, mobile-first design
+- Expandable steps with detailed feature cards
+- Theme variant support with discriminated union types
+- Animated step transitions
+- Call to action buttons at each step
+
+## Usage
+
+```tsx
+import { Journey } from 'features/Homepage/Journey';
+
+// Basic usage with default variant
+<Journey />
+
+// With custom journey steps
+<Journey journey={customJourneySteps} />
+
+// With specific theme variant
+<Journey variant="gym" />
+
+// Full configuration
+<Journey 
+  journey={customJourneySteps}
+  variant="sports"
+/>
+```
+
+## Variant System
+
+The Journey component uses a discriminated union type system for stronger type safety and better IDE intellisense. 
+
+### Available Variants
+
+- `default` - Standard green/lime theme
+- `gym` - Purple-based color scheme
+- `sports` - Blue/cyan color scheme 
+- `wellness` - Teal/green color scheme
+- `modern` - Amber/orange color scheme
+- `classic` - Red/warm color scheme
+- `minimalist` - Gray/neutral color scheme
+
+### Type System
+
+The variant system uses TypeScript discriminated unions for better type safety:
+
+```typescript
+// Base variant type with discriminant
+export type VariantKey = 'default' | 'gym' | 'sports' | 'wellness' | 'modern' | 'classic' | 'minimalist';
+
+// Example of discriminated union props
+export interface DefaultVariantProps extends BaseVariantProps {
+  variant: 'default';
+  colors?: {
+    accentPrimary: '#CCFF00';
+    accentSecondary: '#22d3ee';
+    accentTertiary: '#a78bfa';
+  };
+}
+
+// Union of all variant props
+export type VariantProps = 
+  | DefaultVariantProps
+  | GymVariantProps
+  | SportsVariantProps
+  // Other variants...
+
+// Type guard for type narrowing
+export function isVariant<T extends VariantProps['variant']>(
+  variant: VariantKey,
+  specificVariant: T
+): variant is T {
+  return variant === specificVariant;
+}
+
+// Using the type guard for type narrowing
+if (isVariant(variant, 'gym')) {
+  // TypeScript knows variant is 'gym' here
+  // You can safely access gym-specific properties
+}
+```
+
+## Responsive Behavior System
+
+The Journey component uses a systematic approach to responsive design that ensures consistent behavior across all breakpoints.
+
+### Breakpoint System
+
+We use standardized breakpoints aligned with Tailwind defaults, defined in `utils/breakpoints.ts`:
+
+```typescript
+export const BREAKPOINTS = {
+  xs: 0,      // extra small screens - mobile
+  sm: 640,    // small screens - large mobile / small tablet
+  md: 768,    // medium screens - tablets
+  lg: 1024,   // large screens - small desktops / large tablets
+  xl: 1280,   // extra large screens - desktops
+  xxl: 1536   // extra extra large screens - large desktops
+};
+```
+
+### Responsive CSS Variables
+
+Rather than hardcoding values, we use CSS variables with media queries to adjust values at different breakpoints:
+
+```scss
+:root {
+  /* Mobile-first base values */
+  --journey-title-font-size: 2rem;
+  --journey-section-padding-top: 3rem;
+  
+  /* Tablet breakpoint overrides */
+  @media (min-width: 768px) {
+    --journey-title-font-size: 2.5rem;
+    --journey-section-padding-top: 4rem;
+  }
+  
+  /* Desktop breakpoint overrides */
+  @media (min-width: 1024px) {
+    --journey-title-font-size: 3rem;
+    --journey-section-padding-top: 5rem;
+  }
+}
+```
+
+### Responsive Component Classes
+
+Components use consistent class naming and responsive utility classes:
+
+```jsx
+<div className="journey-step-card">
+  <div className="journey-step-icon">
+    {icon}
+  </div>
+  <h3 className="feature-title">{title}</h3>
+</div>
+```
+
+### Mobile-First Enhancements
+
+The component includes several mobile-specific enhancements:
+
+1. **Touch-friendly targets:** All interactive elements are at least 44x44px on mobile
+2. **Simplified layouts:** Single-column layouts on mobile that expand to multi-column on larger screens
+3. **Optimized spacing:** Different spacing values at each breakpoint to maximize readability
+4. **Responsive typography:** Font sizes adjust based on screen size
+5. **Mobile-specific UI elements:** Special expand/collapse buttons for mobile users
+
+### Special Considerations
+
+- **Reduced Motion:** Animations are disabled for users with reduced motion preferences
+- **Accessible Focus States:** Clear focus indicators at all screen sizes
+- **Overflow Handling:** Text truncation and flexible layouts prevent overflows
+
+### Responsive Testing Approach
+
+When testing responsiveness, check each component at these breakpoints:
+
+- Mobile portrait (320px - 375px)
+- Mobile landscape (568px - 667px)
+- Tablet portrait (768px - 834px)
+- Tablet landscape (1024px - 1112px)
+- Desktop (1280px+)
+
+## Component Structure
+
+The Journey component consists of:
+
+1. `Journey.tsx` - Main container component
+2. `JourneyStep.tsx` - Individual step with expandable content
+3. `JourneyFeatureCard.tsx` - Feature card within each step
+4. `SectionHeader.tsx` - Section title and description
+5. `JourneyCTA.tsx` - Call to action button
+
+## Custom Journey Steps
+
+You can provide custom journey steps by passing an array of objects to the `journey` prop:
+
+```tsx
+const customJourneySteps = [
+  {
+    id: 1,
+    number: 1,
+    title: "Step One Title",
+    description: "Description of step one",
+    // Optional properties
+    icon: <CustomIcon />,
+    delay: 100,
+    accentColor: "from-lime-300 to-emerald-400", 
+    ctaText: "Action Button Text",
+    detailedFeatures: [
+      {
+        title: "Feature Title",
+        description: "Feature description",
+        icon: <FeatureIcon />
+      },
+      // More features...
+    ]
+  },
+  // More steps...
+];
+```
+
+## Styling
+
+The component uses a combination of:
+
+- CSS variables for theme variations
+- Tailwind utility classes
+- Custom SCSS for animations and special effects
+
+### CSS Variables
+
+Theme-specific variables are defined in `Journey.scss` and follow the pattern:
+
+```scss
+:root {
+  --journey-background: rgba(10, 16, 27, 1);
+  --journey-card-bg: #11192a;
+  --journey-accent-primary: #CCFF00;
+  // ...
+}
+
+[data-theme="gym"] {
+  --journey-accent-primary: var(--color-accent-400);
+  // ...
+}
+```
+
+## Accessibility
+
+- Keyboard navigation for expanding/collapsing steps
+- ARIA attributes for screen readers
+- Sufficient color contrast
+- Focus states for interactive elements
 
 ## Directory Structure
 
@@ -12,6 +249,9 @@ src/features/Homepage/Journey/
 ├── README.md               # This documentation
 ├── components/             # Sub-components used by Journey
 │   └── ...
+├── utils/                  # Utility functions and helpers
+│   ├── breakpoints.ts      # Responsive breakpoint system
+│   └── variantHelpers.ts   # Theme variant helper functions
 ├── media/                  # Media assets for the component
 │   └── ...
 └── variants/               # Theme variant implementations
@@ -30,40 +270,6 @@ src/features/Homepage/Journey/
     │   └── index.ts
     └── wellness/           # Wellness theme implementation
         └── index.ts
-```
-
-## Usage
-
-The Journey component automatically selects the appropriate variant based on the WordPress theme settings:
-
-```tsx
-import Journey from 'src/features/Homepage/Journey';
-
-// In your component:
-const HomepageSection = () => {
-  return (
-    <div className="homepage">
-      <Journey />
-      {/* Other sections */}
-    </div>
-  );
-};
-```
-
-To use a specific variant explicitly:
-
-```tsx
-import { ModernVariant as Journey } from 'src/features/Homepage/Journey';
-
-// In your component:
-const HomepageSection = () => {
-  return (
-    <div className="homepage">
-      <Journey />
-      {/* Other sections */}
-    </div>
-  );
-};
 ```
 
 ## WordPress Integration

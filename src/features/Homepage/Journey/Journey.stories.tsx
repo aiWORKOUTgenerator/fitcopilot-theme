@@ -16,8 +16,15 @@ const meta: Meta<typeof Journey> = {
     },
     docs: {
       description: {
-        component: 'The Journey component displays the user journey/process flow with expandable step cards that reveal detailed features. Each step includes an icon, title, description, and can be expanded to show detailed features and a call-to-action.'
+        component: 'The Journey component displays the user journey/process flow with expandable step cards that reveal detailed features. Each step includes an icon, title, description, and can be expanded to show more details. The component is fully responsive and adapts to different screen sizes.'
       }
+    }
+  },
+  argTypes: {
+    variant: {
+      options: ['default', 'gym', 'sports', 'wellness', 'modern', 'classic', 'minimalist'],
+      control: { type: 'select' },
+      description: 'Theme variant to display'
     }
   }
 };
@@ -119,6 +126,91 @@ export const CustomJourney: Story = {
     docs: {
       description: {
         story: 'Journey section with custom steps, showcasing how the component can be configured with different content.'
+      }
+    }
+  }
+};
+
+/**
+ * Displays the Journey component with gym variant theme
+ */
+export const GymVariant: Story = {
+  args: {
+    variant: 'gym'
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Journey component styled with the "gym" theme variant, showing purple accent colors and styling.'
+      }
+    }
+  }
+};
+
+/**
+ * Displays the Journey component on mobile viewport
+ */
+export const MobileView: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+    docs: {
+      description: {
+        story: 'Journey component rendered on a mobile viewport (320px width), showing responsive adaptations.'
+      }
+    }
+  }
+};
+
+/**
+ * Displays the Journey component on tablet viewport
+ */
+export const TabletView: Story = {
+  parameters: {
+    viewport: {
+      defaultViewport: 'tablet',
+    },
+    docs: {
+      description: {
+        story: 'Journey component rendered on a tablet viewport (768px width), showing responsive adaptations.'
+      }
+    }
+  }
+};
+
+/**
+ * Shows how the component adapts across different screen sizes
+ */
+export const ResponsiveComparison: Story = {
+  render: (args) => (
+    <div className="responsive-demo">
+      <div className="viewport-demo">
+        <h3 className="text-white mb-2">Mobile View (320px)</h3>
+        <div className="mobile-frame" style={{ width: '320px', border: '1px solid #666', margin: '0 auto' }}>
+          <Journey {...args} />
+        </div>
+      </div>
+
+      <div className="viewport-demo mt-8">
+        <h3 className="text-white mb-2">Tablet View (768px)</h3>
+        <div className="tablet-frame" style={{ width: '768px', border: '1px solid #666', margin: '0 auto', maxWidth: '100%' }}>
+          <Journey {...args} />
+        </div>
+      </div>
+
+      <div className="viewport-demo mt-8">
+        <h3 className="text-white mb-2">Desktop View (1024px+)</h3>
+        <div className="desktop-frame" style={{ width: '100%', border: '1px solid #666', margin: '0 auto' }}>
+          <Journey {...args} />
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story: 'Demonstrates how the Journey component responsively adapts to different viewport sizes.'
       }
     }
   }

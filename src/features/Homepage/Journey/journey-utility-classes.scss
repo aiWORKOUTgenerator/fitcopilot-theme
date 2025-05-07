@@ -1,0 +1,90 @@
+/* Journey Utility Classes for use with components */
+
+/* RGB variable definitions for opacity calculations */
+:root {
+    --journey-accent-primary-rgb: 204, 255, 0;
+    /* #CCFF00 */
+    --journey-lime-rgb: 204, 255, 0;
+    --journey-cyan-rgb: 34, 211, 238;
+    --journey-violet-rgb: 167, 139, 250;
+    --journey-amber-rgb: 251, 191, 36;
+    --journey-teal-rgb: 45, 212, 191;
+}
+
+[data-theme="gym"] {
+    --journey-accent-primary-rgb: 139, 92, 246;
+    /* Violet color */
+}
+
+[data-theme="sports"] {
+    --journey-accent-primary-rgb: 56, 189, 248;
+    /* Cyan color */
+}
+
+[data-theme="wellness"] {
+    --journey-accent-primary-rgb: 45, 212, 191;
+    /* Teal color */
+}
+
+/* Text color classes */
+.text-journey-accent {
+    color: var(--journey-accent-primary);
+}
+
+/* Background classes */
+.bg-journey-card {
+    background-color: var(--journey-card-bg);
+}
+
+.border-journey-card {
+    border-color: var(--journey-card-border);
+}
+
+/* Button styling */
+.journey-expand-button {
+    border-color: rgba(var(--journey-accent-primary-rgb), 0.3);
+    background-color: rgba(var(--journey-accent-primary-rgb), 0.1);
+    color: var(--journey-accent-primary);
+}
+
+/* Gradient backgrounds */
+.journey-gradient-lime {
+    background-image: linear-gradient(to right, var(--color-lime-300, #bef264), var(--color-emerald-400, #34d399));
+}
+
+.journey-gradient-cyan {
+    background-image: linear-gradient(to right, var(--color-cyan-300, #67e8f9), var(--color-blue-400, #60a5fa));
+}
+
+.journey-gradient-violet {
+    background-image: linear-gradient(to right, var(--color-violet-300, #c4b5fd), var(--color-purple-400, #a78bfa));
+}
+
+.journey-gradient-amber {
+    background-image: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
+}
+
+.journey-gradient-teal {
+    background-image: linear-gradient(to right, var(--color-teal-300, #5eead4), var(--color-emerald-400, #34d399));
+}
+
+/* Hover effects */
+.hover-text-journey-accent:hover {
+    color: var(--journey-accent-primary);
+}
+
+/* Background with opacity */
+.bg-journey-accent-10 {
+    background-color: rgba(var(--journey-accent-primary-rgb), 0.1);
+}
+
+.bg-journey-accent-30 {
+    background-color: rgba(var(--journey-accent-primary-rgb), 0.3);
+}
+
+/* Border with opacity */
+.border-journey-accent-30 {
+    border-color: rgba(var(--journey-accent-primary-rgb), 0.3);
+}
+
+/* Theme-specific overrides are handled by CSS variables in Journey.scss */

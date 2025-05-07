@@ -13,5 +13,8 @@ export * from './variants';
 // Export types
 export * from './types';
 
+// Export utility functions
+export * from './utils/variantHelpers';
+
 // Default export is the function that returns the appropriate variant
 export default getJourneyVariant(); 

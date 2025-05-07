@@ -1,15 +1,173 @@
 @import "../../../styles/design-system/index.scss";
 
+/* Breakpoint definitions for Journey component */
+$breakpoint-xs: 0;
+$breakpoint-sm: 640px;
+$breakpoint-md: 768px;
+$breakpoint-md-max: 767px;
+/* Used for max-width queries */
+$breakpoint-lg: 1024px;
+$breakpoint-xl: 1280px;
+$breakpoint-xxl: 1536px;
+
+/* Journey Section Variables */
+:root {
+  /* Base colors */
+  --journey-background: rgba(10, 16, 27, 1);
+  --journey-card-bg: #11192a;
+  --journey-card-border: #2a365a;
+  --journey-accent-primary: #CCFF00;
+
+  /* Accent colors with opacity for glow effects */
+  --journey-accent-lime: rgba(204, 255, 0, 0.15);
+  --journey-accent-lime-strong: rgba(204, 255, 0, 0.5);
+  --journey-accent-lime-light: rgba(204, 255, 0, 0.05);
+  --journey-accent-lime-medium: rgba(204, 255, 0, 0.1);
+
+  --journey-accent-cyan: rgba(34, 211, 238, 0.15);
+  --journey-accent-cyan-strong: rgba(34, 211, 238, 0.5);
+  --journey-accent-cyan-light: rgba(34, 211, 238, 0.05);
+  --journey-accent-cyan-medium: rgba(34, 211, 238, 0.1);
+
+  --journey-accent-violet: rgba(167, 139, 250, 0.15);
+  --journey-accent-violet-strong: rgba(167, 139, 250, 0.5);
+  --journey-accent-violet-light: rgba(167, 139, 250, 0.05);
+  --journey-accent-violet-medium: rgba(167, 139, 250, 0.1);
+
+  --journey-accent-amber: rgba(251, 191, 36, 0.15);
+  --journey-accent-amber-strong: rgba(251, 191, 36, 0.5);
+  --journey-accent-amber-light: rgba(251, 191, 36, 0.05);
+  --journey-accent-amber-medium: rgba(251, 191, 36, 0.1);
+
+  /* Grid pattern colors */
+  --journey-grid-line: rgba(255, 255, 255, 0.03);
+
+  /* Responsive typography - mobile first */
+  --journey-title-font-size: 2rem;
+  --journey-title-line-height: 1.2;
+  --journey-title-letter-spacing: -0.01em;
+
+  --journey-step-title-font-size: 1.25rem;
+  --journey-step-title-line-height: 1.3;
+
+  --journey-body-font-size: 1rem;
+  --journey-body-line-height: 1.5;
+
+  --journey-feature-title-font-size: 1rem;
+  --journey-feature-title-line-height: 1.4;
+
+  --journey-feature-description-font-size: 0.875rem;
+  --journey-feature-description-line-height: 1.5;
+
+  /* Responsive spacing - mobile first */
+  --journey-section-padding-top: 3rem;
+  --journey-section-padding-bottom: 3rem;
+  --journey-section-padding-horizontal: 1rem;
+
+  --journey-step-card-padding: 1rem;
+  --journey-feature-card-padding: 0.75rem;
+
+  --journey-gap-small: 0.5rem;
+  --journey-gap-medium: 1rem;
+  --journey-gap-large: 1.5rem;
+
+  /* Responsive sizes for interactive elements */
+  --journey-icon-size: 2.5rem;
+  --journey-step-number-size: 1.75rem;
+  --journey-connector-width: 2px;
+
+  /* Step connector height and spacing - must be exactly equal */
+  --journey-connector-height: 60px;
+  /* Space between steps */
+  --journey-step-spacing: 60px;
+  /* Must match connector height */
+
+  @media (min-width: $breakpoint-md) {
+    /* Typography updates for tablet and up */
+    --journey-title-font-size: 2.5rem;
+    --journey-title-line-height: 1.2;
+    --journey-title-letter-spacing: -0.015em;
+
+    --journey-step-title-font-size: 1.5rem;
+
+    --journey-feature-title-font-size: 1.125rem;
+
+    /* Spacing updates for tablet and up */
+    --journey-section-padding-top: 4rem;
+    --journey-section-padding-bottom: 4rem;
+    --journey-section-padding-horizontal: 1.5rem;
+
+    --journey-step-card-padding: 1.5rem;
+    --journey-feature-card-padding: 1rem;
+
+    --journey-gap-small: 0.75rem;
+    --journey-gap-medium: 1.5rem;
+    --journey-gap-large: 2rem;
+
+    --journey-icon-size: 3rem;
+    --journey-step-number-size: 2rem;
+
+    /* Step connector height and spacing for larger screens - must be exactly equal */
+    --journey-connector-height: 80px;
+    /* Space between steps */
+    --journey-step-spacing: 80px;
+    /* Must match connector height */
+  }
+
+  @media (min-width: $breakpoint-lg) {
+    /* Typography updates for desktop and up */
+    --journey-title-font-size: 3rem;
+    --journey-title-line-height: 1.1;
+    --journey-title-letter-spacing: -0.02em;
+
+    /* Spacing updates for desktop and up */
+    --journey-section-padding-top: 5rem;
+    --journey-section-padding-bottom: 5rem;
+    --journey-section-padding-horizontal: 2rem;
+
+    --journey-gap-small: 1rem;
+    --journey-gap-medium: 1.5rem;
+    --journey-gap-large: 2rem;
+
+    --journey-icon-size: 4rem;
+  }
+}
+
 /* Journey Section Styles */
 .journey-section {
   position: relative;
   overflow: hidden;
-  background-color: rgba(10, 16, 27, 1);
-  /* Match the bottom color of Features gradient */
+  background-color: var(--journey-background);
   margin-top: -4rem;
   /* Create slight overlap with Features section */
   padding-top: 4rem;
   /* Add padding to compensate for negative margin */
+  padding-bottom: var(--journey-section-padding-bottom);
+
+  // Add spacing to headers
+  h2,
+  h3 {
+    margin-bottom: var(--spacing-md);
+  }
+
+  // Section header
+  h2 {
+    font-size: var(--journey-title-font-size);
+    line-height: var(--journey-title-line-height);
+    letter-spacing: var(--journey-title-letter-spacing);
+  }
+
+  // Step titles
+  h3 {
+    font-size: var(--journey-step-title-font-size);
+    line-height: var(--journey-step-title-line-height);
+  }
+
+  // Body text
+  p {
+    font-size: var(--journey-body-font-size);
+    line-height: var(--journey-body-line-height);
+  }
 
   // Grid pattern background
   &::before {
@@ -20,8 +178,8 @@
     right: 0;
     bottom: 0;
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      linear-gradient(var(--journey-grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--journey-grid-line) 1px, transparent 1px);
     background-size: 20px 20px;
     background-position: center center;
     z-index: -1;
@@ -29,11 +187,53 @@
   }
 }
 
+/* Journey steps container - adds proper spacing between steps */
+.journey-steps {
+  display: flex;
+  flex-direction: column;
+  margin-top: 3rem;
+
+  @media (min-width: $breakpoint-md) {
+    margin-top: 4rem;
+  }
+}
+
+/* Container for the actual step content to ensure proper spacing */
+.journey-step-container {
+  margin-bottom: var(--journey-step-spacing);
+  position: relative;
+}
+
 /* Step connector - vertical line connecting the steps */
 .step-connector {
   position: absolute;
-  background: linear-gradient(to bottom, rgba(204, 255, 0, 0.5), rgba(204, 255, 0, 0.1));
   z-index: 1;
+  width: var(--journey-connector-width);
+  height: var(--journey-connector-height);
+  left: 31px;
+  bottom: calc(-1 * var(--journey-connector-height));
+
+  @media (max-width: $breakpoint-md-max) {
+    // Adjust connector position on mobile
+    left: 24px !important;
+  }
+
+  /* Connector color variants based on the step */
+  &.connector-lime {
+    background: linear-gradient(to bottom, var(--journey-accent-lime-strong), var(--journey-accent-lime-medium));
+  }
+
+  &.connector-cyan {
+    background: linear-gradient(to bottom, var(--journey-accent-cyan-strong), var(--journey-accent-cyan-medium));
+  }
+
+  &.connector-violet {
+    background: linear-gradient(to bottom, var(--journey-accent-violet-strong), var(--journey-accent-violet-medium));
+  }
+
+  &.connector-amber {
+    background: linear-gradient(to bottom, var(--journey-accent-amber-strong), var(--journey-accent-amber-medium));
+  }
 }
 
 /* Journey timeline - additional visual container for steps */
@@ -46,27 +246,101 @@
     left: 31px;
     top: 0;
     bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, rgba(204, 255, 0, 0.15), rgba(204, 255, 0, 0.05));
+    width: var(--journey-connector-width);
+    background: linear-gradient(to bottom, var(--journey-accent-lime), var(--journey-accent-lime-light));
     z-index: 0;
+
+    @media (max-width: $breakpoint-md-max) {
+      // Adjust timeline position on mobile
+      left: 24px;
+    }
+  }
+
+  /* Timeline color variants for different themes */
+  &.timeline-lime::before {
+    background: linear-gradient(to bottom, var(--journey-accent-lime), var(--journey-accent-lime-light));
+  }
+
+  &.timeline-cyan::before {
+    background: linear-gradient(to bottom, var(--journey-accent-cyan), var(--journey-accent-cyan-light));
+  }
+
+  &.timeline-violet::before {
+    background: linear-gradient(to bottom, var(--journey-accent-violet), var(--journey-accent-violet-light));
+  }
+
+  &.timeline-amber::before {
+    background: linear-gradient(to bottom, var(--journey-accent-amber), var(--journey-accent-amber-light));
+  }
+}
+
+/* Journey Step Card - consistent responsive spacing */
+.journey-step-card {
+  padding: var(--journey-step-card-padding);
+  position: relative;
+
+  .journey-step-icon {
+    width: var(--journey-icon-size);
+    height: var(--journey-icon-size);
+
+    @media (max-width: $breakpoint-md-max) {
+      min-width: var(--journey-icon-size); // Prevent shrinking on mobile
+    }
+  }
+
+  .journey-step-number {
+    width: var(--journey-step-number-size);
+    height: var(--journey-step-number-size);
+
+    @media (max-width: $breakpoint-md-max) {
+      top: -8px;
+      left: -8px;
+    }
+  }
+}
+
+/* Journey Feature Card - responsive styling */
+.journey-feature-card {
+  padding: var(--journey-feature-card-padding);
+
+  .feature-title {
+    font-size: var(--journey-feature-title-font-size);
+    line-height: var(--journey-feature-title-line-height);
+  }
+
+  .feature-description {
+    font-size: var(--journey-feature-description-font-size);
+    line-height: var(--journey-feature-description-line-height);
+  }
+}
+
+/* Expanded content container - improved responsive behavior */
+.journey-expanded-content {
+  transition: all 0.5s ease-in-out;
+  overflow: hidden;
+
+  @media (max-width: $breakpoint-md-max) {
+    // Better mobile padding for expanded content
+    padding-left: calc(var(--journey-icon-size) + var(--journey-gap-medium));
+    padding-right: var(--journey-gap-small);
   }
 }
 
 /* Glow effects for different card types - Visual styling that extends Tailwind */
 .lime-glow:hover {
-  box-shadow: 0 0 20px 0 rgba(204, 255, 0, 0.15);
+  box-shadow: 0 0 20px 0 var(--journey-accent-lime);
 }
 
 .cyan-glow:hover {
-  box-shadow: 0 0 20px 0 rgba(34, 211, 238, 0.15);
+  box-shadow: 0 0 20px 0 var(--journey-accent-cyan);
 }
 
 .violet-glow:hover {
-  box-shadow: 0 0 20px 0 rgba(167, 139, 250, 0.15);
+  box-shadow: 0 0 20px 0 var(--journey-accent-violet);
 }
 
 .amber-glow:hover {
-  box-shadow: 0 0 20px 0 rgba(251, 191, 36, 0.15);
+  box-shadow: 0 0 20px 0 var(--journey-accent-amber);
 }
 
 /* Animation classes */
@@ -108,4 +382,70 @@
   -moz-background-clip: text;
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
+}
+
+/* Journey CTA Button - responsive sizing */
+.journey-cta-button {
+  @media (max-width: $breakpoint-md-max) {
+    // More touch-friendly padding on mobile
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Responsive feature grid - gracefully handles mobile layout */
+.journey-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--journey-gap-medium);
+
+  @media (min-width: $breakpoint-md) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Theme variant overrides */
+[data-theme="gym"] {
+  --journey-accent-primary: var(--color-accent-400);
+  /* Uses theme's accent color */
+  --journey-accent-lime: rgba(139, 92, 246, 0.15);
+  --journey-accent-lime-strong: rgba(139, 92, 246, 0.5);
+  --journey-accent-lime-light: rgba(139, 92, 246, 0.05);
+  --journey-accent-lime-medium: rgba(139, 92, 246, 0.1);
+}
+
+[data-theme="sports"] {
+  --journey-accent-primary: var(--color-accent-400);
+  /* Uses theme's accent color */
+  --journey-accent-lime: rgba(56, 189, 248, 0.15);
+  --journey-accent-lime-strong: rgba(56, 189, 248, 0.5);
+  --journey-accent-lime-light: rgba(56, 189, 248, 0.05);
+  --journey-accent-lime-medium: rgba(56, 189, 248, 0.1);
+}
+
+[data-theme="wellness"] {
+  --journey-accent-primary: var(--color-accent-400);
+  /* Uses theme's accent color */
+  --journey-accent-lime: rgba(45, 212, 191, 0.15);
+  --journey-accent-lime-strong: rgba(45, 212, 191, 0.5);
+  --journey-accent-lime-light: rgba(45, 212, 191, 0.05);
+  --journey-accent-lime-medium: rgba(45, 212, 191, 0.1);
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-fade-slide-up,
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .journey-step-card .journey-step-icon,
+  .journey-feature-card>div,
+  .journey-cta-button {
+    transition: none !important;
+    transform: none !important;
+  }
 }
