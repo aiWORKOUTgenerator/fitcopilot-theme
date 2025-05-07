@@ -1,0 +1,69 @@
+/**
+ * Pricing section theme variables
+ * 
+ * These variables define the pricing section's theme-specific styles
+ * Used by pricing tooltip variants and other pricing components
+ */
+
+// Primary color definitions
+$pricing-primary: #CCFF00;
+$pricing-primary-dark: darken($pricing-primary, 10%);
+
+// Accent colors for different plan types
+$pricing-basic-accent: rgba(59, 130, 246, 0.3); // Blue
+$pricing-pro-accent: rgba(132, 204, 22, 0.3); // Lime
+$pricing-elite-accent: rgba(139, 92, 246, 0.3); // Purple
+
+// Tooltip-specific variables
+$pricing-tooltip-bg: rgba(17, 24, 39, 0.95);
+$pricing-tooltip-text: #d1d5db;
+$pricing-tooltip-border-radius: 8px;
+$pricing-tooltip-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
+
+// Define CSS variables at root
+:root {
+    // Pricing theme colors
+    --pricing-primary: #{$pricing-primary};
+    --pricing-primary-dark: #{$pricing-primary-dark};
+
+    // Plan-specific accent colors
+    --pricing-basic-accent: #{$pricing-basic-accent};
+    --pricing-pro-accent: #{$pricing-pro-accent};
+    --pricing-elite-accent: #{$pricing-elite-accent};
+
+    // Pricing tooltip variables
+    --pricing-tooltip-bg: #{$pricing-tooltip-bg};
+    --pricing-tooltip-text: #{$pricing-tooltip-text};
+    --pricing-tooltip-border-radius: #{$pricing-tooltip-border-radius};
+    --pricing-tooltip-shadow: #{$pricing-tooltip-shadow};
+}
+
+// Pricing-specific tooltip variables
+.tooltip-theme-pricing,
+[data-theme="pricing"] {
+    // Tooltip structure
+    --tooltip-bg: var(--pricing-tooltip-bg);
+    --tooltip-border-color: var(--pricing-pro-accent); // Default to pro
+    --tooltip-border-radius: var(--pricing-tooltip-border-radius);
+    --tooltip-shadow: var(--pricing-tooltip-shadow);
+
+    // Tooltip typography  
+    --tooltip-text-color: var(--pricing-tooltip-text);
+    --tooltip-title-color: var(--pricing-primary);
+    --tooltip-font-size: 14px;
+    --tooltip-line-height: 1.4;
+
+    // Tooltip dimensions
+    --tooltip-width: auto;
+    --tooltip-max-width: 280px;
+    --tooltip-padding: 12px;
+
+    // Tooltip animations
+    --tooltip-transform-y: 8px;
+    --tooltip-transform-x: 8px;
+    --tooltip-transition: all 0.3s ease;
+    --tooltip-z-index: 100;
+
+    // Arrow size for tooltip
+    --tooltip-arrow-size: 8px;
+}

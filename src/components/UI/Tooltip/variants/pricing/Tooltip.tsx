@@ -1,11 +1,14 @@
 import classNames from 'classnames';
-import React, { memo, useCallback, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTooltip } from '../../hooks/useTooltip';
 import { TooltipProps } from '../../types';
 import './Tooltip.scss';
 
 /**
- * Default Tooltip component
+ * Pricing Tooltip variant
+ * 
+ * Enhanced tooltip styling for the Pricing section
+ * Adds special styling for feature comparisons and pricing-specific metadata
  */
 const Tooltip: React.FC<TooltipProps> = ({
     children,
@@ -45,30 +48,31 @@ const Tooltip: React.FC<TooltipProps> = ({
         }
     }, [controlledIsVisible, show, hide]);
 
-    // Memoized event handlers to prevent unnecessary re-renders
-    const handleMouseEnter = useCallback(() => {
+    // Handle mouse events only in uncontrolled mode
+    const handleMouseEnter = () => {
         if (showOnHover && controlledIsVisible === undefined) {
             show();
         }
-    }, [showOnHover, controlledIsVisible, show]);
+    };
 
-    const handleMouseLeave = useCallback(() => {
+    const handleMouseLeave = () => {
         if (showOnHover && controlledIsVisible === undefined) {
             hide();
         }
-    }, [showOnHover, controlledIsVisible, hide]);
+    };
 
-    const handleFocus = useCallback(() => {
+    // Handle focus events only in uncontrolled mode
+    const handleFocus = () => {
         if (showOnFocus && controlledIsVisible === undefined) {
             show();
         }
-    }, [showOnFocus, controlledIsVisible, show]);
+    };
 
-    const handleBlur = useCallback(() => {
+    const handleBlur = () => {
         if (showOnFocus && controlledIsVisible === undefined) {
             hide();
         }
-    }, [showOnFocus, controlledIsVisible, hide]);
+    };
 
     // Style object for dynamic properties
     const tooltipStyle: React.CSSProperties = {
@@ -84,8 +88,13 @@ const Tooltip: React.FC<TooltipProps> = ({
         className
     );
 
+    // Determine plan type for specific styling
+    const plan = planType || (accentColor && accentColor.includes('59, 130, 246') ? 'basic' :
+        accentColor && accentColor.includes('132, 204, 22') ? 'pro' :
+            accentColor && accentColor.includes('139, 92, 246') ? 'elite' : undefined);
+
     return (
-        <div className="tooltip-wrapper">
+        <div className="tooltip-wrapper tooltip-theme-pricing" data-plan={plan}>
             <div
                 className="tooltip-trigger"
                 onMouseEnter={handleMouseEnter}
@@ -123,28 +132,4 @@ const Tooltip: React.FC<TooltipProps> = ({
     );
 };
 
-// Custom prop comparison function for React.memo optimization
-const arePropsEqual = (prevProps: TooltipProps, nextProps: TooltipProps) => {
-    // Always re-render if visibility state changes
-    if (prevProps.isVisible !== nextProps.isVisible) return false;
-
-    // Check for content changes
-    if (prevProps.content !== nextProps.content) return false;
-    if (prevProps.title !== nextProps.title) return false;
-
-    // Children changes should always trigger re-render
-    if (prevProps.children !== nextProps.children) return false;
-
-    // Check styling props
-    if (prevProps.position !== nextProps.position) return false;
-    if (prevProps.width !== nextProps.width) return false;
-    if (prevProps.accentColor !== nextProps.accentColor) return false;
-    if (prevProps.titleColor !== nextProps.titleColor) return false;
-    if (prevProps.planType !== nextProps.planType) return false;
-
-    // If we get here, props are considered equal
-    return true;
-};
-
-// Export memoized version of the tooltip component
-export default memo(Tooltip, arePropsEqual); 
+export default Tooltip; 

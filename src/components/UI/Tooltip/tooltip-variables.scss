@@ -1,0 +1,164 @@
+// Base tooltip variables for consistent styling across variants
+
+// Colors
+$tooltip-bg: rgba(17, 24, 39, 0.95);
+$tooltip-text-color: #d1d5db;
+$tooltip-title-color: #a3e635;
+$tooltip-border-color: rgba(132, 204, 22, 0.3);
+
+// Sizing
+$tooltip-arrow-size: 12px;
+$tooltip-padding: 12px;
+$tooltip-border-radius: 8px;
+$tooltip-font-size: 14px;
+$tooltip-line-height: 1.4;
+$tooltip-width: 260px;
+$tooltip-max-width: 280px;
+
+// Effects
+$tooltip-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
+$tooltip-transition: all 0.3s ease;
+
+// CSS Variables
+:root {
+    // Base variables
+    --tooltip-bg: #{$tooltip-bg};
+    --tooltip-text-color: #{$tooltip-text-color};
+    --tooltip-title-color: #{$tooltip-title-color};
+    --tooltip-border-color: #{$tooltip-border-color};
+    --tooltip-accent-color: var(--accent-color, #{$tooltip-border-color});
+
+    --tooltip-arrow-size: #{$tooltip-arrow-size};
+    --tooltip-padding: #{$tooltip-padding};
+    --tooltip-border-radius: #{$tooltip-border-radius};
+    --tooltip-font-size: #{$tooltip-font-size};
+    --tooltip-line-height: #{$tooltip-line-height};
+    --tooltip-width: #{$tooltip-width};
+    --tooltip-max-width: #{$tooltip-max-width};
+
+    --tooltip-shadow: #{$tooltip-shadow};
+    --tooltip-transition: #{$tooltip-transition};
+
+    // Positioning
+    --tooltip-transform-y: 0;
+    --tooltip-transform-x: 0;
+    --tooltip-z-index: 1000;
+}
+
+// Theme-specific overrides
+// Default theme (already covered in base variables)
+
+// Hero theme
+.tooltip-theme-hero {
+    --tooltip-bg: rgba(17, 24, 39, 0.98);
+    --tooltip-text-color: #e5e7eb;
+    --tooltip-title-color: #a3e635;
+    --tooltip-border-color: rgba(132, 204, 22, 0.4);
+    --tooltip-width: 280px;
+    --tooltip-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.4);
+    --tooltip-arrow-size: 14px;
+    --tooltip-z-index: 1050;
+
+    // Hero-specific variables
+    --tooltip-hero-icon-size: 18px;
+    --tooltip-hero-title-font-weight: 600;
+    --tooltip-hero-title-margin-bottom: 8px;
+}
+
+// Pricing theme
+.tooltip-theme-pricing {
+    --tooltip-bg: rgba(17, 24, 39, 0.95);
+    --tooltip-text-color: #f3f4f6;
+    --tooltip-title-color: #84cc16;
+    --tooltip-border-color: rgba(132, 204, 22, 0.3);
+    --tooltip-width: 240px;
+    --tooltip-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
+    --tooltip-z-index: 1025;
+
+    // Pricing-specific variables
+    --tooltip-pricing-feature-spacing: 8px;
+    --tooltip-pricing-comparison-color: #fbbf24;
+    --tooltip-pricing-feature-icon-size: 16px;
+}
+
+// Utility classes for different positioning
+.tooltip-position-top {
+    --tooltip-transform-y: -8px;
+}
+
+.tooltip-position-bottom {
+    --tooltip-transform-y: 8px;
+}
+
+.tooltip-position-left {
+    --tooltip-transform-x: -8px;
+}
+
+.tooltip-position-right {
+    --tooltip-transform-x: 8px;
+}
+
+// Mobile behavior adjustments
+@media (max-width: 768px) {
+    :root {
+        --tooltip-width: 220px;
+        --tooltip-font-size: 13px;
+        --tooltip-padding: 10px;
+    }
+
+    .tooltip-theme-hero {
+        --tooltip-width: 240px;
+    }
+
+    .tooltip-theme-pricing {
+        --tooltip-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --tooltip-width: 200px;
+        --tooltip-font-size: 12px;
+        --tooltip-padding: 8px;
+    }
+
+    .tooltip-theme-hero {
+        --tooltip-width: 220px;
+    }
+
+    .tooltip-theme-pricing {
+        --tooltip-width: 180px;
+    }
+
+    // Force repositioning for small screens
+    .tooltip-content.tooltip-left,
+    .tooltip-content.tooltip-right {
+        left: 50% !important;
+        right: auto !important;
+        top: 100% !important;
+        transform: translateX(-50%) translateY(var(--tooltip-transform-y, 8px)) !important;
+        margin: 8px 0 0 !important;
+
+        &.visible {
+            transform: translateX(-50%) translateY(0) !important;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: calc(var(--tooltip-arrow-size) / -2);
+            border-width: calc(var(--tooltip-arrow-size) / 2);
+            border-style: solid;
+            border-color: transparent transparent var(--tooltip-bg) transparent;
+        }
+    }
+}
+
+// Accessibility - reduced motion
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --tooltip-transition: opacity 0.1s linear;
+    }
+}

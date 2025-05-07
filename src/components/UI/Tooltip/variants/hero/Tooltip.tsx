@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useTooltip } from '../../hooks/useTooltip';
 import { TooltipProps } from '../../types';
 import './Tooltip.scss';
@@ -8,18 +8,24 @@ import './Tooltip.scss';
  * Hero Tooltip component
  * 
  * Special tooltip styling for the Hero section
+ * Supports both controlled and uncontrolled visibility
  */
 const Tooltip: React.FC<TooltipProps> = ({
     children,
     content,
     title,
+    titleColor,
     icon,
     position = 'bottom',
+    width,
     showOnHover = true,
     showOnFocus = true,
     delay = 0,
     className,
     initialVisible = false,
+    isVisible: controlledIsVisible,
+    accentColor,
+    id,
 }) => {
     const tooltipRef = useRef<HTMLDivElement>(null);
     const { isVisible, show, hide } = useTooltip({
@@ -27,41 +33,62 @@ const Tooltip: React.FC<TooltipProps> = ({
         initialVisible
     });
 
-    // Handle mouse events
+    // Support both controlled and uncontrolled modes
+    const visible = controlledIsVisible !== undefined ? controlledIsVisible : isVisible;
+
+    // Update visibility based on controlled prop
+    useEffect(() => {
+        if (controlledIsVisible !== undefined) {
+            if (controlledIsVisible) {
+                show();
+            } else {
+                hide();
+            }
+        }
+    }, [controlledIsVisible, show, hide]);
+
+    // Handle mouse events only in uncontrolled mode
     const handleMouseEnter = () => {
-        if (showOnHover) {
+        if (showOnHover && controlledIsVisible === undefined) {
             show();
         }
     };
 
     const handleMouseLeave = () => {
-        if (showOnHover) {
+        if (showOnHover && controlledIsVisible === undefined) {
             hide();
         }
     };
 
-    // Handle focus events
+    // Handle focus events only in uncontrolled mode
     const handleFocus = () => {
-        if (showOnFocus) {
+        if (showOnFocus && controlledIsVisible === undefined) {
             show();
         }
     };
 
     const handleBlur = () => {
-        if (showOnFocus) {
+        if (showOnFocus && controlledIsVisible === undefined) {
             hide();
         }
     };
 
-    // Get tooltip classes
-    const tooltipClasses = classNames(
-        'tooltip',
-        { 'show': isVisible, 'hide': !isVisible },
+    // Style object for dynamic properties
+    const tooltipStyle: React.CSSProperties = {
+        ...(width && { width }),
+        ...(accentColor && { '--accent-color': accentColor } as any),
+    };
+
+    // Get position classes
+    const tooltipContentClasses = classNames(
+        'tooltip-content',
+        `tooltip-${position}`,
+        { 'visible': visible },
         className
     );
 
     return (
-        <div className="tooltip-wrapper">
+        <div className="tooltip-wrapper tooltip-theme-hero">
             <div
                 className="tooltip-trigger"
                 onMouseEnter={handleMouseEnter}
@@ -72,21 +99,24 @@ const Tooltip: React.FC<TooltipProps> = ({
                 {children}
             </div>
 
-            <div className="tooltip-container">
-                <div
-                    ref={tooltipRef}
-                    className={tooltipClasses}
-                    role="tooltip"
-                    aria-hidden={!isVisible}
-                >
-                    <div className="tooltip-content">
-                        {icon && <div className="tooltip-icon">{icon}</div>}
-                        <div className="tooltip-text">
-                            {title && <h5 className="tooltip-title">{title}</h5>}
-                            {content}
+            <div
+                ref={tooltipRef}
+                className={tooltipContentClasses}
+                role="tooltip"
+                id={id}
+                aria-hidden={!visible}
+                style={tooltipStyle}
+            >
+                <div className="tooltip-inner">
+                    {(icon || title) && (
+                        <div className="tooltip-header">
+                            {icon && <div className="tooltip-icon">{icon}</div>}
+                            {title && <div className={`tooltip-title ${titleColor || ''}`}>{title}</div>}
                         </div>
+                    )}
+                    <div className="tooltip-body">
+                        {content}
                     </div>
-                    <div className="tooltip-arrow"></div>
                 </div>
             </div>
         </div>

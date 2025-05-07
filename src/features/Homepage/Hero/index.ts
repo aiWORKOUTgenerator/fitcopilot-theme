@@ -16,9 +16,6 @@ export * from './types';
 // Export all components from the Hero feature
 export * from './components';
 
-// Export all hooks from the Hero feature
-export * from './hooks';
-
 // Default export is the main Hero component
 export default Hero;
 

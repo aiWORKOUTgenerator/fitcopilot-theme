@@ -2,8 +2,8 @@
 // Import main tooltip variables and mixins
 @import '../../tooltip-variables.scss';
 
-// Import hero theme variables
-@import '../../../../../features/Homepage/Hero/hero-theme-variables.scss';
+// Import pricing theme variables
+@import '../../../../../features/Homepage/Pricing/pricing-theme-variables.scss';
 
 /* Tooltip wrapper */
 .tooltip-wrapper {
@@ -16,7 +16,7 @@
 .tooltip-container {
     position: absolute;
     width: 100%;
-    top: calc(100% + 15px);
+    top: 0;
     left: 0;
     display: flex;
     justify-content: center;
@@ -24,120 +24,112 @@
     pointer-events: none;
 }
 
-/* Tooltip styling - optimized shadow */
-.tooltip {
+/* Pricing-specific tooltip styling */
+.pricing-tooltip.tooltip {
     position: relative;
-    background: #1f2937;
-    /* bg-gray-800 */
+    background-color: rgba(17, 24, 39, 0.95);
     border-radius: 8px;
     padding: 12px;
     font-size: 14px;
     line-height: 1.4;
     max-width: 260px;
-    width: 264px;
+    width: 260px;
     color: #d1d5db;
-    /* text-gray-300 */
     box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(132, 204, 22, 0.3);
+    border: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
     opacity: 0;
     transform: translateY(8px);
     visibility: hidden;
     transition: all 0.3s ease;
     will-change: transform, opacity;
+
+    // Different positioning for pricing tooltips
+    &.tooltip-top {
+        bottom: 110%;
+        left: 50%;
+        transform: translateX(-50%) translateY(8px);
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -6px;
+            width: 12px;
+            height: 12px;
+            background-color: rgba(17, 24, 39, 0.95);
+            border-right: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
+            border-bottom: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        &.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    }
 }
 
 /* Tooltip heading */
-.tooltip-title {
+.pricing-tooltip .tooltip-title {
     font-size: 14px;
     font-weight: 500;
-    color: #a3e635;
-    /* text-lime-300 */
     margin-bottom: 4px;
 }
 
-/* Tooltip arrow - using dedicated arrow element */
-.tooltip-arrow {
-    position: absolute;
-    top: -6px;
-    left: 50%;
-    transform: translateX(-50%) rotate(45deg);
-    width: 12px;
-    height: 12px;
-    background-color: #1f2937;
-    border-left: 1px solid rgba(132, 204, 22, 0.3);
-    border-top: 1px solid rgba(132, 204, 22, 0.3);
-}
-
 /* Tooltip show/hide states */
-.tooltip.show {
+.pricing-tooltip.tooltip.show {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
 }
 
-.tooltip.hide {
+.pricing-tooltip.tooltip.hide {
     opacity: 0;
     visibility: hidden;
-    transform: translateY(8px);
 }
 
 /* Tooltip content */
-.tooltip-content {
+.pricing-tooltip .tooltip-content {
     display: flex;
     align-items: flex-start;
     margin-bottom: 0;
 }
 
 /* Icon container */
-.tooltip-icon {
+.pricing-tooltip .tooltip-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     margin-right: 8px;
     flex-shrink: 0;
     margin-top: 2px;
-    color: #a3e635;
 }
 
 /* Text container */
-.tooltip-text {
+.pricing-tooltip .tooltip-text {
     flex: 1;
 }
 
-.tooltip-text p {
+.pricing-tooltip .tooltip-text p {
     margin: 0;
     font-size: 12px;
     color: #d1d5db;
     line-height: 1.4;
 }
 
-/* Arrow icon - optimized animation */
-.arrow-icon {
-    display: inline-block;
-    animation: bounce 1.5s ease-in-out infinite;
-    will-change: transform;
-    margin-left: 4px;
-}
-
 /* Optimize animations for users who prefer reduced motion */
 @media (prefers-reduced-motion: reduce) {
-    .tooltip {
+    .pricing-tooltip.tooltip {
         transition: none !important;
     }
 
-    .tooltip.show {
+    .pricing-tooltip.tooltip.show {
         opacity: 1;
         visibility: visible;
         transform: none;
     }
-
-    .arrow-icon {
-        animation: none !important;
-    }
 }
 
-// Hero tooltip specific styling
-.tooltip-theme-hero {
+/* Tooltip content */
+.tooltip-theme-pricing {
     .tooltip-trigger {
         // Ensure the trigger is positioned relatively 
         position: relative;
@@ -145,10 +137,11 @@
     }
 
     .tooltip-content {
+        position: absolute;
         z-index: var(--tooltip-z-index);
         background-color: var(--tooltip-bg);
         color: var(--tooltip-text-color);
-        border: 1px solid var(--tooltip-border-color, var(--accent-color, rgba(132, 204, 22, 0.4)));
+        border: 1px solid var(--tooltip-border-color, var(--accent-color, rgba(132, 204, 22, 0.3)));
         border-radius: var(--tooltip-border-radius);
         padding: var(--tooltip-padding);
         width: var(--tooltip-width);
@@ -156,7 +149,12 @@
         box-shadow: var(--tooltip-shadow);
         font-size: var(--tooltip-font-size);
         line-height: var(--tooltip-line-height);
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--tooltip-transition);
+        pointer-events: none;
 
+        // Position variants
         &.tooltip-top,
         &.tooltip-bottom {
             left: 50%;
@@ -164,6 +162,8 @@
 
             &.visible {
                 transform: translateX(-50%) translateY(0);
+                opacity: 1;
+                visibility: visible;
             }
         }
 
@@ -174,6 +174,8 @@
 
             &.visible {
                 transform: translateY(-50%) translateX(0);
+                opacity: 1;
+                visibility: visible;
             }
         }
 
@@ -188,7 +190,7 @@
                 top: 100%;
                 left: 50%;
                 margin-left: calc(var(--tooltip-arrow-size) / -2);
-                border-width: calc(var(--tooltip-arrow-size) / 2);
+                border-width: var(--tooltip-arrow-size);
                 border-style: solid;
                 border-color: var(--tooltip-bg) transparent transparent transparent;
             }
@@ -204,7 +206,7 @@
                 bottom: 100%;
                 left: 50%;
                 margin-left: calc(var(--tooltip-arrow-size) / -2);
-                border-width: calc(var(--tooltip-arrow-size) / 2);
+                border-width: var(--tooltip-arrow-size);
                 border-style: solid;
                 border-color: transparent transparent var(--tooltip-bg) transparent;
             }
@@ -220,7 +222,7 @@
                 left: 100%;
                 top: 50%;
                 margin-top: calc(var(--tooltip-arrow-size) / -2);
-                border-width: calc(var(--tooltip-arrow-size) / 2);
+                border-width: var(--tooltip-arrow-size);
                 border-style: solid;
                 border-color: transparent transparent transparent var(--tooltip-bg);
             }
@@ -236,53 +238,75 @@
                 right: 100%;
                 top: 50%;
                 margin-top: calc(var(--tooltip-arrow-size) / -2);
-                border-width: calc(var(--tooltip-arrow-size) / 2);
+                border-width: var(--tooltip-arrow-size);
                 border-style: solid;
                 border-color: transparent var(--tooltip-bg) transparent transparent;
             }
         }
     }
 
-    // Hero-specific styling for inner elements
+    // Inner content structure
+    .tooltip-inner {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tooltip-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+    }
+
     .tooltip-icon {
-        font-size: var(--tooltip-hero-icon-size);
-        color: var(--tooltip-title-color);
+        font-size: var(--tooltip-pricing-icon-size, 16px);
+        color: var(--tooltip-title-color, var(--pricing-primary));
         margin-right: 10px;
         display: flex;
         align-items: center;
     }
 
     .tooltip-title {
-        font-weight: var(--tooltip-hero-title-font-weight, 600);
-        color: var(--tooltip-title-color);
-        margin-bottom: var(--tooltip-hero-title-margin-bottom);
-    }
-
-    .tooltip-header {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--tooltip-title-color, var(--pricing-primary));
+        font-size: var(--tooltip-title-font-size, 14px);
     }
 
     .tooltip-body {
-        font-size: calc(var(--tooltip-font-size) - 1px);
+        color: var(--tooltip-text-color);
+        font-size: var(--tooltip-font-size, 12px);
+    }
+
+    // Color variants for different plan types
+    &[data-plan="basic"] {
+        .tooltip-content {
+            border-color: var(--pricing-basic-accent);
+        }
+    }
+
+    &[data-plan="pro"] {
+        .tooltip-content {
+            border-color: var(--pricing-pro-accent);
+        }
+    }
+
+    &[data-plan="elite"] {
+        .tooltip-content {
+            border-color: var(--pricing-elite-accent);
+        }
     }
 }
 
-// Transitions and animations
-.tooltip-theme-hero .tooltip-content {
-    transition: var(--tooltip-transition);
-    opacity: 0;
-    visibility: hidden;
-
-    &.visible {
-        opacity: 1;
-        visibility: visible;
+/* Optimize animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .tooltip-theme-pricing {
+        .tooltip-content {
+            transition: none !important;
+        }
     }
 }
 
 // Accessibility - focus states
-.tooltip-trigger:focus-visible {
+.tooltip-theme-pricing .tooltip-trigger:focus-visible {
     outline: 2px solid var(--tooltip-title-color);
     outline-offset: 2px;
 }
