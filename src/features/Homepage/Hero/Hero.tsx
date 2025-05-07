@@ -1,5 +1,7 @@
 import { Dumbbell, Flame, Heart, LogIn, Shield, UserPlus, Zap } from 'lucide-react';
 import React, { useEffect } from 'react';
+import Button from '../../../components/UI/Button';
+import { Tooltip } from '../../../components/UI/Tooltip';
 import RegistrationButton from '../../../features/Registration/components/RegistrationButton';
 import './Hero.scss';
 import { FloatingIcons } from './components/FloatingIcons';
@@ -20,10 +22,7 @@ const Hero: React.FC<HeroProps> = ({
 }) => {
   // Use the tooltip animation hook for managing tooltip states
   const {
-    tooltipStates,
-    clearAllTimeouts,
-    handleMouseEnter,
-    handleMouseLeave
+    clearAllTimeouts
   } = useTooltipAnimation();
 
   // On mount and unmount
@@ -102,70 +101,50 @@ const Hero: React.FC<HeroProps> = ({
             className="flex flex-col sm:flex-row gap-6 justify-center mb-6"
           >
             {/* Primary CTA: Get a Free Workout */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('freeWorkout')}
-              onMouseLeave={() => handleMouseLeave('freeWorkout')}
+            <Tooltip
+              content={
+                <p className="text-xs text-gray-300">
+                  Generate a personalized workout plan in seconds with our AI technology - no registration required.
+                </p>
+              }
+              title="Quick Workout Builder"
+              icon={<Zap className="w-4 h-4" />}
+              themeContext="hero"
             >
-              <button
+              <Button
+                href="#splash-section"
+                variant="primary"
+                themeContext="hero"
+                leftIcon={<Zap className="h-5 w-5" />}
+                fullWidth
                 onClick={handleScrollToSplash}
-                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-lg hover:shadow-xl hover:-translate-y-1 w-full sm:w-auto"
               >
-                <Zap className="mr-2 h-5 w-5" />
                 Get a Free Workout
-              </button>
-
-              {/* Tooltip - Updated to match Pricing */}
-              <div className="tooltip-container">
-                <div className={`tooltip ${tooltipStates.freeWorkout.show ? 'show' : 'hide'}`}>
-                  <div className="tooltip-content">
-                    <div className="tooltip-icon">
-                      <Zap className="w-4 h-4 text-lime-300" />
-                    </div>
-                    <div className="tooltip-text">
-                      <h5 className="tooltip-title">Quick Workout Builder</h5>
-                      <p className="text-xs text-gray-300">
-                        Generate a personalized workout plan in seconds with our AI technology - no registration required.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-3 h-3 bg-gray-800"></div>
-                </div>
-              </div>
-            </div>
+              </Button>
+            </Tooltip>
 
             {/* Secondary CTA: Create Your Account */}
-            <div
-              className="relative"
-              onMouseEnter={() => handleMouseEnter('createAccount')}
-              onMouseLeave={() => handleMouseLeave('createAccount')}
+            <Tooltip
+              content={
+                <p className="text-xs text-gray-300">
+                  Save workouts, track progress, and access premium features with your free account.
+                </p>
+              }
+              title="Member Benefits"
+              icon={<Shield className="w-4 h-4" />}
+              themeContext="hero"
             >
-              <button
+              <Button
+                href="#splash-section"
+                variant="secondary"
+                themeContext="hero"
+                leftIcon={<UserPlus className="h-5 w-5 text-lime-300" />}
+                fullWidth
                 onClick={handleScrollToSplash}
-                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gray-800 border-2 border-lime-300/30 text-white hover:bg-lime-300/10 hover:-translate-y-1 w-full sm:w-auto"
               >
-                <UserPlus className="mr-2 h-5 w-5 text-lime-300" />
                 Create Your Account
-              </button>
-
-              {/* Tooltip - Updated to match Pricing */}
-              <div className="tooltip-container">
-                <div className={`tooltip ${tooltipStates.createAccount.show ? 'show' : 'hide'}`}>
-                  <div className="tooltip-content">
-                    <div className="tooltip-icon">
-                      <Shield className="w-4 h-4 text-lime-300" />
-                    </div>
-                    <div className="tooltip-text">
-                      <h5 className="tooltip-title">Member Benefits</h5>
-                      <p className="text-xs text-gray-300">
-                        Save workouts, track progress, and access premium features with your free account.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 rotate-45 w-3 h-3 bg-gray-800"></div>
-                </div>
-              </div>
-            </div>
+              </Button>
+            </Tooltip>
           </div>
 
           {/* Sign In Link */}

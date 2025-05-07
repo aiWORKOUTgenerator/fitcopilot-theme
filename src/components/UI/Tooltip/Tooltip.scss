@@ -1,6 +1,40 @@
 // Import design system
 @use '../../../styles/design-system/index' as *;
 
+// Base Tooltip styles
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-trigger {
+    display: inline-block;
+}
+
+.tooltip-content {
+    position: absolute;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.tooltip-content.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+// Reduced motion preferences
+@media (prefers-reduced-motion: reduce) {
+    .tooltip-content {
+        transition: opacity 0.1s ease, visibility 0.1s ease;
+    }
+}
+
+// The following styles are for the default tooltip implementation
+// Hero and other variants will override these in their own files
 .tooltip-container {
     position: relative;
     display: inline-block;

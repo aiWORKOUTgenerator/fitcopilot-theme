@@ -1,34 +1,12 @@
-import { useRef, useState } from 'react';
-
-interface TooltipState {
-    show: boolean;
-    isAutoShow: boolean;
-    isHovered: boolean;
-}
-
-interface TooltipStates {
-    freeWorkout: TooltipState;
-    createAccount: TooltipState;
-}
+import { useRef } from 'react';
 
 /**
- * Hook for managing tooltip animation states
+ * Hook for managing tooltip animation states (Legacy support)
+ * 
+ * This hook is kept for backwards compatibility.
+ * Use the global Tooltip component for new implementations.
  */
 export const useTooltipAnimation = () => {
-    // Animation states for tooltips
-    const [tooltipStates, setTooltipStates] = useState<TooltipStates>({
-        freeWorkout: {
-            show: false,
-            isAutoShow: false,
-            isHovered: false,
-        },
-        createAccount: {
-            show: false,
-            isAutoShow: false,
-            isHovered: false,
-        }
-    });
-
     // Animation timeline references
     const timeoutsRef = useRef<number[]>([]);
 
@@ -38,36 +16,8 @@ export const useTooltipAnimation = () => {
         timeoutsRef.current = [];
     };
 
-    // Mouse enter handler
-    const handleMouseEnter = (button: 'freeWorkout' | 'createAccount') => {
-        setTooltipStates(prev => ({
-            ...prev,
-            [button]: {
-                ...prev[button],
-                show: true,
-                isHovered: true,
-            }
-        }));
-    };
-
-    // Mouse leave handler
-    const handleMouseLeave = (button: 'freeWorkout' | 'createAccount') => {
-        setTooltipStates(prev => ({
-            ...prev,
-            [button]: {
-                ...prev[button],
-                show: false,
-                isHovered: false,
-            }
-        }));
-    };
-
     return {
-        tooltipStates,
-        setTooltipStates,
         clearAllTimeouts,
-        handleMouseEnter,
-        handleMouseLeave,
         timeoutsRef
     };
 };

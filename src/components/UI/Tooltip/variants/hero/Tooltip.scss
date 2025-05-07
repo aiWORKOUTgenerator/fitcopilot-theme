@@ -1,0 +1,136 @@
+// Import design system
+@import '../../../../../styles/design-system/index';
+
+// Import hero theme variables
+@import '../../../../../features/Homepage/Hero/hero-theme-variables.scss';
+
+/* Tooltip wrapper */
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Tooltip container positioning */
+.tooltip-container {
+    position: absolute;
+    width: 100%;
+    top: calc(100% + 15px);
+    left: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+    pointer-events: none;
+}
+
+/* Tooltip styling - optimized shadow */
+.tooltip {
+    position: relative;
+    background: #1f2937;
+    /* bg-gray-800 */
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    max-width: 260px;
+    width: 264px;
+    color: #d1d5db;
+    /* text-gray-300 */
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(132, 204, 22, 0.3);
+    opacity: 0;
+    transform: translateY(8px);
+    visibility: hidden;
+    transition: all 0.3s ease;
+    will-change: transform, opacity;
+}
+
+/* Tooltip heading */
+.tooltip-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: #a3e635;
+    /* text-lime-300 */
+    margin-bottom: 4px;
+}
+
+/* Tooltip arrow - using dedicated arrow element */
+.tooltip-arrow {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background-color: #1f2937;
+    border-left: 1px solid rgba(132, 204, 22, 0.3);
+    border-top: 1px solid rgba(132, 204, 22, 0.3);
+}
+
+/* Tooltip show/hide states */
+.tooltip.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.tooltip.hide {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+}
+
+/* Tooltip content */
+.tooltip-content {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+
+/* Icon container */
+.tooltip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #a3e635;
+}
+
+/* Text container */
+.tooltip-text {
+    flex: 1;
+}
+
+.tooltip-text p {
+    margin: 0;
+    font-size: 12px;
+    color: #d1d5db;
+    line-height: 1.4;
+}
+
+/* Arrow icon - optimized animation */
+.arrow-icon {
+    display: inline-block;
+    animation: bounce 1.5s ease-in-out infinite;
+    will-change: transform;
+    margin-left: 4px;
+}
+
+/* Optimize animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .tooltip {
+        transition: none !important;
+    }
+
+    .tooltip.show {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .arrow-icon {
+        animation: none !important;
+    }
+}

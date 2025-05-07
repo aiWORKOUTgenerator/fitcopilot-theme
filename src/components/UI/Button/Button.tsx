@@ -18,6 +18,7 @@ import { ButtonProps } from './types';
 // Dynamically import button theme variants
 const DefaultButton = React.lazy(() => import('./default/Button'));
 const GymButton = React.lazy(() => import('./gym/Button'));
+const HeroButton = React.lazy(() => import('./hero/Button'));
 
 /**
  * Main Button component that selects the appropriate theme variant
@@ -42,6 +43,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
         }>
             {theme === 'gym' ? (
                 <GymButton ref={ref} {...props} />
+            ) : theme === 'hero' ? (
+                <HeroButton ref={ref} {...props} />
             ) : (
                 <DefaultButton ref={ref} {...props} />
             )}

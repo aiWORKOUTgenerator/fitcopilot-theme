@@ -4,6 +4,12 @@
 // Import hero theme variables
 @import './hero-theme-variables.scss';
 
+// Import the hero Button component styles
+@import '../../../components/UI/Button/hero/Button.scss';
+
+// Import the hero Tooltip component styles
+@import '../../../components/UI/Tooltip/variants/hero/Tooltip.scss';
+
 // src/features/Homepage/Hero/Hero.scss
 
 // Main section styling 
@@ -213,141 +219,12 @@
   }
 }
 
-/* Tooltip container positioning */
-.tooltip-container {
-  position: absolute;
-  width: 100%;
-  top: calc(100% + 15px);
-  left: 0;
-  display: flex;
-  justify-content: center;
-  z-index: 100;
-  pointer-events: none;
-}
-
-/* Tooltip styling - optimized shadow */
-.tooltip {
-  position: relative;
-  background: #1f2937;
-  /* bg-gray-800 */
-  border-radius: 8px;
-  padding: 12px;
-  font-size: 14px;
-  line-height: 1.4;
-  max-width: 260px;
-  width: 264px;
-  color: #d1d5db;
-  /* text-gray-300 */
-  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
-  border: none;
-  opacity: 0;
-  transform: translateY(8px);
-  visibility: hidden;
-  transition: all 0.3s ease;
-  will-change: transform, opacity;
-}
-
-/* Tooltip heading */
-.tooltip-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: #a3e635;
-  /* text-lime-300 */
-  margin-bottom: 4px;
-}
-
-/* Tooltip arrow */
-.tooltip::before {
-  content: '';
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 6px;
-  border-style: solid;
-  border-color: transparent transparent #1f2937 transparent;
-}
-
-/* Tooltip show/hide states */
-.tooltip.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.tooltip.hide {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(8px);
-}
-
-/* Tooltip content */
-.tooltip-content {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 8px;
-}
-
-/* Icon container */
-.tooltip-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 8px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-/* Text container */
-.tooltip-text {
-  flex: 1;
-}
-
 /* Arrow icon - optimized animation */
 .arrow-icon {
   display: inline-block;
   animation: bounce 1.5s ease-in-out infinite;
   will-change: transform;
   margin-left: 4px;
-}
-
-/* Button optimizations */
-.hero-button {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  will-change: transform, box-shadow;
-  display: var(--display-hero-inline-flex);
-  align-items: var(--align-hero-center);
-  justify-content: var(--justify-hero-center);
-  padding: var(--size-hero-button-padding);
-  border-radius: var(--radius-full);
-  font-weight: var(--weight-hero-button);
-  text-align: var(--text-align-hero-center);
-  min-width: var(--size-hero-button-min-width);
-
-  &.primary {
-    background: linear-gradient(var(--angle-hero-gradient), var(--color-lime), var(--color-lime-dark));
-    color: var(--color-hero-button-primary-text);
-    position: var(--pos-hero-element-relative);
-    z-index: var(--z-hero-base);
-
-    &:hover {
-      background: linear-gradient(var(--angle-hero-gradient), var(--color-lime-light), var(--color-lime-medium));
-      transform: translateY(var(--scale-hero-button-hover-y));
-      box-shadow: var(--shadow-hero-button-hover);
-    }
-  }
-
-  &.secondary {
-    background-color: var(--color-hero-button-secondary-bg);
-    color: var(--color-text-inverse);
-    border: var(--size-hero-border-width-secondary) solid var(--color-hero-button-secondary-border);
-
-    &:hover {
-      background-color: var(--color-hero-button-secondary-hover-bg);
-      transform: translateY(var(--scale-hero-button-hover-y));
-      box-shadow: var(--shadow-hero-secondary-button-hover);
-    }
-  }
 }
 
 /* Shadow optimizations */
@@ -490,22 +367,8 @@ a.inline-flex.items-center.text-gray-400 {
     animation: none !important;
   }
 
-  .tooltip {
-    transition: none !important;
-  }
-
-  .tooltip.show {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-  }
-
   .arrow-icon {
     animation: none !important;
-  }
-
-  .hero-button {
-    transition: none !important;
   }
 
   .floating-icon {
