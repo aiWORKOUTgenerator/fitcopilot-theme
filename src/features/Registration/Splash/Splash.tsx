@@ -80,7 +80,7 @@ const SplashComponent: React.FC<RegistrationStepProps> = ({
     };
 
     return (
-        <div className={`splash-step registration-step ${className}`}>
+        <div id="splash-section" className={`splash-step registration-step ${className}`}>
             {/* Background animation with particles */}
             <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 z-0">
                 <div className="particles-container">

@@ -1,0 +1,99 @@
+// Hero Component Theme Variables
+.hero-section {
+    // Base variables (default theme)
+    --hero-bg-primary: var(--color-background-dark);
+    --hero-bg-card: rgba(31, 41, 55, 0.3); // bg-gray-800/30
+    --hero-text-primary: var(--color-white);
+    --hero-text-secondary: var(--color-gray-300);
+    --hero-accent-gradient-from: var(--color-lime-300);
+    --hero-accent-gradient-to: var(--color-emerald-400);
+    --hero-border-color: var(--color-gray-700);
+    --hero-accent-color: var(--color-lime-300);
+    --hero-accent-dark: var(--color-emerald-400);
+    --hero-floating-icon-color: rgba(255, 255, 255, 0.1);
+    --hero-tooltip-bg: var(--color-tooltip-bg);
+    --hero-tooltip-border: rgba(var(--color-lime-rgb), 0.1);
+
+    // When using the Section component with data-theme="gym"
+    &[data-theme="gym"] {
+        --hero-accent-gradient-from: var(--color-lime-400);
+        --hero-accent-gradient-to: var(--color-green-500);
+        --hero-accent-color: var(--color-lime-400);
+        --hero-accent-dark: var(--color-green-500);
+        --hero-floating-icon-color: rgba(var(--color-lime-rgb), 0.15);
+        --hero-tooltip-border: rgba(var(--color-lime-rgb), 0.15);
+        --hero-bg-card: rgba(17, 24, 39, 0.4);
+    }
+
+    // Handle sports theme
+    &[data-theme="sports"] {
+        --hero-accent-gradient-from: var(--color-cyan-300);
+        --hero-accent-gradient-to: var(--color-blue-500);
+        --hero-accent-color: var(--color-cyan-300);
+        --hero-accent-dark: var(--color-blue-500);
+        --hero-floating-icon-color: rgba(var(--color-cyan-rgb), 0.15);
+        --hero-tooltip-border: rgba(var(--color-cyan-rgb), 0.15);
+    }
+
+    // Handle wellness theme  
+    &[data-theme="wellness"] {
+        --hero-accent-gradient-from: var(--color-violet-300);
+        --hero-accent-gradient-to: var(--color-purple-500);
+        --hero-accent-color: var(--color-violet-300);
+        --hero-accent-dark: var(--color-purple-500);
+        --hero-floating-icon-color: rgba(var(--color-violet-rgb), 0.15);
+        --hero-tooltip-border: rgba(var(--color-violet-rgb), 0.15);
+    }
+
+    // Handle modern theme
+    &[data-theme="modern"] {
+        --hero-accent-gradient-from: var(--color-amber-300);
+        --hero-accent-gradient-to: var(--color-orange-500);
+        --hero-accent-color: var(--color-amber-300);
+        --hero-accent-dark: var(--color-orange-500);
+        --hero-floating-icon-color: rgba(var(--color-amber-rgb), 0.15);
+        --hero-tooltip-border: rgba(var(--color-amber-rgb), 0.15);
+    }
+
+    // Handle boutique theme (maps to modern)
+    &[data-theme="boutique"] {
+        --hero-accent-gradient-from: var(--color-pink-300);
+        --hero-accent-gradient-to: var(--color-rose-500);
+        --hero-accent-color: var(--color-pink-300);
+        --hero-accent-dark: var(--color-rose-500);
+        --hero-floating-icon-color: rgba(var(--color-pink-rgb), 0.15);
+        --hero-tooltip-border: rgba(var(--color-pink-rgb), 0.15);
+    }
+
+    // Handle minimalist theme (maps to default but with cleaner styling)
+    &[data-theme="minimalist"] {
+        --hero-bg-card: rgba(31, 41, 55, 0.2);
+        --hero-border-color: var(--color-gray-800);
+    }
+
+    // Handle classic theme (maps to default)
+    &[data-theme="classic"] {
+        --hero-bg-card: rgba(31, 41, 55, 0.5);
+        --hero-border-color: var(--color-gray-600);
+    }
+
+    // Handle mobile theme (maps to modern but with mobile-specific tweaks)
+    &[data-theme="mobile"] {
+        --hero-accent-gradient-from: var(--color-blue-300);
+        --hero-accent-gradient-to: var(--color-indigo-500);
+        --hero-accent-color: var(--color-blue-300);
+        --hero-accent-dark: var(--color-indigo-500);
+        --hero-floating-icon-color: rgba(var(--color-blue-rgb), 0.15);
+        --hero-tooltip-border: rgba(var(--color-blue-rgb), 0.15);
+    }
+
+    // Handle registration theme
+    &[data-theme="registration"] {
+        --hero-accent-gradient-from: var(--color-emerald-300);
+        --hero-accent-gradient-to: var(--color-teal-500);
+        --hero-accent-color: var(--color-emerald-300);
+        --hero-accent-dark: var(--color-teal-500);
+        --hero-floating-icon-color: rgba(var(--color-emerald-rgb), 0.15);
+        --hero-tooltip-border: rgba(var(--color-emerald-rgb), 0.15);
+    }
+}

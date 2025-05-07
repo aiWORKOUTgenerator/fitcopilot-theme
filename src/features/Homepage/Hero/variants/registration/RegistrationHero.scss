@@ -248,22 +248,21 @@
 
     0%,
     100% {
-        transform: translateY(0) translateX(-50%);
+        transform: translateY(0);
     }
 
     50% {
-        transform: translateY(-10px) translateX(-50%);
+        transform: translateY(-15px);
     }
 }
 
 .animate-bounce {
-    animation: bounce 2s infinite;
+    animation: bounce 2s ease-in-out infinite;
 }
 
-/* Responsive styles */
 @media (max-width: 768px) {
     .particle {
-        opacity: 0.4;
+        transform: scale(0.7);
     }
 
     .feature-card {
@@ -271,17 +270,18 @@
     }
 
     .registration-entry-form .space-y-4>div {
-        margin-bottom: 12px;
+        margin-bottom: 16px;
     }
 }
 
 @media (max-width: 480px) {
     .hero--registration h1 {
         font-size: 2.5rem;
+        line-height: 1.1;
     }
 
     .hero--registration p.text-xl {
-        font-size: 1.125rem;
+        font-size: 1rem;
     }
 
     .feature-card {
@@ -289,7 +289,6 @@
     }
 
     .registration-entry-form button {
-        font-size: 1rem;
-        padding: 0.875rem 1.25rem;
+        padding: 0.875rem 1.5rem;
     }
 }

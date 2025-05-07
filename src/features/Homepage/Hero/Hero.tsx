@@ -1,98 +1,30 @@
-import { Apple, Bike, Coffee, Dumbbell, Flame, Footprints, Heart, LogIn, Medal, Shield, Timer, UserPlus, Zap } from 'lucide-react';
-import React, { useEffect, useRef, useState } from 'react';
-import { HeroButton, VideoPlayer } from './components';
-import './Hero.css';
-import { HeroProps } from './types';
+import { Dumbbell, Flame, Heart, LogIn, Shield, UserPlus, Zap } from 'lucide-react';
+import React, { useEffect } from 'react';
+import RegistrationButton from '../../../features/Registration/components/RegistrationButton';
+import './Hero.scss';
+import { FloatingIcons } from './components/FloatingIcons';
+import { useTooltipAnimation } from './hooks';
 
-/**
- * Interface for floating icon props
- */
-interface FloatingIconProps {
-  children: React.ReactNode;
-  delay: number;
-  speed: number;
-  left: number;
-  top: number;
-}
-
-/**
- * Floating icon component for decorative background elements
- */
-const FloatingIcon: React.FC<FloatingIconProps> = ({ children, delay, speed, left, top }) => {
-  return (
-    <div
-      className="floating-icon"
-      style={{
-        left: `${left}%`,
-        top: `${top}%`,
-        animation: `float ${speed}s ease-in-out infinite ${delay}s`
-      }}
-      aria-hidden="true"
-    >
-      {children}
-    </div>
-  );
-};
-
-/**
- * Interface for floating icon data
- */
-interface FloatingIconData {
-  Icon: React.ComponentType<any>;
-  size: number;
-  left: number;
-  top: number;
-  delay: number;
-  speed: number;
+interface HeroProps {
+  registrationLink?: string;
+  loginLink?: string;
+  logoUrl?: string;
+  onRegistrationStart?: () => void;
 }
 
 const Hero: React.FC<HeroProps> = ({
-  registrationLink = "https://aigymengine.com/workout-generator-registration",
-  loginLink = "https://aigymengine.com/react-login",
-  variant = "default",
+  registrationLink = "#splash-section",
+  loginLink = "#login",
   logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
-  videoSrc,
-  videoFallbackSrc,
-  videoPoster,
-  videoControls = true,
-  videoAutoPlay = true,
-  onRegistrationStart,
+  onRegistrationStart
 }) => {
-  // Animation states for tooltips
-  const [tooltipStates, setTooltipStates] = useState({
-    freeWorkout: {
-      show: false,
-      isAutoShow: false,
-      isHovered: false,
-    },
-    createAccount: {
-      show: false,
-      isAutoShow: false,
-      isHovered: false,
-    }
-  });
-
-  // Animation timeline references
-  const timeoutsRef = useRef<number[]>([]);
-
-  // Clear all timeouts on cleanup
-  const clearAllTimeouts = () => {
-    timeoutsRef.current.forEach(timeoutId => window.clearTimeout(timeoutId));
-    timeoutsRef.current = [];
-  };
-
-  // Floating icons data
-  const floatingIcons: FloatingIconData[] = [
-    { Icon: Dumbbell, size: 28, left: 5, top: 15, delay: 0, speed: 8 },
-    { Icon: Timer, size: 36, left: 15, top: 60, delay: 1.5, speed: 10 },
-    { Icon: Medal, size: 32, left: 25, top: 25, delay: 0.8, speed: 12 },
-    { Icon: Flame, size: 40, left: 80, top: 20, delay: 2, speed: 9 },
-    { Icon: Heart, size: 32, left: 85, top: 65, delay: 1, speed: 11 },
-    { Icon: Apple, size: 28, left: 10, top: 80, delay: 2.5, speed: 10 },
-    { Icon: Coffee, size: 24, left: 70, top: 10, delay: 0.5, speed: 7 },
-    { Icon: Footprints, size: 36, left: 90, top: 40, delay: 1.2, speed: 9 },
-    { Icon: Bike, size: 40, left: 30, top: 70, delay: 1.8, speed: 13 }
-  ];
+  // Use the tooltip animation hook for managing tooltip states
+  const {
+    tooltipStates,
+    clearAllTimeouts,
+    handleMouseEnter,
+    handleMouseLeave
+  } = useTooltipAnimation();
 
   // On mount and unmount
   useEffect(() => {
@@ -100,38 +32,30 @@ const Hero: React.FC<HeroProps> = ({
     return () => {
       clearAllTimeouts();
     };
-  }, []);
+  }, [clearAllTimeouts]);
 
-  // Mouse enter handler
-  const handleMouseEnter = (button: 'freeWorkout' | 'createAccount') => {
-    setTooltipStates(prev => ({
-      ...prev,
-      [button]: {
-        ...prev[button],
-        show: true,
-        isHovered: true,
-      }
-    }));
-  };
-
-  // Mouse leave handler
-  const handleMouseLeave = (button: 'freeWorkout' | 'createAccount') => {
-    setTooltipStates(prev => ({
-      ...prev,
-      [button]: {
-        ...prev[button],
-        show: false,
-        isHovered: false,
-      }
-    }));
-  };
-
-  // Handle click for registration start
-  const handleFreeWorkoutClick = (e: React.MouseEvent) => {
+  // Handle robust navigation to the splash section with fallbacks
+  const handleScrollToSplash = (e: React.MouseEvent) => {
     e.preventDefault();
+
+    // Option 1: Use onRegistrationStart callback if available (from Homepage component)
     if (onRegistrationStart) {
+      console.log("Using registration start callback");
       onRegistrationStart();
+      return;
     }
+
+    // Option 2: Try to find and scroll to splash section by ID
+    const splashSection = document.getElementById('splash-section');
+    if (splashSection) {
+      console.log("Found splash section, scrolling to it");
+      splashSection.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    // Option 3: Navigate to the registration page directly
+    console.log("Fallback: navigating to registration page");
+    window.location.href = "/registration";
   };
 
   return (
@@ -142,19 +66,7 @@ const Hero: React.FC<HeroProps> = ({
       {/* Background Grid Pattern - Removed (using global grid) */}
 
       {/* Floating fitness icons - decorative */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-10" aria-hidden="true">
-        {floatingIcons.map((icon, index) => (
-          <FloatingIcon
-            key={index}
-            left={icon.left}
-            top={icon.top}
-            delay={icon.delay}
-            speed={icon.speed}
-          >
-            <icon.Icon size={icon.size} />
-          </FloatingIcon>
-        ))}
-      </div>
+      <FloatingIcons />
 
       <div className="max-w-4xl mx-auto relative z-20 text-center">
         {/* Content Card with Backdrop Blur */}
@@ -162,9 +74,9 @@ const Hero: React.FC<HeroProps> = ({
           {/* Logo */}
           <div className="mb-8 flex justify-center">
             <img
-              src="/wp-content/themes/fitcopilot/assets/media/images/logo.png"
+              src={logoUrl}
               alt="AI Workout Generator Logo"
-              style={{ height: '150px', width: 'auto' }}
+              className="h-48 md:h-56 w-auto"
             />
           </div>
 
@@ -182,7 +94,7 @@ const Hero: React.FC<HeroProps> = ({
           <p
             className="text-gray-300 mb-10 max-w-2xl mx-auto text-base md:text-xl lead"
           >
-            Achieve your fitness goals with <span className="accent-text">customized plans</span> designed by AI and expert trainers.
+            Achieve your fitness goals with <span className="citron-text">customized plans</span> designed by AI and expert trainers.
           </p>
 
           {/* CTA Buttons Container */}
@@ -195,22 +107,20 @@ const Hero: React.FC<HeroProps> = ({
               onMouseEnter={() => handleMouseEnter('freeWorkout')}
               onMouseLeave={() => handleMouseLeave('freeWorkout')}
             >
-              <HeroButton
-                href="https://builder.fitcopilot.ai"
-                variant="primary"
-                leftIcon={<Zap className="h-5 w-5" />}
-                fullWidth
-                onClick={handleFreeWorkoutClick}
+              <button
+                onClick={handleScrollToSplash}
+                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-lg hover:shadow-xl hover:-translate-y-1 w-full sm:w-auto"
               >
+                <Zap className="mr-2 h-5 w-5" />
                 Get a Free Workout
-              </HeroButton>
+              </button>
 
               {/* Tooltip - Updated to match Pricing */}
               <div className="tooltip-container">
                 <div className={`tooltip ${tooltipStates.freeWorkout.show ? 'show' : 'hide'}`}>
                   <div className="tooltip-content">
                     <div className="tooltip-icon">
-                      <Zap className="w-4 h-4 accent-text" />
+                      <Zap className="w-4 h-4 text-lime-300" />
                     </div>
                     <div className="tooltip-text">
                       <h5 className="tooltip-title">Quick Workout Builder</h5>
@@ -230,21 +140,20 @@ const Hero: React.FC<HeroProps> = ({
               onMouseEnter={() => handleMouseEnter('createAccount')}
               onMouseLeave={() => handleMouseLeave('createAccount')}
             >
-              <HeroButton
-                href={registrationLink}
-                variant="secondary"
-                leftIcon={<UserPlus className="h-5 w-5 accent-text" />}
-                fullWidth
+              <button
+                onClick={handleScrollToSplash}
+                className="inline-flex items-center justify-center px-8 py-4 rounded-full font-bold transition-all duration-300 bg-gray-800 border-2 border-lime-300/30 text-white hover:bg-lime-300/10 hover:-translate-y-1 w-full sm:w-auto"
               >
+                <UserPlus className="mr-2 h-5 w-5 text-lime-300" />
                 Create Your Account
-              </HeroButton>
+              </button>
 
               {/* Tooltip - Updated to match Pricing */}
               <div className="tooltip-container">
                 <div className={`tooltip ${tooltipStates.createAccount.show ? 'show' : 'hide'}`}>
                   <div className="tooltip-content">
                     <div className="tooltip-icon">
-                      <Shield className="w-4 h-4 accent-text" />
+                      <Shield className="w-4 h-4 text-lime-300" />
                     </div>
                     <div className="tooltip-text">
                       <h5 className="tooltip-title">Member Benefits</h5>
@@ -269,6 +178,27 @@ const Hero: React.FC<HeroProps> = ({
               Already have an account? Sign in
             </a>
           </div>
+
+          {/* Divider between original and Button component implementation */}
+          <div className="my-8 border-t border-gray-700"></div>
+
+          {/* Alternative implementation using RegistrationButton component */}
+          <div className="flex flex-col items-center">
+            <p className="text-gray-400 mb-4 text-sm">Alternative implementation with component:</p>
+            <div className="flex gap-4">
+              <RegistrationButton
+                onClick={handleScrollToSplash}
+                variant="primary"
+                size="large"
+                className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 shadow-lg hover:shadow-xl hover:-translate-y-1"
+              >
+                <span className="flex items-center">
+                  <Zap className="mr-2 h-5 w-5" />
+                  Get a Free Workout
+                </span>
+              </RegistrationButton>
+            </div>
+          </div>
         </div>
 
         {/* Features Pills */}
@@ -286,23 +216,6 @@ const Hero: React.FC<HeroProps> = ({
             <span>Expert Guidance</span>
           </div>
         </div>
-
-        {/* Feature Video */}
-        {videoSrc && (
-          <div className="mt-10 max-w-3xl mx-auto">
-            <VideoPlayer
-              src={videoSrc}
-              fallbackSrc={videoFallbackSrc}
-              poster={videoPoster}
-              controls={videoControls}
-              autoPlay={videoAutoPlay}
-              muted={true}
-              loop={true}
-              ariaLabel="Demonstration of AI Workout Generator features"
-              className="hero-video"
-            />
-          </div>
-        )}
       </div>
     </section>
   );

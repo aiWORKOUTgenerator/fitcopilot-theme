@@ -1,12 +1,14 @@
+import { SectionProps } from '../../../components/shared/Section';
+
 /**
  * Available theme variants for the Hero component
  */
-export type VariantKey = 'default' | 'gym' | 'mobile' | 'sports' | 'wellness' | 'registration' | 'boutique' | 'classic' | 'minimalist' | 'modern';
+export type HeroVariantKey = 'default' | 'gym' | 'mobile' | 'sports' | 'wellness' | 'registration' | 'boutique' | 'classic' | 'minimalist' | 'modern';
 
 /**
  * Props for the Hero component
  */
-export interface HeroProps {
+export interface HeroProps extends Omit<SectionProps, 'variant'> {
   /**
    * URL for the registration page
    */
@@ -20,7 +22,7 @@ export interface HeroProps {
   /**
    * Visual theme variant of the hero section
    */
-  variant?: VariantKey;
+  variant?: HeroVariantKey;
 
   /**
    * URL for the logo image

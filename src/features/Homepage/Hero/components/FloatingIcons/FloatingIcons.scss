@@ -1,0 +1,40 @@
+// Import hero theme variables
+@import '../../hero-theme-variables.scss';
+
+// Floating icons animation
+.floating-icon {
+    position: absolute;
+    opacity: 0.15;
+    filter: drop-shadow(0 0 6px rgba(163, 230, 53, 0.3));
+    transform-origin: center;
+    z-index: 5;
+    will-change: transform;
+}
+
+.floating-icon svg {
+    color: #a3e635;
+    fill: rgba(163, 230, 53, 0.08);
+    stroke-width: 1.75;
+}
+
+.floating-icon:nth-child(odd) {
+    animation-direction: alternate;
+}
+
+.floating-icon:nth-child(even) {
+    animation-direction: alternate-reverse;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(3deg) scale(1.03);
+    }
+
+    100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+}

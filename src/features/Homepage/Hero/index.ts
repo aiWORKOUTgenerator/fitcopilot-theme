@@ -13,9 +13,12 @@ export * from './variants';
 // Export types
 export * from './types';
 
-// Export component from the Hero feature
+// Export all components from the Hero feature
 export * from './components';
 
-// Default export is the function that returns the appropriate variant
-export default getHeroVariant();
+// Export all hooks from the Hero feature
+export * from './hooks';
+
+// Default export is the main Hero component
+export default Hero;
 

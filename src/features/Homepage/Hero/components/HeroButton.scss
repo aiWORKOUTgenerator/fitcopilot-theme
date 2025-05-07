@@ -4,6 +4,9 @@
 // Canonical design system import - MUST BE FIRST
 @import '../../../../styles/design-system/index';
 
+// Import hero theme variables
+@import '../hero-theme-variables.scss';
+
 /* Hero-specific button styling */
 .hero-button {
   position: var(--pos-hero-element-relative);
@@ -70,25 +73,46 @@
 
   /* Variants */
   &.button--primary {
-    background: linear-gradient(var(--angle-hero-gradient), var(--color-primary), var(--color-primary-dark));
-    color: var(--color-text-dark);
-    border: var(--border-hero-none);
-    box-shadow: var(--shadow-button-primary);
+    background-image: linear-gradient(135deg, var(--hero-accent-gradient-from), var(--hero-accent-gradient-to));
+    color: #000;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 
-    &:hover {
-      background: linear-gradient(var(--angle-hero-gradient), var(--color-primary-light), var(--color-primary));
-      box-shadow: var(--shadow-button-primary-hover);
+    &:hover,
+    &:focus {
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      transform: translateY(0);
     }
   }
 
   &.button--secondary {
-    background-color: var(--color-hero-button-secondary-bg);
-    color: var(--color-text-inverse);
-    border: var(--size-hero-border-width-primary) solid rgba(var(--color-primary-rgb), var(--opacity-hero-lime-border));
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+    color: var(--hero-text-primary);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 
-    &:hover {
-      background-color: rgba(var(--color-primary-rgb), var(--opacity-hero-lime-border));
-      box-shadow: var(--shadow-button-primary-hover);
+    &:hover,
+    &:focus {
+      background-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+      border-color: var(--hero-accent-color);
+
+      .accent-text {
+        color: var(--hero-accent-color);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    .accent-text {
+      color: var(--hero-accent-color);
     }
   }
 
@@ -176,4 +200,9 @@ body[data-theme="gym"] .hero-button {
     transition: var(--transition-hero-none);
     transform: var(--transform-hero-none) !important;
   }
+}
+
+/* Accent text color */
+.accent-text {
+  color: var(--hero-accent-color);
 }
