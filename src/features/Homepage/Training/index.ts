@@ -16,6 +16,8 @@ export * from './utils';
 
 // Export example components
 export { default as ProgramTokenExample } from './examples/ProgramTokenExample';
+export { default as TokenExample } from './examples/TokenExample';
+export { default as VisualEnhancementsExample } from './examples/VisualEnhancementsExample';
 
 // Export all variants
 export { variants };

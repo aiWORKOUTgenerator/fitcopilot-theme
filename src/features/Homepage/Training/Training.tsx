@@ -34,6 +34,10 @@ function Training({
 
     return (
         <section className={`training-section training-section--${variant} ${prefersReducedMotion ? 'reduced-motion' : ''} ${className}`} aria-labelledby="training-section-title">
+            {/* Decorative accent shapes for visual interest */}
+            <div className="training-section__accent-shape training-section__accent-shape--1" aria-hidden="true"></div>
+            <div className="training-section__accent-shape training-section__accent-shape--2" aria-hidden="true"></div>
+
             <div className="training-section__container">
                 {/* Section Header */}
                 <SectionHeader
@@ -42,6 +46,7 @@ function Training({
                     tagText="Training Solutions"
                     variant={variant}
                     id="training-section-title"
+                    className="training-section__header"
                 />
 
                 {/* Programs List */}

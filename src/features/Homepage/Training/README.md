@@ -152,6 +152,45 @@ For complete documentation, see:
 - [Program Tokens](./docs/PROGRAM-TOKENS.md)
 - [Styling Guidelines](./STYLING-GUIDELINES.md)
 
+## Token System
+
+### Background Colors
+
+The Training component uses a standardized approach to background colors, leveraging the global token system:
+
+```scss
+// Component-specific tokens with global inheritance
+:root {
+  --training-bg: var(--color-background-primary, rgba(10, 16, 27, 1));
+}
+
+// Component implementation
+.training-section {
+  background-color: var(--training-bg, var(--color-background-primary));
+}
+```
+
+This approach provides:
+- Consistency with other homepage sections
+- Proper theme variant inheritance
+- Fallback support for backward compatibility
+
+### Theme Variants
+
+Each theme variant (sports, wellness, etc.) uses global tokens with specific fallbacks:
+
+```scss
+body[data-theme="sports"] {
+  --training-bg: var(--color-background-primary, #f9fafb);
+}
+```
+
+This ensures the component responds correctly to theme changes while maintaining its unique visual identity.
+
+### Examples
+
+See `examples/TokenExample.tsx` for a visual demonstration of the token inheritance system.
+
 ## Usage
 
 ### Basic Usage
@@ -482,3 +521,149 @@ The Training component has been decomposed into smaller, focused components for 
 
 For detailed information on the component decomposition, see:
 - [Component Breakdown Documentation](./docs/COMPONENT_BREAKDOWN.md)
+
+## Visual Enhancements
+
+The Training component includes several visual enhancements that provide consistency with other homepage sections:
+
+### Background Patterns
+
+Each theme variant includes a customized grid pattern background that adds subtle visual texture:
+
+```scss
+.training-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(var(--training-grid-pattern) 1px, transparent 1px),
+        linear-gradient(90deg, var(--training-grid-pattern) 1px, transparent 1px);
+    background-size: var(--training-grid-size) var(--training-grid-size);
+    opacity: var(--training-pattern-opacity);
+    z-index: -1;
+}
+```
+
+### Gradient Overlays
+
+The component uses gradient overlays to create smooth transitions between sections:
+
+```scss
+.training-section::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 60%;
+    background: linear-gradient(to bottom,
+        var(--training-bg-transparent) 0%,
+        var(--training-bg-60) 40%,
+        var(--training-bg-90) 70%,
+        var(--training-bg) 100%);
+    z-index: -1;
+}
+```
+
+### Visual Interest Elements
+
+Decorative accent shapes add subtle visual interest to the background:
+
+```jsx
+<div className="training-section__accent-shape training-section__accent-shape--1" aria-hidden="true"></div>
+<div className="training-section__accent-shape training-section__accent-shape--2" aria-hidden="true"></div>
+```
+
+### Seamless Section Transitions
+
+The component supports seamless transitions between sections with special CSS classes:
+
+```scss
+// Seamless section transition support
+&.section-seamless {
+    margin-top: -1px;
+    padding-top: calc(5rem + 1px);
+}
+
+// Bottom overlap for next section
+&.section-overlap-bottom {
+    margin-bottom: -5rem;
+    padding-bottom: 10rem;
+}
+
+// Top overlap for previous section
+&.section-overlap-top {
+    margin-top: -5rem;
+    padding-top: 10rem;
+    z-index: 0;
+}
+```
+
+### Usage
+
+To enable these features in your implementation:
+
+```jsx
+// Seamless transition with previous section
+<Training className="section-seamless" />
+
+// Overlapping transition between sections
+<Training className="section-overlap-bottom" />
+<NextSection className="section-overlap-top" />
+
+// Disable gradient overlay
+<Training className="training-section--no-gradient" />
+```
+
+All visual enhancements are designed to maintain consistency with other homepage sections while respecting the unique identity of each theme variant.
+
+## Section Header
+
+The Training component includes a SectionHeader component that displays the section title, description, and optional tag. The SectionHeader is centered within the Training component and inherits the background of the section.
+
+### Centered SectionHeader
+
+The SectionHeader is automatically centered within the Training component. This is achieved through:
+
+1. CSS classes in the SectionHeader component (align-items: center, text-align: center)
+2. Container styling in the Training component (display: flex, flex-direction: column, align-items: center)
+
+```tsx
+<SectionHeader
+  title="Training Programs"
+  description="Choose from our specialized programs designed to help you achieve your fitness goals."
+  tagText="Training Solutions"
+  variant="default"
+  className="training-section__header"
+/>
+```
+
+The `training-section__header` class ensures the header is properly positioned and styled within the section.
+
+### Background Consistency
+
+The SectionHeader component inherits the background from the Training section, ensuring visual consistency throughout the component. This is achieved through:
+
+```scss
+.section-header {
+  background: inherit; // Inherit background from parent
+  z-index: 1; // Ensure it appears above background patterns
+}
+```
+
+### Section Transitions
+
+The Training component supports seamless transitions with other sections through modifier classes:
+
+- `section-seamless`: Removes padding and gradient overlays for a seamless transition
+- `section-overlap-bottom`: Extends padding at the bottom for overlapping with the next section
+- `section-overlap-top`: Adds padding at the top and adjusts z-index for being overlapped by the previous section
+
+```tsx
+// Seamless transition example
+<Training className="section-seamless" />
+
+// Overlapping sections example
+<PreviousSection className="section-overlap-bottom" />
+<Training className="section-overlap-top" />
+```

@@ -7,21 +7,29 @@
 // Define component-specific variables with fallbacks to global theme tokens
 :root {
     // Default theme variables
-    --training-bg: var(--color-background, rgba(10, 16, 27, 1));
-    --training-text: var(--color-text, #f9fafb);
-    --training-text-muted: var(--color-text-muted, #9ca3af);
+    --training-bg: var(--color-background-primary, rgba(10, 16, 27, 1));
+    --training-text: var(--color-text-primary, #f9fafb);
+    --training-text-muted: var(--color-text-secondary, #9ca3af);
     --training-accent: var(--color-primary, #8b5cf6);
     --training-accent-light: var(--color-primary-light, #c4b5fd);
-    --training-card-bg: rgba(31, 41, 55, 0.5);
-    --training-card-border: var(--color-border, rgba(55, 65, 81, 0.5));
+    --training-card-bg: var(--color-surface-primary, rgba(31, 41, 55, 0.5));
+    --training-card-border: var(--color-border-light, rgba(55, 65, 81, 0.5));
     --training-card-hover-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.3);
     --training-card-active-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.5);
-    --training-expanded-bg: rgba(31, 41, 55, 0.4);
+    --training-expanded-bg: var(--color-surface-secondary, rgba(31, 41, 55, 0.4));
     --training-connector-bg: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.5);
     --training-icon-size: 64px;
     --training-card-toggle-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.3);
     --training-card-toggle-bg: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.1);
     --training-icon-shadow: drop-shadow(0 0 8px rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.4));
+
+    // Background pattern and gradient variables
+    --training-pattern-opacity: 0.05;
+    --training-grid-size: 20px;
+    --training-grid-pattern: var(--color-grid-pattern, rgba(255, 255, 255, 0.05));
+    --training-bg-transparent: rgba(10, 16, 27, 0);
+    --training-bg-60: rgba(10, 16, 27, 0.6);
+    --training-bg-90: rgba(10, 16, 27, 0.9);
 
     // Animation variables - added for a11y
     --training-transition-duration: 0.3s;
@@ -49,20 +57,27 @@
 
 // Theme-specific overrides
 body[data-theme="sports"] {
-    --training-bg: var(--color-gray-50, #f9fafb);
-    --training-text: var(--color-gray-900, #111827);
-    --training-text-muted: var(--color-gray-600, #4b5563);
-    --training-accent: var(--color-violet-600, #7c3aed);
-    --training-accent-light: var(--color-violet-400, #a78bfa);
-    --training-card-bg: white;
-    --training-card-border: var(--color-gray-100, #f3f4f6);
+    --training-bg: var(--color-background-primary, #f9fafb);
+    --training-text: var(--color-text-primary, #111827);
+    --training-text-muted: var(--color-text-secondary, #4b5563);
+    --training-accent: var(--color-primary, #7c3aed);
+    --training-accent-light: var(--color-primary-light, #a78bfa);
+    --training-card-bg: var(--color-surface-primary, white);
+    --training-card-border: var(--color-border-light, #f3f4f6);
     --training-card-hover-border: var(--color-violet-200, #ddd6fe);
     --training-card-active-border: var(--color-violet-300, #c4b5fd);
-    --training-expanded-bg: var(--color-gray-50, #f9fafb);
+    --training-expanded-bg: var(--color-background-primary, #f9fafb);
     --training-connector-bg: var(--color-violet-300, #c4b5fd);
     --training-card-toggle-border: var(--color-violet-200, #ddd6fe);
     --training-card-toggle-bg: var(--color-violet-50, #f5f3ff);
     --training-icon-shadow: drop-shadow(0 0 8px rgba(124, 58, 237, 0.4));
+
+    // Background pattern and gradient variables
+    --training-pattern-opacity: 0.03;
+    --training-grid-pattern: rgba(124, 58, 237, 0.05);
+    --training-bg-transparent: rgba(249, 250, 251, 0);
+    --training-bg-60: rgba(249, 250, 251, 0.6);
+    --training-bg-90: rgba(249, 250, 251, 0.9);
 
     // Program-specific gradients
     --training-gradient-strength: linear-gradient(to right, var(--color-emerald-500, #10b981), var(--color-teal-400, #2dd4bf));
@@ -79,6 +94,20 @@ body[data-theme="sports"] {
 
 // Wellness theme overrides
 body[data-theme="wellness"] {
+    --training-bg: var(--color-background-primary, #ecfdf5);
+    --training-text: var(--color-text-primary, #064e3b);
+    --training-text-muted: var(--color-text-secondary, #059669);
+    --training-accent: var(--color-primary, #0d9488);
+    --training-accent-light: var(--color-primary-light, #2dd4bf);
+    --training-card-bg: var(--color-surface-primary, white);
+
+    // Background pattern and gradient variables
+    --training-pattern-opacity: 0.04;
+    --training-grid-pattern: rgba(13, 148, 136, 0.1);
+    --training-bg-transparent: rgba(236, 253, 245, 0);
+    --training-bg-60: rgba(236, 253, 245, 0.6);
+    --training-bg-90: rgba(236, 253, 245, 0.9);
+
     // Program-specific gradients
     --training-gradient-strength: linear-gradient(to right, var(--color-teal-400, #2dd4bf), var(--color-green-500, #22c55e));
     --training-gradient-fatLoss: linear-gradient(to right, var(--color-cyan-400, #22d3ee), var(--color-teal-500, #14b8a6));
@@ -96,9 +125,159 @@ body[data-theme="wellness"] {
 .training-section {
     position: relative;
     z-index: 1;
-    background-color: var(--training-bg);
+    background-color: var(--training-bg, var(--color-background-primary));
     width: 100%;
     padding: 5rem 1rem;
+    overflow: hidden; // Contain decorative elements within section
+
+    // Section transition modifiers
+    &.section-seamless {
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: -1rem;
+
+        &::after {
+            display: none; // Remove gradient overlay
+        }
+    }
+
+    &.section-overlap-bottom {
+        padding-bottom: 8rem; // Extra padding at the bottom for overlap
+
+        &::after {
+            height: 80%; // Extend gradient further
+        }
+    }
+
+    // Applied to the next section after an overlapping section
+    &.section-overlap-top {
+        padding-top: 8rem;
+        margin-top: -5rem;
+        position: relative;
+        z-index: 0; // Set lower z-index to ensure proper layering
+    }
+
+    // Container for section content
+    &__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    // Section header specific styles
+    &__header {
+        width: 100%;
+        margin-bottom: 3rem;
+        position: relative;
+        z-index: 2; // Ensure header appears above background patterns
+    }
+
+    // Add grid pattern background
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+            linear-gradient(var(--training-grid-pattern) 1px, transparent 1px),
+            linear-gradient(90deg, var(--training-grid-pattern) 1px, transparent 1px);
+        background-size: var(--training-grid-size) var(--training-grid-size);
+        background-position: center center;
+        z-index: -1;
+        pointer-events: none;
+        opacity: var(--training-pattern-opacity);
+    }
+
+    // Add gradient overlay for smooth transitions
+    &::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 60%;
+        background: linear-gradient(to bottom,
+                var(--training-bg-transparent) 0%,
+                var(--training-bg-60) 40%,
+                var(--training-bg-90) 70%,
+                var(--training-bg) 100%);
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    // Turn off gradient overlay when specified
+    &.training-section--no-gradient::after {
+        display: none;
+    }
+
+    // Decorative accent shapes for visual interest
+    &__accent-shape {
+        position: absolute;
+        z-index: -1;
+        pointer-events: none;
+
+        &--1 {
+            top: 10%;
+            right: -5%;
+            width: 40%;
+            height: 40%;
+            background: radial-gradient(circle at center,
+                    var(--training-accent-light) 0%,
+                    transparent 70%);
+            opacity: 0.1;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: training-float 20s ease-in-out infinite;
+        }
+
+        &--2 {
+            bottom: -10%;
+            left: -5%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle at center,
+                    var(--training-accent-light) 0%,
+                    transparent 70%);
+            opacity: 0.05;
+            border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
+            animation: training-float 25s ease-in-out infinite reverse;
+        }
+    }
+
+    // Animation for floating shapes
+    @keyframes training-float {
+        0% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+
+        50% {
+            transform: translate(5%, 5%) rotate(5deg);
+        }
+
+        100% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+    }
+
+    // Reduced motion support for animations
+    &.reduced-motion .training-section__accent-shape {
+        animation: none;
+    }
+
+    // Theme variant support
+    &[data-theme],
+    body[data-theme] & {
+        background-color: var(--training-bg);
+
+        &.section-component {
+            background-color: var(--color-background-primary);
+        }
+    }
 
     // Header styles
     &__header {
