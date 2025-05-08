@@ -12,25 +12,24 @@
 
 // src/features/Homepage/Hero/Hero.scss
 
-// Main section styling 
+// Main Hero section styling
 .hero-section {
-  position: var(--pos-hero-element-relative);
-  background-color: var(--hero-bg-primary);
+  @include hero-section;
+  margin-top: -5rem; // Add negative margin to remove the gap at the top
 
+  // Grid pattern with opacity gradient at bottom
   &::before {
     content: var(--content-hero-empty);
     position: var(--pos-hero-element-absolute);
-    top: var(--pos-hero-top-0);
-    left: var(--pos-hero-left-0);
-    right: var(--pos-hero-right-0);
-    bottom: var(--pos-hero-bottom-0);
-    background-image:
-      linear-gradient(var(--hero-accent-color) var(--size-hero-border-width-primary), var(--color-hero-transparent) var(--size-hero-border-width-primary)),
-      linear-gradient(var(--angle-hero-gradient), var(--hero-accent-color) var(--size-hero-border-width-primary), var(--color-hero-transparent) var(--size-hero-border-width-primary));
+    inset: 0;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: var(--size-hero-grid-pattern) var(--size-hero-grid-pattern);
-    background-position: var(--pos-hero-bg-x) var(--pos-hero-bg-y);
-    z-index: var(--z-hero-behind);
+    z-index: var(--z-hero-base);
     pointer-events: var(--pointer-hero-none);
+    // Add mask gradient that fades out at the bottom
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 0) 100%);
   }
 }
 
@@ -38,14 +37,14 @@
 .bg-grid-pattern {
   background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 30px 30px;
+  background-size: var(--size-hero-grid-pattern) var(--size-hero-grid-pattern);
 }
 
 /* Citron text pulsing animation - optimized */
 .citron-text {
-  color: #ddff0e;
-  font-weight: 600;
-  animation: pulseCitron 3s ease-in-out infinite;
+  color: var(--color-highlight, #ddff0e);
+  font-weight: var(--weight-hero-citron-text);
+  animation: pulseCitron var(--duration-hero-pulse) ease-in-out infinite;
   will-change: opacity, text-shadow;
 }
 
@@ -53,75 +52,47 @@
 
   0%,
   100% {
-    opacity: 0.8;
-    text-shadow: 0 0 0 rgba(221, 255, 14, 0);
+    opacity: var(--opacity-hero-citron-pulse-min);
+    text-shadow: var(--shadow-hero-no-shadow);
   }
 
   50% {
     opacity: 1;
-    text-shadow: 0 0 6px rgba(221, 255, 14, 0.4);
+    text-shadow: var(--shadow-hero-citron-text);
   }
 }
 
-.hero-floating-icon {
+// Floating icons container
+.hero-floating-icons {
   position: var(--pos-hero-element-absolute);
-  opacity: var(--opacity-hero-icon);
-  filter: drop-shadow(var(--shadow-sm));
-  animation: float var(--duration-hero-float-base) infinite var(--ease-in-out);
+  inset: 0;
+  overflow: var(--overflow-hero-hidden);
+  pointer-events: var(--pointer-hero-none);
   z-index: var(--z-hero-floating);
-
-  &:hover {
-    z-index: var(--z-hero-hover);
-  }
-
-  // Different animation timing for odd/even icons
-  &:nth-child(odd) {
-    animation-duration: var(--duration-hero-float-odd);
-  }
-
-  &:nth-child(even) {
-    animation-duration: var(--duration-hero-float-even);
-    animation-delay: var(--duration-hero-animation-delay);
-  }
-
-  svg {
-    fill: var(--color-hero-current);
-    width: var(--width-hero-full);
-    height: var(--height-hero-full);
-    transition: transform var(--transition-fast);
-  }
-
-  &:hover {
-    opacity: var(--opacity-hero-icon-hover);
-
-    svg {
-      transform: scale(var(--scale-hero-icon-hover));
-    }
-  }
 }
 
 /* Floating icons styling - optimized */
 .floating-icon {
-  position: absolute;
-  opacity: 0.15;
+  position: var(--pos-hero-element-absolute);
+  opacity: var(--opacity-hero-floating-icon);
   filter: drop-shadow(0 0 6px rgba(163, 230, 53, 0.3));
   transform-origin: center;
-  z-index: 5;
+  z-index: var(--z-hero-behind);
   will-change: transform;
-}
 
-.floating-icon svg {
-  color: #a3e635;
-  fill: rgba(163, 230, 53, 0.08);
-  stroke-width: 1.75;
-}
+  svg {
+    color: var(--hero-accent-color);
+    fill: rgba(163, 230, 53, 0.08);
+    stroke-width: 1.75;
+  }
 
-.floating-icon:nth-child(odd) {
-  animation-direction: alternate;
-}
+  &:nth-child(odd) {
+    animation-direction: alternate;
+  }
 
-.floating-icon:nth-child(even) {
-  animation-direction: alternate-reverse;
+  &:nth-child(even) {
+    animation-direction: alternate-reverse;
+  }
 }
 
 /* Float animation for floating icons */
@@ -131,7 +102,7 @@
   }
 
   50% {
-    transform: translateY(-15px) rotate(3deg) scale(1.03);
+    transform: translateY(var(--size-hero-floating-icon-translate)) rotate(var(--angle-hero-float-rotate)) scale(1.03);
   }
 
   100% {
@@ -139,92 +110,367 @@
   }
 }
 
-/* Gradient animation */
-@keyframes gradientMove {
-  0% {
-    background-position: var(--pos-hero-gradient-start);
+/* Hero Content Styling */
+.hero-content {
+  max-width: var(--hero-content-max-width);
+  margin: var(--margin-hero-auto);
+  position: var(--pos-hero-element-relative);
+  z-index: var(--z-hero-content);
+  text-align: var(--text-align-hero-center);
+}
+
+/* Hero card styling */
+.hero-card {
+  background-color: var(--color-hero-card-bg);
+  backdrop-filter: blur(var(--size-hero-backdrop-blur));
+  border-radius: var(--hero-card-border-radius);
+  padding: 2.5rem;
+  /* Increased from 2rem for more breathing room */
+  box-shadow: var(--shadow-hero-card);
+  border: var(--size-hero-border-width-primary) solid var(--color-hero-card-border);
+  margin-bottom: var(--hero-card-margin-bottom);
+  text-align: var(--text-align-hero-center);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  /* Add consistent spacing between all direct children */
+  align-items: center;
+  /* Ensure flex children are centered horizontally */
+
+  p {
+    text-align: center !important;
   }
 
-  50% {
-    background-position: var(--pos-hero-gradient-mid);
-  }
-
-  100% {
-    background-position: var(--pos-hero-gradient-end);
+  @media (min-width: var(--breakpoint-md)) {
+    padding: 3rem;
+    /* Even more padding on larger screens */
   }
 }
 
-// Content card styling
-.hero-section {
-  .content-card {
-    background-color: var(--hero-bg-card);
-    backdrop-filter: blur(var(--size-hero-backdrop-blur));
-    border: 1px solid var(--hero-border-color);
-    border-radius: var(--radius-xl);
-    padding: var(--spacing-8);
-    box-shadow: var(--shadow-xl);
-    margin-bottom: var(--spacing-6);
-  }
+/* Logo styling */
+.hero-logo {
+  margin-bottom: 1.25rem;
+  /* Reduced from 2rem to create better hierarchy */
+  display: var(--display-hero-flex);
+  justify-content: var(--justify-hero-center);
+  width: 100%;
+  /* Ensure full width */
 
-  // Hero heading
-  .hero-heading {
-    color: var(--hero-text-primary);
-    font-size: var(--type-hero-heading);
-    font-weight: var(--weight-bold);
-    margin-bottom: var(--spacing-4);
-  }
+  img {
+    height: 0.75rem; // h-3
+    width: auto;
+    max-height: 35%;
 
-  // Text gradient
-  .text-gradient {
-    background-size: var(--size-hero-gradient-x) var(--size-hero-gradient-y);
-    animation: gradientMove var(--duration-hero-gradient) var(--ease-hero-gradient) infinite;
-    background-image: linear-gradient(var(--angle-hero-gradient), var(--hero-accent-gradient-from), var(--hero-accent-gradient-to)) !important;
-  }
+    @media (min-width: var(--breakpoint-sm)) {
+      height: 1rem; // h-4
+    }
 
-  // Divider
-  .divider {
-    width: var(--size-divider-width);
-    height: var(--size-divider-height);
-    margin: 0 auto var(--spacing-6) auto;
-    border-radius: var(--radius-full);
-    background-image: linear-gradient(var(--angle-hero-gradient), var(--hero-accent-gradient-from), var(--hero-accent-gradient-to)) !important;
-  }
+    @media (min-width: var(--breakpoint-md)) {
+      height: 1.5rem; // h-6
+    }
 
-  // Hero description
-  .hero-description {
-    color: var(--hero-text-secondary);
-    margin-bottom: var(--spacing-10);
-    max-width: var(--max-w-2xl);
-    margin-left: auto;
-    margin-right: auto;
-    font-size: var(--type-hero-description);
-    line-height: var(--line-hero-description);
-  }
-
-  // Accent text
-  .accent-text {
-    color: var(--hero-accent-color);
-  }
-
-  // Button container
-  .cta-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--size-hero-gap-buttons);
-    margin-bottom: var(--size-hero-margin-buttons);
-
-    @media (min-width: 640px) {
-      flex-direction: row;
+    @media (min-width: var(--breakpoint-lg)) {
+      height: 2rem; // h-8
     }
   }
 }
 
-/* Arrow icon - optimized animation */
-.arrow-icon {
-  display: inline-block;
-  animation: bounce 1.5s ease-in-out infinite;
-  will-change: transform;
-  margin-left: 4px;
+/* Heading styles */
+.hero-heading {
+  @include hero-heading;
+  margin-bottom: 1.5rem;
+  /* Updated from 1rem for better spacing */
+  max-width: 44rem;
+  /* Control line length for better readability */
+  width: 100%;
+  /* Ensure it takes full width for proper centering */
+  text-align: center !important;
+  /* Explicitly force text centering */
+  line-height: 1.15;
+  /* Tighter line height for headings */
+
+  @media (min-width: var(--breakpoint-md)) {
+    line-height: 1.1;
+    /* Even tighter on desktop */
+  }
+}
+
+/* Gradient text for the heading */
+.hero-heading-gradient {
+  background: linear-gradient(to right, var(--color-hero-gradient-from), var(--color-hero-gradient-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--color-hero-transparent);
+}
+
+/* Gradient text with the same gradient as the divider */
+.hero-divider-gradient {
+  background: linear-gradient(to right, var(--color-hero-gradient-from), var(--color-hero-gradient-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  font-weight: 800;
+}
+
+/* Divider */
+.hero-divider {
+  width: var(--hero-divider-width);
+  height: var(--hero-divider-height);
+  background: linear-gradient(to right, var(--color-hero-gradient-from), var(--color-hero-gradient-to));
+  margin: 0.5rem auto 2rem;
+  /* Updated for better spacing: top/bottom/left/right */
+  border-radius: 9999px;
+}
+
+/* Button with the same gradient as the divider */
+.hero-divider-gradient-btn {
+  background: linear-gradient(to right, var(--color-hero-gradient-from), var(--color-hero-gradient-to)) !important;
+  color: var(--color-gray-900) !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(to right, var(--color-hero-gradient-to), var(--color-hero-gradient-from)) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
+    transform: translateY(-2px);
+  }
+}
+
+/* Subtitle */
+.hero-subtitle {
+  @include hero-description;
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-bottom: 2.5rem !important;
+  /* Slightly reduced for mobile */
+  display: block !important;
+  color: var(--hero-text-secondary);
+  max-width: 42rem;
+  /* Slightly wider for better line length */
+  line-height: 1.6;
+  /* Better line height for readability */
+  font-size: 1rem;
+
+  @media (min-width: var(--breakpoint-md)) {
+    margin-bottom: 3rem !important;
+    /* Increased spacing before CTA buttons on desktop */
+    font-size: 1.125rem;
+    /* Slightly larger font on desktop */
+  }
+}
+
+/* Sign in link */
+.hero-signin {
+  margin-top: 2.5rem;
+  /* Increased from 1rem for better separation from buttons */
+
+  .signin-link {
+    display: var(--display-hero-inline-flex);
+    align-items: var(--align-hero-center);
+    transition: color var(--duration-hero-button-transition) ease;
+    font-size: var(--type-hero-signin);
+    background: linear-gradient(90deg, var(--color-violet-300, #c4b5fd), var(--color-indigo-400, #818cf8));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+
+    &:hover {
+      opacity: 0.9;
+      filter: brightness(1.1);
+    }
+
+    .signin-icon {
+      margin-right: var(--hero-icon-margin-right);
+      color: var(--color-violet-300, #c4b5fd);
+    }
+  }
+}
+
+/* Hero CTA buttons */
+.hero-cta {
+  &__container {
+    display: var(--display-hero-flex);
+    flex-direction: var(--flex-hero-column);
+    gap: 1.25rem;
+    /* Updated from variable for better spacing between buttons */
+    justify-content: var(--justify-hero-center);
+    margin-bottom: 0;
+    /* Remove margin-bottom as we'll rely on flex gap */
+
+    @media (min-width: 576px) {
+      flex-direction: var(--flex-hero-row);
+      gap: 1.5rem;
+      /* Wider gap on desktop */
+    }
+  }
+
+  &__wrapper {
+    position: var(--pos-hero-element-relative);
+    flex: var(--flex-hero-grow-1);
+  }
+}
+
+/* Features section */
+.hero-features {
+  display: var(--display-hero-flex);
+  flex-wrap: wrap;
+  justify-content: var(--justify-hero-center);
+  gap: 1rem;
+  /* Increased from 0.75rem for better spacing */
+  margin-top: 3.5rem;
+  /* Increased from 3rem for better separation from card */
+  position: relative;
+  z-index: 1;
+
+  @media (min-width: 768px) {
+    gap: 1.25rem;
+    /* Wider gap on larger screens */
+  }
+}
+
+/* Feature pill */
+.hero-feature-pill {
+  background-color: var(--color-hero-feature-pill-bg);
+  backdrop-filter: blur(var(--size-hero-backdrop-blur));
+  padding: var(--hero-feature-pill-padding-y) var(--hero-feature-pill-padding-x);
+  border-radius: var(--hero-feature-pill-border-radius);
+  font-size: var(--hero-font-size-feature-pill);
+  color: var(--color-hero-text-secondary);
+  border: none;
+  position: relative;
+  display: var(--display-hero-flex);
+  align-items: var(--align-hero-center);
+  z-index: 100;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--hero-feature-pill-border-radius);
+    padding: 1px;
+    background: linear-gradient(90deg,
+        rgba(196, 181, 253, 0.3),
+        rgba(129, 140, 248, 0.3));
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .feature-icon {
+    color: var(--hero-feature-pill-icon-color);
+    margin-right: var(--hero-icon-margin-right);
+    width: var(--hero-icon-size-sm);
+    height: var(--hero-icon-size-sm);
+  }
+}
+
+/* Hero icon */
+.hero-icon {
+  width: var(--hero-icon-size-md);
+  height: var(--hero-icon-size-md);
+}
+
+/* Tooltip container */
+.tooltip-container {
+  position: absolute;
+  width: 100%;
+  top: calc(100% + 5px);
+  left: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* Tooltip styling */
+.tooltip {
+  position: relative;
+  background: #1f2937;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: 220px;
+  width: 220px;
+  color: #d1d5db;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: none;
+  opacity: 0;
+  transform: translateY(8px);
+  visibility: hidden;
+  transition: all 0.3s ease;
+  will-change: transform, opacity;
+  z-index: 1000;
+
+  /* Add subtle pointer to ensure tooltip is visible */
+  &:after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    margin-left: -8px;
+    border-width: 0 8px 8px;
+    border-style: solid;
+    border-color: transparent transparent #1f2937 transparent;
+    z-index: 1001;
+  }
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  &.hide {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+  }
+
+  // Arrow for tooltip - removed as we're using the :after pseudo-element instead
+}
+
+/* Tooltip content */
+.tooltip-content {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+/* Tooltip icon */
+.tooltip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Icon in tooltip */
+.tooltip-icon-svg {
+  width: 16px;
+  height: 16px;
+  color: #a3e635;
+}
+
+/* Tooltip text */
+.tooltip-text {
+  flex: 1;
+}
+
+/* Tooltip title */
+.tooltip-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #a3e635;
+  margin-bottom: 4px;
 }
 
 /* Shadow optimizations */
@@ -240,142 +486,72 @@
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(132, 204, 22, 0.1);
 }
 
-/* Custom shadow styles */
-.shadow-optimized {
-  box-shadow: var(--shadow-hero-optimized);
-}
-
-.shadow-optimized-hover {
-  box-shadow: var(--shadow-hero-optimized-hover);
-}
-
-/* Sign in link */
-a.inline-flex.items-center.text-gray-400 {
-  font-size: var(--type-hero-signin);
-  margin-top: var(--spacing-4);
-  color: var(--color-hero-signin-text);
-
-  &:hover {
-    color: var(--color-lime);
-  }
-}
-
-/* Feature Pills */
-.flex.flex-wrap.justify-center.gap-3.mt-8 {
-  margin-top: var(--size-hero-margin-feature-pills) !important;
-}
-
-.bg-gray-800\/50 {
-  background-color: var(--color-hero-feature-pill-bg) !important;
-  border: var(--size-hero-border-width-primary) solid var(--color-hero-feature-pill-border) !important;
-}
-
-// Legacy selectors for backward compatibility
-.bg-gray-800\/30 {
-  background-color: var(--hero-bg-card) !important;
-  backdrop-filter: blur(var(--size-hero-backdrop-blur)) !important;
-}
-
-.bg-gradient-to-r.from-lime-300.to-emerald-400 {
-  background-image: linear-gradient(var(--angle-hero-gradient), var(--hero-accent-gradient-from), var(--hero-accent-gradient-to)) !important;
-}
-
-.w-24.h-1 {
-  margin-bottom: var(--spacing-6) !important;
-  background-image: linear-gradient(var(--angle-hero-gradient), var(--hero-accent-gradient-from), var(--hero-accent-gradient-to)) !important;
-}
-
-.mb-10 {
-  margin-bottom: var(--spacing-12) !important;
-}
-
-.flex.flex-col.sm\:flex-row.gap-6 {
-  gap: var(--size-hero-gap-buttons) !important;
-  margin-bottom: var(--size-hero-margin-buttons) !important;
-}
-
-// Helper classes
-.hero-logo {
-  height: 150px;
-  width: auto;
-  display: block;
-  margin: 0 auto;
-}
-
-// Divider under heading
-.divider {
-  width: 96px;
-  height: 4px;
-  background: linear-gradient(to right, #bef264, #34d399);
-  margin: 0 auto 1.5rem auto;
-  border-radius: 9999px;
-}
-
-// Feature pill styles
-.feature-pill {
-  background-color: rgba(31, 41, 55, 0.5);
-  backdrop-filter: blur(4px);
-  padding: 0.5rem 1rem;
-  border-radius: 9999px;
-  font-size: 0.95rem;
-  color: #d1d5db;
-  border: 1px solid rgba(55, 65, 81, 0.5);
-  display: flex;
-  align-items: center;
-  margin: 0 0.5rem 0.5rem 0;
-}
-
-.feature-pill .icon {
-  color: #a3e635;
-  margin-right: 0.5rem;
-}
-
-// Hero video styles
-.hero-video {
-  border-radius: 1rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--color-ui-border-light);
-  overflow: hidden;
-
-  // Override some default video player styles to match Hero aesthetics
-  .control-button {
-    background-color: var(--color-accent-400-alpha-70);
-
-    &:hover {
-      background-color: var(--color-accent-400);
-    }
-  }
-
-  // Enhanced gradient for progress bar to match Hero
-  .video-progress-bar {
-    background: linear-gradient(to right, var(--color-lime-300), var(--color-emerald-400));
-  }
-
-  // Responsive adjustments
-  @media (max-width: 768px) {
-    margin-top: 2rem;
-  }
-}
-
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  .citron-text {
+
+  .citron-text,
+  .floating-icon,
+  .tooltip,
+  .hero-button {
     animation: none !important;
+    transition: none !important;
   }
 
-  .floating-icon {
-    animation: none !important;
+  .tooltip.show {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
   }
+}
 
-  .arrow-icon {
-    animation: none !important;
-  }
+/* Tooltip styles */
+.hero-tooltip-content {
+  font-size: 12px;
+  /* Reduced from default size */
+  color: var(--color-hero-text-secondary);
+  line-height: 1.3;
+  margin: 0;
+  padding: 0;
+}
 
-  .floating-icon {
-    animation: var(--animation-hero-none);
-  }
+.hero-tooltip-icon {
+  width: 14px;
+  /* Reduced from 1rem */
+  height: 14px;
+  /* Reduced from 1rem */
+}
 
-  .text-gradient {
-    animation: var(--animation-hero-none);
+/* Button styles */
+.hero-button-primary {
+  box-shadow: var(--shadow-hero-optimized);
+  transition: transform var(--duration-hero-button-transition) ease,
+    box-shadow var(--duration-hero-button-transition) ease;
+  color: #FFFFFF !important;
+  /* Force WHITE text with high specificity */
+
+  &:hover {
+    box-shadow: var(--shadow-hero-optimized-hover);
+    transform: translateY(var(--transform-hero-button-up));
   }
+}
+
+.hero-button-secondary {
+  border: var(--size-hero-border-width-secondary) solid var(--color-hero-button-secondary-border);
+  transition: transform var(--duration-hero-button-transition) ease,
+    background-color var(--duration-hero-button-transition) ease;
+  color: #FFFFFF !important;
+  /* Force WHITE text with high specificity */
+
+  &:hover {
+    background-color: var(--color-hero-button-secondary-hover-bg);
+    transform: translateY(var(--transform-hero-button-up));
+  }
+}
+
+/* Add a specific class for the UserPlus icon in the secondary button */
+.hero-icon-userplus {
+  color: #b5e23d;
+  /* Lime green to match the left side of primary button gradient */
+  width: var(--hero-icon-size-md);
+  height: var(--hero-icon-size-md);
 }

@@ -297,7 +297,7 @@ const BackgroundVideoPlayer: React.FC = () => {
               leftIcon={<Play size={20} />}
               variant="primary"
               size="medium"
-              className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 w-full"
+              className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 w-full text-center flex justify-center"
             >
               Watch Full Demo
             </RegistrationButton>
@@ -414,8 +414,8 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
       </div>
 
       {/* Main content */}
-      <div className="max-w-6xl mx-auto text-center relative z-10">
-        <div className="inline-block mb-16">
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16">
           <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">Fitness Evolution</span>
           <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white">
             Innovative Features <br />
@@ -445,7 +445,7 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
         <BackgroundVideoPlayer />
 
         {/* CTA Button */}
-        <div className="mt-16">
+        <div className="mt-16 text-center">
           <div className="inline-block w-3/4 md:w-1/2 mx-auto">
             <RegistrationButton
               variant="primary"

@@ -10,6 +10,7 @@ import {
     Video
 } from 'lucide-react';
 import React, { useState } from 'react';
+import Button from '../../../../components/UI/Button';
 import MediaContainer from '../components/MediaContainer';
 import '../TrainingFeatures.scss';
 
@@ -276,10 +277,14 @@ const TrainingFeatures: React.FC = () => {
 
             {/* Footer CTA */}
             <div className="text-center mt-16">
-                <button className="cta-button bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-md hover:shadow-lg transition-all duration-300">
+                <Button
+                    variant="primary"
+                    size="large"
+                    rightIcon={<ChevronRight size={18} />}
+                    onClick={() => window.location.href = 'https://builder.fitcopilot.ai/features'}
+                >
                     Explore All Features
-                    <ChevronRight size={18} />
-                </button>
+                </Button>
             </div>
         </section>
     );

@@ -22,6 +22,36 @@
         pointer-events: none;
     }
 
+    // Header section with centered text - Enhanced with proper flex alignment
+    .text-center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center !important;
+        width: 100%;
+
+        h2 {
+            text-align: center !important;
+            width: 100%;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        p {
+            width: 100%;
+            text-align: center !important;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        span {
+            text-align: center !important;
+            width: 100%;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+    }
+
     // Feature cards
     .feature-card {
         position: relative;
@@ -136,6 +166,9 @@
 
             .flip-back-content {
                 flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
             }
 
             .feature-details {
@@ -157,6 +190,8 @@
                 font-size: 1.125rem;
                 font-weight: 600;
                 margin-bottom: 1rem;
+                width: 100%;
+                text-align: left !important;
             }
 
             .flip-button {
@@ -175,25 +210,7 @@
         }
     }
 
-    // CTA button
-    .cta-button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.75rem 1.5rem;
-        border-radius: 9999px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-
-        &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-        }
-
-        svg {
-            margin-left: 0.5rem;
-        }
-    }
+    // CTA button styles removed - using Button component from UI library
 }
 
 // Optimize for users who prefer reduced motion
@@ -209,10 +226,6 @@
 
         .flip-card {
             transition: transform 0.1s ease;
-        }
-
-        .cta-button:hover {
-            transform: none;
         }
 
         .flip-button:hover {

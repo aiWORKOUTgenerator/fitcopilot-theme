@@ -8,6 +8,7 @@ import {
     Zap
 } from 'lucide-react';
 import React, { useState } from 'react';
+import Button from '../../../../components/UI/Button';
 import '../Training.scss';
 
 /**
@@ -28,7 +29,8 @@ const Training: React.FC = () => {
                 "Improve bone density and joint health",
                 "Boost metabolic rate for better fat loss"
             ],
-            accentColor: "from-lime-300 to-emerald-400"
+            accentColor: "from-lime-300 to-emerald-400",
+            textColor: "text-lime-200"
         },
         {
             title: "Fat Loss",
@@ -40,7 +42,8 @@ const Training: React.FC = () => {
                 "Increased energy levels throughout the day",
                 "Personalized nutrition strategy"
             ],
-            accentColor: "from-cyan-300 to-blue-400"
+            accentColor: "from-cyan-300 to-blue-400",
+            textColor: "text-cyan-200"
         },
         {
             title: "General Fitness",
@@ -52,7 +55,8 @@ const Training: React.FC = () => {
                 "Adaptable to different fitness levels",
                 "Focus on long-term health and wellbeing"
             ],
-            accentColor: "from-violet-300 to-purple-400"
+            accentColor: "from-violet-300 to-purple-400",
+            textColor: "text-violet-200"
         },
         {
             title: "Athletic Performance",
@@ -64,7 +68,8 @@ const Training: React.FC = () => {
                 "Improved recovery protocols",
                 "Periodized programming for competition"
             ],
-            accentColor: "from-amber-300 to-orange-400"
+            accentColor: "from-amber-300 to-orange-400",
+            textColor: "text-amber-200"
         }
     ];
 
@@ -105,7 +110,7 @@ const Training: React.FC = () => {
 
                                 {/* Program Information */}
                                 <div className="flex-1">
-                                    <h3 className="text-xl md:text-2xl font-bold mb-2 text-white group-hover:text-lime-300 transition-colors">
+                                    <h3 className={`text-xl md:text-2xl font-bold mb-2 ${program.textColor} group-hover:text-lime-300 transition-colors`}>
                                         {program.title}
                                     </h3>
                                     <p className="text-gray-400 group-hover:text-gray-300 transition-colors md:pr-12">
@@ -152,11 +157,15 @@ const Training: React.FC = () => {
             </div>
 
             {/* Main CTA */}
-            <div className="text-center">
-                <button className="main-cta-button">
+            <div className="text-center mt-16">
+                <Button
+                    variant="primary"
+                    size="large"
+                    rightIcon={<ArrowRight className="h-5 w-5" />}
+                    onClick={() => window.location.href = 'https://builder.fitcopilot.ai/programs'}
+                >
                     Find Your Perfect Program
-                    <ArrowRight className="h-5 w-5 ml-2" />
-                </button>
+                </Button>
             </div>
         </section>
     );

@@ -3,13 +3,18 @@
     // Base variables (default theme)
     --hero-bg-primary: var(--color-background-dark);
     --hero-bg-card: rgba(31, 41, 55, 0.3); // bg-gray-800/30
-    --hero-text-primary: var(--color-white);
-    --hero-text-secondary: var(--color-gray-300);
-    --hero-accent-gradient-from: var(--color-lime-300);
-    --hero-accent-gradient-to: var(--color-emerald-400);
+    --hero-text-primary: var(--color-text-primary);
+    --hero-text-secondary: var(--color-text-secondary);
+    --hero-signin-text: var(--color-text-primary);
+    --hero-button-text: #FFFFFF; // WHITE text for buttons
+    --color-hero-button-primary-text: transparent; // Transparent text for primary button
+    --color-hero-button-secondary-text: #FFFFFF; // WHITE text for secondary button
+    --hero-accent-gradient-from: #b5e23d; // Exact lime green from image
+    --hero-accent-gradient-to: #34d399; // Exact emerald green from image
     --hero-border-color: var(--color-gray-700);
     --hero-accent-color: var(--color-lime-300);
     --hero-accent-dark: var(--color-emerald-400);
+    --hero-feature-pill-icon-color: var(--color-violet-300, #c4b5fd); // Violet for feature pill icons
     --hero-floating-icon-color: rgba(255, 255, 255, 0.1);
     --hero-tooltip-bg: var(--color-tooltip-bg);
     --hero-tooltip-border: rgba(var(--color-lime-rgb), 0.1);
@@ -96,4 +101,76 @@
         --hero-floating-icon-color: rgba(var(--color-emerald-rgb), 0.15);
         --hero-tooltip-border: rgba(var(--color-emerald-rgb), 0.15);
     }
+}
+
+// Hero theme variables
+
+// Define root variables for the hero component
+:root {
+    // Background colors
+    --color-background-dark: #111827; // bg-gray-900
+    --color-card-background: #1F2937; // bg-gray-800
+    --color-card-background-rgb: 31, 41, 55;
+    --color-button-secondary: #1F2937; // bg-gray-800
+
+    // Text colors
+    --color-text-light: #ffffff;
+    --color-text-dark: #111827; // text-gray-900
+    --color-text-secondary: #D1D5DB; // text-gray-300
+    --color-text-muted: #9CA3AF; // text-gray-400
+
+    // Accent colors
+    --color-accent: #A3E635; // text-lime-300
+    --color-accent-rgb: 163, 230, 53;
+    --color-highlight: #DDFF0E; // citron
+    --color-highlight-rgb: 221, 255, 14;
+
+    // Gradients
+    --color-gradient-start: #A3E635; // lime-300
+    --color-gradient-end: #34D399; // emerald-400
+    --color-gradient-start-hover: #BEF264; // lime-400
+    --color-gradient-end-hover: #10B981; // emerald-500
+
+    // Border colors
+    --color-border: #374151; // border-gray-700
+    --color-border-rgb: 55, 65, 81;
+
+    // Tooltip colors
+    --color-tooltip-background: #1F2937; // bg-gray-800
+    --color-tooltip-text: #D1D5DB; // text-gray-300
+
+    // Shadows
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    // Button shadows
+    --shadow-optimized: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --shadow-optimized-hover: 0 15px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --shadow-lime: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(132, 204, 22, 0.1);
+
+    // Animation speeds for floating icons
+    --animation-speed: 8s;
+    --animation-delay: 0s;
+
+    // Individual animation speeds and delays
+    --animation-speed-1: 8s;
+    --animation-speed-2: 10s;
+    --animation-speed-3: 12s;
+    --animation-speed-4: 9s;
+    --animation-speed-5: 11s;
+    --animation-speed-6: 10s;
+    --animation-speed-7: 7s;
+    --animation-speed-8: 9s;
+    --animation-speed-9: 13s;
+
+    --animation-delay-1: 0s;
+    --animation-delay-2: 1.5s;
+    --animation-delay-3: 0.8s;
+    --animation-delay-4: 2s;
+    --animation-delay-5: 1s;
+    --animation-delay-6: 2.5s;
+    --animation-delay-7: 0.5s;
+    --animation-delay-8: 1.2s;
+    --animation-delay-9: 1.8s;
 }

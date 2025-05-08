@@ -6,6 +6,30 @@ import { SectionProps } from '../../../components/shared/Section';
 export type HeroVariantKey = 'default' | 'gym' | 'mobile' | 'sports' | 'wellness' | 'registration' | 'boutique' | 'classic' | 'minimalist' | 'modern';
 
 /**
+ * Interface for floating icon props
+ */
+export interface FloatingIconProps {
+  Icon: React.ElementType;
+  size?: number;
+  delay?: number;
+  speed?: number;
+  left?: number;
+  top?: number;
+}
+
+/**
+ * Interface for floating icon data
+ */
+export interface FloatingIconData {
+  Icon: React.ElementType;
+  size: number;
+  left: number;
+  top: number;
+  delay: number;
+  speed: number;
+}
+
+/**
  * Props for the Hero component
  */
 export interface HeroProps extends Omit<SectionProps, 'variant'> {
@@ -61,4 +85,24 @@ export interface HeroProps extends Omit<SectionProps, 'variant'> {
    * Callback function to trigger when registration starts
    */
   onRegistrationStart?: () => void;
+}
+
+/**
+ * Tooltip key types
+ */
+export type TooltipKey = 'freeWorkout' | 'createAccount';
+
+/**
+ * Individual tooltip state
+ */
+export interface TooltipState {
+  show: boolean;
+  isHovered: boolean;
+}
+
+/**
+ * Combined tooltip states
+ */
+export interface TooltipStates {
+  [key: string]: TooltipState;
 } 

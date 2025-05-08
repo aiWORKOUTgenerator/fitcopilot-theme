@@ -64,6 +64,77 @@
     --height-hero-auto: auto;
     --color-hero-current: currentColor;
 
+    /* Hero Typography Additions */
+    --hero-font-size-heading-base: 2.25rem;
+    /* text-4xl */
+    --hero-font-size-heading-md: 3rem;
+    /* md:text-5xl */
+    --hero-font-size-heading-lg: 3.75rem;
+    /* lg:text-6xl */
+    --hero-line-height-heading: 1.2;
+    --hero-margin-heading: 1rem;
+    --hero-font-size-description-base: 1rem;
+    /* text-base */
+    --hero-font-size-description-md: 1.25rem;
+    /* md:text-xl */
+    --hero-line-height-description: 1.5;
+    --hero-margin-description: 2.5rem;
+    /* mb-10 */
+    --hero-description-max-width: 36rem;
+    /* max-w-2xl */
+
+    /* Hero Subtitle Tokens */
+    --hero-font-size-subtitle-base: 0.9375rem;
+    /* Slightly smaller than description */
+    --hero-font-size-subtitle-md: 1.125rem;
+    /* md:text-lg */
+    --hero-line-height-subtitle: 1.5;
+    --hero-margin-subtitle: 2rem;
+    /* mb-8 */
+    --hero-subtitle-max-width: 34rem;
+    /* max-w-xl */
+
+    --hero-font-size-feature-pill: 0.875rem;
+    /* text-sm */
+    --hero-icon-size-sm: 0.875rem;
+    /* w-3.5 h-3.5 */
+    --hero-icon-size-md: 1.25rem;
+    /* w-5 h-5 */
+    --hero-icon-margin-right: 0.5rem;
+    /* mr-2 */
+
+    /* Hero Layout Additions */
+    --hero-padding-y: 5rem;
+    /* py-20 */
+    --hero-padding-x: 1rem;
+    /* px-4 */
+    --hero-content-max-width: 56rem;
+    /* max-w-4xl */
+    --hero-card-padding: 2rem;
+    /* p-8 */
+    --hero-card-margin-bottom: 1.5rem;
+    /* mb-6 */
+    --hero-card-border-radius: 1.5rem;
+    /* rounded-3xl */
+    --hero-logo-margin-bottom: 2rem;
+    /* mb-8 */
+    --hero-gap-feature-pills: 0.75rem;
+    /* gap-3 */
+    --hero-margin-top-feature-pills: 2rem;
+    /* mt-8 */
+    --hero-feature-pill-padding-x: 1rem;
+    /* px-4 */
+    --hero-feature-pill-padding-y: 0.5rem;
+    /* py-2 */
+    --hero-feature-pill-border-radius: 9999px;
+    /* rounded-full */
+    --hero-divider-width: 6rem;
+    /* w-24 */
+    --hero-divider-height: 0.25rem;
+    /* h-1 */
+    --hero-divider-margin: 1.5rem;
+    /* mb-6 */
+
     /* Hero Positions and Layout */
     --pos-hero-element-relative: relative;
     --pos-hero-element-absolute: absolute;
@@ -121,14 +192,26 @@
     --animation-hero-none: none;
 
     /* Hero Colors */
-    --color-hero-button-primary-text: #0f172a;
-    --color-hero-signin-text: rgba(255, 255, 255, 0.6);
+    --color-hero-button-primary-text: var(--color-text-primary);
+    --color-hero-signin-text: var(--color-text-primary);
     --color-hero-feature-pill-bg: rgba(15, 23, 42, 0.5);
     --color-hero-feature-pill-border: rgba(31, 41, 55, 0.5);
     --color-hero-tooltip-title: #a3e635;
     --color-hero-button-secondary-bg: rgba(15, 23, 42, 0.8);
     --color-hero-button-secondary-border: rgba(163, 230, 53, 0.3);
     --color-hero-button-secondary-hover-bg: rgba(163, 230, 53, 0.1);
+    --color-hero-card-bg: rgba(31, 41, 55, 0.3);
+    /* bg-gray-800/30 */
+    --color-hero-card-border: rgba(55, 65, 81, 1);
+    /* border-gray-700 */
+    --color-hero-text-primary: #ffffff;
+    /* text-white */
+    --color-hero-text-secondary: #d1d5db;
+    /* text-gray-300 */
+    --color-hero-gradient-from: #a3e635;
+    /* from-lime-300 */
+    --color-hero-gradient-to: #34d399;
+    /* to-emerald-400 */
     --opacity-hero-floating-icon: 0.5;
     --opacity-hero-tooltip-border: 0.3;
     --opacity-hero-lime-border: 0.3;
@@ -147,6 +230,8 @@
     --shadow-hero-optimized-hover: 0 20px 30px -10px rgba(0, 0, 0, 0.4);
     --shadow-hero-citron-text: 0 0 6px rgba(163, 230, 53, 0.4);
     --shadow-hero-no-shadow: 0 0 0 rgba(var(--color-lime-rgb), 0);
+    --shadow-hero-card: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    /* shadow-xl */
 
     /* Hero Opacity */
     --opacity-disabled: 0.6;

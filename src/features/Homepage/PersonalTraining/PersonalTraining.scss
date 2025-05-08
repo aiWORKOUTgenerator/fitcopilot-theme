@@ -60,7 +60,7 @@
     --color-pt-grid: rgba(255, 255, 255, 0.03);
 
     // CTA box styling
-    --gradient-pt-cta: linear-gradient(135deg, var(--color-pt-accent, #84cc16), var(--color-pt-accent-dark, #059669));
+    --gradient-pt-cta: linear-gradient(135deg, var(--color-pt-accent, #8b5cf6), var(--color-pt-accent-dark, #7c3aed));
 
     position: var(--pos-pt-relative, relative);
     z-index: var(--z-pt-base, 1);
@@ -83,6 +83,36 @@
         background-position: var(--pos-pt-center, center center);
         z-index: var(--z-pt-behind, 0);
         pointer-events: var(--pointer-pt-none, none);
+    }
+
+    // Properly centered text styling
+    .text-center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center !important;
+        width: 100%;
+
+        h2 {
+            text-align: center !important;
+            width: 100%;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        p {
+            text-align: center !important;
+            width: 100%;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
+
+        span {
+            text-align: center !important;
+            width: 100%;
+            margin-left: auto !important;
+            margin-right: auto !important;
+        }
     }
 
     .section-title {
@@ -334,157 +364,179 @@
         gap: var(--spacing-4, 1rem);
         margin-bottom: var(--spacing-6, 1.5rem);
 
-        .stat {
-            text-align: center;
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center !important;
 
-            .value {
+            .stat-value {
                 font-size: var(--type-2xl, 1.5rem);
                 font-weight: var(--weight-bold, 700);
-                color: var(--color-violet-400, #a78bfa);
                 display: block;
+                color: var(--color-pt-accent, #8b5cf6);
                 margin-bottom: var(--spacing-1, 0.25rem);
+                text-align: center !important;
+                width: 100%;
             }
 
-            .label {
-                font-size: var(--type-xs, 0.75rem);
-                color: var(--color-pt-text-secondary, rgba(255, 255, 255, 0.7));
+            .stat-label {
+                font-size: var(--type-xs, 0.875rem);
+                color: var(--color-pt-text-secondary, rgba(255, 255, 255, 0.6));
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                text-align: center !important;
+                width: 100%;
             }
         }
-    }
 
-    // Booking consultation box
-    .booking-box {
-        position: relative;
-        border-radius: 1rem;
-        overflow: hidden;
-        padding: 3rem 2rem;
-        margin-top: 4rem;
-        background: linear-gradient(to right, var(--color-violet-600, #7c3aed), var(--color-purple-500, #8b5cf6));
-        max-width: 1024px;
-        margin-left: auto;
-        margin-right: auto;
-        text-align: center;
-
-        &::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image:
-                linear-gradient(135deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
-                linear-gradient(225deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
-                linear-gradient(315deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%),
-                linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 0, 10px -10px, 0px 10px;
-            opacity: 0.4;
-            z-index: -1;
-        }
-
-        .booking-title {
-            font-size: var(--type-3xl, 1.875rem);
-            font-weight: var(--weight-bold, 700);
-            margin-bottom: var(--spacing-3, 0.75rem);
+        // Booking consultation box
+        .booking-box {
+            position: relative;
+            background: var(--gradient-pt-cta, linear-gradient(135deg, var(--color-pt-accent, #8b5cf6), var(--color-pt-accent-dark, #7c3aed)));
+            border-radius: var(--radius-lg, 0.5rem);
+            padding: var(--spacing-8, 2rem);
             color: var(--color-text-inverse, #ffffff);
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .booking-text {
-            font-size: var(--type-base, 1rem);
-            line-height: 1.6;
-            margin-bottom: var(--spacing-6, 1.5rem);
-            color: rgba(255, 255, 255, 0.9);
-            max-width: 600px;
+            overflow: hidden;
+            max-width: var(--w-2xl, 42rem);
             margin-left: auto;
             margin-right: auto;
-        }
-    }
-
-    // Flip card
-    .flip-card-container {
-        margin-top: var(--spacing-6, 1.5rem);
-    }
-
-    .flip-card {
-        perspective: 1000px;
-        height: 240px;
-        position: relative;
-        transform-style: preserve-3d;
-        transition: transform 0.6s;
-        cursor: pointer;
-        border-radius: var(--radius-md, 0.375rem);
-        overflow: hidden;
-
-        &.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .flip-card-front,
-        .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: var(--radius-md, 0.375rem);
-            overflow: hidden;
-        }
-
-        .flip-card-front {
-            transform: rotateY(0deg);
-            background-color: rgba(31, 41, 55, 0.5);
+            margin-top: var(--spacing-16, 4rem);
+            box-shadow: var(--shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04));
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            padding: var(--spacing-6, 1.5rem);
             text-align: center;
-        }
 
-        .flip-card-back {
-            transform: rotateY(180deg);
-            display: flex;
-            flex-direction: column;
-            background-color: rgba(31, 41, 55, 0.5);
-
-            iframe {
+            h3 {
+                font-size: var(--type-2xl, 1.5rem);
+                font-weight: var(--weight-bold, 700);
+                margin-bottom: var(--spacing-4, 1rem);
+                color: var(--color-text-inverse, #ffffff);
+                position: relative;
+                z-index: 1;
+                text-align: center !important;
                 width: 100%;
-                height: 100%;
-                border: none;
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+
+            p {
+                margin-bottom: var(--spacing-6, 1.5rem);
+                color: rgba(255, 255, 255, 0.9);
+                position: relative;
+                z-index: 1;
+                max-width: var(--w-xl, 36rem);
+                text-align: center !important;
+                width: 100%;
+                margin-left: auto !important;
+                margin-right: auto !important;
+            }
+
+            // Background pattern for visual interest
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-image:
+                    linear-gradient(45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+                    linear-gradient(-45deg, rgba(255, 255, 255, 0.1) 25%, transparent 25%),
+                    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%),
+                    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.1) 75%);
+                background-size: 20px 20px;
+                background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+                z-index: 0;
+                pointer-events: none;
             }
         }
-    }
-}
 
-// Animation for pattern
-@keyframes patternMove {
-    0% {
-        background-position: 0 0;
-    }
-
-    100% {
-        background-position: 20px 20px;
-    }
-}
-
-// Media query for reduced motion preference
-@media (prefers-reduced-motion: reduce) {
-    .personal-training-section {
-        .trainer-card:hover {
-            transform: none;
-
-            .trainer-image img {
-                transform: none;
-            }
+        // Flip card
+        .flip-card-container {
+            margin-top: var(--spacing-6, 1.5rem);
         }
 
         .flip-card {
-            transition: transform 0.1s;
+            perspective: 1000px;
+            height: 240px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+            border-radius: var(--radius-md, 0.375rem);
+            overflow: hidden;
+
+            &.flipped {
+                transform: rotateY(180deg);
+            }
+
+            .flip-card-front,
+            .flip-card-back {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                backface-visibility: hidden;
+                border-radius: var(--radius-md, 0.375rem);
+                overflow: hidden;
+            }
+
+            .flip-card-front {
+                transform: rotateY(0deg);
+                background-color: rgba(31, 41, 55, 0.5);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: var(--spacing-6, 1.5rem);
+                text-align: center;
+            }
+
+            .flip-card-back {
+                transform: rotateY(180deg);
+                display: flex;
+                flex-direction: column;
+                background-color: rgba(31, 41, 55, 0.5);
+
+                iframe {
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                }
+            }
+        }
+    }
+
+    // Animation for pattern
+    @keyframes patternMove {
+        0% {
+            background-position: 0 0;
         }
 
-        .video-play-indicator:hover {
-            transform: none;
+        100% {
+            background-position: 20px 20px;
+        }
+    }
+
+    // Media query for reduced motion preference
+    @media (prefers-reduced-motion: reduce) {
+        .personal-training-section {
+            .trainer-card:hover {
+                transform: none;
+
+                .trainer-image img {
+                    transform: none;
+                }
+            }
+
+            .flip-card {
+                transition: transform 0.1s;
+            }
+
+            .video-play-indicator:hover {
+                transform: none;
+            }
         }
     }
 }

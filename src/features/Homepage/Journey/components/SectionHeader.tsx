@@ -57,7 +57,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = (props) => {
             <h2 className={`${headerEmphasis} mb-4 text-center text-white`}>
                 {formattedTitle}
             </h2>
-            <p className="w-full text-gray-400 mx-auto text-center max-w-md md:max-w-xl lg:max-w-2xl" style={{ textAlign: 'center' }}>
+            <p className="w-full text-gray-400 mx-auto text-center max-w-md md:max-w-xl lg:max-w-2xl">
                 {description}
             </p>
         </div>

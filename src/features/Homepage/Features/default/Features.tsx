@@ -90,7 +90,7 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
                 {floatingIcons.map((icon, index) => renderFloatingIcon(icon, index))}
             </div>
 
-            <div className="inline-block mb-16">
+            <div className="text-center mb-16">
                 <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">Fitness Evolution</span>
                 <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white">
                     Innovative Features <br />
@@ -118,7 +118,7 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
             </div>
 
             {/* CTA Button */}
-            <div className="mt-16">
+            <div className="mt-16 text-center">
                 <a
                     href="https://aigymengine.com/workout-generator-registration"
                     className="inline-flex items-center justify-center bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 font-bold py-4 px-8 rounded-full shadow-lg shadow-lime-300/30 transition-all duration-300 hover:shadow-xl hover:shadow-lime-300/40 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-lime-300 focus:ring-offset-2 focus:ring-offset-gray-900 button primary"

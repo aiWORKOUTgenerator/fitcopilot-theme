@@ -24,7 +24,6 @@ import { JourneyCTA, JourneyStep, SectionHeader } from './components';
 import './journey-connector-fix.scss';
 import './journey-utility-classes.scss';
 import './Journey.scss';
-import './text-center-fix.scss';
 import {
   JourneyProps,
   VariantKey,

@@ -74,7 +74,7 @@
     /* Variants */
     &.button--primary {
         background-image: linear-gradient(135deg, var(--hero-accent-gradient-from), var(--hero-accent-gradient-to));
-        color: #000;
+        color: var(--color-hero-button-primary-text);
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 
         &:hover,
@@ -91,7 +91,7 @@
     &.button--secondary {
         background-color: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(4px);
-        color: var(--hero-text-primary);
+        color: var(--color-hero-button-primary-text);
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.1);
 

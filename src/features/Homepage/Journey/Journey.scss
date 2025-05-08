@@ -169,6 +169,36 @@ $breakpoint-xxl: 1536px;
     line-height: var(--journey-body-line-height);
   }
 
+  /* Properly centered text styling */
+  .text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center !important;
+    width: 100%;
+
+    h2 {
+      text-align: center !important;
+      width: 100%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    p {
+      text-align: center !important;
+      width: 100%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    span {
+      text-align: center !important;
+      width: 100%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  }
+
   // Grid pattern background
   &::before {
     content: '';

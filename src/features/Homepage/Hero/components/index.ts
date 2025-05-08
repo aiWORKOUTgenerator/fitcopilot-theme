@@ -1,6 +1,5 @@
-export * from './FloatingIcons';
-export { default as FloatingIcon } from './FloatingIcons/FloatingIcon';
-export { default as FloatingIcons } from './FloatingIcons/FloatingIcons';
+export { default as FloatingIcon } from './FloatingIcon';
+// Don't export FloatingIcons from here since we're importing it directly
 export * from './VideoPlayer';
 export { default as VideoPlayer } from './VideoPlayer';
 

@@ -545,14 +545,14 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
             ))}
           </div>
 
-          <div className="text-center mt-16">
+          <div className="text-center cta-area mt-16">
             <div className="inline-flex items-center px-6 py-3 rounded-xl bg-gray-800/70 border border-gray-700">
               <Clock className="w-5 h-5 text-[#CCFF00] mr-3" aria-hidden="true" />
               <span className="text-gray-300">Limited time <span className="text-white font-medium">beta pricing</span> available during our launch phase.</span>
             </div>
           </div>
 
-          <div className="text-center mt-8">
+          <div className="text-center cta-area mt-8">
             <p className="text-gray-400">
               Need a custom solution for your team or gym? <a href="#contact" className="text-[#CCFF00] hover:underline">Contact us</a>
             </p>

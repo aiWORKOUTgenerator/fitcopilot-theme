@@ -17,6 +17,36 @@
     opacity: var(--pr-opacity-bg-pattern);
     z-index: var(--pr-z-index-bg);
   }
+
+  /* Properly centered text styling */
+  .text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center !important;
+    width: 100%;
+
+    h2 {
+      text-align: center !important;
+      width: 100%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    p {
+      text-align: center !important;
+      width: 100%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    span {
+      text-align: center !important;
+      width: 100%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  }
 }
 
 /* Text gradient effect */
@@ -212,5 +242,43 @@
   100% {
     opacity: var(--pr-opacity-zero);
     transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty)));
+  }
+}
+
+// CTA buttons styling
+a.block {
+  display: block;
+  width: 100%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    text-align: center !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Bottom CTA area
+.cta-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  p {
+    text-align: center !important;
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  a {
+    text-align: center !important;
   }
 }
