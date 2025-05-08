@@ -1,44 +1,50 @@
 import React from 'react';
 import { getComponentVariant } from '../../../../utils/variantLoader';
+import { TrainingProps, VariantKey } from '../types';
 
+// Import all variant components
+import DefaultVariant from '../Training';
 import BoutiqueVariant from './boutique';
 import ClassicVariant from './classic';
-import DefaultVariant from './default';
 import MinimalistVariant from './minimalist';
 import ModernVariant from './modern';
 import SportsVariant from './sports';
 import WellnessVariant from './wellness';
 
-// Map variant keys to their React components
-export const TrainingMap: Record<string, React.ComponentType<any>> = {
+/**
+ * Map of variant keys to their component implementations
+ */
+export const TrainingMap: Record<VariantKey, React.ComponentType<Omit<TrainingProps, 'variant'>>> = {
     default: DefaultVariant,
     boutique: BoutiqueVariant,
     classic: ClassicVariant,
     minimalist: MinimalistVariant,
     modern: ModernVariant,
     sports: SportsVariant,
-    wellness: WellnessVariant,
-    // gym variant is deprecated and removed, but mapping to default for backward compatibility
+    wellness: WellnessVariant
 };
 
-// Helper function to get the variant component based on WordPress settings
-export const getTrainingVariant = () => {
-    const variant = getComponentVariant('training', 'default');
-    // If gym was selected, use default instead (deprecation handling)
-    if (variant === 'gym') {
-        console.warn('The "gym" variant for Training component is deprecated. Using "default" instead.');
-        return 'default';
-    }
-    return variant;
+/**
+ * Helper function to get the current variant based on WordPress settings
+ * @returns The variant key to use
+ */
+export const getTrainingVariant = (): VariantKey => {
+    const variant = getComponentVariant('training', 'default') as VariantKey;
+
+    // Return the variant, falling back to default if not found in our map
+    return Object.keys(TrainingMap).includes(variant) ? variant : 'default';
 };
 
-// Function to get the appropriate variant component
+/**
+ * Function to get the appropriate variant component based on WordPress settings
+ * @returns React component for the selected variant
+ */
 export const getTrainingComponent = () => {
     const variant = getTrainingVariant();
     return TrainingMap[variant] || TrainingMap.default;
 };
 
-// Export all variants
+// Export all variants for direct import
 export {
     BoutiqueVariant,
     ClassicVariant, DefaultVariant, MinimalistVariant,

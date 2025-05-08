@@ -1,0 +1,50 @@
+/**
+ * BenefitsList component styles
+ */
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        margin-bottom: var(--spacing-3, 0.75rem);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        span {
+            font-size: var(--font-size-sm, 0.875rem);
+            line-height: 1.5;
+            color: var(--color-text-secondary, #4b5563);
+        }
+    }
+
+    &__icon {
+        flex-shrink: 0;
+        margin-right: var(--spacing-2, 0.5rem);
+        color: var(--color-success, #10b981);
+    }
+
+    // Variant styling
+    &--default {
+        .benefits-list__item {
+            margin-bottom: var(--spacing-3, 0.75rem);
+        }
+    }
+
+    &--sports {
+        list-style-type: disc;
+        padding-left: var(--spacing-5, 1.25rem);
+
+        .benefits-list__item {
+            display: list-item;
+
+            span {
+                display: inline;
+            }
+        }
+    }
+}
