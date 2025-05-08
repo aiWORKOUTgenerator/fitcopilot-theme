@@ -1,0 +1,305 @@
+/**
+ * Training Component Theme Variants
+ * 
+ * This file contains theme-specific styles for all Training component variants.
+ * It uses the token system defined in themeTokens.ts to maintain consistency.
+ */
+
+// Import base design system
+@import '../../../../styles/design-system/index';
+
+// Default theme variables (dark)
+:root {
+    // Background colors
+    --training-bg: var(--color-background, rgba(10, 16, 27, 1));
+    --training-text: var(--color-text, #f9fafb);
+    --training-text-muted: var(--color-text-muted, #9ca3af);
+    --training-accent: var(--color-primary, #8b5cf6);
+    --training-accent-light: var(--color-primary-light, #c4b5fd);
+    --training-card-bg: rgba(31, 41, 55, 0.5);
+    --training-card-border: var(--color-border, rgba(55, 65, 81, 0.5));
+    --training-card-hover-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.3);
+    --training-card-active-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.5);
+    --training-expanded-bg: rgba(31, 41, 55, 0.4);
+    --training-connector-bg: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.5);
+    --training-icon-size: 64px;
+    --training-card-toggle-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.3);
+    --training-card-toggle-bg: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.1);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.4));
+
+    // Program-specific gradients
+    --training-gradient-strength: linear-gradient(to right, var(--color-lime-300, #bef264), var(--color-emerald-400, #34d399));
+    --training-gradient-fatLoss: linear-gradient(to right, var(--color-cyan-300, #67e8f9), var(--color-blue-400, #60a5fa));
+    --training-gradient-fitness: linear-gradient(to right, var(--color-violet-300, #c4b5fd), var(--color-purple-400, #a78bfa));
+    --training-gradient-athletic: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
+
+    // Program-specific text colors
+    --training-text-strength: var(--color-lime-200, #d9f99d);
+    --training-text-fatLoss: var(--color-cyan-200, #a5f3fc);
+    --training-text-fitness: var(--color-violet-200, #ddd6fe);
+    --training-text-athletic: var(--color-amber-200, #fde68a);
+}
+
+// Sports theme overrides (light)
+body[data-theme="sports"] {
+    --training-bg: var(--color-gray-50, #f9fafb);
+    --training-text: var(--color-gray-900, #111827);
+    --training-text-muted: var(--color-gray-600, #4b5563);
+    --training-accent: var(--color-violet-600, #7c3aed);
+    --training-accent-light: var(--color-violet-400, #a78bfa);
+    --training-card-bg: white;
+    --training-card-border: var(--color-gray-100, #f3f4f6);
+    --training-card-hover-border: var(--color-violet-200, #ddd6fe);
+    --training-card-active-border: var(--color-violet-300, #c4b5fd);
+    --training-expanded-bg: var(--color-gray-50, #f9fafb);
+    --training-connector-bg: var(--color-violet-300, #c4b5fd);
+    --training-card-toggle-border: var(--color-violet-200, #ddd6fe);
+    --training-card-toggle-bg: var(--color-violet-50, #f5f3ff);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(124, 58, 237, 0.4));
+
+    // Program-specific gradients
+    --training-gradient-strength: linear-gradient(to right, var(--color-emerald-500, #10b981), var(--color-teal-400, #2dd4bf));
+    --training-gradient-fatLoss: linear-gradient(to right, var(--color-blue-500, #3b82f6), var(--color-indigo-400, #818cf8));
+    --training-gradient-fitness: linear-gradient(to right, var(--color-violet-500, #8b5cf6), var(--color-purple-400, #a78bfa));
+    --training-gradient-athletic: linear-gradient(to right, var(--color-orange-500, #f97316), var(--color-amber-400, #fbbf24));
+
+    // Program-specific text colors
+    --training-text-strength: var(--color-emerald-600, #059669);
+    --training-text-fatLoss: var(--color-blue-600, #2563eb);
+    --training-text-fitness: var(--color-violet-600, #7c3aed);
+    --training-text-athletic: var(--color-orange-600, #ea580c);
+}
+
+// Wellness theme overrides
+body[data-theme="wellness"] {
+    --training-bg: var(--color-emerald-50, #ecfdf5);
+    --training-text: var(--color-emerald-900, #064e3b);
+    --training-text-muted: var(--color-emerald-600, #059669);
+    --training-accent: var(--color-teal-600, #0d9488);
+    --training-accent-light: var(--color-teal-400, #2dd4bf);
+    --training-card-bg: white;
+    --training-card-border: var(--color-emerald-100, #d1fae5);
+    --training-card-hover-border: var(--color-teal-200, #99f6e4);
+    --training-card-active-border: var(--color-teal-300, #5eead4);
+    --training-expanded-bg: var(--color-emerald-50, #ecfdf5);
+    --training-connector-bg: var(--color-teal-300, #5eead4);
+    --training-card-toggle-border: var(--color-teal-200, #99f6e4);
+    --training-card-toggle-bg: var(--color-teal-50, #f0fdfa);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(20, 184, 166, 0.4));
+
+    // Program-specific gradients
+    --training-gradient-strength: linear-gradient(to right, var(--color-teal-400, #2dd4bf), var(--color-green-500, #22c55e));
+    --training-gradient-fatLoss: linear-gradient(to right, var(--color-cyan-400, #22d3ee), var(--color-teal-500, #14b8a6));
+    --training-gradient-fitness: linear-gradient(to right, var(--color-indigo-400, #818cf8), var(--color-blue-500, #3b82f6));
+    --training-gradient-athletic: linear-gradient(to right, var(--color-amber-400, #fbbf24), var(--color-yellow-500, #eab308));
+
+    // Program-specific text colors
+    --training-text-strength: var(--color-teal-300, #5eead4);
+    --training-text-fatLoss: var(--color-cyan-300, #67e8f9);
+    --training-text-fitness: var(--color-indigo-300, #a5b4fc);
+    --training-text-athletic: var(--color-amber-300, #fcd34d);
+}
+
+// Boutique theme overrides (luxury, elegant)
+body[data-theme="boutique"] {
+    --training-bg: var(--color-slate-900, #0f172a);
+    --training-text: var(--color-slate-50, #f8fafc);
+    --training-text-muted: var(--color-slate-400, #94a3b8);
+    --training-accent: var(--color-amber-400, #fbbf24);
+    --training-accent-light: var(--color-amber-300, #fcd34d);
+    --training-card-bg: rgba(30, 41, 59, 0.7);
+    --training-card-border: rgba(51, 65, 85, 0.6);
+    --training-card-hover-border: rgba(252, 211, 77, 0.4);
+    --training-card-active-border: rgba(251, 191, 36, 0.6);
+    --training-expanded-bg: rgba(30, 41, 59, 0.6);
+    --training-connector-bg: rgba(251, 191, 36, 0.6);
+    --training-card-toggle-border: rgba(252, 211, 77, 0.4);
+    --training-card-toggle-bg: rgba(252, 211, 77, 0.1);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
+
+    // Program-specific gradients
+    --training-gradient-strength: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-yellow-400, #facc15));
+    --training-gradient-fatLoss: linear-gradient(to right, var(--color-rose-300, #fda4af), var(--color-pink-400, #f472b6));
+    --training-gradient-fitness: linear-gradient(to right, var(--color-indigo-300, #a5b4fc), var(--color-violet-400, #a78bfa));
+    --training-gradient-athletic: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
+
+    // Program-specific text colors
+    --training-text-strength: var(--color-amber-200, #fde68a);
+    --training-text-fatLoss: var(--color-rose-200, #fecdd3);
+    --training-text-fitness: var(--color-indigo-200, #c7d2fe);
+    --training-text-athletic: var(--color-amber-200, #fde68a);
+}
+
+// Classic theme overrides (traditional fitness style)
+body[data-theme="classic"] {
+    --training-bg: var(--color-neutral-50, #fafafa);
+    --training-text: var(--color-neutral-900, #171717);
+    --training-text-muted: var(--color-neutral-600, #525252);
+    --training-accent: var(--color-red-600, #dc2626);
+    --training-accent-light: var(--color-red-500, #ef4444);
+    --training-card-bg: white;
+    --training-card-border: var(--color-neutral-200, #e5e5e5);
+    --training-card-hover-border: var(--color-red-200, #fecaca);
+    --training-card-active-border: var(--color-red-300, #fca5a5);
+    --training-expanded-bg: var(--color-neutral-100, #f5f5f5);
+    --training-connector-bg: var(--color-red-300, #fca5a5);
+    --training-card-toggle-border: var(--color-red-200, #fecaca);
+    --training-card-toggle-bg: var(--color-red-50, #fef2f2);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(220, 38, 38, 0.4));
+
+    // Program-specific gradients
+    --training-gradient-strength: linear-gradient(to right, var(--color-red-500, #ef4444), var(--color-red-600, #dc2626));
+    --training-gradient-fatLoss: linear-gradient(to right, var(--color-blue-500, #3b82f6), var(--color-cyan-500, #06b6d4));
+    --training-gradient-fitness: linear-gradient(to right, var(--color-neutral-500, #737373), var(--color-neutral-600, #525252));
+    --training-gradient-athletic: linear-gradient(to right, var(--color-red-500, #ef4444), var(--color-amber-500, #f59e0b));
+
+    // Program-specific text colors
+    --training-text-strength: var(--color-red-600, #dc2626);
+    --training-text-fatLoss: var(--color-blue-600, #2563eb);
+    --training-text-fitness: var(--color-neutral-600, #525252);
+    --training-text-athletic: var(--color-red-600, #dc2626);
+}
+
+// Minimalist theme overrides
+body[data-theme="minimalist"] {
+    --training-bg: var(--color-neutral-50, #fafafa);
+    --training-text: var(--color-neutral-900, #171717);
+    --training-text-muted: var(--color-neutral-500, #737373);
+    --training-accent: var(--color-neutral-800, #262626);
+    --training-accent-light: var(--color-neutral-700, #404040);
+    --training-card-bg: white;
+    --training-card-border: var(--color-neutral-200, #e5e5e5);
+    --training-card-hover-border: var(--color-neutral-300, #d4d4d4);
+    --training-card-active-border: var(--color-neutral-400, #a3a3a3);
+    --training-expanded-bg: var(--color-neutral-100, #f5f5f5);
+    --training-connector-bg: var(--color-neutral-300, #d4d4d4);
+    --training-card-toggle-border: var(--color-neutral-300, #d4d4d4);
+    --training-card-toggle-bg: var(--color-neutral-100, #f5f5f5);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(38, 38, 38, 0.2));
+
+    // Program-specific gradients - all monochrome for minimalist style
+    --training-gradient-strength: linear-gradient(to right, var(--color-neutral-300, #d4d4d4), var(--color-neutral-400, #a3a3a3));
+    --training-gradient-fatLoss: linear-gradient(to right, var(--color-neutral-300, #d4d4d4), var(--color-neutral-400, #a3a3a3));
+    --training-gradient-fitness: linear-gradient(to right, var(--color-neutral-300, #d4d4d4), var(--color-neutral-400, #a3a3a3));
+    --training-gradient-athletic: linear-gradient(to right, var(--color-neutral-300, #d4d4d4), var(--color-neutral-400, #a3a3a3));
+
+    // Program-specific text colors - all consistent for minimalist style
+    --training-text-strength: var(--color-neutral-700, #404040);
+    --training-text-fatLoss: var(--color-neutral-700, #404040);
+    --training-text-fitness: var(--color-neutral-700, #404040);
+    --training-text-athletic: var(--color-neutral-700, #404040);
+}
+
+// Modern theme overrides (tech-focused, sleek)
+body[data-theme="modern"] {
+    --training-bg: var(--color-zinc-900, #18181b);
+    --training-text: var(--color-zinc-50, #fafafa);
+    --training-text-muted: var(--color-zinc-400, #a1a1aa);
+    --training-accent: var(--color-sky-500, #0ea5e9);
+    --training-accent-light: var(--color-sky-400, #38bdf8);
+    --training-card-bg: rgba(39, 39, 42, 0.7);
+    --training-card-border: rgba(63, 63, 70, 0.6);
+    --training-card-hover-border: rgba(56, 189, 248, 0.4);
+    --training-card-active-border: rgba(14, 165, 233, 0.6);
+    --training-expanded-bg: rgba(39, 39, 42, 0.6);
+    --training-connector-bg: rgba(14, 165, 233, 0.6);
+    --training-card-toggle-border: rgba(56, 189, 248, 0.4);
+    --training-card-toggle-bg: rgba(56, 189, 248, 0.1);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(14, 165, 233, 0.4));
+
+    // Program-specific gradients
+    --training-gradient-strength: linear-gradient(to right, var(--color-lime-400, #a3e635), var(--color-green-400, #4ade80));
+    --training-gradient-fatLoss: linear-gradient(to right, var(--color-sky-400, #38bdf8), var(--color-blue-400, #60a5fa));
+    --training-gradient-fitness: linear-gradient(to right, var(--color-fuchsia-400, #e879f9), var(--color-purple-400, #a78bfa));
+    --training-gradient-athletic: linear-gradient(to right, var(--color-amber-400, #fbbf24), var(--color-red-400, #f87171));
+
+    // Program-specific text colors
+    --training-text-strength: var(--color-lime-300, #bef264);
+    --training-text-fatLoss: var(--color-sky-300, #7dd3fc);
+    --training-text-fitness: var(--color-fuchsia-300, #f9a8d4);
+    --training-text-athletic: var(--color-amber-300, #fcd34d);
+}
+
+// Variant-specific class modifiers
+.training-section {
+    &--boutique {
+
+        // Boutique-specific styling
+        .training-card {
+            border-radius: 0.75rem;
+            border-width: 1px;
+        }
+
+        .training-card__title {
+            font-family: var(--font-serif, serif);
+            letter-spacing: 0.025em;
+        }
+
+        .training-expanded {
+            border-radius: 0.75rem;
+        }
+    }
+
+    &--classic {
+
+        // Classic-specific styling
+        .training-card {
+            border-radius: 0.25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .training-expanded {
+            border-radius: 0.25rem;
+        }
+
+        .training-card__title {
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 800;
+        }
+    }
+
+    &--minimalist {
+
+        // Minimalist-specific styling
+        .training-card {
+            border-width: 1px;
+            box-shadow: none;
+        }
+
+        .training-section__header-title {
+            font-weight: 500;
+        }
+
+        .training-card__icon {
+            border-radius: 0;
+        }
+
+        .training-card__toggle {
+            border-radius: 0;
+        }
+
+        .training-expanded {
+            border-width: 1px;
+            border-radius: 0;
+        }
+    }
+
+    &--modern {
+
+        // Modern-specific styling
+        .training-card {
+            border-radius: 1rem;
+            backdrop-filter: blur(12px);
+        }
+
+        .training-card__icon {
+            border-radius: 1rem;
+        }
+
+        .training-expanded {
+            border-radius: 1rem;
+            backdrop-filter: blur(12px);
+        }
+    }
+}

@@ -1,2 +1,2 @@
-import Training from '../../Training';
-export default Training; 
+import MinimalistTraining from './Training';
+export default MinimalistTraining; 

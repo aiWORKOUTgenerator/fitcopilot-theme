@@ -1,3 +1,8 @@
+/**
+ * Training Variants
+ * 
+ * This file exports all theme variants for the Training component
+ */
 import React from 'react';
 import { getComponentVariant } from '../../../../utils/variantLoader';
 import { TrainingProps, VariantKey } from '../types';
@@ -36,11 +41,12 @@ export const getTrainingVariant = (): VariantKey => {
 };
 
 /**
- * Function to get the appropriate variant component based on WordPress settings
- * @returns React component for the selected variant
+ * Get the component for a specific variant
+ * 
+ * @param variant The variant key to get a component for
+ * @returns The component for the specified variant
  */
-export const getTrainingComponent = () => {
-    const variant = getTrainingVariant();
+export const getVariantComponent = (variant: VariantKey): React.ComponentType<Omit<TrainingProps, 'variant'>> => {
     return TrainingMap[variant] || TrainingMap.default;
 };
 
@@ -52,6 +58,3 @@ export {
     SportsVariant,
     WellnessVariant
 };
-
-// Default export for backward compatibility
-export default DefaultVariant; 

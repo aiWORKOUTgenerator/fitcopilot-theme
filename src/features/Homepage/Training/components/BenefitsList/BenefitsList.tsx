@@ -1,5 +1,5 @@
 import { CheckCircle } from 'lucide-react';
-import React from 'react';
+import React, { memo } from 'react';
 import './BenefitsList.scss';
 import { BenefitsListProps } from './types';
 
@@ -13,11 +13,17 @@ const BenefitsList: React.FC<BenefitsListProps> = ({
     benefits,
     variant = 'default',
     className = '',
+    ariaLabelledBy,
+    id,
 }) => {
     const listClasses = `benefits-list benefits-list--${variant} ${className}`;
 
     return (
-        <ul className={listClasses}>
+        <ul
+            className={listClasses}
+            aria-labelledby={ariaLabelledBy}
+            id={id}
+        >
             {benefits.map((benefit, index) => (
                 <li
                     key={index}
@@ -29,7 +35,11 @@ const BenefitsList: React.FC<BenefitsListProps> = ({
                     ) : (
                         // Default variant uses CheckCircle icons
                         <>
-                            <CheckCircle size={16} className="benefits-list__icon" />
+                            <CheckCircle
+                                size={16}
+                                className="benefits-list__icon"
+                                aria-hidden="true"
+                            />
                             <span>{benefit}</span>
                         </>
                     )}
@@ -39,4 +49,5 @@ const BenefitsList: React.FC<BenefitsListProps> = ({
     );
 };
 
-export default BenefitsList; 
+// Export memoized version for better performance
+export default memo(BenefitsList); 

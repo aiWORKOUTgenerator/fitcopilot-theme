@@ -1,4 +1,29 @@
-import { ProgramType } from '../../types';
+import { ProgramType, VariantKey } from '../../types';
+
+/**
+ * ARIA IDs for accessibility
+ */
+export interface ProgramAriaIds {
+    /**
+     * ID for the program card element
+     */
+    cardId?: string;
+
+    /**
+     * ID for the program title element
+     */
+    titleId?: string;
+
+    /**
+     * ID for the expanded content container
+     */
+    contentId?: string;
+
+    /**
+     * ID for the benefits list section
+     */
+    benefitsId?: string;
+}
 
 /**
  * Props interface for the ProgramCard component
@@ -28,10 +53,15 @@ export interface ProgramCardProps {
      * Visual variant of the card
      * @default 'default'
      */
-    variant?: 'default' | 'sports' | 'boutique' | 'classic' | 'minimalist' | 'modern' | 'wellness';
+    variant?: VariantKey;
 
     /**
      * Additional CSS class names
      */
     className?: string;
+
+    /**
+     * ARIA IDs for accessibility
+     */
+    ariaIds?: ProgramAriaIds;
 } 

@@ -1,0 +1,17 @@
+@import '../../../../../styles/design-system/index';
+
+// ProgramsList styles are using the existing styles from Training.scss
+// No additional styles needed for now as they're maintained in the parent component's SCSS
+
+// The connector line between programs
+.training-connector {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 20px;
+    background-color: var(--border-color-primary);
+    opacity: 0.5;
+    z-index: 1;
+}

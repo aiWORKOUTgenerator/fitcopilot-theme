@@ -1,92 +1,381 @@
 /**
- * ProgramCard component styles
+ * Program Card Styles
+ * 
+ * Token-based styling for program cards with variant support and accessibility.
  */
-.program-card {
-    cursor: pointer;
-    background-color: var(--color-card-bg, #ffffff);
-    border-radius: var(--radius-lg, 0.5rem);
-    box-shadow: var(--shadow-sm, 0 1px 2px 0 rgba(0, 0, 0, 0.05));
-    overflow: hidden;
-    transition: all 0.3s ease;
 
-    &:hover {
-        box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06));
-        transform: translateY(-2px);
+.program-card {
+    position: relative;
+    width: 100%;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid;
+
+    // Default focus styles (can be overridden by variants)
+    &:focus-visible {
+        outline: 2px solid var(--highlight-primary, #60a5fa);
+        outline-offset: 2px;
     }
 
     &__container {
         display: flex;
-        align-items: flex-start;
-        padding: var(--spacing-4, 1rem);
-        position: relative;
+        align-items: center;
+        gap: 1rem;
     }
 
     &__icon-wrapper {
         flex-shrink: 0;
-        margin-right: var(--spacing-4, 1rem);
     }
 
     &__icon {
-        width: 48px;
-        height: 48px;
-        border-radius: var(--radius-md, 0.375rem);
+        width: 3rem;
+        height: 3rem;
         display: flex;
         align-items: center;
         justify-content: center;
+        border-radius: 0.5rem;
 
         svg {
-            color: inherit;
+            width: 1.5rem;
+            height: 1.5rem;
         }
     }
 
     &__content {
-        flex: 1;
+        flex-grow: 1;
     }
 
     &__title {
-        font-size: var(--font-size-lg, 1.125rem);
-        font-weight: var(--font-weight-bold, 700);
-        margin-bottom: var(--spacing-2, 0.5rem);
-        color: var(--color-heading, #111827);
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
     }
 
     &__description {
-        color: var(--color-text-secondary, #4b5563);
-        font-size: var(--font-size-sm, 0.875rem);
+        font-size: 0.9375rem;
         line-height: 1.5;
     }
 
     &__toggle {
-        position: absolute;
-        right: var(--spacing-4, 1rem);
-        top: var(--spacing-4, 1rem);
-        color: var(--color-text-secondary, #4b5563);
-        transition: all 0.3s ease;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease;
 
         &--active {
             transform: rotate(90deg);
         }
     }
 
-    // Variant-specific styling
+    // Active state
     &--active {
-        box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06));
+        border-color: var(--border-active, #2563eb);
     }
 
-    &--sports {
-        height: 100%;
+    // Hover state
+    &:hover:not(.program-card--active) {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+    }
 
-        .program-card__container {
-            flex-direction: column;
-        }
+    // Variant-specific styles
 
-        .program-card__icon-wrapper {
-            margin-bottom: var(--spacing-4, 1rem);
-            margin-right: 0;
-        }
+    // Default variant (dark theme)
+    &--default {
+        background-color: var(--card-background, rgba(31, 41, 55, 0.5));
+        border-color: var(--border-primary, rgba(55, 65, 81, 0.5));
+        color: var(--text-primary, #f9fafb);
 
         .program-card__title {
-            color: var(--color-violet-700, #6d28d9);
+            color: var(--text-primary, #f9fafb);
+        }
+
+        .program-card__description {
+            color: var(--text-secondary, #9ca3af);
+        }
+
+        .program-card__icon {
+            background-color: rgba(31, 41, 55, 0.7);
+
+            svg {
+                color: var(--text-primary, #f9fafb);
+            }
+        }
+
+        .program-card__toggle {
+            color: var(--text-secondary, #9ca3af);
+        }
+
+        &:hover:not(.program-card--active) {
+            border-color: var(--border-hover, rgba(139, 92, 246, 0.3));
+        }
+
+        &--active {
+            box-shadow: 0 0 0 1px var(--border-active, rgba(139, 92, 246, 0.5));
         }
     }
+
+    // Sports variant
+    &--sports {
+        background-color: var(--card-background, #1f2937);
+        border-radius: 0.25rem;
+        border-width: 0;
+        padding: 1.5rem;
+
+        .program-card__title {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--highlight-primary, #a78bfa);
+            font-size: 1rem;
+        }
+
+        .program-card__description {
+            color: var(--text-secondary, #9ca3af);
+        }
+
+        .program-card__icon {
+            background-color: transparent;
+
+            svg {
+                width: 1.75rem;
+                height: 1.75rem;
+                color: var(--highlight-primary, #a78bfa);
+            }
+        }
+
+        &:hover:not(.program-card--active) {
+            background-color: var(--card-hover, #374151);
+            transform: translateY(0);
+        }
+
+        &--active {
+            background-color: var(--card-active, #374151);
+        }
+    }
+
+    // Wellness variant
+    &--wellness {
+        background-color: var(--card-background, white);
+        border-color: var(--border-primary, #99f6e4);
+        border-radius: 1rem;
+        box-shadow: var(--shadow-medium, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+
+        .program-card__title {
+            color: var(--text-primary, #0f766e);
+            font-weight: 600;
+        }
+
+        .program-card__description {
+            color: var(--text-secondary, #334155);
+        }
+
+        .program-card__icon {
+            background-color: var(--highlight-primary, #14b8a6);
+            border-radius: 0.75rem;
+
+            svg {
+                color: white;
+            }
+        }
+
+        &:hover:not(.program-card--active) {
+            border-color: var(--border-hover, #2dd4bf);
+            background-color: var(--card-hover, #f0fdfa);
+        }
+
+        &--active {
+            border-color: var(--border-active, #14b8a6);
+            background-color: var(--card-active, #f0fdfa);
+        }
+    }
+
+    // Boutique variant
+    &--boutique {
+        background-color: var(--card-background, white);
+        border-color: var(--border-primary, #fecdd3);
+        border-radius: 1.5rem;
+        padding: 1.5rem;
+
+        .program-card__title {
+            color: var(--text-primary, #be123c);
+            font-weight: 600;
+        }
+
+        .program-card__description {
+            color: var(--text-secondary, #64748b);
+        }
+
+        .program-card__icon {
+            background-color: var(--highlight-primary, #fecdd3);
+            border-radius: 1rem;
+
+            svg {
+                color: var(--text-primary, #be123c);
+            }
+        }
+
+        &:hover:not(.program-card--active) {
+            border-color: var(--border-hover, #fb7185);
+            box-shadow: var(--shadow-medium, 0 4px 6px -1px rgba(244, 63, 94, 0.1));
+        }
+
+        &--active {
+            border-color: var(--border-active, #e11d48);
+        }
+    }
+
+    // Classic variant
+    &--classic {
+        background-color: var(--card-background, white);
+        border-color: var(--border-primary, #fde68a);
+        border-radius: 0.25rem;
+        border-width: 2px;
+
+        .program-card__title {
+            color: var(--text-primary, #92400e);
+            font-family: 'Georgia', serif;
+            font-weight: 700;
+        }
+
+        .program-card__description {
+            color: var(--text-secondary, #57534e);
+            font-style: italic;
+        }
+
+        .program-card__icon {
+            background-color: var(--highlight-primary, #fef3c7);
+            border-radius: 0.25rem;
+
+            svg {
+                color: var(--text-primary, #92400e);
+            }
+        }
+
+        &:hover:not(.program-card--active) {
+            border-color: var(--border-hover, #fbbf24);
+        }
+
+        &--active {
+            border-color: var(--border-active, #d97706);
+            border-width: 2px;
+        }
+    }
+
+    // Minimalist variant
+    &--minimalist {
+        background-color: var(--card-background, white);
+        border-color: var(--border-primary, #e5e7eb);
+        border-radius: 0;
+        border-width: 0;
+        border-bottom-width: 1px;
+        padding: 1.5rem 0;
+
+        .program-card__title {
+            color: var(--text-primary, #111827);
+            font-weight: 500;
+        }
+
+        .program-card__description {
+            color: var(--text-secondary, #6b7280);
+        }
+
+        .program-card__icon {
+            background-color: transparent;
+
+            svg {
+                color: var(--text-primary, #111827);
+            }
+        }
+
+        &:hover:not(.program-card--active) {
+            transform: none;
+            background-color: var(--card-hover, #f9fafb);
+            box-shadow: none;
+        }
+
+        &--active {
+            border-color: var(--border-active, #111827);
+        }
+    }
+
+    // Modern variant
+    &--modern {
+        background-color: var(--card-background, white);
+        border-color: var(--border-primary, #e0e7ff);
+        border-radius: 1rem;
+        box-shadow: var(--shadow-medium, 0 10px 15px -3px rgba(79, 70, 229, 0.1));
+
+        .program-card__title {
+            color: var(--text-primary, #4f46e5);
+            font-weight: 600;
+        }
+
+        .program-card__description {
+            color: var(--text-secondary, #4b5563);
+        }
+
+        .program-card__icon {
+            background-color: var(--highlight-primary, #eef2ff);
+            border-radius: 0.75rem;
+
+            svg {
+                color: var(--text-accent, #4f46e5);
+            }
+        }
+
+        &:hover:not(.program-card--active) {
+            box-shadow: var(--shadow-large, 0 20px 25px -5px rgba(79, 70, 229, 0.1));
+            transform: translateY(-3px);
+        }
+
+        &--active {
+            border-color: var(--border-active, #4f46e5);
+            background-color: var(--card-active, #eef2ff);
+        }
+    }
+}
+
+// Reduced motion support
+.reduced-motion,
+.program-card.reduced-motion {
+    transition: none !important;
+    transform: none !important;
+
+    .program-card__toggle {
+        transition: none !important;
+    }
+
+    &:hover {
+        transform: none !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .program-card,
+    .program-card__toggle {
+        transition: none !important;
+    }
+
+    .program-card:hover {
+        transform: none !important;
+    }
+}
+
+// Screen reader only class
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }

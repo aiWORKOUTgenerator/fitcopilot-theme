@@ -1,2 +1,2 @@
-import Training from '../../Training';
-export default Training; 
+import BoutiqueTraining from './Training';
+export default BoutiqueTraining; 

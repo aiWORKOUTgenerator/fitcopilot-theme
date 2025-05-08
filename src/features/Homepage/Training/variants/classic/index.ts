@@ -1,2 +1,2 @@
-import Training from '../../Training';
-export default Training; 
+import ClassicTraining from './Training';
+export default ClassicTraining; 

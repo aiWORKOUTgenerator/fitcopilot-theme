@@ -1,6 +1,9 @@
 // Canonical design system import - MUST BE FIRST
 @import '../../../styles/design-system/index';
 
+// Import theme variants
+@import './styles/theme-variants.scss';
+
 // Define component-specific variables with fallbacks to global theme tokens
 :root {
     // Default theme variables
@@ -11,11 +14,37 @@
     --training-accent-light: var(--color-primary-light, #c4b5fd);
     --training-card-bg: rgba(31, 41, 55, 0.5);
     --training-card-border: var(--color-border, rgba(55, 65, 81, 0.5));
-    --training-card-hover-border: rgba(139, 92, 246, 0.3);
-    --training-card-active-border: rgba(139, 92, 246, 0.5);
+    --training-card-hover-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.3);
+    --training-card-active-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.5);
     --training-expanded-bg: rgba(31, 41, 55, 0.4);
-    --training-connector-bg: rgba(139, 92, 246, 0.5);
+    --training-connector-bg: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.5);
     --training-icon-size: 64px;
+    --training-card-toggle-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.3);
+    --training-card-toggle-bg: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.1);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.4));
+
+    // Animation variables - added for a11y
+    --training-transition-duration: 0.3s;
+    --training-transition-timing: ease;
+
+    // Program-specific gradients
+    --training-gradient-strength: linear-gradient(to right, var(--color-lime-300, #bef264), var(--color-emerald-400, #34d399));
+    --training-gradient-fatLoss: linear-gradient(to right, var(--color-cyan-300, #67e8f9), var(--color-blue-400, #60a5fa));
+    --training-gradient-fitness: linear-gradient(to right, var(--color-violet-300, #c4b5fd), var(--color-purple-400, #a78bfa));
+    --training-gradient-athletic: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
+
+    // Program-specific text colors
+    --training-text-strength: var(--color-lime-200, #d9f99d);
+    --training-text-fatLoss: var(--color-cyan-200, #a5f3fc);
+    --training-text-fitness: var(--color-violet-200, #ddd6fe);
+    --training-text-athletic: var(--color-amber-200, #fde68a);
+}
+
+// Reduced motion preferences - added for a11y
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --training-transition-duration: 0.1s;
+    }
 }
 
 // Theme-specific overrides
@@ -31,6 +60,36 @@ body[data-theme="sports"] {
     --training-card-active-border: var(--color-violet-300, #c4b5fd);
     --training-expanded-bg: var(--color-gray-50, #f9fafb);
     --training-connector-bg: var(--color-violet-300, #c4b5fd);
+    --training-card-toggle-border: var(--color-violet-200, #ddd6fe);
+    --training-card-toggle-bg: var(--color-violet-50, #f5f3ff);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(124, 58, 237, 0.4));
+
+    // Program-specific gradients
+    --training-gradient-strength: linear-gradient(to right, var(--color-emerald-500, #10b981), var(--color-teal-400, #2dd4bf));
+    --training-gradient-fatLoss: linear-gradient(to right, var(--color-blue-500, #3b82f6), var(--color-indigo-400, #818cf8));
+    --training-gradient-fitness: linear-gradient(to right, var(--color-violet-500, #8b5cf6), var(--color-purple-400, #a78bfa));
+    --training-gradient-athletic: linear-gradient(to right, var(--color-orange-500, #f97316), var(--color-amber-400, #fbbf24));
+
+    // Program-specific text colors
+    --training-text-strength: var(--color-emerald-600, #059669);
+    --training-text-fatLoss: var(--color-blue-600, #2563eb);
+    --training-text-fitness: var(--color-violet-600, #7c3aed);
+    --training-text-athletic: var(--color-orange-600, #ea580c);
+}
+
+// Wellness theme overrides
+body[data-theme="wellness"] {
+    // Program-specific gradients
+    --training-gradient-strength: linear-gradient(to right, var(--color-teal-400, #2dd4bf), var(--color-green-500, #22c55e));
+    --training-gradient-fatLoss: linear-gradient(to right, var(--color-cyan-400, #22d3ee), var(--color-teal-500, #14b8a6));
+    --training-gradient-fitness: linear-gradient(to right, var(--color-indigo-400, #818cf8), var(--color-blue-500, #3b82f6));
+    --training-gradient-athletic: linear-gradient(to right, var(--color-amber-400, #fbbf24), var(--color-yellow-500, #eab308));
+
+    // Program-specific text colors
+    --training-text-strength: var(--color-teal-300, #5eead4);
+    --training-text-fatLoss: var(--color-cyan-300, #67e8f9);
+    --training-text-fitness: var(--color-indigo-300, #a5b4fc);
+    --training-text-athletic: var(--color-amber-300, #fcd34d);
 }
 
 // Component root
@@ -77,7 +136,7 @@ body[data-theme="sports"] {
             }
 
             &-highlight {
-                background-image: linear-gradient(to right, var(--color-lime-300, #bef264), var(--color-emerald-400, #34d399));
+                background-image: var(--training-gradient-strength);
                 -webkit-background-clip: text;
                 background-clip: text;
                 color: transparent;
@@ -85,7 +144,7 @@ body[data-theme="sports"] {
 
             body[data-theme="sports"] & {
                 &-highlight {
-                    background-image: linear-gradient(to right, var(--color-violet-600, #7c3aed), var(--color-purple-500, #a855f7));
+                    background-image: var(--training-gradient-strength);
                 }
             }
         }
@@ -122,10 +181,18 @@ body[data-theme="sports"] {
     background-color: var(--training-card-bg);
     border-radius: 1rem;
     padding: 2rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: transform var(--training-transition-duration) var(--training-transition-timing),
+        box-shadow var(--training-transition-duration) var(--training-transition-timing),
+        border-color var(--training-transition-duration) var(--training-transition-timing);
     border: 1px solid var(--training-card-border);
     backdrop-filter: blur(8px);
     cursor: pointer;
+
+    // Add focus outline for keyboard navigation - a11y enhancement
+    &:focus-visible {
+        outline: 2px solid var(--training-accent);
+        outline-offset: 2px;
+    }
 
     // Layout container
     &__container {
@@ -151,10 +218,10 @@ body[data-theme="sports"] {
         width: var(--training-icon-size);
         height: var(--training-icon-size);
         border-radius: 0.75rem;
-        transition: transform 0.3s ease;
+        transition: transform var(--training-transition-duration) var(--training-transition-timing);
 
         svg {
-            filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.4));
+            filter: var(--training-icon-shadow);
         }
     }
 
@@ -168,7 +235,7 @@ body[data-theme="sports"] {
         line-height: 1.75rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
-        transition: color 0.3s ease;
+        transition: color var(--training-transition-duration) var(--training-transition-timing);
 
         @media (min-width: 768px) {
             font-size: 1.5rem;
@@ -180,7 +247,7 @@ body[data-theme="sports"] {
         font-size: 0.95rem;
         line-height: 1.6;
         color: var(--training-text-muted);
-        transition: color 0.3s ease;
+        transition: color var(--training-transition-duration) var(--training-transition-timing);
 
         @media (min-width: 768px) {
             padding-right: 3rem;
@@ -191,9 +258,9 @@ body[data-theme="sports"] {
     &__toggle {
         padding: 0.5rem;
         border-radius: 9999px;
-        border: 1px solid rgba(139, 92, 246, 0.3);
-        background-color: rgba(139, 92, 246, 0.1);
-        transition: all 0.3s ease;
+        border: 1px solid var(--training-card-toggle-border);
+        background-color: var(--training-card-toggle-bg);
+        transition: all var(--training-transition-duration) var(--training-transition-timing);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -204,6 +271,12 @@ body[data-theme="sports"] {
 
         &--active {
             transform: rotate(90deg);
+        }
+
+        // Add focus styles for keyboard navigation - a11y enhancement
+        &:focus-visible {
+            outline: 2px solid var(--training-accent);
+            outline-offset: 2px;
         }
     }
 
@@ -230,6 +303,30 @@ body[data-theme="sports"] {
     &--active {
         border-color: var(--training-card-active-border);
         box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.1);
+    }
+
+    // Reduced motion alternatives - a11y enhancement
+    @media (prefers-reduced-motion: reduce) {
+        transition-property: border-color, box-shadow;
+
+        &:hover {
+            transform: none;
+
+            .training-card__icon {
+                transform: none;
+            }
+        }
+
+        &__icon {
+            transition-property: border-color;
+        }
+
+        &__toggle {
+            &--active {
+                transform: none;
+                background-color: var(--training-card-active-border);
+            }
+        }
     }
 
     // Theme-specific styles for sports variant
@@ -270,6 +367,40 @@ body[data-theme="sports"] {
     }
 }
 
+// Program-specific theme classes for gradients
+.program-gradient-strength {
+    background-image: var(--training-gradient-strength);
+}
+
+.program-gradient-fatLoss {
+    background-image: var(--training-gradient-fatLoss);
+}
+
+.program-gradient-fitness {
+    background-image: var(--training-gradient-fitness);
+}
+
+.program-gradient-athletic {
+    background-image: var(--training-gradient-athletic);
+}
+
+// Program-specific text color classes
+.program-text-strength {
+    color: var(--training-text-strength);
+}
+
+.program-text-fatLoss {
+    color: var(--training-text-fatLoss);
+}
+
+.program-text-fitness {
+    color: var(--training-text-fitness);
+}
+
+.program-text-athletic {
+    color: var(--training-text-athletic);
+}
+
 // Expanded content styles
 .training-expanded {
     background-color: var(--training-expanded-bg);
@@ -278,7 +409,12 @@ body[data-theme="sports"] {
     padding: 1.5rem;
     margin-top: 1rem;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all var(--training-transition-duration) var(--training-transition-timing);
+
+    // Reduced motion alternatives - a11y enhancement
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+    }
 
     &__title {
         color: var(--training-text);

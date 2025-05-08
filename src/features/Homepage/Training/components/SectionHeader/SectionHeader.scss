@@ -1,0 +1,275 @@
+/**
+ * Section Header Styles
+ * 
+ * Token-based styling system for consistent header appearance across variants.
+ */
+
+.section-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2.5rem;
+    position: relative;
+
+    &__tag {
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.75rem;
+        display: inline-block;
+    }
+
+    &__title {
+        font-size: 2.25rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+
+        @media (min-width: 768px) {
+            font-size: 2.75rem;
+        }
+
+        &-highlight {
+            // Default highlight style (can be overridden by program-specific gradients)
+            font-weight: 700;
+            display: inline-block;
+
+            // Reduced motion alternative
+            @media (prefers-reduced-motion: reduce) {
+                background-image: none !important;
+                transition: none !important;
+            }
+        }
+    }
+
+    &__description {
+        font-size: 1.125rem;
+        max-width: 42rem;
+        line-height: 1.6;
+
+        @media (min-width: 768px) {
+            font-size: 1.25rem;
+        }
+    }
+
+    // Variant-specific styles using CSS custom properties from token system
+
+    // Default variant
+    &--default {
+        .section-header__title {
+            color: var(--text-primary, #f9fafb);
+        }
+
+        .section-header__description {
+            color: var(--text-secondary, #9ca3af);
+        }
+
+        .section-header__tag {
+            color: var(--text-accent, #60a5fa);
+        }
+    }
+
+    // Sports variant
+    &--sports {
+        .section-header__title {
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+        }
+
+        .section-header__title-highlight {
+            color: var(--highlight-primary, #a78bfa);
+        }
+
+        .section-header__tag {
+            background-color: var(--accent, #7c3aed);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+        }
+    }
+
+    // Wellness variant
+    &--wellness {
+        .section-header__title {
+            font-weight: 600;
+        }
+
+        .section-header__title-highlight {
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -0.25rem;
+                left: 0;
+                width: 100%;
+                height: 0.25rem;
+                background-color: var(--highlight-primary, #14b8a6);
+                border-radius: 2px;
+            }
+        }
+    }
+
+    // Boutique variant
+    &--boutique {
+        text-align: center;
+
+        .section-header__title {
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                width: 3rem;
+                height: 1px;
+                background-color: var(--highlight-primary, #f43f5e);
+                top: 50%;
+            }
+
+            &::before {
+                left: -3.5rem;
+            }
+
+            &::after {
+                right: -3.5rem;
+            }
+        }
+
+        .section-header__description {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    // Classic variant
+    &--classic {
+        .section-header__title {
+            font-family: 'Georgia', serif;
+            font-weight: 700;
+        }
+
+        .section-header__description {
+            font-style: italic;
+            color: var(--text-secondary, #525252);
+        }
+    }
+
+    // Minimalist variant
+    &--minimalist {
+        .section-header__title {
+            font-weight: 300;
+            text-transform: lowercase;
+        }
+
+        .section-header__title-highlight {
+            font-weight: 600;
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -0.5rem;
+                left: 0;
+                width: 2rem;
+                height: 1px;
+                background-color: currentColor;
+            }
+        }
+    }
+
+    // Modern variant
+    &--modern {
+        .section-header__title {
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header__title-highlight {
+            padding: 0 0.5rem;
+            border-radius: 0.25rem;
+            background-color: var(--highlight-primary, #4f46e5);
+            color: white;
+        }
+    }
+}
+
+// Program-specific gradient classes
+.program-gradient-strength {
+    background-image: linear-gradient(to right, #bef264, #34d399);
+    background-clip: text;
+    color: transparent;
+}
+
+.program-gradient-fatLoss {
+    background-image: linear-gradient(to right, #67e8f9, #60a5fa);
+    background-clip: text;
+    color: transparent;
+}
+
+.program-gradient-fitness {
+    background-image: linear-gradient(to right, #c4b5fd, #a78bfa);
+    background-clip: text;
+    color: transparent;
+}
+
+.program-gradient-athletic {
+    background-image: linear-gradient(to right, #fcd34d, #fb923c);
+    background-clip: text;
+    color: transparent;
+}
+
+// Program-specific text colors (fallback for browsers that don't support gradient text)
+.program-text-strength {
+    color: #34d399;
+}
+
+.program-text-fatLoss {
+    color: #60a5fa;
+}
+
+.program-text-fitness {
+    color: #a78bfa;
+}
+
+.program-text-athletic {
+    color: #fb923c;
+}
+
+// Enhanced accessibility - provide focus styles
+.section-header {
+    &:focus-within {
+        outline: 2px dashed var(--highlight-primary, #60a5fa);
+        outline-offset: 4px;
+    }
+
+    // Clear outline when a child element has focus
+    *:focus {
+        outline: none;
+    }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+    .section-header {
+
+        &__title,
+        &__title-highlight,
+        &__description,
+        &__tag {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        &--boutique .section-header__title::before,
+        &--boutique .section-header__title::after,
+        &--minimalist .section-header__title-highlight::after,
+        &--wellness .section-header__title-highlight::after {
+            transition: none !important;
+            animation: none !important;
+        }
+    }
+}

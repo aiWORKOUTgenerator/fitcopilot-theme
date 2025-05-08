@@ -1,0 +1,11 @@
+@import '../../../../../styles/design-system/index';
+
+// MainCTA styles are inherited from the parent component
+// This file is for component-specific styles if needed
+
+.training-section__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+    padding: 1rem 0;
+}

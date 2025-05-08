@@ -1,3 +1,5 @@
+import { VariantKey } from '../../types';
+
 /**
  * Props interface for the BenefitsList component
  */
@@ -11,10 +13,20 @@ export interface BenefitsListProps {
      * Visual variant of the list
      * @default 'default'
      */
-    variant?: 'default' | 'sports' | 'boutique' | 'classic' | 'minimalist' | 'modern' | 'wellness';
+    variant?: VariantKey;
 
     /**
      * Additional CSS class names
      */
     className?: string;
+
+    /**
+     * ID of the element that labels this list (for aria-labelledby)
+     */
+    ariaLabelledBy?: string;
+
+    /**
+     * ID for the benefits list element
+     */
+    id?: string;
 } 

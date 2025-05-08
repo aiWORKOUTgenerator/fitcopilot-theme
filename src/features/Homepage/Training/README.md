@@ -1,6 +1,6 @@
 # Training Component
 
-The Training component is a feature component that displays training programs information on the homepage. It supports multiple theme variants through a structured directory organization.
+The Training component is a feature component that displays training programs information on the homepage. It supports multiple theme variants through a comprehensive token-based design system and structured directory organization.
 
 ## Directory Structure
 
@@ -13,6 +13,14 @@ src/features/Homepage/Training/
 ├── README.md               # This documentation
 ├── STYLING-GUIDELINES.md   # Detailed styling guidelines
 ├── BUTTON-STANDARDS.md     # Button usage standards
+├── docs/                   # Additional documentation
+│   ├── index.md            # Documentation overview
+│   └── THEME-VARIANT-SYSTEM.md # Theme variant system documentation
+├── utils/                  # Utility functions
+│   ├── themeTokens.ts      # Token system definition and utilities
+│   └── gradientTokens.ts   # Program gradient/color mapping utilities
+├── styles/                 # Component-specific styles
+│   └── theme-variants.scss # Theme variant CSS implementation
 ├── media/                  # Media assets for the component
 │   ├── images/             # Component images
 │   └── videos/             # Component videos
@@ -20,20 +28,129 @@ src/features/Homepage/Training/
     ├── index.ts            # Exports all variants and selection logic
     ├── default/            # Default theme implementation
     │   └── index.ts        # Re-exports the main component
-    ├── boutique/           # Boutique theme implementation
+    ├── boutique/           # Boutique theme implementation (elegant luxury)
+    │   ├── Training.tsx    # Custom boutique implementation
     │   └── index.ts
-    ├── classic/            # Classic theme implementation
+    ├── classic/            # Classic theme implementation (traditional fitness)
+    │   ├── Training.tsx    # Custom classic implementation
     │   └── index.ts
     ├── minimalist/         # Minimalist theme implementation
+    │   ├── Training.tsx    # Custom minimalist implementation
     │   └── index.ts
-    ├── modern/             # Modern theme implementation
+    ├── modern/             # Modern theme implementation (tech-focused)
+    │   ├── Training.tsx    # Custom modern implementation
     │   └── index.ts
     ├── sports/             # Sports theme implementation
     │   ├── Training.tsx    # Custom sports implementation
     │   └── index.ts
-    └── wellness/           # Wellness theme implementation
+    └── wellness/           # Wellness theme implementation (holistic health)
+        ├── Training.tsx    # Custom wellness implementation
         └── index.ts
 ```
+
+## Theme Variant System
+
+The Training component features a comprehensive token-based theming system that enables consistent styling across multiple visual variants. Each theme maintains its own unique aesthetic while sharing the same core functionality.
+
+### Token Architecture
+
+Our token system follows a three-layer architecture:
+
+1. **Definition Layer** (`utils/themeTokens.ts`)
+   - TypeScript interfaces define the token structure
+   - Token values are organized by variant and purpose
+   - Helper functions facilitate working with tokens programmatically
+
+2. **Implementation Layer** (`styles/theme-variants.scss`)
+   - CSS variables implement the token values
+   - Each theme variant has its own selector section
+   - Program-specific token values are defined for each variant
+
+3. **Consumption Layer** (Components)
+   - CSS classes use the variables for consistent styling
+   - Utility functions like `programTypeGradientMap` provide type-safe access
+   - New utility functions in `utils/applyThemeTokens.ts` enable dynamic applications
+
+### Supported Theme Variants
+
+The component supports seven distinct visual styles:
+
+| Variant | Description | Visual Style |
+|---------|-------------|--------------|
+| Default | Modern dark theme | Dark background with vibrant accents |
+| Sports | Performance-focused | Light theme with energetic colors |
+| Wellness | Holistic health | Natural colors with soothing gradients |
+| Boutique | Luxury aesthetic | Elegant, premium design elements |
+| Classic | Traditional fitness | Strong typography and high contrast |
+| Minimalist | Reduced design | Clean, distraction-free aesthetics |
+| Modern | Tech-focused | Contemporary styling with geometric elements |
+
+### Program-Specific Tokens
+
+Each program type has dedicated tokens for consistent styling across themes:
+
+```typescript
+// Program gradients
+--training-gradient-strength
+--training-gradient-fatLoss
+--training-gradient-fitness
+--training-gradient-athletic
+
+// Program text colors
+--training-text-strength
+--training-text-fatLoss
+--training-text-fitness
+--training-text-athletic
+```
+
+These tokens ensure that each program type maintains its semantic identity across different theme variants while adapting to the specific aesthetic of each theme.
+
+### Using the Token System
+
+There are several ways to use the token system:
+
+#### 1. CSS Classes (Preferred)
+
+```tsx
+import { programTypeGradientMap } from '../utils/gradientTokens';
+
+// In your component
+<div className={programTypeGradientMap[program.programType]}>
+  {program.title}
+</div>
+```
+
+#### 2. CSS Variables in Styles
+
+```scss
+.custom-element {
+  background-image: var(--training-gradient-strength);
+  color: var(--training-text-strength);
+}
+```
+
+#### 3. Programmatic Application
+
+```tsx
+import { applyThemeTokens } from '../utils/applyThemeTokens';
+
+// In a useEffect or event handler
+applyThemeTokens('sports', elementRef.current);
+```
+
+### Extending the System
+
+To add a new program type:
+
+1. Update the `ProgramTypeKey` type in `utils/gradientTokens.ts`
+2. Add mappings in the token maps
+3. Add CSS classes in `Training.scss`
+4. Define token values for each theme variant in `styles/theme-variants.scss`
+
+For complete documentation, see:
+- [Theme Variant System](./docs/THEME-VARIANT-SYSTEM.md)
+- [Program Tokens](./docs/PROGRAM-TOKENS.md)
+- [Styling Guidelines](./STYLING-GUIDELINES.md)
 
 ## Usage
 
@@ -337,3 +454,31 @@ The next phase will focus on improving test coverage and performance:
 - Implement integration tests for variants
 - Optimize rendering performance
 - Add accessibility testing
+
+## Performance Optimization
+
+The Training component has been optimized for performance using several strategies:
+
+1. **Data Separation**: Large default data moved to dedicated files in the `data/` directory
+2. **Component Memoization**: All sub-components memoized with React.memo
+3. **Callback Memoization**: Event handlers optimized with useCallback
+4. **Render Optimization**: Conditional rendering optimized with extracted components
+
+For detailed information on performance optimizations, see:
+- [Performance Documentation](./docs/PERFORMANCE.md)
+- [Performance Tests](./tests/performance.test.tsx)
+
+## Component Decomposition
+
+The Training component has been decomposed into smaller, focused components for better maintainability:
+
+1. **Main Component**: `Training.tsx` orchestrates the feature
+2. **Subcomponents**:
+   - `SectionHeader`: Renders the section title, description, and tag
+   - `ProgramsList`: Manages and renders the list of training programs
+   - `MainCTA`: Renders the main call-to-action button
+   - `ProgramCard`: Renders individual program cards (existing)
+   - `BenefitsList`: Renders the list of benefits for a program (existing)
+
+For detailed information on the component decomposition, see:
+- [Component Breakdown Documentation](./docs/COMPONENT_BREAKDOWN.md)

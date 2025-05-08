@@ -1,18 +1,35 @@
-import type { ProgramType, TrainingProps, VariantKey } from './types';
-import { getTrainingComponent, getTrainingVariant, TrainingMap } from './variants';
+/**
+ * Training component and related exports
+ */
+import DefaultTraining from './Training';
+import { VariantKey } from './types';
+import * as variants from './variants';
 
-// Export the core component (default implementation)
-import Training from './Training';
-export { Training };
+// Re-export main component as default
+export default DefaultTraining;
 
 // Export type definitions
-export type { ProgramType, TrainingProps, VariantKey };
+export * from './types';
 
-// Export the variant selector function and map
-export { getTrainingVariant, TrainingMap };
+// Export token utilities
+export * from './utils';
 
-// Export all variant components
-export * from './variants';
+// Export example components
+export { default as ProgramTokenExample } from './examples/ProgramTokenExample';
 
-// Default export is the function that returns the appropriate variant
-export default getTrainingComponent();
+// Export all variants
+export { variants };
+
+/**
+ * Get appropriate variant based on WordPress settings
+ * 
+ * @returns Variant key from WordPress settings or default
+ */
+export const getTrainingVariant = (): VariantKey => {
+    // This would typically read from WordPress settings or context
+    // For now, just return default
+    return 'default';
+};
+
+// Export the main component and its props
+export { DefaultTraining as Training };
