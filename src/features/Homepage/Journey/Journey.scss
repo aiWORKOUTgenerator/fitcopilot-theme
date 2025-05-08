@@ -214,6 +214,29 @@ $breakpoint-xxl: 1536px;
     background-position: center center;
     z-index: -1;
     pointer-events: none;
+    // Update mask gradient to fade at both top and bottom
+    mask-image:
+      linear-gradient(to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        /* Start transparent at the very top */
+        rgba(0, 0, 0, 1) 15%,
+        /* Fully visible after top 15% */
+        rgba(0, 0, 0, 1) 85%,
+        /* Stay visible until 85% down */
+        rgba(0, 0, 0, 0) 100%
+        /* Fade to transparent at the bottom */
+      );
+    -webkit-mask-image:
+      linear-gradient(to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        /* Start transparent at the very top */
+        rgba(0, 0, 0, 1) 15%,
+        /* Fully visible after top 15% */
+        rgba(0, 0, 0, 1) 85%,
+        /* Stay visible until 85% down */
+        rgba(0, 0, 0, 0) 100%
+        /* Fade to transparent at the bottom */
+      );
   }
 }
 

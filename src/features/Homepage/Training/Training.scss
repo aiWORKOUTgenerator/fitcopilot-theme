@@ -1,9 +1,15 @@
 // Canonical design system import - MUST BE FIRST
 @import '../../../styles/design-system/index';
 
+// Define the Training section's background color variable to match Journey
+:root {
+    --training-background: rgba(10, 16, 27, 1); // Matches --journey-background
+}
+
 .training-section {
     position: relative;
     z-index: 1;
+    background-color: var(--training-background); // Explicitly set background color to match Journey
 
     /* Properly centered text styling */
     .text-center {
@@ -35,22 +41,7 @@
         }
     }
 
-    // Grid pattern background
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-image:
-            linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-        background-size: 20px 20px;
-        background-position: center center;
-        z-index: -1;
-        pointer-events: none;
-    }
+    // Grid pattern is completely removed
 
     .program-card {
         background-color: rgba(31, 41, 55, 0.5); // bg-gray-800 with opacity

@@ -1,38 +1,25 @@
 // Canonical design system import - MUST BE FIRST
 @import '../../../styles/design-system/index';
 
+// Define explicit consistent background color to match other sections
+:root {
+  --testimonials-background: rgba(10, 16, 27, 1); // Matches --journey-background
+}
+
 /* Add high-specificity selector to ensure our styles take precedence */
 body .testimonials-section {
   position: relative !important;
   overflow: hidden !important;
+  background-color: var(--testimonials-background) !important; // Explicit background color
 
-  // Create a theme-aware pattern using pseudo-elements instead of SVG data URL
+  // Grid pattern is completely removed
   &::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px) !important;
-    background-size: 20px 20px !important;
-    z-index: 0 !important;
-    opacity: 0.7 !important;
+    display: none !important; // Remove the grid pattern completely
   }
 
-  // Subtle gradient overlay for depth
+  // Remove the gradient overlay
   &::after {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    background: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 100%) !important;
-    z-index: 1 !important;
-    pointer-events: none !important;
+    display: none !important; // Remove the after element completely
   }
 
   // Make sure content is above the background layers
@@ -82,33 +69,20 @@ body .testimonials-section {
     }
   }
 
-  // Theme variant specific styling
+  // Theme variant specific styling - grid patterns are disabled
   &[data-variant="gym"] {
-    &::before {
-      background-image: radial-gradient(rgba(132, 204, 22, 0.03) 1px, transparent 1px) !important;
-      background-size: 20px 20px !important;
-    }
+    // Grid pattern is removed for all variants
   }
 
   &[data-variant="sports"] {
-    &::before {
-      background-image: linear-gradient(45deg, rgba(34, 211, 238, 0.03) 25%, transparent 25%, transparent 50%,
-          rgba(34, 211, 238, 0.03) 50%, rgba(34, 211, 238, 0.03) 75%, transparent 75%, transparent) !important;
-      background-size: 20px 20px !important;
-    }
+    // Grid pattern is removed for all variants
   }
 
   &[data-variant="wellness"] {
-    &::before {
-      background-image: radial-gradient(circle at center, rgba(167, 139, 250, 0.03) 0%, transparent 60%) !important;
-      background-size: 80px 80px !important;
-    }
+    // Grid pattern is removed for all variants
   }
 
   &[data-variant="modern"] {
-    &::before {
-      background-image: linear-gradient(rgba(251, 191, 36, 0.03) 1px, transparent 1px) !important;
-      background-size: 20px 20px !important;
-    }
+    // Grid pattern is removed for all variants
   }
 }
