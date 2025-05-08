@@ -239,7 +239,7 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
 
   return (
     <TooltipThemeProvider theme="pricing">
-      <section className="pricing-section py-24 bg-[#0B1121]" id="pricing">
+      <section className="pricing-section py-24" id="pricing">
         <div className="container mx-auto px-4 relative">
           {/* Floating particles in background */}
           <div className="price-particles pointer-events-none">
@@ -248,7 +248,7 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
 
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4 text-white">
-              Simple <span className="text-[#CCFF00]">Pricing</span>
+              Simple <span className="text-accent">Pricing</span>
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               Choose the plan that fits your fitness journey
@@ -262,18 +262,18 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
 
               <button
                 onClick={() => setIsYearly(!isYearly)}
-                className="relative inline-flex h-7 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[#151F38] transition-colors duration-200 ease-in-out focus:outline-none"
+                className="relative inline-flex h-7 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-surface transition-colors duration-200 ease-in-out focus:outline-none"
                 role="switch"
                 aria-checked={isYearly}
               >
                 <span
-                  className={`pointer-events-none block h-6 w-6 transform rounded-full bg-[#CCFF00] shadow-lg ring-0 transition duration-200 ease-in-out ${isYearly ? 'translate-x-7' : 'translate-x-0'}`}
+                  className={`pointer-events-none block h-6 w-6 transform rounded-full bg-accent shadow-lg ring-0 transition duration-200 ease-in-out ${isYearly ? 'translate-x-7' : 'translate-x-0'}`}
                 />
               </button>
 
               <span className={`ml-4 flex items-center ${isYearly ? 'text-white font-semibold' : 'text-gray-400'}`}>
                 Yearly
-                <span className="ml-2 text-xs bg-[#CCFF00] text-[#0B1121] px-2 py-0.5 rounded-full font-medium">
+                <span className="ml-2 text-xs bg-accent text-inverse px-2 py-0.5 rounded-full font-medium">
                   Save 20%
                 </span>
               </span>
@@ -284,7 +284,7 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
             {defaultPlans.map((plan, index) => (
               <div
                 key={plan.id}
-                className={`pricing-card relative rounded-2xl bg-[#151F38] border ${plan.name === 'Basic'
+                className={`pricing-card relative rounded-2xl bg-surface border ${plan.name === 'Basic'
                   ? 'border-blue-300/40 shadow-optimized-blue'
                   : plan.name === 'Pro'
                     ? 'border-lime-300/40 shadow-optimized-lime cursor-pointer'
@@ -547,14 +547,14 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
 
           <div className="text-center cta-area mt-16">
             <div className="inline-flex items-center px-6 py-3 rounded-xl bg-gray-800/70 border border-gray-700">
-              <Clock className="w-5 h-5 text-[#CCFF00] mr-3" aria-hidden="true" />
+              <Clock className="w-5 h-5 text-accent mr-3" aria-hidden="true" />
               <span className="text-gray-300">Limited time <span className="text-white font-medium">beta pricing</span> available during our launch phase.</span>
             </div>
           </div>
 
           <div className="text-center cta-area mt-8">
             <p className="text-gray-400">
-              Need a custom solution for your team or gym? <a href="#contact" className="text-[#CCFF00] hover:underline">Contact us</a>
+              Need a custom solution for your team or gym? <a href="#contact" className="text-accent hover:underline">Contact us</a>
             </p>
           </div>
         </div>

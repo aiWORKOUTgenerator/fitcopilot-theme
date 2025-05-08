@@ -1,15 +1,16 @@
 // Canonical design system import – MUST BE FIRST
 @import '../../../styles/design-system/index';
 
-/* Define consistent background color that matches the inline Tailwind bg color */
+/* Define consistent background color that matches the other sections */
 :root {
-  --pricing-background: #0B1121;
+  --pricing-background: rgba(10, 16, 27, 1); // Matches --journey-background
 }
 
 /* Pricing Section Styles */
 .pricing-section {
   position: var(--pr-position-relative);
   overflow: var(--pr-overflow-hidden);
+  background-color: var(--pricing-background);
 
   // Add a gradient fade overlay for smooth transition at the top
   &::after {
@@ -20,9 +21,9 @@
     right: 0;
     height: 150px; // Height of the gradient fade
     background: linear-gradient(to bottom,
-        rgba(11, 17, 33, 0) 0%, // Start completely transparent (using the RGB values of #0B1121)
-        rgba(11, 17, 33, 0.6) 40%, // Fade to semi-transparent
-        rgba(11, 17, 33, 1) 100% // End with full opacity
+        rgba(10, 16, 27, 0) 0%, // Start completely transparent 
+        rgba(10, 16, 27, 0.6) 40%, // Fade to semi-transparent
+        rgba(10, 16, 27, 1) 100% // End with full opacity
       );
     z-index: 1; // Above the pattern but below the content
     pointer-events: none;
@@ -74,6 +75,102 @@
       margin-left: auto !important;
       margin-right: auto !important;
     }
+  }
+
+  /* Design system token classes for color */
+  // Text colors
+  .text-accent {
+    color: var(--color-accent-400);
+  }
+
+  .text-inverse {
+    color: var(--color-text-inverse);
+  }
+
+  .text-primary {
+    color: var(--color-text-primary);
+  }
+
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+
+  // Background colors
+  .bg-accent {
+    background-color: var(--color-accent-400);
+  }
+
+  .bg-surface {
+    background-color: var(--color-ui-surface);
+  }
+
+  .bg-background-primary {
+    background-color: var(--color-ui-background);
+  }
+
+  .bg-surface-translucent {
+    background-color: rgba(31, 41, 55, 0.7); // Translucent surface color
+  }
+
+  // Border colors
+  .border-accent {
+    border-color: var(--color-accent-400);
+  }
+
+  .border-divider {
+    border-color: var(--color-ui-border);
+  }
+
+  // Card styles
+  .pricing-card {
+    background-color: var(--color-ui-surface);
+    border: 1px solid var(--color-ui-border);
+
+    &.basic-card {
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: var(--pr-shadow-blue);
+    }
+
+    &.pro-card {
+      border-color: rgba(132, 204, 22, 0.4);
+      box-shadow: var(--pr-shadow-lime);
+    }
+
+    &.elite-card {
+      border-color: rgba(139, 92, 246, 0.4);
+      box-shadow: var(--pr-shadow-purple);
+    }
+  }
+
+  // Badge styles
+  .badge {
+    background-color: rgba(31, 41, 55, 0.5);
+    border: 1px solid var(--color-ui-border);
+
+    &.badge-basic {
+      color: var(--color-text-secondary);
+      border-color: rgba(209, 213, 219, 0.3);
+    }
+
+    &.badge-pro {
+      color: var(--color-accent-400); // Use design system variable for lime color
+      border-color: rgba(132, 204, 22, 0.3);
+    }
+
+    &.badge-elite {
+      color: var(--color-primary); // Use design system variable for violet color
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+  }
+
+  // CTA area styles
+  .cta-container {
+    background-color: rgba(31, 41, 55, 0.7);
+    border: 1px solid var(--color-ui-border);
   }
 }
 
