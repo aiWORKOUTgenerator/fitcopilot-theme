@@ -1,55 +1,130 @@
 import {
   Activity,
+  Apple,
   BarChart2,
+  Bike,
   Calendar,
   Clock,
+  Coffee,
   Cpu,
   Dumbbell,
   FileText,
   Flame,
+  Footprints,
+  Heart,
   Layers,
   Lightbulb,
+  Medal,
   Microscope,
   Package,
   PieChart,
   Settings,
   Target,
+  Timer,
   TrendingUp,
   Trophy,
   Zap
 } from 'lucide-react';
-import React, { useState } from 'react';
-import { Section } from '../../../components/shared';
+import React from 'react';
+import './_tokens.scss';
 import { JourneyCTA, JourneyStep, SectionHeader } from './components';
-import './journey-connector-fix.scss';
+import { useReducedMotion } from './hooks/useReducedMotion';
+import './journey-animations.scss';
 import './journey-utility-classes.scss';
 import './Journey.scss';
 import {
   JourneyProps,
-  VariantKey,
-  isVariant
+  JourneyStep as JourneyStepType
 } from './types';
+import { useJourneyStore } from './utils/journeyState';
+import { getIconColorClass, getStepGradientClass } from './utils/tokenUtils';
+
+/**
+ * FloatingIcon component for Journey background
+ */
+interface FloatingIconProps {
+  children: React.ReactNode;
+  delay: number;
+  speed: number;
+  left: number;
+  top: number;
+}
+
+const FloatingIcon: React.FC<FloatingIconProps> = ({
+  children,
+  delay,
+  speed,
+  left,
+  top
+}) => {
+  return (
+    <div
+      className="journey-floating-icon"
+      style={{
+        left: `${left}%`,
+        top: `${top}%`,
+        animation: `float ${speed}s ease-in-out infinite ${delay}s`
+      }}
+      aria-hidden="true"
+    >
+      {children}
+    </div>
+  );
+};
+
+/**
+ * FloatingIcons component for Journey background decoration
+ */
+const FloatingIcons: React.FC<{ variant?: string }> = ({ variant = 'default' }) => {
+  // Floating icons data - adjusted positioning for container context
+  const floatingIcons = [
+    { Icon: Dumbbell, size: 24, left: 5, top: 12, delay: 0, speed: 8 },
+    { Icon: Timer, size: 28, left: 18, top: 65, delay: 1.5, speed: 10 },
+    { Icon: Medal, size: 22, left: 28, top: 32, delay: 0.8, speed: 12 },
+    { Icon: Flame, size: 30, left: 85, top: 18, delay: 2, speed: 9 },
+    { Icon: Heart, size: 20, left: 88, top: 70, delay: 1, speed: 11 },
+    { Icon: Apple, size: 20, left: 8, top: 85, delay: 2.5, speed: 10 },
+    { Icon: Coffee, size: 18, left: 75, top: 8, delay: 0.5, speed: 7 },
+    { Icon: Footprints, size: 26, left: 65, top: 88, delay: 1.8, speed: 9 },
+    { Icon: Trophy, size: 22, left: 55, top: 15, delay: 2.2, speed: 11 },
+    { Icon: Bike, size: 32, left: 10, top: 45, delay: 1.2, speed: 8 },
+    { Icon: TrendingUp, size: 28, left: 35, top: 75, delay: 0.3, speed: 10 },
+    { Icon: Calendar, size: 24, left: 45, top: 45, delay: 2.8, speed: 7 },
+    { Icon: PieChart, size: 26, left: 90, top: 40, delay: 0.7, speed: 12 }
+  ];
+
+  return (
+    <div className="journey-floating-icons">
+      {floatingIcons.map(({ Icon, size, left, top, delay, speed }, index) => (
+        <div
+          key={index}
+          className="journey-floating-icon"
+          style={{
+            left: `${left}%`,
+            top: `${top}%`,
+            animationDelay: `${delay}s`,
+            animationDuration: `${speed}s`
+          }}
+        >
+          <Icon size={size} />
+        </div>
+      ))}
+    </div>
+  );
+};
 
 /**
  * Journey component - Shows the user journey/process flow with expandable steps
  */
-export const Journey: React.FC<JourneyProps> = (props) => {
-  const { journey = [], variant = 'default' } = props;
-  const [expandedStep, setExpandedStep] = useState<number | null>(null);
+const Journey: React.FC<JourneyProps> = ({
+  journey = [],
+  variant = 'default'
+}) => {
+  const prefersReducedMotion = useReducedMotion();
+  const { expandedStep, setExpandedStep } = useJourneyStore();
 
-  // Define detailed journey steps
-  const journeySteps = journey.length > 0 ? journey.map(step => ({
-    id: step.id,
-    title: step.title,
-    description: step.description,
-    number: step.number,
-    // Default values for the new properties if not provided from props
-    icon: getIconForStep(step.number),
-    delay: step.number * 100,
-    accentColor: getAccentColorForStep(step.number, variant),
-    ctaText: getCTATextForStep(step.number),
-    detailedFeatures: getDetailedFeaturesForStep(step.number, variant)
-  })) : [
+  // Define detailed journey steps if not provided
+  const journeySteps = journey.length > 0 ? journey : [
     {
       id: 1,
       number: 1,
@@ -57,28 +132,28 @@ export const Journey: React.FC<JourneyProps> = (props) => {
       description: "Tell us what you want to achieve - strength, muscle gain, fat loss, or general fitness.",
       icon: <Target size={40} className="text-gray-900" />,
       delay: 100,
-      accentColor: "from-lime-300 to-emerald-400",
+      accentColor: getStepGradientClass(1),
       ctaText: "Set Your Goals",
       detailedFeatures: [
         {
           title: "Strength Building",
           description: "Focus on compound movements and progressive overload for maximum strength gains.",
-          icon: <Dumbbell size={24} className={getIconColorClass(variant, 'lime')} />
+          icon: <Dumbbell size={24} className={getIconColorClass(1)} />
         },
         {
           title: "Fat Loss",
           description: "Optimize caloric deficit with the right mix of HIIT and steady-state cardio.",
-          icon: <Flame size={24} className={getIconColorClass(variant, 'lime')} />
+          icon: <Flame size={24} className={getIconColorClass(1)} />
         },
         {
           title: "Muscle Growth",
           description: "Hypertrophy-focused programs with proper volume and intensity distribution.",
-          icon: <Zap size={24} className={getIconColorClass(variant, 'lime')} />
+          icon: <Zap size={24} className={getIconColorClass(1)} />
         },
         {
           title: "General Fitness",
           description: "Well-rounded programs balancing strength, endurance, and mobility.",
-          icon: <Activity size={24} className={getIconColorClass(variant, 'lime')} />
+          icon: <Activity size={24} className={getIconColorClass(1)} />
         }
       ]
     },
@@ -89,28 +164,28 @@ export const Journey: React.FC<JourneyProps> = (props) => {
       description: "Specify your experience level, available equipment, and time constraints.",
       icon: <Settings size={40} className="text-gray-900" />,
       delay: 200,
-      accentColor: "from-cyan-300 to-blue-400",
+      accentColor: getStepGradientClass(2),
       ctaText: "Personalize",
       detailedFeatures: [
         {
           title: "Equipment Selection",
           description: "From minimal home setups to full gym access - we adapt to what you have.",
-          icon: <Dumbbell size={24} className={getIconColorClass(variant, 'cyan')} />
+          icon: <Dumbbell size={24} className={getIconColorClass(2)} />
         },
         {
           title: "Time Management",
           description: "Short on time? Our AI optimizes workouts from 15 minutes to 90+ minutes.",
-          icon: <Clock size={24} className={getIconColorClass(variant, 'cyan')} />
+          icon: <Clock size={24} className={getIconColorClass(2)} />
         },
         {
           title: "Experience Level",
           description: "Whether you're a beginner or advanced, we scale appropriately for your level.",
-          icon: <Layers size={24} className={getIconColorClass(variant, 'cyan')} />
+          icon: <Layers size={24} className={getIconColorClass(2)} />
         },
         {
           title: "Training Frequency",
           description: "Flexible scheduling from 2-6 days per week based on your availability.",
-          icon: <Calendar size={24} className={getIconColorClass(variant, 'cyan')} />
+          icon: <Calendar size={24} className={getIconColorClass(2)} />
         }
       ]
     },
@@ -121,28 +196,28 @@ export const Journey: React.FC<JourneyProps> = (props) => {
       description: "Our AI generates a tailored workout program specific to your needs and capabilities.",
       icon: <Package size={40} className="text-gray-900" />,
       delay: 300,
-      accentColor: "from-violet-300 to-purple-400",
+      accentColor: getStepGradientClass(3),
       ctaText: "See Sample Plan",
       detailedFeatures: [
         {
           title: "AI-Powered Design",
           description: "Advanced algorithms create the optimal exercise selection and progression.",
-          icon: <Cpu size={24} className={getIconColorClass(variant, 'violet')} />
+          icon: <Cpu size={24} className={getIconColorClass(3)} />
         },
         {
           title: "Scientific Approach",
           description: "Evidence-based programming following proven training principles.",
-          icon: <Microscope size={24} className={getIconColorClass(variant, 'violet')} />
+          icon: <Microscope size={24} className={getIconColorClass(3)} />
         },
         {
           title: "Adaptive Progression",
           description: "Your plan evolves as you progress, ensuring continued results.",
-          icon: <TrendingUp size={24} className={getIconColorClass(variant, 'violet')} />
+          icon: <TrendingUp size={24} className={getIconColorClass(3)} />
         },
         {
           title: "Detailed Instructions",
           description: "Clear guidance on execution, tempo, and form for each exercise.",
-          icon: <FileText size={24} className={getIconColorClass(variant, 'violet')} />
+          icon: <FileText size={24} className={getIconColorClass(3)} />
         }
       ]
     },
@@ -153,28 +228,28 @@ export const Journey: React.FC<JourneyProps> = (props) => {
       description: "Log your workouts, track your metrics, and watch your progress over time.",
       icon: <BarChart2 size={40} className="text-gray-900" />,
       delay: 400,
-      accentColor: "from-amber-300 to-orange-400",
+      accentColor: getStepGradientClass(4),
       ctaText: "View Analytics",
       detailedFeatures: [
         {
           title: "Visual Analytics",
           description: "Interactive charts showing your strength progression and volume over time.",
-          icon: <PieChart size={24} className={getIconColorClass(variant, 'amber')} />
+          icon: <PieChart size={24} className={getIconColorClass(4)} />
         },
         {
           title: "Achievement System",
           description: "Unlock badges and achievements as you hit milestones in your fitness journey.",
-          icon: <Trophy size={24} className={getIconColorClass(variant, 'amber')} />
+          icon: <Trophy size={24} className={getIconColorClass(4)} />
         },
         {
           title: "Body Composition",
           description: "Track weight, measurements, and body composition changes visually.",
-          icon: <Activity size={24} className={getIconColorClass(variant, 'amber')} />
+          icon: <Activity size={24} className={getIconColorClass(4)} />
         },
         {
           title: "Smart Insights",
           description: "AI-powered observations about your performance patterns and suggestions.",
-          icon: <Lightbulb size={24} className={getIconColorClass(variant, 'amber')} />
+          icon: <Lightbulb size={24} className={getIconColorClass(4)} />
         }
       ]
     }
@@ -193,214 +268,23 @@ export const Journey: React.FC<JourneyProps> = (props) => {
 
   const timelineColorClass = getTimelineColorClass(journeySteps);
 
-  const toggleStep = (index: number) => {
+  const handleStepClick = (index: number) => {
     if (expandedStep === index) {
       setExpandedStep(null);
     } else {
       setExpandedStep(index);
+
+      // Scroll to the expanded step with a slight delay for animation
+      if (!prefersReducedMotion) {
+        setTimeout(() => {
+          const stepElement = document.querySelector(`#journey-step-${index}`);
+          if (stepElement) {
+            stepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 100);
+      }
     }
   };
-
-  // Helper functions to provide defaults
-  function getIconForStep(stepNumber: number) {
-    switch (stepNumber) {
-      case 1: return <Target size={40} className="text-gray-900" />;
-      case 2: return <Settings size={40} className="text-gray-900" />;
-      case 3: return <Package size={40} className="text-gray-900" />;
-      case 4: return <BarChart2 size={40} className="text-gray-900" />;
-      default: return <Target size={40} className="text-gray-900" />;
-    }
-  }
-
-  /**
-   * Get icon color class based on variant and color family
-   */
-  function getIconColorClass(variant: VariantKey, colorFamily: 'lime' | 'cyan' | 'violet' | 'amber'): string {
-    if (isVariant(variant, 'gym')) {
-      return 'text-violet-200';
-    } else if (isVariant(variant, 'sports')) {
-      return 'text-cyan-200';
-    } else if (isVariant(variant, 'wellness')) {
-      return 'text-teal-200';
-    } else if (isVariant(variant, 'modern')) {
-      return 'text-amber-200';
-    } else {
-      // Default variant with color family
-      switch (colorFamily) {
-        case 'lime': return 'text-lime-200';
-        case 'cyan': return 'text-cyan-200';
-        case 'violet': return 'text-violet-200';
-        case 'amber': return 'text-amber-200';
-        default: return 'text-lime-200';
-      }
-    }
-  }
-
-  /**
-   * Get the accent color gradient based on step number and theme variant
-   */
-  function getAccentColorForStep(stepNumber: number, variant: VariantKey): string {
-    // Apply variant-specific styling with type narrowing
-    if (isVariant(variant, 'gym')) {
-      // Gym variant has more vibrant colors
-      switch (stepNumber) {
-        case 1: return "from-lime-400 to-emerald-500";
-        case 2: return "from-cyan-400 to-blue-500";
-        case 3: return "from-violet-400 to-purple-500";
-        case 4: return "from-amber-400 to-orange-500";
-        default: return "from-lime-400 to-emerald-500";
-      }
-    } else if (isVariant(variant, 'sports')) {
-      // Sports variant has more blue/cyan tones
-      switch (stepNumber) {
-        case 1: return "from-cyan-300 to-blue-400";
-        case 2: return "from-blue-300 to-indigo-400";
-        case 3: return "from-indigo-300 to-violet-400";
-        case 4: return "from-lime-300 to-emerald-400";
-        default: return "from-cyan-300 to-blue-400";
-      }
-    } else if (isVariant(variant, 'wellness')) {
-      // Wellness variant has more purple/violet tones
-      switch (stepNumber) {
-        case 1: return "from-violet-300 to-purple-400";
-        case 2: return "from-pink-300 to-rose-400";
-        case 3: return "from-amber-300 to-orange-400";
-        case 4: return "from-emerald-300 to-teal-400";
-        default: return "from-violet-300 to-purple-400";
-      }
-    } else if (isVariant(variant, 'modern')) {
-      // Modern variant has amber/orange tones
-      switch (stepNumber) {
-        case 1: return "from-amber-300 to-orange-400";
-        case 2: return "from-rose-300 to-pink-400";
-        case 3: return "from-violet-300 to-purple-400";
-        case 4: return "from-blue-300 to-indigo-400";
-        default: return "from-amber-300 to-orange-400";
-      }
-    } else {
-      // Default variant
-      switch (stepNumber) {
-        case 1: return "from-lime-300 to-emerald-400";
-        case 2: return "from-cyan-300 to-blue-400";
-        case 3: return "from-violet-300 to-purple-400";
-        case 4: return "from-amber-300 to-orange-400";
-        default: return "from-lime-300 to-emerald-400";
-      }
-    }
-  }
-
-  function getCTATextForStep(stepNumber: number) {
-    switch (stepNumber) {
-      case 1: return "Set Your Goals";
-      case 2: return "Personalize";
-      case 3: return "See Sample Plan";
-      case 4: return "View Analytics";
-      default: return "Learn More";
-    }
-  }
-
-  function getDetailedFeaturesForStep(stepNumber: number, variant: VariantKey) {
-    // Get the appropriate icon color class for the variant
-    const getIconColor = (colorFamily: 'lime' | 'cyan' | 'violet' | 'amber') =>
-      getIconColorClass(variant, colorFamily);
-
-    switch (stepNumber) {
-      case 1:
-        return [
-          {
-            title: "Strength Building",
-            description: "Focus on compound movements and progressive overload for maximum strength gains.",
-            icon: <Dumbbell size={24} className={getIconColor('lime')} />
-          },
-          {
-            title: "Fat Loss",
-            description: "Optimize caloric deficit with the right mix of HIIT and steady-state cardio.",
-            icon: <Flame size={24} className={getIconColor('lime')} />
-          },
-          {
-            title: "Muscle Growth",
-            description: "Hypertrophy-focused programs with proper volume and intensity distribution.",
-            icon: <Zap size={24} className={getIconColor('lime')} />
-          },
-          {
-            title: "General Fitness",
-            description: "Well-rounded programs balancing strength, endurance, and mobility.",
-            icon: <Activity size={24} className={getIconColor('lime')} />
-          }
-        ];
-      case 2:
-        return [
-          {
-            title: "Equipment Selection",
-            description: "From minimal home setups to full gym access - we adapt to what you have.",
-            icon: <Dumbbell size={24} className={getIconColor('cyan')} />
-          },
-          {
-            title: "Time Management",
-            description: "Short on time? Our AI optimizes workouts from 15 minutes to 90+ minutes.",
-            icon: <Clock size={24} className={getIconColor('cyan')} />
-          },
-          {
-            title: "Experience Level",
-            description: "Whether you're a beginner or advanced, we scale appropriately for your level.",
-            icon: <Layers size={24} className={getIconColor('cyan')} />
-          },
-          {
-            title: "Training Frequency",
-            description: "Flexible scheduling from 2-6 days per week based on your availability.",
-            icon: <Calendar size={24} className={getIconColor('cyan')} />
-          }
-        ];
-      case 3:
-        return [
-          {
-            title: "AI-Powered Design",
-            description: "Advanced algorithms create the optimal exercise selection and progression.",
-            icon: <Cpu size={24} className={getIconColor('violet')} />
-          },
-          {
-            title: "Scientific Approach",
-            description: "Evidence-based programming following proven training principles.",
-            icon: <Microscope size={24} className={getIconColor('violet')} />
-          },
-          {
-            title: "Adaptive Progression",
-            description: "Your plan evolves as you progress, ensuring continued results.",
-            icon: <TrendingUp size={24} className={getIconColor('violet')} />
-          },
-          {
-            title: "Detailed Instructions",
-            description: "Clear guidance on execution, tempo, and form for each exercise.",
-            icon: <FileText size={24} className={getIconColor('violet')} />
-          }
-        ];
-      case 4:
-        return [
-          {
-            title: "Visual Analytics",
-            description: "Interactive charts showing your strength progression and volume over time.",
-            icon: <PieChart size={24} className={getIconColor('amber')} />
-          },
-          {
-            title: "Achievement System",
-            description: "Unlock badges and achievements as you hit milestones in your fitness journey.",
-            icon: <Trophy size={24} className={getIconColor('amber')} />
-          },
-          {
-            title: "Body Composition",
-            description: "Track weight, measurements, and body composition changes visually.",
-            icon: <Activity size={24} className={getIconColor('amber')} />
-          },
-          {
-            title: "Smart Insights",
-            description: "AI-powered observations about your performance patterns and suggestions.",
-            icon: <Lightbulb size={24} className={getIconColor('amber')} />
-          }
-        ];
-      default:
-        return [];
-    }
-  }
 
   // Create variant-specific props for the Section component
   const sectionProps = {
@@ -414,39 +298,70 @@ export const Journey: React.FC<JourneyProps> = (props) => {
   };
 
   return (
-    <Section {...sectionProps}>
-      <SectionHeader
-        title="Your Fitness Journey"
-        description="Four simple steps to transform your fitness routine with AI-powered workouts"
-        variant={variant}
-      />
+    <section
+      className="w-full py-16 md:pt-8 md:pb-24 px-4 bg-journey-bg relative overflow-hidden"
+      data-theme={variant !== 'default' ? variant : undefined}
+    >
+      {/* Create a visual connector from Features to Journey */}
+      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background-primary to-transparent z-0"></div>
 
-      <div className="journey-steps mt-16">
-        <div className={`journey-timeline ${timelineColorClass}`}>
-          {journeySteps.map((step, index) => (
-            <div key={step.id} className="journey-step-container">
-              <JourneyStep
-                step={step}
-                index={index}
-                isExpanded={expandedStep === index}
-                onToggle={() => toggleStep(index)}
-                isLast={index === journeySteps.length - 1}
-                variant={variant}
-              />
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Section Header */}
+        <SectionHeader
+          title={<>Your Fitness <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">Journey</span></>}
+          description="Four simple steps to transform your fitness routine with AI-powered workouts"
+          variant={variant}
+        />
+
+        {/* Journey Steps - Wrapped in a cohesive container */}
+        <div
+          className="journey-steps mt-16"
+          data-aos={prefersReducedMotion ? undefined : 'fade-up'}
+          data-aos-delay={prefersReducedMotion ? undefined : '100'}
+        >
+          <div className="journey-container rounded-3xl bg-journey-bg-alt p-6 md:p-10 relative overflow-hidden border journey-border">
+            {/* Add floating icons as the background */}
+            <FloatingIcons variant={variant} />
+
+            <div className={`journey-timeline ${timelineColorClass}`}>
+              {journeySteps.map((step: JourneyStepType, index: number) => (
+                <div
+                  key={step.id}
+                  className="journey-step-container"
+                  id={`journey-step-${index}`}
+                >
+                  <JourneyStep
+                    step={step}
+                    index={index}
+                    isExpanded={expandedStep === index}
+                    onToggle={() => handleStepClick(index)}
+                    isLast={index === journeySteps.length - 1}
+                    variant={variant}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+        </div>
+
+        {/* Main CTA */}
+        <div
+          className="text-center mt-16"
+          data-aos={prefersReducedMotion ? undefined : 'fade-up'}
+          data-aos-delay={prefersReducedMotion ? undefined : '500'}
+        >
+          <JourneyCTA
+            text="Start Your Journey Now"
+            href="https://aigymengine.com/workout-generator-registration"
+            buttonVariant="gradient"
+            gradientColor="lime"
+            buttonSize="large"
+            showIcon={true}
+            variant={variant}
+          />
         </div>
       </div>
-
-      <JourneyCTA
-        text="Start Your Fitness Journey"
-        href="https://builder.fitcopilot.ai"
-        variant={variant}
-        gradientColor="green"
-        dataAos="fade-up"
-        dataAosDelay="300"
-      />
-    </Section>
+    </section>
   );
 };
 

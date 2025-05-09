@@ -1,5 +1,7 @@
 @import "../../../styles/design-system/index.scss";
 
+/* Removed .journey-step styling since that container no longer exists */
+
 /* Breakpoint definitions for Journey component */
 $breakpoint-xs: 0;
 $breakpoint-sm: 640px;
@@ -61,12 +63,6 @@ $breakpoint-xxl: 1536px;
   --journey-step-number-size: var(--journey-step-number-size);
   --journey-connector-width: 2px;
 
-  /* Step connector height and spacing - must be exactly equal */
-  --journey-connector-height: 60px;
-  /* Space between steps */
-  --journey-step-spacing: 60px;
-  /* Must match connector height */
-
   @media (min-width: $breakpoint-md) {
     /* Typography updates for tablet and up */
     --journey-title-font-size: 2.5rem;
@@ -91,12 +87,6 @@ $breakpoint-xxl: 1536px;
 
     --journey-icon-size: 3rem;
     --journey-step-number-size: 2rem;
-
-    /* Step connector height and spacing for larger screens - must be exactly equal */
-    --journey-connector-height: 80px;
-    /* Space between steps */
-    --journey-step-spacing: 80px;
-    /* Must match connector height */
   }
 
   @media (min-width: $breakpoint-lg) {
@@ -123,11 +113,6 @@ $breakpoint-xxl: 1536px;
   position: relative;
   overflow: hidden;
   background-color: var(--journey-background);
-  margin-top: -4rem;
-  /* Create slight overlap with Features section */
-  padding-top: 4rem;
-  /* Add padding to compensate for negative margin */
-  padding-bottom: var(--journey-section-padding-bottom);
 
   // Add spacing to headers
   h2,
@@ -154,7 +139,7 @@ $breakpoint-xxl: 1536px;
     line-height: var(--journey-body-line-height);
   }
 
-  /* Properly centered text styling */
+  /* Properly centered text styling - matching PersonalTraining */
   .text-center {
     display: flex;
     flex-direction: column;
@@ -162,84 +147,136 @@ $breakpoint-xxl: 1536px;
     text-align: center !important;
     width: 100%;
 
-    h2 {
-      text-align: center !important;
-      width: 100%;
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
-
-    p {
-      text-align: center !important;
-      width: 100%;
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
-
+    h2,
+    p,
     span {
       text-align: center !important;
       width: 100%;
       margin-left: auto !important;
       margin-right: auto !important;
     }
-  }
 
-  // Grid pattern background
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image:
-      linear-gradient(var(--journey-grid-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--journey-grid-line) 1px, transparent 1px);
-    background-size: 20px 20px;
-    background-position: center center;
-    z-index: -1;
-    pointer-events: none;
-    // Update mask gradient to fade at both top and bottom
-    mask-image:
-      linear-gradient(to bottom,
-        rgba(0, 0, 0, 0) 0%,
-        /* Start transparent at the very top */
-        rgba(0, 0, 0, 1) 15%,
-        /* Fully visible after top 15% */
-        rgba(0, 0, 0, 1) 85%,
-        /* Stay visible until 85% down */
-        rgba(0, 0, 0, 0) 100%
-        /* Fade to transparent at the bottom */
-      );
-    -webkit-mask-image:
-      linear-gradient(to bottom,
-        rgba(0, 0, 0, 0) 0%,
-        /* Start transparent at the very top */
-        rgba(0, 0, 0, 1) 15%,
-        /* Fully visible after top 15% */
-        rgba(0, 0, 0, 1) 85%,
-        /* Stay visible until 85% down */
-        rgba(0, 0, 0, 0) 100%
-        /* Fade to transparent at the bottom */
-      );
+    h2 {
+      .bg-gradient-to-r {
+        background-size: 100%;
+        background-clip: text;
+        display: inline-block;
+      }
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.7); // Match PersonalTraining gray-400
+      max-width: 32rem; // Equivalent to max-w-2xl
+    }
   }
 }
 
-/* Journey steps container - adds proper spacing between steps */
+/* Floating icons container for Journey */
+.journey-floating-icons {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.8;
+  /* Slightly higher overall opacity */
+}
+
+/* Journey container - Visual Unifying Container */
+.journey-container {
+  position: relative;
+  overflow: hidden;
+
+  /* Ensure proper z-indexing for container elements */
+  .journey-timeline {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Adjust any journey-step styling to maintain proper z-index */
+  .journey-step-container {
+    position: relative;
+    z-index: 3;
+  }
+}
+
+/* Floating icon styling for Journey */
+.journey-floating-icon {
+  position: absolute;
+  opacity: 0.12;
+  /* Slightly reduced opacity for subtle effect */
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.1));
+  animation: float 15s ease-in-out infinite;
+
+  svg {
+    color: var(--journey-accent-primary);
+    fill: rgba(var(--color-lime-500-rgb), 0.06);
+  }
+}
+
+/* Theme variant overrides */
+[data-theme="gym"] {
+  .journey-floating-icon svg {
+    color: var(--color-violet-500);
+    fill: rgba(var(--color-violet-rgb), 0.06);
+    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.2));
+  }
+}
+
+[data-theme="sports"] {
+  .journey-floating-icon svg {
+    color: var(--color-cyan-500);
+    fill: rgba(var(--color-cyan-rgb), 0.06);
+    filter: drop-shadow(0 0 6px rgba(8, 145, 178, 0.2));
+  }
+}
+
+[data-theme="wellness"] {
+  .journey-floating-icon svg {
+    color: var(--color-teal-500);
+    fill: rgba(var(--color-teal-rgb), 0.06);
+    filter: drop-shadow(0 0 6px rgba(20, 184, 166, 0.2));
+  }
+}
+
+/* Animation for the floating icons */
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* Journey steps container */
 .journey-steps {
   display: flex;
   flex-direction: column;
-  margin-top: 3rem;
+  margin-top: 2rem;
 
   @media (min-width: $breakpoint-md) {
-    margin-top: 4rem;
+    margin-top: 2.5rem;
   }
 }
 
-/* Container for the actual step content to ensure proper spacing */
+/* Container for steps with margin from token system */
 .journey-step-container {
   margin-bottom: var(--journey-step-spacing);
   position: relative;
+
+  @media (min-width: $breakpoint-md) {
+    margin-bottom: var(--journey-step-spacing-md);
+  }
+
+  @media (min-width: $breakpoint-lg) {
+    margin-bottom: var(--journey-step-spacing-lg);
+  }
 }
 
 /* Step connector - vertical line connecting the steps */
@@ -252,7 +289,6 @@ $breakpoint-xxl: 1536px;
   bottom: calc(-1 * var(--journey-connector-height));
 
   @media (max-width: $breakpoint-md-max) {
-    // Adjust connector position on mobile
     left: 24px !important;
   }
 
@@ -277,6 +313,7 @@ $breakpoint-xxl: 1536px;
 /* Journey timeline - additional visual container for steps */
 .journey-timeline {
   position: relative;
+  padding: 16px 0;
 
   &::before {
     content: '';
@@ -289,7 +326,6 @@ $breakpoint-xxl: 1536px;
     z-index: 0;
 
     @media (max-width: $breakpoint-md-max) {
-      // Adjust timeline position on mobile
       left: 24px;
     }
   }
@@ -325,7 +361,7 @@ $breakpoint-xxl: 1536px;
     height: var(--journey-icon-size);
 
     @media (max-width: $breakpoint-md-max) {
-      min-width: var(--journey-icon-size); // Prevent shrinking on mobile
+      min-width: var(--journey-icon-size);
     }
   }
 
@@ -361,7 +397,7 @@ $breakpoint-xxl: 1536px;
 
 /* Expanded content container - improved responsive behavior */
 .journey-expanded-content {
-  transition: all 0.5s ease-in-out;
+  transition: all 0.3s ease-in-out;
   overflow: hidden;
 
   @media (max-width: $breakpoint-md-max) {
@@ -434,7 +470,7 @@ $breakpoint-xxl: 1536px;
   position: relative;
   display: flex;
   justify-content: center;
-  margin-top: var(--spacing-8, 2rem);
+  margin-top: var(--spacing-8, 1.5rem);
   transition: var(--journey-btn-transition, all 0.3s ease);
 
   /* Common styles for the child Button component */
@@ -472,11 +508,11 @@ $breakpoint-xxl: 1536px;
 
   /* Responsive margins */
   @media (min-width: $breakpoint-md) {
-    margin-top: var(--spacing-12, 3rem);
+    margin-top: var(--spacing-12, 2rem);
   }
 
   @media (min-width: $breakpoint-lg) {
-    margin-top: var(--spacing-16, 4rem);
+    margin-top: var(--spacing-16, 2.5rem);
   }
 }
 
@@ -490,25 +526,10 @@ $breakpoint-xxl: 1536px;
       transform: none !important;
     }
   }
-}
 
-/* Theme variant overrides */
-[data-theme="gym"] {
-  --journey-accent-primary: var(--color-accent-400);
-  /* Uses theme's accent color */
-  @include create-accent-color-variants('color-violet-500', 'journey-accent-lime');
-}
-
-[data-theme="sports"] {
-  --journey-accent-primary: var(--color-accent-400);
-  /* Uses theme's accent color */
-  @include create-accent-color-variants('color-cyan-500', 'journey-accent-lime');
-}
-
-[data-theme="wellness"] {
-  --journey-accent-primary: var(--color-accent-400);
-  /* Uses theme's accent color */
-  @include create-accent-color-variants('color-teal-500', 'journey-accent-lime');
+  .journey-floating-icon {
+    animation: none !important;
+  }
 }
 
 /* Reduced motion preferences */

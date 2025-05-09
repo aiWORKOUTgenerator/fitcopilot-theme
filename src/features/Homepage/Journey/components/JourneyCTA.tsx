@@ -1,68 +1,63 @@
 import { ArrowRight } from 'lucide-react';
 import React from 'react';
-import Button from '../../../../components/UI/Button';
-import '../Journey.scss';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import { JourneyCTAProps } from '../types';
 
 /**
- * JourneyCTA - Call to action button for the Journey section
- * 
- * A standardized CTA button component that properly integrates with
- * the design system's gradient tokens and theme variants.
- * 
- * @example
- * <JourneyCTA 
- *   text="Get Started" 
- *   href="/signup" 
- *   variant="gym" 
- * />
+ * JourneyCTA - Call to action button with gradient styling
  */
 const JourneyCTA: React.FC<JourneyCTAProps> = ({
-    text = "Start Your Journey",
-    href = "https://builder.fitcopilot.ai",
-    variant = 'default',
-    className = '',
+    text = 'Start Your Journey Now',
+    href = 'https://aigymengine.com/workout-generator-registration',
     buttonSize = 'large',
     buttonVariant = 'gradient',
     showIcon = true,
-    icon = <ArrowRight size={20} />,
-    dataAos = '',
-    dataAosDelay = '',
-    gradientColor
+    icon,
+    gradientColor = 'lime',
+    variant
 }) => {
-    // Map the journey variant to the appropriate button theme context
-    const buttonThemeContext = variant === 'default' ? 'default' : variant;
+    const prefersReducedMotion = useReducedMotion();
 
-    // Determine gradient class based on variant or explicit gradientColor
-    const gradientClass = gradientColor
-        ? `journey-gradient-${gradientColor}`
-        : variant === 'default' ? 'journey-gradient-lime'
-            : variant === 'gym' ? 'journey-gradient-violet'
-                : variant === 'sports' ? 'journey-gradient-cyan'
-                    : variant === 'wellness' ? 'journey-gradient-teal'
-                        : variant === 'modern' ? 'journey-gradient-amber'
-                            : 'journey-gradient-lime';
+    // Get size classes
+    const sizeClasses = {
+        small: 'px-4 py-2 text-sm',
+        medium: 'px-6 py-3 text-base',
+        large: 'px-8 py-4 text-base'
+    };
 
-    // Combine classes
-    const componentClasses = `journey-cta-button ${gradientClass} ${className}`;
+    // Get gradient classes
+    const gradientClasses = {
+        lime: 'journey-gradient-lime',
+        cyan: 'journey-gradient-cyan',
+        violet: 'journey-gradient-violet',
+        amber: 'journey-gradient-amber'
+    };
+
+    // Determine the button classes
+    const buttonClasses = [
+        'journey-button inline-flex items-center rounded-full font-medium',
+        sizeClasses[buttonSize],
+        buttonVariant === 'gradient' ? gradientClasses[gradientColor] : '',
+        prefersReducedMotion ? '' : 'hover:-translate-y-1'
+    ].join(' ');
 
     return (
-        <div
-            className={componentClasses}
-            data-aos={dataAos}
-            data-aos-delay={dataAosDelay}
+        <a
+            href={href}
+            className={buttonClasses}
+            data-theme={variant !== 'default' ? variant : undefined}
         >
-            <Button
-                as="a"
-                href={href}
-                size={buttonSize}
-                variant={buttonVariant}
-                themeContext={buttonThemeContext}
-                rightIcon={showIcon ? icon : undefined}
-            >
-                {text}
-            </Button>
-        </div>
+            {text}
+            {showIcon && (
+                icon ? (
+                    // Render custom icon if provided
+                    <span className="ml-2" aria-hidden="true">{icon}</span>
+                ) : (
+                    // Default to ArrowRight
+                    <ArrowRight size={buttonSize === 'small' ? 16 : 20} className="ml-2" aria-hidden="true" />
+                )
+            )}
+        </a>
     );
 };
 

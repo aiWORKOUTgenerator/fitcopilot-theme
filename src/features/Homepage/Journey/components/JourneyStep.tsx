@@ -1,14 +1,16 @@
 import { ChevronRight } from 'lucide-react';
 import React from 'react';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import {
   DetailedFeature,
+  ExpandedContentProps,
   JourneyStepProps,
-  JourneyStep as JourneyStepType,
+  StepCTAProps,
   VariantKey,
-  VariantProps,
   isVariant
 } from '../types';
-// Import from index to resolve TypeScript import issue
+// Import from utils/tokenUtils instead of redefining functions
+import { getConnectorColorClass, getGlowEffectClass, getStepCTAUrl, getStepGradientClass } from '../utils/tokenUtils';
 import { JourneyFeatureCard } from './index';
 
 /**
@@ -61,24 +63,6 @@ const getGradientClass = (variant: VariantKey): string => {
 };
 
 /**
- * Get the appropriate connector color class based on step accent color
- */
-const getConnectorColorClass = (accentColor?: string): string => {
-  if (!accentColor) return 'connector-lime'; // Default
-
-  if (accentColor.includes('cyan')) {
-    return 'connector-cyan';
-  } else if (accentColor.includes('violet')) {
-    return 'connector-violet';
-  } else if (accentColor.includes('amber')) {
-    return 'connector-amber';
-  }
-
-  // Default to lime
-  return 'connector-lime';
-};
-
-/**
  * Get the appropriate timeline color class based on step accent color
  */
 const getTimelineColorClass = (accentColor?: string): string => {
@@ -96,33 +80,33 @@ const getTimelineColorClass = (accentColor?: string): string => {
   return 'timeline-lime';
 };
 
-const JourneyStep: React.FC<JourneyStepProps> = (props) => {
-  const {
-    step,
-    index,
-    isExpanded,
-    onToggle,
-    isLast,
-    variant
-  } = props;
+/**
+ * JourneyStep - Renders a single step in the journey process
+ */
+const JourneyStep: React.FC<JourneyStepProps> = ({
+  step,
+  index,
+  isExpanded,
+  onToggle,
+  isLast,
+  variant
+}) => {
+  const prefersReducedMotion = useReducedMotion();
 
-  // Extract the color class for the border glow effect
-  const borderColor = step.accentColor?.includes('cyan') ? 'cyan-glow' :
-    step.accentColor?.includes('violet') ? 'violet-glow' :
-      step.accentColor?.includes('amber') ? 'amber-glow' : 'lime-glow';
-
-  // Get the connector color class based on step accent color
-  const connectorColorClass = getConnectorColorClass(step.accentColor);
-
-  // Get variant-specific styles
-  const hoverTextColor = getHoverTextColor(variant);
-  const expandButtonStyle = getExpandButtonStyle(variant);
+  // Get appropriate classes from our token utility
+  const stepGradientClass = getStepGradientClass(step.number);
+  const glowEffectClass = getGlowEffectClass(step.number);
+  const connectorClass = getConnectorColorClass(step.number);
 
   return (
     <>
-      {/* Step header - always visible */}
+      {/* Main Step Card */}
       <div
-        className={`journey-step-card relative rounded-xl bg-journey-card border border-journey-card cursor-pointer group hover:border-opacity-80 transition-all duration-300 ${borderColor}`}
+        className={`
+          relative p-4 md:p-6 rounded-xl journey-bg-card z-10
+          border ${isExpanded ? 'journey-border-active' : 'journey-border'}
+          transition-medium cursor-pointer group ${glowEffectClass}
+        `}
         onClick={onToggle}
         role="button"
         tabIndex={0}
@@ -134,52 +118,45 @@ const JourneyStep: React.FC<JourneyStepProps> = (props) => {
             onToggle();
           }
         }}
-        data-aos="fade-up"
-        data-aos-delay={step.delay}
         data-theme={variant !== 'default' ? variant : undefined}
+        data-aos={prefersReducedMotion ? undefined : 'fade-up'}
+        data-aos-delay={prefersReducedMotion ? undefined : step.delay?.toString()}
       >
-        <div className={`flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6`}>
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
           {/* Step Icon & Number */}
-          <div className="relative z-10">
-            <div className={`journey-step-icon rounded-xl bg-gradient-to-br ${step.accentColor} flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}>
+          <div className="relative">
+            <div className={`w-16 h-16 rounded-xl ${stepGradientClass} flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}>
               {step.icon}
-
-              {/* Pulsing ring - decorative */}
-              <div className={`absolute inset-0 rounded-xl bg-gradient-to-br ${step.accentColor} opacity-15 blur-[1px] group-hover:opacity-25 transition-opacity`} aria-hidden="true"></div>
+              <div className={`absolute inset-0 rounded-xl ${stepGradientClass} opacity-15 blur-[1px] group-hover:opacity-25 transition-opacity`} aria-hidden="true"></div>
             </div>
 
             {/* Step number */}
-            <div className="journey-step-number absolute -top-3 -left-3 rounded-full flex items-center justify-center text-sm font-bold journey-gradient-lime text-gray-900">
+            <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold journey-gradient-lime text-gray-900">
               {index + 1}
             </div>
           </div>
 
           {/* Step Information */}
           <div className="flex-1">
-            <h3 className={`mb-1 text-white group-${hoverTextColor} transition-colors flex items-center`}>
+            <h3 className="text-xl md:text-2xl font-bold mb-2 journey-text-heading group-hover:journey-text-heading-hover transition-colors flex items-center">
               {step.title}
             </h3>
-            <p className="text-gray-400 group-hover:text-gray-300 transition-colors md:pr-12">
+            <p className="journey-text-description group-hover:journey-text-description-hover transition-colors md:pr-8">
               {step.description}
             </p>
           </div>
 
           {/* Expand/Collapse Button */}
-          <div className={`hidden md:flex p-2 rounded-full border border-journey-accent-30 bg-journey-accent-10 text-journey-accent transition-all duration-300 ${isExpanded ? 'rotate-90' : ''}`} aria-hidden="true">
-            <ChevronRight size={20} />
-          </div>
-
-          {/* Mobile-only Expand Button */}
-          <div className={`md:hidden absolute top-4 right-4 p-2 rounded-full border border-journey-accent-30 bg-journey-accent-10 text-journey-accent transition-all duration-300 ${isExpanded ? 'rotate-90' : ''}`} aria-hidden="true">
-            <ChevronRight size={16} />
+          <div className={`p-2 rounded-full journey-accent-border-30 journey-accent-bg-10 transition-all duration-300 ${isExpanded ? 'rotate-90' : ''}`} aria-hidden="true">
+            <ChevronRight size={20} className="journey-text-accent" />
           </div>
         </div>
-
-        {/* Connector line that connects to the next step */}
-        {!isLast && (
-          <div className={`step-connector ${connectorColorClass} absolute left-[31px] bottom-[-60px] h-[60px] z-10`} aria-hidden="true"></div>
-        )}
       </div>
+
+      {/* Progress connector - Now outside the card to connect with the timeline */}
+      {!isLast && (
+        <div className={`journey-step-connector ${connectorClass}`} aria-hidden="true"></div>
+      )}
 
       {/* Expanded Content */}
       <ExpandedContent
@@ -192,29 +169,29 @@ const JourneyStep: React.FC<JourneyStepProps> = (props) => {
   );
 };
 
-// Updated to use discriminated union
-type ExpandedContentProps = {
-  step: JourneyStepType;
-  index: number;
-  isExpanded: boolean;
-} & VariantProps;
+/**
+ * ExpandedContent - Renders the detailed features when a step is expanded
+ */
+const ExpandedContent: React.FC<ExpandedContentProps> = ({
+  step,
+  index,
+  isExpanded,
+  variant
+}) => {
+  const prefersReducedMotion = useReducedMotion();
 
-const ExpandedContent: React.FC<ExpandedContentProps> = (props) => {
-  const {
-    step,
-    index,
-    isExpanded,
-    variant
-  } = props;
+  // Don't render content at all when collapsed to save memory and prevent space issues
+  if (!isExpanded) {
+    return null;
+  }
 
   return (
     <div
       id={`step-content-${index}`}
-      className={`journey-expanded-content transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-[800px] opacity-100 pt-4 pb-6' : 'max-h-0 opacity-0 py-0'}`}
-      aria-hidden={!isExpanded}
+      className="mt-2 rounded-xl journey-bg-card journey-border z-10 relative overflow-hidden p-4 md:p-6 animate-fade-in"
       data-theme={variant !== 'default' ? variant : undefined}
     >
-      <div className={`journey-feature-grid mb-6 ${isExpanded ? 'animate-fade-slide-up' : ''}`}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         {step.detailedFeatures?.map((feature: DetailedFeature, featureIndex: number) => (
           <JourneyFeatureCard
             key={featureIndex}
@@ -224,43 +201,36 @@ const ExpandedContent: React.FC<ExpandedContentProps> = (props) => {
         ))}
       </div>
 
+      {/* CTA Section */}
       <StepCTA
         step={step}
-        isExpanded={isExpanded}
+        isExpanded={true}
         variant={variant}
       />
     </div>
   );
 };
 
-// Updated to use discriminated union
-type StepCTAProps = {
-  step: JourneyStepType;
-  isExpanded: boolean;
-} & VariantProps;
-
-const StepCTA: React.FC<StepCTAProps> = (props) => {
-  const { step, isExpanded, variant } = props;
-
-  // Always use the journey-gradient-lime class for green gradient
-  const gradientClass = 'journey-gradient-lime';
+/**
+ * StepCTA - Renders the call-to-action button for expanded steps
+ */
+const StepCTA: React.FC<StepCTAProps> = ({
+  step,
+  isExpanded,
+  variant
+}) => {
+  const ctaUrl = getStepCTAUrl(step.title);
 
   return (
-    <div className={`text-center ${isExpanded ? 'animate-fade-in' : ''}`} data-theme={variant !== 'default' ? variant : undefined}>
+    <div className="text-center">
       <a
-        href={
-          step.title === "Receive Your Personalized Plan"
-            ? "http://builder.fitcopilot.ai"
-            : "https://aigymengine.com/workout-generator-registration"
-        }
-        className={`journey-cta-button inline-flex items-center rounded-full text-sm font-medium transition-all duration-300 ${gradientClass} text-gray-900 shadow-md hover:shadow-lg hover:-translate-y-1 px-6 py-2 md:px-8 md:py-3 button primary`}
+        href={ctaUrl}
+        className="journey-button inline-flex items-center px-6 py-2 rounded-full text-sm font-medium"
         aria-label={`${step.ctaText} for ${step.title}`}
         data-theme={variant !== 'default' ? variant : undefined}
       >
         {step.ctaText}
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-        </svg>
+        <ChevronRight size={16} className="ml-2" aria-hidden="true" />
       </a>
     </div>
   );

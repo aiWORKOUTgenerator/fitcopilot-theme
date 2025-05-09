@@ -1,7 +1,7 @@
 import Journey from './Journey';
 import { getJourneyVariant, JourneyMap } from './variants';
 
-// Export the base Journey component
+// Export main component and subcomponents
 export { Journey };
 
 // Export the variant selector function and map
@@ -16,5 +16,5 @@ export * from './types';
 // Export utility functions
 export * from './utils/variantHelpers';
 
-// Default export is the function that returns the appropriate variant
-export default getJourneyVariant(); 
+// Default export for convenience 
+export default Journey; 

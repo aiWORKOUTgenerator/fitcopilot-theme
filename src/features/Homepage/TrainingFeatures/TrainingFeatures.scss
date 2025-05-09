@@ -4,7 +4,7 @@
 // Define semantic variables for TrainingFeatures component
 :root {
     // Base colors using semantic variables
-    --training-features-background: var(--color-background-secondary);
+    --training-features-background: var(--color-background-primary, #0a101b);
     --training-features-card-bg: var(--color-surface-primary);
     --training-features-card-border: var(--color-border-subtle);
     --training-features-text-primary: var(--color-text-primary);
@@ -22,6 +22,44 @@
     --training-features-flip-front-bg: var(--color-surface-secondary);
     --training-features-flip-back-bg: var(--color-surface-secondary);
     --training-features-detail-bullet: var(--color-accent-primary);
+}
+
+// Floating icon animation
+@keyframes float {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+.floating-icon {
+    position: absolute;
+    opacity: 0.15;
+    filter: drop-shadow(0 0 6px rgba(var(--color-lime-300-rgb, 190, 242, 100), 0.5));
+
+    svg {
+        color: var(--color-lime-300, #bef264);
+        fill: rgba(var(--color-lime-300-rgb, 190, 242, 100), 0.05);
+    }
+}
+
+[data-theme="gym"] .floating-icon svg {
+    color: var(--color-violet-500, #8b5cf6);
+    fill: rgba(var(--color-violet-500-rgb, 139, 92, 246), 0.05);
+    filter: drop-shadow(0 0 6px rgba(var(--color-violet-500-rgb, 139, 92, 246), 0.5));
+}
+
+[data-theme="sports"] .floating-icon svg {
+    color: var(--color-cyan-500, #06b6d4);
+    fill: rgba(var(--color-cyan-500-rgb, 6, 182, 212), 0.05);
+    filter: drop-shadow(0 0 6px rgba(var(--color-cyan-500-rgb, 6, 182, 212), 0.5));
 }
 
 .training-features-section {
