@@ -423,4 +423,74 @@ See `.stylelintrc.json` for the specific rules.
     border-width: var(--size-tooltip-arrow);
   }
 }
-``` 
+```
+
+## Gradient System
+
+The FitCopilot design system includes a comprehensive gradient token system that helps maintain consistent gradients across the application while supporting theme variants.
+
+### Gradient Structure
+
+Our gradient system follows a multi-layered approach:
+
+```
+src/styles/design-system/
+├── tokens/
+│   ├── _gradients.scss   # Base gradient tokens & component-specific mappings
+```
+
+### Base Gradient Primitives
+
+Base gradient tokens define the raw color combinations:
+
+```scss
+$gradient-map: (
+  'lime-primary': (
+    start: var(--color-lime-500),
+    end: var(--color-emerald-500),
+    start-rgb: var(--color-lime-500-rgb),
+    end-rgb: var(--color-emerald-500-rgb)
+  ),
+  // Other gradient primitives...
+);
+```
+
+### Component-Specific Gradients
+
+Component tokens map semantic meanings to gradient primitives:
+
+```scss
+$component-gradients: (
+  'journey': (
+    'default': (
+      'primary': map-get($gradient-map, 'lime-primary'),
+      'hover': map-get($gradient-map, 'lime-hover'),
+      'glow-color': var(--color-lime-500)
+    ),
+    // Other variants...
+  )
+);
+```
+
+### Usage
+
+Apply gradients using the `gradient-button` mixin:
+
+```scss
+.my-component {
+  @include gradient-button('component-name', 'variant-name');
+}
+```
+
+For opacity variants of colors:
+
+```scss
+@include create-accent-color-variants('color-name', 'css-variable-prefix');
+```
+
+### Helper Functions
+
+- `get-gradient-token($component, $variant, $type)`: Retrieves a gradient token for a specific component/variant
+- `get-gradient-color($gradient-token, $position)`: Gets the start/end color from a gradient token
+
+See the [Migration Guide](./MIGRATION-GUIDE.md) for more details on migrating to the gradient token system. 

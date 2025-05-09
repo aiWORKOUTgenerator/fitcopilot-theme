@@ -8,24 +8,24 @@
 // Import base design system
 @import '../../../../styles/design-system/index';
 
-// Default theme variables (dark)
+// Default theme variables (dark with amber accent)
 :root {
     // Background colors
     --training-bg: var(--color-background-primary, rgba(10, 16, 27, 1));
     --training-text: var(--color-text-primary, #f9fafb);
     --training-text-muted: var(--color-text-secondary, #9ca3af);
-    --training-accent: var(--color-primary, #8b5cf6);
-    --training-accent-light: var(--color-primary-light, #c4b5fd);
+    --training-accent: var(--color-amber-400, #FB923C);
+    --training-accent-light: var(--color-amber-300, #FCD34D);
     --training-card-bg: var(--color-surface-primary, rgba(31, 41, 55, 0.5));
     --training-card-border: var(--color-border-light, rgba(55, 65, 81, 0.5));
-    --training-card-hover-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.3);
-    --training-card-active-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.5);
+    --training-card-hover-border: rgba(251, 191, 36, 0.3);
+    --training-card-active-border: rgba(251, 191, 36, 0.5);
     --training-expanded-bg: var(--color-surface-secondary, rgba(31, 41, 55, 0.4));
-    --training-connector-bg: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.5);
+    --training-connector-bg: rgba(251, 191, 36, 0.5);
     --training-icon-size: 64px;
-    --training-card-toggle-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.3);
-    --training-card-toggle-bg: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.1);
-    --training-icon-shadow: drop-shadow(0 0 8px rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.4));
+    --training-card-toggle-border: rgba(251, 191, 36, 0.3);
+    --training-card-toggle-bg: rgba(251, 191, 36, 0.1);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
 
     // Background pattern and gradient variables
     --training-pattern-opacity: 0.05;
@@ -36,88 +36,119 @@
     --training-bg-90: rgba(10, 16, 27, 0.9);
 
     // Program-specific gradients
+    --training-gradient-default: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
     --training-gradient-strength: linear-gradient(to right, var(--color-lime-300, #bef264), var(--color-emerald-400, #34d399));
     --training-gradient-fatLoss: linear-gradient(to right, var(--color-cyan-300, #67e8f9), var(--color-blue-400, #60a5fa));
     --training-gradient-fitness: linear-gradient(to right, var(--color-violet-300, #c4b5fd), var(--color-purple-400, #a78bfa));
     --training-gradient-athletic: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
 
     // Program-specific text colors
+    --training-text-default: var(--color-amber-200, #fde68a);
     --training-text-strength: var(--color-lime-200, #d9f99d);
     --training-text-fatLoss: var(--color-cyan-200, #a5f3fc);
     --training-text-fitness: var(--color-violet-200, #ddd6fe);
     --training-text-athletic: var(--color-amber-200, #fde68a);
+
+    // Forward variables to component-specific styles
+    // These variables ensure the amber theme is applied to all sub-components
+    --text-accent: var(--training-accent-light);
+    --highlight-primary: var(--training-accent);
+    --border-primary: var(--training-card-border);
+    --border-hover: var(--training-card-hover-border);
+    --border-active: var(--training-card-active-border);
+    --card-background: var(--training-card-bg);
+    --card-hover: rgba(51, 65, 85, 0.4);
+    --card-active: rgba(55, 65, 85, 0.6);
+    --shadow-medium: 0 4px 6px -1px rgba(251, 191, 36, 0.1);
+    --text-primary: var(--training-text, #f9fafb);
+    --text-secondary: var(--training-text-muted, #9ca3af);
 }
 
-// Sports theme overrides (light)
+// Sports theme overrides (light with amber accent)
 body[data-theme="sports"] {
     --training-bg: var(--color-background-primary, #f9fafb);
     --training-text: var(--color-text-primary, #111827);
     --training-text-muted: var(--color-text-secondary, #4b5563);
-    --training-accent: var(--color-primary, #7c3aed);
-    --training-accent-light: var(--color-primary-light, #a78bfa);
+    --training-accent: var(--color-orange-500, #F97316);
+    --training-accent-light: var(--color-amber-400, #FBBF24);
     --training-card-bg: var(--color-surface-primary, white);
     --training-card-border: var(--color-border-light, #f3f4f6);
-    --training-card-hover-border: var(--color-violet-200, #ddd6fe);
-    --training-card-active-border: var(--color-violet-300, #c4b5fd);
+    --training-card-hover-border: var(--color-amber-200, #fde68a);
+    --training-card-active-border: var(--color-amber-300, #fcd34d);
     --training-expanded-bg: var(--color-background-primary, #f9fafb);
-    --training-connector-bg: var(--color-violet-300, #c4b5fd);
-    --training-card-toggle-border: var(--color-violet-200, #ddd6fe);
-    --training-card-toggle-bg: var(--color-violet-50, #f5f3ff);
-    --training-icon-shadow: drop-shadow(0 0 8px rgba(124, 58, 237, 0.4));
+    --training-connector-bg: var(--color-amber-300, #fcd34d);
+    --training-card-toggle-border: var(--color-amber-200, #fde68a);
+    --training-card-toggle-bg: var(--color-amber-50, #fffbeb);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
 
     // Background pattern and gradient variables
     --training-pattern-opacity: 0.03;
     --training-grid-size: 25px;
-    --training-grid-pattern: rgba(124, 58, 237, 0.05);
+    --training-grid-pattern: rgba(251, 191, 36, 0.05);
     --training-bg-transparent: rgba(249, 250, 251, 0);
     --training-bg-60: rgba(249, 250, 251, 0.6);
     --training-bg-90: rgba(249, 250, 251, 0.9);
 
     // Program-specific gradients
+    --training-gradient-default: linear-gradient(to right, var(--color-amber-400, #fbbf24), var(--color-orange-500, #f97316));
     --training-gradient-strength: linear-gradient(to right, var(--color-emerald-500, #10b981), var(--color-teal-400, #2dd4bf));
     --training-gradient-fatLoss: linear-gradient(to right, var(--color-blue-500, #3b82f6), var(--color-indigo-400, #818cf8));
     --training-gradient-fitness: linear-gradient(to right, var(--color-violet-500, #8b5cf6), var(--color-purple-400, #a78bfa));
     --training-gradient-athletic: linear-gradient(to right, var(--color-orange-500, #f97316), var(--color-amber-400, #fbbf24));
 
     // Program-specific text colors
+    --training-text-default: var(--color-amber-600, #d97706);
     --training-text-strength: var(--color-emerald-600, #059669);
     --training-text-fatLoss: var(--color-blue-600, #2563eb);
     --training-text-fitness: var(--color-violet-600, #7c3aed);
     --training-text-athletic: var(--color-orange-600, #ea580c);
+
+    // Forward variables to component-specific styles
+    --text-accent: var(--training-accent-light);
+    --highlight-primary: var(--training-accent);
+    --border-primary: var(--training-card-border);
+    --border-hover: var(--training-card-hover-border);
+    --border-active: var(--training-card-active-border);
+    --card-background: var(--training-card-bg);
+    --card-hover: rgba(253, 230, 138, 0.1);
+    --card-active: rgba(253, 230, 138, 0.2);
+    --shadow-medium: 0 4px 6px -1px rgba(251, 191, 36, 0.1);
 }
 
-// Wellness theme overrides
+// Wellness theme overrides (with amber accents)
 body[data-theme="wellness"] {
     --training-bg: var(--color-background-primary, #ecfdf5);
     --training-text: var(--color-text-primary, #064e3b);
     --training-text-muted: var(--color-text-secondary, #059669);
-    --training-accent: var(--color-primary, #0d9488);
-    --training-accent-light: var(--color-primary-light, #2dd4bf);
+    --training-accent: var(--color-amber-500, #F59E0B);
+    --training-accent-light: var(--color-amber-400, #FBBF24);
     --training-card-bg: var(--color-surface-primary, white);
     --training-card-border: var(--color-border-light, #d1fae5);
-    --training-card-hover-border: var(--color-teal-200, #99f6e4);
-    --training-card-active-border: var(--color-teal-300, #5eead4);
+    --training-card-hover-border: var(--color-amber-200, #fde68a);
+    --training-card-active-border: var(--color-amber-300, #fcd34d);
     --training-expanded-bg: var(--color-background-primary, #ecfdf5);
-    --training-connector-bg: var(--color-teal-300, #5eead4);
-    --training-card-toggle-border: var(--color-teal-200, #99f6e4);
-    --training-card-toggle-bg: var(--color-teal-50, #f0fdfa);
-    --training-icon-shadow: drop-shadow(0 0 8px rgba(20, 184, 166, 0.4));
+    --training-connector-bg: var(--color-amber-300, #fcd34d);
+    --training-card-toggle-border: var(--color-amber-200, #fde68a);
+    --training-card-toggle-bg: var(--color-amber-50, #fffbeb);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
 
     // Background pattern and gradient variables
     --training-pattern-opacity: 0.04;
     --training-grid-size: 22px;
-    --training-grid-pattern: rgba(13, 148, 136, 0.1);
+    --training-grid-pattern: rgba(245, 158, 11, 0.1);
     --training-bg-transparent: rgba(236, 253, 245, 0);
     --training-bg-60: rgba(236, 253, 245, 0.6);
     --training-bg-90: rgba(236, 253, 245, 0.9);
 
     // Program-specific gradients
+    --training-gradient-default: linear-gradient(to right, var(--color-amber-400, #fbbf24), var(--color-yellow-500, #eab308));
     --training-gradient-strength: linear-gradient(to right, var(--color-teal-400, #2dd4bf), var(--color-green-500, #22c55e));
     --training-gradient-fatLoss: linear-gradient(to right, var(--color-cyan-400, #22d3ee), var(--color-teal-500, #14b8a6));
     --training-gradient-fitness: linear-gradient(to right, var(--color-indigo-400, #818cf8), var(--color-blue-500, #3b82f6));
     --training-gradient-athletic: linear-gradient(to right, var(--color-amber-400, #fbbf24), var(--color-yellow-500, #eab308));
 
     // Program-specific text colors
+    --training-text-default: var(--color-amber-600, #d97706);
     --training-text-strength: var(--color-teal-300, #5eead4);
     --training-text-fatLoss: var(--color-cyan-300, #67e8f9);
     --training-text-fitness: var(--color-indigo-300, #a5b4fc);
@@ -323,7 +354,8 @@ body[data-theme="modern"] {
             box-shadow: none;
         }
 
-        .training-section__header-title {
+        // Replace legacy header title reference
+        .section-header__title {
             font-weight: 500;
         }
 

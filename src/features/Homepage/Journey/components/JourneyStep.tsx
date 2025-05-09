@@ -242,7 +242,8 @@ type StepCTAProps = {
 const StepCTA: React.FC<StepCTAProps> = (props) => {
   const { step, isExpanded, variant } = props;
 
-  const gradientClass = getGradientClass(variant);
+  // Always use the journey-gradient-lime class for green gradient
+  const gradientClass = 'journey-gradient-lime';
 
   return (
     <div className={`text-center ${isExpanded ? 'animate-fade-in' : ''}`} data-theme={variant !== 'default' ? variant : undefined}>

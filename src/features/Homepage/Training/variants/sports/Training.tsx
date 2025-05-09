@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import React from 'react';
 import Button from '../../../../../components/UI/Button';
-import { BenefitsList, ProgramCard } from '../../components';
+import { BenefitsList, ProgramCard, SectionHeader } from '../../components';
 import { useTrainingPrograms } from '../../hooks';
 import '../../Training.scss';
 import { ProgramType, TrainingProps } from '../../types';
@@ -101,17 +101,16 @@ const Training: React.FC<Omit<TrainingProps, 'variant'>> = ({
             <div className="absolute inset-0 bg-gradient-to-br from-violet-50 to-gray-50 opacity-70"></div>
 
             <div className="container mx-auto px-4 relative z-10">
-                {/* Header */}
-                <div className="training-section__header">
-                    <h2 className="training-section__header-title">
-                        <span className="training-section__header-title-highlight">
-                            {sectionTitle}
-                        </span>
-                    </h2>
-                    <p className="training-section__header-description">
-                        {sectionDescription}
-                    </p>
-                </div>
+                {/* Header - updated to use SectionHeader component */}
+                <SectionHeader
+                    title={sectionTitle}
+                    description={sectionDescription}
+                    tagText="Training Solutions"
+                    variant="sports"
+                    id="training-section-title"
+                    className="training-section__header"
+                    programType="athletic"
+                />
 
                 {/* Programs Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -141,7 +140,7 @@ const Training: React.FC<Omit<TrainingProps, 'variant'>> = ({
                                         className="pl-5 space-y-2"
                                     />
 
-                                    <div className="mt-4 text-center">
+                                    <div className="mt-8 text-center">
                                         <Button
                                             variant="secondary"
                                             size="small"

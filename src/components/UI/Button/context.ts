@@ -4,10 +4,10 @@
  * Provides utilities for determining button context and theme
  */
 
-export type ButtonThemeContext = 'default' | 'gym' | 'hero';
+export type ButtonThemeContext = 'default' | 'gym' | 'hero' | 'sports' | 'wellness' | 'modern' | 'classic' | 'minimalist';
 
 // Define available theme contexts
-export const BUTTON_THEME_CONTEXTS = ['default', 'gym', 'hero'] as const;
+export const BUTTON_THEME_CONTEXTS = ['default', 'gym', 'hero', 'sports', 'wellness', 'modern', 'classic', 'minimalist'] as const;
 
 /**
  * Determines if the provided theme context is valid
@@ -46,6 +46,11 @@ export const getSectionThemeContext = (sectionName?: string): ButtonThemeContext
         'gym-section': 'gym',
         'workout-planner': 'gym',
         'hero-section': 'hero',
+        'sports-section': 'sports',
+        'wellness-section': 'wellness',
+        'modern-section': 'modern',
+        'classic-section': 'classic',
+        'minimalist-section': 'minimalist',
         // Add more section mappings as needed
     };
 

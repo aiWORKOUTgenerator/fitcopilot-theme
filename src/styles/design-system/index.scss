@@ -17,6 +17,9 @@
 @forward './mixins';
 @forward './breakpoints';
 
+// Gradient system
+@forward './tokens/gradients';
+
 // Component-specific tokens
 @forward './component-tokens';
 

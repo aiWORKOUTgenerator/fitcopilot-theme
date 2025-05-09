@@ -442,6 +442,9 @@ export const Journey: React.FC<JourneyProps> = (props) => {
         text="Start Your Fitness Journey"
         href="https://builder.fitcopilot.ai"
         variant={variant}
+        gradientColor="green"
+        dataAos="fade-up"
+        dataAosDelay="300"
       />
     </Section>
   );

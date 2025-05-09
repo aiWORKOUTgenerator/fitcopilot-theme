@@ -33,10 +33,16 @@ function Training({
     }, [navigateToProgram, onProgramSelect]);
 
     return (
-        <section className={`training-section training-section--${variant} ${prefersReducedMotion ? 'reduced-motion' : ''} ${className}`} aria-labelledby="training-section-title">
+        <section
+            className={`training-section training-section--${variant} ${prefersReducedMotion ? 'reduced-motion' : ''} ${className}`}
+            aria-labelledby="training-section-title"
+            data-theme-accent="amber"
+            style={{ '--text-primary': 'var(--training-text)' } as React.CSSProperties}
+        >
             {/* Decorative accent shapes for visual interest */}
             <div className="training-section__accent-shape training-section__accent-shape--1" aria-hidden="true"></div>
             <div className="training-section__accent-shape training-section__accent-shape--2" aria-hidden="true"></div>
+            <div className="training-section__accent-shape--3" aria-hidden="true"></div>
 
             <div className="training-section__container">
                 {/* Section Header */}
@@ -46,7 +52,8 @@ function Training({
                     tagText="Training Solutions"
                     variant={variant}
                     id="training-section-title"
-                    className="training-section__header"
+                    className="training-section__header animate-fade-in"
+                    programType="athletic"
                 />
 
                 {/* Programs List */}
@@ -57,12 +64,14 @@ function Training({
                     onNavigate={handleNavigate}
                     variant={variant}
                     prefersReducedMotion={prefersReducedMotion}
+                    className="animate-fade-slide-up"
                 />
 
                 {/* Main CTA */}
                 <MainCTA
                     onNavigate={handleNavigate}
                     variant={variant}
+                    className="animate-fade-in"
                 />
             </div>
         </section>

@@ -33,21 +33,21 @@
 
     // Size variants
     &--small {
-        height: var(--size-btn-sm, 32px);
-        padding: 0 var(--spacing-4, 1rem);
-        font-size: var(--type-small, 0.875rem);
+        font-size: 0.875rem;
+        padding: var(--spacing-2, 0.5rem) var(--spacing-4, 1rem);
+        border-radius: 0.25rem;
     }
 
     &--medium {
-        height: var(--size-btn-md, 40px);
-        padding: 0 var(--spacing-6, 1.5rem);
-        font-size: var(--type-base, 1rem);
+        font-size: 1rem;
+        padding: var(--spacing-3, 0.75rem) var(--spacing-6, 1.5rem);
+        border-radius: 0.375rem;
     }
 
     &--large {
-        height: var(--size-btn-lg, 48px);
-        padding: 0 var(--spacing-8, 2rem);
-        font-size: var(--type-lg, 1.125rem);
+        font-size: 1.125rem;
+        padding: var(--spacing-4, 1rem) var(--spacing-8, 2rem);
+        border-radius: 0.5rem;
     }
 
     // Fullwidth

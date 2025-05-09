@@ -16,14 +16,20 @@ import { getButtonThemeContext } from './context';
 import { ButtonProps } from './types';
 
 // Dynamically import button theme variants
+/* These imports use dynamic loading to support theming */
 const DefaultButton = React.lazy(() => import('./default/Button'));
 const GymButton = React.lazy(() => import('./gym/Button'));
 const HeroButton = React.lazy(() => import('./hero/Button'));
+const SportsButton = React.lazy(() => import('./sports/Button'));
+const WellnessButton = React.lazy(() => import('./wellness/Button'));
+const ModernButton = React.lazy(() => import('./modern/Button'));
+const ClassicButton = React.lazy(() => import('./classic/Button'));
+const MinimalistButton = React.lazy(() => import('./minimalist/Button'));
 
 /**
  * Main Button component that selects the appropriate theme variant
  */
-export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
+export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(({
     themeContext = 'default',
     ...props
 }, ref) => {
@@ -41,12 +47,23 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({
                 <span className="button__text">{props.children}</span>
             </button>
         }>
+            {/* Using 'as any' for ref compatibility with button variants */}
             {theme === 'gym' ? (
-                <GymButton ref={ref} {...props} />
+                <GymButton ref={ref as any} {...props} />
             ) : theme === 'hero' ? (
-                <HeroButton ref={ref} {...props} />
+                <HeroButton ref={ref as any} {...props} />
+            ) : theme === 'sports' ? (
+                <SportsButton ref={ref as any} {...props} />
+            ) : theme === 'wellness' ? (
+                <WellnessButton ref={ref as any} {...props} />
+            ) : theme === 'modern' ? (
+                <ModernButton ref={ref as any} {...props} />
+            ) : theme === 'classic' ? (
+                <ClassicButton ref={ref as any} {...props} />
+            ) : theme === 'minimalist' ? (
+                <MinimalistButton ref={ref as any} {...props} />
             ) : (
-                <DefaultButton ref={ref} {...props} />
+                <DefaultButton ref={ref as any} {...props} />
             )}
         </React.Suspense>
     );

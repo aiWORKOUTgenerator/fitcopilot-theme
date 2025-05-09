@@ -1,5 +1,7 @@
 import { withActions } from '@storybook/addon-actions/decorator';
 import type { Meta, StoryObj } from '@storybook/react';
+import { ArrowRight, Heart, Play } from 'lucide-react';
+import React from 'react';
 import { Button } from './';
 
 /**
@@ -17,7 +19,7 @@ const meta: Meta<typeof Button> = {
         },
         docs: {
             description: {
-                component: 'Button component for user actions with various sizes and styles. Buttons provide visual cues to users for interactive elements.',
+                component: 'Button component for user actions with various sizes, styles, and theme variants. Buttons provide visual cues to users for interactive elements.',
             },
         },
         design: {
@@ -46,24 +48,82 @@ const meta: Meta<typeof Button> = {
                 defaultValue: { summary: 'medium' },
             },
         },
-        primary: {
-            description: 'Whether the button is primary',
+        variant: {
+            description: 'Button style variant',
+            control: { type: 'select' },
+            options: ['primary', 'secondary', 'tertiary', 'ghost', 'gradient', 'violet-indigo'],
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'primary' },
+            },
+        },
+        themeContext: {
+            description: 'Theme context for styling',
+            control: { type: 'select' },
+            options: ['default', 'gym', 'sports', 'wellness', 'modern', 'classic', 'minimalist'],
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'default' },
+            },
+        },
+        children: {
+            description: 'Button content',
+            control: 'text',
+            table: {
+                type: { summary: 'React.ReactNode' },
+            },
+        },
+        fullWidth: {
+            description: 'Makes button full width',
             control: 'boolean',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
             },
         },
-        label: {
-            description: 'Button text',
-            control: 'text',
+        isLoading: {
+            description: 'Shows loading state',
+            control: 'boolean',
             table: {
-                type: { summary: 'string' },
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
             },
         },
-        backgroundColor: {
-            description: 'Button background color',
-            control: { type: 'color' },
+        disabled: {
+            description: 'Disables the button',
+            control: 'boolean',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+            },
+        },
+        as: {
+            description: 'Render as button or anchor',
+            control: { type: 'select' },
+            options: ['button', 'a'],
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'button' },
+            },
+        },
+        leftIcon: {
+            description: 'Icon displayed before text',
+            control: { type: 'boolean' },
+            table: {
+                type: { summary: 'React.ReactNode' },
+            },
+        },
+        rightIcon: {
+            description: 'Icon displayed after text',
+            control: { type: 'boolean' },
+            table: {
+                type: { summary: 'React.ReactNode' },
+            },
+        },
+        href: {
+            description: 'URL when rendered as anchor',
+            control: 'text',
+            if: { arg: 'as', eq: 'a' },
             table: {
                 type: { summary: 'string' },
             },
@@ -83,12 +143,12 @@ export default meta;
 type Story = StoryObj<typeof Button>;
 
 /**
- * Primary button state - used for main call-to-action
+ * Primary button variant - used for main call-to-action
  */
 export const Primary: Story = {
     args: {
-        primary: true,
-        label: 'Get Started',
+        variant: 'primary',
+        children: 'Get Started',
         size: 'medium',
     },
     parameters: {
@@ -101,11 +161,12 @@ export const Primary: Story = {
 };
 
 /**
- * Secondary button state - used for secondary actions
+ * Secondary button variant - used for secondary actions
  */
 export const Secondary: Story = {
     args: {
-        label: 'Cancel',
+        variant: 'secondary',
+        children: 'Cancel',
         size: 'medium',
     },
     parameters: {
@@ -118,56 +179,89 @@ export const Secondary: Story = {
 };
 
 /**
- * Large button - uses increased padding and font size
+ * Gradient button variant - visually striking effect
  */
-export const Large: Story = {
+export const Gradient: Story = {
     args: {
-        primary: true,
-        size: 'large',
-        label: 'Create Workout',
-    },
-    parameters: {
-        docs: {
-            description: {
-                story: 'Large buttons should be used for the main action on landing pages or important forms.',
-            },
-        },
-    },
-};
-
-/**
- * Small button - used in compact spaces
- */
-export const Small: Story = {
-    args: {
-        primary: true,
-        size: 'small',
-        label: 'Save',
-    },
-    parameters: {
-        docs: {
-            description: {
-                story: 'Small buttons should be used in tight spaces like tables, cards, or alongside other controls.',
-            },
-        },
-    },
-};
-
-/**
- * Focus state demonstration for accessibility testing
- */
-export const Focused: Story = {
-    args: {
-        primary: true,
-        label: 'Focused Button',
+        variant: 'gradient',
+        children: 'Create Workout',
         size: 'medium',
     },
     parameters: {
         docs: {
             description: {
-                story: 'This demonstrates the focus state for keyboard navigation and accessibility.',
+                story: 'Gradient buttons create visual emphasis for important actions.',
             },
         },
+    },
+};
+
+/**
+ * Button with left icon example
+ */
+export const WithLeftIcon: Story = {
+    args: {
+        variant: 'primary',
+        children: 'Play Workout',
+        leftIcon: <Play size={16} />,
+        size: 'medium',
+    },
+    parameters: {
+        docs: {
+            description: {
+                story: 'Buttons can include icons to enhance visual communication.',
+            },
+        },
+    },
+};
+
+/**
+ * Button with right icon example
+ */
+export const WithRightIcon: Story = {
+    args: {
+        variant: 'primary',
+        children: 'Next Step',
+        rightIcon: <ArrowRight size={16} />,
+        size: 'medium',
+    },
+};
+
+/**
+ * Button as anchor link example
+ */
+export const AsLink: Story = {
+    args: {
+        variant: 'gradient',
+        children: 'Visit Dashboard',
+        as: 'a',
+        href: '#dashboard',
+        size: 'medium',
+    },
+};
+
+/**
+ * Gym theme context example
+ */
+export const GymTheme: Story = {
+    args: {
+        variant: 'primary',
+        children: 'Join Gym',
+        themeContext: 'gym',
+        rightIcon: <Heart size={16} />,
+        size: 'medium',
+    },
+};
+
+/**
+ * Loading state example
+ */
+export const Loading: Story = {
+    args: {
+        variant: 'primary',
+        children: 'Saving',
+        isLoading: true,
+        size: 'medium',
     },
 };
 
@@ -176,16 +270,9 @@ export const Focused: Story = {
  */
 export const Disabled: Story = {
     args: {
-        primary: true,
-        label: 'Disabled',
+        variant: 'primary',
+        children: 'Disabled',
         size: 'medium',
         disabled: true,
-    },
-    parameters: {
-        docs: {
-            description: {
-                story: 'Use disabled buttons to indicate actions that are currently unavailable.',
-            },
-        },
     },
 }; 

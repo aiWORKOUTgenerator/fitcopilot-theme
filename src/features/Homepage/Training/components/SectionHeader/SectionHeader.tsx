@@ -76,7 +76,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     tagText,
     variant = 'default',
     highlightLastWord = true,
-    programType = 'strength',
+    programType = 'athletic',
     className = '',
     id = 'section-header',
 }) => {
@@ -92,7 +92,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
     const headerClasses = applyTheme(sectionHeaderTheme, variant, className);
 
     // Construct gradient class for highlighted text
-    const gradientClass = programType ? getProgramToken(programType, 'gradient') : '';
+    const gradientClass = programType ? getProgramToken(programType, 'gradient') : 'program-gradient-athletic';
 
     // Create ARIA props
     const ariaProps = createAriaProps({

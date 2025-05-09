@@ -1,11 +1,15 @@
 import React from 'react';
+import { ButtonThemeContext } from './context';
+
+type ButtonElementProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
+type AnchorElementProps = React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 /**
  * ButtonProps Interface
  * 
  * Defines the properties for the Button component
  */
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export type ButtonProps = {
     /** Button size variant */
     size?: 'small' | 'medium' | 'large';
     /** Button color variant */
@@ -18,18 +22,17 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     leftIcon?: React.ReactNode;
     /** Icon to display after button text */
     rightIcon?: React.ReactNode;
-    /** Theme context for specific styling (default or gym) */
-    themeContext?: 'default' | 'gym' | string;
+    /** Theme context for specific styling */
+    themeContext?: ButtonThemeContext;
     /** Button content */
     children: React.ReactNode;
     /** Additional CSS classes */
     className?: string;
     /** Whether the button is disabled */
     disabled?: boolean;
-    /** Button click handler */
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-    /** Button type */
-    type?: 'button' | 'submit' | 'reset';
-    /** Additional HTML attributes */
-    [key: string]: any;
-} 
+    /** Render as button or anchor element */
+    as?: 'button' | 'a';
+} & (
+        | ({ as?: 'button' } & ButtonElementProps)
+        | ({ as: 'a' } & AnchorElementProps)
+    ); 

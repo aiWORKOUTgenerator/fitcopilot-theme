@@ -145,6 +145,14 @@ export type JourneyFeatureCardProps = {
 export type JourneyCTAProps = {
   text?: string;
   href?: string;
+  className?: string;
+  buttonSize?: 'small' | 'medium' | 'large';
+  buttonVariant?: 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'gradient' | 'violet-indigo';
+  showIcon?: boolean;
+  icon?: React.ReactNode;
+  dataAos?: string;
+  dataAosDelay?: string;
+  gradientColor?: 'lime' | 'violet' | 'cyan' | 'teal' | 'amber' | 'green';
 } & VariantProps;
 
 export type SectionHeaderProps = {

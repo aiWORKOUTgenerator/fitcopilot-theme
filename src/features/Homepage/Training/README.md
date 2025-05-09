@@ -522,6 +522,43 @@ The Training component has been decomposed into smaller, focused components for 
 For detailed information on the component decomposition, see:
 - [Component Breakdown Documentation](./docs/COMPONENT_BREAKDOWN.md)
 
+## Migrating Variant Components
+
+As of the latest update, all variant components should be updated to use the `SectionHeader` component instead of direct header markup. Here's how to upgrade a variant:
+
+1. Import the SectionHeader component:
+   ```tsx
+   import { BenefitsList, ProgramCard, SectionHeader } from '../../components';
+   ```
+
+2. Replace the legacy header markup:
+   ```tsx
+   // OLD - Legacy implementation
+   <div className="training-section__header">
+     <h2 className="training-section__header-title">
+       <span className="training-section__header-title-highlight">
+         {sectionTitle}
+       </span>
+     </h2>
+     <p className="training-section__header-description">
+       {sectionDescription}
+     </p>
+   </div>
+
+   // NEW - Using SectionHeader component
+   <SectionHeader
+     title={sectionTitle}
+     description={sectionDescription}
+     tagText="Training Solutions"
+     variant="your-variant"
+     id="training-section-title"
+     className="training-section__header"
+     programType="athletic"
+   />
+   ```
+
+This ensures consistent styling, accessibility, and behavior across all variants.
+
 ## Visual Enhancements
 
 The Training component includes several visual enhancements that provide consistency with other homepage sections:
@@ -667,3 +704,199 @@ The Training component supports seamless transitions with other sections through
 <PreviousSection className="section-overlap-bottom" />
 <Training className="section-overlap-top" />
 ```
+
+## Color Scheme Update
+
+The Training component now uses amber/orange as its primary accent color to:
+1. Better match the overall color palette of the theme
+2. Provide stronger visual contrast with the background
+3. Create a cohesive look with other homepage sections
+
+### Primary Color Variables
+
+```scss
+// Primary accent colors (amber/orange as primary)
+--training-accent: var(--color-amber-400, #FB923C);
+--training-accent-light: var(--color-amber-300, #FCD34D);
+
+// Accent colors with opacity variations for effects
+--training-accent-amber: rgba(251, 191, 36, 0.15);
+--training-accent-amber-strong: rgba(251, 191, 36, 0.5);
+--training-accent-amber-light: rgba(251, 191, 36, 0.05);
+--training-accent-amber-medium: rgba(251, 191, 36, 0.1);
+```
+
+### Theme Variants
+
+Each theme variant maintains the amber/orange as its primary accent while adapting to the theme's overall aesthetic. This creates visual consistency across different themes while preserving each theme's unique identity.
+
+### Program-Specific Gradients
+
+The component now uses the athletic program gradient (amber/orange) as the default gradient for visual consistency:
+
+```scss
+--training-gradient-default: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
+```
+
+## Visual Enhancements
+
+### Improved Background Pattern
+
+The grid pattern background now includes a gradient mask that creates a smooth fade effect at the top and bottom of the section:
+
+```scss
+mask-image:
+  linear-gradient(to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 15%,
+    rgba(0, 0, 0, 1) 85%,
+    rgba(0, 0, 0, 0) 100%);
+```
+
+### Enhanced Accent Shapes
+
+The component now includes three decorative accent shapes with improved opacity and animation for visual interest:
+
+```jsx
+<div className="training-section__accent-shape training-section__accent-shape--1" aria-hidden="true"></div>
+<div className="training-section__accent-shape training-section__accent-shape--2" aria-hidden="true"></div>
+<div className="training-section__accent-shape--3" aria-hidden="true"></div>
+```
+
+### Glow Effects
+
+Interactive elements now feature amber glow effects on hover for enhanced visual feedback:
+
+```scss
+&:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 0 20px 0 var(--training-accent-amber);
+}
+```
+
+## Animation Classes
+
+New animation classes provide smooth entrance animations for content:
+
+```scss
+.animate-fade-slide-up {
+  animation: fadeSlideUp 0.4s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+```
+
+These classes are applied to key components:
+
+```jsx
+<SectionHeader className="animate-fade-in" />
+<ProgramsList className="animate-fade-slide-up" />
+<MainCTA className="animate-fade-in" />
+```
+
+## Improved Accessibility
+
+Enhanced support for users who prefer reduced motion:
+
+```scss
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-slide-up,
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  // Disable transitions and animations
+  .training-card,
+  .training-card__icon,
+  .training-card__toggle,
+  .training-expanded,
+  .training-section__accent-shape {
+    transition: none !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}
+```
+
+## Troubleshooting Component Styling
+
+When implementing amber/orange as the primary color theme, you may encounter issues where only some elements (like the title highlight) adopt the new color while others retain their original styling. This happens because:
+
+1. **Component Isolation**: Each component has its own stylesheet that may not directly inherit the main theme variables
+2. **CSS Specificity**: Existing styles might have higher specificity than the new theme variables
+3. **Variable Inheritance Chain**: CSS custom properties need proper forwarding between components
+
+### Solutions
+
+To ensure all components properly use the amber/orange theme:
+
+#### 1. Direct Attribute-Based Styling
+
+Apply a data attribute to the main component and target it with high-specificity selectors:
+
+```tsx
+<section data-theme-accent="amber">
+  {/* Component content */}
+</section>
+```
+
+```scss
+.training-section[data-theme-accent="amber"] {
+  // High-specificity selectors that will override component-specific styles
+  .training-card__title {
+    color: var(--color-amber-300, #FCD34D);
+  }
+}
+```
+
+#### 2. Forward CSS Variables
+
+Create a set of generic variables that component stylesheets will use and set them to the amber values:
+
+```scss
+:root {
+  // Component-specific variables
+  --card-border: var(--color-gray-700);
+  
+  // Forward to generic variables that components use
+  --border-primary: var(--training-card-border);
+  --border-hover: var(--training-card-hover-border);
+  --text-accent: var(--training-accent-light);
+}
+```
+
+#### 3. Force Important Styles
+
+For critical elements that must use the amber theme, use the `!important` flag:
+
+```scss
+.training-section__header-tag {
+  color: var(--color-amber-300, #FCD34D) !important;
+}
+
+.training-section__header-title-highlight {
+  background-image: var(--training-gradient-athletic) !important;
+}
+```
+
+#### 4. Import Order Matters
+
+Ensure that theme variant styles are imported before component-specific styles:
+
+```scss
+// 1. Import design system
+@import '../../../styles/design-system/index';
+
+// 2. Import theme variants
+@import './styles/theme-variants.scss';
+
+// 3. Define component variables that reference theme variables
+:root {
+  --training-bg: var(--color-background-primary);
+}
+```
+
+These strategies ensure that the amber/orange theme is consistently applied across all components regardless of their structure or styling approach.

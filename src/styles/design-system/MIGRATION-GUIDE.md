@@ -246,4 +246,67 @@ If background patterns aren't visible:
 Consult:
 - [Section Component Docs](../../components/shared/README.md)
 - [Color System Documentation](./COLOR-SYSTEM.md)
-- [Design System README](./README.md) 
+- [Design System README](./README.md)
+
+## Gradient Token System
+
+### Overview
+
+A new multi-layered gradient token system has been implemented to improve maintainability, consistency, and theme switching capabilities. This system replaces hard-coded gradient values with a token-based approach that integrates with the color system.
+
+### Token Architecture
+
+The gradient token system consists of three layers:
+
+1. **Base Gradient Primitives** - Raw color combinations defined as SCSS maps with start/end colors
+2. **Component-Specific Semantic Tokens** - Contextual application of gradients for specific components
+3. **Utility Functions/Mixins** - Helper functions to retrieve and apply gradients consistently
+
+### Example Usage
+
+**Before:**
+```scss
+.my-button {
+  background: linear-gradient(90deg, rgba(132, 204, 22, 1) 0%, rgba(16, 185, 129, 1) 100%);
+  box-shadow: 0 0 20px 0 rgba(204, 255, 0, 0.3);
+  
+  &:hover {
+    background: linear-gradient(90deg, rgba(163, 230, 53, 1) 0%, rgba(20, 184, 166, 1) 100%);
+    box-shadow: 0 0 25px 0 rgba(204, 255, 0, 0.4);
+  }
+}
+```
+
+**After:**
+```scss
+.my-button {
+  @include gradient-button('journey', 'default');
+}
+```
+
+### Implementation Steps
+
+1. Import gradient tokens:
+   ```scss
+   @import "../../styles/design-system/index.scss";
+   ```
+
+2. Use the gradient mixin for your components:
+   ```scss
+   .my-element {
+     @include gradient-button('component-name', 'variant');
+   }
+   ```
+
+3. For opacity variants of colors, use the new utility mixin:
+   ```scss
+   @include create-accent-color-variants('color-lime-500', 'my-accent-lime');
+   ```
+
+### Advantages
+
+- **Semantic Naming**: Gradients are now named by their purpose, not just colors
+- **Theme Integration**: Gradients automatically adapt to theme variants
+- **Consistency**: Ensures the same gradient values are used across components
+- **Maintainability**: Change a gradient once, update everywhere
+- **Performance**: Reduces CSS duplication 

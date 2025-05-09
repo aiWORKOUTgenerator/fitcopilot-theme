@@ -67,7 +67,7 @@ const MinimalistTraining: React.FC<TrainingProps> = ({
                                 />
 
                                 {/* CTA Button */}
-                                <div className="training-expanded__cta">
+                                <div className="training-expanded__cta mt-8">
                                     <Button
                                         variant="secondary"
                                         size="medium"

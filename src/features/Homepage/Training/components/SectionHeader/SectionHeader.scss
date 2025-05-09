@@ -30,21 +30,10 @@
         line-height: 1.2;
         margin-bottom: 1rem;
         max-width: 100%;
+        color: var(--training-text, #f9fafb) !important;
 
         @media (min-width: 768px) {
             font-size: 2.75rem;
-        }
-
-        &-highlight {
-            // Default highlight style (can be overridden by program-specific gradients)
-            font-weight: 700;
-            display: inline-block;
-
-            // Reduced motion alternative
-            @media (prefers-reduced-motion: reduce) {
-                background-image: none !important;
-                transition: none !important;
-            }
         }
     }
 
@@ -65,7 +54,7 @@
     // Default variant
     &--default {
         .section-header__title {
-            color: var(--text-primary, #f9fafb);
+            color: var(--training-text, #f9fafb) !important;
         }
 
         .section-header__description {
@@ -73,7 +62,7 @@
         }
 
         .section-header__tag {
-            color: var(--text-accent, #60a5fa);
+            color: var(--color-amber-300, #FCD34D);
         }
     }
 
@@ -203,9 +192,31 @@
             color: white;
         }
     }
+
+    &__title-highlight {
+        // Default highlight style (can be overridden by program-specific gradients)
+        font-weight: 700;
+        display: inline-block;
+        background-image: var(--training-gradient-athletic) !important;
+        -webkit-background-clip: text !important;
+        background-clip: text !important;
+        color: transparent !important;
+
+        // Reduced motion alternative
+        @media (prefers-reduced-motion: reduce) {
+            background-image: none !important;
+            transition: none !important;
+        }
+    }
 }
 
-// Program-specific gradient classes
+// Program-specific gradient classes - athletic first for priority
+.program-gradient-athletic {
+    background-image: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
+    background-clip: text;
+    color: transparent;
+}
+
 .program-gradient-strength {
     background-image: linear-gradient(to right, #bef264, #34d399);
     background-clip: text;
@@ -220,12 +231,6 @@
 
 .program-gradient-fitness {
     background-image: linear-gradient(to right, #c4b5fd, #a78bfa);
-    background-clip: text;
-    color: transparent;
-}
-
-.program-gradient-athletic {
-    background-image: linear-gradient(to right, #fcd34d, #fb923c);
     background-clip: text;
     color: transparent;
 }
@@ -280,4 +285,9 @@
             animation: none !important;
         }
     }
+}
+
+/* Force white text for training section headers */
+.training-section .section-header .section-header__title {
+    color: var(--training-text, #f9fafb) !important;
 }

@@ -217,4 +217,12 @@
     button#{&}#{&}--features {
         // Features-specific button styling
     }
+
+    &--secondary {
+        &.button--small {
+            // Ensure small secondary buttons have adequate horizontal padding
+            padding-left: var(--spacing-4, 1rem);
+            padding-right: var(--spacing-4, 1rem);
+        }
+    }
 }

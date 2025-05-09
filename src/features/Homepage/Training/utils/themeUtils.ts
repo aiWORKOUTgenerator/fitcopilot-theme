@@ -46,6 +46,12 @@ export function applyTheme(
     // Apply variant class
     classList += ` ${component.baseClass}--${variant}`;
 
+    // Special case for SectionHeader title
+    if (component.baseClass === 'section-header') {
+        // This doesn't modify classes, but documents the override we're doing in CSS
+        // The title color is forced via direct CSS rules in Training.scss
+    }
+
     // Apply token-based classes
     Object.entries(component.tokenMappings).forEach(([selector, { category, subcategory }]) => {
         const tokenValue = tokens[category]?.[subcategory];

@@ -370,4 +370,53 @@
     --vp-transition-standard: 0.3s ease;
     --vp-transition-fast: 0.1s linear;
     --vp-animation-spin-duration: 1s;
+
+    /* Journey Component Tokens */
+    --journey-bg-color: var(--color-slate-900);
+    --journey-card-bg: var(--color-slate-800);
+    --journey-card-border: var(--color-slate-700);
+
+    /* Journey Button Tokens */
+    --journey-btn-radius: var(--radii-xl);
+    --journey-btn-padding-x: 1.5rem;
+    --journey-btn-padding-x-large: 2.5rem;
+    --journey-btn-padding-y: 0.875rem;
+    --journey-btn-transition: var(--transition-standard);
+
+    /* Journey Feature Card Tokens */
+    --journey-feature-card-radius: var(--radii-lg);
+    --journey-feature-card-border-width: 1px;
+    --journey-feature-icon-size: 1.5rem;
+
+    /* Journey Step Card Tokens */
+    --journey-step-card-radius: var(--radii-xl);
+    --journey-step-card-border-width: 1px;
+    --journey-step-icon-size: 2.5rem;
+    --journey-step-number-size: 1.75rem;
+    --journey-step-number-radius: var(--radii-full);
+}
+
+/* Variant Overrides */
+[data-theme="gym"] {
+    --journey-bg-color: var(--color-slate-900);
+    --journey-card-bg: var(--color-slate-800);
+    --journey-card-border: var(--color-violet-700);
+}
+
+[data-theme="sports"] {
+    --journey-bg-color: var(--color-slate-900);
+    --journey-card-bg: var(--color-slate-800);
+    --journey-card-border: var(--color-cyan-700);
+}
+
+[data-theme="wellness"] {
+    --journey-bg-color: var(--color-slate-900);
+    --journey-card-bg: var(--color-slate-800);
+    --journey-card-border: var(--color-teal-700);
+}
+
+[data-theme="modern"] {
+    --journey-bg-color: var(--color-slate-900);
+    --journey-card-bg: var(--color-slate-800);
+    --journey-card-border: var(--color-amber-700);
 }

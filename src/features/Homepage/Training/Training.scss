@@ -10,18 +10,43 @@
     --training-bg: var(--color-background-primary, rgba(10, 16, 27, 1));
     --training-text: var(--color-text-primary, #f9fafb);
     --training-text-muted: var(--color-text-secondary, #9ca3af);
-    --training-accent: var(--color-primary, #8b5cf6);
-    --training-accent-light: var(--color-primary-light, #c4b5fd);
+
+    // Primary accent colors (amber/orange as primary)
+    --training-accent: var(--color-amber-400, #FB923C);
+    --training-accent-light: var(--color-amber-300, #FCD34D);
+
+    // Accent colors with opacity variations for effects
+    --training-accent-amber: rgba(251, 191, 36, 0.15);
+    --training-accent-amber-strong: rgba(251, 191, 36, 0.5);
+    --training-accent-amber-light: rgba(251, 191, 36, 0.05);
+    --training-accent-amber-medium: rgba(251, 191, 36, 0.1);
+
+    // Alternative accent colors for program types
+    --training-accent-lime: rgba(190, 242, 100, 0.15);
+    --training-accent-lime-strong: rgba(190, 242, 100, 0.5);
+    --training-accent-lime-light: rgba(190, 242, 100, 0.05);
+    --training-accent-lime-medium: rgba(190, 242, 100, 0.1);
+
+    --training-accent-cyan: rgba(34, 211, 238, 0.15);
+    --training-accent-cyan-strong: rgba(34, 211, 238, 0.5);
+    --training-accent-cyan-light: rgba(34, 211, 238, 0.05);
+    --training-accent-cyan-medium: rgba(34, 211, 238, 0.1);
+
+    --training-accent-violet: rgba(167, 139, 250, 0.15);
+    --training-accent-violet-strong: rgba(167, 139, 250, 0.5);
+    --training-accent-violet-light: rgba(167, 139, 250, 0.05);
+    --training-accent-violet-medium: rgba(167, 139, 250, 0.1);
+
     --training-card-bg: var(--color-surface-primary, rgba(31, 41, 55, 0.5));
     --training-card-border: var(--color-border-light, rgba(55, 65, 81, 0.5));
-    --training-card-hover-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.3);
-    --training-card-active-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.5);
+    --training-card-hover-border: rgba(251, 191, 36, 0.3);
+    --training-card-active-border: rgba(251, 191, 36, 0.5);
     --training-expanded-bg: var(--color-surface-secondary, rgba(31, 41, 55, 0.4));
-    --training-connector-bg: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.5);
+    --training-connector-bg: rgba(251, 191, 36, 0.5);
     --training-icon-size: 64px;
-    --training-card-toggle-border: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.3);
-    --training-card-toggle-bg: rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.1);
-    --training-icon-shadow: drop-shadow(0 0 8px rgba(var(--color-accent-400-rgb, 139, 92, 246), 0.4));
+    --training-card-toggle-border: rgba(251, 191, 36, 0.3);
+    --training-card-toggle-bg: rgba(251, 191, 36, 0.1);
+    --training-icon-shadow: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
 
     // Background pattern and gradient variables
     --training-pattern-opacity: 0.05;
@@ -36,12 +61,14 @@
     --training-transition-timing: ease;
 
     // Program-specific gradients
+    --training-gradient-default: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
     --training-gradient-strength: linear-gradient(to right, var(--color-lime-300, #bef264), var(--color-emerald-400, #34d399));
     --training-gradient-fatLoss: linear-gradient(to right, var(--color-cyan-300, #67e8f9), var(--color-blue-400, #60a5fa));
     --training-gradient-fitness: linear-gradient(to right, var(--color-violet-300, #c4b5fd), var(--color-purple-400, #a78bfa));
     --training-gradient-athletic: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
 
     // Program-specific text colors
+    --training-text-default: var(--color-amber-200, #fde68a);
     --training-text-strength: var(--color-lime-200, #d9f99d);
     --training-text-fatLoss: var(--color-cyan-200, #a5f3fc);
     --training-text-fitness: var(--color-violet-200, #ddd6fe);
@@ -170,13 +197,36 @@ body[data-theme="wellness"] {
 
     // Section header specific styles
     &__header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 4rem;
         width: 100%;
-        margin-bottom: 3rem;
-        position: relative;
-        z-index: 2; // Ensure header appears above background patterns
+
+        &-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--color-amber-300, #FCD34D) !important;
+            margin-bottom: 0.5rem;
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+
+        &-description {
+            color: var(--training-text-muted);
+            max-width: 36rem;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            width: 100%;
+        }
     }
 
-    // Add grid pattern background
+    // Add grid pattern background with improved masking
     &::before {
         content: '';
         position: absolute;
@@ -192,6 +242,19 @@ body[data-theme="wellness"] {
         z-index: -1;
         pointer-events: none;
         opacity: var(--training-pattern-opacity);
+        // Add mask gradient to fade at top and bottom
+        mask-image:
+            linear-gradient(to bottom,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 1) 15%,
+                rgba(0, 0, 0, 1) 85%,
+                rgba(0, 0, 0, 0) 100%);
+        -webkit-mask-image:
+            linear-gradient(to bottom,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 1) 15%,
+                rgba(0, 0, 0, 1) 85%,
+                rgba(0, 0, 0, 0) 100%);
     }
 
     // Add gradient overlay for smooth transitions
@@ -216,7 +279,7 @@ body[data-theme="wellness"] {
         display: none;
     }
 
-    // Decorative accent shapes for visual interest
+    // Decorative accent shapes for visual interest with amber colors
     &__accent-shape {
         position: absolute;
         z-index: -1;
@@ -230,7 +293,7 @@ body[data-theme="wellness"] {
             background: radial-gradient(circle at center,
                     var(--training-accent-light) 0%,
                     transparent 70%);
-            opacity: 0.1;
+            opacity: 0.15;
             border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
             animation: training-float 20s ease-in-out infinite;
         }
@@ -243,10 +306,27 @@ body[data-theme="wellness"] {
             background: radial-gradient(circle at center,
                     var(--training-accent-light) 0%,
                     transparent 70%);
-            opacity: 0.05;
+            opacity: 0.1;
             border-radius: 50% 50% 50% 50% / 60% 40% 60% 40%;
             animation: training-float 25s ease-in-out infinite reverse;
         }
+    }
+
+    // Add a third accent shape for additional visual interest
+    &__accent-shape--3 {
+        position: absolute;
+        z-index: -1;
+        pointer-events: none;
+        top: 40%;
+        left: -10%;
+        width: 30%;
+        height: 30%;
+        background: radial-gradient(circle at center,
+                var(--training-accent-amber-strong) 0%,
+                transparent 70%);
+        opacity: 0.05;
+        border-radius: 70% 30% 50% 50% / 40% 60% 40% 60%;
+        animation: training-float 30s ease-in-out infinite;
     }
 
     // Animation for floating shapes
@@ -279,65 +359,6 @@ body[data-theme="wellness"] {
         }
     }
 
-    // Header styles
-    &__header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        margin-bottom: 4rem;
-        width: 100%;
-
-        &-tag {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--training-accent-light);
-            margin-bottom: 0.5rem;
-            display: block;
-            text-align: center;
-            width: 100%;
-        }
-
-        &-title {
-            font-size: 2.25rem;
-            line-height: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--training-text);
-            text-align: center;
-            width: 100%;
-
-            @media (min-width: 768px) {
-                font-size: 3rem;
-                line-height: 1;
-            }
-
-            &-highlight {
-                background-image: var(--training-gradient-strength);
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
-            }
-
-            body[data-theme="sports"] & {
-                &-highlight {
-                    background-image: var(--training-gradient-strength);
-                }
-            }
-        }
-
-        &-description {
-            color: var(--training-text-muted);
-            max-width: 36rem;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            width: 100%;
-        }
-    }
-
     // Programs list container
     &__programs {
         display: flex;
@@ -352,6 +373,51 @@ body[data-theme="wellness"] {
     &__cta {
         margin-top: 4rem;
         text-align: center;
+        margin-bottom: 1rem;
+
+        @media (min-width: 768px) {
+            margin-top: 5rem;
+            margin-bottom: 2rem;
+        }
+    }
+
+    // SectionHeader integration styles - these replace the legacy header styles
+    .section-header__title {
+        color: var(--training-text, #f9fafb) !important;
+    }
+
+    // Apply amber gradient to primary buttons in Training section
+    .button--primary {
+        background: linear-gradient(to right, var(--color-amber-300, #FCD34D), var(--color-orange-400, #FB923C)) !important;
+        color: var(--color-gray-900, #111827) !important;
+        font-weight: 600;
+
+        &.button--large {
+            // Feature CTA enhancements applied by MainCTA.scss
+        }
+
+        &:hover {
+            filter: brightness(1.05);
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px 10px rgba(251, 191, 36, 0.4) !important;
+        }
+    }
+
+    // Apply amber styling to secondary buttons as well
+    .button--secondary {
+        background-color: rgba(251, 191, 36, 0.1);
+        color: var(--color-amber-600, #D97706);
+        border: 1px solid var(--color-amber-300, #FCD34D);
+        padding-left: var(--spacing-6, 1.5rem) !important;
+        padding-right: var(--spacing-6, 1.5rem) !important;
+
+        &:hover:not(:disabled) {
+            background-color: rgba(251, 191, 36, 0.15);
+        }
+
+        &:active:not(:disabled) {
+            background-color: rgba(251, 191, 36, 0.2);
+        }
     }
 }
 
@@ -400,7 +466,8 @@ body[data-theme="wellness"] {
         transition: transform var(--training-transition-duration) var(--training-transition-timing);
 
         svg {
-            filter: var(--training-icon-shadow);
+            filter: var(--training-icon-shadow) !important;
+            color: var(--color-amber-300, #FCD34D) !important;
         }
     }
 
@@ -414,6 +481,7 @@ body[data-theme="wellness"] {
         line-height: 1.75rem;
         font-weight: 700;
         margin-bottom: 0.5rem;
+        color: var(--color-amber-300, #FCD34D) !important;
         transition: color var(--training-transition-duration) var(--training-transition-timing);
 
         @media (min-width: 768px) {
@@ -425,7 +493,7 @@ body[data-theme="wellness"] {
     &__description {
         font-size: 0.95rem;
         line-height: 1.6;
-        color: var(--training-text-muted);
+        color: var(--color-gray-100, #F3F4F6);
         transition: color var(--training-transition-duration) var(--training-transition-timing);
 
         @media (min-width: 768px) {
@@ -437,8 +505,8 @@ body[data-theme="wellness"] {
     &__toggle {
         padding: 0.5rem;
         border-radius: 9999px;
-        border: 1px solid var(--training-card-toggle-border);
-        background-color: var(--training-card-toggle-bg);
+        border: 1px solid var(--training-accent-amber-medium);
+        background-color: var(--training-accent-amber-light);
         transition: all var(--training-transition-duration) var(--training-transition-timing);
         display: flex;
         align-items: center;
@@ -450,6 +518,8 @@ body[data-theme="wellness"] {
 
         &--active {
             transform: rotate(90deg);
+            background-color: var(--training-accent-amber-medium);
+            border-color: var(--training-accent-amber-strong);
         }
 
         // Add focus styles for keyboard navigation - a11y enhancement
@@ -457,12 +527,17 @@ body[data-theme="wellness"] {
             outline: 2px solid var(--training-accent);
             outline-offset: 2px;
         }
+
+        &:hover {
+            background-color: var(--training-accent-amber-medium);
+            border-color: var(--training-accent-amber-strong);
+        }
     }
 
     // Hover state
     &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 0 20px 0 var(--training-accent-amber);
         border-color: var(--training-card-hover-border);
 
         .training-card__icon {
@@ -470,7 +545,7 @@ body[data-theme="wellness"] {
         }
 
         .training-card__title {
-            color: var(--training-accent-light);
+            color: var(--training-accent);
         }
 
         .training-card__description {
@@ -481,7 +556,7 @@ body[data-theme="wellness"] {
     // Active state
     &--active {
         border-color: var(--training-card-active-border);
-        box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.1);
+        box-shadow: 0 10px 25px -5px rgba(251, 191, 36, 0.1);
     }
 
     // Reduced motion alternatives - a11y enhancement
@@ -602,7 +677,7 @@ body[data-theme="wellness"] {
     }
 
     &__benefits {
-        margin-bottom: 1.5rem;
+        margin-bottom: var(--spacing-8, 2rem);
 
         &-item {
             display: flex;
@@ -610,7 +685,7 @@ body[data-theme="wellness"] {
             margin-bottom: 0.5rem;
 
             svg {
-                color: var(--training-accent-light);
+                color: var(--color-amber-400, #FB923C);
                 margin-right: 0.5rem;
                 margin-top: 0.125rem;
                 flex-shrink: 0;
@@ -624,6 +699,7 @@ body[data-theme="wellness"] {
 
     &__cta {
         text-align: center;
+        margin-top: var(--spacing-8, 2rem);
     }
 
     // Sports variant styling
@@ -663,4 +739,183 @@ body[data-theme="wellness"] {
         margin-left: auto;
         margin-right: auto;
     }
+}
+
+// Animation classes
+.animate-fade-slide-up {
+    animation: fadeSlideUp 0.4s ease-out forwards;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+// Improved reduced motion support
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --training-transition-duration: 0.1s;
+    }
+
+    .animate-fade-slide-up,
+    .animate-fade-in {
+        animation: none;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .training-card,
+    .training-card__icon,
+    .training-card__toggle,
+    .training-expanded,
+    .training-section__accent-shape {
+        transition: none !important;
+        transform: none !important;
+        animation: none !important;
+    }
+
+    .training-card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .training-card__toggle--active {
+        transform: none !important;
+    }
+
+    // Disable glow animations for reduced motion
+    .button--primary {
+        &:hover:not(:disabled) {
+            transform: none;
+            box-shadow: 0 0 15px 2px rgba(251, 191, 36, 0.2);
+        }
+    }
+}
+
+// Special attribute to force amber theme
+.training-section[data-theme-accent="amber"] {
+
+    // Tag should be amber
+    .training-section__header-tag {
+        color: var(--color-amber-300, #FCD34D);
+    }
+
+    // Buttons and toggle elements
+    .training-card__toggle {
+        border-color: var(--training-accent-amber-medium, rgba(251, 191, 36, 0.1));
+        background-color: var(--training-accent-amber-light, rgba(251, 191, 36, 0.05));
+
+        svg {
+            color: var(--color-amber-300, #FCD34D);
+        }
+
+        &:hover {
+            background-color: var(--training-accent-amber-medium, rgba(251, 191, 36, 0.1));
+            border-color: var(--training-accent-amber-strong, rgba(251, 191, 36, 0.5));
+        }
+    }
+
+    // Card hover effect
+    .training-card:hover {
+        border-color: var(--color-amber-400, #FB923C);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 0 15px 0 rgba(251, 191, 36, 0.2);
+    }
+
+    // Program title color
+    .training-card__title {
+        color: var(--color-amber-300, #FCD34D);
+    }
+
+    // Accent shapes - amber coloring
+    .training-section__accent-shape {
+
+        &--1,
+        &--2 {
+            background: radial-gradient(circle at center,
+                    var(--color-amber-300, #FCD34D) 0%,
+                    transparent 70%);
+        }
+    }
+
+    .training-section__accent-shape--3 {
+        background: radial-gradient(circle at center,
+                rgba(251, 191, 36, 0.3) 0%,
+                transparent 70%);
+    }
+
+    // CTA button with amber/orange gradient
+    .button--primary {
+        background: linear-gradient(to right, var(--color-amber-300, #FCD34D), var(--color-orange-400, #FB923C)) !important;
+        color: var(--color-gray-900, #111827) !important;
+        font-weight: 600;
+
+        &.button--large {
+            // Feature CTA enhancements applied by MainCTA.scss
+        }
+
+        &:hover {
+            filter: brightness(1.05);
+            transform: translateY(-3px);
+            box-shadow: 0 0 35px 10px rgba(251, 191, 36, 0.4) !important;
+        }
+    }
+
+    // Secondary buttons with amber styling
+    .button--secondary {
+        background-color: rgba(251, 191, 36, 0.1) !important;
+        color: var(--color-amber-600, #D97706) !important;
+        border: 1px solid var(--color-amber-300, #FCD34D) !important;
+        padding-left: var(--spacing-6, 1.5rem) !important;
+        padding-right: var(--spacing-6, 1.5rem) !important;
+
+        &:hover {
+            background-color: rgba(251, 191, 36, 0.15) !important;
+        }
+    }
+
+    // Force section header title text to be white
+    .section-header__title {
+        color: var(--training-text, #f9fafb) !important;
+    }
+
+    // Make benefit list checkmarks use the amber color
+    .benefits-list__icon,
+    .training-expanded__benefits-item svg {
+        color: var(--color-amber-400, #FB923C) !important;
+    }
+
+    // Main CTA styling reference
+    .main-cta .button--primary {
+        // MainCTA component handles styling
+    }
+}
+
+// Modify the program-gradient classes
+.program-gradient-athletic,
+.program-gradient-default {
+    background-image: var(--training-gradient-athletic, linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }

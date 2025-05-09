@@ -5,26 +5,26 @@ import './MainCTA.scss';
 import { MainCTAProps } from './types';
 
 /**
- * MainCTA component for the training section
+ * Main CTA button for the Training section
  */
-const MainCTA: React.FC<MainCTAProps> = ({
+const MainCTA: React.FC<MainCTAProps> = memo(function MainCTA({
     onNavigate,
     variant = 'default',
-    className = ''
-}) => {
+    className = '',
+}) {
     return (
-        <div className={`training-section__cta ${className}`}>
+        <div className={`main-cta main-cta--${variant} ${className}`}>
             <Button
                 variant="primary"
                 size="large"
                 rightIcon={<ArrowRight size={20} />}
                 onClick={() => onNavigate('all')}
-                aria-label="Browse all training programs"
+                aria-label="View all training programs"
             >
-                Find Your Perfect Program
+                View All Programs
             </Button>
         </div>
     );
-};
+});
 
-export default memo(MainCTA); 
+export default MainCTA; 
