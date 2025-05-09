@@ -1,0 +1,147 @@
+import {
+    BarChart,
+    Calendar,
+    ChevronRight,
+    Download,
+    Info,
+    MessageSquare,
+    RotateCw,
+    Smartphone,
+    Video
+} from 'lucide-react';
+import React, { useState } from 'react';
+import { Section } from '../../../../../components/shared';
+import Button from '../../../../../components/UI/Button';
+import { MediaContainer } from '../../../components';
+import '../../../TrainingFeatures.scss';
+import { ModernVariantProps, TrainingFeature } from '../../../types';
+
+/**
+ * Modern theme variant of the TrainingFeatures component for the homepage
+ * 
+ * Features a clean, tech-inspired design with subtle animations and a focus on readability
+ */
+const ModernTrainingFeatures: React.FC<ModernVariantProps> = (props) => {
+    const {
+        features: customFeatures,
+        sectionTitle = "AI-Powered Training Technologies",
+        sectionSubtitle = "Leveraging advanced algorithms for peak performance",
+        ctaText = "Explore Technologies",
+        ctaUrl = "/technologies",
+        mediaType = "video",
+        mediaSrc = "https://example.com/videos/training-tech.mp4",
+        mediaAlt = "AI-powered training technologies visualization",
+        backgroundColor = "gradient-tech",
+        variant = "modern"
+    } = props;
+
+    // Default features for modern variant
+    const defaultFeatures: TrainingFeature[] = [
+        {
+            icon: <BarChart size={24} />,
+            title: "Performance Analytics",
+            description: "Real-time workout data visualization with AI-powered insights to optimize your training cycles."
+        },
+        {
+            icon: <Calendar size={24} />,
+            title: "Intelligent Scheduling",
+            description: "Smart training calendar that adapts to your performance, recovery metrics, and lifestyle factors."
+        },
+        {
+            icon: <Smartphone size={24} />,
+            title: "Mobile Integration",
+            description: "Seamless syncing between devices with offline capability for uninterrupted training anywhere."
+        },
+        {
+            icon: <Video size={24} />,
+            title: "Form Analysis",
+            description: "AI-powered video analysis that provides real-time form feedback and technique improvement suggestions."
+        },
+        {
+            icon: <RotateCw size={24} />,
+            title: "Adaptive Programming",
+            description: "Dynamic workout adjustments based on your progress, fatigue levels, and performance metrics."
+        },
+        {
+            icon: <MessageSquare size={24} />,
+            title: "Expert Consultation",
+            description: "On-demand access to certified coaches through our integrated messaging platform."
+        },
+        {
+            icon: <Download size={24} />,
+            title: "Offline Access",
+            description: "Download workouts and instructional content for training in areas with limited connectivity."
+        },
+        {
+            icon: <Info size={24} />,
+            title: "Knowledge Base",
+            description: "Comprehensive library of exercise science resources curated by industry professionals."
+        }
+    ];
+
+    // Use custom features if provided, otherwise use defaults
+    const features = customFeatures || defaultFeatures;
+
+    // State for tracking the expanded feature
+    const [expandedFeature, setExpandedFeature] = useState<number | null>(null);
+
+    const toggleFeature = (index: number) => {
+        setExpandedFeature(expandedFeature === index ? null : index);
+    };
+
+    return (
+        <Section
+            className="training-features training-features--modern"
+            backgroundColor={backgroundColor}
+            data-variant={variant}
+        >
+            <div className="training-features__container">
+                <div className="training-features__content">
+                    <div className="training-features__header">
+                        <h2 className="training-features__title">{sectionTitle}</h2>
+                        <p className="training-features__subtitle">{sectionSubtitle}</p>
+                    </div>
+
+                    <div className="training-features__grid">
+                        {features.map((feature, index) => (
+                            <div
+                                key={index}
+                                className={`training-features__card ${expandedFeature === index ? 'training-features__card--expanded' : ''}`}
+                                onClick={() => toggleFeature(index)}
+                            >
+                                <div className="training-features__card-header">
+                                    <div className="training-features__card-icon">
+                                        {feature.icon}
+                                    </div>
+                                    <h3 className="training-features__card-title">{feature.title}</h3>
+                                </div>
+                                <p className="training-features__card-description">{feature.description}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="training-features__cta">
+                        <Button
+                            variant="primary"
+                            size="large"
+                            rightIcon={<ChevronRight size={20} />}
+                            href={ctaUrl}
+                        >
+                            {ctaText}
+                        </Button>
+                    </div>
+                </div>
+
+                <div className="training-features__media">
+                    <MediaContainer
+                        type={mediaType}
+                        src={mediaSrc}
+                        alt={mediaAlt}
+                    />
+                </div>
+            </div>
+        </Section>
+    );
+};
+
+export default ModernTrainingFeatures;

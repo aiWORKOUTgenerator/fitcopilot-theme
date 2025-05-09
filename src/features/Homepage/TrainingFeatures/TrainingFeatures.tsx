@@ -10,18 +10,29 @@ import {
     Video
 } from 'lucide-react';
 import React, { useState } from 'react';
-import Button from '../../../../components/UI/Button';
-import MediaContainer from '../components/MediaContainer';
-import '../TrainingFeatures.scss';
+import { Section } from '../../../components/shared';
+import Button from '../../../components/UI/Button';
+import { MediaContainer } from './components';
+import './TrainingFeatures.scss';
+import { DefaultVariantProps, TrainingFeature } from './types';
 
 /**
  * Default Training Features component for the homepage
  */
-const TrainingFeatures: React.FC = () => {
+const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
+    const {
+        features: customFeatures,
+        sectionTitle = "Comprehensive Training Features",
+        sectionDescription = "Our training platform includes everything you need to succeed on your fitness journey, from cutting-edge tools to personalized support.",
+        sectionTagText = "Premium Experience",
+        variant = 'default',
+        className = '',
+    } = props;
+
     const [flippedCards, setFlippedCards] = useState<Record<number, boolean>>({});
 
-    // Training features data
-    const trainingFeatures = [
+    // Default training features data
+    const defaultFeatures: TrainingFeature[] = [
         {
             icon: <Video size={24} className="text-gray-900" />,
             title: "Live Virtual Sessions",
@@ -29,7 +40,7 @@ const TrainingFeatures: React.FC = () => {
             gradient: "from-lime-300 to-emerald-400",
             flipFront: "Get expert coaching from anywhere with our high-quality video platform.",
             media: {
-                type: 'video' as const,
+                type: 'video',
                 src: '/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/media/videos/Drone Video 3.mp4',
                 poster: '/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/media/videos/drone-video-poster.jpg',
                 alt: 'Aerial drone footage showing fitness activities',
@@ -57,7 +68,7 @@ const TrainingFeatures: React.FC = () => {
             gradient: "from-cyan-300 to-blue-400",
             flipFront: "Life gets busy. Our flexible scheduling adapts to your changing needs.",
             media: {
-                type: 'image' as const,
+                type: 'image',
                 src: '/assets/features/calendar.jpg',
                 alt: 'Calendar scheduling interface showing workout appointments'
             },
@@ -78,7 +89,7 @@ const TrainingFeatures: React.FC = () => {
             gradient: "from-violet-300 to-purple-400",
             flipFront: "Track every aspect of your fitness journey with intuitive visualizations.",
             media: {
-                type: 'image' as const,
+                type: 'image',
                 src: '/assets/features/progress-tracking.jpg',
                 alt: 'Fitness progress dashboard with charts and metrics'
             },
@@ -99,7 +110,7 @@ const TrainingFeatures: React.FC = () => {
             gradient: "from-amber-300 to-orange-400",
             flipFront: "Questions between sessions? Your trainer is just a message away.",
             media: {
-                type: 'image' as const,
+                type: 'image',
                 src: '/assets/features/support.jpg',
                 alt: 'Trainer and client messaging interface'
             },
@@ -120,7 +131,7 @@ const TrainingFeatures: React.FC = () => {
             gradient: "from-lime-300 to-emerald-400",
             flipFront: "Every workout is designed specifically for your body, goals, and equipment.",
             media: {
-                type: 'image' as const,
+                type: 'image',
                 src: '/assets/features/custom-workout.jpg',
                 alt: 'Customized workout plan'
             },
@@ -141,7 +152,7 @@ const TrainingFeatures: React.FC = () => {
             gradient: "from-cyan-300 to-blue-400",
             flipFront: "Your entire fitness plan in your pocket, accessible anywhere and anytime.",
             media: {
-                type: 'image' as const,
+                type: 'image',
                 src: '/assets/features/mobile.jpg',
                 alt: 'Mobile app interface showing workout details'
             },
@@ -157,6 +168,9 @@ const TrainingFeatures: React.FC = () => {
         }
     ];
 
+    // Use custom features if provided, otherwise use defaults
+    const trainingFeatures = customFeatures || defaultFeatures;
+
     // Toggle flip for a specific card
     const toggleFlip = (index: number, e?: React.MouseEvent) => {
         if (e) {
@@ -169,17 +183,25 @@ const TrainingFeatures: React.FC = () => {
         }));
     };
 
+    // Create props for the Section component
+    const sectionProps = {
+        id: "training-features",
+        className: `training-features-section ${className}`,
+        backgroundColor: "secondary" as const,
+        backgroundVariant: "gradient" as const,
+        spacing: "lg" as const,
+        variant
+    };
+
     return (
-        <section className="training-features-section w-full py-20 px-4 bg-gray-900">
+        <Section {...sectionProps}>
             {/* Header */}
             <div className="text-center mb-12">
-                <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">Premium Experience</span>
+                <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">{sectionTagText}</span>
                 <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-                    Comprehensive <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">Training Features</span>
+                    <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">{sectionTitle}</span>
                 </h2>
-                <p className="text-gray-400 max-w-2xl mx-auto">
-                    Our training platform includes everything you need to succeed on your fitness journey, from cutting-edge tools to personalized support.
-                </p>
+                <p className="text-gray-400 max-w-2xl mx-auto">{sectionDescription}</p>
             </div>
 
             {/* Features List */}
@@ -202,13 +224,15 @@ const TrainingFeatures: React.FC = () => {
                                     </div>
                                 </div>
                                 <p className="text-gray-300 mt-4">{feature.flipFront}</p>
-                                <button
+                                <Button
+                                    variant="ghost"
+                                    size="small"
+                                    className="mt-4 text-lime-300 hover:text-lime-400"
                                     onClick={(e) => toggleFlip(index, e)}
-                                    className="mt-4 inline-flex items-center text-sm text-lime-300 hover:text-lime-400 transition-colors"
                                 >
                                     <Info size={16} className="mr-1" />
                                     See more details
-                                </button>
+                                </Button>
                             </div>
 
                             {/* Flip Card - Right Side */}
@@ -260,13 +284,15 @@ const TrainingFeatures: React.FC = () => {
                                                 </li>
                                             ))}
                                         </ul>
-                                        <button
+                                        <Button
+                                            variant="ghost"
+                                            size="small"
+                                            className="mt-2 text-xs text-lime-300 hover:text-lime-400"
                                             onClick={(e) => toggleFlip(index, e)}
-                                            className="flip-button mt-2 text-xs text-lime-300 hover:text-lime-400 transition-colors"
                                         >
                                             <RotateCw size={12} className="mr-1" />
                                             Flip back
-                                        </button>
+                                        </Button>
                                     </div>
                                 </div>
                             </div>
@@ -279,14 +305,13 @@ const TrainingFeatures: React.FC = () => {
             <div className="text-center mt-16">
                 <Button
                     variant="primary"
-                    size="large"
-                    rightIcon={<ChevronRight size={18} />}
-                    onClick={() => window.location.href = 'https://builder.fitcopilot.ai/features'}
+                    className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-md hover:shadow-lg transition-all duration-300"
                 >
                     Explore All Features
+                    <ChevronRight size={18} />
                 </Button>
             </div>
-        </section>
+        </Section>
     );
 };
 
