@@ -1,0 +1,301 @@
+/**
+ * FeatureCard component styles
+ * 
+ * Uses multi-layered token approach with:
+ * - Base tokens (colors, spacing)
+ * - Semantic tokens (card specific)
+ * - Component-specific properties
+ */
+
+// Component-specific tokens
+:root {
+    // Base tokens
+    --feature-card-border-radius: 0.75rem;
+    --feature-card-transition-duration: 300ms;
+
+    // Semantic tokens - Default theme
+    --feature-card-border-color: var(--color-gray-700);
+    --feature-card-border-hover: var(--color-lime-300-30);
+    --feature-card-bg: var(--color-transparent);
+    --feature-card-shadow-color: var(--color-lime-300-10);
+    --feature-card-text-primary: var(--color-white);
+    --feature-card-text-secondary: var(--color-gray-400);
+    --feature-card-text-tertiary: var(--color-gray-300);
+    --feature-card-icon-bg: var(--color-gradient-lime);
+
+    // Card face backgrounds
+    --feature-card-front-bg-from: var(--color-gray-800);
+    --feature-card-front-bg-to: var(--color-gray-900);
+    --feature-card-back-bg-from: var(--color-gray-800);
+    --feature-card-back-bg-to: var(--color-gray-900);
+    --feature-card-secondary-bg-opacity: 0.2;
+
+    --feature-card-bullet-color: var(--color-lime-300);
+    --feature-card-link-color: var(--color-lime-300);
+    --feature-card-link-hover: var(--color-lime-400);
+
+    // Feature card animation properties
+    --feature-card-flip-duration: 600ms;
+    --feature-card-flip-easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Theme variant tokens
+[data-theme="gym"] {
+    --feature-card-border-color: var(--color-slate-700);
+    --feature-card-border-hover: var(--color-red-300-30);
+    --feature-card-shadow-color: var(--color-red-300-10);
+    --feature-card-icon-bg: var(--color-gradient-red);
+    --feature-card-bullet-color: var(--color-red-300);
+    --feature-card-link-color: var(--color-red-300);
+    --feature-card-link-hover: var(--color-red-400);
+
+    // Card face backgrounds - Gym theme
+    --feature-card-front-bg-from: var(--color-slate-800);
+    --feature-card-front-bg-to: var(--color-slate-900);
+    --feature-card-back-bg-from: var(--color-slate-800);
+    --feature-card-back-bg-to: var(--color-slate-900);
+}
+
+[data-theme="sports"] {
+    --feature-card-border-color: var(--color-gray-700);
+    --feature-card-border-hover: var(--color-blue-300-30);
+    --feature-card-shadow-color: var(--color-blue-300-10);
+    --feature-card-icon-bg: var(--color-gradient-blue);
+    --feature-card-bullet-color: var(--color-blue-300);
+    --feature-card-link-color: var(--color-blue-300);
+    --feature-card-link-hover: var(--color-blue-400);
+
+    // Card face backgrounds - Sports theme
+    --feature-card-front-bg-from: var(--color-blue-900);
+    --feature-card-front-bg-to: var(--color-blue-950);
+    --feature-card-back-bg-from: var(--color-blue-900);
+    --feature-card-back-bg-to: var(--color-blue-950);
+}
+
+[data-theme="wellness"] {
+    --feature-card-border-color: var(--color-gray-700);
+    --feature-card-border-hover: var(--color-purple-300-30);
+    --feature-card-shadow-color: var(--color-purple-300-10);
+    --feature-card-icon-bg: var(--color-gradient-purple);
+    --feature-card-bullet-color: var(--color-purple-300);
+    --feature-card-link-color: var(--color-purple-300);
+    --feature-card-link-hover: var(--color-purple-400);
+
+    // Card face backgrounds - Wellness theme
+    --feature-card-front-bg-from: var(--color-purple-900);
+    --feature-card-front-bg-to: var(--color-purple-950);
+    --feature-card-back-bg-from: var(--color-purple-900);
+    --feature-card-back-bg-to: var(--color-purple-950);
+}
+
+// Feature Card Component Styles
+.feature-card {
+    position: relative;
+    background: var(--feature-card-bg);
+    border: 1px solid var(--feature-card-border-color);
+    border-radius: var(--feature-card-border-radius);
+    transition: all var(--feature-card-transition-duration) ease;
+    overflow: hidden;
+
+    &:hover,
+    &:focus-within {
+        border-color: var(--feature-card-border-hover);
+        box-shadow: 0 4px 12px var(--feature-card-shadow-color);
+    }
+
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        color: var(--color-gray-900);
+        flex-shrink: 0;
+    }
+
+    .feature-title {
+        color: var(--feature-card-text-primary);
+        transition: color var(--feature-card-transition-duration) ease;
+
+        &:hover {
+            color: var(--feature-card-link-color);
+        }
+    }
+
+    .feature-description {
+        color: var(--feature-card-text-secondary);
+        transition: color var(--feature-card-transition-duration) ease;
+
+        &:hover {
+            color: var(--feature-card-text-tertiary);
+        }
+    }
+
+    // Perspective container for 3D flip effect
+    .perspective-container {
+        perspective: 1000px;
+    }
+
+    // Flip card styles
+    .flip-card {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform var(--feature-card-flip-duration) var(--feature-card-flip-easing);
+        transform-style: preserve-3d;
+        cursor: pointer;
+
+        &.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .flip-front,
+        .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--feature-card-border-radius);
+            overflow: hidden;
+            background: linear-gradient(to bottom right,
+                    var(--feature-card-front-bg-from),
+                    var(--feature-card-front-bg-to));
+        }
+
+        .flip-back {
+            transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(to bottom right,
+                    var(--feature-card-back-bg-from),
+                    var(--feature-card-back-bg-to));
+
+            .flip-back-title {
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+
+            .feature-details {
+                flex: 1;
+
+                .detail-bullet {
+                    color: var(--feature-card-bullet-color);
+                }
+            }
+        }
+
+        // Secondary background for icon placeholder
+        .secondary-bg {
+            background-color: var(--feature-card-front-bg-from);
+            background-image: linear-gradient(to bottom right,
+                    rgba(var(--feature-card-link-color-rgb), var(--feature-card-secondary-bg-opacity)),
+                    transparent);
+            border-radius: var(--feature-card-border-radius);
+        }
+    }
+
+    // Reduced motion support
+    @media (prefers-reduced-motion: reduce) {
+        .flip-card {
+            transition: none;
+
+            &.flipped {
+                .flip-front {
+                    display: none;
+                }
+
+                .flip-back {
+                    transform: none;
+                }
+            }
+        }
+    }
+}
+
+// Individual card variants
+.feature-card[data-variant="gym"] {
+    --feature-card-border-color: var(--color-slate-700);
+    --feature-card-border-hover: var(--color-red-300-30);
+    --feature-card-shadow-color: var(--color-red-300-10);
+    --feature-card-bullet-color: var(--color-red-300);
+    --feature-card-link-color: var(--color-red-300);
+    --feature-card-link-hover: var(--color-red-400);
+    --feature-card-front-bg-from: var(--color-slate-800);
+    --feature-card-front-bg-to: var(--color-slate-900);
+    --feature-card-back-bg-from: var(--color-slate-800);
+    --feature-card-back-bg-to: var(--color-slate-900);
+
+    .feature-icon {
+        background: var(--color-gradient-red);
+    }
+}
+
+.feature-card[data-variant="sports"] {
+    --feature-card-border-color: var(--color-gray-700);
+    --feature-card-border-hover: var(--color-blue-300-30);
+    --feature-card-shadow-color: var(--color-blue-300-10);
+    --feature-card-bullet-color: var(--color-blue-300);
+    --feature-card-link-color: var(--color-blue-300);
+    --feature-card-link-hover: var(--color-blue-400);
+    --feature-card-front-bg-from: var(--color-blue-900);
+    --feature-card-front-bg-to: var(--color-blue-950);
+    --feature-card-back-bg-from: var(--color-blue-900);
+    --feature-card-back-bg-to: var(--color-blue-950);
+
+    .feature-icon {
+        background: var(--color-gradient-blue);
+    }
+}
+
+.feature-card[data-variant="wellness"] {
+    --feature-card-border-color: var(--color-gray-700);
+    --feature-card-border-hover: var(--color-purple-300-30);
+    --feature-card-shadow-color: var(--color-purple-300-10);
+    --feature-card-bullet-color: var(--color-purple-300);
+    --feature-card-link-color: var(--color-purple-300);
+    --feature-card-link-hover: var(--color-purple-400);
+    --feature-card-front-bg-from: var(--color-purple-900);
+    --feature-card-front-bg-to: var(--color-purple-950);
+    --feature-card-back-bg-from: var(--color-purple-900);
+    --feature-card-back-bg-to: var(--color-purple-950);
+
+    .feature-icon {
+        background: var(--color-gradient-purple);
+    }
+}
+
+// Feature-specific card styles for hover borders
+.feature-card[data-gradient="from-lime-300 to-emerald-400"] {
+
+    &:hover,
+    &:focus-within {
+        border-color: rgba(190, 242, 100, 0.3); // lime-300 at 30% opacity
+        box-shadow: 0 4px 12px rgba(190, 242, 100, 0.1); // lime-300 at 10% opacity
+    }
+}
+
+.feature-card[data-gradient="from-cyan-300 to-blue-400"] {
+
+    &:hover,
+    &:focus-within {
+        border-color: rgba(103, 232, 249, 0.3); // cyan-300 at 30% opacity
+        box-shadow: 0 4px 12px rgba(103, 232, 249, 0.1); // cyan-300 at 10% opacity
+    }
+}
+
+.feature-card[data-gradient="from-violet-300 to-purple-400"] {
+
+    &:hover,
+    &:focus-within {
+        border-color: rgba(196, 181, 253, 0.3); // violet-300 at 30% opacity
+        box-shadow: 0 4px 12px rgba(196, 181, 253, 0.1); // violet-300 at 10% opacity
+    }
+}
+
+.feature-card[data-gradient="from-amber-300 to-orange-400"] {
+
+    &:hover,
+    &:focus-within {
+        border-color: rgba(252, 211, 77, 0.3); // amber-300 at 30% opacity
+        box-shadow: 0 4px 12px rgba(252, 211, 77, 0.1); // amber-300 at 10% opacity
+    }
+}

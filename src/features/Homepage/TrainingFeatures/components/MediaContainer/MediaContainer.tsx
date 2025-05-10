@@ -1,220 +1,113 @@
-import { AlertCircle } from 'lucide-react';
-import React, { useState } from 'react';
-import VideoPlayer from '../VideoPlayer';
-import { VideoSource } from '../VideoPlayer/VideoPlayer';
+import React, { useEffect, useRef, useState } from 'react';
+import { MediaContainerProps } from '../FeatureCard/types';
 import './MediaContainer.scss';
 
 /**
- * Props for the MediaContainer component
- * 
- * @interface MediaContainerProps
- */
-export interface MediaContainerProps {
-    /**
-     * Media source URL
-     * @required
-     */
-    src: string;
-
-    /**
-     * Type of media ('image' or 'video')
-     * @default 'image'
-     */
-    type?: 'image' | 'video';
-
-    /**
-     * Aspect ratio of the media container (CSS aspect-ratio format)
-     * @default '16/9'
-     */
-    aspectRatio?: string;
-
-    /**
-     * Fallback color to show when loading or on error
-     * @default 'var(--color-gray-800)'
-     */
-    fallbackColor?: string;
-
-    /**
-     * Alt text for image or aria-label for video
-     * @default ''
-     */
-    alt?: string;
-
-    /**
-     * Optional poster image for video
-     */
-    poster?: string;
-
-    /**
-     * Optional fallback sources for video
-     */
-    fallbackSrc?: string | VideoSource[];
-
-    /**
-     * Whether to show controls for video
-     * @default true
-     */
-    controls?: boolean;
-
-    /**
-     * Whether to loop the video
-     * @default true
-     */
-    loop?: boolean;
-
-    /**
-     * Whether to mute the video
-     * @default true
-     */
-    muted?: boolean;
-
-    /**
-     * Whether to autoplay the video
-     * @default false
-     */
-    autoPlay?: boolean;
-
-    /**
-     * Whether to autoplay when the video comes into view
-     * @default true
-     */
-    autoPlayOnScroll?: boolean;
-
-    /**
-     * Optional CSS class name to apply to container
-     */
-    className?: string;
-
-    /**
-     * Optional children to render inside the container (e.g., overlay text)
-     */
-    children?: React.ReactNode;
-}
-
-/**
- * MediaContainer component for consistent display of images and videos
- * 
- * @component
- * @example
- * // Basic image usage
- * <MediaContainer 
- *   src="/path/to/image.jpg" 
- *   type="image" 
- *   alt="Description of image" 
- * />
- * 
- * @example
- * // Basic video usage
- * <MediaContainer 
- *   src="/path/to/video.mp4" 
- *   type="video" 
- *   alt="Description of video"
- * />
- * 
- * @example
- * // With overlay content
- * <MediaContainer src="/path/to/image.jpg">
- *   <div className="overlay-content">Text on top of media</div>
- * </MediaContainer>
+ * MediaContainer component for handling both image and video media in feature cards
+ * with optimized loading and accessibility support
  */
 const MediaContainer: React.FC<MediaContainerProps> = ({
     src,
-    type = 'image',
+    type,
     aspectRatio = '16/9',
-    fallbackColor = 'var(--color-gray-800)',
     alt = '',
     poster,
     fallbackSrc,
-    controls = true,
-    loop = true,
+    controls = false,
     muted = true,
     autoPlay = false,
-    autoPlayOnScroll = true,
-    className = '',
-    children
+    autoPlayOnScroll = false,
+    variant = 'default'
 }) => {
-    const [isLoading, setIsLoading] = useState(true);
+    const mediaRef = useRef<HTMLVideoElement | null>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isInView, setIsInView] = useState(false);
     const [hasError, setHasError] = useState(false);
 
-    // Handle media load event
-    const handleLoad = () => {
-        setIsLoading(false);
-        setHasError(false);
-    };
+    // Set up intersection observer for lazy loading and autoplay on scroll
+    useEffect(() => {
+        if (!autoPlayOnScroll || type !== 'video') return;
 
-    // Handle media error event
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const [entry] = entries;
+                setIsInView(entry.isIntersecting);
+            },
+            {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5,
+            }
+        );
+
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
+
+        return () => {
+            if (containerRef.current) {
+                observer.unobserve(containerRef.current);
+            }
+        };
+    }, [autoPlayOnScroll, type]);
+
+    // Handle video autoplay when in view
+    useEffect(() => {
+        if (type !== 'video' || !mediaRef.current) return;
+
+        if (autoPlayOnScroll && isInView) {
+            mediaRef.current.play().catch((error) => {
+                console.error('Error playing video:', error);
+            });
+        } else if (autoPlayOnScroll && !isInView) {
+            mediaRef.current.pause();
+        }
+    }, [isInView, autoPlayOnScroll, type]);
+
+    // Handle error state
     const handleError = () => {
-        setIsLoading(false);
         setHasError(true);
     };
 
     return (
         <div
-            className={`media-container ${className}`}
-            style={{
-                aspectRatio: aspectRatio,
-                backgroundColor: fallbackColor
-            }}
+            className="media-container"
+            ref={containerRef}
+            style={{ aspectRatio }}
+            data-variant={variant}
         >
-            {/* Media Content */}
-            {type === 'video' ? (
-                <VideoPlayer
-                    src={src}
-                    poster={poster}
-                    fallbackSrc={fallbackSrc}
-                    controls={controls}
-                    loop={loop}
-                    muted={muted}
-                    autoPlay={autoPlay}
-                    autoPlayOnScroll={autoPlayOnScroll}
-                    ariaLabel={alt}
-                    className="media-content"
-                />
-            ) : (
+            {hasError ? (
+                <div className="media-error">
+                    <span>Media could not be loaded</span>
+                </div>
+            ) : type === 'image' ? (
                 <img
                     src={src}
                     alt={alt}
                     className="media-content"
                     loading="lazy"
-                    onLoad={handleLoad}
                     onError={handleError}
                 />
+            ) : (
+                <video
+                    ref={mediaRef}
+                    className="media-content"
+                    poster={poster}
+                    controls={controls}
+                    muted={muted}
+                    autoPlay={autoPlay}
+                    loop
+                    playsInline
+                    onError={handleError}
+                >
+                    <source src={src} type="video/mp4" />
+                    {fallbackSrc?.map((source, index) => (
+                        <source key={index} src={source.src} type={source.type} />
+                    ))}
+                    {alt && <track kind="description" srcLang="en" label={alt} />}
+                    Your browser does not support the video tag.
+                </video>
             )}
-
-            {/* Loading State */}
-            {isLoading && type === 'image' && (
-                <div className="media-loading-state">
-                    <svg
-                        className="loading-indicator"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <circle
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="3"
-                            strokeLinecap="round"
-                            strokeDasharray="40 60"
-                        />
-                    </svg>
-                </div>
-            )}
-
-            {/* Error State */}
-            {hasError && type === 'image' && (
-                <div className="media-error-state">
-                    <AlertCircle size={24} />
-                    <span>Unable to load media</span>
-                </div>
-            )}
-
-            {/* Optional Overlay Content */}
-            {children && <div className="media-overlay-content">{children}</div>}
         </div>
     );
 };
