@@ -894,12 +894,6 @@
     "importedBy": "features/Homepage/TrainingFeatures/components/VideoPlayer/index.ts"
   },
   {
-    "file": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
-    "exportName": "TrainingFeatures",
-    "type": "missing",
-    "importedBy": "features/Homepage/TrainingFeatures/default/index.ts"
-  },
-  {
     "file": "components/UI/Button/index.ts",
     "exportName": "Button",
     "type": "missing",
@@ -910,6 +904,18 @@
     "exportName": "BoutiqueTrainingFeatures",
     "type": "missing",
     "importedBy": "features/Homepage/TrainingFeatures/variants/boutique/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
+    "exportName": "DefaultTrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/classic/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
+    "exportName": "DefaultTrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/default/index.ts"
   },
   {
     "file": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
@@ -930,6 +936,12 @@
     "importedBy": "features/Homepage/TrainingFeatures/variants/index.ts"
   },
   {
+    "file": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
+    "exportName": "DefaultTrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/minimalist/index.ts"
+  },
+  {
     "file": "components/UI/Button/index.ts",
     "exportName": "Button",
     "type": "missing",
@@ -940,6 +952,18 @@
     "exportName": "ModernTrainingFeatures",
     "type": "missing",
     "importedBy": "features/Homepage/TrainingFeatures/variants/modern/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
+    "exportName": "DefaultTrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/sports/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
+    "exportName": "DefaultTrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/wellness/index.ts"
   },
   {
     "file": "features/Homepage/Hero/types.ts",

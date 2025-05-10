@@ -3,11 +3,7 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import './VideoPlayer.scss';
 
 /**
- * Interface representing a video source with URL and content type
- * 
- * @interface VideoSource
- * @property {string} src - URL of the video source
- * @property {string} type - MIME type of the video (e.g., 'video/mp4')
+ * Video source definitions
  */
 export interface VideoSource {
     /**
@@ -18,13 +14,11 @@ export interface VideoSource {
     /**
      * Video type
      */
-    type: string;
+    type: 'video/mp4' | 'video/webm' | 'video/ogg';
 }
 
 /**
- * Props for the VideoPlayer component
- * 
- * @interface VideoPlayerProps
+ * Video player props
  */
 export interface VideoPlayerProps {
     /**
@@ -88,6 +82,11 @@ export interface VideoPlayerProps {
      * @default 'Video content'
      */
     ariaLabel?: string;
+
+    /**
+     * Callback function to be called when the video ends
+     */
+    onEnded?: () => void;
 }
 
 /**
@@ -137,7 +136,8 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         autoPlay = false,
         autoPlayOnScroll = true,
         className = '',
-        ariaLabel = 'Video content'
+        ariaLabel = 'Video content',
+        onEnded
     }, ref) => {
         const [isPlaying, setIsPlaying] = useState(false);
         const [currentTime, setCurrentTime] = useState(0);
@@ -333,6 +333,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                         preload="metadata"
                         onClick={controls ? handlePlayPause : undefined}
                         aria-label={ariaLabel}
+                        onEnded={onEnded}
                     >
                         {/* Render all sources */}
                         {sources.map((source, index) => (

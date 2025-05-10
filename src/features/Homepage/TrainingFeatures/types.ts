@@ -2,7 +2,7 @@
  * TrainingFeatures component types
  */
 
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 /**
  * Supported theme variants for the TrainingFeatures component
@@ -147,4 +147,25 @@ export type VariantProps =
 /**
  * Main component props
  */
-export type TrainingFeaturesProps = VariantProps; 
+export type TrainingFeaturesProps = VariantProps;
+
+/**
+ * Training Feature item interface
+ */
+export interface TrainingFeature {
+    title: string;
+    description: string;
+    icon?: React.ReactNode;
+    link?: string;
+    linkText?: string;
+}
+
+/**
+ * Training Features component props
+ */
+export interface TrainingFeaturesProps {
+    title?: string;
+    subtitle?: string;
+    features?: TrainingFeature[];
+    className?: string;
+} 

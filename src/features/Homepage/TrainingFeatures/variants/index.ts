@@ -1,11 +1,14 @@
 import { VariantKey } from '../types';
 
-// Import variants
+// Import variants - DefaultTrainingFeatures comes from the main component file, not the default directory
 import DefaultTrainingFeatures from '../TrainingFeatures';
 import BoutiqueTrainingFeatures from './boutique';
 import ModernTrainingFeatures from './modern';
 
-// Map of all variants
+/**
+ * Map of all variants
+ * The 'default' variant uses the main TrainingFeatures component directly
+ */
 export const TrainingFeaturesMap = {
   default: DefaultTrainingFeatures,
   modern: ModernTrainingFeatures,

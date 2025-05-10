@@ -1,330 +1,340 @@
-#!/usr/bin/env node
-
 /**
  * Image Optimization Script
  * 
- * This script processes images in the src/assets directory and creates optimized
- * versions with multiple formats (webp, avif) and sizes for responsive loading.
+ * This script generates:
+ * 1. Responsive image sets at multiple resolutions
+ * 2. Modern image formats (WebP and AVIF)
+ * 3. Low-Quality Image Placeholders (LQIP)
  * 
  * Usage:
- *   node scripts/optimize-images.js
- * 
- * Options:
- *   --watch   Watch for file changes
- *   --clean   Remove all generated files first
+ * - npm run optimize:images - Process all images
+ * - npm run optimize:images -- --watch - Watch for new images
+ * - npm run optimize:images -- --clean - Remove generated images
+ * - npm run optimize:images -- --src=path/to/image.jpg - Process specific image or directory
  */
 
 const fs = require('fs');
 const path = require('path');
-const { promisify } = require('util');
-const childProcess = require('child_process');
-const glob = promisify(require('glob'));
-
-// Check if sharp is installed
-try {
-    require.resolve('sharp');
-} catch (e) {
-    console.error('\x1b[31m%s\x1b[0m', 'Error: The "sharp" package is required for image optimization.');
-    console.log('Please install it using: npm install --save-dev sharp');
-    process.exit(1);
-}
-
-// Dynamically import sharp to avoid issues if not installed
 const sharp = require('sharp');
+const glob = require('glob');
+const chalk = require('chalk');
 
 // Configuration
 const config = {
-    sourceDir: 'src/assets/images',
-    outputDir: 'public/images',
-    sizes: [320, 640, 960, 1280, 1920],
-    formats: ['webp', 'avif'],
-    quality: {
-        jpeg: 80,
-        webp: 75,
-        avif: 65,
+    // Source image directories to process
+    sourceDirs: [
+        'src/assets/images',
+        'assets/images',
+        'public/wp-content/themes/fitcopilot/assets/images'
+    ],
+
+    // Output directories (will mirror source structure)
+    outputDirs: {
+        responsive: 'dist/images/responsive',
+        webp: 'dist/images/webp',
+        avif: 'dist/images/avif',
+        lqip: 'dist/images/lqip',
     },
-    lqipSize: 20, // Size of LQIP preview in pixels
-    includeOriginal: true,
-    concurrency: 4,
+
+    // Responsive image sizes to generate (widths in pixels)
+    sizes: [320, 640, 768, 1024, 1366, 1920],
+
+    // LQIP settings
+    lqip: {
+        width: 20, // Very small for placeholder
+        quality: 20
+    },
+
+    // File types to process
+    fileTypes: ['.jpg', '.jpeg', '.png', '.webp'],
 };
 
-// Helper to ensure directory exists
-const ensureDir = (dir) => {
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-    }
-};
+// Helper function for filesystem operations
+const fs_helper = {
+    ensureDir: (dir) => {
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+    },
 
-// Helper for generating file size in human-readable format
-const formatBytes = (bytes) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-};
-
-// Get original image dimensions
-async function getImageDimensions(filePath) {
-    try {
-        const metadata = await sharp(filePath).metadata();
-        return {
-            width: metadata.width,
-            height: metadata.height,
-        };
-    } catch (error) {
-        console.error(`Error getting dimensions for ${filePath}:`, error);
-        return { width: 0, height: 0 };
-    }
-}
-
-// Generate a low quality image placeholder (LQIP)
-async function generateLQIP(filePath, targetPath) {
-    try {
-        // Create a tiny version of the image
-        await sharp(filePath)
-            .resize(config.lqipSize)
-            .blur(5)
-            .toFile(targetPath);
-
-        // Read it back and convert to base64
-        const data = fs.readFileSync(targetPath);
-        const base64 = Buffer.from(data).toString('base64');
-
-        // Get the mime type from the original file extension
-        const ext = path.extname(filePath).toLowerCase();
-        const mimeType = ext === '.png' ? 'image/png' : 'image/jpeg';
-
-        // Create data URI
-        const dataURI = `data:${mimeType};base64,${base64}`;
-
-        // Remove the temporary file
-        fs.unlinkSync(targetPath);
-
-        return dataURI;
-    } catch (error) {
-        console.error(`Error generating LQIP for ${filePath}:`, error);
-        return '';
-    }
-}
-
-// Process a single image file
-async function processImage(filePath) {
-    const startTime = Date.now();
-    const fileName = path.basename(filePath, path.extname(filePath));
-    const outputBase = path.join(config.outputDir, fileName);
-    const originalOutputPath = `${outputBase}${path.extname(filePath)}`;
-
-    // Ensure output directory exists
-    ensureDir(path.dirname(outputBase));
-
-    console.log(`\nProcessing: ${filePath}`);
-
-    // Get original file size for comparison
-    const originalSize = fs.statSync(filePath).size;
-    const { width: originalWidth, height: originalHeight } = await getImageDimensions(filePath);
-
-    // Generate LQIP
-    const lqipPath = `${outputBase}-lqip${path.extname(filePath)}`;
-    const lqipDataURI = await generateLQIP(filePath, lqipPath);
-
-    // Copy original
-    let totalSaved = 0;
-    const results = [];
-
-    if (config.includeOriginal) {
-        fs.copyFileSync(filePath, originalOutputPath);
-        results.push({
-            file: path.basename(originalOutputPath),
-            size: formatBytes(originalSize),
-            width: originalWidth,
-            height: originalHeight,
-            saved: '0%',
-        });
-    }
-
-    // Generate responsive sizes and formats
-    const tasks = [];
-
-    for (const size of config.sizes) {
-        if (size > originalWidth) continue; // Skip sizes larger than original
-
-        // Resize original format
-        const resizedPath = `${outputBase}-${size}${path.extname(filePath)}`;
-        tasks.push(
-            sharp(filePath)
-                .resize(size)
-                .jpeg({ quality: config.quality.jpeg })
-                .png({ quality: config.quality.jpeg })
-                .toFile(resizedPath)
-                .then(info => {
-                    const savedBytes = originalSize - info.size;
-                    const savedPercent = ((savedBytes / originalSize) * 100).toFixed(1);
-                    totalSaved += savedBytes;
-
-                    results.push({
-                        file: path.basename(resizedPath),
-                        size: formatBytes(info.size),
-                        width: info.width,
-                        height: info.height,
-                        saved: `${savedPercent}%`,
-                    });
-                })
-        );
-
-        // Generate each alternative format
-        for (const format of config.formats) {
-            const formatPath = `${outputBase}-${size}.${format}`;
-            tasks.push(
-                sharp(filePath)
-                    .resize(size)
-                [format]({ quality: config.quality[format] })
-                    .toFile(formatPath)
-                    .then(info => {
-                        const savedBytes = originalSize - info.size;
-                        const savedPercent = ((savedBytes / originalSize) * 100).toFixed(1);
-                        totalSaved += savedBytes;
-
-                        results.push({
-                            file: path.basename(formatPath),
-                            size: formatBytes(info.size),
-                            width: info.width,
-                            height: info.height,
-                            saved: `${savedPercent}%`,
-                        });
-                    })
-            );
+    cleanDir: (dir) => {
+        if (fs.existsSync(dir)) {
+            fs.rmdirSync(dir, { recursive: true });
         }
     }
+};
 
-    // Wait for all tasks to complete
-    await Promise.all(tasks);
+// Process command line arguments
+const args = process.argv.slice(2);
+const isWatchMode = args.includes('--watch');
+const isCleanMode = args.includes('--clean');
+const sourcePath = args.find(arg => arg.startsWith('--src='))?.split('=')[1];
 
-    // Sort results by width for better display
-    results.sort((a, b) => a.width - b.width);
-
-    // Generate manifest file
-    const manifest = {
-        original: path.basename(filePath),
-        lqip: lqipDataURI,
-        width: originalWidth,
-        height: originalHeight,
-        variants: results.map(r => ({
-            file: r.file,
-            width: r.width,
-            height: r.height,
-            format: path.extname(r.file).substring(1),
-        })),
-    };
-
-    // Write manifest file
-    fs.writeFileSync(
-        `${outputBase}.json`,
-        JSON.stringify(manifest, null, 2)
-    );
-
-    // Display results
-    console.log(`\n✅ Generated ${results.length} variants for ${fileName}`);
-    console.log(`   Original: ${formatBytes(originalSize)} (${originalWidth}x${originalHeight})`);
-    console.log(`   Total space saved: ${formatBytes(totalSaved)}`);
-    console.log(`   Took ${((Date.now() - startTime) / 1000).toFixed(2)}s`);
-
-    // Return manifest for further processing
-    return manifest;
+// Clean generated images if requested
+if (isCleanMode) {
+    console.log(chalk.yellow('🧹 Cleaning generated images...'));
+    Object.values(config.outputDirs).forEach(dir => {
+        fs_helper.cleanDir(dir);
+        console.log(`  Cleaned ${dir}`);
+    });
+    console.log(chalk.green('✅ Cleanup complete'));
+    process.exit(0);
 }
 
-// Process all images
-async function processAllImages() {
+// Helper to get all image files
+const getImageFiles = () => {
+    // If a specific source path is provided
+    if (sourcePath) {
+        // Check if it's a directory or file
+        if (fs.existsSync(sourcePath)) {
+            const stats = fs.statSync(sourcePath);
+            if (stats.isDirectory()) {
+                return glob.sync(`${sourcePath}/**/*+(${config.fileTypes.join('|')})`, { nocase: true });
+            } else if (stats.isFile() && config.fileTypes.includes(path.extname(sourcePath).toLowerCase())) {
+                return [sourcePath];
+            }
+        }
+        console.log(chalk.yellow(`Warning: Source path ${sourcePath} is not a valid image file or directory`));
+        return [];
+    }
+
+    // Otherwise get all images from configured directories
+    let allFiles = [];
+    config.sourceDirs.forEach(dir => {
+        if (fs.existsSync(dir)) {
+            const files = glob.sync(`${dir}/**/*+(${config.fileTypes.join('|')})`, { nocase: true });
+            allFiles = [...allFiles, ...files];
+        }
+    });
+    return allFiles;
+};
+
+// Create responsive versions of an image
+const createResponsiveImages = async (imagePath) => {
     try {
-        // Ensure output directory exists
-        ensureDir(config.outputDir);
+        const filename = path.basename(imagePath);
+        const fileExt = path.extname(imagePath).toLowerCase();
+        const baseName = path.basename(filename, fileExt);
+        const relativePath = path.dirname(imagePath).replace(/^(src\/|assets\/|public\/wp-content\/themes\/fitcopilot\/)/, '');
 
-        // Get list of images to process
-        const imageFiles = await glob(`${config.sourceDir}/**/*.{jpg,jpeg,png}`);
+        // Create output directories
+        const responsiveDir = path.join(config.outputDirs.responsive, relativePath);
+        const webpDir = path.join(config.outputDirs.webp, relativePath);
+        const avifDir = path.join(config.outputDirs.avif, relativePath);
+        const lqipDir = path.join(config.outputDirs.lqip, relativePath);
 
-        if (imageFiles.length === 0) {
-            console.log('No image files found to process.');
+        fs_helper.ensureDir(responsiveDir);
+        fs_helper.ensureDir(webpDir);
+        fs_helper.ensureDir(avifDir);
+        fs_helper.ensureDir(lqipDir);
+
+        // Load image with sharp
+        const image = sharp(imagePath);
+        const metadata = await image.metadata();
+
+        // Skip SVG files
+        if (metadata.format === 'svg') {
+            console.log(chalk.blue(`Skipping SVG: ${imagePath}`));
             return;
         }
 
-        console.log(`Found ${imageFiles.length} images to process.`);
+        // Process responsive sizes
+        const createSizesPromises = config.sizes
+            .filter(size => size <= metadata.width) // Only create sizes smaller than original
+            .map(size => {
+                const resizedImage = image.clone().resize(size);
 
-        // Process images
-        const startTime = Date.now();
-        const manifests = {};
+                // Original format at this size
+                const outputOriginal = path.join(responsiveDir, `${baseName}-${size}${fileExt}`);
 
-        // Process in batches to avoid memory issues
-        const batchSize = config.concurrency;
-        for (let i = 0; i < imageFiles.length; i += batchSize) {
-            const batch = imageFiles.slice(i, i + batchSize);
-            const results = await Promise.all(batch.map(processImage));
+                // WebP version
+                const outputWebP = path.join(webpDir, `${baseName}-${size}.webp`);
 
-            // Add to manifests
-            results.forEach((manifest, idx) => {
-                if (manifest) {
-                    const fileName = path.basename(batch[idx], path.extname(batch[idx]));
-                    manifests[fileName] = manifest;
-                }
+                // AVIF version
+                const outputAVIF = path.join(avifDir, `${baseName}-${size}.avif`);
+
+                return Promise.all([
+                    resizedImage.toFile(outputOriginal),
+                    resizedImage.webp({ quality: 80 }).toFile(outputWebP),
+                    resizedImage.avif({ quality: 65 }).toFile(outputAVIF)
+                ]);
             });
 
-            console.log(`\nProcessed batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(imageFiles.length / batchSize)}`);
-        }
+        // Create LQIP (Low Quality Image Placeholder)
+        const lqipPath = path.join(lqipDir, `${baseName}.jpg`);
+        const createLQIP = image
+            .clone()
+            .resize(config.lqip.width)
+            .jpeg({ quality: config.lqip.quality })
+            .toFile(lqipPath);
 
-        // Write global manifest
-        fs.writeFileSync(
-            path.join(config.outputDir, 'manifest.json'),
-            JSON.stringify(manifests, null, 2)
-        );
+        // Wait for all operations to complete
+        await Promise.all([...createSizesPromises, createLQIP]);
 
-        const totalTime = ((Date.now() - startTime) / 1000).toFixed(2);
-        console.log(`\n🎉 All images processed in ${totalTime}s`);
-        console.log(`   Global manifest saved to ${path.join(config.outputDir, 'manifest.json')}`);
+        console.log(chalk.green(`✅ Processed: ${imagePath}`));
 
+        // Generate the HTML markup for this image (helpful output)
+        generateImageMarkup(imagePath, baseName, fileExt, metadata.width, relativePath);
+
+        return true;
     } catch (error) {
-        console.error('Error processing images:', error);
+        console.error(chalk.red(`❌ Error processing ${imagePath}:`), error);
+        return false;
     }
-}
+};
 
-// Clean output directory
-function cleanOutputDir() {
-    if (fs.existsSync(config.outputDir)) {
-        console.log(`Cleaning output directory: ${config.outputDir}`);
-        fs.rmSync(config.outputDir, { recursive: true, force: true });
+// Generate example responsive image markup
+const generateImageMarkup = (imagePath, baseName, fileExt, originalWidth, relativePath) => {
+    // Only show for a few images to avoid console spam
+    if (Math.random() > 0.1) return;
+
+    const sizes = config.sizes.filter(size => size <= originalWidth);
+
+    // Example srcset
+    let srcsetWebP = sizes.map(size =>
+        `/wp-content/themes/fitcopilot/dist/images/webp/${relativePath}/${baseName}-${size}.webp ${size}w`
+    ).join(', ');
+
+    let srcsetOriginal = sizes.map(size =>
+        `/wp-content/themes/fitcopilot/dist/images/responsive/${relativePath}/${baseName}-${size}${fileExt} ${size}w`
+    ).join(', ');
+
+    console.log(chalk.blue('\nResponsive Image Markup Example:'));
+    console.log(`<picture>
+  <source 
+    srcset="${srcsetWebP}" 
+    sizes="(max-width: 768px) 100vw, 50vw"
+    type="image/webp" 
+  />
+  <img
+    src="/wp-content/themes/fitcopilot/dist/images/responsive/${relativePath}/${baseName}-640${fileExt}"
+    srcset="${srcsetOriginal}"
+    sizes="(max-width: 768px) 100vw, 50vw"
+    width="${originalWidth}"
+    height="auto"
+    alt="Description of image"
+    loading="lazy"
+  />
+</picture>
+  
+<!-- With LQIP (blur-up technique) -->
+<style>
+  .blur-load {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .blur-load img {
+    opacity: 0;
+    transition: opacity 250ms ease-in-out;
+  }
+  .blur-load.loaded img {
+    opacity: 1;
+  }
+</style>
+
+<div 
+  class="blur-load"
+  style="background-image: url('/wp-content/themes/fitcopilot/dist/images/lqip/${relativePath}/${baseName}.jpg')">
+  <picture>
+    <!-- Same picture element as above -->
+  </picture>
+</div>
+
+<script>
+// Add this to your main JS
+const blurImgs = document.querySelectorAll('.blur-load');
+blurImgs.forEach(div => {
+  const img = div.querySelector('img');
+  function loaded() {
+    div.classList.add('loaded');
+  }
+  if (img.complete) {
+    loaded();
+  } else {
+    img.addEventListener('load', loaded);
+  }
+});
+</script>`);
+};
+
+// Process all images
+const processAllImages = async () => {
+    const images = getImageFiles();
+
+    if (images.length === 0) {
+        console.log(chalk.yellow('No images found to process'));
+        return;
     }
-    ensureDir(config.outputDir);
-}
 
-// Parse command line arguments
-const args = process.argv.slice(2);
-const shouldWatch = args.includes('--watch');
-const shouldClean = args.includes('--clean');
+    console.log(chalk.blue(`🖼️ Processing ${images.length} images...`));
+
+    // Ensure output directories exist
+    Object.values(config.outputDirs).forEach(dir => {
+        fs_helper.ensureDir(dir);
+    });
+
+    // Process images with concurrency limit
+    const concurrencyLimit = 4;
+    const results = [];
+
+    for (let i = 0; i < images.length; i += concurrencyLimit) {
+        const batch = images.slice(i, i + concurrencyLimit);
+        const batchResults = await Promise.all(batch.map(img => createResponsiveImages(img)));
+        results.push(...batchResults);
+
+        // Simple progress indicator
+        console.log(chalk.blue(`Progress: ${i + batch.length}/${images.length} images (${Math.round((i + batch.length) / images.length * 100)}%)`));
+    }
+
+    const successCount = results.filter(Boolean).length;
+    console.log(chalk.green(`\n✅ Done! Successfully processed ${successCount} of ${images.length} images`));
+
+    if (successCount < images.length) {
+        console.log(chalk.yellow(`⚠️ Failed to process ${images.length - successCount} images`));
+    }
+};
+
+// Watch mode function
+const startWatchMode = () => {
+    console.log(chalk.blue('👀 Watching for image changes...'));
+
+    // Process all images immediately
+    processAllImages();
+
+    // Set up watchers for each source directory
+    config.sourceDirs.forEach(dir => {
+        if (fs.existsSync(dir)) {
+            fs.watch(dir, { recursive: true }, async (eventType, filename) => {
+                if (!filename) return;
+
+                // Only process supported file types
+                const ext = path.extname(filename).toLowerCase();
+                if (!config.fileTypes.includes(ext)) return;
+
+                const fullPath = path.join(dir, filename);
+
+                // Need a slight delay as file might still be copying
+                setTimeout(async () => {
+                    if (fs.existsSync(fullPath)) {
+                        console.log(chalk.blue(`🔄 File changed: ${fullPath}`));
+                        await createResponsiveImages(fullPath);
+                    }
+                }, 500);
+            });
+            console.log(chalk.blue(`  Watching ${dir}`));
+        }
+    });
+};
 
 // Main execution
-async function main() {
-    if (shouldClean) {
-        cleanOutputDir();
-    }
-
-    await processAllImages();
-
-    if (shouldWatch) {
-        console.log('\n👀 Watching for changes...');
-
-        fs.watch(config.sourceDir, { recursive: true }, (eventType, filename) => {
-            if (!filename || !filename.match(/\.(jpg|jpeg|png)$/i)) return;
-
-            console.log(`\nDetected ${eventType} event for ${filename}`);
-            const filePath = path.join(config.sourceDir, filename);
-
-            if (fs.existsSync(filePath)) {
-                processImage(filePath).catch(err => {
-                    console.error(`Error processing ${filename}:`, err);
-                });
-            }
-        });
-    }
-}
-
-main().catch(err => {
-    console.error('Error:', err);
-    process.exit(1); 
+if (isWatchMode) {
+    startWatchMode();
+} else {
+    processAllImages().then(() => {
+        process.exit(0);
+    }).catch(err => {
+        console.error(chalk.red('Error processing images:'), err);
+        process.exit(1);
+    });
+} 

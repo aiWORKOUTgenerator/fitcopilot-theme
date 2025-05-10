@@ -1,2 +1,2 @@
-import TrainingFeatures from '../../default/TrainingFeatures';
-export default TrainingFeatures; 
+import DefaultTrainingFeatures from '../../TrainingFeatures';
+export default DefaultTrainingFeatures; 
