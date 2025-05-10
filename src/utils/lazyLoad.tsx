@@ -144,13 +144,18 @@ export function lazyLoad<T extends React.ComponentType<any>>(
     }
 
     // Return wrapped component
-    return (props: React.ComponentProps<T>) => (
+    const WrappedLazyComponent = (props: React.ComponentProps<T>) => (
         <ErrorBoundary fallback={errorFallback}>
             <Suspense fallback={fallback}>
                 <LazyComponent {...props} />
             </Suspense>
         </ErrorBoundary>
     );
+
+    // Add display name to fix the linting error
+    WrappedLazyComponent.displayName = `LazyLoaded(${factory.toString().split('(')[0].split(' ').pop() || 'Component'})`;
+
+    return WrappedLazyComponent;
 }
 
 /**
@@ -182,12 +187,17 @@ export function lazyLoadVariant<V extends string, P extends { variant?: V }>(
     });
 
     // Return component that renders the appropriate variant
-    return function VariantComponent(props: P) {
+    const VariantComponent = function (props: P) {
         const variant = (props.variant || 'default') as string;
         const Component = lazyVariants[variant] || lazyVariants['default'];
 
         return <Component {...props} />;
     };
+
+    // Add display name to fix the linting error
+    VariantComponent.displayName = 'LazyLoadedVariant';
+
+    return VariantComponent;
 }
 
 export default lazyLoad; 

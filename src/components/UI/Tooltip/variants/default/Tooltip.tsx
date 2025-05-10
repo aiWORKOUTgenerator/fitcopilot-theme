@@ -23,7 +23,6 @@ const Tooltip: React.FC<TooltipProps> = ({
     isVisible: controlledIsVisible,
     accentColor,
     id,
-    planType,
 }) => {
     const tooltipRef = useRef<HTMLDivElement>(null);
     const { isVisible, show, hide } = useTooltip({
@@ -140,7 +139,6 @@ const arePropsEqual = (prevProps: TooltipProps, nextProps: TooltipProps) => {
     if (prevProps.width !== nextProps.width) return false;
     if (prevProps.accentColor !== nextProps.accentColor) return false;
     if (prevProps.titleColor !== nextProps.titleColor) return false;
-    if (prevProps.planType !== nextProps.planType) return false;
 
     // If we get here, props are considered equal
     return true;

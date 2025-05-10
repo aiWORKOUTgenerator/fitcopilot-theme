@@ -128,7 +128,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
             }));
         },
 
-        login: async (email, password) => {
+        login: async (email, _password) => {
             setState(prev => ({ ...prev, isLoading: true }));
 
             // Simulate API call

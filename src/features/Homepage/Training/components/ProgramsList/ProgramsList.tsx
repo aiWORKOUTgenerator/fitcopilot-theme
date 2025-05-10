@@ -55,6 +55,9 @@ const ExpandedContent = memo(({
     </div>
 ));
 
+// Add display name to fix the linting error
+ExpandedContent.displayName = 'ExpandedContent';
+
 /**
  * Programs list component for displaying all training programs
  */

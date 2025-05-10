@@ -8,9 +8,9 @@ interface FeatureCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
-  gradient: string;
+  _gradient: string;
   demoComponent: React.ReactNode;
-  isActive?: boolean;
+  _isActive?: boolean;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   variant?: VariantKey;
@@ -20,9 +20,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   icon,
   title,
   description,
-  gradient,
+  _gradient,
   demoComponent,
-  isActive = false,
+  _isActive = false,
   onMouseEnter,
   onMouseLeave,
   variant = 'default',

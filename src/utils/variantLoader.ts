@@ -89,7 +89,7 @@ export const getComponentVariant = (
  */
 export const createVariantComponent = (featurePath: string) => {
     // Create a React component
-    return (props: any) => {
+    const VariantLoader = (props: any) => {
         // Determine which variant to use (from data-theme attribute or props)
         const [variant, setVariant] = React.useState<VariantKey>('default');
         const [VariantComponent, setVariantComponent] = React.useState<React.ComponentType<any> | null>(null);
@@ -144,7 +144,7 @@ export const createVariantComponent = (featurePath: string) => {
                     setError(err);
                     setIsLoading(false);
                 });
-        }, [props.variant, featurePath]);
+        }, [props.variant]);  // Remove featurePath dependency as it doesn't change
 
         // Show loading state
         if (isLoading) {
@@ -163,6 +163,11 @@ export const createVariantComponent = (featurePath: string) => {
         // Render the variant component with props
         return React.createElement(VariantComponent, props);
     };
+
+    // Add display name to fix linting error
+    VariantLoader.displayName = `VariantLoader(${featurePath.split('/').pop() || 'Component'})`;
+
+    return VariantLoader;
 };
 
 /**
