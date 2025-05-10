@@ -2,11 +2,13 @@ import { Dumbbell, Flame, Heart, LogIn, Shield, UserPlus, Zap } from 'lucide-rea
 import React, { useRef, useState } from 'react';
 import Button from '../../../components/UI/Button';
 import { Tooltip, TooltipThemeProvider } from '../../../components/UI/Tooltip';
+// Temporarily comment out the module style import until we fix the SCSS issues
+// import styles from './Hero.module.scss';
 import './Hero.scss';
 import FloatingIcons from './components/FloatingIcons';
 import { HeroProps } from './types';
 
-const Hero: React.FC<HeroProps> = ({
+export const Hero: React.FC<HeroProps> = ({
   registrationLink = "#splash-section",
   loginLink = "#login",
   logoUrl = '/wp-content/themes/fitcopilot/assets/images/logo.png',

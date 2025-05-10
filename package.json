@@ -13,6 +13,7 @@
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10",
     "react-icons": "^5.5.0",
+    "react-router-dom": "^6.22.1",
     "zustand": "^5.0.4"
   },
   "devDependencies": {
@@ -47,6 +48,7 @@
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@typescript-eslint/parser": "^8.31.0",
+    "@typescript-eslint/typescript-estree": "^8.31.0",
     "autoprefixer": "^10.4.14",
     "babel-loader": "^10.0.0",
     "chalk": "^5.4.1",
@@ -70,11 +72,13 @@
     "postcss-nesting": "^13.0.1",
     "sass": "^1.87.0",
     "sass-loader": "^16.0.5",
+    "sharp": "^0.34.1",
     "storybook": "^8.6.12",
     "tailwindcss": "^4.1.4",
     "terser-webpack-plugin": "^5.3.14",
     "ts-jest": "^29.3.2",
     "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.2",
     "typescript": "^5.1.6",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
@@ -89,8 +93,11 @@
     "test:registration": "jest src/features/Registration",
     "verify:mount": "./scripts/verify-mount-point.sh",
     "verify:scss": "./scripts/verify-scss-imports-fixed.sh",
-    "verify:all": "npm run verify:mount && npm run verify:scss",
-    "prebuild": "npm run verify:all || echo '⚠️ Verification warnings - check consistency!'",
+    "verify:all": "npm run verify:mount && npm run verify:scss && npm run verify:sass-colors",
+    "verify:imports": "node -r ts-node/register scripts/import-validator.ts",
+    "verify:barrels": "ts-node scripts/standardize-barrels.ts",
+    "verify:sass-colors": "node scripts/sass-color-audit.js",
+    "prebuild": "npm run verify:all && npm run verify:imports || echo '⚠️ Verification warnings - check consistency!'",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
@@ -122,6 +129,11 @@
     "migrate:scss": "./scripts/migrate-scss.sh",
     "migrate:scss:add-imports": "./scripts/add-canonical-import.sh",
     "migrate:scss:convert-imports": "./scripts/convert-remaining-imports.sh",
-    "prepare": "husky install"
+    "migrate:scss:colors": "node scripts/sass-color-migrate.js",
+    "migrate:scss:colors-file": "node scripts/sass-color-migrate.js",
+    "prepare": "husky install",
+    "optimize:images": "node scripts/optimize-images.js",
+    "optimize:images:watch": "node scripts/optimize-images.js --watch",
+    "optimize:images:clean": "node scripts/optimize-images.js --clean"
   }
 }

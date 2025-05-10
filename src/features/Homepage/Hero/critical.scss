@@ -1,0 +1,79 @@
+// Critical Hero styles
+// Only includes styles needed for initial render
+
+// Canonical design system import - MUST BE FIRST
+@use '../../../styles/design-system' as ds;
+
+// Import hero theme variables
+@use './hero-theme-variables' as hero;
+
+.hero-section {
+    // Core layout styles
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    // Critical visual styles
+    background-color: var(--hero-bg-color);
+    color: var(--hero-text-color);
+
+    // Essential responsive behavior
+    @media (max-width: 768px) {
+        min-height: 90vh;
+        padding: 2rem 1rem;
+    }
+}
+
+// Critical headline styles
+.hero-heading {
+    font-size: var(--hero-headline-size);
+    font-weight: var(--hero-headline-weight);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    text-align: center;
+    max-width: 90%;
+
+    @media (max-width: 768px) {
+        font-size: calc(var(--hero-headline-size) * 0.7);
+    }
+}
+
+// Gradient text with the same gradient as the divider
+.hero-divider-gradient {
+    background: linear-gradient(to right, var(--color-hero-gradient-from), var(--color-hero-gradient-to));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent !important;
+    font-weight: 800;
+}
+
+// Critical CTA styles
+.hero-cta__container {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+// Button with gradient styling
+.hero-divider-gradient-btn {
+    background: linear-gradient(to right, var(--color-hero-gradient-from), var(--color-hero-gradient-to)) !important;
+    color: var(--color-gray-900) !important;
+    font-weight: 600;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: linear-gradient(to right, var(--color-hero-gradient-to), var(--color-hero-gradient-from)) !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
+        transform: translateY(-2px);
+    }
+}

@@ -1,0 +1,1376 @@
+[
+  {
+    "file": "components/Layout/Header/Header.tsx",
+    "exportName": "Header",
+    "type": "missing",
+    "importedBy": "App.tsx"
+  },
+  {
+    "file": "utils/debug.tsx",
+    "exportName": "debug",
+    "type": "missing",
+    "importedBy": "Homepage.tsx"
+  },
+  {
+    "file": "features/Homepage/Hero/types.ts",
+    "exportName": "VariantKey",
+    "type": "missing",
+    "importedBy": "components/DemoNav.tsx"
+  },
+  {
+    "file": "utils/debug.tsx",
+    "exportName": "debug",
+    "type": "missing",
+    "importedBy": "components/ExampleComponent.tsx"
+  },
+  {
+    "file": "components/Layout/Header/Header.tsx",
+    "exportName": "Header",
+    "type": "missing",
+    "importedBy": "components/Layout/Header/Header.stories.tsx"
+  },
+  {
+    "file": "components/Layout/Page/Page.tsx",
+    "exportName": "Page",
+    "type": "missing",
+    "importedBy": "components/Layout/Page/Page.stories.tsx"
+  },
+  {
+    "file": "components/OptimizedImage/OptimizedImage.tsx",
+    "exportName": "OptimizedImage",
+    "type": "missing",
+    "importedBy": "components/OptimizedImage/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "components/UI/Button/__tests__/Button.stories.tsx"
+  },
+  {
+    "file": "components/UI/Button/hero/Button.tsx",
+    "exportName": "HeroButton",
+    "type": "missing",
+    "importedBy": "components/UI/Button/index.ts"
+  },
+  {
+    "file": "components/UI/ThemeSwitcher/ThemeSwitcher.tsx",
+    "exportName": "ThemeSwitcher",
+    "type": "missing",
+    "importedBy": "components/UI/ThemeSwitcher/index.ts"
+  },
+  {
+    "file": "components/UI/Tooltip/Tooltip.tsx",
+    "exportName": "Tooltip",
+    "type": "missing",
+    "importedBy": "components/UI/Tooltip/TooltipExample.tsx"
+  },
+  {
+    "file": "components/UI/Tooltip/examples/DefaultTooltipExample.tsx",
+    "exportName": "DefaultTooltipExample",
+    "type": "missing",
+    "importedBy": "components/UI/Tooltip/examples/TooltipShowcase.tsx"
+  },
+  {
+    "file": "components/UI/Tooltip/examples/HeroTooltipExample.tsx",
+    "exportName": "HeroTooltipExample",
+    "type": "missing",
+    "importedBy": "components/UI/Tooltip/examples/TooltipShowcase.tsx"
+  },
+  {
+    "file": "components/UI/Tooltip/examples/PricingTooltipExample.tsx",
+    "exportName": "PricingTooltipExample",
+    "type": "missing",
+    "importedBy": "components/UI/Tooltip/examples/TooltipShowcase.tsx"
+  },
+  {
+    "file": "components/UI/Tooltip/Tooltip.tsx",
+    "exportName": "Tooltip",
+    "type": "missing",
+    "importedBy": "components/UI/Tooltip/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "debug/ButtonVariantsDemo.tsx"
+  },
+  {
+    "file": "debug/ButtonImplementation.tsx",
+    "exportName": "ButtonImplementation",
+    "type": "missing",
+    "importedBy": "debug/DebugRunner.tsx"
+  },
+  {
+    "file": "debug/Implementation.tsx",
+    "exportName": "Implementation",
+    "type": "missing",
+    "importedBy": "debug/DebugRunner.tsx"
+  },
+  {
+    "file": "debug/DebugRunner.tsx",
+    "exportName": "DebugRunner",
+    "type": "missing",
+    "importedBy": "debug/TestPage.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/Features.tsx",
+    "exportName": "Features",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/Features.stories.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/Features.tsx",
+    "exportName": "ProgressChart",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/Features.stories.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/Features.tsx",
+    "exportName": "SampleWorkout",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/Features.stories.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/Features.tsx",
+    "exportName": "VideoPlayer",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/Features.stories.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/components/FeatureCard.tsx",
+    "exportName": "FeatureCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/Features.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/Features.tsx",
+    "exportName": "ProgressChart",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/components/FeatureCard.stories.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/Features.tsx",
+    "exportName": "SampleWorkout",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/components/FeatureCard.stories.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/Features.tsx",
+    "exportName": "VideoPlayer",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/components/FeatureCard.stories.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/components/FeatureCard.tsx",
+    "exportName": "FeatureCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/components/FeatureCard.stories.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/components/FeatureCard.tsx",
+    "exportName": "FeatureCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/default/Features.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/default/Features.tsx",
+    "exportName": "Features",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/default/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/Features.tsx",
+    "exportName": "Features",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/default/Features.tsx",
+    "exportName": "Features",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/boutique/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/default/Features.tsx",
+    "exportName": "Features",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/classic/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/default/Features.tsx",
+    "exportName": "Features",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/default/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/variants/boutique/index.ts",
+    "exportName": "BoutiqueVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/variants/classic/index.ts",
+    "exportName": "ClassicVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/variants/default/index.ts",
+    "exportName": "DefaultVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/variants/minimalist/index.ts",
+    "exportName": "MinimalistVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/variants/modern/index.ts",
+    "exportName": "ModernVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/variants/registration/index.ts",
+    "exportName": "RegistrationVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/variants/sports/index.ts",
+    "exportName": "SportsVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/variants/wellness/index.ts",
+    "exportName": "WellnessVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/default/Features.tsx",
+    "exportName": "Features",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/minimalist/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/default/Features.tsx",
+    "exportName": "Features",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/modern/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/variants/registration/RegistrationFeatures.tsx",
+    "exportName": "RegistrationFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/registration/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/components/FeatureCard.tsx",
+    "exportName": "FeatureCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/sports/Features.tsx"
+  },
+  {
+    "file": "features/Homepage/Features/variants/sports/Features.tsx",
+    "exportName": "Features",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/sports/index.ts"
+  },
+  {
+    "file": "features/Homepage/Features/default/Features.tsx",
+    "exportName": "Features",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/variants/wellness/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/Hero.tsx"
+  },
+  {
+    "file": "features/Homepage/Hero/components/FloatingIcons/FloatingIcon.tsx",
+    "exportName": "FloatingIcon",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/components/FloatingIcons/FloatingIcons.tsx"
+  },
+  {
+    "file": "features/Homepage/Hero/components/FloatingIcon.tsx",
+    "exportName": "FloatingIcon",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/components/FloatingIcons.tsx"
+  },
+  {
+    "file": "features/Homepage/Hero/variants/boutique/index.ts",
+    "exportName": "BoutiqueVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Hero/variants/classic/index.ts",
+    "exportName": "ClassicVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Hero/variants/default/index.ts",
+    "exportName": "DefaultVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Hero/variants/minimalist/index.ts",
+    "exportName": "MinimalistVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Hero/variants/modern/index.ts",
+    "exportName": "ModernVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Hero/variants/registration/index.ts",
+    "exportName": "RegistrationVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Hero/variants/sports/index.ts",
+    "exportName": "SportsVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Hero/variants/wellness/index.ts",
+    "exportName": "WellnessVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Hero/variants/registration/RegistrationHero.tsx",
+    "exportName": "RegistrationHero",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/variants/registration/index.ts"
+  },
+  {
+    "file": "features/Homepage/Homepage.tsx",
+    "exportName": "Homepage",
+    "type": "missing",
+    "importedBy": "features/Homepage/Homepage.stories.tsx"
+  },
+  {
+    "file": "features/Registration/Registration.tsx",
+    "exportName": "Registration",
+    "type": "missing",
+    "importedBy": "features/Homepage/Homepage.tsx"
+  },
+  {
+    "file": "features/Homepage/Hero/types.ts",
+    "exportName": "VariantKey",
+    "type": "missing",
+    "importedBy": "features/Homepage/Homepage.tsx"
+  },
+  {
+    "file": "features/Homepage/Journey/Journey.tsx",
+    "exportName": "Journey",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/Journey.stories.tsx"
+  },
+  {
+    "file": "features/Homepage/Journey/types.ts",
+    "exportName": "JourneyStepType",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/Journey.tsx"
+  },
+  {
+    "file": "features/Homepage/Journey/components/JourneyStep.tsx",
+    "exportName": "JourneyStep",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/components/JourneyStep.stories.tsx"
+  },
+  {
+    "file": "features/Homepage/Journey/components/JourneyCTA.tsx",
+    "exportName": "JourneyCTA",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/components/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/components/JourneyFeatureCard.tsx",
+    "exportName": "JourneyFeatureCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/components/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/components/JourneyStep.tsx",
+    "exportName": "JourneyStep",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/components/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/components/SectionHeader.tsx",
+    "exportName": "SectionHeader",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/components/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/Journey.tsx",
+    "exportName": "Journey",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/Journey.tsx",
+    "exportName": "Journey",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/boutique/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/Journey.tsx",
+    "exportName": "Journey",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/classic/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/Journey.tsx",
+    "exportName": "Journey",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/default/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/variants/boutique/index.ts",
+    "exportName": "BoutiqueVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/variants/classic/index.ts",
+    "exportName": "ClassicVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/variants/default/index.ts",
+    "exportName": "DefaultVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/variants/minimalist/index.ts",
+    "exportName": "MinimalistVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/variants/modern/index.ts",
+    "exportName": "ModernVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/variants/sports/index.ts",
+    "exportName": "SportsVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/variants/wellness/index.ts",
+    "exportName": "WellnessVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/Journey.tsx",
+    "exportName": "Journey",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/minimalist/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/Journey.tsx",
+    "exportName": "Journey",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/sports/index.ts"
+  },
+  {
+    "file": "features/Homepage/Journey/Journey.tsx",
+    "exportName": "Journey",
+    "type": "missing",
+    "importedBy": "features/Homepage/Journey/variants/wellness/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/PersonalTraining.tsx"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/components/MediaContainer/index.ts",
+    "exportName": "MediaContainer",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/PersonalTraining.tsx"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx",
+    "exportName": "VideoPlayer",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/components/MediaContainer/MediaContainer.tsx"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/components/MediaContainer/MediaContainer.tsx",
+    "exportName": "MediaContainer",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/components/MediaContainer/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/variants/classic/index.ts",
+    "exportName": "ClassicVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/variants/default/index.ts",
+    "exportName": "DefaultVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/variants/minimalist/index.ts",
+    "exportName": "MinimalistVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/variants/modern/index.ts",
+    "exportName": "ModernVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/variants/sports/index.ts",
+    "exportName": "SportsVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/variants/wellness/index.ts",
+    "exportName": "WellnessVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/PersonalTraining.tsx",
+    "exportName": "PersonalTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/variants/classic/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/PersonalTraining.tsx",
+    "exportName": "PersonalTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/variants/default/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/PersonalTraining.tsx",
+    "exportName": "PersonalTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/variants/minimalist/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/PersonalTraining.tsx",
+    "exportName": "PersonalTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/variants/modern/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/variants/sports/PersonalTraining.tsx"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/components/MediaContainer/index.ts",
+    "exportName": "MediaContainer",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/variants/sports/PersonalTraining.tsx"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/variants/sports/PersonalTraining.tsx",
+    "exportName": "PersonalTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/variants/sports/index.ts"
+  },
+  {
+    "file": "features/Homepage/PersonalTraining/PersonalTraining.tsx",
+    "exportName": "PersonalTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/variants/wellness/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/variants/boutique/index.ts",
+    "exportName": "BoutiqueVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/variants/classic/index.ts",
+    "exportName": "ClassicVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/variants/default/index.ts",
+    "exportName": "DefaultVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/variants/minimalist/index.ts",
+    "exportName": "MinimalistVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/variants/modern/index.ts",
+    "exportName": "ModernVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/variants/sports/index.ts",
+    "exportName": "SportsVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/variants/wellness/index.ts",
+    "exportName": "WellnessVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/variants/index.ts"
+  },
+  {
+    "file": "components/shared/GlobalBackground.tsx",
+    "exportName": "GlobalBackground",
+    "type": "missing",
+    "importedBy": "features/Homepage/Testimonials/Testimonials.stories.tsx"
+  },
+  {
+    "file": "components/UI/Section.tsx",
+    "exportName": "Section",
+    "type": "missing",
+    "importedBy": "features/Homepage/Testimonials/Testimonials.tsx"
+  },
+  {
+    "file": "features/Homepage/Training/components/BenefitsList/BenefitsList.tsx",
+    "exportName": "BenefitsList",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/components/BenefitsList/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/components/MainCTA/MainCTA.tsx"
+  },
+  {
+    "file": "features/Homepage/Training/components/MainCTA/MainCTA.tsx",
+    "exportName": "MainCTA",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/components/MainCTA/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/components/ProgramCard/ProgramCard.tsx",
+    "exportName": "ProgramCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/components/ProgramCard/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/components/ProgramsList/ProgramsList.tsx"
+  },
+  {
+    "file": "features/Homepage/Training/components/ProgramsList/ProgramsList.tsx",
+    "exportName": "ProgramsList",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/components/ProgramsList/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/components/SectionHeader/SectionHeader.tsx",
+    "exportName": "SectionHeader",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/components/SectionHeader/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/Training.tsx",
+    "exportName": "Training",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/examples/VisualEnhancementsExample.tsx"
+  },
+  {
+    "file": "features/Homepage/Training/Training.tsx",
+    "exportName": "DefaultTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/boutique/Training.tsx"
+  },
+  {
+    "file": "features/Homepage/Training/variants/boutique/Training.tsx",
+    "exportName": "BoutiqueTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/boutique/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/classic/Training.tsx"
+  },
+  {
+    "file": "features/Homepage/Training/variants/classic/Training.tsx",
+    "exportName": "ClassicTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/classic/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/Training.tsx",
+    "exportName": "Training",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/default/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/Training.tsx",
+    "exportName": "DefaultVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/variants/boutique/index.ts",
+    "exportName": "BoutiqueVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/variants/classic/index.ts",
+    "exportName": "ClassicVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/variants/minimalist/index.ts",
+    "exportName": "MinimalistVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/variants/modern/index.ts",
+    "exportName": "ModernVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/variants/sports/index.ts",
+    "exportName": "SportsVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/variants/wellness/index.ts",
+    "exportName": "WellnessVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/minimalist/Training.tsx"
+  },
+  {
+    "file": "features/Homepage/Training/variants/minimalist/Training.tsx",
+    "exportName": "MinimalistTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/minimalist/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/modern/Training.tsx"
+  },
+  {
+    "file": "features/Homepage/Training/variants/modern/Training.tsx",
+    "exportName": "ModernTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/modern/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/sports/Training.tsx"
+  },
+  {
+    "file": "features/Homepage/Training/variants/sports/Training.tsx",
+    "exportName": "Training",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/sports/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/wellness/Training.tsx"
+  },
+  {
+    "file": "features/Homepage/Training/variants/wellness/Training.tsx",
+    "exportName": "WellnessTraining",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/variants/wellness/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/components/FeatureCard/FeatureCard.tsx"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/components/FeatureCard/FeatureCard.tsx",
+    "exportName": "FeatureCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/components/FeatureCard/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/components/FeatureCard/FeatureCard.tsx",
+    "exportName": "FeatureCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/components/FeatureCard/variants/DefaultFeatureCard.tsx"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/components/FeatureCard/FeatureCard.tsx",
+    "exportName": "FeatureCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/components/FeatureCard/variants/GymFeatureCard.tsx"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/components/FeatureCard/variants/DefaultFeatureCard.tsx",
+    "exportName": "DefaultFeatureCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/components/FeatureCard/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/components/FeatureCard/variants/GymFeatureCard.tsx",
+    "exportName": "GymFeatureCard",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/components/FeatureCard/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/components/MediaContainer/MediaContainer.tsx",
+    "exportName": "MediaContainer",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/components/MediaContainer/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/components/VideoPlayer/VideoPlayer.tsx",
+    "exportName": "VideoPlayer",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/components/VideoPlayer/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
+    "exportName": "TrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/default/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx",
+    "exportName": "BoutiqueTrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/boutique/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
+    "exportName": "DefaultTrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/variants/boutique/index.ts",
+    "exportName": "BoutiqueTrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/variants/modern/index.ts",
+    "exportName": "ModernTrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/index.ts"
+  },
+  {
+    "file": "components/UI/Button/index.ts",
+    "exportName": "Button",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/modern/TrainingFeatures.tsx"
+  },
+  {
+    "file": "features/Homepage/TrainingFeatures/variants/modern/TrainingFeatures.tsx",
+    "exportName": "ModernTrainingFeatures",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/variants/modern/index.ts"
+  },
+  {
+    "file": "features/Homepage/Hero/types.ts",
+    "exportName": "VariantKey",
+    "type": "missing",
+    "importedBy": "features/Homepage/components/DemoNav/DemoNav.tsx"
+  },
+  {
+    "file": "features/Homepage/components/DemoNav/DemoNav.tsx",
+    "exportName": "DemoNav",
+    "type": "missing",
+    "importedBy": "features/Homepage/components/DemoNav/index.ts"
+  },
+  {
+    "file": "features/Homepage/components/DemoNav/index.ts",
+    "exportName": "DemoNav",
+    "type": "missing",
+    "importedBy": "features/Homepage/components/index.ts"
+  },
+  {
+    "file": "features/Registration/types.ts",
+    "exportName": "ExperienceLevelEnum",
+    "type": "missing",
+    "importedBy": "features/Registration/ExperienceLevel/ExperienceLevel.tsx"
+  },
+  {
+    "file": "features/Registration/ExperienceLevel/components/LevelCard.tsx",
+    "exportName": "LevelCard",
+    "type": "missing",
+    "importedBy": "features/Registration/ExperienceLevel/ExperienceLevel.tsx"
+  },
+  {
+    "file": "features/Registration/ExperienceLevel/components/LevelComparison.tsx",
+    "exportName": "LevelComparison",
+    "type": "missing",
+    "importedBy": "features/Registration/ExperienceLevel/ExperienceLevel.tsx"
+  },
+  {
+    "file": "features/Registration/ExperienceLevel/ExperienceLevel.tsx",
+    "exportName": "ExperienceLevel",
+    "type": "missing",
+    "importedBy": "features/Registration/ExperienceLevel/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/EquipmentSelector/index.ts",
+    "exportName": "EquipmentSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/ExperienceLevelIndicator/index.ts",
+    "exportName": "ExperienceLevelIndicator",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/SectionErrorState/index.ts",
+    "exportName": "SectionErrorState",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/TimeCommitmentSelector/index.ts",
+    "exportName": "TimeCommitmentSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/WorkoutPreferenceSelector/index.ts",
+    "exportName": "WorkoutPreferenceSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/SelectableOption/index.ts",
+    "exportName": "SelectableOption",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/components/EquipmentSelector/EquipmentSelector.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/ValidationSummary/index.ts",
+    "exportName": "ValidationSummary",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/components/EquipmentSelector/EquipmentSelector.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/EquipmentSelector/EquipmentSelector.tsx",
+    "exportName": "EquipmentSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/components/EquipmentSelector/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/ExperienceLevelIndicator/ExperienceLevelIndicator.tsx",
+    "exportName": "ExperienceLevelIndicator",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/components/ExperienceLevelIndicator/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/TimeCommitmentSelector/TimeCommitmentSelector.tsx",
+    "exportName": "TimeCommitmentSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/components/TimeCommitmentSelector/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/WorkoutPreferenceSelector/WorkoutPreferenceSelector.tsx",
+    "exportName": "WorkoutPreferenceSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/components/WorkoutPreferenceSelector/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/CustomizedMedicalContent.tsx",
+    "exportName": "CustomizedMedicalContent",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/CustomizedMedical.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/index.ts",
+    "exportName": "AnthropometricsSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/CustomizedMedicalContent.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/index.ts",
+    "exportName": "InjuriesSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/CustomizedMedicalContent.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/LiabilityWaiverSelector/index.ts",
+    "exportName": "LiabilityWaiverSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/CustomizedMedicalContent.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/index.ts",
+    "exportName": "MedicalClearanceSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/CustomizedMedicalContent.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/StandardSection/index.ts",
+    "exportName": "StandardSection",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+    "exportName": "AnthropometricsSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/StandardSection/index.ts",
+    "exportName": "StandardSection",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/InjuriesSelector.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/InjuriesSelector.tsx",
+    "exportName": "InjuriesSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/StandardSection/index.ts",
+    "exportName": "StandardSection",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/LiabilityWaiverSelector/LiabilityWaiverSelector.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/LiabilityWaiverSelector/LiabilityWaiverSelector.tsx",
+    "exportName": "LiabilityWaiverSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/LiabilityWaiverSelector/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/StandardSection/index.ts",
+    "exportName": "StandardSection",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/MedicalClearanceSelector.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/MedicalClearanceSelector.tsx",
+    "exportName": "MedicalClearanceSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/SectionErrorState/SectionErrorState.tsx",
+    "exportName": "SectionErrorState",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/SectionErrorState/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/AccordionSection.tsx",
+    "exportName": "AccordionSection",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/StandardSection/StandardSection.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/components/StandardSection/StandardSection.tsx",
+    "exportName": "StandardSection",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/components/StandardSection/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizedMedical/CustomizedMedical.tsx",
+    "exportName": "CustomizedMedical",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/JourneyStepCard.tsx",
+    "exportName": "JourneyStepCard",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/Journey.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/SavingIndicator.tsx",
+    "exportName": "SavingIndicator",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/Journey.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/JourneySelector/index.ts",
+    "exportName": "JourneySelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/AnalyticsSelector/AnalyticsSelector.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/AnalyticsSelector/AnalyticsSelector.tsx",
+    "exportName": "AnalyticsSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/AnalyticsSelector/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/EquipmentSelector/index.ts",
+    "exportName": "EquipmentSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/CustomizationContainer.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/TimeCommitmentSelector/index.ts",
+    "exportName": "TimeCommitmentSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/CustomizationContainer.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/WorkoutPreferenceSelector.tsx",
+    "exportName": "WorkoutPreferenceSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/CustomizationContainer.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/JourneySelector/JourneySelector.tsx",
+    "exportName": "JourneySelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/GoalSelector/GoalSelector.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/GoalSelector/GoalSelector.tsx",
+    "exportName": "GoalSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/GoalSelector/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/JourneySelector/JourneySelector.tsx",
+    "exportName": "JourneySelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/JourneySelector/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/AnalyticsSelector.tsx",
+    "exportName": "AnalyticsSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/JourneyStepCard.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/GoalSelector/GoalSelector.tsx",
+    "exportName": "GoalSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/JourneyStepCard.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/StepValidator.tsx",
+    "exportName": "StepValidator",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/JourneyStepCard.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/AccordionSection.tsx",
+    "exportName": "AccordionSection",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/StandardSection/StandardSection.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/AccordionSection.tsx",
+    "exportName": "AccordionSection",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/WorkoutPreferenceSelector.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/components/ConfirmSectionButton.tsx",
+    "exportName": "ConfirmSectionButton",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/WorkoutPreferenceSelector.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/EquipmentSelector/index.ts",
+    "exportName": "EquipmentSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/CustomizeExperience/components/TimeCommitmentSelector/index.ts",
+    "exportName": "TimeCommitmentSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/Journey.tsx",
+    "exportName": "Journey",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/AccordionSection.tsx",
+    "exportName": "AccordionSection",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/AnalyticsSelector.tsx",
+    "exportName": "AnalyticsSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/GoalSelector/GoalSelector.tsx",
+    "exportName": "GoalSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/JourneySelector/index.ts",
+    "exportName": "JourneySelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/JourneyStepCard.tsx",
+    "exportName": "JourneyStepCard",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/SavingIndicator.tsx",
+    "exportName": "SavingIndicator",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/StepValidator.tsx",
+    "exportName": "StepValidator",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/components/WorkoutPreferenceSelector.tsx",
+    "exportName": "WorkoutPreferenceSelector",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/Journey.tsx",
+    "exportName": "Journey",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/index.tsx"
+  },
+  {
+    "file": "features/Registration/Journey/shared/components/SectionCard.tsx",
+    "exportName": "SectionCard",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/shared/components/index.ts"
+  },
+  {
+    "file": "features/Registration/Journey/shared/components/SelectionSummary.tsx",
+    "exportName": "SelectionSummary",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/shared/components/index.ts"
+  },
+  {
+    "file": "features/Registration/Pricing/Pricing.tsx",
+    "exportName": "Pricing",
+    "type": "missing",
+    "importedBy": "features/Registration/Pricing/index.ts"
+  },
+  {
+    "file": "features/Registration/Splash/Splash.tsx",
+    "exportName": "Splash",
+    "type": "missing",
+    "importedBy": "features/Registration/Splash/index.ts"
+  },
+  {
+    "file": "features/Registration/components/ProgressIndicator/ProgressIndicator.tsx",
+    "exportName": "ProgressIndicator",
+    "type": "missing",
+    "importedBy": "features/Registration/components/ProgressIndicator/index.ts"
+  },
+  {
+    "file": "features/Registration/Registration.tsx",
+    "exportName": "Registration",
+    "type": "missing",
+    "importedBy": "features/Registration/index.ts"
+  },
+  {
+    "file": "Homepage.tsx",
+    "exportName": "App",
+    "type": "missing",
+    "importedBy": "index.tsx"
+  },
+  {
+    "file": "utils/debug.tsx",
+    "exportName": "debug",
+    "type": "missing",
+    "importedBy": "index.tsx"
+  },
+  {
+    "file": "services/implementations/WordPressService.ts",
+    "exportName": "wordPressServiceImpl",
+    "type": "missing",
+    "importedBy": "services/index.ts"
+  }
+]

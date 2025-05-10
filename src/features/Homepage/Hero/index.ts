@@ -1,7 +1,9 @@
+import Hero from './Hero';
 import { getHeroVariant, HeroMap } from './variants';
 
 // Export the base Hero component
 export { default } from './Hero';
+export { Hero };
 
 // Export the variant selector function and map
 export { getHeroVariant, HeroMap };

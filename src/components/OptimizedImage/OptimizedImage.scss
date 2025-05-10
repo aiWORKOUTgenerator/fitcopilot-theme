@@ -1,0 +1,108 @@
+@use '../../styles/design-system' as ds;
+
+// Optimized Image Container
+.optimized-image-container {
+    position: relative;
+    overflow: hidden;
+    display: block;
+    width: 100%;
+    line-height: 0;
+}
+
+// Base Image
+.optimized-image {
+    width: 100%;
+    height: auto;
+    display: block;
+
+    // For fade-in effect
+    &.optimized-image--fade {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    // When loaded and with fade enabled
+    &.optimized-image--fade.optimized-image--loaded {
+        opacity: 1;
+    }
+
+    // When error occurs
+    &.optimized-image--error {
+        display: none;
+    }
+}
+
+// Low Quality Image Placeholder (LQIP)
+.optimized-image__lqip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(20px);
+    transform: scale(1.1); // Scale up to avoid blur edges
+    opacity: 1;
+    z-index: 1;
+    transition: opacity 0.3s ease-out;
+}
+
+// Error State
+.optimized-image__error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-700);
+    font-size: 0.875rem;
+    text-align: center;
+    padding: 1rem;
+    border-radius: var(--border-radius-sm, 0.25rem);
+    border: 1px solid var(--color-gray-300);
+
+    span {
+        background-color: var(--color-gray-200);
+        padding: 0.5rem 1rem;
+        border-radius: var(--border-radius-sm, 0.25rem);
+        line-height: 1.5;
+    }
+}
+
+// For picture element support
+picture {
+    position: relative;
+    display: block;
+    width: 100%;
+    line-height: 0;
+
+    .optimized-image__lqip {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        filter: blur(20px);
+        transform: scale(1.1);
+        opacity: 1;
+        z-index: 1;
+        transition: opacity 0.3s ease-out;
+    }
+}
+
+// Apply responsive image ratio
+[style*="aspect-ratio"] {
+    height: auto !important;
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+
+    .optimized-image--fade,
+    .optimized-image__lqip {
+        transition: none !important;
+    }
+}

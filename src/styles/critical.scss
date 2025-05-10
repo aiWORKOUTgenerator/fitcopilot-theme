@@ -1,0 +1,17 @@
+// Critical CSS for above-the-fold content
+// Only include essential styles needed for immediate rendering
+
+// Use canonical design system import
+@use './design-system' as ds;
+
+// Reset and base styles
+@use './reset' as *;
+
+// Essential theme variables
+@use './variants/theme-variables' as *;
+
+// Critical component styles
+@use '../features/Homepage/Hero/critical' as *;
+
+// Animation utilities for initial render
+@use './utils/fade-in' as *;

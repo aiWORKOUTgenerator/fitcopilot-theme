@@ -5,6 +5,7 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 module.exports = {
   mode: 'production',
   entry: {
+    'critical': './src/styles/critical.scss',
     'homepage': ['./src/index.tsx', './src/styles/homepage.scss'],
     'debug': './src/debug.js'
   },
@@ -60,7 +61,47 @@ module.exports = {
         }
       },
       {
+        test: /\.module\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIdentName: '[name]__[local]--[hash:base64:5]',
+                exportLocalsConvention: 'camelCase'
+              },
+              importLoaders: 2
+            }
+          },
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              api: 'modern',
+              implementation: require('sass'),
+              sassOptions: {
+                outputStyle: 'compressed',
+                logger: {
+                  warn: function (message) {
+                    if (message.includes('darken()') ||
+                      message.includes('lighten()') ||
+                      message.includes('saturate()') ||
+                      message.includes('desaturate()')) {
+                      throw new Error(`Sass Deprecation Error: ${message}`);
+                    } else {
+                      console.warn('Sass Warning:', message);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
         test: /\.scss$/,
+        exclude: /\.module\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
@@ -72,7 +113,19 @@ module.exports = {
               implementation: require('sass'),
               sassOptions: {
                 outputStyle: 'compressed',
-              },
+                logger: {
+                  warn: function (message) {
+                    if (message.includes('darken()') ||
+                      message.includes('lighten()') ||
+                      message.includes('saturate()') ||
+                      message.includes('desaturate()')) {
+                      throw new Error(`Sass Deprecation Error: ${message}`);
+                    } else {
+                      console.warn('Sass Warning:', message);
+                    }
+                  }
+                }
+              }
             }
           }
         ]

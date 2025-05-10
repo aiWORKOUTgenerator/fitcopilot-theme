@@ -4,9 +4,16 @@ import { FloatingIconData } from '../types';
 import FloatingIcon from './FloatingIcon';
 
 /**
+ * Interface for FloatingIcons component props
+ */
+export interface FloatingIconsProps {
+    variant?: string;
+}
+
+/**
  * FloatingIcons component for displaying decorative background icons
  */
-const FloatingIcons: React.FC = () => {
+export const FloatingIcons: React.FC<FloatingIconsProps> = ({ variant = 'default' }) => {
     // Floating icons data
     const floatingIcons: FloatingIconData[] = [
         { Icon: Dumbbell, size: 28, left: 5, top: 15, delay: 0, speed: 8 },
@@ -21,7 +28,7 @@ const FloatingIcons: React.FC = () => {
     ];
 
     return (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-10" aria-hidden="true">
+        <div className={`absolute inset-0 overflow-hidden pointer-events-none z-10 ${variant !== 'default' ? `theme-${variant}` : ''}`} aria-hidden="true">
             {floatingIcons.map((icon, index) => (
                 <FloatingIcon
                     key={index}
@@ -32,4 +39,5 @@ const FloatingIcons: React.FC = () => {
     );
 };
 
+// Also provide a default export for backward compatibility
 export default FloatingIcons; 

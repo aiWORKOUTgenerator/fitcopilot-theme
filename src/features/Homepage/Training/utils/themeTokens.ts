@@ -422,6 +422,12 @@ export const getThemeTokens = (variant: VariantKey = 'default'): ThemeTokens => 
 };
 
 /**
+ * Get theme variables as CSS custom properties
+ * Maps to the getThemeTokens function for consistent API
+ */
+export const getThemeVariables = getThemeTokens;
+
+/**
  * Get a specific token from a theme variant
  * 
  * @param variant The theme variant

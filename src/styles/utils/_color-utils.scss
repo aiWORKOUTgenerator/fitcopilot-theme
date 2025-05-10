@@ -1,0 +1,85 @@
+@use "sass:color";
+@use "sass:math";
+@use "sass:meta";
+
+/// Modernized replacement for the deprecated darken() function
+/// @param {Color} $color - The base color to darken
+/// @param {Number} $amount - The amount to darken by (percentage)
+/// @return {Color} The darkened color
+@function darken-safe($color, $amount) {
+    @return color.scale($color, $lightness: -$amount);
+}
+
+/// Modernized replacement for the deprecated lighten() function
+/// @param {Color} $color - The base color to lighten
+/// @param {Number} $amount - The amount to lighten by (percentage)
+/// @return {Color} The lightened color
+@function lighten-safe($color, $amount) {
+    @return color.scale($color, $lightness: $amount);
+}
+
+/// Adjust the lightness of a color (positive or negative)
+/// @param {Color} $color - The base color
+/// @param {Number} $amount - The amount to adjust lightness by (percentage)
+/// @return {Color} The color with adjusted lightness
+@function adjust-lightness($color, $amount) {
+    @return color.scale($color, $lightness: $amount);
+}
+
+/// Adjust the saturation of a color (positive or negative)
+/// @param {Color} $color - The base color
+/// @param {Number} $amount - The amount to adjust saturation by (percentage)
+/// @return {Color} The color with adjusted saturation
+@function adjust-saturation($color, $amount) {
+    @return color.scale($color, $saturation: $amount);
+}
+
+/// Create a color variant that ensures adequate contrast against a background
+/// @param {Color} $color - The base color
+/// @param {Color} $background - The background color
+/// @param {Number} $target-contrast - The target contrast ratio (default: 4.5)
+/// @return {Color} Adjusted color with adequate contrast
+@function ensure-contrast($color, $background, $target-contrast: 4.5) {
+    $current-contrast: color.contrast($color, $background);
+
+    @if $current-contrast >=$target-contrast {
+        @return $color;
+    }
+
+    $direction: if(color.lightness($color) > color.lightness($background), 1, -1);
+    $step: 5;
+    $adjusted-color: $color;
+
+    @while color.contrast($adjusted-color, $background) < $target-contrast {
+        $adjusted-color: adjust-lightness($adjusted-color, $direction * $step);
+    }
+
+    @return $adjusted-color;
+}
+
+/// Create a color palette from a base color
+/// @param {Color} $base-color - The base color
+/// @param {Number} $steps - Number of steps in each direction (default: 5)
+/// @param {Number} $step-size - Size of each step (default: 10%)
+/// @return {Map} Map containing the color palette
+@function create-palette($base-color, $steps: 5, $step-size: 10%) {
+    $palette: (
+        'base': $base-color,
+    );
+
+@for $i from 1 through $steps {
+    $palette: map-merge($palette,
+            ('lighten-#{$i}': lighten-safe($base-color, $i * $step-size),
+                'darken-#{$i}': darken-safe($base-color, $i * $step-size)));
+}
+
+@return $palette;
+}
+
+/// Color function replacement detection helper
+/// @param {String} $function-call - The string of the original function call
+/// @return {String} Warning message
+@function warn-deprecated($function-call) {
+    @warn "Deprecated color function used: #{$function-call}. Use color utilities from src/styles/utils/_color-utils.scss instead.";
+    @return null;
+}

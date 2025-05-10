@@ -1,0 +1,154 @@
+// Canonical design system import - MUST BE FIRST
+@use '../../../styles/design-system' as ds;
+@use "../../../styles/utils/color-utils" as color-utils;
+
+// Button component styles with deprecated color functions
+// This is an example file for demonstrating migration
+
+$button-primary: #4a90e2;
+$button-secondary: #6c757d;
+$button-success: #28a745;
+$button-danger: #dc3545;
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    border: none;
+    cursor: pointer;
+
+    // Primary button styles
+    &--primary {
+        background-color: $button-primary;
+        color: white;
+
+        &:hover {
+            background-color: color-utils.darken-safe($button-primary, 10%);
+        }
+
+        &:active {
+            background-color: color-utils.darken-safe($button-primary, 15%);
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 0.2rem color-utils.lighten-safe($button-primary, 30%);
+        }
+    }
+
+    // Secondary button styles
+    &--secondary {
+        background-color: $button-secondary;
+        color: white;
+
+        &:hover {
+            background-color: color-utils.darken-safe($button-secondary, 10%);
+        }
+
+        &:active {
+            background-color: color-utils.darken-safe($button-secondary, 15%);
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 0.2rem color-utils.lighten-safe($button-secondary, 30%);
+        }
+    }
+
+    // Success button styles
+    &--success {
+        background-color: $button-success;
+        color: white;
+
+        &:hover {
+            background-color: color-utils.darken-safe($button-success, 10%);
+        }
+
+        &:active {
+            background-color: color-utils.darken-safe($button-success, 15%);
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 0.2rem color-utils.lighten-safe($button-success, 30%);
+        }
+    }
+
+    // Danger button styles
+    &--danger {
+        background-color: $button-danger;
+        color: white;
+
+        &:hover {
+            background-color: color-utils.darken-safe($button-danger, 10%);
+        }
+
+        &:active {
+            background-color: color-utils.darken-safe($button-danger, 15%);
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 0.2rem color-utils.lighten-safe($button-danger, 30%);
+        }
+    }
+
+    // Outlined variant
+    &--outlined {
+        background-color: transparent;
+
+        &.button--primary {
+            color: $button-primary;
+            border: 1px solid $button-primary;
+
+            &:hover {
+                background-color: color-utils.lighten-safe($button-primary, 45%);
+            }
+        }
+
+        &.button--secondary {
+            color: $button-secondary;
+            border: 1px solid $button-secondary;
+
+            &:hover {
+                background-color: color-utils.lighten-safe($button-secondary, 45%);
+            }
+        }
+
+        &.button--success {
+            color: $button-success;
+            border: 1px solid $button-success;
+
+            &:hover {
+                background-color: color-utils.lighten-safe($button-success, 45%);
+            }
+        }
+
+        &.button--danger {
+            color: $button-danger;
+            border: 1px solid $button-danger;
+
+            &:hover {
+                background-color: color-utils.lighten-safe($button-danger, 45%);
+            }
+        }
+    }
+
+    // Disabled state
+    &:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        background-color: color-utils.adjust-saturation($button-secondary, -30%);
+        color: white;
+    }
+
+    // Icon button variant
+    &--icon {
+        padding: 0.5rem;
+        border-radius: 50%;
+
+        .icon {
+            fill: currentColor;
+        }
+    }
+}

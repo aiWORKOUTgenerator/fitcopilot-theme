@@ -1,4 +1,5 @@
 @use "@/styles/design-system" as ds;
+@use "../../../styles/utils/color-utils" as color-utils;
 
 
 
@@ -13,7 +14,7 @@
 
 // Primary color definitions
 $pricing-primary: #CCFF00;
-$pricing-primary-dark: darken($pricing-primary, 10%);
+$pricing-primary-dark: color-utils.darken-safe($pricing-primary, 10%);
 
 // Accent colors for different plan types
 $pricing-basic-accent: rgba(59, 130, 246, 0.3); // Blue

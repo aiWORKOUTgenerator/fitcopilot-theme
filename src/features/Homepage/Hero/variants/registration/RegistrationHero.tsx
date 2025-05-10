@@ -1,10 +1,25 @@
 import { Dumbbell, Flame, Heart } from 'lucide-react';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// Add a custom hook to handle navigation with fallback
 import { FloatingIcons } from '../../components/FloatingIcons';
 import '../../Hero.scss';
 import { HeroProps } from '../../types';
 import './RegistrationHero.scss';
+
+// Fallback hook for environments without react-router
+const useNavigation = () => {
+    try {
+        // Dynamically import useNavigate to prevent build errors
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const { useNavigate } = require('react-router-dom');
+        return useNavigate();
+    } catch (error) {
+        // Return a no-op function if react-router-dom is not available
+        return () => {
+            console.warn('Navigation attempted but react-router-dom is not available');
+        };
+    }
+};
 
 /**
  * Splash page Hero component for the AI Workout Generator registration flow
@@ -13,7 +28,7 @@ const RegistrationHero: React.FC<HeroProps> = ({
     loginLink = "https://aigymengine.com/react-login",
     logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
 }) => {
-    const navigate = useNavigate();
+    const navigate = useNavigation();
     // Form state
     const [firstName, setFirstName] = useState('');
     const [email, setEmail] = useState('');

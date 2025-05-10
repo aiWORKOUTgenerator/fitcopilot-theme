@@ -1,4 +1,5 @@
 @use "@/styles/design-system" as ds;
+@use "../../styles/utils/color-utils" as color-utils;
 
 
 
@@ -198,7 +199,7 @@
 
         &:hover,
         &:focus {
-            background: darken(#0ea5e9, 10%);
+            background: color-utils.darken-safe(#0ea5e9, 10%);
             transform: translateY(-2px);
         }
 

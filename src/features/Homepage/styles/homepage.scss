@@ -1,7 +1,8 @@
-@use "@/styles/design-system" as ds;
+@use "../../../styles/design-system" as ds;
 @use '../../../styles/animations.scss';
 @use '../../../styles/reset.scss';
 @use '../../../styles/theme.scss';
+@use "../../../styles/utils/color-utils" as color-utils;
 
 
 
@@ -152,7 +153,7 @@
 
             &:hover {
                 transform: translateY(-2px);
-                background: lighten(#ddff0e, 10%);
+                background: color-utils.lighten-safe(#ddff0e, 10%);
             }
         }
 

@@ -1,4 +1,4 @@
-import MediaContainer, { MediaContainerProps } from './MediaContainer';
+import MediaContainer from './MediaContainer';
 
+export type { MediaContainerProps } from './MediaContainer';
 export default MediaContainer;
-export { MediaContainerProps };

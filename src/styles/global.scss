@@ -1,7 +1,65 @@
-@use 'design-system/index' as *;
+// Global styles
+// Contains minimal styling essential for application structure
+// Component-specific styles should be in component-level files
 
+// Canonical design system import - MUST BE FIRST
+@use './design-system' as ds;
 
+// Import consolidated theme tokens
+@use './design-system/tokens/theme-tokens' as tokens;
 
+// Base styles
+html,
+body {
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-gray-900);
+    background-color: var(--color-gray-50);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.2;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+
+    &:hover {
+        color: var(--color-primary-dark);
+    }
+}
+
+// Focus styles for accessibility
+:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+// Reduced motion preferences
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
 
 // Add demo mode navigation styles
 @keyframes highlight-pulse {
