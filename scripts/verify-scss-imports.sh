@@ -1,11 +1,15 @@
 #!/bin/bash
-# Script to verify that all SCSS files include the canonical design system import
-# This can be used in pre-commit hooks or CI pipelines
+# Enhanced script to verify SCSS files follow modern Sass practices
+# This checks for both canonical design system imports and modern @use syntax
 
-echo "🔍 Checking for missing design system imports in SCSS files..."
+echo "🔍 Checking SCSS files for modern Sass practices..."
+
+# Directory to search within
+SOURCE_DIR="src"
 
 # Check for SCSS files missing the canonical import
-MISSING_IMPORTS=$(find src/features -name "*.scss" | xargs grep -L "@import.*design-system/index")
+echo "1️⃣ Checking for missing design system imports..."
+MISSING_IMPORTS=$(find $SOURCE_DIR/features -name "*.scss" -type f | xargs grep -L -e "@import.*design-system/index" -e "@use.*styles/design-system")
 
 if [ -n "$MISSING_IMPORTS" ]; then
   echo "❌ ERROR: The following SCSS files are missing the canonical design system import:"
@@ -13,11 +17,70 @@ if [ -n "$MISSING_IMPORTS" ]; then
   echo ""
   echo "Please add the following to the top of each file:"
   echo "// Canonical design system import - MUST BE FIRST"
-  echo "@import '../../../styles/design-system/index';"
+  echo "@use '../../../styles/design-system' as ds;"
   echo ""
   echo "Note: For files in subdirectories, adjust the path accordingly."
-  exit 1
+  HAS_ERRORS=true
 else
   echo "✅ All SCSS files have the required design system import!"
+fi
+
+# Check for deprecated @import usage (except for valid cases)
+echo ""
+echo "2️⃣ Checking for deprecated @import usage..."
+
+# Find all SCSS files
+SCSS_FILES=$(find $SOURCE_DIR -name "*.scss" -type f)
+
+# Initialize counters
+DEPRECATED_COUNT=0
+VALID_COUNT=0
+
+# Check each file for @import usage
+for file in $SCSS_FILES; do
+  # Count @import directives, excluding valid cases (CSS imports like AOS)
+  IMPORT_COUNT=$(grep -c "@import" $file)
+  CSS_IMPORT_COUNT=$(grep -c "@import.*\.css" $file)
+  VALID_IMPORT_COUNT=$CSS_IMPORT_COUNT
+  
+  # Calculate deprecated imports
+  DEPRECATED_IMPORTS=$((IMPORT_COUNT - VALID_IMPORT_COUNT))
+  
+  if [ $DEPRECATED_IMPORTS -gt 0 ]; then
+    echo "❌ $file contains $DEPRECATED_IMPORTS deprecated @import directives"
+    grep -n "@import" $file | grep -v "\.css"
+    DEPRECATED_COUNT=$((DEPRECATED_COUNT + DEPRECATED_IMPORTS))
+  else
+    VALID_COUNT=$((VALID_COUNT + 1))
+  fi
+done
+
+echo ""
+if [ $DEPRECATED_COUNT -gt 0 ]; then
+  echo "❌ Found $DEPRECATED_COUNT deprecated @import directives across the codebase"
+  echo "Please convert these to @use directives with appropriate namespacing."
+  echo ""
+  echo "Example conversion:"
+  echo "BEFORE: @import '../../../styles/design-system/index';"
+  echo "AFTER:  @use '../../../styles/design-system' as ds;"
+  HAS_ERRORS=true
+else
+  echo "✅ No deprecated @import directives found!"
+fi
+
+# Final summary
+echo ""
+echo "📊 SCSS Modernization Summary:"
+echo "----------------------------------------"
+echo "Total SCSS files checked: $(echo "$SCSS_FILES" | wc -l | tr -d ' ')"
+echo "Files with proper imports: $VALID_COUNT"
+echo "Deprecated @import directives: $DEPRECATED_COUNT"
+echo ""
+
+if [ "$HAS_ERRORS" = true ]; then
+  echo "❌ SCSS modernization verification failed with errors."
+  exit 1
+else
+  echo "✅ SCSS modernization verification passed successfully!"
   exit 0
 fi 

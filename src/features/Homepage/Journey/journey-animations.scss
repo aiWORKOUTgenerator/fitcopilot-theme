@@ -1,8 +1,9 @@
+@use "../../../styles/design-system" as ds;
+@use "./_tokens" as tokens;
+
 /* Journey Component Animation System
  * Includes reduced motion support for accessibility
  */
-
-@import './_tokens.scss';
 
 /* Animation keyframes */
 @keyframes fade-slide-up {
@@ -17,7 +18,7 @@
     }
 }
 
-@keyframes fade-in {
+@keyframes fadeIn {
     from {
         opacity: 0;
     }
@@ -61,7 +62,7 @@
 }
 
 .animate-fade-in {
-    animation: fade-in 0.5s ease-out forwards;
+    animation: fadeIn tokens.$animation-duration tokens.$animation-easing forwards;
     animation-delay: 0.2s;
     opacity: 0;
 }

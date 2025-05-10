@@ -1,0 +1,312 @@
+@use '../../../../../styles/design-system/index' as *;
+// Import main tooltip variables and mixins
+@import '../../tooltip-variables.scss';
+
+// Import pricing theme variables
+@import '../../../../../features/Homepage/Pricing/pricing-theme-variables.scss';
+
+/* Tooltip wrapper */
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+/* Tooltip container positioning */
+.tooltip-container {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+    pointer-events: none;
+}
+
+/* Pricing-specific tooltip styling */
+.pricing-tooltip.tooltip {
+    position: relative;
+    background-color: rgba(17, 24, 39, 0.95);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    max-width: 260px;
+    width: 260px;
+    color: #d1d5db;
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
+    opacity: 0;
+    transform: translateY(8px);
+    visibility: hidden;
+    transition: all 0.3s ease;
+    will-change: transform, opacity;
+
+    // Different positioning for pricing tooltips
+    &.tooltip-top {
+        bottom: 110%;
+        left: 50%;
+        transform: translateX(-50%) translateY(8px);
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -6px;
+            width: 12px;
+            height: 12px;
+            background-color: rgba(17, 24, 39, 0.95);
+            border-right: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
+            border-bottom: 1px solid var(--accent-color, rgba(132, 204, 22, 0.3));
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        &.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    }
+}
+
+/* Tooltip heading */
+.pricing-tooltip .tooltip-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+/* Tooltip show/hide states */
+.pricing-tooltip.tooltip.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.pricing-tooltip.tooltip.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Tooltip content */
+.pricing-tooltip .tooltip-content {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 0;
+}
+
+/* Icon container */
+.pricing-tooltip .tooltip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* Text container */
+.pricing-tooltip .tooltip-text {
+    flex: 1;
+}
+
+.pricing-tooltip .tooltip-text p {
+    margin: 0;
+    font-size: 12px;
+    color: #d1d5db;
+    line-height: 1.4;
+}
+
+/* Optimize animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .pricing-tooltip.tooltip {
+        transition: none !important;
+    }
+
+    .pricing-tooltip.tooltip.show {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+}
+
+/* Tooltip content */
+.tooltip-theme-pricing {
+    .tooltip-trigger {
+        // Ensure the trigger is positioned relatively 
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip-content {
+        position: absolute;
+        z-index: var(--tooltip-z-index);
+        background-color: var(--tooltip-bg);
+        color: var(--tooltip-text-color);
+        border: 1px solid var(--tooltip-border-color, var(--accent-color, rgba(132, 204, 22, 0.3)));
+        border-radius: var(--tooltip-border-radius);
+        padding: var(--tooltip-padding);
+        width: var(--tooltip-width);
+        max-width: var(--tooltip-max-width);
+        box-shadow: var(--tooltip-shadow);
+        font-size: var(--tooltip-font-size);
+        line-height: var(--tooltip-line-height);
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--tooltip-transition);
+        pointer-events: none;
+
+        // Position variants
+        &.tooltip-top,
+        &.tooltip-bottom {
+            left: 50%;
+            transform: translateX(-50%) translateY(var(--tooltip-transform-y));
+
+            &.visible {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        &.tooltip-left,
+        &.tooltip-right {
+            top: 50%;
+            transform: translateY(-50%) translateX(var(--tooltip-transform-x));
+
+            &.visible {
+                transform: translateY(-50%) translateX(0);
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+
+        // Position-specific styles for arrows
+        &.tooltip-top {
+            bottom: 100%;
+            margin-bottom: 8px;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: calc(var(--tooltip-arrow-size) / -2);
+                border-width: var(--tooltip-arrow-size);
+                border-style: solid;
+                border-color: var(--tooltip-bg) transparent transparent transparent;
+            }
+        }
+
+        &.tooltip-bottom {
+            top: 100%;
+            margin-top: 8px;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                margin-left: calc(var(--tooltip-arrow-size) / -2);
+                border-width: var(--tooltip-arrow-size);
+                border-style: solid;
+                border-color: transparent transparent var(--tooltip-bg) transparent;
+            }
+        }
+
+        &.tooltip-left {
+            right: 100%;
+            margin-right: 8px;
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 100%;
+                top: 50%;
+                margin-top: calc(var(--tooltip-arrow-size) / -2);
+                border-width: var(--tooltip-arrow-size);
+                border-style: solid;
+                border-color: transparent transparent transparent var(--tooltip-bg);
+            }
+        }
+
+        &.tooltip-right {
+            left: 100%;
+            margin-left: 8px;
+
+            &::after {
+                content: '';
+                position: absolute;
+                right: 100%;
+                top: 50%;
+                margin-top: calc(var(--tooltip-arrow-size) / -2);
+                border-width: var(--tooltip-arrow-size);
+                border-style: solid;
+                border-color: transparent var(--tooltip-bg) transparent transparent;
+            }
+        }
+    }
+
+    // Inner content structure
+    .tooltip-inner {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tooltip-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 6px;
+    }
+
+    .tooltip-icon {
+        font-size: var(--tooltip-pricing-icon-size, 16px);
+        color: var(--tooltip-title-color, var(--pricing-primary));
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .tooltip-title {
+        font-weight: 600;
+        color: var(--tooltip-title-color, var(--pricing-primary));
+        font-size: var(--tooltip-title-font-size, 14px);
+    }
+
+    .tooltip-body {
+        color: var(--tooltip-text-color);
+        font-size: var(--tooltip-font-size, 12px);
+    }
+
+    // Color variants for different plan types
+    &[data-plan="basic"] {
+        .tooltip-content {
+            border-color: var(--pricing-basic-accent);
+        }
+    }
+
+    &[data-plan="pro"] {
+        .tooltip-content {
+            border-color: var(--pricing-pro-accent);
+        }
+    }
+
+    &[data-plan="elite"] {
+        .tooltip-content {
+            border-color: var(--pricing-elite-accent);
+        }
+    }
+}
+
+/* Optimize animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .tooltip-theme-pricing {
+        .tooltip-content {
+            transition: none !important;
+        }
+    }
+}
+
+// Accessibility - focus states
+.tooltip-theme-pricing .tooltip-trigger:focus-visible {
+    outline: 2px solid var(--tooltip-title-color);
+    outline-offset: 2px;
+}

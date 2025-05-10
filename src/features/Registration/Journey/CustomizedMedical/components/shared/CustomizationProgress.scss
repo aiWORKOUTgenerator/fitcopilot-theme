@@ -1,3 +1,9 @@
+@use "@/styles/design-system" as ds;
+
+
+
+// Canonical design system import - MUST BE FIRST
+
 .customization-progress {
     margin-top: 1.5rem;
     padding: 0.75rem;

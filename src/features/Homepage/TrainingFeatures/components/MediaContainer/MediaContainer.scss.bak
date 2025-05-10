@@ -1,0 +1,192 @@
+// Import design system
+@import '../../../../../styles/design-system/index';
+
+/**
+ * MediaContainer component styles
+ */
+
+:root {
+    // Base tokens
+    --media-container-border-radius: 0.5rem;
+    --media-container-background: var(--color-gray-800);
+
+    // Error state
+    --media-error-text: var(--color-gray-300);
+    --media-error-background: var(--color-gray-800);
+}
+
+// Theme-specific tokens
+[data-theme="gym"] {
+    --media-container-background: var(--color-slate-800);
+    --media-error-background: var(--color-slate-800);
+}
+
+[data-theme="sports"] {
+    --media-container-background: var(--color-blue-900);
+    --media-error-background: var(--color-blue-900);
+}
+
+[data-theme="wellness"] {
+    --media-container-background: var(--color-purple-900);
+    --media-error-background: var(--color-purple-900);
+}
+
+.media-container {
+    --media-overlay-bg: rgba(0, 0, 0, 0.5);
+    --media-overlay-bg-hover: rgba(0, 0, 0, 0.3);
+    --media-text-color: var(--color-white, #ffffff);
+    --media-loading-bg: rgba(0, 0, 0, 0.2);
+    --media-error-bg: rgba(220, 38, 38, 0.1);
+
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--media-container-border-radius);
+    background-color: var(--media-container-background);
+    width: 100%;
+    height: 100%;
+    /* Ensure minimum height for container */
+    flex-grow: 1;
+    /* Allow container to expand */
+    display: flex;
+    flex-direction: column;
+
+    // Media content styling
+    .media-content {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: var(--media-container-border-radius);
+        display: block;
+    }
+
+    // Consistent focus state for accessibility
+    &:focus-within {
+        outline: 2px solid var(--color-lime-300);
+        outline-offset: 2px;
+    }
+
+    // Loading state
+    .media-loading-state {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--media-loading-bg);
+        color: var(--media-text-color);
+
+        .loading-indicator {
+            animation: spin 1s linear infinite;
+            color: var(--color-lime-300);
+
+            @media (prefers-reduced-motion: reduce) {
+                animation: none;
+            }
+        }
+    }
+
+    // Error state
+    .media-error-state {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: var(--media-error-bg);
+        color: var(--color-red-500);
+        gap: 0.5rem;
+
+        span {
+            font-size: 0.875rem;
+            color: var(--color-gray-300);
+        }
+    }
+
+    // Error message
+    .media-error {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        color: var(--media-error-text);
+        text-align: center;
+        padding: 1rem;
+        font-size: 0.875rem;
+        background-color: var(--media-error-background);
+    }
+
+    // Optional overlay content
+    .media-overlay-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        background: var(--media-overlay-bg);
+        color: var(--media-text-color);
+        transition: background-color 0.3s ease;
+
+        &:hover {
+            background: var(--media-overlay-bg-hover);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: none;
+        }
+    }
+
+    // Responsive styles
+    @media (max-width: 768px) {
+        font-size: 0.875rem;
+
+        .media-overlay-content {
+            padding: 0.75rem;
+        }
+    }
+}
+
+// Optimize for flip card integration
+.flip-front,
+.flip-back {
+    .media-container {
+        height: auto;
+        min-height: 190px;
+        /* Taller minimum height for flip card context */
+        flex: 1 1 auto;
+        /* Allow flexible growth */
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+// Animation keyframes
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// Accessibility considerations
+@media (prefers-reduced-motion: reduce) {
+    .media-container video {
+        // Disable autoplay animations when reduced motion is preferred
+        animation: none !important;
+        transition: none !important;
+    }
+}

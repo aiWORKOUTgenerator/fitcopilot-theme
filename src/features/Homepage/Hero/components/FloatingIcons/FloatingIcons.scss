@@ -1,5 +1,6 @@
-// Import hero theme variables
-@import '../../hero-theme-variables.scss';
+// Canonical design system import - MUST BE FIRST
+@use '../../../../../styles/design-system' as ds;
+@use '../../hero-theme-variables' as hero;
 
 // Floating icons animation
 .floating-icon {
@@ -37,4 +38,13 @@
     100% {
         transform: translateY(0) rotate(0deg) scale(1);
     }
+}
+
+// Floating icons animations and styles
+.floating-icons {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
 }

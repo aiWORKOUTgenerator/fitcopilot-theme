@@ -1,3 +1,11 @@
-@use './global.scss';
-@use './design-system/index.scss' as *;
-@use './components/section' as *;
+// Main application styles entry point
+// Import all modular styles with proper namespacing
+
+// Global styles
+@use './global' as global;
+
+// Design system
+@use './design-system/index' as ds;
+
+// Layout components
+@use './components/section' as section;

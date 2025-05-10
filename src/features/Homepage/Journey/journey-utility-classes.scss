@@ -1,3 +1,11 @@
+@use "../../../styles/design-system" as ds;
+@use "./_tokens" as tokens;
+
+
+
+
+// Canonical design system import - MUST BE FIRST
+
 /* Journey Utility Classes for use with components */
 
 /* Override the fixed height issue */
@@ -109,7 +117,6 @@
  * for consistent styling across the component
  */
 
-@import './_tokens.scss';
 
 /* Gradient utility classes */
 .journey-gradient-lime {
@@ -331,4 +338,14 @@
 
 .group:hover .group-hover\:opacity-25 {
     opacity: 0.25;
+}
+
+/* Journey utility classes */
+.journey-accent-text {
+    color: tokens.$accent-color;
+    font-weight: 600;
+}
+
+.journey-gradient-bg {
+    background: linear-gradient(135deg, tokens.$gradient-start 0%, tokens.$gradient-end 100%);
 }

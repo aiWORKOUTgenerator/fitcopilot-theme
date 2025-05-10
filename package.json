@@ -88,7 +88,7 @@
     "test:coverage": "jest --coverage",
     "test:registration": "jest src/features/Registration",
     "verify:mount": "./scripts/verify-mount-point.sh",
-    "verify:scss": "./scripts/verify-scss-imports.sh",
+    "verify:scss": "./scripts/verify-scss-imports-fixed.sh",
     "verify:all": "npm run verify:mount && npm run verify:scss",
     "prebuild": "npm run verify:all || echo '⚠️ Verification warnings - check consistency!'",
     "storybook": "storybook dev -p 6006",
@@ -119,6 +119,9 @@
     "token-report:features": "node scripts/token-compliance.js src/features/Homepage/Features",
     "token-report:journey": "node scripts/token-compliance.js src/features/Homepage/Journey",
     "token-report:pricing": "node scripts/token-compliance.js src/features/Homepage/Pricing",
+    "migrate:scss": "./scripts/migrate-scss.sh",
+    "migrate:scss:add-imports": "./scripts/add-canonical-import.sh",
+    "migrate:scss:convert-imports": "./scripts/convert-remaining-imports.sh",
     "prepare": "husky install"
   }
 }

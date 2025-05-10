@@ -1,10 +1,19 @@
-// Import design system
-@import '../../../../../styles/design-system/index';
+// Canonical design system import - MUST BE FIRST
+@use '../../../../../styles/design-system' as ds;
+@use './hero-theme-variables' as hero;
 
 // Sports Hero specific styling
 .sports-hero {
     position: relative;
     color: var(--color-text-light);
+
+    // Sports-specific styling
+    background: var(--sport-gradient-primary);
+
+    .hero-title {
+        font-size: ds.$font-size-4xl;
+        color: var(--sport-highlight);
+    }
 
     // Background pattern grid
     .bg-pattern-grid {

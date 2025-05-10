@@ -1,4 +1,8 @@
-@import "../../../../styles/design-system/index.scss";
+@use "@/styles/design-system" as ds;
+
+
+
+// Canonical design system import - MUST BE FIRST
 
 /* Minimal styling for JourneyStep - most styles now use Tailwind directly in the component */
 .journey-step {

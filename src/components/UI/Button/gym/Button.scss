@@ -1,13 +1,16 @@
+@use '../../../../styles/design-system/index' as *;
+@use '../Button.scss' as Button;
+
+
+
 /**
  * Gym Theme Button Styles
  * 
  * Styles specific to the gym theme button variant
  */
 
-@use '../../../../styles/design-system/index' as *;
 
 // Import the core button styles
-@import '../Button.scss';
 
 // Gym theme button styles
 .button {
@@ -133,3 +136,4 @@
         }
     }
 }
+

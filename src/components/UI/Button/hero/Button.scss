@@ -1,11 +1,14 @@
-/* Import the base Button styles */
+@use "@/styles/design-system" as ds;
 @use '../../../../components/UI/Button/Button.scss' as *;
+@use '../../../../features/Homepage/Hero/hero-theme-variables.scss' as hero_theme_variables;
+
+
+
+/* Import the base Button styles */
 
 // Canonical design system import - MUST BE FIRST
-@import '../../../../styles/design-system/index';
 
 // Import hero theme variables
-@import '../../../../features/Homepage/Hero/hero-theme-variables.scss';
 
 /* Hero-specific button styling */
 .hero-button {

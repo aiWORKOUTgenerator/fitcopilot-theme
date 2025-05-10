@@ -1,3 +1,8 @@
+@use "@/styles/design-system" as ds;
+
+
+
+// Canonical design system import - MUST BE FIRST
 /**
  * Training Component Theme Variants
  * 
@@ -6,7 +11,6 @@
  */
 
 // Import base design system
-@import '../../../../styles/design-system/index';
 
 // Default theme variables (dark with amber accent)
 :root {
@@ -415,3 +419,4 @@ body[data-theme="modern"] {
         }
     }
 }
+

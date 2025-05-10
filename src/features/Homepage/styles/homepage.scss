@@ -1,13 +1,16 @@
-// Sass @use statements must come first
-@use '../../../styles/theme.scss';
+@use "@/styles/design-system" as ds;
 @use '../../../styles/animations.scss';
 @use '../../../styles/reset.scss';
+@use '../../../styles/theme.scss';
+
+
+
+@import 'aos/dist/aos.css'; // Animation library
+// Sass @use statements must come first
 
 // Canonical design system import - MUST COME AFTER @use statements
-@import '../../../styles/design-system/index';
 
 // Import external dependencies
-@import 'aos/dist/aos.css'; // Animation library
 
 // Homepage-specific styles
 .homepage-container {

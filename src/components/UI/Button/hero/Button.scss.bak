@@ -1,0 +1,241 @@
+/* Import the base Button styles */
+@use '../../../../components/UI/Button/Button.scss' as *;
+
+// Canonical design system import - MUST BE FIRST
+@use '../../../src/styles/design-system' as ds;
+
+// Import hero theme variables
+@import '../../../../features/Homepage/Hero/hero-theme-variables.scss';
+
+/* Hero-specific button styling */
+.hero-button {
+    position: var(--pos-hero-element-relative);
+    overflow: var(--overflow-hero-hidden);
+    display: var(--display-hero-inline-flex);
+    align-items: var(--align-hero-center);
+    justify-content: var(--justify-hero-center);
+    gap: var(--size-hero-btn-gap);
+    padding: var(--size-hero-btn-padding-y-md) var(--size-hero-btn-padding-x-md);
+    font-weight: var(--weight-hero-button);
+    font-size: var(--type-base);
+    line-height: var(--line-height-normal);
+    border-radius: var(--radius-full);
+    cursor: var(--cursor-hero-pointer);
+    text-align: var(--text-align-hero-center);
+    text-decoration: var(--text-decoration-hero-none);
+    white-space: var(--white-space-hero-nowrap);
+    transition: var(--transition-standard);
+    box-shadow: var(--shadow-button);
+
+    &::before {
+        content: var(--content-hero-empty);
+        position: var(--pos-hero-element-absolute);
+        top: var(--pos-hero-top-0);
+        left: var(--pos-hero-before-left-start);
+        width: var(--pos-hero-gradient-100);
+        height: var(--pos-hero-gradient-100);
+        background: linear-gradient(var(--angle-hero-gradient),
+                var(--color-hero-transparent) var(--pos-hero-gradient-0),
+                rgba(255, 255, 255, var(--opacity-hero-white-shine)) var(--pos-hero-gradient-50),
+                var(--color-hero-transparent) var(--pos-hero-gradient-100));
+        transition: var(--transition-slow);
+    }
+
+    &:hover {
+        transform: translateY(var(--transform-hero-button-up));
+        box-shadow: var(--shadow-button-hover);
+
+        &::before {
+            left: var(--pos-hero-gradient-100);
+        }
+    }
+
+    &:active {
+        transform: translateY(var(--transform-hero-button-down));
+        box-shadow: var(--shadow-button-active);
+    }
+
+    /* Sizes */
+    &.button--small {
+        padding: var(--size-hero-btn-padding-y-sm) var(--size-hero-btn-padding-x-sm);
+        font-size: var(--type-small);
+    }
+
+    &.button--medium {
+        padding: var(--size-hero-btn-padding-y-md) var(--size-hero-btn-padding-x-md);
+        font-size: var(--type-base);
+    }
+
+    &.button--large {
+        padding: var(--size-hero-btn-padding-y-lg) var(--size-hero-btn-padding-x-lg);
+        font-size: var(--type-lg);
+    }
+
+    /* Variants */
+    &.button--primary {
+        background-image: linear-gradient(135deg, var(--hero-accent-gradient-from), var(--hero-accent-gradient-to));
+        color: var(--color-hero-button-primary-text);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+
+        &:hover,
+        &:focus {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+            transform: translateY(-2px);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+
+    &.button--secondary {
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(4px);
+        color: var(--color-hero-button-primary-text);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+
+        &:hover,
+        &:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            border-color: var(--hero-accent-color);
+
+            .accent-text {
+                color: var(--hero-accent-color);
+            }
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+
+        .accent-text {
+            color: var(--hero-accent-color);
+        }
+    }
+
+    /* Full width */
+    &.button--fullwidth {
+        width: var(--pos-hero-gradient-100);
+        display: var(--display-hero-flex);
+        justify-content: var(--justify-hero-center);
+    }
+
+    /* Icons */
+    .button__icon {
+        display: var(--display-hero-inline-flex);
+        align-items: var(--align-hero-center);
+
+        &--left {
+            margin-right: var(--size-hero-btn-icon-margin);
+        }
+
+        &--right {
+            margin-left: var(--size-hero-btn-icon-margin);
+        }
+    }
+
+    /* Text */
+    .button__text {
+        position: var(--pos-hero-element-relative);
+    }
+}
+
+/* Theme overrides for default theme (lime/green) */
+body:not([data-theme="gym"]) .hero-button {
+    &.button--primary {
+        /* Default theme is lime/green */
+        background: linear-gradient(var(--angle-hero-gradient), var(--color-lime), var(--color-lime-dark));
+
+        &:hover {
+            background: linear-gradient(var(--angle-hero-gradient), var(--color-lime-light), var(--color-lime-medium));
+        }
+    }
+
+    &.button--secondary {
+        border-color: rgba(var(--color-lime-rgb), var(--opacity-hero-lime-border));
+
+        &:hover {
+            background-color: rgba(var(--color-lime-rgb), var(--opacity-hero-lime-border));
+        }
+    }
+}
+
+/* Theme overrides for gym theme (violet/purple) */
+body[data-theme="gym"] .hero-button {
+    &.button--primary {
+        /* Gym theme uses the theme variables (violet/purple) */
+        background: linear-gradient(var(--angle-hero-gradient), var(--color-primary), var(--color-primary-dark));
+
+        &:hover {
+            background: linear-gradient(var(--angle-hero-gradient), var(--color-primary-light), var(--color-primary));
+        }
+    }
+
+    &.button--secondary {
+        border-color: rgba(var(--color-primary-rgb), var(--opacity-hero-lime-border));
+
+        &:hover {
+            background-color: rgba(var(--color-primary-rgb), var(--opacity-hero-lime-border));
+        }
+    }
+}
+
+/* Disabled state */
+.hero-button:disabled {
+    opacity: var(--opacity-disabled);
+    cursor: var(--cursor-hero-not-allowed);
+    transform: var(--transform-hero-none) !important;
+}
+
+/* Loading state */
+.hero-button.button--loading {
+    position: relative;
+    cursor: wait;
+
+    .button__text {
+        visibility: hidden;
+    }
+
+    .button__spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--hero-accent-color);
+        animation: spin 0.8s linear infinite;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* Optimize animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .hero-button::before {
+        display: var(--display-hero-none);
+    }
+
+    .hero-button {
+        transition: var(--transition-hero-none);
+        transform: var(--transform-hero-none) !important;
+    }
+
+    .button__spinner {
+        animation: none !important;
+    }
+}
+
+/* Accent text color */
+.accent-text {
+    color: var(--hero-accent-color);
+}

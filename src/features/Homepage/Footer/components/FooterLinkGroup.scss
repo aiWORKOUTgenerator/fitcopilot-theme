@@ -1,7 +1,10 @@
-// Canonical design system import - MUST BE FIRST
-@import '../../../../styles/design-system/index';
+@use "@/styles/design-system" as ds;
+@use '../../../../styles/shared/canon.scss' as canon;
 
-@import "../../../../styles/shared/canon.scss";
+
+
+// Canonical design system import - MUST BE FIRST
+
 
 .footer-link-group {
   ul {

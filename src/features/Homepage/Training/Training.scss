@@ -1,8 +1,11 @@
+@use "@/styles/design-system" as ds;
+@use './styles/theme-variants.scss' as theme_variants;
+
+
+
 // Canonical design system import - MUST BE FIRST
-@import '../../../styles/design-system/index';
 
 // Import theme variants
-@import './styles/theme-variants.scss';
 
 // Define component-specific variables with fallbacks to global theme tokens
 :root {

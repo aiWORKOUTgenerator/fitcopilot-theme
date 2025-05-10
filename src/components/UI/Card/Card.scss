@@ -1,3 +1,7 @@
+@use '../../../styles/design-system/index' as *;
+
+
+
 /**
  * Card Component Styles
  * 
@@ -5,7 +9,6 @@
  */
 
 // Import design system once
-@use '../../../styles/design-system/index' as *;
 
 // Extend the base .card class from the design system
 .card {
@@ -81,3 +84,4 @@
 
 // The base .card class is defined in the design system _components.scss file
 // This file can be used for card variants and extensions 
+

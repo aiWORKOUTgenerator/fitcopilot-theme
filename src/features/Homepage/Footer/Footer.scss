@@ -1,5 +1,8 @@
+@use "@/styles/design-system" as ds;
+
+
+
 // Canonical design system import - MUST BE FIRST
-@import '../../../styles/design-system/index';
 
 // Define explicit consistent background color to match other sections
 :root {

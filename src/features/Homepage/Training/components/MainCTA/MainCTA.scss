@@ -1,4 +1,8 @@
-@import '../../../../../styles/design-system/index';
+@use "@/styles/design-system" as ds;
+
+
+
+// Canonical design system import - MUST BE FIRST
 
 // MainCTA styles are inherited from the parent component
 // This file is for component-specific styles if needed

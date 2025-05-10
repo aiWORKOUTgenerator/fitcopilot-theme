@@ -1,4 +1,8 @@
-@import '../../../../../styles/design-system/index';
+@use "@/styles/design-system" as ds;
+
+
+
+// Canonical design system import - MUST BE FIRST
 
 // ProgramsList styles are using the existing styles from Training.scss
 // No additional styles needed for now as they're maintained in the parent component's SCSS

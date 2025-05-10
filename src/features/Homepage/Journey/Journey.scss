@@ -1,562 +1,155 @@
-@import "../../../styles/design-system/index.scss";
+@use "../../../styles/design-system" as ds;
+@use "./_tokens" as tokens;
 
-/* Removed .journey-step styling since that container no longer exists */
-
-/* Breakpoint definitions for Journey component */
-$breakpoint-xs: 0;
-$breakpoint-sm: 640px;
-$breakpoint-md: 768px;
-$breakpoint-md-max: 767px;
-/* Used for max-width queries */
-$breakpoint-lg: 1024px;
-$breakpoint-xl: 1280px;
-$breakpoint-xxl: 1536px;
-
-/* Journey Section Variables */
-:root {
-  /* Base colors - Using component tokens */
-  --journey-background: var(--journey-bg-color);
-  --journey-card-bg: var(--journey-card-bg);
-  --journey-card-border: var(--journey-card-border);
-  --journey-accent-primary: var(--color-lime-500);
-
-  /* Accent colors with opacity for glow effects */
-  @include create-accent-color-variants('color-lime-500', 'journey-accent-lime');
-  @include create-accent-color-variants('color-cyan-500', 'journey-accent-cyan');
-  @include create-accent-color-variants('color-violet-500', 'journey-accent-violet');
-  @include create-accent-color-variants('color-amber-500', 'journey-accent-amber');
-
-  /* Grid pattern colors */
-  --journey-grid-line: rgba(255, 255, 255, 0.03);
-
-  /* Responsive typography - mobile first */
-  --journey-title-font-size: 2rem;
-  --journey-title-line-height: 1.2;
-  --journey-title-letter-spacing: -0.01em;
-
-  --journey-step-title-font-size: 1.25rem;
-  --journey-step-title-line-height: 1.3;
-
-  --journey-body-font-size: 1rem;
-  --journey-body-line-height: 1.5;
-
-  --journey-feature-title-font-size: 1rem;
-  --journey-feature-title-line-height: 1.4;
-
-  --journey-feature-description-font-size: 0.875rem;
-  --journey-feature-description-line-height: 1.5;
-
-  /* Responsive spacing - mobile first */
-  --journey-section-padding-top: 3rem;
-  --journey-section-padding-bottom: 3rem;
-  --journey-section-padding-horizontal: 1rem;
-
-  --journey-step-card-padding: 1rem;
-  --journey-feature-card-padding: 0.75rem;
-
-  --journey-gap-small: 0.5rem;
-  --journey-gap-medium: 1rem;
-  --journey-gap-large: 1.5rem;
-
-  /* Responsive sizes for interactive elements */
-  --journey-icon-size: var(--journey-step-icon-size);
-  --journey-step-number-size: var(--journey-step-number-size);
-  --journey-connector-width: 2px;
-
-  @media (min-width: $breakpoint-md) {
-    /* Typography updates for tablet and up */
-    --journey-title-font-size: 2.5rem;
-    --journey-title-line-height: 1.2;
-    --journey-title-letter-spacing: -0.015em;
-
-    --journey-step-title-font-size: 1.5rem;
-
-    --journey-feature-title-font-size: 1.125rem;
-
-    /* Spacing updates for tablet and up */
-    --journey-section-padding-top: 4rem;
-    --journey-section-padding-bottom: 4rem;
-    --journey-section-padding-horizontal: 1.5rem;
-
-    --journey-step-card-padding: 1.5rem;
-    --journey-feature-card-padding: 1rem;
-
-    --journey-gap-small: 0.75rem;
-    --journey-gap-medium: 1.5rem;
-    --journey-gap-large: 2rem;
-
-    --journey-icon-size: 3rem;
-    --journey-step-number-size: 2rem;
-  }
-
-  @media (min-width: $breakpoint-lg) {
-    /* Typography updates for desktop and up */
-    --journey-title-font-size: 3rem;
-    --journey-title-line-height: 1.1;
-    --journey-title-letter-spacing: -0.02em;
-
-    /* Spacing updates for desktop and up */
-    --journey-section-padding-top: 5rem;
-    --journey-section-padding-bottom: 5rem;
-    --journey-section-padding-horizontal: 2rem;
-
-    --journey-gap-small: 1rem;
-    --journey-gap-medium: 1.5rem;
-    --journey-gap-large: 2rem;
-
-    --journey-icon-size: 4rem;
-  }
-}
-
-/* Journey Section Styles */
 .journey-section {
-  position: relative;
+  padding: 4rem 0; // Use hardcoded value instead of variable
+  background-color: var(--journey-bg, #f9fafb); // Use CSS custom property with fallback
   overflow: hidden;
-  background-color: var(--journey-background);
+  position: relative;
 
-  // Add spacing to headers
-  h2,
-  h3 {
-    margin-bottom: var(--spacing-md);
+  &__container {
+    max-width: 1280px; // Use hardcoded value instead of variable
+    margin: 0 auto;
+    padding: 0 1.5rem; // Use hardcoded value instead of variable
+    position: relative;
+    z-index: 2;
   }
 
-  // Section header
-  h2 {
-    font-size: var(--journey-title-font-size);
-    line-height: var(--journey-title-line-height);
-    letter-spacing: var(--journey-title-letter-spacing);
-  }
-
-  // Step titles
-  h3 {
-    font-size: var(--journey-step-title-font-size);
-    line-height: var(--journey-step-title-line-height);
-  }
-
-  // Body text
-  p {
-    font-size: var(--journey-body-font-size);
-    line-height: var(--journey-body-line-height);
-  }
-
-  /* Properly centered text styling - matching PersonalTraining */
-  .text-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center !important;
-    width: 100%;
-
-    h2,
-    p,
-    span {
-      text-align: center !important;
-      width: 100%;
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
+  &__heading {
+    text-align: center;
+    margin-bottom: 3rem; // Use hardcoded value instead of variable
 
     h2 {
-      .bg-gradient-to-r {
-        background-size: 100%;
-        background-clip: text;
-        display: inline-block;
-      }
+      font-size: 1.875rem; // Use hardcoded value instead of variable
+      font-weight: 700; // Use hardcoded value instead of variable  
+      margin-bottom: 1.5rem; // Use hardcoded value instead of variable
+      color: var(--journey-heading-color, #111827); // Use CSS custom property with fallback
     }
 
     p {
-      color: rgba(255, 255, 255, 0.7); // Match PersonalTraining gray-400
-      max-width: 32rem; // Equivalent to max-w-2xl
+      font-size: 1.125rem; // Use hardcoded value instead of variable
+      color: var(--journey-description-color, #4b5563); // Use CSS custom property with fallback
+      max-width: 700px;
+      margin: 0 auto;
+    }
+  }
+
+  &__steps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem; // Use hardcoded value instead of variable
+    margin-bottom: 3rem; // Use hardcoded value instead of variable
+
+    @media (max-width: 768px) {
+      // Use hardcoded value instead of variable
+      flex-direction: column;
+    }
+  }
+
+  &__cta {
+    text-align: center;
+    margin-top: 3rem; // Use hardcoded value instead of variable
+
+    .button {
+      padding: 1.5rem 2rem; // Use hardcoded value instead of variable
+      font-size: 1.125rem; // Use hardcoded value instead of variable
+      font-weight: 700; // Use hardcoded value instead of variable
+      border-radius: 9999px; // Use hardcoded value instead of variable
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: #ffffff; // Use hardcoded value instead of variable
+      background: linear-gradient(135deg, tokens.$gradient-start 0%, tokens.$gradient-end 100%);
+      border: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      svg {
+        margin-left: 0.5rem; // Use hardcoded value instead of variable
+      }
+    }
+  }
+
+  &__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+
+    &-decor {
+      position: absolute;
+      border-radius: 50%;
+
+      &--1 {
+        top: -10%;
+        right: -5%;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(tokens.$accent-color-light, 0.05) 0%, rgba(tokens.$accent-color-light, 0) 70%);
+      }
+
+      &--2 {
+        bottom: -15%;
+        left: -10%;
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(tokens.$accent-color, 0.05) 0%, rgba(tokens.$accent-color, 0) 70%);
+      }
     }
   }
 }
 
-/* Floating icons container for Journey */
+// Floating icons container for Journey
 .journey-floating-icons {
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.8;
-  /* Slightly higher overall opacity */
 }
 
-/* Journey container - Visual Unifying Container */
-.journey-container {
-  position: relative;
-  overflow: hidden;
-
-  /* Ensure proper z-indexing for container elements */
-  .journey-timeline {
-    position: relative;
-    z-index: 2;
-  }
-
-  /* Adjust any journey-step styling to maintain proper z-index */
-  .journey-step-container {
-    position: relative;
-    z-index: 3;
-  }
-}
-
-/* Floating icon styling for Journey */
 .journey-floating-icon {
   position: absolute;
-  opacity: 0.12;
-  /* Slightly reduced opacity for subtle effect */
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.1));
-  animation: float 15s ease-in-out infinite;
+  opacity: 0.5;
+  filter: drop-shadow(0 0 6px rgba(163, 230, 53, 0.3));
+  transform-origin: center;
+  z-index: 0;
+  will-change: transform;
 
   svg {
-    color: var(--journey-accent-primary);
-    fill: rgba(var(--color-lime-500-rgb), 0.06);
+    color: #a3e635;
+    fill: rgba(163, 230, 53, 0.08);
+    stroke-width: 1.75;
+  }
+
+  &:nth-child(odd) {
+    animation-direction: alternate;
+  }
+
+  &:nth-child(even) {
+    animation-direction: alternate-reverse;
   }
 }
 
-/* Theme variant overrides */
-[data-theme="gym"] {
-  .journey-floating-icon svg {
-    color: var(--color-violet-500);
-    fill: rgba(var(--color-violet-rgb), 0.06);
-    filter: drop-shadow(0 0 6px rgba(139, 92, 246, 0.2));
-  }
-}
-
-[data-theme="sports"] {
-  .journey-floating-icon svg {
-    color: var(--color-cyan-500);
-    fill: rgba(var(--color-cyan-rgb), 0.06);
-    filter: drop-shadow(0 0 6px rgba(8, 145, 178, 0.2));
-  }
-}
-
-[data-theme="wellness"] {
-  .journey-floating-icon svg {
-    color: var(--color-teal-500);
-    fill: rgba(var(--color-teal-rgb), 0.06);
-    filter: drop-shadow(0 0 6px rgba(20, 184, 166, 0.2));
-  }
-}
-
-/* Animation for the floating icons */
 @keyframes float {
   0% {
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(0) rotate(0deg) scale(1);
   }
 
   50% {
-    transform: translateY(-15px) rotate(5deg);
+    transform: translateY(10px) rotate(5deg) scale(1.03);
   }
 
   100% {
-    transform: translateY(0) rotate(0deg);
-  }
-}
-
-/* Journey steps container */
-.journey-steps {
-  display: flex;
-  flex-direction: column;
-  margin-top: 2rem;
-
-  @media (min-width: $breakpoint-md) {
-    margin-top: 2.5rem;
-  }
-}
-
-/* Container for steps with margin from token system */
-.journey-step-container {
-  margin-bottom: var(--journey-step-spacing);
-  position: relative;
-
-  @media (min-width: $breakpoint-md) {
-    margin-bottom: var(--journey-step-spacing-md);
-  }
-
-  @media (min-width: $breakpoint-lg) {
-    margin-bottom: var(--journey-step-spacing-lg);
-  }
-}
-
-/* Step connector - vertical line connecting the steps */
-.step-connector {
-  position: absolute;
-  z-index: 1;
-  width: var(--journey-connector-width);
-  height: var(--journey-connector-height);
-  left: 31px;
-  bottom: calc(-1 * var(--journey-connector-height));
-
-  @media (max-width: $breakpoint-md-max) {
-    left: 24px !important;
-  }
-
-  /* Connector color variants based on the step */
-  &.connector-lime {
-    background: linear-gradient(to bottom, var(--journey-accent-lime-strong), var(--journey-accent-lime-medium));
-  }
-
-  &.connector-cyan {
-    background: linear-gradient(to bottom, var(--journey-accent-cyan-strong), var(--journey-accent-cyan-medium));
-  }
-
-  &.connector-violet {
-    background: linear-gradient(to bottom, var(--journey-accent-violet-strong), var(--journey-accent-violet-medium));
-  }
-
-  &.connector-amber {
-    background: linear-gradient(to bottom, var(--journey-accent-amber-strong), var(--journey-accent-amber-medium));
-  }
-}
-
-/* Journey timeline - additional visual container for steps */
-.journey-timeline {
-  position: relative;
-  padding: 16px 0;
-
-  &::before {
-    content: '';
-    position: absolute;
-    left: 31px;
-    top: 0;
-    bottom: 0;
-    width: var(--journey-connector-width);
-    background: linear-gradient(to bottom, var(--journey-accent-lime), var(--journey-accent-lime-light));
-    z-index: 0;
-
-    @media (max-width: $breakpoint-md-max) {
-      left: 24px;
-    }
-  }
-
-  /* Timeline color variants for different themes */
-  &.timeline-lime::before {
-    background: linear-gradient(to bottom, var(--journey-accent-lime), var(--journey-accent-lime-light));
-  }
-
-  &.timeline-cyan::before {
-    background: linear-gradient(to bottom, var(--journey-accent-cyan), var(--journey-accent-cyan-light));
-  }
-
-  &.timeline-violet::before {
-    background: linear-gradient(to bottom, var(--journey-accent-violet), var(--journey-accent-violet-light));
-  }
-
-  &.timeline-amber::before {
-    background: linear-gradient(to bottom, var(--journey-accent-amber), var(--journey-accent-amber-light));
-  }
-}
-
-/* Journey Step Card - consistent responsive spacing */
-.journey-step-card {
-  padding: var(--journey-step-card-padding);
-  position: relative;
-  border-radius: var(--journey-step-card-radius);
-  background-color: var(--journey-card-bg);
-  border: var(--journey-step-card-border-width) solid var(--journey-card-border);
-
-  .journey-step-icon {
-    width: var(--journey-icon-size);
-    height: var(--journey-icon-size);
-
-    @media (max-width: $breakpoint-md-max) {
-      min-width: var(--journey-icon-size);
-    }
-  }
-
-  .journey-step-number {
-    width: var(--journey-step-number-size);
-    height: var(--journey-step-number-size);
-    border-radius: var(--journey-step-number-radius);
-
-    @media (max-width: $breakpoint-md-max) {
-      top: -8px;
-      left: -8px;
-    }
-  }
-}
-
-/* Journey Feature Card - responsive styling */
-.journey-feature-card {
-  padding: var(--journey-feature-card-padding);
-  border-radius: var(--journey-feature-card-radius);
-  background-color: var(--journey-card-bg);
-  border: var(--journey-feature-card-border-width) solid var(--journey-card-border);
-
-  .feature-title {
-    font-size: var(--journey-feature-title-font-size);
-    line-height: var(--journey-feature-title-line-height);
-  }
-
-  .feature-description {
-    font-size: var(--journey-feature-description-font-size);
-    line-height: var(--journey-feature-description-line-height);
-  }
-}
-
-/* Expanded content container - improved responsive behavior */
-.journey-expanded-content {
-  transition: all 0.3s ease-in-out;
-  overflow: hidden;
-
-  @media (max-width: $breakpoint-md-max) {
-    // Better mobile padding for expanded content
-    padding-left: calc(var(--journey-icon-size) + var(--journey-gap-medium));
-    padding-right: var(--journey-gap-small);
-  }
-}
-
-/* Glow effects for different card types - Visual styling that extends Tailwind */
-.lime-glow:hover {
-  box-shadow: 0 0 20px 0 var(--journey-accent-lime);
-}
-
-.cyan-glow:hover {
-  box-shadow: 0 0 20px 0 var(--journey-accent-cyan);
-}
-
-.violet-glow:hover {
-  box-shadow: 0 0 20px 0 var(--journey-accent-violet);
-}
-
-.amber-glow:hover {
-  box-shadow: 0 0 20px 0 var(--journey-accent-amber);
-}
-
-/* Animation classes */
-.animate-fade-slide-up {
-  animation: fadeSlideUp 0.4s ease-out forwards;
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
-}
-
-@keyframes fadeSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-/* Text gradient effect - Used globally in multiple components */
-.text-gradient {
-  background-size: 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-
-/* Journey CTA Button - responsive sizing */
-.journey-cta-button {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  margin-top: var(--spacing-8, 1.5rem);
-  transition: var(--journey-btn-transition, all 0.3s ease);
-
-  /* Common styles for the child Button component */
-  .button {
-    font-weight: 600;
-    color: var(--color-gray-900, #111827);
-    padding-left: var(--journey-btn-padding-x-large, 2.5rem) !important;
-    padding-right: var(--journey-btn-padding-x-large, 2.5rem) !important;
-  }
-
-  /* Use design system's gradient-button mixin for variants */
-  &.journey-gradient-lime {
-    @include gradient-button('journey', 'default');
-  }
-
-  &.journey-gradient-violet {
-    @include gradient-button('journey', 'gym');
-  }
-
-  &.journey-gradient-cyan {
-    @include gradient-button('journey', 'sports');
-  }
-
-  &.journey-gradient-teal {
-    @include gradient-button('journey', 'wellness');
-  }
-
-  &.journey-gradient-amber {
-    @include gradient-button('journey', 'modern');
-  }
-
-  &.journey-gradient-green {
-    @include gradient-button('journey', 'green');
-  }
-
-  /* Responsive margins */
-  @media (min-width: $breakpoint-md) {
-    margin-top: var(--spacing-12, 2rem);
-  }
-
-  @media (min-width: $breakpoint-lg) {
-    margin-top: var(--spacing-16, 2.5rem);
-  }
-}
-
-/* Prefers reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .journey-cta-button {
-    transition: none;
-
-    /* Override transform effects */
-    &:hover {
-      transform: none !important;
-    }
-  }
-
-  .journey-floating-icon {
-    animation: none !important;
-  }
-}
-
-/* Reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-
-  .animate-fade-slide-up,
-  .animate-fade-in {
-    animation: none;
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .journey-step-card .journey-step-icon,
-  .journey-feature-card>div,
-  .journey-cta-button {
-    transition: none !important;
-    transform: none !important;
-  }
-}
-
-/* Responsive feature grid - gracefully handles mobile layout */
-.journey-feature-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--journey-gap-medium);
-
-  @media (min-width: $breakpoint-md) {
-    grid-template-columns: 1fr 1fr;
+    transform: translateY(0) rotate(0deg) scale(1);
   }
 }

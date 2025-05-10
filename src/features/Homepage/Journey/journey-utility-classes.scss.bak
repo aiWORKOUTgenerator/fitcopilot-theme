@@ -1,0 +1,340 @@
+@use "@/features/Homepage/Journey/_tokens" as _tokens;
+
+@use "@/styles/design-system" as ds;
+
+
+// Canonical design system import - MUST BE FIRST
+
+/* Journey Utility Classes for use with components */
+
+/* Override the fixed height issue */
+.journey-step {
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+}
+
+/* RGB variable definitions for opacity calculations */
+:root {
+    --journey-accent-primary-rgb: 204, 255, 0;
+    /* #CCFF00 */
+    --journey-lime-rgb: 204, 255, 0;
+    --journey-cyan-rgb: 34, 211, 238;
+    --journey-violet-rgb: 167, 139, 250;
+    --journey-amber-rgb: 251, 191, 36;
+    --journey-teal-rgb: 45, 212, 191;
+}
+
+[data-theme="gym"] {
+    --journey-accent-primary-rgb: 139, 92, 246;
+    /* Violet color */
+}
+
+[data-theme="sports"] {
+    --journey-accent-primary-rgb: 56, 189, 248;
+    /* Cyan color */
+}
+
+[data-theme="wellness"] {
+    --journey-accent-primary-rgb: 45, 212, 191;
+    /* Teal color */
+}
+
+/* Text color classes */
+.text-journey-accent {
+    color: var(--journey-accent-primary);
+}
+
+/* Background classes */
+.bg-journey-bg {
+    background-color: var(--journey-bg);
+}
+
+.bg-journey-bg-alt {
+    background-color: var(--journey-bg-alt);
+}
+
+.bg-journey-card {
+    background-color: var(--journey-card-bg);
+}
+
+.border-journey-card {
+    border-color: var(--journey-card-border);
+}
+
+/* Button styling */
+.journey-expand-button {
+    border-color: rgba(var(--journey-accent-primary-rgb), 0.3);
+    background-color: rgba(var(--journey-accent-primary-rgb), 0.1);
+    color: var(--journey-accent-primary);
+}
+
+/* Gradient backgrounds */
+.journey-gradient-lime {
+    background-image: linear-gradient(to right, var(--journey-step-1-start), var(--journey-step-1-end));
+}
+
+.journey-gradient-cyan {
+    background-image: linear-gradient(to right, var(--journey-step-2-start), var(--journey-step-2-end));
+}
+
+.journey-gradient-violet {
+    background-image: linear-gradient(to right, var(--journey-step-3-start), var(--journey-step-3-end));
+}
+
+.journey-gradient-amber {
+    background-image: linear-gradient(to right, var(--journey-step-4-start), var(--journey-step-4-end));
+}
+
+.journey-gradient-teal {
+    background-image: linear-gradient(to right, var(--color-teal-300, #5eead4), var(--color-emerald-400, #34d399));
+}
+
+/* Hover effects */
+.hover-text-journey-accent:hover {
+    color: var(--journey-accent-primary);
+}
+
+/* Background with opacity */
+.bg-journey-accent-10 {
+    background-color: rgba(var(--journey-accent-primary-rgb), 0.1);
+}
+
+.bg-journey-accent-30 {
+    background-color: rgba(var(--journey-accent-primary-rgb), 0.3);
+}
+
+/* Border with opacity */
+.border-journey-accent-30 {
+    border-color: rgba(var(--journey-accent-primary-rgb), 0.3);
+}
+
+/* Theme-specific overrides are handled by CSS variables in Journey.scss */
+
+/* Journey Component Utility Classes
+ * Standardized classes that leverage the token system
+ * for consistent styling across the component
+ */
+
+
+/* Gradient utility classes */
+.journey-gradient-lime {
+    background-image: linear-gradient(to right, var(--journey-step-1-start), var(--journey-step-1-end));
+}
+
+.journey-gradient-cyan {
+    background-image: linear-gradient(to right, var(--journey-step-2-start), var(--journey-step-2-end));
+}
+
+.journey-gradient-violet {
+    background-image: linear-gradient(to right, var(--journey-step-3-start), var(--journey-step-3-end));
+}
+
+.journey-gradient-amber {
+    background-image: linear-gradient(to right, var(--journey-step-4-start), var(--journey-step-4-end));
+}
+
+/* Text gradient utilities */
+.journey-text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.journey-text-gradient-lime {
+    @extend .journey-text-gradient;
+    background-image: linear-gradient(to right, var(--journey-step-1-start), var(--journey-step-1-end));
+}
+
+/* Background with opacity utilities */
+.journey-bg-card {
+    background-color: var(--journey-card-bg);
+    backdrop-filter: blur(8px);
+}
+
+.journey-bg-feature-card {
+    background-color: var(--journey-feature-card-bg);
+}
+
+.journey-bg-feature-card-hover {
+    background-color: var(--journey-feature-card-bg-hover);
+}
+
+.journey-bg-feature-icon {
+    background-color: var(--journey-feature-icon-bg);
+}
+
+/* Border utilities */
+.journey-border {
+    border-color: var(--journey-card-border);
+}
+
+.journey-border-active {
+    border-color: var(--journey-card-border-active);
+}
+
+/* Timeline and connector styling */
+.journey-container {
+    position: relative;
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+    }
+}
+
+.journey-timeline {
+    position: relative;
+    padding: 24px 0;
+
+    &::before {
+        content: '';
+        position: absolute;
+        left: calc(33px - (var(--journey-timeline-width) / 2));
+        top: 40px;
+        bottom: 40px;
+        width: var(--journey-timeline-width);
+        background: var(--journey-accent-primary);
+        box-shadow: 0 0 var(--journey-timeline-glow) rgba(var(--journey-accent-primary-rgb), 0.3);
+        z-index: 0;
+    }
+}
+
+.journey-step-container {
+    position: relative;
+    /* Use the spacing token from _tokens.scss */
+    margin-bottom: var(--journey-step-spacing);
+}
+
+.journey-step-connector {
+    position: absolute;
+    left: 33px;
+    top: 70px;
+    bottom: -24px;
+    width: var(--journey-connector-width);
+    z-index: 0;
+    height: var(--journey-connector-height);
+}
+
+/* Timeline color variants */
+.timeline-lime::before {
+    background: linear-gradient(to bottom, var(--journey-step-1-start), var(--journey-step-1-end));
+    box-shadow: 0 0 var(--journey-timeline-glow) rgba(var(--color-lime-300-rgb), 0.3);
+}
+
+.timeline-cyan::before {
+    background: linear-gradient(to bottom, var(--journey-step-2-start), var(--journey-step-2-end));
+    box-shadow: 0 0 var(--journey-timeline-glow) rgba(var(--color-cyan-300-rgb), 0.3);
+}
+
+.timeline-violet::before {
+    background: linear-gradient(to bottom, var(--journey-step-3-start), var(--journey-step-3-end));
+    box-shadow: 0 0 var(--journey-timeline-glow) rgba(var(--color-violet-300-rgb), 0.3);
+}
+
+.timeline-amber::before {
+    background: linear-gradient(to bottom, var(--journey-step-4-start), var(--journey-step-4-end));
+    box-shadow: 0 0 var(--journey-timeline-glow) rgba(var(--color-amber-300-rgb), 0.3);
+}
+
+/* Accent color utilities with opacity variants */
+.journey-accent-bg-10 {
+    background-color: rgba(var(--color-lime-300-rgb), 0.1);
+}
+
+.journey-accent-border-30 {
+    border-color: rgba(var(--color-lime-300-rgb), 0.3);
+}
+
+/* Glow effect utilities */
+.journey-lime-glow:hover {
+    border-color: rgba(var(--color-lime-300-rgb), 0.5) !important;
+    box-shadow: 0 0 20px rgba(var(--color-lime-300-rgb), 0.15);
+}
+
+.journey-cyan-glow:hover {
+    border-color: rgba(var(--color-cyan-300-rgb), 0.5) !important;
+    box-shadow: 0 0 20px rgba(var(--color-cyan-300-rgb), 0.15);
+}
+
+.journey-violet-glow:hover {
+    border-color: rgba(var(--color-violet-300-rgb), 0.5) !important;
+    box-shadow: 0 0 20px rgba(var(--color-violet-300-rgb), 0.15);
+}
+
+.journey-amber-glow:hover {
+    border-color: rgba(var(--color-amber-300-rgb), 0.5) !important;
+    box-shadow: 0 0 20px rgba(var(--color-amber-300-rgb), 0.15);
+}
+
+/* Text color utilities */
+.journey-text-heading {
+    color: var(--journey-heading-color);
+}
+
+.journey-text-heading-hover:hover {
+    color: var(--journey-heading-hover);
+}
+
+.journey-text-description {
+    color: var(--journey-description-color);
+}
+
+.journey-text-description-hover:hover {
+    color: var(--journey-description-hover);
+}
+
+.journey-text-accent {
+    color: var(--journey-accent-primary);
+}
+
+/* Icon color utilities */
+.journey-icon-step-1 {
+    color: var(--journey-icon-step-1);
+}
+
+.journey-icon-step-2 {
+    color: var(--journey-icon-step-2);
+}
+
+.journey-icon-step-3 {
+    color: var(--journey-icon-step-3);
+}
+
+.journey-icon-step-4 {
+    color: var(--journey-icon-step-4);
+}
+
+/* Button styles */
+.journey-button {
+    background-image: var(--journey-accent-gradient);
+    color: var(--journey-button-text);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px var(--journey-button-shadow);
+
+    &:hover {
+        box-shadow: 0 8px 15px var(--journey-button-shadow-hover);
+        transform: translateY(-2px);
+    }
+}
+
+/* Group hover utilities that match Tailwind's group syntax */
+.group:hover .group-hover\:journey-text-description-hover {
+    color: var(--journey-description-hover);
+}
+
+.group:hover .group-hover\:journey-text-heading-hover {
+    color: var(--journey-heading-hover);
+}
+
+.group:hover .group-hover\:scale-105 {
+    transform: scale(1.05);
+}
+
+.group:hover .group-hover\:opacity-25 {
+    opacity: 0.25;
+}

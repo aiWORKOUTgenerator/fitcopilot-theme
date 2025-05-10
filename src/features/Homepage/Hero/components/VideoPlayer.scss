@@ -1,5 +1,5 @@
-// Import design system
-@import '../../../../styles/design-system/index';
+// Canonical design system import - MUST BE FIRST
+@use '../../../../styles/design-system' as ds;
 
 .video-container {
     position: relative;
@@ -153,4 +153,13 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+// Hero video player styles
+.hero-video-player {
+    overflow: hidden;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+    // Rest of existing styles
 }

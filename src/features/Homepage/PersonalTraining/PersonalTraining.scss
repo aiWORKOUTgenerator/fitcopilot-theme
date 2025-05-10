@@ -1,5 +1,9 @@
-@import "../../../styles/theme.scss";
-@import "../../../styles/design-system/index.scss";
+@use "@/styles/design-system" as ds;
+@use '../../../styles/theme.scss' as theme;
+
+
+
+// Canonical design system import - MUST BE FIRST
 
 // Define fallback values for critical CSS variables
 :root {

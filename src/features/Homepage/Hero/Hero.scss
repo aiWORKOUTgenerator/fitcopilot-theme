@@ -1,20 +1,21 @@
 // Canonical design system import - MUST BE FIRST
-@use '../../../styles/design-system/index' as *;
+@use '../../../styles/design-system' as ds;
 
-// Import hero theme variables
-@import './hero-theme-variables.scss';
-
-// Import the hero Button component styles
-@import '../../../components/UI/Button/hero/Button.scss';
-
-// Import the hero Tooltip component styles
-@import '../../../components/UI/Tooltip/variants/hero/Tooltip.scss';
+// Component-specific variables and dependencies
+@use './hero-theme-variables' as hero;
+@use '../../../components/UI/Button/hero/Button' as heroButton;
+@use '../../../components/UI/Tooltip/variants/hero/Tooltip' as heroTooltip;
 
 // src/features/Homepage/Hero/Hero.scss
 
 // Main Hero section styling
 .hero-section {
-  @include hero-section;
+  position: relative;
+  overflow: hidden;
+
+  // Use hardcoded value instead of design system token
+  padding: 4rem 0;
+
   margin-top: -5rem; // Add negative margin to remove the gap at the top
 
   // Grid pattern with opacity gradient at bottom
@@ -177,7 +178,6 @@
 
 /* Heading styles */
 .hero-heading {
-  @include hero-heading;
   margin-bottom: 1.5rem;
   /* Updated from 1rem for better spacing */
   max-width: 44rem;
@@ -238,7 +238,6 @@
 
 /* Subtitle */
 .hero-subtitle {
-  @include hero-description;
   text-align: center !important;
   margin-left: auto !important;
   margin-right: auto !important;

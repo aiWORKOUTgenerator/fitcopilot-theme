@@ -1,5 +1,9 @@
+@use "@/styles/design-system" as ds;
+
+
+
+
 // Canonical design system import - MUST BE FIRST
-@import '../../../styles/design-system/index';
 
 .experience-level-step {
     background-color: var(--color-bg-dark, #0f172a);

@@ -1,3 +1,9 @@
+@use "@/styles/design-system" as ds;
+
+
+
+// Canonical design system import - MUST BE FIRST
+
 .selectable-option {
     display: flex;
     align-items: center;

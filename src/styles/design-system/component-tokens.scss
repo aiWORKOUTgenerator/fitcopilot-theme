@@ -394,6 +394,62 @@
     --journey-step-icon-size: 2.5rem;
     --journey-step-number-size: 1.75rem;
     --journey-step-number-radius: var(--radii-full);
+
+    /* Button tokens */
+    --button-border-radius: var(--radius-md);
+    --button-padding-x: var(--spacing-4);
+    --button-padding-y: var(--spacing-2);
+    --button-font-weight: var(--font-weight-semibold);
+    --button-transition: var(--transition-all);
+
+    /* Card tokens */
+    --card-border-radius: var(--radius-lg);
+    --card-padding: var(--spacing-6);
+    --card-bg-color: var(--color-surface);
+    --card-shadow: var(--shadow-md);
+    --card-border-width: 1px;
+    --card-border-color: var(--color-border);
+
+    /* Form tokens */
+    --input-height: 2.5rem;
+    --input-padding-x: var(--spacing-3);
+    --input-padding-y: var(--spacing-2);
+    --input-border-radius: var(--radius-md);
+    --input-border-width: 1px;
+    --input-border-color: var(--color-border);
+    --input-focus-ring-width: 2px;
+    --input-focus-ring-color: var(--color-primary-light);
+
+    /* Navigation tokens */
+    --nav-height: 4rem;
+    --nav-padding-x: var(--spacing-6);
+    --nav-item-gap: var(--spacing-8);
+    --nav-font-weight: var(--font-weight-medium);
+
+    /* Modal tokens */
+    --modal-border-radius: var(--radius-lg);
+    --modal-padding: var(--spacing-6);
+    --modal-shadow: var(--shadow-lg);
+    --modal-backdrop-opacity: 0.5;
+    --modal-max-width: 500px;
+    --modal-transition: var(--transition-all);
+
+    /* Tooltip tokens */
+    --tooltip-bg-color: var(--color-gray-800);
+    --tooltip-text-color: var(--color-white);
+    --tooltip-border-radius: var(--radius-sm);
+    --tooltip-padding-x: var(--spacing-2);
+    --tooltip-padding-y: var(--spacing-1);
+    --tooltip-arrow-size: 5px;
+    --tooltip-font-size: var(--font-size-xs);
+    --tooltip-max-width: 200px;
+
+    /* Badge tokens */
+    --badge-padding-x: var(--spacing-2);
+    --badge-padding-y: var(--spacing-1);
+    --badge-border-radius: var(--radius-full);
+    --badge-font-size: var(--font-size-xs);
+    --badge-font-weight: var(--font-weight-medium);
 }
 
 /* Variant Overrides */

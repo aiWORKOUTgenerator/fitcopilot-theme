@@ -1,4 +1,10 @@
-@import '../../../../styles/variables';
+@use "@/styles/design-system" as ds;
+@use '../../../../styles/variables' as variables;
+
+
+
+// Canonical design system import - MUST BE FIRST
+
 
 .customized-medical-container {
     width: 100%;

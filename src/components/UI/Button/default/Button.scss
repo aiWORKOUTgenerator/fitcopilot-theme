@@ -1,13 +1,16 @@
+@use '../../../../styles/design-system/index' as *;
+@use '../Button.scss' as Button;
+
+
+
 /**
  * Default Theme Button Styles
  * 
  * Styles specific to the default theme button variant
  */
 
-@use '../../../../styles/design-system/index' as *;
 
 // Import the core button styles
-@import '../Button.scss';
 
 // Override for athlete-dashboard-root global reset
 // This has higher specificity to override the global button reset
@@ -226,3 +229,4 @@
         }
     }
 }
+

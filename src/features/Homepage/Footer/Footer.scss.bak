@@ -1,0 +1,28 @@
+// Canonical design system import - MUST BE FIRST
+@import '../../../styles/design-system/index';
+
+// Define explicit consistent background color to match other sections
+:root {
+  --footer-background: rgba(10, 16, 27, 1); // Matches other dark sections
+}
+
+.footer-section {
+  position: relative;
+  background-color: var(--footer-background) !important; // Override the inline Tailwind bg color
+
+  a {
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #CCFF00;
+    }
+  }
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+  background-color: var(--footer-background); // Use our consistent background color
+  color: var(--color-text-inverse);
+}

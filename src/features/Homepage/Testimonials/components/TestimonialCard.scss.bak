@@ -1,0 +1,169 @@
+// Canonical design system import - MUST BE FIRST
+@import '../../../../styles/design-system/index';
+
+.testimonial-card {
+  position: relative !important;
+  overflow: hidden !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+
+  &::before {
+    content: '"' !important;
+    position: absolute !important;
+    top: -35px !important;
+    right: 20px !important;
+    font-size: 160px !important;
+    line-height: 1 !important;
+    font-family: Georgia, serif !important;
+    color: var(--color-accent-500-alpha-10) !important;
+    z-index: 0 !important;
+    opacity: 0.4 !important;
+  }
+
+  &:hover {
+    transform: translateY(-5px) !important;
+  }
+
+  // Quote icon styling with better visibility
+  .testimonial-quote {
+    opacity: 0.9 !important;
+    filter: drop-shadow(0 0 8px var(--color-accent-500-alpha-30));
+    transition: transform 0.3s ease, filter 0.3s ease !important;
+
+    &:hover {
+      transform: scale(1.1) !important;
+      filter: drop-shadow(0 0 12px var(--color-accent-500-alpha-50));
+    }
+  }
+
+  .testimonial-image {
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+
+    &:hover {
+      transform: scale(1.1) !important;
+      box-shadow: 0 0 15px 0 var(--color-accent-500-alpha-30) !important;
+    }
+  }
+
+  // Index-specific icon and border glow colors
+  &[data-index="0"],
+  &[data-index="4"],
+  &[data-index="8"] {
+    .testimonial-quote {
+      filter: drop-shadow(0 0 8px rgba(132, 204, 22, 0.4));
+
+      &:hover {
+        filter: drop-shadow(0 0 12px rgba(132, 204, 22, 0.6));
+      }
+    }
+
+    &:hover {
+      box-shadow: 0 0 20px 0 rgba(132, 204, 22, 0.2) !important;
+    }
+  }
+
+  &[data-index="1"],
+  &[data-index="5"],
+  &[data-index="9"] {
+    .testimonial-quote {
+      filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.4));
+
+      &:hover {
+        filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.6));
+      }
+    }
+
+    &:hover {
+      box-shadow: 0 0 20px 0 rgba(34, 211, 238, 0.2) !important;
+    }
+  }
+
+  &[data-index="2"],
+  &[data-index="6"],
+  &[data-index="10"] {
+    .testimonial-quote {
+      filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.4));
+
+      &:hover {
+        filter: drop-shadow(0 0 12px rgba(167, 139, 250, 0.6));
+      }
+    }
+
+    &:hover {
+      box-shadow: 0 0 20px 0 rgba(167, 139, 250, 0.2) !important;
+    }
+  }
+
+  &[data-index="3"],
+  &[data-index="7"],
+  &[data-index="11"] {
+    .testimonial-quote {
+      filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
+
+      &:hover {
+        filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.6));
+      }
+    }
+
+    &:hover {
+      box-shadow: 0 0 20px 0 rgba(251, 191, 36, 0.2) !important;
+    }
+  }
+
+  // Variant-specific glow effects
+  &[data-variant="gym"] {
+    .testimonial-quote {
+      filter: drop-shadow(0 0 8px rgba(132, 204, 22, 0.4));
+
+      &:hover {
+        filter: drop-shadow(0 0 12px rgba(132, 204, 22, 0.6));
+      }
+    }
+  }
+
+  &[data-variant="sports"] {
+    .testimonial-quote {
+      filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.4));
+
+      &:hover {
+        filter: drop-shadow(0 0 12px rgba(34, 211, 238, 0.6));
+      }
+    }
+  }
+
+  &[data-variant="wellness"] {
+    .testimonial-quote {
+      filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.4));
+
+      &:hover {
+        filter: drop-shadow(0 0 12px rgba(167, 139, 250, 0.6));
+      }
+    }
+  }
+
+  &[data-variant="modern"] {
+    .testimonial-quote {
+      filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.4));
+
+      &:hover {
+        filter: drop-shadow(0 0 12px rgba(251, 191, 36, 0.6));
+      }
+    }
+  }
+}
+
+// Import glow effects from Journey component
+.lime-glow:hover {
+  box-shadow: 0 0 20px 0 rgba(204, 255, 0, 0.15) !important;
+}
+
+.cyan-glow:hover {
+  box-shadow: 0 0 20px 0 rgba(34, 211, 238, 0.15) !important;
+}
+
+.violet-glow:hover {
+  box-shadow: 0 0 20px 0 rgba(167, 139, 250, 0.15) !important;
+}
+
+.amber-glow:hover {
+  box-shadow: 0 0 20px 0 rgba(251, 191, 36, 0.15) !important;
+}

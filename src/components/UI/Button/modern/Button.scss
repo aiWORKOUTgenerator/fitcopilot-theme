@@ -1,8 +1,12 @@
+@use "@/styles/design-system" as ds;
+
+
+
+// Canonical design system import - MUST BE FIRST
 /**
  * Modern Button Theme Styles
  */
 
-@import '../../../../styles/design-system/index.scss';
 
 .button {
     position: relative;
@@ -176,3 +180,4 @@
         transform: translate(-50%, -50%) rotate(360deg);
     }
 }
+

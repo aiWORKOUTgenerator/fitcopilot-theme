@@ -1,0 +1,409 @@
+// Canonical design system import – MUST BE FIRST
+@import '../../../styles/design-system/index';
+
+/* Define consistent background color that matches the other sections */
+:root {
+  --pricing-background: rgba(10, 16, 27, 1); // Matches --journey-background
+}
+
+/* Pricing Section Styles */
+.pricing-section {
+  position: var(--pr-position-relative);
+  overflow: var(--pr-overflow-hidden);
+  background-color: var(--pricing-background);
+
+  // Add a gradient fade overlay for smooth transition at the top
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 150px; // Height of the gradient fade
+    background: linear-gradient(to bottom,
+        rgba(10, 16, 27, 0) 0%, // Start completely transparent 
+        rgba(10, 16, 27, 0.6) 40%, // Fade to semi-transparent
+        rgba(10, 16, 27, 1) 100% // End with full opacity
+      );
+    z-index: 1; // Above the pattern but below the content
+    pointer-events: none;
+  }
+
+  &::before {
+    content: var(--pr-content-empty);
+    position: var(--pr-position-absolute);
+    top: var(--pr-top-0);
+    left: var(--pr-left-0);
+    width: var(--pr-width-full);
+    height: var(--pr-height-full);
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23CCFF00' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: var(--pr-opacity-bg-pattern);
+    z-index: var(--pr-z-index-bg);
+  }
+
+  /* Ensure content is above the gradient */
+  .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Properly centered text styling */
+  .text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center !important;
+    width: 100%;
+
+    h2 {
+      text-align: center !important;
+      width: 100%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    p {
+      text-align: center !important;
+      width: 100%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    span {
+      text-align: center !important;
+      width: 100%;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+  }
+
+  /* Design system token classes for color */
+  // Text colors
+  .text-accent {
+    color: var(--color-accent-400);
+  }
+
+  .text-inverse {
+    color: var(--color-text-inverse);
+  }
+
+  .text-primary {
+    color: var(--color-text-primary);
+  }
+
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+
+  .text-muted {
+    color: var(--color-text-muted);
+  }
+
+  // Background colors
+  .bg-accent {
+    background-color: var(--color-accent-400);
+  }
+
+  .bg-surface {
+    background-color: var(--color-ui-surface);
+  }
+
+  .bg-background-primary {
+    background-color: var(--color-ui-background);
+  }
+
+  .bg-surface-translucent {
+    background-color: rgba(31, 41, 55, 0.7); // Translucent surface color
+  }
+
+  // Border colors
+  .border-accent {
+    border-color: var(--color-accent-400);
+  }
+
+  .border-divider {
+    border-color: var(--color-ui-border);
+  }
+
+  // Card styles
+  .pricing-card {
+    background-color: var(--color-ui-surface);
+    border: 1px solid var(--color-ui-border);
+
+    &.basic-card {
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: var(--pr-shadow-blue);
+    }
+
+    &.pro-card {
+      border-color: rgba(132, 204, 22, 0.4);
+      box-shadow: var(--pr-shadow-lime);
+    }
+
+    &.elite-card {
+      border-color: rgba(139, 92, 246, 0.4);
+      box-shadow: var(--pr-shadow-purple);
+    }
+  }
+
+  // Badge styles
+  .badge {
+    background-color: rgba(31, 41, 55, 0.5);
+    border: 1px solid var(--color-ui-border);
+
+    &.badge-basic {
+      color: var(--color-text-secondary);
+      border-color: rgba(209, 213, 219, 0.3);
+    }
+
+    &.badge-pro {
+      color: var(--color-accent-400); // Use design system variable for lime color
+      border-color: rgba(132, 204, 22, 0.3);
+    }
+
+    &.badge-elite {
+      color: var(--color-primary); // Use design system variable for violet color
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+  }
+
+  // CTA area styles
+  .cta-container {
+    background-color: rgba(31, 41, 55, 0.7);
+    border: 1px solid var(--color-ui-border);
+  }
+}
+
+/* Text gradient effect */
+.text-gradient,
+.price-gradient {
+  background-size: var(--pr-background-size-full);
+  background-clip: var(--pr-bg-clip-text);
+  -webkit-background-clip: var(--pr-webkit-bg-clip-text);
+  -moz-background-clip: var(--pr-moz-bg-clip-text);
+  -webkit-text-fill-color: var(--pr-webkit-text-fill-transparent);
+  -moz-text-fill-color: var(--pr-moz-text-fill-transparent);
+}
+
+.plan-name-gradient {
+  @extend .text-gradient;
+  font-size: var(--pr-font-size-plan-name);
+  font-weight: var(--pr-font-weight-plan-name);
+  line-height: var(--pr-line-height-plan-name);
+}
+
+.price {
+  font-size: var(--pr-font-size-price);
+  font-weight: var(--pr-font-weight-price);
+  line-height: var(--pr-line-height-price);
+}
+
+/* Pricing card shadows */
+.shadow-optimized-blue {
+  box-shadow: var(--pr-shadow-blue);
+}
+
+.shadow-optimized-lime {
+  box-shadow: var(--pr-shadow-lime);
+}
+
+.shadow-optimized-purple {
+  box-shadow: var(--pr-shadow-purple);
+}
+
+/* Pricing animations */
+.price-shake {
+  animation: var(--pr-animation-shake);
+}
+
+.price-flash {
+  animation: var(--pr-animation-flash);
+}
+
+.price-fade-out {
+  animation: var(--pr-animation-fade-out);
+}
+
+.price-fade-in {
+  animation: var(--pr-animation-fade-in);
+}
+
+.price-zoom-in {
+  animation: var(--pr-animation-zoom-in);
+}
+
+.animate-fade-in {
+  animation: var(--pr-animation-fade-in);
+}
+
+/* Pricing particles */
+.price-particles {
+  position: var(--pr-position-absolute);
+  top: var(--pr-top-0);
+  left: var(--pr-left-0);
+  right: var(--pr-right-0);
+  bottom: var(--pr-bottom-0);
+  overflow: var(--pr-overflow-hidden);
+}
+
+.price-particle {
+  position: var(--pr-position-absolute);
+  border-radius: var(--pr-border-radius-particle);
+  background: var(--pr-bg-gradient-lime-teal);
+  opacity: var(--pr-opacity-particle);
+  pointer-events: var(--pr-pointer-events-none);
+  animation: var(--pr-animation-float);
+}
+
+.pricing-card:hover .feature-text.highlighted {
+  background: var(--pr-bg-gradient-highlight);
+  -webkit-background-clip: var(--pr-webkit-bg-clip-text);
+  background-clip: var(--pr-bg-clip-text);
+  -webkit-text-fill-color: var(--pr-webkit-text-fill-transparent);
+  transition: var(--pr-transition-hover);
+}
+
+.popular-badge,
+.elite-badge {
+  display: var(--pr-display-badge);
+  align-items: var(--pr-align-badge);
+}
+
+/* Animation keyframes */
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: var(--pr-transform-none);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: var(--pr-transform-translatex-neg-2);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: var(--pr-transform-translatex-2);
+  }
+}
+
+@keyframes flash {
+
+  0%,
+  50%,
+  100% {
+    opacity: var(--pr-opacity-full);
+  }
+
+  25%,
+  75% {
+    opacity: var(--pr-opacity-half);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: var(--pr-opacity-full);
+  }
+
+  to {
+    opacity: var(--pr-opacity-half);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: var(--pr-opacity-zero);
+  }
+
+  to {
+    opacity: var(--pr-opacity-full);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: var(--pr-opacity-zero);
+    transform: var(--pr-transform-scale-small);
+  }
+
+  to {
+    opacity: var(--pr-opacity-full);
+    transform: var(--pr-transform-scale-full);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: var(--pr-transform-translate-y0-x0);
+  }
+
+  50% {
+    transform: var(--pr-transform-translate-y30-x15);
+  }
+
+  100% {
+    transform: var(--pr-transform-translate-y0-x0);
+  }
+}
+
+/* Particle explosion animation */
+.price-particle {
+  animation: var(--pr-animation-explode);
+}
+
+@keyframes explode {
+  0% {
+    opacity: var(--pr-opacity-full);
+    transform: var(--pr-transform-translate-neg-50);
+  }
+
+  100% {
+    opacity: var(--pr-opacity-zero);
+    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty)));
+  }
+}
+
+// CTA buttons styling
+a.block {
+  display: block;
+  width: 100%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    text-align: center !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Bottom CTA area
+.cta-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  p {
+    text-align: center !important;
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  a {
+    text-align: center !important;
+  }
+}

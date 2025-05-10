@@ -1,0 +1,88 @@
+// Canonical design system import - MUST BE FIRST
+@import '../../../styles/design-system/index';
+
+// Define explicit consistent background color to match other sections
+:root {
+  --testimonials-background: rgba(10, 16, 27, 1); // Matches --journey-background
+}
+
+/* Add high-specificity selector to ensure our styles take precedence */
+body .testimonials-section {
+  position: relative !important;
+  overflow: hidden !important;
+  background-color: var(--testimonials-background) !important; // Explicit background color
+
+  // Grid pattern is completely removed
+  &::before {
+    display: none !important; // Remove the grid pattern completely
+  }
+
+  // Remove the gradient overlay
+  &::after {
+    display: none !important; // Remove the after element completely
+  }
+
+  // Make sure content is above the background layers
+  .container {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  @media (max-width: 768px) {
+    .grid {
+      gap: 1.5rem !important;
+    }
+  }
+
+  /* Style for SUCCESS STORIES text - override with !important */
+  .testimonials-section span.uppercase {
+    color: #ddff0e !important;
+    /* Citron color */
+  }
+
+  /* Style for subtitle text - ensure centering */
+  p.max-w-2xl {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+  }
+
+  /* Style for Read More link - ensure lighter color */
+  a.inline-flex {
+    color: #d1d5db !important;
+
+    /* gray-300 */
+    &:hover {
+      color: #ddff0e !important;
+      /* Citron color on hover */
+    }
+  }
+
+  a {
+    &:hover svg {
+      transform: translateX(5px) !important;
+    }
+
+    svg {
+      transition: transform 0.3s ease !important;
+    }
+  }
+
+  // Theme variant specific styling - grid patterns are disabled
+  &[data-variant="gym"] {
+    // Grid pattern is removed for all variants
+  }
+
+  &[data-variant="sports"] {
+    // Grid pattern is removed for all variants
+  }
+
+  &[data-variant="wellness"] {
+    // Grid pattern is removed for all variants
+  }
+
+  &[data-variant="modern"] {
+    // Grid pattern is removed for all variants
+  }
+}

@@ -1,3 +1,6 @@
+// Import design system first
+@use '../../../styles/design-system' as ds;
+
 // Hero Component Theme Variables
 .hero-section {
     // Base variables (default theme)
@@ -105,7 +108,11 @@
 
 // Hero theme variables
 
-// Define root variables for the hero component
+// Define variables that can be used in other files
+$hero-title-color: var(--hero-title-color);
+$hero-subtitle-color: var(--hero-subtitle-color);
+$hero-cta-background: var(--hero-cta-background);
+
 :root {
     // Background colors
     --color-background-dark: #111827; // bg-gray-900
@@ -173,4 +180,18 @@
     --animation-delay-7: 0.5s;
     --animation-delay-8: 1.2s;
     --animation-delay-9: 1.8s;
+
+    --hero-title-color: #ffffff;
+    --hero-subtitle-color: #cccccc;
+    --hero-cta-background: var(--primary-color);
+}
+
+[data-theme="gym"] {
+    --hero-title-color: #ff5722;
+    --hero-cta-background: #ff8a65;
+}
+
+[data-theme="sport"] {
+    --hero-title-color: #2196f3;
+    --hero-cta-background: #03a9f4;
 }

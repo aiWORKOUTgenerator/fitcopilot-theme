@@ -1,0 +1,24 @@
+// Canonical design system import - MUST BE FIRST
+@import '../../../../styles/design-system/index';
+
+// DemoNav component styles
+#homepage-demo-nav {
+
+    // Pulse animation for highlighting the demo nav
+    &.highlight-pulse {
+        animation: pulse-lime 1s ease-in-out;
+    }
+}
+
+// Animations
+@keyframes pulse-lime {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(132, 204, 22, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(132, 204, 22, 0.8);
+    }
+}

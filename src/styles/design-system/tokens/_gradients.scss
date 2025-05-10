@@ -1,3 +1,6 @@
+@use "sass:map";
+
+
 /**
  * Gradient System Tokens
  * 
@@ -7,7 +10,6 @@
  */
 
 // Import the Sass module system
-@use "sass:map";
 
 // Base gradient primitive tokens - using color system variables
 $gradient-map: (
@@ -105,3 +107,4 @@ $component-gradients: (
 @function get-gradient-color($gradient-token, $position) {
     @return map.get($gradient-token, $position);
 }
+

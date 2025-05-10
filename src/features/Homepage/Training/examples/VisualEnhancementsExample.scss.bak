@@ -1,0 +1,147 @@
+// Import base design system
+@import '../../../../styles/design-system/index';
+
+// Visual Enhancements Example Component Styles
+.visual-enhancements-example {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .controls {
+        background-color: var(--color-surface-primary, rgba(31, 41, 55, 0.5));
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+        h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary, #f9fafb);
+        }
+
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+
+            .option {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                padding: 0.5rem 1rem;
+                background-color: rgba(255, 255, 255, 0.05);
+                border-radius: 0.25rem;
+                transition: background-color 0.2s;
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
+
+                input {
+                    margin-right: 0.5rem;
+                }
+
+                span {
+                    color: var(--color-text-primary, #f9fafb);
+                }
+            }
+        }
+    }
+
+    .placeholder-section {
+        background-color: var(--color-background-secondary, #1f2937);
+        padding: 3rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+
+        &.section-overlap-top {
+            margin-top: -5rem;
+            padding-top: 8rem;
+            z-index: 0;
+        }
+
+        h3 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            color: var(--color-text-primary, #f9fafb);
+        }
+
+        p {
+            color: var(--color-text-secondary, #9ca3af);
+        }
+    }
+
+    .documentation {
+        margin-top: 3rem;
+        padding: 1.5rem;
+        background-color: var(--color-surface-primary, rgba(31, 41, 55, 0.5));
+        border-radius: 0.5rem;
+
+        h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            color: var(--color-text-primary, #f9fafb);
+        }
+
+        .code-example {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 0.25rem;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--color-text-primary, #f9fafb);
+            white-space: pre;
+        }
+    }
+
+    // Theme-specific styles
+    body[data-theme="sports"] & {
+
+        .controls,
+        .documentation {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+            h3 {
+                color: var(--color-text-primary, #111827);
+            }
+
+            .options .option {
+                background-color: var(--color-gray-50, #f9fafb);
+
+                &:hover {
+                    background-color: var(--color-gray-100, #f3f4f6);
+                }
+
+                span {
+                    color: var(--color-text-primary, #111827);
+                }
+            }
+
+            .code-example {
+                background-color: var(--color-gray-50, #f9fafb);
+                color: var(--color-text-primary, #111827);
+            }
+        }
+
+        .placeholder-section {
+            background-color: var(--color-gray-100, #f3f4f6);
+
+            h3 {
+                color: var(--color-text-primary, #111827);
+            }
+
+            p {
+                color: var(--color-text-secondary, #4b5563);
+            }
+        }
+    }
+}

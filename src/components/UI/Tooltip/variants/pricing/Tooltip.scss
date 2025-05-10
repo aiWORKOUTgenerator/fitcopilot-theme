@@ -1,9 +1,12 @@
+@use '../../../../../features/Homepage/Pricing/pricing-theme-variables.scss' as pricing_theme_variables;
 @use '../../../../../styles/design-system/index' as *;
+@use '../../tooltip-variables.scss' as tooltip_variables;
+
+
+
 // Import main tooltip variables and mixins
-@import '../../tooltip-variables.scss';
 
 // Import pricing theme variables
-@import '../../../../../features/Homepage/Pricing/pricing-theme-variables.scss';
 
 /* Tooltip wrapper */
 .tooltip-wrapper {

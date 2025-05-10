@@ -1,0 +1,7 @@
+@import "../../../../styles/design-system/index.scss";
+
+/* Minimal styling for JourneyStep - most styles now use Tailwind directly in the component */
+.journey-step {
+  position: relative;
+  z-index: 1;
+}

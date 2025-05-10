@@ -1,4 +1,8 @@
-@import '../../../styles/design-system/index';
+@use "@/styles/design-system" as ds;
+
+
+
+// Canonical design system import - MUST BE FIRST
 
 .pricing-card {
     background: rgba(17, 24, 39, 0.6);

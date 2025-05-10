@@ -1,9 +1,13 @@
+@use "@/styles/design-system" as ds;
+@use '../../../../styles/design-system/tokens/buttons' as buttons;
+
+
+
+// Canonical design system import - MUST BE FIRST
 /**
  * Minimalist Button Theme Styles
  */
 
-@import '../../../../styles/design-system/index.scss';
-@import '../../../../styles/design-system/tokens/buttons';
 
 .button {
     position: relative;
@@ -189,3 +193,4 @@
         transform: translate(-50%, -50%) rotate(360deg);
     }
 }
+

@@ -1,19 +1,13 @@
 // Import Sass modules with @use
-@use './theme.scss';
-@use './animations.scss';
-@use './reset.scss';
+@use 'variables' as vars;
+@use './theme' as theme;
+@use './animations' as animations;
+@use './reset' as reset;
+@use './variants/theme-variables' as themeVars;
+@use "tailwindcss" as *;
 
-// Import theme variables first
-@import './variants/theme-variables';
-
-// Then import Tailwind
-@import "tailwindcss";
-
-// Import external dependencies with @import
-@import 'aos/dist/aos.css'; // External CSS still needs @import
-
-// Import variables
-@import 'variables';
+// External CSS files still need @import
+@import 'aos/dist/aos.css';
 
 // Base styles
 html {

@@ -1,6 +1,9 @@
-// Import design system
 @use '../../../styles/design-system/index' as *;
-@import './tooltip-variables.scss';
+@use './tooltip-variables.scss' as tooltip_variables;
+
+
+
+// Import design system
 
 // Base Tooltip styles
 .tooltip-wrapper {

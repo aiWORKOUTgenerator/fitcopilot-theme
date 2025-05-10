@@ -1,3 +1,7 @@
+@use '../../../styles/design-system/index' as *;
+
+
+
 /**
  * Core Button Component Styles
  * 
@@ -5,7 +9,6 @@
  */
 
 // Import design system once
-@use '../../../styles/design-system/index' as *;
 
 // Build on top of the base .btn styles from design system
 .button {
@@ -115,3 +118,4 @@
         animation-duration: 2s;
     }
 }
+
