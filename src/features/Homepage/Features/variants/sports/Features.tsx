@@ -55,7 +55,7 @@ const Features: React.FC = () => {
         // Auto-play video when hovering Expert Advice
         if (index === 2 && videoRef.current) {
             videoRef.current.play().catch(e => {
-                console.error("Video autoplay failed:", e);
+                logger.error("Video autoplay failed:", e);
             });
         }
     };

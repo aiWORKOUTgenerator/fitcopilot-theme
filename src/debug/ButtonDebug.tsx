@@ -141,8 +141,8 @@ export const ButtonDebug: React.FC = () => {
                 <h3 className="text-xl font-bold mb-4">Class Name Generation</h3>
                 <pre className="p-4 bg-gray-200 rounded overflow-auto">
                     {JSON.stringify({
-                        method1: `button button--primary button--medium ${true ? 'button--personal-training' : ''}`.trim(),
-                        method2: ['button', 'button--primary', 'button--medium', true && 'button--personal-training'].filter(Boolean).join(' ')
+                        method1: `button button--primary button--medium button--personal-training`.trim(),
+                        method2: ['button', 'button--primary', 'button--medium', 'button--personal-training'].filter(Boolean).join(' ')
                     }, null, 2)}
                 </pre>
             </div>

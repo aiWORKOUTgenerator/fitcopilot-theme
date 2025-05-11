@@ -197,7 +197,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement>((_, ref) => {
                                 if (isPlaying) {
                                     videoElement.current.pause();
                                 } else {
-                                    videoElement.current.play().catch(console.error);
+                                    videoElement.current.play().catch(logger.error);
                                 }
                             }
                         }}

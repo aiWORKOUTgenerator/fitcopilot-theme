@@ -6381,4 +6381,4 @@ describe('Registration Analytics Integration', () => {
 
         // Should track via analytics service
         expect(mockAnalyticsTrack).toHaveBeenCalledWith(
-            'registration
+            'registration_account_created'_account_created

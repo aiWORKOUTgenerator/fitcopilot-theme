@@ -27,4 +27,4 @@ if (typeof window !== 'undefined') {
 }
 
 // Silence console errors during tests
-console.error = jest.fn(); 
+logger.error = jest.fn(); 

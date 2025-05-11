@@ -1,4 +1,5 @@
 import * as React from 'react';
+import logger from '../../../utils/logger';
 
 /**
  * Animation easing options supported by the animation library
@@ -74,7 +75,7 @@ export function useHomepageAnimation(options: HomepageAnimationOptions = {}) {
                     });
                 }
             } catch (error) {
-                console.error('Failed to load animation library for Homepage:', error);
+                logger.error('Failed to load animation library for Homepage:', error);
             }
         };
 

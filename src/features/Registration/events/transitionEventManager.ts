@@ -41,7 +41,7 @@ class TransitionEventManager {
         this.listeners.forEach(listener => listener(event));
 
         // Log for debugging
-        console.log(
+        logger.debug(
             `[Registration Event] ${sourceStep} → ${destinationStep} (${transitionType})`,
             metadata ? metadata : ''
         );

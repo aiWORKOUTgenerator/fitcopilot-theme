@@ -603,7 +603,7 @@ const Pricing: React.FC = () => {
     const handleComplete = () => {
         // Handle any completion logic here
         // This would typically redirect to checkout or the next registration step
-        console.log('Pricing selection complete');
+        logger.debug('Pricing selection complete');
     };
 
     const handleNext = () => { }; // Not used in this implementation

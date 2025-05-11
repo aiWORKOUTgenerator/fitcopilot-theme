@@ -63,4 +63,4 @@ export const DEFAULT_SECTION_TITLE = "Specialized Programs";
 /**
  * Default section description
  */
-export const DEFAULT_SECTION_DESCRIPTION = "Our comprehensive training programs are designed to target specific fitness goals with proven methodologies and personalized approaches."; 
+export const DEFAULT_SECTION_DESCRIPTION = "Our comprehensive training programs are designed to target specific fitness goals with proven methodologies and personalized approaches"; 

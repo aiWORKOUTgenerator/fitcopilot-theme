@@ -3,7 +3,7 @@ import React from 'react';
 import logger from '../../../../utils/logger';
 import Training from '../Training';
 import { BenefitsList, ProgramCard } from '../components';
-import { DEFAULT_PROGRAMS } from '../data/defaultPrograms';
+import { DEFAULT_PROGRAMS } from '../data/defaultProgramsData';
 import { generateProgramAriaIds } from '../utils/accessibilityHelpers';
 
 // Create a test-specific logger

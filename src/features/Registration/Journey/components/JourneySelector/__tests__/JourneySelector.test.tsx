@@ -71,7 +71,10 @@ describe('JourneySelector', () => {
         const validProps = {
             ...mockProps,
             children: (
-                <div data-testid="test-content-valid" setIsValid={(isValid: boolean) => isValid}>
+                <div
+                    data-testid="test-content-valid"
+                    data-set-is-valid="true"
+                >
                     Test Content
                 </div>
             )

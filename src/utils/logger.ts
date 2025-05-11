@@ -182,8 +182,8 @@ export const addContext = (component: string) => {
     };
 };
 
-// Default export for ease of use
-export default {
+// Create the logger object
+const logger = {
     debug,
     info,
     warn,
@@ -195,4 +195,13 @@ export default {
     addContext,
     setLogLevel,
     LogLevel
-}; 
+};
+
+// Make logger globally available as a fallback
+if (typeof window !== 'undefined') {
+    // @ts-expect-error - Explicitly adding to window
+    window.logger = logger;
+}
+
+// Default export for normal import usage
+export default logger; 

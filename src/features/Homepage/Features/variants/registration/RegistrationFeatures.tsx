@@ -227,7 +227,7 @@ const RegistrationFeatures: React.FC = () => {
         } else {
             // If goals section doesn't exist yet, we can navigate to a different URL
             // or display the goals selection in this component
-            console.log('Navigate to goals selection');
+            logger.debug('Navigate to goals selection');
         }
     };
 

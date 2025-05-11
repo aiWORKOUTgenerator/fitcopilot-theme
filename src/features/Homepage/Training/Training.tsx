@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import logger from '../../../utils/logger';
 import { MainCTA, ProgramsList, SectionHeader } from './components';
 import { DEFAULT_PROGRAMS, DEFAULT_SECTION_DESCRIPTION, DEFAULT_SECTION_TITLE } from './data/defaultProgramsData';
 import { useTrainingPrograms } from './hooks';
@@ -16,7 +17,7 @@ function Training({
     sectionDescription = DEFAULT_SECTION_DESCRIPTION,
     variant = 'default',
     programs = mapProgramsWithIcons(DEFAULT_PROGRAMS),
-    onProgramSelect = (title: string) => console.log(`Program selected: ${title}`),
+    onProgramSelect = (title: string) => logger.debug(`Program selected: ${title}`),
 }: TrainingProps) {
     const { programs: activePrograms, selectedProgram, toggleProgramDetails, navigateToProgram } =
         useTrainingPrograms({ initialPrograms: programs });

@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './Homepage'; // Always point at real root
 import './styles/homepage.scss'; // Global styles
 import debug from './utils/debug';
+import logger from './utils/logger';
 
 /**
  * Error Boundary component for catching React rendering errors
@@ -20,7 +21,7 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log error to console in development
     if (debug.isDebugMode()) {
-      console.error('React Error Boundary caught an error:', error, errorInfo);
+      logger.error('React Error Boundary caught an error:', error, errorInfo);
     }
   }
 
@@ -60,8 +61,8 @@ const AppContainer: React.FC = () => {
       // Log debug information
       if (debug.isDebugMode()) {
         debug.debugLog('React application initializing');
-        console.log('Theme variant:', document.body.getAttribute('data-theme'));
-        console.log('React mount point:', document.getElementById('athlete-dashboard-root'));
+        logger.debug('Theme variant:', document.body.getAttribute('data-theme'));
+        logger.debug('React mount point:', document.getElementById('athlete-dashboard-root'));
       }
       setAppInitialized(true);
     } catch (err) {
@@ -96,39 +97,39 @@ const AppContainer: React.FC = () => {
 };
 
 // Debug React bootstrap process with more detailed logs
-console.log('React bootstrap starting...');
-console.log('Environment check:', {
+logger.debug('React bootstrap starting...');
+logger.debug('Environment check:', {
   isDevelopment: process.env.NODE_ENV === 'development',
   isProduction: process.env.NODE_ENV === 'production'
 });
 
 // Root element ID where the React app will mount
 const rootElementId = 'athlete-dashboard-root';
-console.log(`Looking for mount point with ID: #${rootElementId}`);
+logger.debug(`Looking for mount point with ID: #${rootElementId}`);
 
 // Get the container element
 const container = document.getElementById(rootElementId);
 
 // Handle case where container doesn't exist
 if (!container) {
-  console.error(`Mount point #${rootElementId} not found in DOM. Creating one...`);
+  logger.error(`Mount point #${rootElementId} not found in DOM. Creating one...`);
 
   try {
     // Create a container if it doesn't exist
     const newContainer = document.createElement('div');
     newContainer.id = rootElementId;
     document.body.appendChild(newContainer);
-    console.log(`Created #${rootElementId} and appended to body`);
+    logger.debug(`Created #${rootElementId} and appended to body`);
 
     // Mount app to the newly created container
     const root = createRoot(newContainer);
     root.render(<AppContainer />);
-    console.log('React app successfully mounted to dynamically created container');
+    logger.debug('React app successfully mounted to dynamically created container');
 
     // Signal successful mount
     notifyMountSuccess(newContainer);
   } catch (error) {
-    console.error('Failed to create container and mount app:', error);
+    logger.error('Failed to create container and mount app:', error);
 
     // Fallback error message
     const errorMsg = document.createElement('div');
@@ -144,18 +145,18 @@ if (!container) {
     document.body.appendChild(errorMsg);
   }
 } else {
-  console.log(`Mount point #${rootElementId} found in DOM, rendering React app...`);
+  logger.debug(`Mount point #${rootElementId} found in DOM, rendering React app...`);
 
   try {
     // Mount app to the existing container
     const root = createRoot(container);
     root.render(<AppContainer />);
-    console.log('React app successfully mounted to existing container');
+    logger.debug('React app successfully mounted to existing container');
 
     // Signal successful mount
     notifyMountSuccess(container);
   } catch (error) {
-    console.error('Failed to mount React app to existing container:', error);
+    logger.error('Failed to mount React app to existing container:', error);
 
     // Error display
     container.innerHTML = `
@@ -177,7 +178,7 @@ if (!container) {
 function notifyMountSuccess(mountElement: HTMLElement) {
   // Set data attribute on mount element
   mountElement.setAttribute('data-react-mounted', 'true');
-  console.log('🚀 React successfully mounted');
+  logger.debug('🚀 React successfully mounted');
 
   // Signal to WordPress that React mounted successfully (if function exists)
   if (typeof window !== 'undefined' && 'fitcopilotReactMounted' in window) {
@@ -185,7 +186,7 @@ function notifyMountSuccess(mountElement: HTMLElement) {
       // @ts-expect-error - Custom global function
       window.fitcopilotReactMounted();
     } catch (err) {
-      console.error('Error calling mount notification function:', err);
+      logger.error('Error calling mount notification function:', err);
     }
   }
 } 

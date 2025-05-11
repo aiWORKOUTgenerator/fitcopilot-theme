@@ -49,6 +49,38 @@ declare global {
             init: (options: object) => void;
             refresh: () => void;
         };
+
+        /**
+         * Global logger utility
+         * Available as fallback when imports fail
+         */
+        logger: {
+            debug: (message: string, ...data: unknown[]) => void;
+            info: (message: string, ...data: unknown[]) => void;
+            warn: (message: string, ...data: unknown[]) => void;
+            error: (message: string, ...data: unknown[]) => void;
+            captureError: (err: unknown, context?: Record<string, unknown>) => void;
+            group: (label: string, callback: () => void) => void;
+            time: (label: string) => string;
+            timeEnd: (timerId: string) => void;
+            addContext: (component: string) => {
+                debug: (msg: string, ...args: unknown[]) => void;
+                info: (msg: string, ...args: unknown[]) => void;
+                warn: (msg: string, ...args: unknown[]) => void;
+                error: (msg: string, ...args: unknown[]) => void;
+                captureError: (err: unknown, context?: Record<string, unknown>) => void;
+                time: (label: string) => string;
+                timeEnd: (timerId: string) => void;
+                group: (label: string, callback: () => void) => void;
+            };
+            setLogLevel: (level: number) => void;
+            LogLevel: {
+                DEBUG: number;
+                INFO: number;
+                WARN: number;
+                ERROR: number;
+            };
+        };
     }
 }
 

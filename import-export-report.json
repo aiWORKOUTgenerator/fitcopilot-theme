@@ -72,6 +72,12 @@
     "importedBy": "components/UI/Tooltip/TooltipExample.tsx"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "components/UI/Tooltip/context.tsx"
+  },
+  {
     "file": "components/UI/Tooltip/examples/DefaultTooltipExample.tsx",
     "exportName": "DefaultTooltipExample",
     "type": "missing",
@@ -714,6 +720,12 @@
     "importedBy": "features/Homepage/Testimonials/Testimonials.tsx"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/Training.tsx"
+  },
+  {
     "file": "features/Homepage/Training/components/BenefitsList/BenefitsList.tsx",
     "exportName": "BenefitsList",
     "type": "missing",
@@ -1036,6 +1048,24 @@
     "exportName": "DemoNav",
     "type": "missing",
     "importedBy": "features/Homepage/components/index.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/hooks/useAnimation.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/hooks/useHomepageService.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/utils/variantLoader.ts"
   },
   {
     "file": "features/Registration/types.ts",
@@ -1485,6 +1515,12 @@
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",
+    "importedBy": "features/Registration/utils/registrationApi.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
     "importedBy": "hooks/useAnimation.ts"
   },
   {
@@ -1496,6 +1532,12 @@
   {
     "file": "utils/debug.tsx",
     "exportName": "debug",
+    "type": "missing",
+    "importedBy": "index.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
     "type": "missing",
     "importedBy": "index.tsx"
   },

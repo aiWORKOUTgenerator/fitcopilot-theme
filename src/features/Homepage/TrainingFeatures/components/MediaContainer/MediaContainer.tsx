@@ -60,7 +60,7 @@ const MediaContainer: React.FC<MediaContainerProps> = ({
 
         if (autoPlayOnScroll && isInView) {
             mediaRef.current.play().catch((error) => {
-                console.error('Error playing video:', error);
+                logger.error('Error playing video:', error);
             });
         } else if (autoPlayOnScroll && !isInView) {
             mediaRef.current.pause();

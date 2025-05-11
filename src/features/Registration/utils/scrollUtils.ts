@@ -57,7 +57,7 @@ export const scrollToElement = (
     try {
         const element = document.getElementById(elementId);
         if (!element) {
-            console.warn(`Element with ID "${elementId}" not found`);
+            logger.warn(`Element with ID "${elementId}" not found`);
             return;
         }
 
@@ -78,7 +78,7 @@ export const scrollToElement = (
             behavior: effectiveBehavior
         });
     } catch (error) {
-        console.error('Error scrolling to element:', error);
+        logger.error('Error scrolling to element:', error);
     }
 };
 
@@ -153,7 +153,7 @@ export const adjustScrollAfterExpand = (
             }, 300);
         }
     } catch (error) {
-        console.error('Error adjusting scroll after expand:', error);
+        logger.error('Error adjusting scroll after expand:', error);
     }
 };
 
@@ -231,7 +231,7 @@ export const ensureDropdownContentVisible = (
             });
         }
     } catch (error) {
-        console.error('Error ensuring dropdown content visibility:', error);
+        logger.error('Error ensuring dropdown content visibility:', error);
     }
 };
 

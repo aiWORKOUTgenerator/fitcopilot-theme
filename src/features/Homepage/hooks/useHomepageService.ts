@@ -7,6 +7,7 @@
 
 import { useEffect, useState } from 'react';
 import { wordPressService, WordPressServiceData } from '../../../services';
+import logger from '../../../utils/logger';
 
 export interface HomepageData {
     siteLinks: {
@@ -87,7 +88,7 @@ export function getHomepageVariant<T extends string>(key: string, defaultVariant
     const variantValue = wordPressService.getThemeVariant(wpKey, defaultVariant);
 
     // Log for debugging
-    console.log(`Getting variant for ${key}, using WP key: ${wpKey}, value: ${variantValue}`);
+    logger.debug(`Getting variant for ${key}, using WP key: ${wpKey}, value: ${variantValue}`);
 
     return variantValue;
 } 
