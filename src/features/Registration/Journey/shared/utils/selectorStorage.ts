@@ -2,6 +2,9 @@ import logger from "../../../../../utils/logger";
 import { RegistrationData } from "../../../types";
 import { useJourney } from "../../components/JourneyContext";
 
+// Create a context-specific logger
+const storageLogger = logger.addContext('SelectorStorage');
+
 /**
  * Interface for selector storage operations
  */
@@ -23,15 +26,18 @@ export interface SelectorStorage<T> {
 export const createSelectorStorage = <T>(
     storageKey: string,
     defaultValue: T,
-    registrationDataKey?: keyof RegistrationData
+    _registrationDataKey?: keyof RegistrationData
 ): SelectorStorage<T> => {
+    storageLogger.debug('Creating selector storage', { storageKey });
+
     return {
         save: (data: T) => {
             try {
                 // Store in sessionStorage
                 sessionStorage.setItem(storageKey, JSON.stringify(data));
+                storageLogger.debug('Data saved to storage', { storageKey, dataSize: JSON.stringify(data).length });
             } catch (error) {
-                logger.error(`Failed to save data for ${storageKey}:`, error);
+                storageLogger.error(`Failed to save data for ${storageKey}`, { error });
             }
         },
 
@@ -39,9 +45,15 @@ export const createSelectorStorage = <T>(
             try {
                 // Try to load from sessionStorage
                 const stored = sessionStorage.getItem(storageKey);
-                return stored ? JSON.parse(stored) : defaultValue;
+                if (stored) {
+                    storageLogger.debug('Data loaded from storage', { storageKey });
+                    return JSON.parse(stored);
+                } else {
+                    storageLogger.debug('No stored data found, using default', { storageKey });
+                    return defaultValue;
+                }
             } catch (error) {
-                logger.error(`Failed to load data for ${storageKey}:`, error);
+                storageLogger.error(`Failed to load data for ${storageKey}`, { error });
                 return defaultValue;
             }
         },
@@ -49,8 +61,9 @@ export const createSelectorStorage = <T>(
         clear: () => {
             try {
                 sessionStorage.removeItem(storageKey);
+                storageLogger.debug('Storage cleared', { storageKey });
             } catch (error) {
-                logger.error(`Failed to clear data for ${storageKey}:`, error);
+                storageLogger.error(`Failed to clear data for ${storageKey}`, { error });
             }
         }
     };
@@ -73,6 +86,11 @@ export const useSelectorStorage = <T>(
         ...storage,
         syncWithContext: (data: T) => {
             if (registrationDataKey) {
+                storageLogger.debug('Syncing with journey context', {
+                    storageKey,
+                    registrationDataKey: String(registrationDataKey)
+                });
+
                 updateRegistrationData({
                     [registrationDataKey]: data
                 } as Partial<RegistrationData>);

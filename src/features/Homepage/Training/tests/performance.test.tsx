@@ -1,9 +1,13 @@
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
+import logger from '../../../../utils/logger';
 import Training from '../Training';
 import { BenefitsList, ProgramCard } from '../components';
 import { DEFAULT_PROGRAMS } from '../data/defaultPrograms';
 import { generateProgramAriaIds } from '../utils/accessibilityHelpers';
+
+// Create a test-specific logger
+const testLogger = logger.addContext('TrainingPerformanceTest');
 
 /**
  * Performance test suite for the Training component
@@ -42,7 +46,7 @@ describe('Training Component Performance', () => {
 
         // Time to render should be captured
         const renderTime = performance.now() - perfStart;
-        console.log(`Initial render time: ${renderTime}ms`);
+        testLogger.debug(`Initial render time: ${renderTime}ms`);
 
         // Expect the component to render all programs
         expect(container.querySelectorAll('.program-card')).toHaveLength(DEFAULT_PROGRAMS.length);
@@ -78,7 +82,7 @@ describe('Training Component Performance', () => {
         );
 
         const reRenderTime = performance.now() - reRenderStart;
-        console.log(`ProgramCard re-render time: ${reRenderTime}ms`);
+        testLogger.debug(`ProgramCard re-render time: ${reRenderTime}ms`);
 
         // Changing isActive should cause re-render
         rerender(
@@ -121,7 +125,7 @@ describe('Training Component Performance', () => {
         );
 
         const reRenderTime = performance.now() - reRenderStart;
-        console.log(`BenefitsList re-render time: ${reRenderTime}ms`);
+        testLogger.debug(`BenefitsList re-render time: ${reRenderTime}ms`);
     });
 
     it('ExpandedContent only renders when program is selected', () => {

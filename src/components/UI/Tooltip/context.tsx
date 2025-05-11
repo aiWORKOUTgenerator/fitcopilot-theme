@@ -5,7 +5,11 @@
  * and allows components to consume the theme context.
  */
 import React, { createContext, ReactNode, useContext } from 'react';
+import logger from '../../../utils/logger';
 import { TooltipThemeContext } from './types';
+
+// Create component-specific logger
+const tooltipLogger = logger.addContext('TooltipContext');
 
 // Interface for the context value
 interface TooltipThemeContextValue {
@@ -38,11 +42,15 @@ interface TooltipThemeProviderProps {
 export const TooltipThemeProvider: React.FC<TooltipThemeProviderProps> = ({
     theme = 'default',
     children
-}) => (
-    <TooltipContext.Provider value={{ theme }}>
-        {children}
-    </TooltipContext.Provider>
-);
+}) => {
+    tooltipLogger.debug('TooltipThemeProvider initialized', { theme });
+
+    return (
+        <TooltipContext.Provider value={{ theme }}>
+            {children}
+        </TooltipContext.Provider>
+    );
+};
 
 /**
  * Custom hook for consuming the tooltip theme context
@@ -66,10 +74,12 @@ export const useEffectiveTheme = (explicitTheme?: TooltipThemeContext): TooltipT
 
     // Explicit theme takes precedence over context
     if (explicitTheme) {
+        tooltipLogger.debug('Using explicit theme', { theme: explicitTheme });
         return explicitTheme;
     }
 
     // Otherwise use the theme from context
+    tooltipLogger.debug('Using theme from context', { theme: themeContext.theme });
     return themeContext.theme;
 };
 
@@ -83,7 +93,11 @@ export const TOOLTIP_THEMES: readonly TooltipThemeContext[] = ['default', 'hero'
  * @returns True if valid, false otherwise
  */
 export const isValidTheme = (context: string): context is TooltipThemeContext => {
-    return TOOLTIP_THEMES.includes(context as TooltipThemeContext);
+    const isValid = TOOLTIP_THEMES.includes(context as TooltipThemeContext);
+    if (!isValid) {
+        tooltipLogger.warn('Invalid tooltip theme', { providedTheme: context });
+    }
+    return isValid;
 };
 
 /**
@@ -96,6 +110,7 @@ export const getTooltipTheme = (context?: string): TooltipThemeContext => {
     if (context && isValidTheme(context)) {
         return context as TooltipThemeContext;
     }
+    tooltipLogger.debug('Falling back to default theme', { providedTheme: context });
     return 'default';
 };
 
@@ -115,5 +130,7 @@ export const getSectionTheme = (sectionName?: string): TooltipThemeContext => {
         // Add more section mappings as needed
     };
 
-    return sectionThemeMap[sectionName] || 'default';
+    const theme = sectionThemeMap[sectionName] || 'default';
+    tooltipLogger.debug('Section theme mapping', { section: sectionName, theme });
+    return theme;
 }; 
