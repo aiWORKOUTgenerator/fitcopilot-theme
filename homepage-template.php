@@ -23,6 +23,9 @@ add_action('wp_head', 'wp_print_styles', 8);
 add_action('wp_head', 'wp_print_head_scripts', 9);
 add_action('wp_head', 'wp_site_icon', 99);
 
+// Add our critical CSS output function
+add_action('wp_head', 'fitcopilot_output_critical_css', 5);
+
 // Get the manifest file
 $manifest_path = get_template_directory() . '/dist/manifest.json';
 $manifest = file_exists($manifest_path) ? json_decode(file_get_contents($manifest_path), true) : [];
@@ -32,7 +35,7 @@ if (empty($manifest)) {
 }
 
 // Ensure React is enqueued first with the correct global variable names that webpack expects
-wp_enqueue_script('react', 'https://unpkg.com/react@18/umd/react.production.min.js', array(), '18.0.0', true);
+wp_enqueue_script('react', 'https://unpkg.com/react@18/umd/react.production.min.js', array(), '18.0.0', false);
 wp_enqueue_script('react-dom', 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js', array('react'), '18.0.0', true);
 
 // Add script to explicitly assign React and ReactDOM to window globals for webpack externals
@@ -43,18 +46,19 @@ window.ReactDOM = window.ReactDOM || ReactDOM;
 console.log("React and ReactDOM globals initialized for webpack externals");
 ', 'after');
 
-// Enqueue homepage CSS with cache busting
+// Don't enqueue critical CSS here since it's inlined in the head
+// Instead, set up async loading for non-critical CSS
 if (isset($manifest['homepage.css'])) {
     $css_file = $manifest['homepage.css'];
     $css_path = get_template_directory() . '/dist/' . $css_file;
     
     if (file_exists($css_path)) {
-        wp_enqueue_style(
-            'athlete-dashboard-homepage',
-            get_template_directory_uri() . '/dist/' . $css_file,
-            [],
-            filemtime($css_path)
-        );
+        // Add as a preload link with onload handler to non-blocking rendering
+        add_action('wp_head', function() use ($css_file) {
+            $css_url = get_template_directory_uri() . '/dist/' . $css_file;
+            echo '<link rel="preload" href="' . esc_url($css_url) . '" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">';
+            echo '<noscript><link rel="stylesheet" href="' . esc_url($css_url) . '"></noscript>';
+        }, 6);
     } else {
         error_log('Homepage template: CSS file not found at ' . $css_path);
     }
@@ -62,12 +66,18 @@ if (isset($manifest['homepage.css'])) {
     error_log('Homepage template: homepage.css not found in manifest');
 }
 
-// Enqueue any chunk files if they exist
+// Set up preloading of chunk files
 foreach ($manifest as $key => $value) {
-    if ($key !== 'homepage.css' && $key !== 'homepage.js' && strpos($key, '.js') !== false) {
+    if ($key !== 'critical.css' && $key !== 'homepage.js' && strpos($key, '.js') !== false) {
         $chunk_path = get_template_directory() . '/dist/' . $value;
         
         if (file_exists($chunk_path)) {
+            // Add chunk as a preload
+            add_action('wp_head', function() use ($value) {
+                echo '<link rel="preload" href="' . get_template_directory_uri() . '/dist/' . $value . '" as="script">';
+            }, 7);
+            
+            // Still enqueue the script normally but with defer attribute
             wp_enqueue_script(
                 'chunk-' . substr($key, 0, strpos($key, '.')),
                 get_template_directory_uri() . '/dist/' . $value,
@@ -127,19 +137,45 @@ if (isset($manifest['homepage.js'])) {
             'athleteDashboardData',
             $localized_data
         );
-        
-        // Add inline script to verify data is available
-        wp_add_inline_script(
-            'athlete-dashboard-homepage',
-            'console.log("athleteDashboardData is available:", window.athleteDashboardData);',
-            'before'
-        );
     } else {
         error_log('Homepage template: JS file not found at ' . $js_path);
     }
 } else {
     error_log('Homepage template: homepage.js not found in manifest');
 }
+
+// Add inline performance monitoring script in head
+add_action('wp_head', function() {
+    echo '
+    <script>
+    // Performance monitoring
+    window.performance && window.performance.mark && window.performance.mark("critical-css-loaded");
+    
+    // Add load timing for FCP (First Contentful Paint) monitoring
+    document.addEventListener("DOMContentLoaded", function() {
+        window.performance && window.performance.mark && window.performance.mark("dom-content-loaded");
+    });
+    
+    // Register onload complete
+    window.addEventListener("load", function() {
+        window.performance && window.performance.mark && window.performance.mark("fully-loaded");
+        
+        // Measure and log times
+        if (window.performance && window.performance.measure) {
+            window.performance.measure("critical-render-time", "navigationStart", "critical-css-loaded");
+            window.performance.measure("dom-ready-time", "navigationStart", "dom-content-loaded");
+            window.performance.measure("full-load-time", "navigationStart", "fully-loaded");
+            
+            console.log("Performance metrics:", {
+                criticalRenderTime: Math.round(window.performance.getEntriesByName("critical-render-time")[0].duration),
+                domReadyTime: Math.round(window.performance.getEntriesByName("dom-ready-time")[0].duration),
+                fullLoadTime: Math.round(window.performance.getEntriesByName("full-load-time")[0].duration)
+            });
+        }
+    });
+    </script>
+    ';
+}, 10);
 
 get_header();
 ?>

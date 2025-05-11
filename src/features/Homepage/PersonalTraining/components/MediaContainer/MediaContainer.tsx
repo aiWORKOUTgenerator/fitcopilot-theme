@@ -1,5 +1,6 @@
 import { AlertCircle } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import logger from '../../../../../utils/logger';
 import VideoPlayer, { VideoSource } from '../VideoPlayer/VideoPlayer';
 import './MediaContainer.scss';
 
@@ -155,50 +156,50 @@ const MediaContainer: React.FC<MediaContainerProps> = ({
     // Load and prioritize WordPress data if available
     useEffect(() => {
         if (type === 'video' && useWordPressData) {
-            console.log('MediaContainer: Checking for WordPress video data...');
+            logger.debug('MediaContainer: Checking for WordPress video data...');
 
             // First try to get data from fitcopilotVideoData
             let videoData = window.fitcopilotVideoData?.personalTraining?.featuredTrainer;
-            console.log('MediaContainer: Checking fitcopilotVideoData:', videoData);
+            logger.debug('MediaContainer: Checking fitcopilotVideoData:', videoData);
 
             // If not found, try athleteDashboardData
             if (!videoData && window.athleteDashboardData?.wpData?.videoData) {
                 videoData = window.athleteDashboardData.wpData.videoData.personalTraining?.featuredTrainer;
-                console.log('MediaContainer: Found video data in athleteDashboardData:', videoData);
+                logger.debug('MediaContainer: Found video data in athleteDashboardData:', videoData);
             }
 
             if (videoData) {
                 const { url, image, title } = videoData;
 
                 if (url && url.trim() !== '') {
-                    console.log('MediaContainer: Using WordPress video URL:', url);
+                    logger.debug('MediaContainer: Using WordPress video URL:', url);
                     setResolvedSrc(url);
                 } else {
-                    console.log('MediaContainer: WordPress video URL is empty, using fallback:', src);
+                    logger.debug('MediaContainer: WordPress video URL is empty, using fallback:', src);
                 }
 
                 if (image && image.trim() !== '') {
-                    console.log('MediaContainer: Using WordPress poster image:', image);
+                    logger.debug('MediaContainer: Using WordPress poster image:', image);
                     setResolvedPoster(image);
                 } else if (poster) {
-                    console.log('MediaContainer: WordPress image is empty, using provided poster:', poster);
+                    logger.debug('MediaContainer: WordPress image is empty, using provided poster:', poster);
                 }
 
                 if (title && title.trim() !== '') {
-                    console.log('MediaContainer: Using WordPress video title for alt text:', title);
+                    logger.debug('MediaContainer: Using WordPress video title for alt text:', title);
                     setResolvedAlt(title);
                 } else if (alt) {
-                    console.log('MediaContainer: WordPress title is empty, using provided alt text:', alt);
+                    logger.debug('MediaContainer: WordPress title is empty, using provided alt text:', alt);
                 }
             } else {
-                console.log('MediaContainer: No WordPress video data found, using fallback values');
-                console.log('MediaContainer: Fallback video URL:', src);
-                console.log('MediaContainer: Fallback poster:', poster);
-                console.log('MediaContainer: Fallback alt text:', alt);
+                logger.debug('MediaContainer: No WordPress video data found, using fallback values');
+                logger.debug('MediaContainer: Fallback video URL:', src);
+                logger.debug('MediaContainer: Fallback poster:', poster);
+                logger.debug('MediaContainer: Fallback alt text:', alt);
 
                 // Log the complete athleteDashboardData object for debugging
                 if (window.athleteDashboardData) {
-                    console.log('MediaContainer: athleteDashboardData:', window.athleteDashboardData);
+                    logger.debug('MediaContainer: athleteDashboardData:', window.athleteDashboardData);
                 }
             }
         }

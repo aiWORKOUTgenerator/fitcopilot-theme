@@ -182,7 +182,7 @@ function notifyMountSuccess(mountElement: HTMLElement) {
   // Signal to WordPress that React mounted successfully (if function exists)
   if (typeof window !== 'undefined' && 'fitcopilotReactMounted' in window) {
     try {
-      // @ts-ignore - Custom global function
+      // @ts-expect-error - Custom global function
       window.fitcopilotReactMounted();
     } catch (err) {
       console.error('Error calling mount notification function:', err);

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import logger from '../../../../../utils/logger';
 import { useJourney } from '../../components/JourneyContext';
 import { SECTION_IDS } from '../constants/sectionConstants';
 
@@ -31,7 +32,7 @@ export const useCustomizationState = (): CustomizationState => {
                 return parsed.validSections || initializeValidSections();
             }
         } catch (error) {
-            console.error('Failed to parse cached customization state:', error);
+            logger.error('Failed to parse cached customization state:', error);
         }
         return initializeValidSections();
     });
@@ -50,7 +51,7 @@ export const useCustomizationState = (): CustomizationState => {
                 return parsed.completedSections || [];
             }
         } catch (error) {
-            console.error('Failed to parse cached customization state:', error);
+            logger.error('Failed to parse cached customization state:', error);
         }
         return [];
     });
@@ -76,7 +77,7 @@ export const useCustomizationState = (): CustomizationState => {
             persistState(updated, completedSections);
             return updated;
         });
-    }, [completedSections]);
+    }, [completedSections, persistState]);
 
     // Mark a section as complete
     const markSectionComplete = useCallback((sectionId: string) => {
@@ -93,7 +94,7 @@ export const useCustomizationState = (): CustomizationState => {
 
             return updated;
         });
-    }, [validSections, updateRegistrationData]);
+    }, [validSections, updateRegistrationData, persistState]);
 
     // Reset state
     const resetCustomizationState = useCallback(() => {
@@ -122,7 +123,7 @@ export const useCustomizationState = (): CustomizationState => {
 
             sessionStorage.setItem(STORAGE_KEY, JSON.stringify(stateToCache));
         } catch (error) {
-            console.error('Failed to cache customization state:', error);
+            logger.error('Failed to cache customization state:', error);
         }
     }, []);
 

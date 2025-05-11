@@ -4,13 +4,16 @@
  * This script provides debugging functionality for React components.
  */
 
+// Import the logger utility
+import logger from './utils/logger';
+
 (function () {
     // Check if we're in debug mode
     if (!window.fitcopilotDebug || !window.fitcopilotDebug.isDebugMode) {
         return;
     }
 
-    console.log('%c FitCopilot React Debug Tools Activated ', 'background: #a3e635; color: #111827; font-weight: bold; padding: 3px 5px;');
+    logger.info('%c FitCopilot React Debug Tools Activated ', 'background: #a3e635; color: #111827; font-weight: bold; padding: 3px 5px;');
 
     const debug = {
         init: function () {
@@ -41,7 +44,7 @@
                 } else {
                     statusEl.textContent = 'Missing';
                     statusEl.style.color = '#ef4444';
-                    console.error(`%c React mount point #${mountPointId} not found! `, 'background: #ef4444; color: white;');
+                    logger.error(`%c React mount point #${mountPointId} not found! `, 'background: #ef4444; color: white;');
                 }
             }
         },
@@ -89,7 +92,7 @@
                     });
                 })
                 .catch(err => {
-                    console.error('Error loading manifest:', err);
+                    logger.error('Error loading manifest:', err);
                     assetListEl.innerHTML = `<li style="color: #ef4444">Error loading manifest: ${err.message}</li>`;
                 });
         },
@@ -182,7 +185,7 @@
                 this.updateComponentList();
             }
 
-            console.log(`%c Component ${componentName} rendered in ${renderTime}ms `, 'background: #a3e635; color: #111827; padding: 2px 4px;');
+            logger.info(`%c Component ${componentName} rendered in ${renderTime}ms `, 'background: #a3e635; color: #111827; padding: 2px 4px;');
         },
 
         getComponentStats: function () {

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import logger from '../../utils/logger';
 import './styles/homepage.scss';
 
 // Import custom hooks
@@ -58,10 +59,10 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
     setIsLoaded(true);
 
     // Enhanced logging for debugging variants
-    console.log('========= VARIANT DEBUG INFO =========');
-    console.log('Demo mode status:', demoMode);
-    console.log('All current variants:', variants);
-    console.log('====================================');
+    logger.debug('========= VARIANT DEBUG INFO =========');
+    logger.debug('Demo mode status:', demoMode);
+    logger.debug('All current variants:', variants);
+    logger.debug('====================================');
 
     // Add a class to the body for demo mode
     if (demoMode) {
@@ -98,7 +99,7 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
 
   const handleRegistrationComplete = (registrationData: RegistrationData) => {
     // Store registration data (can be used for future API calls)
-    console.log('Registration completed with data:', registrationData);
+    logger.info('Registration completed with data:', registrationData);
 
     // Hide registration component
     setShowRegistration(false);
@@ -123,7 +124,7 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
 
   // Handle variant change in demo mode
   const handleVariantChange = (sectionKey: string, variant: VariantKey) => {
-    console.log(`Changing ${sectionKey} variant to ${variant}`);
+    logger.debug(`Changing ${sectionKey} variant to ${variant}`);
     setVariants(prev => ({
       ...prev,
       [sectionKey]: variant

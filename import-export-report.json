@@ -60,6 +60,12 @@
     "importedBy": "components/UI/ThemeSwitcher/index.ts"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "components/UI/Tooltip/Tooltip.tsx"
+  },
+  {
     "file": "components/UI/Tooltip/Tooltip.tsx",
     "exportName": "Tooltip",
     "type": "missing",
@@ -114,6 +120,12 @@
     "importedBy": "debug/TestPage.tsx"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "debug.js"
+  },
+  {
     "file": "features/Homepage/Features/Features.tsx",
     "exportName": "Features",
     "type": "missing",
@@ -136,6 +148,12 @@
     "exportName": "VideoPlayer",
     "type": "missing",
     "importedBy": "features/Homepage/Features/Features.stories.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/Features/Features.tsx"
   },
   {
     "file": "features/Homepage/Features/components/FeatureCard.tsx",
@@ -306,6 +324,12 @@
     "importedBy": "features/Homepage/Hero/components/FloatingIcons.tsx"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/Hero/components/VideoPlayer.tsx"
+  },
+  {
     "file": "features/Homepage/Hero/variants/boutique/index.ts",
     "exportName": "BoutiqueVariant",
     "type": "missing",
@@ -364,6 +388,12 @@
     "exportName": "Homepage",
     "type": "missing",
     "importedBy": "features/Homepage/Homepage.stories.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/Homepage.tsx"
   },
   {
     "file": "features/Registration/Registration.tsx",
@@ -510,10 +540,22 @@
     "importedBy": "features/Homepage/PersonalTraining/PersonalTraining.tsx"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/PersonalTraining.tsx"
+  },
+  {
     "file": "features/Homepage/PersonalTraining/components/MediaContainer/index.ts",
     "exportName": "MediaContainer",
     "type": "missing",
     "importedBy": "features/Homepage/PersonalTraining/PersonalTraining.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/components/MediaContainer/MediaContainer.tsx"
   },
   {
     "file": "features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx",
@@ -526,6 +568,12 @@
     "exportName": "MediaContainer",
     "type": "missing",
     "importedBy": "features/Homepage/PersonalTraining/components/MediaContainer/index.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx"
   },
   {
     "file": "features/Homepage/PersonalTraining/variants/classic/index.ts",
@@ -888,6 +936,12 @@
     "importedBy": "features/Homepage/TrainingFeatures/components/MediaContainer/index.ts"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Homepage/TrainingFeatures/components/VideoPlayer/VideoPlayer.tsx"
+  },
+  {
     "file": "features/Homepage/TrainingFeatures/components/VideoPlayer/VideoPlayer.tsx",
     "exportName": "VideoPlayer",
     "type": "missing",
@@ -1074,6 +1128,12 @@
     "importedBy": "features/Registration/Journey/CustomizeExperience/components/WorkoutPreferenceSelector/index.ts"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizeExperience/hooks/useCustomizationState.ts"
+  },
+  {
     "file": "features/Registration/Journey/CustomizedMedical/CustomizedMedicalContent.tsx",
     "exportName": "CustomizedMedicalContent",
     "type": "missing",
@@ -1170,6 +1230,18 @@
     "importedBy": "features/Registration/Journey/CustomizedMedical/components/StandardSection/index.ts"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/context/MedicalCustomizationContext.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/CustomizedMedical/hooks/useMedicalCustomizationState.ts"
+  },
+  {
     "file": "features/Registration/Journey/CustomizedMedical/CustomizedMedical.tsx",
     "exportName": "CustomizedMedical",
     "type": "missing",
@@ -1186,6 +1258,12 @@
     "exportName": "SavingIndicator",
     "type": "missing",
     "importedBy": "features/Registration/Journey/Journey.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/AnalyticsSelector/AnalyticsSelector.tsx"
   },
   {
     "file": "features/Registration/Journey/components/JourneySelector/index.ts",
@@ -1218,6 +1296,12 @@
     "importedBy": "features/Registration/Journey/components/CustomizationContainer.tsx"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/GoalSelector/GoalSelector.tsx"
+  },
+  {
     "file": "features/Registration/Journey/components/JourneySelector/JourneySelector.tsx",
     "exportName": "JourneySelector",
     "type": "missing",
@@ -1228,6 +1312,12 @@
     "exportName": "GoalSelector",
     "type": "missing",
     "importedBy": "features/Registration/Journey/components/GoalSelector/index.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Registration/Journey/components/JourneyContext.tsx"
   },
   {
     "file": "features/Registration/Journey/components/JourneySelector/JourneySelector.tsx",
@@ -1374,10 +1464,28 @@
     "importedBy": "features/Registration/components/ProgressIndicator/index.ts"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Registration/events/analyticsIntegration.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/Registration/hooks/useRegistrationProgress.ts"
+  },
+  {
     "file": "features/Registration/Registration.tsx",
     "exportName": "Registration",
     "type": "missing",
     "importedBy": "features/Registration/index.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "hooks/useAnimation.ts"
   },
   {
     "file": "Homepage.tsx",
@@ -1392,9 +1500,33 @@
     "importedBy": "index.tsx"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "services/implementations/WordPressService.ts"
+  },
+  {
     "file": "services/implementations/WordPressService.ts",
     "exportName": "wordPressServiceImpl",
     "type": "missing",
     "importedBy": "services/index.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "utils/debug.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "utils/mountVerification.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "utils/variantLoader.ts"
   }
 ]

@@ -1,5 +1,6 @@
 import { BarChart } from 'lucide-react';
 import React, { forwardRef, useEffect, useState } from 'react';
+import logger from "../../../../../utils/logger";
 import { SectionCard, SelectionSummary } from '../../shared/components';
 import { selectorStorage, validationUtils } from '../../shared/utils';
 import { AccordionSectionRef } from '../AccordionSection';
@@ -37,7 +38,7 @@ const AnalyticsSelector = forwardRef<AccordionSectionRef, AnalyticsSelectorProps
                 return storedState.selectedFeatures || [];
             }
         } catch (error) {
-            console.error('Failed to load stored analytics selector data:', error);
+            logger.error('Failed to load stored analytics selector data:', error);
         }
 
         return [];

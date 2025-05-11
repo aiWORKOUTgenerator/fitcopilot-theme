@@ -10,8 +10,15 @@ import RegistrationVariant from './registration';
 import SportsVariant from './sports';
 import WellnessVariant from './wellness';
 
+// Define proper props type
+type VariantKey = 'default' | 'gym' | 'boutique' | 'modern' | 'wellness' | 'classic' | 'sports' | 'minimalist' | 'registration';
+
+export interface FeaturesProps {
+    variant?: VariantKey;
+}
+
 // Map variant keys to their React components
-export const FeaturesMap: Record<string, React.ComponentType<any>> = {
+export const FeaturesMap: Record<string, React.ComponentType<FeaturesProps>> = {
     default: DefaultVariant,
     boutique: BoutiqueVariant,
     classic: ClassicVariant,

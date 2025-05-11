@@ -9,8 +9,15 @@ import ModernVariant from './modern';
 import SportsVariant from './sports';
 import WellnessVariant from './wellness';
 
+// Define proper props type
+type VariantKey = 'default' | 'gym' | 'boutique' | 'modern' | 'wellness' | 'classic' | 'sports' | 'minimalist' | 'registration';
+
+export interface PricingProps {
+    variant?: VariantKey;
+}
+
 // Map variant keys to their React components
-export const PricingMap: Record<string, React.ComponentType<any>> = {
+export const PricingMap: Record<string, React.ComponentType<PricingProps>> = {
     default: DefaultVariant,
     boutique: BoutiqueVariant,
     classic: ClassicVariant,

@@ -28,6 +28,9 @@ const MediaContainer: React.FC<MediaContainerProps> = ({
     useEffect(() => {
         if (!autoPlayOnScroll || type !== 'video') return;
 
+        // Store current ref value to avoid closure issues during cleanup
+        const currentContainerRef = containerRef.current;
+
         const observer = new IntersectionObserver(
             (entries) => {
                 const [entry] = entries;
@@ -40,13 +43,13 @@ const MediaContainer: React.FC<MediaContainerProps> = ({
             }
         );
 
-        if (containerRef.current) {
-            observer.observe(containerRef.current);
+        if (currentContainerRef) {
+            observer.observe(currentContainerRef);
         }
 
         return () => {
-            if (containerRef.current) {
-                observer.unobserve(containerRef.current);
+            if (currentContainerRef) {
+                observer.unobserve(currentContainerRef);
             }
         };
     }, [autoPlayOnScroll, type]);

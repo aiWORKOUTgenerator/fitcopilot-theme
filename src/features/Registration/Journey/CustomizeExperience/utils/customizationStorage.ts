@@ -1,3 +1,4 @@
+import logger from "../../../../../utils/logger";
 import { CustomizationData } from "../types";
 
 // Storage keys
@@ -13,7 +14,7 @@ const LAST_ACTIVE_SECTION_KEY = 'fitcopilot_last_active_section';
 export const saveCustomizationData = (data: CustomizationData): boolean => {
     try {
         if (!data) {
-            console.error('Cannot save empty customization data');
+            logger.error('Cannot save empty customization data');
             return false;
         }
 
@@ -25,11 +26,11 @@ export const saveCustomizationData = (data: CustomizationData): boolean => {
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
         return true;
     } catch (error) {
-        console.error('Failed to save customization data:', error);
+        logger.error('Failed to save customization data:', error);
 
         // Check for storage quota exceeded
         if (error instanceof DOMException && error.name === 'QuotaExceededError') {
-            console.warn('Storage quota exceeded. Attempting to clear old data...');
+            logger.warn('Storage quota exceeded. Attempting to clear old data...');
             try {
                 // Try to remove non-essential data
                 clearOldStorageData();
@@ -42,7 +43,7 @@ export const saveCustomizationData = (data: CustomizationData): boolean => {
                 sessionStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
                 return true;
             } catch (retryError) {
-                console.error('Failed to save after clearing storage:', retryError);
+                logger.error('Failed to save after clearing storage:', retryError);
                 return false;
             }
         }
@@ -66,7 +67,7 @@ export const updateCustomizationSection = <T>(sectionKey: string, sectionData: T
 
         // Type safety check
         if (typeof existingData !== 'object') {
-            console.error('Invalid customization data format in storage');
+            logger.error('Invalid customization data format in storage');
             return false;
         }
 
@@ -79,7 +80,7 @@ export const updateCustomizationSection = <T>(sectionKey: string, sectionData: T
 
         return saveCustomizationData(updatedData);
     } catch (error) {
-        console.error(`Failed to update section ${sectionKey}:`, error);
+        logger.error(`Failed to update section ${sectionKey}:`, error);
         return false;
     }
 };
@@ -98,7 +99,7 @@ export const loadCustomizationData = (): CustomizationData | null => {
 
         // Validate data has required structure
         if (!parsedData || typeof parsedData !== 'object') {
-            console.warn('Invalid customization data format');
+            logger.warn('Invalid customization data format');
             return null;
         }
 
@@ -109,13 +110,13 @@ export const loadCustomizationData = (): CustomizationData | null => {
 
         return parsedData;
     } catch (error) {
-        console.error('Failed to load customization data:', error);
+        logger.error('Failed to load customization data:', error);
 
         // Attempt to recover corrupt data by clearing it
         try {
             sessionStorage.removeItem(STORAGE_KEY);
         } catch (clearError) {
-            console.error('Failed to clear corrupted storage:', clearError);
+            logger.error('Failed to clear corrupted storage:', clearError);
         }
 
         return null;
@@ -133,7 +134,7 @@ export const saveLastActiveSection = (sectionId: string): boolean => {
         sessionStorage.setItem(LAST_ACTIVE_SECTION_KEY, sectionId);
         return true;
     } catch (error) {
-        console.error('Failed to save last active section:', error);
+        logger.error('Failed to save last active section:', error);
         return false;
     }
 };
@@ -147,7 +148,7 @@ export const getLastActiveSection = (): string | null => {
     try {
         return sessionStorage.getItem(LAST_ACTIVE_SECTION_KEY);
     } catch (error) {
-        console.error('Failed to get last active section:', error);
+        logger.error('Failed to get last active section:', error);
         return null;
     }
 };
@@ -163,7 +164,7 @@ export const clearCustomizationData = (): boolean => {
         sessionStorage.removeItem(LAST_ACTIVE_SECTION_KEY);
         return true;
     } catch (error) {
-        console.error('Failed to clear customization data:', error);
+        logger.error('Failed to clear customization data:', error);
         return false;
     }
 };
@@ -178,7 +179,7 @@ export const hasCustomizationData = (): boolean => {
         const data = loadCustomizationData();
         return !!data;
     } catch (error) {
-        console.error('Error checking customization data:', error);
+        logger.error('Error checking customization data:', error);
         return false;
     }
 };
@@ -199,6 +200,6 @@ const clearOldStorageData = (): void => {
             sessionStorage.removeItem(key);
         }
     } catch (error) {
-        console.error('Failed to clear old storage data:', error);
+        logger.error('Failed to clear old storage data:', error);
     }
 }; 

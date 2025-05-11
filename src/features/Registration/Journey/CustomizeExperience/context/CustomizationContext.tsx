@@ -99,7 +99,7 @@ export const CustomizationProvider: React.FC<{ children: React.ReactNode }> = ({
     // Load data on first render
     useEffect(() => {
         syncWithStoredData();
-    }, []);
+    }, [syncWithStoredData]);
 
     // Sync with registration data when it changes
     useEffect(() => {
@@ -133,7 +133,7 @@ export const CustomizationProvider: React.FC<{ children: React.ReactNode }> = ({
 
             return updated;
         });
-    }, [updateRegistrationData]);
+    }, [updateRegistrationData, saveAllData]);
 
     // Reset customization state
     const resetCustomizationState = useCallback(() => {

@@ -95,7 +95,7 @@ type Story = StoryObj<typeof HomepageForStory>;
 export const Default: Story = {
     decorators: [
         (Story) => {
-            // @ts-ignore - Ignoring TS error since we need to temporarily override the hook for Storybook
+            // @ts-expect-error - Temporarily override the hook for Storybook
             jest.spyOn(WordPressHooks, 'useWordPress').mockImplementation(() => mockWordPressData);
             return <Story />;
         }

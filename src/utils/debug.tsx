@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import logger from './logger';
 
 declare global {
     interface Window {
@@ -36,7 +37,14 @@ export const debugLog = (message: string, type: 'log' | 'warn' | 'error' = 'log'
         error: 'background: #ef4444; color: white; padding: 2px 4px;'
     };
 
-    console[type](`%c FitCopilot Debug: ${message} `, styles[type]);
+    // Use the logger utility based on the type
+    if (type === 'log') {
+        logger.debug(`FitCopilot Debug: ${message}`);
+    } else if (type === 'warn') {
+        logger.warn(`FitCopilot Debug: ${message}`);
+    } else if (type === 'error') {
+        logger.error(`FitCopilot Debug: ${message}`);
+    }
 };
 
 /**
@@ -126,7 +134,9 @@ export const useDebugProps = <P extends object>(props: P, componentName: string)
 
             if (hasChanges) {
                 debugLog(`${componentName} props changed:`, 'log');
-                console.table(changes);
+                logger.group('Prop Changes', () => {
+                    logger.debug('Changed props:', changes);
+                });
             }
         }
 

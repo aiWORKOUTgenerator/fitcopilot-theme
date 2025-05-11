@@ -12,6 +12,25 @@
 
 // Critical component styles
 @use '../features/Homepage/Hero/critical' as *;
+@use '../components/Layout/Header/critical' as *;
 
 // Animation utilities for initial render
 @use './utils/fade-in' as *;
+
+// Critical typography styles
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+// Critical global styles
+img {
+    max-width: 100%;
+    height: auto;
+}

@@ -3,8 +3,12 @@
 import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, LucideIcon, Medal, Pause, Play, Timer } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import RegistrationButton from '../../../features/Registration/components/RegistrationButton';
+import logger from '../../../utils/logger';
 import FeatureCard from './components/FeatureCard';
 import './Features.scss';
+
+// Define the variant type to match what's in FeatureCard
+type VariantKey = 'default' | 'gym' | 'boutique' | 'modern' | 'wellness' | 'classic' | 'sports' | 'minimalist' | 'registration';
 
 /**
  * Interface for floating icon props
@@ -193,19 +197,18 @@ const VideoPlayer: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> = (
 
   // Update play state when video state changes
   useEffect(() => {
-    if (!videoRef.current) return;
-
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
 
-    videoRef.current.addEventListener('play', handlePlay);
-    videoRef.current.addEventListener('pause', handlePause);
+    if (!videoRef.current) return;
+
+    const videoElement = videoRef.current;
+    videoElement.addEventListener('play', handlePlay);
+    videoElement.addEventListener('pause', handlePause);
 
     return () => {
-      if (videoRef.current) {
-        videoRef.current.removeEventListener('play', handlePlay);
-        videoRef.current.removeEventListener('pause', handlePause);
-      }
+      videoElement.removeEventListener('play', handlePlay);
+      videoElement.removeEventListener('pause', handlePause);
     };
   }, [videoRef]);
 
@@ -230,7 +233,9 @@ const VideoPlayer: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> = (
                 if (isPlaying) {
                   videoRef.current.pause();
                 } else {
-                  videoRef.current.play().catch(console.error);
+                  videoRef.current.play().catch(error => {
+                    logger.error("Video playback failed:", error);
+                  });
                 }
               }
             }}
@@ -270,12 +275,13 @@ const BackgroundVideoPlayer: React.FC = () => {
 
   useEffect(() => {
     // Auto-play video when component mounts
-    if (videoRef.current) {
-      videoRef.current.play().catch(e => {
-        console.error("Background video autoplay failed:", e);
-      });
-    }
-  }, []);
+    if (!videoRef.current) return;
+
+    const videoElement = videoRef.current;
+    videoElement.play().catch(e => {
+      logger.error("Background video autoplay failed:", e);
+    });
+  }, [videoRef]);
 
   return (
     <div className="video-background relative w-full h-80 md:h-[500px] mt-20 mb-20 overflow-hidden rounded-xl">
@@ -324,7 +330,7 @@ interface FloatingIconData {
  * Features section component
  */
 interface FeaturesProps {
-  variant?: string;
+  variant?: VariantKey;
 }
 
 const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
@@ -374,7 +380,7 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
     // Auto-play video when hovering Expert Advice
     if (index === 2 && videoRef.current) {
       videoRef.current.play().catch(e => {
-        console.error("Video autoplay failed:", e);
+        logger.error("Video autoplay failed:", e);
       });
     }
   };
@@ -431,12 +437,12 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
               icon={feature.icon}
               title={feature.title}
               description={feature.description}
-              gradient={feature.gradient}
+              _gradient={feature.gradient}
               demoComponent={feature.demoComponent}
-              isActive={activeFeatureIndex === index}
+              _isActive={activeFeatureIndex === index}
               onMouseEnter={() => handleFeatureHover(index)}
               onMouseLeave={handleMouseLeave}
-              variant={variant as any}
+              variant={variant}
             />
           ))}
         </div>

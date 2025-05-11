@@ -1,3 +1,4 @@
+import logger from "../../../../../utils/logger";
 import {
     AnthropometricsData,
     InjuriesData,
@@ -40,7 +41,7 @@ export const updateCustomizationSection = (
         // Save to storage
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(updatedData));
     } catch (error) {
-        console.error(`Failed to update ${section} customization data:`, error);
+        logger.error(`Failed to update ${section} customization data:`, error);
     }
 };
 
@@ -59,7 +60,7 @@ export const saveMedicalCustomizationData = async (
         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(dataToStore));
         return { success: true };
     } catch (error) {
-        console.error('Failed to save medical customization data:', error);
+        logger.error('Failed to save medical customization data:', error);
         return {
             success: false,
             error: error instanceof Error ? error.message : 'Failed to save your medical information'
@@ -84,7 +85,7 @@ export const getMedicalCustomizationData = (): MedicalCustomizationData | null =
 
         return parsedData;
     } catch (error) {
-        console.error('Failed to load medical customization data:', error);
+        logger.error('Failed to load medical customization data:', error);
         // Return minimal valid data structure for graceful degradation
         return { completedSections: [] };
     }
@@ -97,7 +98,7 @@ export const clearMedicalCustomizationData = (): void => {
     try {
         sessionStorage.removeItem(STORAGE_KEY);
     } catch (error) {
-        console.error('Failed to clear medical customization data:', error);
+        logger.error('Failed to clear medical customization data:', error);
     }
 };
 
@@ -116,7 +117,7 @@ export const withRetry = async <T>(
             return { success: true, result };
         } catch (error) {
             attempts++;
-            console.error(`Operation failed (attempt ${attempts}/${maxRetries + 1}):`, error);
+            logger.error(`Operation failed (attempt ${attempts}/${maxRetries + 1}):`, error);
 
             if (attempts <= maxRetries) {
                 // Simple linear backoff

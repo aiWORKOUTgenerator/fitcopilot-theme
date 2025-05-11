@@ -1,6 +1,7 @@
 import { Pause, Play } from 'lucide-react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import { ErrorMessage, Loading } from '../../../../../components/UI';
+import logger from '../../../../../utils/logger';
 import './VideoPlayer.scss';
 
 /**
@@ -320,9 +321,8 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                         setConnectionSpeed('low');
                     }
                 } catch (error) {
-                    console.warn('Connection speed test failed:', error);
-                    // Default to medium if test fails
-                    setConnectionSpeed('medium');
+                    logger.warn('Connection speed test failed:', error);
+                    setConnectionSpeed('medium'); // Default to medium on error
                 }
             };
 
@@ -368,6 +368,9 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                     }
                 } else {
                     // Desktop - select based on connection
+                    // Define midIndex outside the switch to avoid lexical declaration issues
+                    let midIndex = 0;
+
                     switch (connectionSpeed) {
                         case 'low':
                             quality = qualitySources
@@ -375,7 +378,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                             break;
                         case 'medium':
                             // Middle quality or slightly higher
-                            const midIndex = Math.min(
+                            midIndex = Math.min(
                                 Math.floor(qualitySources.length / 2) + 1,
                                 qualitySources.length - 1
                             );
@@ -414,7 +417,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
         // Set up Intersection Observer for autoplay on scroll
         useEffect(() => {
-            if (!autoPlayOnScroll || !containerRef.current || isStreaming) return;
+            if (!autoPlayOnScroll || !containerRef.current) return;
 
             const handleIntersection = (entries: IntersectionObserverEntry[]) => {
                 const [entry] = entries;
@@ -428,11 +431,12 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             };
 
             const observer = new IntersectionObserver(handleIntersection, options);
-            observer.observe(containerRef.current);
+            const currentContainer = containerRef.current;
+            observer.observe(currentContainer);
 
             return () => {
-                if (containerRef.current) {
-                    observer.unobserve(containerRef.current);
+                if (currentContainer) {
+                    observer.unobserve(currentContainer);
                 }
                 observer.disconnect();
             };
@@ -445,13 +449,13 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             if (isInView) {
                 videoRef.current.currentTime = 0; // Always start from the beginning
                 videoRef.current.play().catch(e => {
-                    console.error("Video autoplay failed:", e);
+                    logger.error("Video autoplay failed:", e);
                 });
             } else if (videoRef.current.played.length > 0) {
                 videoRef.current.pause();
                 videoRef.current.currentTime = 0; // Reset to first frame when out of view
             }
-        }, [isInView, autoPlayOnScroll, hasError, isStreaming]);
+        }, [isInView, autoPlayOnScroll, hasError, isStreaming, videoRef]);
 
         // Helper to determine video type from URL
         const getVideoTypeFromUrl = (url: string): string => {
@@ -477,52 +481,41 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
         // Handle play/pause toggle
         const handlePlayPause = () => {
-            if (!videoRef.current || hasError || isStreaming) return;
+            if (!videoRef.current || hasError) return;
 
             if (isPlaying) {
                 videoRef.current.pause();
             } else {
                 videoRef.current.play().catch(error => {
-                    console.error("Video playback failed:", error);
+                    logger.error("Video playback failed:", error);
                     setHasError(true);
-                    setErrorDetails("The video failed to play. It may be unavailable or in an unsupported format.");
                 });
             }
         };
 
-        // Handle retry action on error
+        // Handle retry after error
         const handleRetry = () => {
-            if (!videoRef.current) return;
-
             setHasError(false);
             setIsLoading(true);
-            setErrorDetails(undefined);
 
-            // Try loading the video again
-            videoRef.current.load();
+            if (videoRef.current) {
+                videoRef.current.load();
 
-            if (autoPlay) {
-                videoRef.current.play().catch(error => {
-                    console.error("Video retry failed:", error);
-                    setHasError(true);
-                    setErrorDetails("We're still having trouble playing this video. Please try again later.");
-                });
-            }
-
-            // Execute custom handler if provided
-            if (errorAction && errorAction.handler) {
-                errorAction.handler();
+                // Try playing again
+                setTimeout(() => {
+                    if (videoRef.current) {
+                        videoRef.current.play().catch(error => {
+                            logger.error("Video retry failed:", error);
+                            setHasError(true);
+                            setIsLoading(false);
+                        });
+                    }
+                }, 1000);
             }
         };
 
         // Update play state when video state changes
         useEffect(() => {
-            if (isStreaming) {
-                setIsLoading(false);
-                setIsPlaying(true);
-                return;
-            }
-
             const video = videoRef.current;
             if (!video) return;
 
@@ -545,13 +538,13 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                 }
             };
             const handleError = (e: Event) => {
-                console.error("Video error:", e);
+                logger.error("Video error:", e);
                 setHasError(true);
                 setIsLoading(false);
-                setErrorDetails("This video cannot be played. It may be unavailable or in an unsupported format.");
 
-                // Call external error handler if provided
-                if (onError) onError(e);
+                if (onError) {
+                    onError(e);
+                }
             };
 
             video.addEventListener('play', handlePlay);
@@ -562,11 +555,10 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             video.addEventListener('error', handleError);
 
             // Auto play if specified
-            if (autoPlay && !hasError && !autoPlayOnScroll) {
+            if (autoPlay && !hasError) {
                 video.play().catch(e => {
-                    console.error("Video autoplay failed:", e);
+                    logger.error("Video autoplay failed:", e);
                     setHasError(true);
-                    setErrorDetails("The video couldn't auto-play. This may be due to browser autoplay policies.");
                 });
             }
 
@@ -578,7 +570,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                 video.removeEventListener('loadeddata', handleLoadedData);
                 video.removeEventListener('error', handleError);
             };
-        }, [videoRef, autoPlay, hasError, isPlaying, autoPlayOnScroll, isStreaming, onError]);
+        }, [autoPlay, hasError, isPlaying, autoPlayOnScroll, isStreaming, onError, videoRef]);
 
         // Update progress bar width based on current time
         useEffect(() => {

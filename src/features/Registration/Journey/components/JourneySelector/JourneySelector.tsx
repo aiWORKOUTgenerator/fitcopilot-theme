@@ -3,6 +3,12 @@ import React, { forwardRef, useEffect, useState } from 'react';
 import { AccordionSectionRef } from '../AccordionSection';
 import './JourneySelector.scss';
 
+// Define interface for the child component props
+interface JourneySelectorChildProps {
+    setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
+    isValid: boolean;
+}
+
 export interface JourneySelectorProps {
     /**
      * Unique identifier for the selector
@@ -93,7 +99,7 @@ const JourneySelector = forwardRef<AccordionSectionRef, JourneySelectorProps>(({
     isLoading = false,
     showConfirmButton = true,
     children
-}, ref) => {
+}, _ref) => {
     const [isValid, setIsValid] = useState(false);
 
     // Forward validity state to parent
@@ -142,7 +148,7 @@ const JourneySelector = forwardRef<AccordionSectionRef, JourneySelectorProps>(({
                         {/* Pass isValid/setIsValid to children */}
                         {React.Children.map(children, child => {
                             if (React.isValidElement(child)) {
-                                return React.cloneElement(child as React.ReactElement<any>, {
+                                return React.cloneElement(child as React.ReactElement<JourneySelectorChildProps>, {
                                     setIsValid,
                                     isValid
                                 });

@@ -30,10 +30,10 @@ export const useReducedMotion = (): boolean => {
         }
         // Legacy support
         else if ('addListener' in mediaQuery) {
-            // @ts-ignore - Older TypeScript doesn't know about addListener
+            // @ts-expect-error - Older TypeScript doesn't know about addListener
             mediaQuery.addListener(handleChange);
             return () => {
-                // @ts-ignore - Older TypeScript doesn't know about removeListener
+                // @ts-expect-error - Older TypeScript doesn't know about removeListener
                 mediaQuery.removeListener(handleChange);
             };
         }

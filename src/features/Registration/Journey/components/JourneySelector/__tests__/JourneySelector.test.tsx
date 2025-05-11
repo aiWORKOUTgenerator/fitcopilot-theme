@@ -86,7 +86,7 @@ describe('JourneySelector', () => {
         // Re-render with explicit isValid prop (this is a test approach since we can't easily test the internal state)
         const explicitValidProps = {
             ...mockProps,
-            // @ts-ignore - adding test-only prop
+            // @ts-expect-error - adding test-only prop
             isValid: true
         };
 
@@ -103,7 +103,7 @@ describe('JourneySelector', () => {
         // Force enable button for test by setting explicit props
         const enabledProps = {
             ...mockProps,
-            // @ts-ignore - adding test-only prop
+            // @ts-expect-error - adding test-only prop
             isValid: true,
             children: <div data-testid="test-content">Test Content</div>
         };
@@ -113,7 +113,7 @@ describe('JourneySelector', () => {
         // Find button and manually enable it for the test
         const confirmButton = screen.getByText('Confirm Selection').closest('button');
         if (confirmButton) {
-            // @ts-ignore - removing disabled attribute for testing
+            // @ts-expect-error - removing disabled attribute for testing
             confirmButton.disabled = false;
 
             // Now click the button

@@ -51,7 +51,7 @@ export const TooltipThemeProvider: React.FC<TooltipThemeProviderProps> = ({
  * 
  * @example
  * const { theme } = useTooltipTheme();
- * console.log(`Current theme: ${theme}`);
+ * logger.debug(`Current theme: ${theme}`);
  */
 export const useTooltipTheme = () => useContext(TooltipContext);
 

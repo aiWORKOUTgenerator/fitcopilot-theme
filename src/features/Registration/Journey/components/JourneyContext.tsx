@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import logger from "../../../../utils/logger";
 import { RegistrationData } from '../../types';
 
 // Define the context state interface
@@ -50,7 +51,7 @@ export const JourneyProvider: React.FC<{
                 const parsedState = JSON.parse(storedState);
                 return { ...parsedState, isSaving: false };
             } catch (error) {
-                console.error('Failed to parse stored journey state:', error);
+                logger.error('Failed to parse stored journey state:', error);
             }
         }
         // Fall back to initial state with any provided data
@@ -68,7 +69,7 @@ export const JourneyProvider: React.FC<{
                     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
                     setState(prev => ({ ...prev, isDirty: false, isSaving: false }));
                 } catch (error) {
-                    console.error('Failed to save journey state:', error);
+                    logger.error('Failed to save journey state:', error);
                     setState(prev => ({ ...prev, isSaving: false }));
                 }
             }, 300);

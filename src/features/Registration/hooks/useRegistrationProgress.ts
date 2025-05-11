@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
+import logger from '../../../utils/logger';
 import { RegistrationStep } from '../types';
 import useNavigationOverrides from './useNavigationOverrides';
 import { useRegistrationEvents } from './useRegistrationEvents';
@@ -76,7 +77,7 @@ export const useRegistrationProgress = (initialStep: RegistrationStep = Registra
             // Check for custom transitions first
             if (STEP_TRANSITION_MAP[prevStep]) {
                 const nextStep = STEP_TRANSITION_MAP[prevStep];
-                console.log(`[Registration] Transition: ${prevStep} -> ${nextStep} (via transition map)`);
+                logger.info(`[Registration] Transition: ${prevStep} -> ${nextStep} (via transition map)`);
                 trackMapTransition(prevStep, nextStep, {
                     transitionSource: 'nextStep',
                     via: 'map'
@@ -88,7 +89,7 @@ export const useRegistrationProgress = (initialStep: RegistrationStep = Registra
 
             // Handle invalid states
             if (currentIndex < 0) {
-                console.error(`Invalid registration step: ${prevStep}`);
+                logger.error(`Invalid registration step: ${prevStep}`);
                 const fallbackStep = RegistrationStep.SPLASH;
                 trackDirectNavigation(prevStep, fallbackStep, {
                     error: 'Invalid registration step',
@@ -99,13 +100,13 @@ export const useRegistrationProgress = (initialStep: RegistrationStep = Registra
 
             // Check for last step
             if (currentIndex >= REGISTRATION_STEPS.length - 1) {
-                console.log(`[Registration] Staying on last step: ${prevStep}`);
+                logger.info(`[Registration] Staying on last step: ${prevStep}`);
                 return prevStep; // Stay on last step
             }
 
             // Standard transition to next step
             const nextStep = REGISTRATION_STEPS[currentIndex + 1];
-            console.log(`[Registration] Transition: ${prevStep} -> ${nextStep} (standard)`);
+            logger.info(`[Registration] Transition: ${prevStep} -> ${nextStep} (standard)`);
             trackStandardTransition(prevStep, nextStep, {
                 transitionSource: 'nextStep',
                 stepIndex: currentIndex + 1
@@ -151,14 +152,14 @@ export const useRegistrationProgress = (initialStep: RegistrationStep = Registra
             if (typeof window !== 'undefined') {
                 window.sessionStorage.setItem('PREVIOUS_STEP', currentStep);
             }
-            console.log(`[Registration] Direct navigation: ${currentStep} -> ${step}`);
+            logger.info(`[Registration] Direct navigation: ${currentStep} -> ${step}`);
             trackDirectNavigation(currentStep, step, {
                 method: 'goToStep',
                 validDestination: true
             });
             setCurrentStep(step);
         } else {
-            console.error(`[Registration] Invalid step navigation attempted: ${step}`);
+            logger.error(`[Registration] Invalid step navigation attempted: ${step}`);
             trackDirectNavigation(currentStep, currentStep, {
                 method: 'goToStep',
                 validDestination: false,

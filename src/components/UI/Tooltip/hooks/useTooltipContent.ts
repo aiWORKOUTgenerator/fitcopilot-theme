@@ -5,19 +5,17 @@ import { useMemo } from 'react';
  * This helps prevent unnecessary re-renders by memoizing complex content
  * 
  * @param contentRenderer A function that returns the tooltip content
- * @param deps Dependencies array for content memoization
+ * @param data Data to use for rendering
  * @returns Memoized tooltip content
  */
 export function useTooltipContent<T>(
     contentRenderer: (data: T) => React.ReactNode,
-    data: T,
-    deps: React.DependencyList = []
+    data: T
 ) {
-    // Memoize the content based on dependencies
+    // Memoize the content based on contentRenderer and data
     return useMemo(() => {
         return contentRenderer(data);
-        // Include data in dependencies to catch reference changes
-    }, [contentRenderer, data, ...deps]);
+    }, [contentRenderer, data]);
 }
 
 /**
@@ -30,8 +28,7 @@ export function useTooltipContent<T>(
  *       <p>{userData.details}</p>
  *     </div>
  *   ),
- *   userData,
- *   [userData.id] // Only recompute if the user ID changes
+ *   userData
  * );
  * 
  * <Tooltip content={tooltipContent}>

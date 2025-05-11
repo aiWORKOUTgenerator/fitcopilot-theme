@@ -2,6 +2,7 @@
  * Standardized validation helpers for CustomizedMedical sections
  */
 
+import logger from "../../../../../utils/logger";
 import { AnthropometricsData, InjuriesData, LiabilityWaiverData, MedicalClearanceData } from '../types';
 
 /**
@@ -102,7 +103,7 @@ export const saveWithRetry = async <T>(
             const result = await saveFunction(data);
             return { success: true };
         } catch (error) {
-            console.error(`Error saving data (attempt ${attempts + 1}):`, error);
+            logger.error(`Error saving data (attempt ${attempts + 1}):`, error);
 
             if (++attempts <= maxRetries) {
                 // Simple linear retry with small delay

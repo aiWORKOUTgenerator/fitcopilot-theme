@@ -1,5 +1,6 @@
 import { Target } from 'lucide-react';
 import React, { forwardRef, useEffect, useState } from 'react';
+import logger from "../../../../../utils/logger";
 import { WorkoutGoal } from '../../../types';
 import { SectionCard, SelectionSummary } from '../../shared/components';
 import { selectorStorage, validationUtils } from '../../shared/utils';
@@ -35,7 +36,7 @@ const GoalSelector = forwardRef<AccordionSectionRef, GoalSelectorProps>(({
                 return storedState.selectedGoals || [];
             }
         } catch (error) {
-            console.error('Failed to load stored goal selector data:', error);
+            logger.error('Failed to load stored goal selector data:', error);
         }
 
         return [];

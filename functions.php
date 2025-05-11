@@ -105,6 +105,9 @@ require_once get_template_directory() . '/includes/admin-dashboard.php';
 // Include video manager admin page
 require_once get_template_directory() . '/inc/admin/video-manager.php';
 
+// Include critical CSS functions
+require_once get_template_directory() . '/inc/critical-css.php';
+
 // Add debugging script to help diagnose React mount issues
 function fitcopilot_add_debug_script() {
     if (is_page_template('homepage-template.php')) {

@@ -23,26 +23,27 @@
  */
 
 import React, { Suspense, useEffect, useState } from 'react';
+import logger from '../../../utils/logger';
 import { useEffectiveTheme } from './context';
 import './Tooltip.scss';
 import { TooltipProps, TooltipThemeContext } from './types';
 
 // Log config for debugging
-console.log('Loading Tooltip component with variants');
+logger.debug('Loading Tooltip component with variants');
 
 // Dynamically import tooltip theme variants using React.lazy
 const DefaultTooltip = React.lazy(() => {
-    console.log('Loading DefaultTooltip variant');
+    logger.debug('Loading DefaultTooltip variant');
     return import('./variants/default/Tooltip').then(module => ({ default: module.default }));
 });
 
 const HeroTooltip = React.lazy(() => {
-    console.log('Loading HeroTooltip variant');
+    logger.debug('Loading HeroTooltip variant');
     return import('./variants/hero/Tooltip').then(module => ({ default: module.default }));
 });
 
 const PricingTooltip = React.lazy(() => {
-    console.log('Loading PricingTooltip variant');
+    logger.debug('Loading PricingTooltip variant');
     return import('./variants/pricing/Tooltip').then(module => ({ default: module.default }));
 });
 
@@ -76,18 +77,15 @@ const Tooltip: React.FC<TooltipProps> = ({
         }
     }, [controlledIsVisible]);
 
-    // Determine theme using the context system and add fallback
-    let effectiveTheme: TooltipThemeContext;
-    try {
-        effectiveTheme = useEffectiveTheme(themeContext);
-        console.log('Tooltip using theme:', effectiveTheme);
-    } catch (error) {
-        console.error('Error getting effective theme, falling back to default', error);
-        effectiveTheme = themeContext || 'default';
-    }
+    // Always call hooks at the top level, never conditionally
+    // This fixes the React hooks rule violation
+    const hookTheme = useEffectiveTheme(themeContext);
+
+    // Determine the final theme, with fallbacks
+    const effectiveTheme = hookTheme || themeContext || 'default';
 
     // Log the theme being used
-    console.log('Tooltip variant being used:', effectiveTheme);
+    logger.debug('Tooltip variant being used:', effectiveTheme);
 
     // Get the variant component based on theme
     const TooltipVariant = TOOLTIP_VARIANTS[effectiveTheme];
@@ -112,5 +110,7 @@ const Tooltip: React.FC<TooltipProps> = ({
         </Suspense>
     );
 };
+
+Tooltip.displayName = 'Tooltip';
 
 export default Tooltip; 

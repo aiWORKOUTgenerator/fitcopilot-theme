@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import logger from '../utils/logger';
 
 type EasingOptions =
   | 'linear'
@@ -60,7 +61,7 @@ export function useAnimation(options: AnimationOptions = {}) {
           });
         }
       } catch (error) {
-        console.error('Failed to load animation library:', error);
+        logger.error('Failed to load animation library:', error);
       }
     };
 

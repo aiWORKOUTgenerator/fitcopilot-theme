@@ -1,5 +1,6 @@
 import { AlertCircle, Pause, Play } from 'lucide-react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import logger from '../../../../utils/logger';
 import './VideoPlayer.scss';
 
 /**
@@ -190,7 +191,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                 videoRef.current.pause();
             } else {
                 videoRef.current.play().catch(error => {
-                    console.error("Video playback failed:", error);
+                    logger.error("Video playback failed:", error);
                     setHasError(true);
                 });
             }
@@ -210,7 +211,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                 setHasError(false);
             };
             const handleError = (e: Event) => {
-                console.error("Video error:", e);
+                logger.error("Video error:", e);
                 setHasError(true);
                 setIsLoading(false);
             };
@@ -225,7 +226,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             // Auto play if specified
             if (autoPlay && !hasError) {
                 video.play().catch(e => {
-                    console.error("Video autoplay failed:", e);
+                    logger.error("Video autoplay failed:", e);
                     setHasError(true);
                 });
             }

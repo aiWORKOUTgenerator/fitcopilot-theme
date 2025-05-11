@@ -9,8 +9,15 @@ import ModernVariant from './modern';
 import SportsVariant from './sports';
 import WellnessVariant from './wellness';
 
+// Define proper props type
+type VariantKey = 'default' | 'gym' | 'boutique' | 'modern' | 'wellness' | 'classic' | 'sports' | 'minimalist' | 'registration';
+
+export interface JourneyProps {
+    variant?: VariantKey;
+}
+
 // Map variant keys to their React components
-export const JourneyMap: Record<string, React.ComponentType<any>> = {
+export const JourneyMap: Record<string, React.ComponentType<JourneyProps>> = {
     default: DefaultVariant,
     boutique: BoutiqueVariant,
     classic: ClassicVariant,

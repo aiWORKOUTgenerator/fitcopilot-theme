@@ -43,11 +43,20 @@ const MockGoalSelector = ({ onValidChange, onConfirm }) => {
     );
 };
 
+// Add displayName for the mock component
+MockGoalSelector.displayName = 'MockGoalSelector';
+
 // Mock the GoalSelector component
 jest.mock('../GoalSelector', () => {
-    return function (props) {
+    // Create a named function to ensure React DevTools displays a proper name
+    const MockedGoalSelector = function (props) {
         return <MockGoalSelector {...props} />;
     };
+
+    // Add displayName to the mock wrapper
+    MockedGoalSelector.displayName = 'GoalSelector';
+
+    return MockedGoalSelector;
 });
 
 // Import the mocked version

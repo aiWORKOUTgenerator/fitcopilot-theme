@@ -1,3 +1,4 @@
+import logger from "../../../../../utils/logger";
 import { RegistrationData } from "../../../types";
 import { useJourney } from "../../components/JourneyContext";
 
@@ -30,7 +31,7 @@ export const createSelectorStorage = <T>(
                 // Store in sessionStorage
                 sessionStorage.setItem(storageKey, JSON.stringify(data));
             } catch (error) {
-                console.error(`Failed to save data for ${storageKey}:`, error);
+                logger.error(`Failed to save data for ${storageKey}:`, error);
             }
         },
 
@@ -40,7 +41,7 @@ export const createSelectorStorage = <T>(
                 const stored = sessionStorage.getItem(storageKey);
                 return stored ? JSON.parse(stored) : defaultValue;
             } catch (error) {
-                console.error(`Failed to load data for ${storageKey}:`, error);
+                logger.error(`Failed to load data for ${storageKey}:`, error);
                 return defaultValue;
             }
         },
@@ -49,7 +50,7 @@ export const createSelectorStorage = <T>(
             try {
                 sessionStorage.removeItem(storageKey);
             } catch (error) {
-                console.error(`Failed to clear data for ${storageKey}:`, error);
+                logger.error(`Failed to clear data for ${storageKey}:`, error);
             }
         }
     };

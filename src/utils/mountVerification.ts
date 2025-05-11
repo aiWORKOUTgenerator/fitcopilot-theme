@@ -5,12 +5,14 @@
  * back to the WordPress environment.
  */
 
+import logger from './logger';
+
 /**
  * Notify WordPress that React has successfully mounted
  * Calls a global function that WordPress has defined in functions.php
  */
 export const notifyMountSuccess = (): void => {
-    console.log('React app successfully mounted');
+    logger.info('React app successfully mounted');
 
     // Add a class to the document for CSS targeting
     document.documentElement.classList.add('react-mounted');
@@ -18,10 +20,10 @@ export const notifyMountSuccess = (): void => {
     // Call the global callback function if it exists
     if (typeof window !== 'undefined' && 'fitcopilotReactMounted' in window) {
         try {
-            // @ts-ignore - Call the global function defined in WordPress
+            // @ts-expect-error - Call the global function defined in WordPress
             window.fitcopilotReactMounted();
         } catch (error) {
-            console.error('Error calling WordPress mount notification function:', error);
+            logger.error('Error calling WordPress mount notification function:', error);
         }
     }
 };
@@ -31,7 +33,7 @@ export const notifyMountSuccess = (): void => {
  */
 export const verifyEnvironment = (): boolean => {
     if (typeof window === 'undefined') {
-        console.warn('React app is running in a non-browser environment');
+        logger.warn('React app is running in a non-browser environment');
         return false;
     }
 
@@ -42,7 +44,7 @@ export const verifyEnvironment = (): boolean => {
         window.athleteDashboardData !== null;
 
     if (!hasWordPressData) {
-        console.warn('React app is running outside WordPress context or athleteDashboardData is missing');
+        logger.warn('React app is running outside WordPress context or athleteDashboardData is missing');
     }
 
     return hasWordPressData;
@@ -58,7 +60,7 @@ export const initializeMountVerification = (): void => {
     if (isValidEnvironment) {
         notifyMountSuccess();
     } else {
-        console.warn('React mount verification failed: invalid environment');
+        logger.warn('React mount verification failed: invalid environment');
     }
 };
 

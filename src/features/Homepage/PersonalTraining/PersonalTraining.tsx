@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import Button from '../../../components/UI/Button';
+import logger from '../../../utils/logger';
 import MediaContainer from './components/MediaContainer';
 import './PersonalTraining.scss';
 import { PersonalTrainingProps, Trainer, WordPressVideoData } from './types';
@@ -24,7 +25,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
         // Check both potential data sources
         if (window.fitcopilotVideoData) {
             setWordpressVideoData(window.fitcopilotVideoData);
-            console.log('WordPress video data loaded from fitcopilotVideoData:', window.fitcopilotVideoData);
+            logger.debug('WordPress video data loaded from fitcopilotVideoData:', window.fitcopilotVideoData);
         }
         // If not found in fitcopilotVideoData, try athleteDashboardData
         else if (window.athleteDashboardData?.wpData?.videoData) {
@@ -32,13 +33,13 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                 personalTraining: window.athleteDashboardData.wpData.videoData.personalTraining
             };
             setWordpressVideoData(athleteVideoData);
-            console.log('WordPress video data loaded from athleteDashboardData:', athleteVideoData);
+            logger.debug('WordPress video data loaded from athleteDashboardData:', athleteVideoData);
         }
         else {
-            console.log('No WordPress video data found');
-            console.log('Debug - window.athleteDashboardData:', window.athleteDashboardData);
+            logger.debug('No WordPress video data found');
+            logger.debug('Debug - window.athleteDashboardData:', window.athleteDashboardData);
             if (window.athleteDashboardData?.wpData) {
-                console.log('Debug - window.athleteDashboardData.wpData:', window.athleteDashboardData.wpData);
+                logger.debug('Debug - window.athleteDashboardData.wpData:', window.athleteDashboardData.wpData);
             }
         }
     }, []);

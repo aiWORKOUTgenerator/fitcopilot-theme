@@ -1,87 +1,69 @@
 import { Dumbbell, Flame, Heart } from 'lucide-react';
 import React, { useState } from 'react';
-// Add a custom hook to handle navigation with fallback
 import { FloatingIcons } from '../../components/FloatingIcons';
 import '../../Hero.scss';
 import { HeroProps } from '../../types';
 import './RegistrationHero.scss';
 
-// Fallback hook for environments without react-router
-const useNavigation = () => {
-    try {
-        // Dynamically import useNavigate to prevent build errors
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const { useNavigate } = require('react-router-dom');
-        return useNavigate();
-    } catch (error) {
-        // Return a no-op function if react-router-dom is not available
-        return () => {
-            console.warn('Navigation attempted but react-router-dom is not available');
-        };
-    }
-};
-
 /**
  * Splash page Hero component for the AI Workout Generator registration flow
  */
 const RegistrationHero: React.FC<HeroProps> = ({
-    loginLink = "https://aigymengine.com/react-login",
-    logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
+    _loginLink = "https://aigymengine.com/react-login",
+    _logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
 }) => {
-    const navigate = useNavigation();
-    // Form state
-    const [firstName, setFirstName] = useState('');
-    const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState<{ firstName?: string; email?: string }>({});
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    // Form state - prefixed with underscore as they're not yet used in this simplified view
+    const [_firstName, _setFirstName] = useState('');
+    const [_email, _setEmail] = useState('');
+    const [_errors, _setErrors] = useState<{ firstName?: string; email?: string }>({});
+    const [_isSubmitting, _setIsSubmitting] = useState(false);
 
-    // Handle firstName input change
-    const handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFirstName(e.target.value);
-        if (errors.firstName) {
-            setErrors(prev => ({ ...prev, firstName: undefined }));
+    // Note: These handlers are defined but unused in this simplified mock component
+    // In a real implementation, they would be connected to form inputs
+    const _handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        _setFirstName(e.target.value);
+        if (_errors.firstName) {
+            _setErrors(prev => ({ ...prev, firstName: undefined }));
         }
     };
 
-    // Handle email input change
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-        if (errors.email) {
-            setErrors(prev => ({ ...prev, email: undefined }));
+    const _handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        _setEmail(e.target.value);
+        if (_errors.email) {
+            _setErrors(prev => ({ ...prev, email: undefined }));
         }
     };
 
-    // Validate form and proceed to next section
-    const handleSubmit = (e: React.FormEvent) => {
+    const _handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const newErrors: { firstName?: string; email?: string } = {};
 
         // Validate first name
-        if (!firstName.trim()) {
+        if (!_firstName.trim()) {
             newErrors.firstName = 'First name is required';
         }
 
         // Validate email
-        if (!email) {
+        if (!_email) {
             newErrors.email = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
+        } else if (!/\S+@\S+\.\S+/.test(_email)) {
             newErrors.email = 'Please enter a valid email address';
         }
 
         // If there are errors, update state and don't proceed
         if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors);
+            _setErrors(newErrors);
             return;
         }
 
         // Show loading state
-        setIsSubmitting(true);
+        _setIsSubmitting(true);
 
         // Simulate saving form data
         setTimeout(() => {
             // Save data to localStorage for use in Features section
-            localStorage.setItem('registration_firstName', firstName);
-            localStorage.setItem('registration_email', email);
+            localStorage.setItem('registration_firstName', _firstName);
+            localStorage.setItem('registration_email', _email);
 
             // Scroll to Features section
             const featuresSection = document.getElementById('features-section');
@@ -89,7 +71,7 @@ const RegistrationHero: React.FC<HeroProps> = ({
                 featuresSection.scrollIntoView({ behavior: 'smooth' });
             }
 
-            setIsSubmitting(false);
+            _setIsSubmitting(false);
         }, 600);
     };
 
@@ -139,5 +121,7 @@ const RegistrationHero: React.FC<HeroProps> = ({
         </section>
     );
 };
+
+RegistrationHero.displayName = 'RegistrationHero';
 
 export default RegistrationHero; 

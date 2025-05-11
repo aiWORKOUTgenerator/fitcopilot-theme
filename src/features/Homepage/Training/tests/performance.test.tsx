@@ -22,7 +22,7 @@ describe('Training Component Performance', () => {
     beforeAll(() => {
         // Setup performance testing
         global.performance.now = jest.fn(() => Date.now());
-        // @ts-ignore - for testing purposes
+        // @ts-expect-error - for testing purposes
         jest.spyOn(React, 'memo').mockImplementation((component) => {
             return component;
         });

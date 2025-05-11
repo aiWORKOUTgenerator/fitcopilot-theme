@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import React, { memo, useCallback, useRef } from 'react';
 import useReducedMotion from '../../hooks/useReducedMotion';
-import { createAriaProps, createKeyboardHandler, manageFocus } from '../../utils/accessibilityHelpers';
+import { createAriaProps, manageFocus } from '../../utils/accessibilityHelpers';
 import { ThemeableComponent, applyTheme, getProgramToken } from '../../utils/themeUtils';
 import './ProgramCard.scss';
 import { ProgramCardProps } from './types';
@@ -48,10 +48,12 @@ const ProgramCard: React.FC<ProgramCardProps> = ({
     );
 
     // Setup keyboard handler for a11y - memoized for better performance
-    const handleKeyDown = useCallback(
-        createKeyboardHandler(onToggle),
-        [onToggle]
-    );
+    const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            onToggle();
+        }
+    }, [onToggle]);
 
     // Focus management
     React.useEffect(() => {

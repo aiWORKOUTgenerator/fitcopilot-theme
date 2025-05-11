@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import logger from "../../../../../utils/logger";
 import { useJourney } from '../../components/JourneyContext';
 import { SECTION_IDS } from '../constants/sectionConstants';
 import { AnthropometricsData, InjuriesData, LiabilityWaiverData, MedicalClearanceData, MedicalCustomizationData } from '../types';
@@ -147,7 +148,7 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
             await saveMedicalCustomizationData(medicalData);
             return true;
         } catch (error) {
-            console.error('Error saving medical data:', error);
+            logger.error('Error saving medical data:', error);
             throw error;
         }
     }, [state]);
@@ -188,7 +189,7 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
                     }
                 }
             } catch (err) {
-                console.error('Error loading medical data:', err);
+                logger.error('Error loading medical data:', err);
                 setError('Failed to load your saved medical information');
             } finally {
                 setIsLoading(false);
@@ -219,7 +220,7 @@ export const MedicalCustomizationProvider: React.FC<{ children: React.ReactNode 
                 };
 
                 saveMedicalCustomizationData(medicalData).catch(err => {
-                    console.error('Error saving medical data:', err);
+                    logger.error('Error saving medical data:', err);
                 });
             }
         }, 500);

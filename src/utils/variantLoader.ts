@@ -1,4 +1,5 @@
 import React from 'react';
+import logger from './logger';
 
 /**
  * Enhanced Variant Loader Utility
@@ -45,11 +46,11 @@ export const importVariant = async (featurePath: string, variant: VariantKey = '
         // Return the component or fallback to default export
         return module.default || module;
     } catch (err) {
-        console.error(`Error loading variant ${variant} for ${featurePath}:`, err);
+        logger.error(`Error loading variant ${variant} for ${featurePath}:`, err);
 
         // Fallback to default variant
         if (variant !== 'default') {
-            console.log(`Falling back to default variant for ${featurePath}`);
+            logger.info(`Falling back to default variant for ${featurePath}`);
             return importVariant(featurePath, 'default');
         }
 
@@ -140,7 +141,7 @@ export const createVariantComponent = (featurePath: string) => {
                     setIsLoading(false);
                 })
                 .catch(err => {
-                    console.error(`Failed to load variant ${selectedVariant} for ${featurePath}:`, err);
+                    logger.error(`Failed to load variant ${selectedVariant} for ${featurePath}:`, err);
                     setError(err);
                     setIsLoading(false);
                 });

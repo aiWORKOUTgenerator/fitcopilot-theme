@@ -1,5 +1,6 @@
 import { AlertCircle, Pause, Play } from 'lucide-react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import logger from '../../../../../utils/logger';
 import './VideoPlayer.scss';
 
 /**
@@ -178,7 +179,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             setSources(videoSources);
         }, [src, fallbackSrc]);
 
-        // Set up Intersection Observer for autoplay on scroll
+        // Set up intersection observer for autoplay on scroll
         useEffect(() => {
             if (!autoPlayOnScroll || !containerRef.current) return;
 
@@ -194,11 +195,12 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             };
 
             const observer = new IntersectionObserver(handleIntersection, options);
-            observer.observe(containerRef.current);
+            const currentContainer = containerRef.current;
+            observer.observe(currentContainer);
 
             return () => {
-                if (containerRef.current) {
-                    observer.unobserve(containerRef.current);
+                if (currentContainer) {
+                    observer.unobserve(currentContainer);
                 }
                 observer.disconnect();
             };
@@ -211,13 +213,13 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             if (isInView) {
                 videoRef.current.currentTime = 0; // Always start from the beginning
                 videoRef.current.play().catch(e => {
-                    console.error("Video autoplay failed:", e);
+                    logger.error("Video autoplay failed:", e);
                 });
             } else if (videoRef.current.played.length > 0) {
                 videoRef.current.pause();
                 videoRef.current.currentTime = 0; // Reset to first frame when out of view
             }
-        }, [isInView, autoPlayOnScroll, hasError]);
+        }, [isInView, autoPlayOnScroll, hasError, videoRef]);
 
         // Helper to determine video type from URL
         const getVideoTypeFromUrl = (url: string): string => {
@@ -249,7 +251,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                 videoRef.current.pause();
             } else {
                 videoRef.current.play().catch(error => {
-                    console.error("Video playback failed:", error);
+                    logger.error("Video playback failed:", error);
                     setHasError(true);
                 });
             }
@@ -279,7 +281,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                 }
             };
             const handleError = (e: Event) => {
-                console.error("Video error:", e);
+                logger.error("Video error:", e);
                 setHasError(true);
                 setIsLoading(false);
             };
@@ -294,7 +296,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             // Auto play if specified
             if (autoPlay && !hasError && !autoPlayOnScroll) {
                 video.play().catch(e => {
-                    console.error("Video autoplay failed:", e);
+                    logger.error("Video autoplay failed:", e);
                     setHasError(true);
                 });
             }

@@ -23,6 +23,8 @@ import {
     Testimonial
 } from '../../types/wordpress';
 
+import logger from '../../utils/logger';
+
 class DefaultWordPressService implements WordPressService {
     private data: WordPressServiceData;
     private subscribers: WordPressServiceEventHandlers[] = [];
@@ -221,12 +223,12 @@ class DefaultWordPressService implements WordPressService {
         const variants = this.data.themeVariants;
 
         // Debug information
-        console.log('Available theme variants:', variants);
-        console.log(`Looking for variant with key: ${key}`);
+        logger.debug('Available theme variants:', variants);
+        logger.debug(`Looking for variant with key: ${key}`);
 
         // First try the exact key
         if (variants[key] !== undefined) {
-            console.log(`Found exact match for ${key}: ${variants[key]}`);
+            logger.debug(`Found exact match for ${key}: ${variants[key]}`);
             return variants[key] as T;
         }
 
@@ -237,13 +239,13 @@ class DefaultWordPressService implements WordPressService {
 
             // Check if the short key exists
             if (variants[shortKey] !== undefined) {
-                console.log(`Found match for ${shortKey}: ${variants[shortKey]}`);
+                logger.debug(`Found match for ${shortKey}: ${variants[shortKey]}`);
                 return variants[shortKey] as T;
             }
         }
 
         // If we're falling back to default, log this for debugging
-        console.log(`No match found for ${key}, using default: ${defaultVariant}`);
+        logger.debug(`No match found for ${key}, using default: ${defaultVariant}`);
         return defaultVariant;
     }
 }

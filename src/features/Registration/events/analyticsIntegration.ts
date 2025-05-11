@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import logger from '../../../utils/logger';
 import { transitionEventManager } from './transitionEventManager';
 import { StepTransitionEvent } from './transitionEvents';
 
@@ -17,7 +18,7 @@ const analyticsService: AnalyticsService = {
     trackEvent: (eventName, properties) => {
         // In a real implementation, this would send to Google Analytics, Mixpanel, etc.
         if (process.env.NODE_ENV !== 'production') {
-            console.log(`[Analytics] ${eventName}`, properties);
+            logger.debug(`[Analytics] ${eventName}`, properties);
         }
     }
 };
