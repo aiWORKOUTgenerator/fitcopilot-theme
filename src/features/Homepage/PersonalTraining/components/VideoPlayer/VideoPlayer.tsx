@@ -4,6 +4,9 @@ import { ErrorMessage, Loading } from '../../../../../components/UI';
 import logger from '../../../../../utils/logger';
 import './VideoPlayer.scss';
 
+// Create a component-specific logger
+const videoLogger = logger.addContext('VideoPlayer');
+
 /**
  * Interface representing a video source with URL and content type
  * 
@@ -321,7 +324,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                         setConnectionSpeed('low');
                     }
                 } catch (error) {
-                    logger.warn('Connection speed test failed:', error);
+                    videoLogger.warn('Connection speed test failed', { error });
                     setConnectionSpeed('medium'); // Default to medium on error
                 }
             };
@@ -449,7 +452,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             if (isInView) {
                 videoRef.current.currentTime = 0; // Always start from the beginning
                 videoRef.current.play().catch(e => {
-                    logger.error("Video autoplay failed:", e);
+                    videoLogger.error("Video autoplay failed", { error: e });
                 });
             } else if (videoRef.current.played.length > 0) {
                 videoRef.current.pause();
@@ -487,7 +490,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                 videoRef.current.pause();
             } else {
                 videoRef.current.play().catch(error => {
-                    logger.error("Video playback failed:", error);
+                    videoLogger.error("Video playback failed", { error });
                     setHasError(true);
                 });
             }
@@ -505,7 +508,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                 setTimeout(() => {
                     if (videoRef.current) {
                         videoRef.current.play().catch(error => {
-                            logger.error("Video retry failed:", error);
+                            videoLogger.error("Video retry failed", { error });
                             setHasError(true);
                             setIsLoading(false);
                         });
@@ -538,7 +541,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
                 }
             };
             const handleError = (e: Event) => {
-                logger.error("Video error:", e);
+                videoLogger.error("Video error", { event: e });
                 setHasError(true);
                 setIsLoading(false);
 
@@ -557,7 +560,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
             // Auto play if specified
             if (autoPlay && !hasError) {
                 video.play().catch(e => {
-                    logger.error("Video autoplay failed:", e);
+                    videoLogger.error("Video autoplay failed", { error: e });
                     setHasError(true);
                 });
             }

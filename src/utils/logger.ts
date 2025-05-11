@@ -22,6 +22,10 @@ export const setLogLevel = (level: LogLevel): void => {
     currentLogLevel = level;
 };
 
+// Timer IDs for performance measurement
+const timers: Record<string, number> = {};
+let timerCounter = 0;
+
 /**
  * Base logging function
  * @param level Log level
@@ -37,9 +41,8 @@ const logMessage = (level: LogLevel, message: string, ...data: unknown[]): void 
     const formattedMessage = `[${timestamp}] ${message}`;
 
     // In production, we might want to send logs to a server
-    if (isProduction) {
-        // TODO: Implement production logging strategy
-        // This could send logs to a server, analytics platform, etc.
+    if (isProduction && level < LogLevel.WARN) {
+        // Skip debug and info logs in production
         return;
     }
 
@@ -96,16 +99,15 @@ export const error = (message: string, ...data: unknown[]): void => {
  * Capture and log error objects
  * Useful for try/catch blocks
  */
-export const captureError = (err: unknown, context?: string): void => {
+export const captureError = (err: unknown, context: Record<string, unknown> = {}): void => {
     const errorMessage = err instanceof Error
         ? err.message
         : (typeof err === 'string' ? err : 'Unknown error');
 
-    const contextMessage = context
-        ? `[${context}] ${errorMessage}`
-        : errorMessage;
+    const component = context.component ? `[${String(context.component)}] ` : '';
+    const contextMessage = `${component}${errorMessage}`;
 
-    error(contextMessage, err);
+    error(contextMessage, { ...context, error: err });
 
     // In production, we might want to send errors to an error tracking service
     if (isProduction) {
@@ -129,17 +131,55 @@ export const group = (label: string, callback: () => void): void => {
 };
 
 /**
- * Log a performance measurement
+ * Start timing a performance measurement
+ * @param label Label for the timer
+ * @returns Timer ID to use with timeEnd
  */
-export const measure = (label: string, callback: () => void): void => {
-    if (isProduction) {
-        callback();
+export const time = (label: string): string => {
+    const timerId = `${label}-${timerCounter++}`;
+    if (!isProduction) {
+        console.time(timerId);
+    }
+    timers[timerId] = performance.now();
+    return timerId;
+};
+
+/**
+ * End timing a performance measurement
+ * @param timerId Timer ID from time()
+ */
+export const timeEnd = (timerId: string): void => {
+    if (!timers[timerId]) {
+        warn(`Timer '${timerId}' does not exist`);
         return;
     }
 
-    console.time(label);
-    callback();
-    console.timeEnd(label);
+    const elapsed = performance.now() - timers[timerId];
+    if (!isProduction) {
+        console.timeEnd(timerId);
+    }
+
+    delete timers[timerId];
+    debug(`Operation took ${elapsed.toFixed(2)}ms`, { timerId, duration: elapsed });
+};
+
+/**
+ * Create a component-specific logger
+ * @param component Component name or identifier
+ * @returns Logger with component context
+ */
+export const addContext = (component: string) => {
+    return {
+        debug: (msg: string, ...args: unknown[]) => debug(`[${component}] ${msg}`, ...args),
+        info: (msg: string, ...args: unknown[]) => info(`[${component}] ${msg}`, ...args),
+        warn: (msg: string, ...args: unknown[]) => warn(`[${component}] ${msg}`, ...args),
+        error: (msg: string, ...args: unknown[]) => error(`[${component}] ${msg}`, ...args),
+        captureError: (err: unknown, context: Record<string, unknown> = {}) =>
+            captureError(err, { ...context, component }),
+        time: (label: string) => time(`${component}:${label}`),
+        timeEnd,
+        group: (label: string, callback: () => void) => group(`${component}: ${label}`, callback),
+    };
 };
 
 // Default export for ease of use
@@ -150,7 +190,9 @@ export default {
     error,
     captureError,
     group,
-    measure,
+    time,
+    timeEnd,
+    addContext,
     setLogLevel,
     LogLevel
 }; 

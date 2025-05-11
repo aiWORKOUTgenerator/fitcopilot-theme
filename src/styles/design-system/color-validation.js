@@ -7,6 +7,9 @@
  * Run with: node color-validation.js
  */
 
+const logger = require('../../utils/logger').default;
+const designLogger = logger.addContext('DesignSystem');
+
 // Color definitions from our design system
 const colors = {
     // Primary (blue)
@@ -124,9 +127,9 @@ function passesWCAGAAA(contrast, isLargeText = false) {
 }
 
 // Validate and output results
-console.log('Color System Validation Results');
-console.log('===============================');
-console.log();
+designLogger.debug('Color System Validation Results');
+designLogger.debug('===============================');
+designLogger.debug('');
 
 // Test each combination
 combinations.forEach(combo => {
@@ -136,23 +139,23 @@ combinations.forEach(combo => {
     const passesAAA = passesWCAGAAA(contrast);
     const passesAAALarge = passesWCAGAAA(contrast, true);
 
-    console.log(`${combo.name}:`);
-    console.log(`  Foreground: ${combo.fg}`);
-    console.log(`  Background: ${combo.bg}`);
-    console.log(`  Contrast Ratio: ${contrast.toFixed(2)}:1`);
-    console.log(`  WCAG AA (Normal Text): ${passesAA ? '✅ PASS' : '❌ FAIL'}`);
-    console.log(`  WCAG AA (Large Text): ${passesAALarge ? '✅ PASS' : '❌ FAIL'}`);
-    console.log(`  WCAG AAA (Normal Text): ${passesAAA ? '✅ PASS' : '❌ FAIL'}`);
-    console.log(`  WCAG AAA (Large Text): ${passesAAALarge ? '✅ PASS' : '❌ FAIL'}`);
-    console.log();
+    designLogger.debug(`${combo.name}:`);
+    designLogger.debug(`  Foreground: ${combo.fg}`);
+    designLogger.debug(`  Background: ${combo.bg}`);
+    designLogger.debug(`  Contrast Ratio: ${contrast.toFixed(2)}:1`);
+    designLogger.debug(`  WCAG AA (Normal Text): ${passesAA ? '✅ PASS' : '❌ FAIL'}`);
+    designLogger.debug(`  WCAG AA (Large Text): ${passesAALarge ? '✅ PASS' : '❌ FAIL'}`);
+    designLogger.debug(`  WCAG AAA (Normal Text): ${passesAAA ? '✅ PASS' : '❌ FAIL'}`);
+    designLogger.debug(`  WCAG AAA (Large Text): ${passesAAALarge ? '✅ PASS' : '❌ FAIL'}`);
+    designLogger.debug('');
 });
 
 // Summary
-console.log('Summary');
-console.log('=======');
+designLogger.debug('Summary');
+designLogger.debug('=======');
 const passedCount = combinations.filter(combo =>
     passesWCAGAA(getContrastRatio(combo.fg, combo.bg))
 ).length;
 
-console.log(`${passedCount}/${combinations.length} combinations pass WCAG AA standards`);
-console.log(`${Math.round((passedCount / combinations.length) * 100)}% compliance rate`); 
+designLogger.debug(`${passedCount}/${combinations.length} combinations pass WCAG AA standards`);
+designLogger.debug(`${Math.round((passedCount / combinations.length) * 100)}% compliance rate`); 

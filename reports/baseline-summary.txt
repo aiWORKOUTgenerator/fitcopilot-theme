@@ -1,0 +1,8 @@
+ 459 "ruleId":"no-mixed-spaces-and-tabs"
+ 459 "ruleId":"no-extra-semi"
+  68 "ruleId":"no-console"
+  65 "ruleId":"@typescript-eslint/no-explicit-any"
+  57 "ruleId":"fitcopilot/use-logger"
+  50 "ruleId":"@typescript-eslint/no-unused-vars"
+   1 "ruleId":"@typescript-eslint/no-require-imports"
+   1 "ruleId":"@typescript-eslint/no-empty-object-type"
