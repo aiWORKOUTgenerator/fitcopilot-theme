@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESLint Warning Pattern Analysis</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .chart-container { max-width: 800px; margin: 0 auto 30px; }
+    .section { margin-bottom: 40px; }
+    h1, h2 { color: #333; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+    th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background-color: #f2f2f2; }
+    .summary { background: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>ESLint Warning Pattern Analysis</h1>
+  
+  <div class="summary">
+    <h2>Summary</h2>
+    <p>Total patterns analyzed: 12</p>
+    <p>Component warnings analyzed: 12</p>
+  </div>
+  
+  <div class="section">
+    <h2>Overall Pattern Distribution</h2>
+    <div class="chart-container">
+      <canvas id="patternChart"></canvas>
+    </div>
+    
+    <table>
+      <tr>
+        <th>Pattern</th>
+        <th>Count</th>
+        <th>Percentage</th>
+      </tr>
+      
+          <tr>
+            <td>unusedProps</td>
+            <td>7</td>
+            <td>58.3%</td>
+          </tr>
+        
+          <tr>
+            <td>anyTypes</td>
+            <td>5</td>
+            <td>41.7%</td>
+          </tr>
+        
+          <tr>
+            <td>hooksExhaustiveDeps</td>
+            <td>0</td>
+            <td>0.0%</td>
+          </tr>
+        
+          <tr>
+            <td>implicitType</td>
+            <td>0</td>
+            <td>0.0%</td>
+          </tr>
+        
+          <tr>
+            <td>unnecessaryEscape</td>
+            <td>0</td>
+            <td>0.0%</td>
+          </tr>
+        
+          <tr>
+            <td>importOrder</td>
+            <td>0</td>
+            <td>0.0%</td>
+          </tr>
+        
+          <tr>
+            <td>preferConst</td>
+            <td>0</td>
+            <td>0.0%</td>
+          </tr>
+        
+          <tr>
+            <td>consoleStatements</td>
+            <td>0</td>
+            <td>0.0%</td>
+          </tr>
+        
+          <tr>
+            <td>accessibility</td>
+            <td>0</td>
+            <td>0.0%</td>
+          </tr>
+        
+          <tr>
+            <td>other</td>
+            <td>0</td>
+            <td>0.0%</td>
+          </tr>
+        
+    </table>
+  </div>
+  
+  <div class="section">
+    <h2>Pattern Distribution by Component Type</h2>
+    <div class="chart-container">
+      <canvas id="componentTypeChart"></canvas>
+    </div>
+  </div>
+  
+  <script>
+    // Overall pattern chart
+    const patternData = [{"name":"unusedProps","value":7},{"name":"anyTypes","value":5},{"name":"hooksExhaustiveDeps","value":0},{"name":"implicitType","value":0},{"name":"unnecessaryEscape","value":0},{"name":"importOrder","value":0},{"name":"preferConst","value":0},{"name":"consoleStatements","value":0},{"name":"accessibility","value":0},{"name":"other","value":0}];
+    
+    new Chart(document.getElementById('patternChart'), {
+      type: 'pie',
+      data: {
+        labels: patternData.map(d => d.name),
+        datasets: [{
+          data: patternData.map(d => d.value),
+          backgroundColor: [
+            '#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#c9cbcf',
+            '#ff9f40', '#ffcd56', '#7cd992', '#4dbde6', '#cab0e3'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'right' },
+          title: { display: true, text: 'Warning Patterns Distribution' }
+        }
+      }
+    });
+    
+    // Component type comparison chart
+    const componentTypes = ["UI","Feature","Layout"];
+    const patternTypes = ["unusedProps","anyTypes","hooksExhaustiveDeps","implicitType","unnecessaryEscape","importOrder","preferConst","consoleStatements","accessibility","other"];
+    
+    const typeData = {
+      labels: componentTypes,
+      datasets: patternTypes.map((pattern, index) => {
+        const colors = ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff', '#c9cbcf', 
+                        '#ff9f40', '#ffcd56', '#7cd992', '#4dbde6'];
+        return {
+          label: pattern,
+          data: componentTypes.map(type => componentTypePatterns[type].patterns[pattern]),
+          backgroundColor: colors[index % colors.length]
+        };
+      })
+    };
+    
+    new Chart(document.getElementById('componentTypeChart'), {
+      type: 'bar',
+      data: typeData,
+      options: {
+        responsive: true,
+        scales: {
+          x: { stacked: true },
+          y: { stacked: true }
+        },
+        plugins: {
+          title: { display: true, text: 'Warning Patterns by Component Type' }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

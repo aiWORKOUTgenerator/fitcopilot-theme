@@ -1,148 +1,175 @@
 # Logger Usage Guide
 
-## Overview
-
-The FitCopilot logger is a centralized, structured logging utility that provides consistent logging capabilities across the application. It's designed to replace direct use of `console` methods.
+This guide provides documentation for using the structured logger utility in the FitCopilot codebase. The logger provides environment-aware logging with different log levels and consistent formatting across the application.
 
 ## Basic Usage
 
+Import the logger at the top of your file:
+
 ```typescript
 import logger from '../utils/logger';
+// OR for named exports
+import { debug, info, warn, error } from '../utils/logger';
+```
 
-// Different log levels
-logger.debug('Debug message');
-logger.info('Informational message');
-logger.warn('Warning message');
-logger.error('Error message');
+Use the appropriate log level functions:
 
-// With additional context data
-logger.info('User logged in', { userId: 123, timestamp: new Date() });
+```typescript
+// Debug messages (only visible in development)
+logger.debug('User clicked signup button', { userId: 123 });
 
-// Error logging with error object
-try {
-  // Some code that might throw
-} catch (error) {
-  logger.error('Operation failed', { error });
-}
+// Informational messages
+logger.info('User registration completed');
+
+// Warning messages
+logger.warn('API request taking longer than expected', { endpoint: '/users', duration: 3000 });
+
+// Error messages
+logger.error('Failed to process payment', { orderId: 'ABC123', errorCode: 500 });
 ```
 
 ## Component-Specific Logging
 
-For component-specific logging, you can create a dedicated logger with context:
+For components, create a contextualized logger:
 
 ```typescript
-import logger from '../utils/logger';
+import logger from '../utils/logger'; 
 
-// Create component-specific logger
-const componentLogger = logger.addContext('Button');
+// At the top of your component file
+const componentLogger = logger.addContext('ButtonComponent');
 
-// Use the component logger
-componentLogger.debug('Button rendered');
-componentLogger.error('Click handler failed', { errorCode: 500 });
-```
-
-## Performance Measurement
-
-Use the performance utilities for timing operations:
-
-```typescript
-import logger from '../utils/logger';
-
-// Start timing
-const timerId = logger.time('dataFetch');
-
-// Some async operation
-await fetchData();
-
-// End timing and log result
-logger.timeEnd(timerId);
-```
-
-## Environment Awareness
-
-The logger automatically adjusts behavior based on the environment:
-
-- **Development**: All logs are output to the console
-- **Production**: Only warnings and errors are output, debug/info are suppressed
-- **Test**: Logs can be captured for verification
-
-## Error Capturing
-
-For critical errors that should be reported to monitoring systems:
-
-```typescript
-import logger from '../utils/logger';
-
-try {
-  // Critical operation
-} catch (error) {
-  // Log and capture for reporting
-  logger.captureError(error, {
-    component: 'PaymentProcessor',
-    severity: 'critical',
-    userId: currentUser.id
-  });
+// Then use it in your component
+function ButtonComponent() {
+  componentLogger.debug('Button rendered');
+  
+  const handleClick = () => {
+    componentLogger.info('Button clicked');
+    // ...
+  };
 }
 ```
 
-## Form Submission Pattern
+## Error Handling
 
-For handling form submissions:
+Use the `captureError` method for try/catch blocks:
 
 ```typescript
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  setIsLoading(true);
-  
-  try {
-    const result = await submitForm(formData);
-    logger.info('Form submitted successfully', { formId: 'registration', userId });
-    onSuccess(result);
-  } catch (error) {
-    logger.error('Form submission failed', { 
-      formId: 'registration', 
-      error,
-      formData: sanitizeFormData(formData) // Remove sensitive data
-    });
-    setError('Submission failed. Please try again.');
-  } finally {
-    setIsLoading(false);
-  }
-};
+try {
+  // Risky operation
+  await submitForm(data);
+} catch (error) {
+  logger.captureError(error, { 
+    component: 'RegistrationForm',
+    formData: data,
+    userId: user.id
+  });
+  // Show user-friendly error message
+  setErrorMessage('Unable to submit form. Please try again.');
+}
 ```
 
-## API Call Pattern
+## Performance Timing
 
-For API requests:
+Measure performance with time tracking:
 
 ```typescript
-const fetchData = async () => {
-  logger.debug('Fetching data', { endpoint: '/api/users' });
-  
-  try {
-    const response = await fetch('/api/users');
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
-    }
-    
-    const data = await response.json();
-    logger.debug('Data fetched successfully', { count: data.length });
-    return data;
-  } catch (error) {
-    logger.error('API request failed', { 
-      endpoint: '/api/users',
-      error: error.message
-    });
-    throw error;
-  }
-};
+// Start timing
+const timerId = logger.time('dataFetchOperation');
+
+// Do some work
+await fetchData();
+
+// End timing
+logger.timeEnd(timerId);
+// Will log: "Operation took 123.45ms"
+```
+
+## Grouping Related Logs
+
+Group related logs together:
+
+```typescript
+logger.group('Form Validation', () => {
+  logger.debug('Validating email');
+  logger.debug('Validating password');
+  logger.debug('Validation complete');
+});
+```
+
+## Configuration
+
+The logger automatically configures itself based on the environment, but you can override settings:
+
+```typescript
+// Set minimum log level
+logger.setLogLevel(LogLevel.WARN); // Only show warnings and errors
+
+// Full configuration
+logger.configureLogger({
+  minLevel: LogLevel.DEBUG,
+  enableConsole: true,
+  enableRemoteLogging: false,
+  enableGrouping: true,
+  enableTimers: true
+});
 ```
 
 ## Best Practices
 
-1. **Use the appropriate log level** - Debug for development info, Info for significant events, Warn for potential issues, Error for failures
-2. **Include relevant context** - Add useful metadata as a second parameter
-3. **Sanitize sensitive data** - Never log passwords, tokens, or personal information
-4. **Be concise but descriptive** - Log messages should be clear and actionable
-5. **Log at boundaries** - Focus on component entry/exit points, API calls, and state transitions 
+1. **Use Appropriate Levels**
+   - `debug`: Development debugging only
+   - `info`: General application flow
+   - `warn`: Possible issues that don't break functionality
+   - `error`: Issues that affect functionality
+
+2. **Add Context to Logs**
+   - Include relevant data objects with logs
+   - Use component-specific loggers
+   - Include IDs for entities (users, orders, etc.)
+
+3. **Structured Data**
+   - Pass objects as additional parameters for structured logging
+   - Don't concatenate objects into strings
+
+4. **Sensitive Data**
+   - Never log passwords, tokens or personal information
+   - Mask sensitive data (e.g., `{ email: maskEmail(user.email) }`)
+
+5. **Error Formatting**
+   - Use `logger.captureError()` instead of `logger.error(error.message)`
+   - Include stack traces and relevant context
+
+## Migration from Console
+
+Replace console statements with the equivalent logger methods:
+
+| Console Method | Logger Replacement |
+|----------------|-------------------|
+| `console.log()` | `logger.debug()` |
+| `console.info()` | `logger.info()` |
+| `console.warn()` | `logger.warn()` |
+| `console.error()` | `logger.error()` |
+| `console.group()` | `logger.group()` |
+| `console.time()` | `logger.time()` |
+| `console.timeEnd()` | `logger.timeEnd()` |
+
+## ESLint Integration
+
+The project includes a custom ESLint rule to enforce logger usage. To fix violations:
+
+```bash
+# Run ESLint with auto-fix for logger issues
+npm run lint:fix-console
+```
+
+## Implementation Details
+
+The logger implementation supports:
+- Environment-specific configuration
+- Timestamp inclusion
+- Multiple log levels
+- Performance timing
+- Log grouping
+- Context-aware logging
+- Safe fallbacks for environments without console
+- Remote logging in production (when configured) 

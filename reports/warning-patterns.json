@@ -1,0 +1,12 @@
+{
+  "unusedProps": 7,
+  "anyTypes": 5,
+  "hooksExhaustiveDeps": 0,
+  "implicitType": 0,
+  "unnecessaryEscape": 0,
+  "importOrder": 0,
+  "preferConst": 0,
+  "consoleStatements": 0,
+  "accessibility": 0,
+  "other": 0
+}

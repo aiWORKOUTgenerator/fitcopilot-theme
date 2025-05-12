@@ -1,0 +1,14 @@
+[
+  {
+    "ruleId": "@typescript-eslint/no-explicit-any",
+    "count": 13
+  },
+  {
+    "ruleId": "@typescript-eslint/no-unused-vars",
+    "count": 3
+  },
+  {
+    "ruleId": "fitcopilot/use-logger",
+    "count": 1
+  }
+]

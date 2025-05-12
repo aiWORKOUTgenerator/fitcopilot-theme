@@ -3,7 +3,7 @@
  * Functions to handle token-based styling for different steps and variants
  */
 
-type VariantKey = 'default' | 'gym' | 'sports' | 'wellness' | 'modern' | 'classic' | 'minimalist';
+type _VariantKey = 'default' | 'gym' | 'sports' | 'wellness' | 'modern' | 'classic' | 'minimalist';
 type StepNumber = 1 | 2 | 3 | 4;
 type StepColorFamily = 'lime' | 'cyan' | 'violet' | 'amber';
 
@@ -84,9 +84,19 @@ export const getStepCTAText = (stepNumber: number): string => {
  * Get the CTA URL based on step title
  */
 export const getStepCTAUrl = (stepTitle: string): string => {
-    if (stepTitle.includes('Personalized Plan')) {
-        return 'http://builder.fitcopilot.ai';
+    if (!stepTitle) {
+        return 'https://aigymengine.com/workout-generator-registration';
     }
+
+    try {
+        if (stepTitle.includes('Personalized Plan')) {
+            return 'http://builder.fitcopilot.ai';
+        }
+    } catch (_e) {
+        // If includes method fails, return default
+        return 'https://aigymengine.com/workout-generator-registration';
+    }
+
     return 'https://aigymengine.com/workout-generator-registration';
 };
 

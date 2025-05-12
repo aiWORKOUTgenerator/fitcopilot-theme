@@ -1,0 +1,23 @@
+[
+  {
+    "rule": "@typescript-eslint/no-explicit-any",
+    "tsx": 9,
+    "ts": 13,
+    "total": 22,
+    "ratio": "0.69"
+  },
+  {
+    "rule": "@typescript-eslint/no-unused-vars",
+    "tsx": 16,
+    "ts": 3,
+    "total": 19,
+    "ratio": "5.33"
+  },
+  {
+    "rule": "fitcopilot/use-logger",
+    "tsx": 0,
+    "ts": 1,
+    "total": 1,
+    "ratio": "N/A"
+  }
+]

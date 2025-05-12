@@ -1,0 +1,16 @@
+Warning Pattern Distribution:
+----------------------------
+unusedProps: 7 occurrences
+anyTypes: 5 occurrences
+hooksExhaustiveDeps: 0 occurrences
+implicitType: 0 occurrences
+unnecessaryEscape: 0 occurrences
+importOrder: 0 occurrences
+preferConst: 0 occurrences
+consoleStatements: 0 occurrences
+accessibility: 0 occurrences
+other: 0 occurrences
+Pattern analysis complete:
+- reports/warning-patterns.json
+- reports/component-type-patterns.json
+- reports/warning-patterns.html

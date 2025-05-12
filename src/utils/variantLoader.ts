@@ -90,7 +90,7 @@ export const getComponentVariant = (
  */
 export const createVariantComponent = (featurePath: string) => {
     // Create a React component
-    const VariantLoader = (props: any) => {
+    const VariantLoader = (props: Record<string, unknown>) => {
         // Determine which variant to use (from data-theme attribute or props)
         const [variant, setVariant] = React.useState<VariantKey>('default');
         const [VariantComponent, setVariantComponent] = React.useState<React.ComponentType<any> | null>(null);

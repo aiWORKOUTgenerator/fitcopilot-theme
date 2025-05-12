@@ -27,7 +27,7 @@ class TransitionEventManager {
         sourceStep: RegistrationStep,
         destinationStep: RegistrationStep,
         transitionType: TransitionType,
-        metadata?: Record<string, any>
+        metadata?: Record<string, unknown>
     ): void {
         const event: StepTransitionEvent = {
             sourceStep,

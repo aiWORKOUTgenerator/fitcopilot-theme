@@ -56,7 +56,9 @@ const floatingIcons = [
 
 /**
  * Interface for floating icon data
+ * @deprecated - This will be used in future animations - do not remove
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface FloatingIconData {
     Icon: React.ElementType;
     size: number;
@@ -72,7 +74,7 @@ export const Hero: React.FC<HeroProps> = ({
     ctaText = 'Create My Training Plan',
     secondaryCtaText = 'Learn more',
     logoUrl = 'http://fitcopilot-theme.local/wp-content/uploads/2025/05/AI-Workout-Generater-TransparentBG-400x516-1.png',
-    variant = 'sports'
+    variant: _variant = 'sports'
 }) => {
     const benefits = [
         'Sport-specific training programs',

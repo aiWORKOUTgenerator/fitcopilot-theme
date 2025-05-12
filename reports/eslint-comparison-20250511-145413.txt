@@ -1,0 +1,7 @@
+ESLint Comparison Report (20250511-145413)
+==================================
+
+Baseline vs Current:
+Total issues: 244 -> 134 (+110)
+Errors: 94 -> 76 (+18)
+Warnings: 150 -> 58 (+92)

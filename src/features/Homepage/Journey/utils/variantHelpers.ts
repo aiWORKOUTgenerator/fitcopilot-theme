@@ -3,7 +3,7 @@ import { VariantKey, isVariant } from '../types';
 /**
  * Returns the accent color class appropriate for the given variant
  */
-export const getAccentColorClass = (variant: VariantKey): string => {
+export const getAccentColorClass = (_variant: VariantKey): string => {
     // All variants use the same semantic CSS class which gets overridden in CSS
     return 'text-journey-accent';
 };
@@ -52,7 +52,7 @@ export const getGradientClass = (variant: VariantKey): string => {
 /**
  * Returns the appropriate hover text color class based on variant
  */
-export const getHoverTextColor = (variant: VariantKey): string => {
+export const getHoverTextColor = (_variant: VariantKey): string => {
     // All variants use the same hover class for consistency
     return 'hover-text-journey-accent';
 };

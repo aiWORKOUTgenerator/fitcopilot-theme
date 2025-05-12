@@ -1,5 +1,9 @@
 import React from 'react';
 import Button from '../components/UI/Button/Button';
+import logger from '../utils/logger';
+
+// Create component-specific logger
+const tracingLogger = logger.addContext('ButtonPropsTracing');
 
 // Type copied from the original Button component
 interface ButtonProps {
@@ -22,30 +26,30 @@ interface ButtonProps {
  * Wrapper component that logs all Button props before passing them through
  */
 export const TracedButton: React.FC<ButtonProps> = (props) => {
-    // Log props to console
-    console.group('Button Props Tracing');
-    console.log('Props received:', { ...props });
+    // Log props using structured logger
+    tracingLogger.group('Button Props Tracing', () => {
+        tracingLogger.debug('Props received:', { ...props });
 
-    // Analyze themeContext
-    if (props.themeContext) {
-        console.log('themeContext value:', props.themeContext);
-        console.log('Expected class:', `button--${props.themeContext}`);
-    } else {
-        console.warn('No themeContext provided');
-    }
+        // Analyze themeContext
+        if (props.themeContext) {
+            tracingLogger.debug('themeContext value:', props.themeContext);
+            tracingLogger.debug('Expected class:', `button--${props.themeContext}`);
+        } else {
+            tracingLogger.warn('No themeContext provided');
+        }
 
-    // Log CSS class composition 
-    const expectedClasses = [
-        'button',
-        `button--${props.variant || 'primary'}`,
-        `button--${props.size || 'medium'}`,
-        props.themeContext && `button--${props.themeContext}`,
-        props.fullWidth && 'button--fullwidth',
-        props.className
-    ].filter(Boolean).join(' ');
+        // Log CSS class composition 
+        const expectedClasses = [
+            'button',
+            `button--${props.variant || 'primary'}`,
+            `button--${props.size || 'medium'}`,
+            props.themeContext && `button--${props.themeContext}`,
+            props.fullWidth && 'button--fullwidth',
+            props.className
+        ].filter(Boolean).join(' ');
 
-    console.log('Expected final class string:', expectedClasses);
-    console.groupEnd();
+        tracingLogger.debug('Expected final class string:', expectedClasses);
+    });
 
     // Pass all props to the original Button
     return <Button {...props} data-traced="true" />;

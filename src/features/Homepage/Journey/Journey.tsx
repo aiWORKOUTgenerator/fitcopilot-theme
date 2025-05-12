@@ -75,7 +75,7 @@ const FloatingIcon: React.FC<FloatingIconProps> = ({
 /**
  * FloatingIcons component for Journey background decoration
  */
-const FloatingIcons: React.FC<{ variant?: string }> = ({ variant = 'default' }) => {
+const FloatingIcons: React.FC<{ variant?: string }> = ({ variant: _variant = 'default' }) => {
   // Floating icons data - adjusted positioning for container context
   const floatingIcons = [
     { Icon: Dumbbell, size: 24, left: 5, top: 12, delay: 0, speed: 8 },
@@ -118,7 +118,7 @@ const FloatingIcons: React.FC<{ variant?: string }> = ({ variant = 'default' }) 
  */
 const Journey: React.FC<JourneyProps> = ({
   journey = [],
-  variant = 'default'
+  variant: _variant = 'default'
 }) => {
   const prefersReducedMotion = useReducedMotion();
   const { expandedStep, setExpandedStep } = useJourneyStore();
@@ -257,13 +257,21 @@ const Journey: React.FC<JourneyProps> = ({
 
   // Get the timeline color class based on the first step's color
   const getTimelineColorClass = (steps: typeof journeySteps): string => {
-    if (steps.length === 0) return 'timeline-lime'; // Default
+    if (!steps || steps.length === 0) return 'timeline-lime';
 
-    const firstStepColor = steps[0].accentColor;
-    if (firstStepColor?.includes('cyan')) return 'timeline-cyan';
-    if (firstStepColor?.includes('violet')) return 'timeline-violet';
-    if (firstStepColor?.includes('amber')) return 'timeline-amber';
-    return 'timeline-lime'; // Default to lime
+    const firstStepColor = steps[0]?.accentColor;
+    if (!firstStepColor) return 'timeline-lime';
+
+    try {
+      if (firstStepColor?.includes('cyan')) return 'timeline-cyan';
+      if (firstStepColor?.includes('violet')) return 'timeline-violet';
+      if (firstStepColor?.includes('amber')) return 'timeline-amber';
+    } catch (_e) {
+      // If includes method fails, return default
+      return 'timeline-lime';
+    }
+
+    return 'timeline-lime';
   };
 
   const timelineColorClass = getTimelineColorClass(journeySteps);
@@ -294,13 +302,13 @@ const Journey: React.FC<JourneyProps> = ({
     backgroundVariant: "grid" as const,
     spacing: "lg" as const,
     seamless: true,
-    variant
+    variant: _variant
   };
 
   return (
     <section
       className="w-full py-16 md:pt-8 md:pb-24 px-4 bg-journey-bg relative overflow-hidden"
-      data-theme={variant !== 'default' ? variant : undefined}
+      data-theme={_variant !== 'default' ? _variant : undefined}
     >
       {/* Create a visual connector from Features to Journey */}
       <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background-primary to-transparent z-0"></div>
@@ -310,7 +318,7 @@ const Journey: React.FC<JourneyProps> = ({
         <SectionHeader
           title={<>Your Fitness <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">Journey</span></>}
           description="Four simple steps to transform your fitness routine with AI-powered workouts"
-          variant={variant}
+          variant={_variant}
         />
 
         {/* Journey Steps - Wrapped in a cohesive container */}
@@ -321,7 +329,7 @@ const Journey: React.FC<JourneyProps> = ({
         >
           <div className="journey-container rounded-3xl bg-journey-bg-alt p-6 md:p-10 relative overflow-hidden border journey-border">
             {/* Add floating icons as the background */}
-            <FloatingIcons variant={variant} />
+            <FloatingIcons variant={_variant} />
 
             <div className={`journey-timeline ${timelineColorClass}`}>
               {journeySteps.map((step: JourneyStepType, index: number) => (
@@ -336,7 +344,7 @@ const Journey: React.FC<JourneyProps> = ({
                     isExpanded={expandedStep === index}
                     onToggle={() => handleStepClick(index)}
                     isLast={index === journeySteps.length - 1}
-                    variant={variant}
+                    variant={_variant}
                   />
                 </div>
               ))}
@@ -357,7 +365,7 @@ const Journey: React.FC<JourneyProps> = ({
             gradientColor="lime"
             buttonSize="large"
             showIcon={true}
-            variant={variant}
+            variant={_variant}
           />
         </div>
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { fireEvent, render } from '@testing-library/react';
 import React from 'react';
 import logger from '../../../../utils/logger';

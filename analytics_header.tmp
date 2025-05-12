@@ -1,0 +1,50 @@
+import { fireEvent, render, screen } from '@testing-library/react';
+import React from 'react';
+import { transitionEventManager } from '../events/transitionEventManager';
+import { TransitionType } from '../events/transitionEvents';
+import { RegistrationStep } from '../types';
+
+// Import test setup
+import './setup';
+
+// Create mock for analytics service
+const mockAnalyticsTrack = jest.fn();
+const mockAnalyticsIdentify = jest.fn();
+const mockAnalyticsService = {
+    trackEvent: mockAnalyticsTrack,
+    identifyUser: mockAnalyticsIdentify,
+    pageView: jest.fn()
+};
+
+// Mock the useTransitionAnalytics hook
+const mockTrackStepView = jest.fn((step) => {
+    // Connect to the analytics service
+    mockAnalyticsTrack('registration_view', {
+        step,
+        timestamp: new Date().toISOString()
+    });
+});
+
+const mockTrackStepTransition = jest.fn((sourceStep, destinationStep, transitionType) => {
+    // Connect to the analytics service
+    mockAnalyticsTrack('registration_step_transition', {
+        sourceStep,
+        destinationStep,
+        transitionType,
+        durationInStep: 1000, // Mock duration
+        timestamp: new Date().toISOString()
+    });
+});
+
+const mockTrackFormFieldChange = jest.fn((step, field, value) => {
+    // Connect to the analytics service
+    mockAnalyticsTrack('registration_field_change', {
+        step,
+        field,
+        value,
+        timestamp: new Date().toISOString()
+    });
+});
+
+const mockTrackAccountCreation = jest.fn((email) => {
+    // Connect to the analytics service

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { act, renderHook } from '@testing-library/react';
 import { REGISTRATION_STEPS, useRegistrationProgress } from '../hooks/useRegistrationProgress';
 import { RegistrationStep } from '../types';

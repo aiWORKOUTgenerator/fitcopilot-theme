@@ -7,6 +7,9 @@ export { default as Section } from './Section';
 export { default as ThemeSwitcher } from './ThemeSwitcher';
 export { default as Tooltip } from './Tooltip';
 
+// Import Media components
+export * from './Media';
+
 // Export types
 export type { ButtonProps } from './Button';
 export type { CardProps } from './Card';
@@ -16,4 +19,10 @@ export type { PlanFeature, PricingCardProps, PricingPlan } from './PricingCard';
 export type { BackgroundVariant, ContainerSize, SectionProps, SpacingSize, VariantKey } from './Section';
 export type { ThemeSwitcherProps } from './ThemeSwitcher';
 export type { TooltipProps } from './Tooltip';
+
+// Export Media types
+export type {
+    AudioPlayerProps,
+    MediaPlayerProps, VideoPlayerProps
+} from '../../../types/media';
 

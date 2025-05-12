@@ -1,0 +1,254 @@
+
+> ai-workout-generator-homepage@1.0.0 lint-strict
+> eslint "src/**/*.{js,jsx,ts,tsx}" --max-warnings=0
+
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/OptimizedImage/OptimizedImage.tsx
+  73:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Button/Button.tsx
+  52:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  54:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  56:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  58:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  62:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  64:47  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  66:44  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Button/hero/Button.tsx
+  44:80  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  68:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/default/Tooltip.tsx
+  75:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/hero/Tooltip.tsx
+  79:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/pricing/Tooltip.tsx
+  80:65  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonPropsTracing.tsx
+  22:20  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ClassNameDebug.tsx
+  49:94  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/registration/RegistrationHero.tsx
+  19:12  error  '_isSubmitting' is assigned a value but never used           @typescript-eslint/no-unused-vars
+  23:11  error  '_handleFirstNameChange' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  30:11  error  '_handleEmailChange' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  37:11  error  '_handleSubmit' is assigned a value but never used           @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/registration/types.ts
+  80:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx
+  149:7  error  'MockDataDecorator' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  157:7  error  'mockRestore' is assigned a value but never used        @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/Journey.tsx
+   53:7   error  'FloatingIcon' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  269:14  error  'e' is defined but never used                      @typescript-eslint/no-unused-vars
+  298:9   error  'sectionProps' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx
+   87:12  error  'e' is defined but never used                                                 @typescript-eslint/no-unused-vars
+  194:9   error  'prefersReducedMotion' is assigned a value but never used                     @typescript-eslint/no-unused-vars
+  232:3   error  'isExpanded' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/utils/tokenUtils.ts
+   6:6   error  'VariantKey' is defined but never used  @typescript-eslint/no-unused-vars
+  95:14  error  'e' is defined but never used           @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/variants/modern/Journey.tsx
+  199:14  error  'getAccentColorForStep' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/variants/sports/Journey.tsx
+  199:14  error  'getAccentColorForStep' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx
+  278:30  error  'setErrorDetails' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/data/defaultData.ts
+  12:17  error  Parsing error: '>' expected
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/tests/performance.test.tsx
+   45:28  error  'getByText' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  132:39  error  'queryByText' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx
+  25:9  error  'className' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/hooks/useHomepageService.ts
+  20:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  21:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  22:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  23:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  24:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/ExperienceLevel/ExperienceLevel.tsx
+  10:11  error  An interface declaring no members is equivalent to its supertype  @typescript-eslint/no-empty-object-type
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx
+   38:9   error  'validSections' is assigned a value but never used                     @typescript-eslint/no-unused-vars
+   46:9   error  'syncWithStoredData' is assigned a value but never used                @typescript-eslint/no-unused-vars
+  259:74  error  'key' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/__tests__/CustomizeExperience.test.tsx
+  85:39  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/validators.ts
+  78:19  error  'result' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/CustomizedMedicalContent.tsx
+  179:74  error  'key' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx
+   17:5   error  'isValid' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  266:36  error  'state' is assigned a value but never used                                 @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/InjuriesSelector.tsx
+  17:5  error  'isValid' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/LiabilityWaiverSelector/LiabilityWaiverSelector.tsx
+  16:5  error  'isValid' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/MedicalClearanceSelector.tsx
+  17:5  error  'isValid' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/StandardSection/StandardSection.tsx
+  119:91  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/utils/validators.ts
+  103:19  error  'result' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/__tests__/JourneySelectors.integration.test.tsx
+  211:15  error  'updateData' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/CustomizationContainer.tsx
+  26:12  error  'validSections' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/StandardSection/StandardSection.tsx
+  118:91  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Registration.tsx
+  28:50  error  'goToStep' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/components/ProgressIndicator/ProgressIndicator.tsx
+  24:11  error  '_isCompact' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/events/analyticsIntegration.ts
+  10:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  50:77  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/events/transitionEventManager.ts
+  30:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/events/transitionEvents.ts
+  22:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/hooks/useRegistrationEvents.ts
+  21:101  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  34:101  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  47:101  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  60:101  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  73:101  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/tests/RegistrationFlow.test.tsx
+  64:11  error  'handleAccountContinue' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  69:11  error  'handleAccountBack' is assigned a value but never used      @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/tests/analytics.test.tsx
+  7166:0  error  Parsing error: '}' expected
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/utils/registrationApi.ts
+   18:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+   78:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  130:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/utils/scrollUtils.ts
+  246:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  246:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  253:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useWordPress.ts
+  13:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  57:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/react-app-env.d.ts
+  6:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/services/implementations/WordPressService.ts
+  117:38  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  127:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  136:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  143:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  150:37  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  157:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  164:41  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  171:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  178:40  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/styles/design-system/color-validation.js
+  10:16  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/styles/design-system/tailwind-color-plugin.js
+  4:59  error  'theme' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+  4:66  error  'e' is defined but never used. Allowed unused args must match /^_/u      @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/global.d.ts
+  41:32  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/debug.tsx
+   34:11  error    'styles' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  121:51  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  121:60  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  193:54  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+  194:48  warning  Unexpected any. Specify a different type     @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/lazyLoad.tsx
+  113:56  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logLevels.ts
+  27:14  error  '_e' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts
+   26:14  error    'e' is defined but never used              @typescript-eslint/no-unused-vars
+   84:13  warning  Use logger.log instead of console.log      fitcopilot/use-logger
+   85:18  error    '_e' is defined but never used             @typescript-eslint/no-unused-vars
+   92:13  warning  Use logger.info instead of console.info    fitcopilot/use-logger
+   93:18  error    '_e' is defined but never used             @typescript-eslint/no-unused-vars
+  100:13  warning  Use logger.warn instead of console.warn    fitcopilot/use-logger
+  101:18  error    '_e' is defined but never used             @typescript-eslint/no-unused-vars
+  108:13  warning  Use logger.error instead of console.error  fitcopilot/use-logger
+  109:18  error    '_e' is defined but never used             @typescript-eslint/no-unused-vars
+  117:18  error    '_e' is defined but never used             @typescript-eslint/no-unused-vars
+  125:18  error    '_e' is defined but never used             @typescript-eslint/no-unused-vars
+  133:18  error    '_e' is defined but never used             @typescript-eslint/no-unused-vars
+  141:18  error    '_e' is defined but never used             @typescript-eslint/no-unused-vars
+  181:14  error    '_e' is defined but never used             @typescript-eslint/no-unused-vars
+  261:14  error    'e' is defined but never used              @typescript-eslint/no-unused-vars
+  280:18  error    'e' is defined but never used              @typescript-eslint/no-unused-vars
+  287:14  error    'e' is defined but never used              @typescript-eslint/no-unused-vars
+  302:18  error    'e' is defined but never used              @typescript-eslint/no-unused-vars
+  317:22  error    'e' is defined but never used              @typescript-eslint/no-unused-vars
+  326:18  error    'e' is defined but never used              @typescript-eslint/no-unused-vars
+  329:14  error    'e' is defined but never used              @typescript-eslint/no-unused-vars
+  379:14  error    'e' is defined but never used              @typescript-eslint/no-unused-vars
+
+/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/variantLoader.ts
+   28:55  warning  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+   70:56  warning  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+   71:41  warning  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+   72:24  warning  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+   93:35  warning  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+   95:16  error    'variant' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   96:92  warning  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+  123:70  warning  Unexpected any. Specify a different type      @typescript-eslint/no-explicit-any
+
+✖ 134 problems (65 errors, 69 warnings)
+  0 errors and 4 warnings potentially fixable with the `--fix` option.
+

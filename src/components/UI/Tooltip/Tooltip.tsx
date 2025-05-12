@@ -23,10 +23,10 @@
  */
 
 import React, { Suspense, useEffect, useState } from 'react';
+import { TooltipProps as GlobalTooltipProps, TooltipThemeContext } from '../../../types/components';
 import logger from '../../../utils/logger';
 import { useEffectiveTheme } from './context';
 import './Tooltip.scss';
-import { TooltipProps, TooltipThemeContext } from './types';
 
 // Log config for debugging
 logger.debug('Loading Tooltip component with variants');
@@ -50,7 +50,7 @@ const PricingTooltip = React.lazy(() => {
 /**
  * Map of theme variants to their respective components
  */
-const TOOLTIP_VARIANTS: Record<TooltipThemeContext, React.LazyExoticComponent<React.ComponentType<TooltipProps>>> = {
+const TOOLTIP_VARIANTS: Record<TooltipThemeContext, React.LazyExoticComponent<React.ComponentType<GlobalTooltipProps>>> = {
     'default': DefaultTooltip,
     'hero': HeroTooltip,
     'pricing': PricingTooltip,
@@ -60,12 +60,16 @@ const TOOLTIP_VARIANTS: Record<TooltipThemeContext, React.LazyExoticComponent<Re
  * Main Tooltip component that selects the appropriate theme variant
  * Supports both controlled and uncontrolled usage
  */
-const Tooltip: React.FC<TooltipProps> = ({
-    themeContext,
-    isVisible: controlledIsVisible,
-    initialVisible = false,
-    ...props
-}) => {
+const Tooltip: React.FC<GlobalTooltipProps> = (props) => {
+    const {
+        themeContext,
+        isVisible: controlledIsVisible,
+        initialVisible = false,
+        children,
+        className,
+        ...rest
+    } = props;
+
     // Handle both controlled (isVisible) and uncontrolled (initialVisible) modes
     const [internalIsVisible, setInternalIsVisible] = useState(initialVisible);
     const isVisible = controlledIsVisible !== undefined ? controlledIsVisible : internalIsVisible;
@@ -88,12 +92,12 @@ const Tooltip: React.FC<TooltipProps> = ({
     logger.debug('Tooltip variant being used:', effectiveTheme);
 
     // Get the variant component based on theme
-    const TooltipVariant = TOOLTIP_VARIANTS[effectiveTheme];
+    const TooltipVariant = TOOLTIP_VARIANTS[effectiveTheme as TooltipThemeContext];
 
     // Simple fallback while loading the variant
     const fallback = (
         <div className="tooltip-wrapper tooltip-loading">
-            {props.children}
+            {children}
         </div>
     );
 
@@ -101,12 +105,14 @@ const Tooltip: React.FC<TooltipProps> = ({
     return (
         <Suspense fallback={fallback}>
             <TooltipVariant
-                {...props}
+                {...rest}
                 themeContext={effectiveTheme}
                 isVisible={isVisible}
                 initialVisible={initialVisible}
-                className={`tooltip-theme-${effectiveTheme} ${props.className || ''}`}
-            />
+                className={`tooltip-theme-${effectiveTheme} ${className || ''}`}
+            >
+                {children}
+            </TooltipVariant>
         </Suspense>
     );
 };

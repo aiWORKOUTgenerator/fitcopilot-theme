@@ -1,0 +1,10 @@
+[
+  {
+    "ruleId": "@typescript-eslint/no-explicit-any",
+    "count": 9
+  },
+  {
+    "ruleId": "@typescript-eslint/no-unused-vars",
+    "count": 16
+  }
+]

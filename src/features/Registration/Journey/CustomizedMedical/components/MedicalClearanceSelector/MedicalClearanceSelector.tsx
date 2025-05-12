@@ -14,7 +14,7 @@ import './MedicalClearanceSelector.scss';
  */
 const MedicalClearanceInnerForm: React.FC<SectionComponentProps> = ({
     setIsValid,
-    isValid
+    _isValid
 }) => {
     const { state, updateSectionData } = useMedicalCustomization();
     const medicalClearance = state.medicalClearance || {};

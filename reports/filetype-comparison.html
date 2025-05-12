@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESLint File Type Warning Comparison</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+    canvas { max-width: 800px; height: 500px; margin: 0 auto 30px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 30px; }
+    th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+    th { background-color: #f2f2f2; position: sticky; top: 0; }
+    h1, h2 { color: #333; }
+    .summary { background: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+    .tsx { color: #36a2eb; }
+    .ts { color: #ff6384; }
+    .section { margin-bottom: 40px; }
+    .chart-container { position: relative; margin: auto; height: 500px; }
+  </style>
+</head>
+<body>
+  <h1>File Type Warning Comparison</h1>
+  
+  <div class="summary">
+    <h2>Summary</h2>
+    <p>Total rules: 3</p>
+    <p><span class="tsx">TSX-specific rules:</span> 0</p>
+    <p><span class="ts">TS-specific rules:</span> 1</p>
+    <p>Shared rules: 2</p>
+  </div>
+  
+  <div class="section">
+    <h2>Top 10 Warnings by File Type</h2>
+    <div class="chart-container">
+      <canvas id="comparisonChart"></canvas>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>File Type Distribution</h2>
+    <div class="chart-container" style="height: 300px;">
+      <canvas id="distributionChart"></canvas>
+    </div>
+  </div>
+  
+  <h2>Detailed Comparison</h2>
+  <table>
+    <tr>
+      <th>Rule</th>
+      <th>TSX Files</th>
+      <th>TS Files</th>
+      <th>Total</th>
+      <th>TSX:TS Ratio</th>
+    </tr>
+    
+      <tr>
+        <td>@typescript-eslint/no-explicit-any</td>
+        <td>9</td>
+        <td>13</td>
+        <td>22</td>
+        <td>0.69</td>
+      </tr>
+    
+      <tr>
+        <td>@typescript-eslint/no-unused-vars</td>
+        <td>16</td>
+        <td>3</td>
+        <td>19</td>
+        <td>5.33</td>
+      </tr>
+    
+      <tr>
+        <td>fitcopilot/use-logger</td>
+        <td>0</td>
+        <td>1</td>
+        <td>1</td>
+        <td>N/A</td>
+      </tr>
+    
+  </table>
+  
+  <script>
+    // Top 10 comparison chart
+    const data = [{"rule":"@typescript-eslint/no-explicit-any","tsx":9,"ts":13,"total":22,"ratio":"0.69"},{"rule":"@typescript-eslint/no-unused-vars","tsx":16,"ts":3,"total":19,"ratio":"5.33"},{"rule":"fitcopilot/use-logger","tsx":0,"ts":1,"total":1,"ratio":"N/A"}];
+    
+    new Chart(document.getElementById('comparisonChart'), {
+      type: 'bar',
+      data: {
+        labels: data.map(d => d.rule),
+        datasets: [
+          {
+            label: 'TSX Files',
+            data: data.map(d => d.tsx),
+            backgroundColor: '#36a2eb'
+          },
+          {
+            label: 'TS Files',
+            data: data.map(d => d.ts),
+            backgroundColor: '#ff6384'
+          }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: {
+          legend: { position: 'top' },
+          title: { display: true, text: 'Top 10 Warnings by File Type' }
+        }
+      }
+    });
+    
+    // Distribution pie chart
+    const tsxTotal = 25;
+    const tsTotal = 17;
+    
+    new Chart(document.getElementById('distributionChart'), {
+      type: 'pie',
+      data: {
+        labels: ['TSX Files', 'TS Files'],
+        datasets: [{
+          data: [tsxTotal, tsTotal],
+          backgroundColor: ['#36a2eb', '#ff6384']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'right' },
+          title: { display: true, text: 'Warning Distribution by File Type' }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

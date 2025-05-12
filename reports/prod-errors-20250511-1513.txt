@@ -1,0 +1,21 @@
+Production Code ESLint Error Report (20250511-1513)
+=========================================
+
+Total Errors: 37
+
+Errors by Rule:
+  @typescript-eslint/no-unused-vars: 35
+  null: 1
+  @typescript-eslint/no-empty-object-type: 1
+
+Top Files with Errors:
+  variants/registration/RegistrationHero.tsx: 4
+  Homepage/Journey/Journey.tsx: 3
+  Journey/components/JourneyStep.tsx: 3
+  Journey/CustomizeExperience/CustomizeExperience.tsx: 3
+  features/Homepage/Homepage.stories.tsx: 2
+  Journey/utils/tokenUtils.ts: 2
+  components/AnthropometricsSelector/AnthropometricsSelector.tsx: 2
+  variants/modern/Journey.tsx: 1
+  variants/sports/Journey.tsx: 1
+  components/VideoPlayer/VideoPlayer.tsx: 1

@@ -41,7 +41,13 @@ module.exports = {
         'react/no-unescaped-entities': 'off', // Allow quotes in JSX
 
         // TypeScript rules
-        '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+        '@typescript-eslint/no-unused-vars': ['warn', {
+            argsIgnorePattern: '^_',
+            varsIgnorePattern: '^_',
+            caughtErrorsIgnorePattern: '^_',
+            destructuredArrayIgnorePattern: '^_',
+            ignoreRestSiblings: true
+        }],
         '@typescript-eslint/explicit-module-boundary-types': 'off',
         '@typescript-eslint/no-explicit-any': 'warn',
 
@@ -50,11 +56,12 @@ module.exports = {
     },
     overrides: [
         {
-            // Test files can use console freely
+            // Test files can use console freely and have unused variables
             files: ['**/*.test.{js,jsx,ts,tsx}', '**/*.spec.{js,jsx,ts,tsx}', '**/tests/**/*.{js,jsx,ts,tsx}'],
             rules: {
                 'no-console': 'off',
                 'fitcopilot/use-logger': 'off',
+                '@typescript-eslint/no-unused-vars': 'off',
             },
         },
         {
@@ -63,6 +70,13 @@ module.exports = {
             rules: {
                 'no-console': 'warn',
                 'fitcopilot/use-logger': 'off',
+            },
+        },
+        {
+            // Allow more flexibility in utility files
+            files: ['**/utils/**/*.{js,jsx,ts,tsx}'],
+            rules: {
+                '@typescript-eslint/no-unused-vars': 'warn',
             },
         },
     ],

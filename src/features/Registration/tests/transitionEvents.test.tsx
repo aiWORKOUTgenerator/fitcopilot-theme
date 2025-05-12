@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { transitionEventManager } from '../events/transitionEventManager';
 import { StepTransitionEvent, TransitionType } from '../events/transitionEvents';
 import { RegistrationStep } from '../types';

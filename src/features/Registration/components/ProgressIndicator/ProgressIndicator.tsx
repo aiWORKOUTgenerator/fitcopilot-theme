@@ -19,9 +19,9 @@ const ProgressIndicator: React.FC<ProgressIndicatorProps> = ({
     const completionPercentage = Math.min((completionCount / totalSections) * 100, 100);
 
     // Handle variant-specific configurations
-    // isCompact will be used in the future compact variant implementation 
+    // _isCompact will be used in the future compact variant implementation 
     // planned in the CompletionContext integration
-    const isCompact = variant === 'compact';
+    const _isCompact = variant === 'compact';
     const isDetailed = variant === 'detailed';
 
     // Get appropriate class names based on variant and accent color

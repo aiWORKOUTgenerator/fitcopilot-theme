@@ -18,7 +18,7 @@ export const useRegistrationEvents = () => {
 
     // Track standard transition (next in sequence)
     const trackStandardTransition = useCallback(
-        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, any>) => {
+        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
             transitionEventManager.emitTransition(
                 sourceStep,
                 destinationStep,
@@ -31,7 +31,7 @@ export const useRegistrationEvents = () => {
 
     // Track map-based transition (using transition map)
     const trackMapTransition = useCallback(
-        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, any>) => {
+        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
             transitionEventManager.emitTransition(
                 sourceStep,
                 destinationStep,
@@ -44,7 +44,7 @@ export const useRegistrationEvents = () => {
 
     // Track direct navigation (goToStep)
     const trackDirectNavigation = useCallback(
-        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, any>) => {
+        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
             transitionEventManager.emitTransition(
                 sourceStep,
                 destinationStep,
@@ -57,7 +57,7 @@ export const useRegistrationEvents = () => {
 
     // Track back navigation
     const trackBackNavigation = useCallback(
-        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, any>) => {
+        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
             transitionEventManager.emitTransition(
                 sourceStep,
                 destinationStep,
@@ -70,7 +70,7 @@ export const useRegistrationEvents = () => {
 
     // Track override navigation
     const trackOverrideNavigation = useCallback(
-        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, any>) => {
+        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
             transitionEventManager.emitTransition(
                 sourceStep,
                 destinationStep,

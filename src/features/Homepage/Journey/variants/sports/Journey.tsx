@@ -196,7 +196,7 @@ export const SportsJourney: React.FC<JourneyProps> = ({ journey = [] }) => {
         }
     }
 
-    function getAccentColorForStep(stepNumber: number) {
+    function _getAccentColorForStep(stepNumber: number) {
         return sportsAccentColors[stepNumber as keyof typeof sportsAccentColors] || "from-red-400 to-orange-500";
     }
 

@@ -5,7 +5,8 @@
  */
 import classNames from 'classnames';
 import React from 'react';
-import { ButtonProps } from '../types';
+import { ButtonProps, ExtendedCSSProperties } from '../../../../types/components';
+import '../Button.scss';
 import './Button.scss';
 
 /**
@@ -21,6 +22,7 @@ export const DefaultButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({
     leftIcon,
     rightIcon,
     disabled,
+    style,
     ...rest
 }, ref) => {
     // Generate class names with proper order for specificity
@@ -37,11 +39,17 @@ export const DefaultButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({
         className
     );
 
+    // Handle custom CSS properties for tokens
+    const buttonStyle: ExtendedCSSProperties = {
+        ...style
+    };
+
     return (
         <button
             className={buttonClasses}
             disabled={disabled || isLoading}
             ref={ref}
+            style={buttonStyle}
             {...rest}
             aria-busy={isLoading}
         >

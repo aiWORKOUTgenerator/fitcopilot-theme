@@ -1,19 +1,34 @@
 import React from 'react';
+import { ExtendedCSSProperties, ButtonProps as GlobalButtonProps } from '../../../types/components';
 import { ButtonThemeContext } from './context';
 
 type ButtonElementProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
 type AnchorElementProps = React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
 /**
- * ButtonProps Interface
+ * ButtonVariant Types
  * 
- * Defines the properties for the Button component
+ * Defines the variant types for the Button component
  */
-export type ButtonProps = {
+export type ButtonVariant = 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'gradient' | 'violet-indigo';
+
+/**
+ * ButtonSize Types
+ * 
+ * Defines the size types for the Button component
+ */
+export type ButtonSize = 'small' | 'medium' | 'large';
+
+/**
+ * Extended ButtonProps Interface
+ * 
+ * Extends global ButtonProps with theme specific properties
+ */
+export type ButtonProps = Omit<GlobalButtonProps, 'variant' | 'size'> & {
     /** Button size variant */
-    size?: 'small' | 'medium' | 'large';
+    size?: ButtonSize;
     /** Button color variant */
-    variant?: 'primary' | 'secondary' | 'tertiary' | 'ghost' | 'gradient' | 'violet-indigo';
+    variant?: ButtonVariant;
     /** Sets width to 100% when true */
     fullWidth?: boolean;
     /** Shows loading spinner and disables button when true */
@@ -30,9 +45,25 @@ export type ButtonProps = {
     className?: string;
     /** Whether the button is disabled */
     disabled?: boolean;
+    /** Custom CSS properties for token overrides */
+    style?: ExtendedCSSProperties;
     /** Render as button or anchor element */
     as?: 'button' | 'a';
 } & (
         | ({ as?: 'button' } & ButtonElementProps)
         | ({ as: 'a' } & AnchorElementProps)
-    ); 
+    );
+
+/**
+ * Extended HeroButtonProps Interface
+ * 
+ * Extends global HeroButtonProps with theme specific properties
+ */
+export type HeroButtonProps = Omit<ButtonProps, '_variant'> & {
+    /** Identify as hero variant */
+    _variant: 'hero';
+    /** Hero-specific visual treatment */
+    heroStyle?: 'gradient' | 'outlined' | 'solid';
+    /** Animation variant for hero buttons */
+    animation?: 'pulse' | 'bounce' | 'none';
+}; 

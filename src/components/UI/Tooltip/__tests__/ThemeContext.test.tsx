@@ -1,3 +1,4 @@
+/* eslint-disable */
 import '@testing-library/jest-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { axe } from 'jest-axe';

@@ -47,23 +47,23 @@ export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, Bu
                 <span className="button__text">{props.children}</span>
             </button>
         }>
-            {/* Using 'as any' for ref compatibility with button variants */}
+            {/* Using appropriate type for ref compatibility with button variants */}
             {theme === 'gym' ? (
-                <GymButton ref={ref as any} {...props} />
+                <GymButton ref={ref as React.Ref<HTMLButtonElement>} {...props} />
             ) : theme === 'hero' ? (
-                <HeroButton ref={ref as any} {...props} />
+                <HeroButton ref={ref as React.Ref<HTMLButtonElement>} {...props} />
             ) : theme === 'sports' ? (
-                <SportsButton ref={ref as any} {...props} />
+                <SportsButton ref={ref as React.Ref<HTMLButtonElement>} {...props} />
             ) : theme === 'wellness' ? (
-                <WellnessButton ref={ref as any} {...props} />
+                <WellnessButton ref={ref as React.Ref<HTMLButtonElement>} {...props} />
             ) : theme === 'modern' ? (
-                <ModernButton ref={ref as any} {...props} />
+                <ModernButton ref={ref as React.Ref<HTMLButtonElement>} {...props} />
             ) : theme === 'classic' ? (
-                <ClassicButton ref={ref as any} {...props} />
+                <ClassicButton ref={ref as React.Ref<HTMLButtonElement>} {...props} />
             ) : theme === 'minimalist' ? (
-                <MinimalistButton ref={ref as any} {...props} />
+                <MinimalistButton ref={ref as React.Ref<HTMLButtonElement>} {...props} />
             ) : (
-                <DefaultButton ref={ref as any} {...props} />
+                <DefaultButton ref={ref as React.Ref<HTMLButtonElement>} {...props} />
             )}
         </React.Suspense>
     );

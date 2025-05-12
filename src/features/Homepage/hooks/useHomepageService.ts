@@ -17,11 +17,11 @@ export interface HomepageData {
     assets: {
         logo: string;
     };
-    features: any[];
-    journey: any[];
-    testimonials: any[];
-    pricing: any[];
-    footerLinks: any[];
+    features: unknown[];
+    journey: unknown[];
+    testimonials: unknown[];
+    pricing: unknown[];
+    footerLinks: unknown[];
     demoMode: boolean;
 }
 

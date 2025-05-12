@@ -73,4 +73,68 @@ A component is considered fully tokenized when:
 1. The token compliance script shows 100% compliance
 2. Visual regression tests pass
 3. Code review has been completed
-4. The PR has been merged into develop 
+4. The PR has been merged into develop
+
+## ESLint Warning Reduction Toolkit
+
+To improve code quality and ensure type safety across the codebase, we've implemented a comprehensive suite of tools, type definitions, and custom hooks to reduce ESLint warnings.
+
+### Type Definitions
+
+We've created several type definition files to ensure consistent typing across the application:
+
+- **`src/types/events.ts`**: Type definitions for React event handlers
+- **`src/types/components.ts`**: Common component props interfaces
+- **`src/types/api.ts`**: API response type definitions
+
+### Custom Hooks
+
+We've developed several custom hooks to address common React patterns and avoid ESLint warnings:
+
+- **`useEventCallback`**: Safely memoize callbacks while preserving the latest state and props
+- **`useAsyncEffect`**: Safely handle async operations in useEffect with proper cleanup
+- **`useIntersectionObserver`**: Detect when elements enter or leave the viewport
+
+### Automation Tools
+
+The following scripts have been developed to help identify and fix warnings:
+
+```bash
+# Analyze warnings and generate a report
+node scripts/analyze-warnings.sh
+
+# Fix explicit 'any' types
+node scripts/fix-explicit-any.js
+
+# Fix React hook dependency issues
+node scripts/fix-react-hooks.js
+
+# Fix unused variables by adding underscore prefix
+node scripts/fix-unused-vars.js
+
+# Generate a warnings reduction progress report
+node scripts/generate-warnings-report.js
+```
+
+### ESLint Warnings Analysis Reports
+
+Various reports are generated to help track progress:
+
+- **`reports/eslint-warnings-categorized.json`**: Warnings categorized by rule
+- **`reports/warning-priorities.json`**: Warnings prioritized by impact
+- **`reports/ui-component-warnings.json`**: Warnings in UI components
+- **`reports/feature-component-warnings.json`**: Warnings in feature components
+- **`reports/warning-reduction-progress.md`**: Current warning reduction progress
+
+### Best Practices
+
+Follow these best practices to avoid introducing new ESLint warnings:
+
+1. Use the provided type definitions for events and props
+2. Use custom hooks like `useEventCallback` for event handlers
+3. Ensure all dependencies are included in React hook dependency arrays
+4. Add underscore prefix to intentionally unused variables
+5. Replace `any` types with proper type definitions
+6. Use the `unknown` type rather than `any` when the type is truly unknown
+7. Always provide proper return types for functions
+8. Use strongly typed component props with interfaces 

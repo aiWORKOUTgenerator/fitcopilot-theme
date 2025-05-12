@@ -176,7 +176,7 @@ const CustomizedMedicalContent: React.FC<CustomizedMedicalContentProps> = ({ onV
             <ProgressIndicator
                 completedSections={state.meta.completedSections}
                 totalSections={Object.keys(SECTION_IDS).length}
-                sectionLabels={Object.entries(SECTION_IDS).reduce((acc, [key, value]) => {
+                sectionLabels={Object.entries(SECTION_IDS).reduce((acc, [_key, value]) => {
                     acc[value] = value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
                     return acc;
                 }, {} as Record<string, string>)}

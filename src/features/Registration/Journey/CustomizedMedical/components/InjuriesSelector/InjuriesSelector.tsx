@@ -14,7 +14,7 @@ import './InjuriesSelector.scss';
  */
 const InjuriesInnerForm: React.FC<SectionComponentProps> = ({
     setIsValid,
-    isValid
+    _isValid
 }) => {
     const { state, updateSectionData } = useMedicalCustomization();
     const injuries = state.injuries || {};

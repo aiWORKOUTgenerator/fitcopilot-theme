@@ -45,7 +45,7 @@ const JourneyContent: React.FC<RegistrationStepProps & { currentStep: Registrati
     onNext,
     onBack,
     // currentStep not directly used but needed for parent component type validation
-    currentStep
+    _currentStep
 }) => {
     const {
         // expandedStep is used by the CompletionContext integration planned in the future

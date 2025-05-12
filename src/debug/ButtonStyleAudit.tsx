@@ -6,6 +6,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
+import { logger } from '../utils/logger';
 
 interface StylesheetInfo {
     href: string;
@@ -71,7 +72,7 @@ export const ButtonStyleAudit: React.FC = () => {
                         });
                     }
                 } catch (e) {
-                    console.warn('Could not access stylesheet:', sheet.href, e);
+                    logger.warn('Could not access stylesheet:', sheet.href, e);
                 }
             });
 

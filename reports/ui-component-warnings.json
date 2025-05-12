@@ -1,0 +1,23 @@
+[
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/default/Tooltip.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-explicit-any"
+    ]
+  },
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/hero/Tooltip.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-explicit-any"
+    ]
+  },
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/pricing/Tooltip.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-explicit-any"
+    ]
+  }
+]

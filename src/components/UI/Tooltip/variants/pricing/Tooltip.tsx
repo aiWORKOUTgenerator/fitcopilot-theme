@@ -5,12 +5,26 @@ import { TooltipProps } from '../../types';
 import './Tooltip.scss';
 
 /**
+ * Extended CSS properties with CSS variables
+ */
+interface ExtendedCSSProperties extends React.CSSProperties {
+    '--accent-color'?: string;
+}
+
+/**
+ * Extended TooltipProps for Pricing variant
+ */
+interface PricingTooltipProps extends TooltipProps {
+    planType?: 'basic' | 'pro' | 'elite';
+}
+
+/**
  * Pricing Tooltip variant
  * 
  * Enhanced tooltip styling for the Pricing section
  * Adds special styling for feature comparisons and pricing-specific metadata
  */
-const Tooltip: React.FC<TooltipProps> = ({
+const Tooltip: React.FC<PricingTooltipProps> = ({
     children,
     content,
     title,
@@ -75,9 +89,9 @@ const Tooltip: React.FC<TooltipProps> = ({
     };
 
     // Style object for dynamic properties
-    const tooltipStyle: React.CSSProperties = {
+    const tooltipStyle: ExtendedCSSProperties = {
         ...(width && { width }),
-        ...(accentColor && { '--accent-color': accentColor } as any),
+        ...(accentColor && { '--accent-color': accentColor }),
     };
 
     // Get position classes

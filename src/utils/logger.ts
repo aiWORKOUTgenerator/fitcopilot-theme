@@ -3,28 +3,146 @@
  * Provides environment-aware logging and support for different log levels
  */
 
-// Determine if we're in production mode
-const isProduction = process.env.NODE_ENV === 'production';
+import { LOG_LEVEL_VALUES, LogLevel } from './logLevels';
 
-// Log levels
-export enum LogLevel {
-    DEBUG = 0,
-    INFO = 1,
-    WARN = 2,
-    ERROR = 3,
+// Determine environment
+const isProduction = process.env.NODE_ENV === 'production';
+// const isDevelopment = process.env.NODE_ENV === 'development'; // Removed unused variable
+const isTest = process.env.NODE_ENV === 'test';
+
+// Advanced configuration with environment-specific settings
+interface LoggerConfig {
+    minLevel: number; // Changed from LogLevel to number for safety
+    enableConsole: boolean;
+    enableRemoteLogging?: boolean;
+    enableGrouping: boolean;
+    enableTimers: boolean;
 }
 
-// Current log level (can be modified based on configuration)
-let currentLogLevel = isProduction ? LogLevel.ERROR : LogLevel.DEBUG;
+// Safely access log level values
+const safeLogLevel = (level: keyof typeof LogLevel): number => {
+    try {
+        return LogLevel[level];
+    } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // Fallback to hardcoded values if enum access fails
+        return LOG_LEVEL_VALUES[level];
+    }
+};
 
-// Function to set the current log level
-export const setLogLevel = (level: LogLevel): void => {
-    currentLogLevel = level;
+// Default configurations based on environment - use safe access
+const DEFAULT_CONFIGS: Record<string, LoggerConfig> = {
+    production: {
+        minLevel: safeLogLevel('WARN'),
+        enableConsole: true,
+        enableRemoteLogging: true,
+        enableGrouping: false,
+        enableTimers: false
+    },
+    development: {
+        minLevel: safeLogLevel('DEBUG'),
+        enableConsole: true,
+        enableRemoteLogging: false,
+        enableGrouping: true,
+        enableTimers: true
+    },
+    test: {
+        minLevel: safeLogLevel('ERROR'),
+        enableConsole: false,
+        enableRemoteLogging: false,
+        enableGrouping: false,
+        enableTimers: false
+    }
+};
+
+// Re-export LogLevel
+export { LogLevel };
+
+// Get environment-specific default config
+const getDefaultConfig = (): LoggerConfig => {
+    if (isProduction) return DEFAULT_CONFIGS.production;
+    if (isTest) return DEFAULT_CONFIGS.test;
+    return DEFAULT_CONFIGS.development;
+};
+
+// Active configuration (starts with environment default)
+let activeConfig = getDefaultConfig();
+
+// Function to set or update logger configuration
+export const configureLogger = (config: Partial<LoggerConfig>): void => {
+    activeConfig = { ...activeConfig, ...config };
 };
 
 // Timer IDs for performance measurement
 const timers: Record<string, number> = {};
 let timerCounter = 0;
+
+// Safe console methods with fallbacks
+const safeConsole = {
+    log: (...args: unknown[]) => {
+        try {
+            // eslint-disable-next-line no-console
+            console.log(...args);
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback if console is not available
+        }
+    },
+    info: (...args: unknown[]) => {
+        try {
+            // eslint-disable-next-line no-console
+            console.info(...args);
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback if console is not available
+        }
+    },
+    warn: (...args: unknown[]) => {
+        try {
+            // eslint-disable-next-line no-console
+            console.warn(...args);
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback if console is not available
+        }
+    },
+    error: (...args: unknown[]) => {
+        try {
+            // eslint-disable-next-line no-console
+            console.error(...args);
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback if console is not available
+        }
+    },
+    group: (label: string) => {
+        try {
+            // eslint-disable-next-line no-console
+            console.group(label);
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback if console is not available
+        }
+    },
+    groupEnd: () => {
+        try {
+            // eslint-disable-next-line no-console
+            console.groupEnd();
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback if console is not available
+        }
+    },
+    time: (label: string) => {
+        try {
+            // eslint-disable-next-line no-console
+            console.time(label);
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback if console is not available
+        }
+    },
+    timeEnd: (label: string) => {
+        try {
+            // eslint-disable-next-line no-console
+            console.timeEnd(label);
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback if console is not available
+        }
+    }
+};
 
 /**
  * Base logging function
@@ -32,34 +150,42 @@ let timerCounter = 0;
  * @param message Main message to log
  * @param data Additional data to log
  */
-const logMessage = (level: LogLevel, message: string, ...data: unknown[]): void => {
-    // Skip logging if the level is below the current level
-    if (level < currentLogLevel) return;
+const logMessage = (level: number, message: string, ...data: unknown[]): void => {
+    // Skip logging if the level is below the configured minimum level
+    if (level < activeConfig.minLevel) return;
 
     // Format the message with a timestamp
     const timestamp = new Date().toISOString();
     const formattedMessage = `[${timestamp}] ${message}`;
 
-    // In production, we might want to send logs to a server
-    if (isProduction && level < LogLevel.WARN) {
-        // Skip debug and info logs in production
-        return;
+    // Skip console output if disabled in config
+    if (!activeConfig.enableConsole) return;
+
+    // Use direct console access with safety checks
+    try {
+        // Log to console based on level
+        switch (level) {
+            case safeLogLevel('DEBUG'):
+                safeConsole.log(formattedMessage, ...data);
+                break;
+            case safeLogLevel('INFO'):
+                safeConsole.info(formattedMessage, ...data);
+                break;
+            case safeLogLevel('WARN'):
+                safeConsole.warn(formattedMessage, ...data);
+                break;
+            case safeLogLevel('ERROR'):
+                safeConsole.error(formattedMessage, ...data);
+                break;
+        }
+    } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // Silent fallback if console access fails
     }
 
-    // In development, log to console
-    switch (level) {
-        case LogLevel.DEBUG:
-            console.debug(formattedMessage, ...data);
-            break;
-        case LogLevel.INFO:
-            console.info(formattedMessage, ...data);
-            break;
-        case LogLevel.WARN:
-            console.warn(formattedMessage, ...data);
-            break;
-        case LogLevel.ERROR:
-            console.error(formattedMessage, ...data);
-            break;
+    // In production with remote logging enabled, send logs to remote service
+    if (isProduction && activeConfig.enableRemoteLogging) {
+        // TODO: Implement remote logging service integration
+        // Example: sendLogToRemoteService(level, message, data);
     }
 };
 
@@ -68,7 +194,7 @@ const logMessage = (level: LogLevel, message: string, ...data: unknown[]): void 
  * Only visible in development mode or when log level is set to DEBUG
  */
 export const debug = (message: string, ...data: unknown[]): void => {
-    logMessage(LogLevel.DEBUG, message, ...data);
+    logMessage(safeLogLevel('DEBUG'), message, ...data);
 };
 
 /**
@@ -76,7 +202,7 @@ export const debug = (message: string, ...data: unknown[]): void => {
  * General information about application flow
  */
 export const info = (message: string, ...data: unknown[]): void => {
-    logMessage(LogLevel.INFO, message, ...data);
+    logMessage(safeLogLevel('INFO'), message, ...data);
 };
 
 /**
@@ -84,7 +210,7 @@ export const info = (message: string, ...data: unknown[]): void => {
  * For issues that don't prevent the application from functioning
  */
 export const warn = (message: string, ...data: unknown[]): void => {
-    logMessage(LogLevel.WARN, message, ...data);
+    logMessage(safeLogLevel('WARN'), message, ...data);
 };
 
 /**
@@ -92,7 +218,7 @@ export const warn = (message: string, ...data: unknown[]): void => {
  * For issues that affect functionality
  */
 export const error = (message: string, ...data: unknown[]): void => {
-    logMessage(LogLevel.ERROR, message, ...data);
+    logMessage(safeLogLevel('ERROR'), message, ...data);
 };
 
 /**
@@ -120,14 +246,22 @@ export const captureError = (err: unknown, context: Record<string, unknown> = {}
  * Group related logs together
  */
 export const group = (label: string, callback: () => void): void => {
-    if (isProduction) {
+    if (!activeConfig.enableGrouping) {
+        // Just execute the callback without grouping if grouping is disabled
         callback();
         return;
     }
 
-    console.group(label);
-    callback();
-    console.groupEnd();
+    try {
+        // eslint-disable-next-line no-console
+        safeConsole.group(label);
+        callback();
+        // eslint-disable-next-line no-console
+        safeConsole.groupEnd();
+    } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // If grouping fails, just run the callback
+        callback();
+    }
 };
 
 /**
@@ -137,10 +271,23 @@ export const group = (label: string, callback: () => void): void => {
  */
 export const time = (label: string): string => {
     const timerId = `${label}-${timerCounter++}`;
+    if (!activeConfig.enableTimers) return timerId;
+
     if (!isProduction) {
-        console.time(timerId);
+        try {
+            // eslint-disable-next-line no-console
+            safeConsole.time(timerId);
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback if console.time is not available
+        }
     }
-    timers[timerId] = performance.now();
+
+    try {
+        timers[timerId] = performance.now();
+    } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // Silent fallback if performance API is not available
+    }
+
     return timerId;
 };
 
@@ -150,17 +297,38 @@ export const time = (label: string): string => {
  */
 export const timeEnd = (timerId: string): void => {
     if (!timers[timerId]) {
-        warn(`Timer '${timerId}' does not exist`);
+        try {
+            warn(`Timer '${timerId}' does not exist`);
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback
+        }
         return;
     }
 
-    const elapsed = performance.now() - timers[timerId];
-    if (!isProduction) {
-        console.timeEnd(timerId);
-    }
+    try {
+        const elapsed = performance.now() - timers[timerId];
 
-    delete timers[timerId];
-    debug(`Operation took ${elapsed.toFixed(2)}ms`, { timerId, duration: elapsed });
+        if (!activeConfig.enableTimers) return;
+
+        if (!isProduction) {
+            try {
+                // eslint-disable-next-line no-console
+                safeConsole.timeEnd(timerId);
+            } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+                // Silent fallback if console.timeEnd is not available
+            }
+        }
+
+        delete timers[timerId];
+
+        try {
+            debug(`Operation took ${elapsed.toFixed(2)}ms`, { timerId, duration: elapsed });
+        } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+            // Silent fallback
+        }
+    } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // Silent fallback if performance API is not available
+    }
 };
 
 /**
@@ -182,6 +350,11 @@ export const addContext = (component: string) => {
     };
 };
 
+// Function to set the current log level (maintained for backwards compatibility)
+export const setLogLevel = (level: number): void => {
+    configureLogger({ minLevel: level });
+};
+
 // Create the logger object
 const logger = {
     debug,
@@ -194,13 +367,18 @@ const logger = {
     timeEnd,
     addContext,
     setLogLevel,
-    LogLevel
+    configureLogger,
+    LogLevel // Re-export for compatibility
 };
 
 // Make logger globally available as a fallback
 if (typeof window !== 'undefined') {
-    // @ts-expect-error - Explicitly adding to window
-    window.logger = logger;
+    try {
+        // @ts-expect-error - Explicitly adding to window
+        window.logger = logger;
+    } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // Silent fallback if window is not available or cannot be modified
+    }
 }
 
 // Default export for normal import usage

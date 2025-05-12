@@ -1,4 +1,8 @@
 import React, { useEffect } from 'react';
+import logger from '../utils/logger';
+
+// Create component-specific logger
+const classNameLogger = logger.addContext('ClassNameDebug');
 
 /**
  * Debug class name generation to understand how different methods produce different results
@@ -37,40 +41,39 @@ export const debugClassNames = (
 export const ClassNameDebug: React.FC = () => {
     useEffect(() => {
         // Test basic examples
-        console.group('Class Name Generation Tests');
-        console.log('Default (primary, medium):', debugClassNames());
-        console.log('With context:', debugClassNames('primary', 'personal-training'));
-        console.log('With extra classes:', debugClassNames('primary', 'personal-training', 'medium', 'my-extra-class'));
-        console.log('With undefined context:', debugClassNames('primary', undefined, 'medium', 'my-extra-class'));
-        console.log('With falsy context:', debugClassNames('primary', false as any, 'medium', 'my-extra-class'));
-        console.groupEnd();
+        classNameLogger.group('Class Name Generation Tests', () => {
+            classNameLogger.debug('Default (primary, medium):', debugClassNames());
+            classNameLogger.debug('With context:', debugClassNames('primary', 'personal-training'));
+            classNameLogger.debug('With extra classes:', debugClassNames('primary', 'personal-training', 'medium', 'my-extra-class'));
+            classNameLogger.debug('With undefined context:', debugClassNames('primary', undefined, 'medium', 'my-extra-class'));
+            classNameLogger.debug('With falsy context:', debugClassNames('primary', false as any, 'medium', 'my-extra-class'));
+        });
 
         // Compare to existing button component's class name generation
-        console.group('Button Component Class Pattern Analysis');
+        classNameLogger.group('Button Component Class Pattern Analysis', () => {
+            // Example derived from Button.tsx
+            const getButtonClasses = (
+                variant: string = 'primary',
+                size: string = 'medium',
+                themeContext?: string,
+                className?: string,
+                fullWidth?: boolean
+            ) => {
+                return [
+                    'button',
+                    `button--${variant}`,
+                    `button--${size}`,
+                    themeContext && `button--${themeContext}`,
+                    fullWidth && 'button--fullwidth',
+                    className
+                ].filter(Boolean).join(' ');
+            };
 
-        // Example derived from Button.tsx
-        const getButtonClasses = (
-            variant: string = 'primary',
-            size: string = 'medium',
-            themeContext?: string,
-            className?: string,
-            fullWidth?: boolean
-        ) => {
-            return [
-                'button',
-                `button--${variant}`,
-                `button--${size}`,
-                themeContext && `button--${themeContext}`,
-                fullWidth && 'button--fullwidth',
-                className
-            ].filter(Boolean).join(' ');
-        };
-
-        console.log('Button primary:', getButtonClasses('primary', 'medium'));
-        console.log('Button personal-training:', getButtonClasses('primary', 'medium', 'personal-training'));
-        console.log('Button full-width:', getButtonClasses('primary', 'medium', 'personal-training', '', true));
-        console.log('Button with extra class:', getButtonClasses('primary', 'medium', 'personal-training', 'extra-class'));
-        console.groupEnd();
+            classNameLogger.debug('Button primary:', getButtonClasses('primary', 'medium'));
+            classNameLogger.debug('Button personal-training:', getButtonClasses('primary', 'medium', 'personal-training'));
+            classNameLogger.debug('Button full-width:', getButtonClasses('primary', 'medium', 'personal-training', '', true));
+            classNameLogger.debug('Button with extra class:', getButtonClasses('primary', 'medium', 'personal-training', 'extra-class'));
+        });
     }, []);
 
     return (

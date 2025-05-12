@@ -1,0 +1,47 @@
+{
+  "UI": {
+    "total": 3,
+    "patterns": {
+      "unusedProps": 0,
+      "anyTypes": 3,
+      "hooksExhaustiveDeps": 0,
+      "implicitType": 0,
+      "unnecessaryEscape": 0,
+      "importOrder": 0,
+      "preferConst": 0,
+      "consoleStatements": 0,
+      "accessibility": 0,
+      "other": 0
+    }
+  },
+  "Feature": {
+    "total": 9,
+    "patterns": {
+      "unusedProps": 7,
+      "anyTypes": 2,
+      "hooksExhaustiveDeps": 0,
+      "implicitType": 0,
+      "unnecessaryEscape": 0,
+      "importOrder": 0,
+      "preferConst": 0,
+      "consoleStatements": 0,
+      "accessibility": 0,
+      "other": 0
+    }
+  },
+  "Layout": {
+    "total": 0,
+    "patterns": {
+      "unusedProps": 0,
+      "anyTypes": 0,
+      "hooksExhaustiveDeps": 0,
+      "implicitType": 0,
+      "unnecessaryEscape": 0,
+      "importOrder": 0,
+      "preferConst": 0,
+      "consoleStatements": 0,
+      "accessibility": 0,
+      "other": 0
+    }
+  }
+}

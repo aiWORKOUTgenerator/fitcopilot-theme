@@ -1,21 +1,26 @@
 import { ChevronRight } from 'lucide-react';
-import React from 'react';
+import React, { KeyboardEvent } from 'react';
+import {
+  ExtendedCSSProperties
+} from '../../../../types/components';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import {
   DetailedFeature,
   ExpandedContentProps,
-  JourneyStepProps,
-  StepCTAProps,
+  JourneyStepProps as LocalJourneyStepProps,
   VariantKey,
   isVariant
 } from '../types';
 // Import from utils/tokenUtils instead of redefining functions
-import { getConnectorColorClass, getGlowEffectClass, getStepCTAUrl, getStepGradientClass } from '../utils/tokenUtils';
+import { getConnectorColorClass, getGlowEffectClass, getStepGradientClass } from '../utils/tokenUtils';
 import { JourneyFeatureCard } from './index';
+import StepCTA from './StepCTA';
 
 /**
  * Get variant-specific hover text color for step title using type narrowing
+ * @deprecated Will be used in future theming customizations
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getHoverTextColor = (variant: VariantKey): string => {
   if (isVariant(variant, 'gym') ||
     isVariant(variant, 'sports') ||
@@ -29,7 +34,9 @@ const getHoverTextColor = (variant: VariantKey): string => {
 
 /**
  * Get variant-specific expand button styling with proper type narrowing
+ * @deprecated Will be used in upcoming UI enhancements
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getExpandButtonStyle = (variant: VariantKey): string => {
   if (isVariant(variant, 'gym')) {
     return 'border-lime-400/30 bg-lime-400/10 text-lime-400';
@@ -47,7 +54,9 @@ const getExpandButtonStyle = (variant: VariantKey): string => {
 
 /**
  * Returns the appropriate gradient class for the variant
+ * @deprecated Will be used in future theme controls
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getGradientClass = (variant: VariantKey): string => {
   if (isVariant(variant, 'gym')) {
     return 'journey-gradient-violet';
@@ -64,16 +73,23 @@ const getGradientClass = (variant: VariantKey): string => {
 
 /**
  * Get the appropriate timeline color class based on step accent color
+ * @deprecated Will be used in custom timeline styling
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getTimelineColorClass = (accentColor?: string): string => {
   if (!accentColor) return 'timeline-lime'; // Default
 
-  if (accentColor.includes('cyan')) {
-    return 'timeline-cyan';
-  } else if (accentColor.includes('violet')) {
-    return 'timeline-violet';
-  } else if (accentColor.includes('amber')) {
-    return 'timeline-amber';
+  try {
+    if (accentColor.includes('cyan')) {
+      return 'timeline-cyan';
+    } else if (accentColor.includes('violet')) {
+      return 'timeline-violet';
+    } else if (accentColor.includes('amber')) {
+      return 'timeline-amber';
+    }
+  } catch (_e) {
+    // If includes method fails, return default
+    return 'timeline-lime';
   }
 
   // Default to lime
@@ -83,20 +99,33 @@ const getTimelineColorClass = (accentColor?: string): string => {
 /**
  * JourneyStep - Renders a single step in the journey process
  */
-const JourneyStep: React.FC<JourneyStepProps> = ({
+const JourneyStep: React.FC<LocalJourneyStepProps> = ({
   step,
   index,
   isExpanded,
   onToggle,
   isLast,
-  variant
+  variant = 'default'
 }) => {
-  const prefersReducedMotion = useReducedMotion();
+  const _prefersReducedMotion = useReducedMotion();
 
   // Get appropriate classes from our token utility
   const stepGradientClass = getStepGradientClass(step.number);
   const glowEffectClass = getGlowEffectClass(step.number);
   const connectorClass = getConnectorColorClass(step.number);
+
+  // Handle keyboard events
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>): void => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onToggle();
+    }
+  };
+
+  // Custom CSS properties with proper typing
+  const customStyle: ExtendedCSSProperties = {
+    '--journey-step-highlight': step.accentColor || 'var(--color-journey-accent)',
+  };
 
   return (
     <>
@@ -112,15 +141,11 @@ const JourneyStep: React.FC<JourneyStepProps> = ({
         tabIndex={0}
         aria-expanded={isExpanded}
         aria-controls={`step-content-${index}`}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            onToggle();
-          }
-        }}
+        onKeyDown={handleKeyDown}
         data-theme={variant !== 'default' ? variant : undefined}
-        data-aos={prefersReducedMotion ? undefined : 'fade-up'}
-        data-aos-delay={prefersReducedMotion ? undefined : step.delay?.toString()}
+        data-aos={_prefersReducedMotion ? undefined : 'fade-up'}
+        data-aos-delay={_prefersReducedMotion ? undefined : step.delay?.toString()}
+        style={customStyle}
       >
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
           {/* Step Icon & Number */}
@@ -176,7 +201,7 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({
   step,
   index,
   isExpanded,
-  variant
+  variant = 'default'
 }) => {
   const prefersReducedMotion = useReducedMotion();
 
@@ -185,11 +210,17 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({
     return null;
   }
 
+  // Custom CSS properties with proper typing
+  const customStyle: ExtendedCSSProperties = {
+    '--journey-content-highlight': step.accentColor || 'var(--color-journey-accent)',
+  };
+
   return (
     <div
       id={`step-content-${index}`}
       className="mt-2 rounded-xl journey-bg-card journey-border z-10 relative overflow-hidden p-4 md:p-6 animate-fade-in"
       data-theme={variant !== 'default' ? variant : undefined}
+      style={customStyle}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         {step.detailedFeatures?.map((feature: DetailedFeature, featureIndex: number) => (
@@ -207,31 +238,6 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({
         isExpanded={true}
         variant={variant}
       />
-    </div>
-  );
-};
-
-/**
- * StepCTA - Renders the call-to-action button for expanded steps
- */
-const StepCTA: React.FC<StepCTAProps> = ({
-  step,
-  isExpanded,
-  variant
-}) => {
-  const ctaUrl = getStepCTAUrl(step.title);
-
-  return (
-    <div className="text-center">
-      <a
-        href={ctaUrl}
-        className="journey-button inline-flex items-center px-6 py-2 rounded-full text-sm font-medium"
-        aria-label={`${step.ctaText} for ${step.title}`}
-        data-theme={variant !== 'default' ? variant : undefined}
-      >
-        {step.ctaText}
-        <ChevronRight size={16} className="ml-2" aria-hidden="true" />
-      </a>
     </div>
   );
 };

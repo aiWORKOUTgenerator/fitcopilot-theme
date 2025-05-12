@@ -7,12 +7,10 @@ import LevelCard from './components/LevelCard';
 import LevelComparison from './components/LevelComparison';
 import './ExperienceLevel.scss';
 
-interface ExperienceLevelComponentProps extends RegistrationStepProps { }
-
 /**
  * Experience level selection component
  */
-const ExperienceLevelComponent: React.FC<ExperienceLevelComponentProps> = ({
+const ExperienceLevelComponent: React.FC<RegistrationStepProps> = ({
     data,
     updateData,
     onNext,

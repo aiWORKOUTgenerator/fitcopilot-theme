@@ -16,7 +16,7 @@ interface LevelCardProps {
  * Individual level selection card component
  */
 const LevelCard: React.FC<LevelCardProps> = ({
-    level,
+    level: _level,
     title,
     description,
     icon,

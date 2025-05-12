@@ -1,0 +1,16 @@
+ESLint Report Summary (20250511-144422)
+==================================
+
+Total issues: 145
+Errors: 76
+Warnings: 69
+
+Top rule violations:
+ 461  - no-mixed-spaces-and-tabs
+ 461  - no-extra-semi
+  65  - @typescript-eslint/no-unused-vars
+  65  - @typescript-eslint/no-explicit-any
+   6  - no-console
+   4  - fitcopilot/use-logger
+   2  - @typescript-eslint/no-require-imports
+   1  - @typescript-eslint/no-empty-object-type

@@ -1,0 +1,65 @@
+[
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-unused-vars"
+    ]
+  },
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-unused-vars"
+    ]
+  },
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-unused-vars"
+    ]
+  },
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/InjuriesSelector.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-unused-vars"
+    ]
+  },
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/LiabilityWaiverSelector/LiabilityWaiverSelector.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-unused-vars"
+    ]
+  },
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/MedicalClearanceSelector.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-unused-vars"
+    ]
+  },
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/StandardSection/StandardSection.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-explicit-any"
+    ]
+  },
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/CustomizationContainer.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-unused-vars"
+    ]
+  },
+  {
+    "component": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/StandardSection/StandardSection.tsx",
+    "warnings": 1,
+    "rules": [
+      "@typescript-eslint/no-explicit-any"
+    ]
+  }
+]

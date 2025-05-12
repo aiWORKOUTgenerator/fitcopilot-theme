@@ -1,36 +1,24 @@
 import React from 'react';
+import {
+    ExtendedCSSProperties,
+    ExerciseTooltipProps as GlobalExerciseTooltipProps,
+    HelpTooltipProps as GlobalHelpTooltipProps,
+    TooltipProps as GlobalTooltipProps,
+    TooltipPlanType
+} from '../../../types/components';
 
 /**
- * Tooltip position types
+ * Extended Tooltip props interface
+ * 
+ * Extends the global TooltipProps with component-specific properties
  */
-export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
-
-/**
- * Theme context for Tooltip
- */
-export type TooltipThemeContext = 'default' | 'hero' | 'pricing';
-
-/**
- * Plan type for pricing tooltips
- */
-export type TooltipPlanType = 'basic' | 'pro' | 'elite';
-
-/**
- * Base Tooltip props interface
- */
-export interface TooltipProps {
-    /** Element that triggers the tooltip */
-    children: React.ReactNode;
-    /** Tooltip content */
-    content: React.ReactNode;
+export interface TooltipProps extends GlobalTooltipProps {
     /** Optional title for the tooltip */
     title?: string;
     /** Title color class (Tailwind color class) */
     titleColor?: string;
     /** Optional icon */
     icon?: React.ReactNode;
-    /** Position of the tooltip relative to the trigger element */
-    position?: TooltipPosition;
     /** Width of the tooltip in pixels or any valid CSS width */
     width?: string;
     /** Whether to show on hover */
@@ -39,18 +27,42 @@ export interface TooltipProps {
     showOnFocus?: boolean;
     /** Delay before showing (ms) */
     delay?: number;
-    /** Additional classes for styling */
-    className?: string;
-    /** Theme context (default, hero, pricing, etc) */
-    themeContext?: TooltipThemeContext;
-    /** Whether the tooltip is initially visible */
-    initialVisible?: boolean;
-    /** Whether the tooltip is visible (for controlled usage) */
-    isVisible?: boolean;
     /** Border accent color (in rgba format) */
     accentColor?: string;
-    /** ID for the tooltip (for accessibility) */
-    id?: string;
     /** Plan type for styling plan-specific tooltips (basic, pro, elite) - primarily for pricing tooltips */
     planType?: TooltipPlanType;
-} 
+}
+
+/**
+ * Extended Exercise Tooltip props
+ */
+export interface ExerciseTooltipProps extends GlobalExerciseTooltipProps {
+    /** Exercise summary display mode */
+    summaryDisplay?: 'compact' | 'detailed';
+    /** Whether to show difficulty indicator */
+    showDifficulty?: boolean;
+    /** Whether to show muscle group tags */
+    showMuscleGroups?: boolean;
+    /** Custom CSS properties for token overrides */
+    style?: ExtendedCSSProperties;
+}
+
+/**
+ * Extended Help Tooltip props
+ */
+export interface HelpTooltipProps extends GlobalHelpTooltipProps {
+    /** Whether to use dotted underline style for triggering element */
+    useDottedUnderline?: boolean;
+    /** Icon color class (Tailwind class) */
+    iconColor?: string;
+    /** Custom CSS properties for token overrides */
+    style?: ExtendedCSSProperties;
+}
+
+/**
+ * Tooltip props using discriminated union for type safety
+ */
+export type DiscriminatedTooltipProps =
+    | (TooltipProps & { _variant?: 'default' })
+    | (ExerciseTooltipProps & { _variant: 'exercise' })
+    | (HelpTooltipProps & { _variant: 'help' }); 

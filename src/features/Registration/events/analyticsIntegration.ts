@@ -7,7 +7,7 @@ import { StepTransitionEvent } from './transitionEvents';
  * Interface for analytics service integration
  */
 interface AnalyticsService {
-    trackEvent(eventName: string, properties: Record<string, any>): void;
+    trackEvent(eventName: string, properties: Record<string, unknown>): void;
 }
 
 /**
@@ -47,7 +47,7 @@ export const useTransitionAnalytics = () => {
     }, []);
 
     // Expose direct access to analytics service for custom events
-    const trackCustomEvent = (eventName: string, properties: Record<string, any>) => {
+    const trackCustomEvent = (eventName: string, properties: Record<string, unknown>) => {
         analyticsService.trackEvent(eventName, properties);
     };
 

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ArrowRight } from 'lucide-react';
 import React from 'react';

@@ -1,5 +1,6 @@
 import { Dumbbell, Flame, Heart } from 'lucide-react';
 import React, { useState } from 'react';
+import { InputChangeEvent } from '../../../../../types/events';
 import { FloatingIcons } from '../../components/FloatingIcons';
 import '../../Hero.scss';
 import { HeroProps } from '../../types';
@@ -20,39 +21,39 @@ const RegistrationHero: React.FC<HeroProps> = ({
 
     // Note: These handlers are defined but unused in this simplified mock component
     // In a real implementation, they would be connected to form inputs
-    const _handleFirstNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        _setFirstName(e.target.value);
+    const _handleFirstNameChange = (_e: InputChangeEvent) => {
+        _setFirstName(_e.target.value);
         if (_errors.firstName) {
-            _setErrors(prev => ({ ...prev, firstName: undefined }));
+            _setErrors(_prev => ({ ..._prev, firstName: undefined }));
         }
     };
 
-    const _handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        _setEmail(e.target.value);
+    const _handleEmailChange = (_e: InputChangeEvent) => {
+        _setEmail(_e.target.value);
         if (_errors.email) {
-            _setErrors(prev => ({ ...prev, email: undefined }));
+            _setErrors(_prev => ({ ..._prev, email: undefined }));
         }
     };
 
-    const _handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const newErrors: { firstName?: string; email?: string } = {};
+    const _handleSubmit = (_e: React.FormEvent) => {
+        _e.preventDefault();
+        const _newErrors: { firstName?: string; email?: string } = {};
 
         // Validate first name
         if (!_firstName.trim()) {
-            newErrors.firstName = 'First name is required';
+            _newErrors.firstName = 'First name is required';
         }
 
         // Validate email
         if (!_email) {
-            newErrors.email = 'Email is required';
+            _newErrors.email = 'Email is required';
         } else if (!/\S+@\S+\.\S+/.test(_email)) {
-            newErrors.email = 'Please enter a valid email address';
+            _newErrors.email = 'Please enter a valid email address';
         }
 
         // If there are errors, update state and don't proceed
-        if (Object.keys(newErrors).length > 0) {
-            _setErrors(newErrors);
+        if (Object.keys(_newErrors).length > 0) {
+            _setErrors(_newErrors);
             return;
         }
 
@@ -66,9 +67,9 @@ const RegistrationHero: React.FC<HeroProps> = ({
             localStorage.setItem('registration_email', _email);
 
             // Scroll to Features section
-            const featuresSection = document.getElementById('features-section');
-            if (featuresSection) {
-                featuresSection.scrollIntoView({ behavior: 'smooth' });
+            const _featuresSection = document.getElementById('features-section');
+            if (_featuresSection) {
+                _featuresSection.scrollIntoView({ behavior: 'smooth' });
             }
 
             _setIsSubmitting(false);

@@ -256,7 +256,7 @@ const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = React.mem
             <ProgressIndicator
                 completedSections={completedSections.filter(section => Object.values(SECTION_IDS).includes(section))}
                 totalSections={Object.keys(SECTION_IDS).length}
-                sectionLabels={Object.entries(SECTION_IDS).reduce((acc, [key, value]) => {
+                sectionLabels={Object.entries(SECTION_IDS).reduce((acc, [_key, value]) => {
                     acc[value] = value.charAt(0).toUpperCase() + value.slice(1).replace(/-/g, ' ');
                     return acc;
                 }, {} as Record<string, string>)}

@@ -196,7 +196,7 @@ export const ModernJourney: React.FC<JourneyProps> = ({ journey = [] }) => {
         }
     }
 
-    function getAccentColorForStep(stepNumber: number) {
+    function _getAccentColorForStep(stepNumber: number) {
         return modernAccentColors[stepNumber as keyof typeof modernAccentColors] || "from-blue-300 to-indigo-400";
     }
 

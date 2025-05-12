@@ -14,7 +14,7 @@ import './AnthropometricsSelector.scss';
  */
 const AnthropometricsInnerForm: React.FC<SectionComponentProps> = ({
     setIsValid,
-    isValid
+    _isValid
 }) => {
     const { state, updateSectionData } = useMedicalCustomization();
     const anthropometrics = state.anthropometrics || {};

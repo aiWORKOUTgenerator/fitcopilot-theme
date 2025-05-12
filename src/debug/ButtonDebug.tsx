@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import Button from '../components/UI/Button/Button';
 import '../features/Homepage/PersonalTraining/PersonalTraining.scss';
+import logger from '../utils/logger';
+
+// Create a component-specific logger
+const debugLogger = logger.addContext('ButtonDebug');
 
 export const ButtonDebug: React.FC = () => {
     const buttonRef = useRef<HTMLButtonElement>(null);
@@ -9,11 +13,11 @@ export const ButtonDebug: React.FC = () => {
     useEffect(() => {
         if (buttonRef.current) {
             // Log all applied classes
-            console.log('Base Button classes:', buttonRef.current.className);
+            debugLogger.debug('Base Button classes:', buttonRef.current.className);
 
             // Log computed styles
             const styles = window.getComputedStyle(buttonRef.current);
-            console.log('Base Button computed styles:', {
+            debugLogger.debug('Base Button computed styles:', {
                 background: styles.background,
                 backgroundImage: styles.backgroundImage,
                 color: styles.color,
@@ -26,11 +30,11 @@ export const ButtonDebug: React.FC = () => {
 
         if (personalTrainingButtonRef.current) {
             // Log all applied classes
-            console.log('PersonalTraining Button classes:', personalTrainingButtonRef.current.className);
+            debugLogger.debug('PersonalTraining Button classes:', personalTrainingButtonRef.current.className);
 
             // Log computed styles
             const styles = window.getComputedStyle(personalTrainingButtonRef.current);
-            console.log('PersonalTraining Button computed styles:', {
+            debugLogger.debug('PersonalTraining Button computed styles:', {
                 background: styles.background,
                 backgroundImage: styles.backgroundImage,
                 color: styles.color,
@@ -41,12 +45,12 @@ export const ButtonDebug: React.FC = () => {
             });
 
             // Check style inheritance
-            console.log('Button style inheritance:');
+            debugLogger.debug('Button style inheritance:');
             let element = personalTrainingButtonRef.current;
             let level = 0;
             while (element && level < 10) {
                 const classes = element.className.split(' ').join('.');
-                console.log(`- ${element.tagName}${element.id ? '#' + element.id : ''}${classes ? '.' + classes : ''}`);
+                debugLogger.debug(`- ${element.tagName}${element.id ? '#' + element.id : ''}${classes ? '.' + classes : ''}`);
                 element = element.parentElement;
                 level++;
             }
@@ -57,17 +61,17 @@ export const ButtonDebug: React.FC = () => {
     useEffect(() => {
         // Root variables
         const rootVars = getCSSVariables(document.documentElement);
-        console.log('Root CSS Variables:', rootVars);
+        debugLogger.debug('Root CSS Variables:', rootVars);
 
         // Body variables
         const bodyVars = getCSSVariables(document.body);
-        console.log('Body CSS Variables:', bodyVars);
+        debugLogger.debug('Body CSS Variables:', bodyVars);
 
         // Section variables
         const ptSection = document.querySelector('.personal-training-section');
         if (ptSection) {
             const sectionVars = getCSSVariables(ptSection as HTMLElement);
-            console.log('Personal Training Section CSS Variables:', sectionVars);
+            debugLogger.debug('Personal Training Section CSS Variables:', sectionVars);
         }
     }, []);
 

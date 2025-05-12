@@ -1,0 +1,69 @@
+{
+  "generatedAt": "2025-05-11T22:57:40.559Z",
+  "summary": {
+    "baselineWarnings": 42,
+    "currentWarnings": 59,
+    "reductionPercent": -40,
+    "reductionCount": -17
+  },
+  "warningRules": [
+    {
+      "rule": "@typescript-eslint/no-explicit-any",
+      "count": 36
+    },
+    {
+      "rule": "@typescript-eslint/no-unused-vars",
+      "count": 16
+    },
+    {
+      "rule": "fitcopilot/use-logger",
+      "count": 4
+    },
+    {
+      "rule": "react-hooks/exhaustive-deps",
+      "count": 3
+    }
+  ],
+  "mostAffectedFiles": [
+    {
+      "filePath": "src/services/implementations/WordPressService.ts",
+      "warningCount": 9
+    },
+    {
+      "filePath": "src/utils/variantLoader.ts",
+      "warningCount": 7
+    },
+    {
+      "filePath": "src/utils/debug.tsx",
+      "warningCount": 5
+    },
+    {
+      "filePath": "src/utils/logger.ts",
+      "warningCount": 4
+    },
+    {
+      "filePath": "src/features/Registration/utils/registrationApi.ts",
+      "warningCount": 3
+    },
+    {
+      "filePath": "src/features/Homepage/Homepage.stories.tsx",
+      "warningCount": 2
+    },
+    {
+      "filePath": "src/features/Homepage/Journey/Journey.tsx",
+      "warningCount": 2
+    },
+    {
+      "filePath": "src/features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx",
+      "warningCount": 2
+    },
+    {
+      "filePath": "src/features/Registration/utils/scrollUtils.ts",
+      "warningCount": 2
+    },
+    {
+      "filePath": "src/hooks/useAsyncEffect.ts",
+      "warningCount": 2
+    }
+  ]
+}

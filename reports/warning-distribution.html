@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESLint Warning Analysis</title>
+  <style>
+    body { font-family: sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px; }
+    .rule { margin-bottom: 20px; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+    .rule-header { background: #f5f5f5; padding: 10px; cursor: pointer; display: flex; justify-content: space-between; }
+    .rule-files { padding: 10px; display: none; }
+    .count { font-weight: bold; }
+    .high { color: #d73a4a; }
+    .medium { color: #ff9800; }
+    .low { color: #28a745; }
+    h1, h2 { color: #333; }
+    .summary { background: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+  </style>
+  <script>
+    function toggleFiles(id) {
+      const element = document.getElementById(id);
+      element.style.display = element.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+</head>
+<body>
+  <h1>ESLint Warning Analysis</h1>
+  
+  <div class="summary">
+    <h2>Summary</h2>
+    <p>Total warnings: 42</p>
+    <p>Unique rules: 3</p>
+  </div>
+  
+  
+    <div class="rule">
+      <div class="rule-header" onclick="toggleFiles('files-0')">
+        <span>@typescript-eslint/no-explicit-any</span>
+        <span class="count medium">22</span>
+      </div>
+      <div class="rule-files" id="files-0">
+        <ul>
+          <li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/OptimizedImage/OptimizedImage.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/default/Tooltip.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/hero/Tooltip.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/pricing/Tooltip.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonPropsTracing.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ClassNameDebug.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/registration/types.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/hooks/useHomepageService.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/StandardSection/StandardSection.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/StandardSection/StandardSection.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/events/analyticsIntegration.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/events/transitionEventManager.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/events/transitionEvents.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/hooks/useRegistrationEvents.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/utils/registrationApi.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/utils/scrollUtils.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useWordPress.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/react-app-env.d.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/services/implementations/WordPressService.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/global.d.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/lazyLoad.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/variantLoader.ts</li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="rule">
+      <div class="rule-header" onclick="toggleFiles('files-1')">
+        <span>@typescript-eslint/no-unused-vars</span>
+        <span class="count medium">19</span>
+      </div>
+      <div class="rule-files" id="files-1">
+        <ul>
+          <li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/Journey.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/utils/tokenUtils.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/variants/modern/Journey.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/variants/sports/Journey.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/validators.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/CustomizedMedicalContent.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/InjuriesSelector.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/LiabilityWaiverSelector/LiabilityWaiverSelector.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/MedicalClearanceSelector.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/utils/validators.ts</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/CustomizationContainer.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Registration.tsx</li><li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/debug.tsx</li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="rule">
+      <div class="rule-header" onclick="toggleFiles('files-2')">
+        <span>fitcopilot/use-logger</span>
+        <span class="count low">1</span>
+      </div>
+      <div class="rule-files" id="files-2">
+        <ul>
+          <li>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts</li>
+        </ul>
+      </div>
+    </div>
+  
+  
+</body>
+</html>

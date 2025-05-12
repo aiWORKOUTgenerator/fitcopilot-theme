@@ -13,7 +13,7 @@ import './LiabilityWaiverSelector.scss';
  */
 const LiabilityWaiverInnerForm: React.FC<SectionComponentProps> = ({
     setIsValid,
-    isValid
+    _isValid
 }) => {
     const { state, updateSectionData } = useMedicalCustomization();
     const liabilityWaiver = state.liabilityWaiver || {};

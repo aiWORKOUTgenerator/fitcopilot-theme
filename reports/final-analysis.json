@@ -1,0 +1,84 @@
+{
+  "summary": {
+    "totalWarnings": 42,
+    "uniqueRules": 3,
+    "highPriorityCount": 22,
+    "tsxVsTsRatio": 1.4705882352941178
+  },
+  "priorityRules": [
+    "@typescript-eslint/no-explicit-any"
+  ],
+  "frequentRules": [
+    "@typescript-eslint/no-explicit-any",
+    "@typescript-eslint/no-unused-vars",
+    "fitcopilot/use-logger"
+  ],
+  "patternPriorities": [
+    "unusedProps",
+    "anyTypes",
+    "hooksExhaustiveDeps",
+    "implicitType",
+    "unnecessaryEscape",
+    "importOrder",
+    "preferConst",
+    "consoleStatements",
+    "accessibility",
+    "other"
+  ],
+  "problematicComponents": {
+    "ui": [
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/default/Tooltip.tsx",
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/hero/Tooltip.tsx",
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/variants/pricing/Tooltip.tsx"
+    ],
+    "feature": [
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx",
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/InjuriesSelector.tsx",
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/LiabilityWaiverSelector/LiabilityWaiverSelector.tsx"
+    ]
+  },
+  "actionPlan": [
+    {
+      "area": "Type Safety",
+      "actions": [
+        "Create standardized type definitions for common patterns",
+        "Replace explicit \"any\" types with proper interfaces",
+        "Implement type guards for conditional logic",
+        "Add return type annotations to functions",
+        "Create shared interface files for component props"
+      ]
+    },
+    {
+      "area": "React Hooks",
+      "actions": [
+        "Review dependency arrays in useEffect hooks",
+        "Create custom hooks for common patterns",
+        "Implement useMemo for expensive computations",
+        "Fix missing dependencies in useCallback",
+        "Add eslint-disable comments only where truly needed"
+      ]
+    },
+    {
+      "area": "Unused Variables",
+      "actions": [
+        "Add underscore prefix to intentionally unused parameters",
+        "Remove truly unused variables",
+        "Create utility functions for repeated patterns",
+        "Fix destructuring to only extract needed properties",
+        "Implement proper TypeScript interfaces to avoid type-only imports"
+      ]
+    },
+    {
+      "area": "Component Structure",
+      "actions": [
+        "Apply consistent prop naming across component variants",
+        "Fix console statements in UI components",
+        "Implement proper typing for event handlers",
+        "Update Button components to use consistent event types",
+        "Fix accessibility warnings in interactive components"
+      ]
+    }
+  ]
+}

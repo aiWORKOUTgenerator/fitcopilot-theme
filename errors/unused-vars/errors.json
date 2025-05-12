@@ -1,0 +1,373 @@
+[
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/registration/RegistrationHero.tsx",
+    "line": 20,
+    "column": 12,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_isSubmitting' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/registration/RegistrationHero.tsx",
+    "line": 24,
+    "column": 11,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_handleFirstNameChange' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/registration/RegistrationHero.tsx",
+    "line": 31,
+    "column": 11,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_handleEmailChange' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/registration/RegistrationHero.tsx",
+    "line": 38,
+    "column": 11,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_handleSubmit' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+    "line": 149,
+    "column": 7,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'MockDataDecorator' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+    "line": 157,
+    "column": 7,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'mockRestore' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/Journey.tsx",
+    "line": 53,
+    "column": 7,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'FloatingIcon' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/Journey.tsx",
+    "line": 269,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/Journey.tsx",
+    "line": 298,
+    "column": 9,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'sectionProps' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+    "line": 87,
+    "column": 12,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+    "line": 194,
+    "column": 9,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'prefersReducedMotion' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+    "line": 232,
+    "column": 3,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'isExpanded' is defined but never used. Allowed unused args must match /^_/u."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/utils/tokenUtils.ts",
+    "line": 6,
+    "column": 6,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'VariantKey' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/utils/tokenUtils.ts",
+    "line": 95,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/variants/modern/Journey.tsx",
+    "line": 199,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'getAccentColorForStep' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/variants/sports/Journey.tsx",
+    "line": 199,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'getAccentColorForStep' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx",
+    "line": 278,
+    "column": 30,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'setErrorDetails' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx",
+    "line": 25,
+    "column": 9,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'className' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx",
+    "line": 38,
+    "column": 9,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'validSections' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx",
+    "line": 46,
+    "column": 9,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'syncWithStoredData' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx",
+    "line": 259,
+    "column": 74,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'key' is defined but never used. Allowed unused args must match /^_/u."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/validators.ts",
+    "line": 78,
+    "column": 19,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'result' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/CustomizedMedicalContent.tsx",
+    "line": 179,
+    "column": 74,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'key' is defined but never used. Allowed unused args must match /^_/u."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+    "line": 17,
+    "column": 5,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'isValid' is defined but never used. Allowed unused args must match /^_/u."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+    "line": 266,
+    "column": 36,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'state' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/InjuriesSelector.tsx",
+    "line": 17,
+    "column": 5,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'isValid' is defined but never used. Allowed unused args must match /^_/u."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/LiabilityWaiverSelector/LiabilityWaiverSelector.tsx",
+    "line": 16,
+    "column": 5,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'isValid' is defined but never used. Allowed unused args must match /^_/u."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/MedicalClearanceSelector.tsx",
+    "line": 17,
+    "column": 5,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'isValid' is defined but never used. Allowed unused args must match /^_/u."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/utils/validators.ts",
+    "line": 103,
+    "column": 19,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'result' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/CustomizationContainer.tsx",
+    "line": 26,
+    "column": 12,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'validSections' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Registration.tsx",
+    "line": 28,
+    "column": 50,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'goToStep' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/components/ProgressIndicator/ProgressIndicator.tsx",
+    "line": 24,
+    "column": 11,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_isCompact' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/debug.tsx",
+    "line": 34,
+    "column": 11,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'styles' is assigned a value but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logLevels.ts",
+    "line": 27,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 26,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 85,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 93,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 101,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 109,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 117,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 125,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 133,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 141,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 181,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'_e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 261,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 280,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 287,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 302,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 317,
+    "column": 22,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 326,
+    "column": 18,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 329,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/logger.ts",
+    "line": 379,
+    "column": 14,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'e' is defined but never used."
+  },
+  {
+    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/variantLoader.ts",
+    "line": 95,
+    "column": 16,
+    "rule": "@typescript-eslint/no-unused-vars",
+    "message": "'variant' is assigned a value but never used."
+  }
+]

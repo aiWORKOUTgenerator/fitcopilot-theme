@@ -19,7 +19,7 @@ export interface StepTransitionEvent {
     destinationStep: RegistrationStep;
     transitionType: TransitionType;
     timestamp: number;
-    metadata?: Record<string, any>;
+    metadata?: Record<string, unknown>;
 }
 
 /**

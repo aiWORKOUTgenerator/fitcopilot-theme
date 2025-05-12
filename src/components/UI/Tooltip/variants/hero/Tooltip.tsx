@@ -1,8 +1,15 @@
 import classNames from 'classnames';
 import React, { useEffect, useRef } from 'react';
+import { TooltipProps as GlobalTooltipProps } from '../../../../../types/components';
 import { useTooltip } from '../../hooks/useTooltip';
-import { TooltipProps } from '../../types';
 import './Tooltip.scss';
+
+/**
+ * Extended CSS properties with CSS variables
+ */
+interface ExtendedCSSProperties extends React.CSSProperties {
+    '--accent-color'?: string;
+}
 
 /**
  * Hero Tooltip component
@@ -10,7 +17,7 @@ import './Tooltip.scss';
  * Special tooltip styling for the Hero section
  * Supports both controlled and uncontrolled visibility
  */
-const Tooltip: React.FC<TooltipProps> = ({
+const Tooltip: React.FC<GlobalTooltipProps> = ({
     children,
     content,
     title,
@@ -20,7 +27,7 @@ const Tooltip: React.FC<TooltipProps> = ({
     width,
     showOnHover = true,
     showOnFocus = true,
-    delay = 0,
+    showDelay: delay = 0,
     className,
     initialVisible = false,
     isVisible: controlledIsVisible,
@@ -74,9 +81,9 @@ const Tooltip: React.FC<TooltipProps> = ({
     };
 
     // Style object for dynamic properties
-    const tooltipStyle: React.CSSProperties = {
+    const tooltipStyle: ExtendedCSSProperties = {
         ...(width && { width }),
-        ...(accentColor && { '--accent-color': accentColor } as any),
+        ...(accentColor && { '--accent-color': accentColor }),
     };
 
     // Get position classes

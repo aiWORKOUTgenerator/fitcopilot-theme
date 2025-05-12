@@ -5,6 +5,13 @@ import { TooltipProps } from '../../types';
 import './Tooltip.scss';
 
 /**
+ * Extended CSS properties with CSS variables
+ */
+interface ExtendedCSSProperties extends React.CSSProperties {
+    '--accent-color'?: string;
+}
+
+/**
  * Default Tooltip component
  */
 const Tooltip: React.FC<TooltipProps> = ({
@@ -70,9 +77,9 @@ const Tooltip: React.FC<TooltipProps> = ({
     }, [showOnFocus, controlledIsVisible, hide]);
 
     // Style object for dynamic properties
-    const tooltipStyle: React.CSSProperties = {
+    const tooltipStyle: ExtendedCSSProperties = {
         ...(width && { width }),
-        ...(accentColor && { '--accent-color': accentColor } as any),
+        ...(accentColor && { '--accent-color': accentColor }),
     };
 
     // Get position classes

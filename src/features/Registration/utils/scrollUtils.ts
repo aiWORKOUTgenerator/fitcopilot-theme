@@ -243,7 +243,7 @@ export const ensureDropdownContentVisible = (
  * @param limit Time limit in milliseconds
  * @returns Throttled function
  */
-export const throttle = <T extends (...args: any[]) => any>(
+export const throttle = <T extends (...args: unknown[]) => any>(
     func: T,
     limit: number
 ): ((...args: Parameters<T>) => void) => {
