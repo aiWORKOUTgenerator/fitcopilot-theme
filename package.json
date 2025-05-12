@@ -149,6 +149,8 @@
     "prepare": "husky install",
     "optimize:images": "node scripts/optimize-images.js",
     "optimize:images:watch": "node scripts/optimize-images.js --watch",
-    "optimize:images:clean": "node scripts/optimize-images.js --clean"
+    "optimize:images:clean": "node scripts/optimize-images.js --clean",
+    "verify-components": "ts-node scripts/verify-components.ts",
+    "generate-warning-chart": "ts-node scripts/generate-warning-chart.ts"
   }
 }

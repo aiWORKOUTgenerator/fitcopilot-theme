@@ -62,8 +62,8 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps | LegacyVideoP
             aspectRatio = '16:9',
             tracks = [],
             allowPictureInPicture = false,
-            allowFullscreen = true,
-            playbackRate = 1,
+            _allowFullscreen = true,
+            _playbackRate = 1,
             onPlaybackRateChange,
             // Destructure additional props
             ...restProps

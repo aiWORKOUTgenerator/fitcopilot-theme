@@ -7,23 +7,17 @@
  */
 
 import {
-    Assets,
-    SiteLinks,
-    ThemeVariants,
-    WordPressService,
-    WordPressServiceData,
-    WordPressServiceEventHandlers
-} from '../interfaces/wordpress';
-
-import {
     Feature,
     FooterLinkGroup,
     JourneyStep,
     PricingPlan,
-    Testimonial
+    Testimonial,
+    WordPressData,
+    WordPressServiceData,
+    WordPressServiceEventHandlers
 } from '../../types/wordpress';
-
 import logger from '../../utils/logger';
+import { WordPressService } from '../interfaces/WordPressService';
 
 class DefaultWordPressService implements WordPressService {
     private data: WordPressServiceData;
@@ -41,6 +35,9 @@ class DefaultWordPressService implements WordPressService {
             // Get initial data from window if available
             this.handleDataChange();
         }
+
+        // Debug info
+        logger.debug('WordPress service initialized with data:', this.data);
     }
 
     /**
@@ -49,11 +46,11 @@ class DefaultWordPressService implements WordPressService {
     private getInitialData(): WordPressServiceData {
         const fallbackData: WordPressServiceData = {
             siteLinks: {
-                registration: 'https://builder.fitcopilot.ai/register',
-                login: 'https://builder.fitcopilot.ai/login',
+                registration: '/registration',
+                login: '/login',
             },
             assets: {
-                logo: 'http://fitcopilot-theme.local/wp-content/uploads/2025/05/AI-Workout-Generater-TransparentBG-400x516-1.png',
+                logo: '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
             },
             themeVariants: {},
             demoMode: false,
@@ -114,7 +111,7 @@ class DefaultWordPressService implements WordPressService {
     /**
      * Extract site links from WordPress data
      */
-    private extractSiteLinks(wpData: any): SiteLinks {
+    private extractSiteLinks(wpData: WordPressData): WordPressServiceData['siteLinks'] {
         return {
             registration: wpData.siteLinks?.registration || this.data?.siteLinks.registration,
             login: wpData.siteLinks?.login || this.data?.siteLinks.login,
@@ -124,7 +121,7 @@ class DefaultWordPressService implements WordPressService {
     /**
      * Extract assets from WordPress data
      */
-    private extractAssets(wpData: any): Assets {
+    private extractAssets(wpData: WordPressData): WordPressServiceData['assets'] {
         return {
             logo: wpData.assets?.logo || this.data?.assets.logo,
         };
@@ -133,49 +130,49 @@ class DefaultWordPressService implements WordPressService {
     /**
      * Extract theme variants from WordPress data
      */
-    private extractThemeVariants(wpData: any): ThemeVariants {
+    private extractThemeVariants(wpData: WordPressData): Record<string, string> {
         return wpData.themeVariants || this.data?.themeVariants || {};
     }
 
     /**
      * Extract demo mode from WordPress data
      */
-    private extractDemoMode(wpData: any): boolean {
+    private extractDemoMode(wpData: WordPressData): boolean {
         return wpData.demoMode || this.data?.demoMode || false;
     }
 
     /**
      * Extract features from WordPress data
      */
-    private extractFeatures(wpData: any): Feature[] {
+    private extractFeatures(wpData: WordPressData): Feature[] {
         return wpData.features || this.data?.features || [];
     }
 
     /**
      * Extract journey from WordPress data
      */
-    private extractJourney(wpData: any): JourneyStep[] {
+    private extractJourney(wpData: WordPressData): JourneyStep[] {
         return wpData.journey || this.data?.journey || [];
     }
 
     /**
      * Extract testimonials from WordPress data
      */
-    private extractTestimonials(wpData: any): Testimonial[] {
+    private extractTestimonials(wpData: WordPressData): Testimonial[] {
         return wpData.testimonials || this.data?.testimonials || [];
     }
 
     /**
      * Extract pricing from WordPress data
      */
-    private extractPricing(wpData: any): PricingPlan[] {
+    private extractPricing(wpData: WordPressData): PricingPlan[] {
         return wpData.pricing || this.data?.pricing || [];
     }
 
     /**
      * Extract footer links from WordPress data
      */
-    private extractFooterLinks(wpData: any): FooterLinkGroup[] {
+    private extractFooterLinks(wpData: WordPressData): FooterLinkGroup[] {
         return wpData.footerLinks || this.data?.footerLinks || [];
     }
 

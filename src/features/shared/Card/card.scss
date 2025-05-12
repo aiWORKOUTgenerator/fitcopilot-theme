@@ -1,0 +1,195 @@
+// Canonical design system import - MUST BE FIRST
+@use '../../../styles/design-system' as ds;
+
+// Card Component Styles
+// Uses design system tokens for consistent theming and responsiveness
+
+// Base card styles
+.card {
+    @extend %card-base;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-standard);
+
+    // Theme-specific styles
+    &[data-theme="gym"] {
+        --card-bg-color: var(--color-surface-primary);
+        --card-border-color: var(--color-border-light);
+        --card-shadow: var(--shadow-md);
+    }
+
+    &[data-theme="sports"] {
+        --card-bg-color: var(--color-surface-primary);
+        --card-border-color: var(--color-border-light);
+        --card-shadow: var(--shadow-md);
+    }
+
+    &[data-theme="wellness"] {
+        --card-bg-color: var(--color-surface-primary);
+        --card-border-color: var(--color-border-light);
+        --card-shadow: var(--shadow-md);
+    }
+
+    // Responsive padding
+    padding: var(--spacing-4);
+
+    @media (min-width: var(--breakpoint-md)) {
+        padding: var(--spacing-6);
+    }
+
+    @media (min-width: var(--breakpoint-lg)) {
+        padding: var(--spacing-8);
+    }
+
+    // Card variants
+    &--content {
+        --card-content-spacing: var(--spacing-4);
+
+        h2 {
+            color: var(--color-text-primary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--card-content-spacing);
+        }
+
+        p {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-relaxed);
+        }
+    }
+
+    &--profile {
+        --card-profile-spacing: var(--spacing-4);
+        text-align: center;
+
+        .card-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: var(--card-profile-spacing);
+            border: 2px solid var(--color-border-light);
+        }
+
+        h2 {
+            color: var(--color-text-primary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-2);
+        }
+
+        p {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-relaxed);
+        }
+    }
+
+    &--workout {
+        --card-workout-spacing: var(--spacing-4);
+
+        h2 {
+            color: var(--color-text-primary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--card-workout-spacing);
+        }
+
+        .card-difficulty {
+            display: inline-block;
+            padding: var(--spacing-1) var(--spacing-2);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            background-color: var(--color-accent-400-alpha-10);
+            color: var(--color-accent-400);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .card-duration {
+            display: block;
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--spacing-4);
+        }
+
+        button {
+            @extend %button-base;
+            background: var(--button-default-primary-gradient);
+            color: var(--color-text-primary);
+            box-shadow: var(--button-default-primary-shadow);
+
+            &:hover {
+                background: var(--button-default-primary-gradient-hover);
+                box-shadow: var(--button-default-primary-shadow-hover);
+                transform: translateY(-2px);
+            }
+        }
+    }
+
+    &--program {
+        --card-program-spacing: var(--spacing-4);
+
+        h2 {
+            color: var(--color-text-primary);
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--card-program-spacing);
+        }
+
+        .card-level {
+            display: inline-block;
+            padding: var(--spacing-1) var(--spacing-2);
+            border-radius: var(--radius-full);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            background-color: var(--color-accent-400-alpha-10);
+            color: var(--color-accent-400);
+            margin-bottom: var(--spacing-2);
+        }
+
+        p {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-base);
+            line-height: var(--line-height-relaxed);
+        }
+    }
+
+    // Media container
+    .card-media {
+        margin: calc(-1 * var(--card-padding));
+        margin-bottom: var(--card-padding);
+
+        img,
+        video {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    }
+
+    // Loading state
+    &[data-loading="true"] {
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg,
+                    transparent,
+                    var(--color-overlay-light),
+                    transparent);
+            animation: shimmer 1.5s infinite;
+        }
+    }
+}
+
+// Loading animation
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}

@@ -1,0 +1,228 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs';
+import { Button, ButtonGroup } from '../Button';
+import FormField from './FormField';
+import { useForm } from './useForm';
+import { FormExample } from '../examples/FormExample';
+
+<Meta
+  title="Forms/Form Integration"
+  parameters={{
+    viewMode: 'docs',
+    previewTabs: {
+      canvas: { hidden: false }
+    }
+  }}
+/>
+
+# Form Integration
+
+The FitCopilot form system provides a type-safe way to build forms with validation, state management, and proper accessibility features.
+
+## Key Features
+
+- **Type-safe form state** through TypeScript generics
+- **Discriminated union pattern** for form field types
+- **Built-in validation** with composable validator functions
+- **Automatic error handling** and form state management
+- **Theme-consistent styling** across all FitCopilot themes
+
+## Architecture Overview
+
+The form system consists of these key components:
+
+1. **useForm hook** - Manages form state, validation, and submission
+2. **FormField component** - Renders different field types based on discriminated union
+3. **Type guards** - Ensure type safety for form field variants
+4. **Validators** - Composable validation functions
+
+## Using the Form System
+
+### 1. Define your form data interface
+
+```tsx
+interface LoginFormData {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
+```
+
+### 2. Initialize the form with useForm
+
+```tsx
+const {
+  values,
+  register,
+  handleSubmit,
+  isValid,
+  isSubmitting
+} = useForm<LoginFormData>({
+  initialValues: {
+    email: '',
+    password: '',
+    rememberMe: false
+  },
+  validators: {
+    email: [required(), email()],
+    password: [required(), minLength(8)]
+  },
+  onSubmit: async (data) => {
+    // Submit data to API
+    await loginUser(data);
+  }
+});
+```
+
+### 3. Register fields and build your form
+
+```tsx
+// Register fields to get props
+const emailProps = register('email');
+const passwordProps = register('password');
+const rememberProps = register('rememberMe');
+
+// Build your form
+return (
+  <form onSubmit={handleSubmit} noValidate>
+    <FormField
+      fieldType="text"
+      label="Email"
+      name={emailProps.name}
+      value={emailProps.value as string}
+      onChange={emailProps.onChange}
+      type="email"
+      error={emailProps.error || undefined}
+      required
+    />
+    
+    <FormField
+      fieldType="text"
+      label="Password"
+      name={passwordProps.name}
+      value={passwordProps.value as string}
+      onChange={passwordProps.onChange}
+      type="password"
+      error={passwordProps.error || undefined}
+      required
+    />
+    
+    <FormField
+      fieldType="checkbox"
+      label="Remember me"
+      name={rememberProps.name}
+      checked={rememberProps.value as boolean}
+      onChange={rememberProps.onChange}
+    />
+    
+    <ButtonGroup alignment="end">
+      <Button
+        variant="primary"
+        type="submit"
+        disabled={!isValid || isSubmitting}
+        isLoading={isSubmitting}
+      >
+        Login
+      </Button>
+    </ButtonGroup>
+  </form>
+);
+```
+
+## Example Form Implementation
+
+<Canvas>
+  <Story name="Contact Form">
+    <FormExample />
+  </Story>
+</Canvas>
+
+## Type Safety Features
+
+### Field Type Discrimination
+
+The form system uses TypeScript's discriminated union pattern to ensure type safety:
+
+```tsx
+// Example of type discrimination
+if (isTextField(props)) {
+  return <TextField {...props} />;
+}
+
+if (isCheckboxField(props)) {
+  return <Checkbox {...props} />;
+}
+```
+
+### Type Guards
+
+Each field type has a corresponding type guard function:
+
+```tsx
+// Type guard examples
+export const isTextField = (props: FormFieldProps): props is TextFieldProps => 
+  props.fieldType === 'text';
+
+export const isCheckboxField = (props: FormFieldProps): props is CheckboxFieldProps => 
+  props.fieldType === 'checkbox';
+```
+
+### Form Field Type Hierarchy
+
+```
+FormFieldProps (union type)
+│
+├── TextFieldProps
+│   fieldType: 'text'
+│   value: string
+│   ...
+│
+├── TextAreaFieldProps
+│   fieldType: 'textarea'
+│   value: string
+│   ...
+│
+├── SelectFieldProps
+│   fieldType: 'select'
+│   value: string
+│   options: Array<{value, label}>
+│   ...
+│
+├── CheckboxFieldProps
+│   fieldType: 'checkbox'
+│   checked: boolean
+│   ...
+│
+└── ... other field types
+```
+
+## Form Validation System
+
+The validation system uses composable functions for flexible validation rules:
+
+```tsx
+// Example validator setup
+validators: {
+  email: [required(), email()],
+  password: [required(), minLength(8), pattern(/[A-Z]/, 'Must contain uppercase')],
+  confirmPassword: [required(), matchField('password', 'Passwords must match')]
+}
+```
+
+## Theme Compatibility
+
+All form fields inherit the current theme through CSS variables and data attributes, ensuring consistent styling across all FitCopilot themes.
+
+## Accessibility Features
+
+- All form fields include proper ARIA attributes
+- Error states are properly communicated to screen readers
+- Focus management follows best practices
+- All fields have proper labels and error messaging
+
+## Best Practices
+
+1. **Always use the type system** - Leverage TypeScript's type checking
+2. **Compose validators** - Combine validation functions for complex rules
+3. **Use typed event handlers** - Avoid `any` types for onChange handlers
+4. **Keep form state minimal** - Only store necessary data in form state
+5. **Implement clear error handling** - Show validation errors at appropriate times 

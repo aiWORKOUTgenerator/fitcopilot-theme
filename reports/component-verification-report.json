@@ -1,0 +1,346 @@
+{
+  "timestamp": "2025-05-12T03:19:25.175Z",
+  "summary": {
+    "totalComponents": 5,
+    "compliantComponents": 1,
+    "compliancePercentage": 20,
+    "totalWarnings": 24,
+    "totalErrors": 2,
+    "typeSafetyScore": 10
+  },
+  "components": [
+    {
+      "component": "src/features",
+      "warningCount": 0,
+      "errorCount": 1,
+      "messages": [
+        {
+          "ruleId": "verification-error",
+          "severity": 2,
+          "message": "Failed to verify component: Error: Command failed: npx eslint src/features --format json\n",
+          "line": 0,
+          "column": 0,
+          "nodeType": "unknown",
+          "messageId": "verification-error"
+        }
+      ],
+      "compliant": false
+    },
+    {
+      "component": "src/components/UI",
+      "warningCount": 0,
+      "errorCount": 1,
+      "messages": [
+        {
+          "ruleId": "verification-error",
+          "severity": 2,
+          "message": "Failed to verify component: Error: Command failed: npx eslint src/components/UI --format json\n",
+          "line": 0,
+          "column": 0,
+          "nodeType": "unknown",
+          "messageId": "verification-error"
+        }
+      ],
+      "compliant": false
+    },
+    {
+      "component": "src/utils",
+      "warningCount": 10,
+      "errorCount": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'styles' is assigned a value but never used. Allowed unused vars must match /^_/u.",
+          "line": 34,
+          "column": 11,
+          "nodeType": "unknown",
+          "messageId": "unusedVar",
+          "endLine": 34,
+          "endColumn": 17
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 121,
+          "column": 51,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 121,
+          "endColumn": 54
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 121,
+          "column": 60,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 121,
+          "endColumn": 63
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 193,
+          "column": 54,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 193,
+          "endColumn": 57
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 194,
+          "column": 48,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 194,
+          "endColumn": 51
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 113,
+          "column": 56,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 113,
+          "endColumn": 59
+        },
+        {
+          "ruleId": "fitcopilot/use-logger",
+          "severity": 1,
+          "message": "Use logger.log instead of console.log",
+          "line": 84,
+          "column": 13,
+          "nodeType": "MemberExpression",
+          "messageId": "useLogger",
+          "endLine": 84,
+          "endColumn": 24
+        },
+        {
+          "ruleId": "fitcopilot/use-logger",
+          "severity": 1,
+          "message": "Use logger.info instead of console.info",
+          "line": 92,
+          "column": 13,
+          "nodeType": "MemberExpression",
+          "messageId": "useLogger",
+          "endLine": 92,
+          "endColumn": 25
+        },
+        {
+          "ruleId": "fitcopilot/use-logger",
+          "severity": 1,
+          "message": "Use logger.warn instead of console.warn",
+          "line": 100,
+          "column": 13,
+          "nodeType": "MemberExpression",
+          "messageId": "useLogger",
+          "endLine": 100,
+          "endColumn": 25
+        },
+        {
+          "ruleId": "fitcopilot/use-logger",
+          "severity": 1,
+          "message": "Use logger.error instead of console.error",
+          "line": 108,
+          "column": 13,
+          "nodeType": "MemberExpression",
+          "messageId": "useLogger",
+          "endLine": 108,
+          "endColumn": 26
+        }
+      ],
+      "compliant": false
+    },
+    {
+      "component": "src/services",
+      "warningCount": 0,
+      "errorCount": 0,
+      "messages": [],
+      "compliant": true
+    },
+    {
+      "component": "src/hooks",
+      "warningCount": 14,
+      "errorCount": 0,
+      "messages": [
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'e' is defined but never used. Allowed unused caught errors must match /^_/u.",
+          "line": 134,
+          "column": 26,
+          "nodeType": "unknown",
+          "messageId": "unusedVar",
+          "endLine": 134,
+          "endColumn": 27
+        },
+        {
+          "ruleId": "react-hooks/exhaustive-deps",
+          "severity": 1,
+          "message": "React Hook useCallback was passed a dependency list that is not an array literal. This means we can't statically verify whether you've passed the correct dependencies.",
+          "line": 32,
+          "column": 9,
+          "nodeType": "Identifier",
+          "messageId": "unknown",
+          "endLine": 32,
+          "endColumn": 21
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'autoAdvance' is assigned a value but never used. Allowed unused vars must match /^_/u.",
+          "line": 24,
+          "column": 9,
+          "nodeType": "unknown",
+          "messageId": "unusedVar",
+          "endLine": 24,
+          "endColumn": 20
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 242,
+          "column": 34,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 242,
+          "endColumn": 37
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 243,
+          "column": 33,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 243,
+          "endColumn": 36
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 244,
+          "column": 34,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 244,
+          "endColumn": 37
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 245,
+          "column": 33,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 245,
+          "endColumn": 36
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 257,
+          "column": 37,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 257,
+          "endColumn": 40
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 258,
+          "column": 36,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 258,
+          "endColumn": 39
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 259,
+          "column": 37,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 259,
+          "endColumn": 40
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 260,
+          "column": 36,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 260,
+          "endColumn": 39
+        },
+        {
+          "ruleId": "@typescript-eslint/no-unused-vars",
+          "severity": 1,
+          "message": "'e' is defined but never used. Allowed unused args must match /^_/u.",
+          "line": 384,
+          "column": 30,
+          "nodeType": "unknown",
+          "messageId": "unusedVar",
+          "endLine": 384,
+          "endColumn": 31
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 13,
+          "column": 59,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 13,
+          "endColumn": 62
+        },
+        {
+          "ruleId": "@typescript-eslint/no-explicit-any",
+          "severity": 1,
+          "message": "Unexpected any. Specify a different type.",
+          "line": 57,
+          "column": 61,
+          "nodeType": "TSAnyKeyword",
+          "messageId": "unexpectedAny",
+          "endLine": 57,
+          "endColumn": 64
+        }
+      ],
+      "compliant": false
+    }
+  ],
+  "warningsByRule": {
+    "verification-error": 2,
+    "@typescript-eslint/no-unused-vars": 4,
+    "@typescript-eslint/no-explicit-any": 15,
+    "fitcopilot/use-logger": 4,
+    "react-hooks/exhaustive-deps": 1
+  },
+  "recommendations": [
+    "Focus on fixing 4 non-compliant components, starting with ones having the most warnings.",
+    "Address the most common ESLint rule violations: @typescript-eslint/no-explicit-any (15 occurrences), @typescript-eslint/no-unused-vars (4 occurrences), fitcopilot/use-logger (4 occurrences).",
+    "Replace explicit \"any\" types with proper interfaces or type definitions."
+  ]
+}

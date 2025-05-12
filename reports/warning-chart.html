@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESLint Warning Reduction Progress</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --color-primary: var(--fc-color-primary, #0078d4);
+      --color-secondary: var(--fc-color-secondary, #2b88d8);
+      --color-background: var(--fc-color-background, #f9f9f9);
+      --color-text: var(--fc-color-text, #333333);
+      --color-success: var(--fc-color-success, #107c10);
+      --color-warning: var(--fc-color-warning, #ff8c00);
+      --color-error: var(--fc-color-error, #d83b01);
+      --color-border: var(--fc-color-border, #e0e0e0);
+      --font-family: var(--fc-font-family-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif);
+      --spacing-base: var(--fc-spacing-base, 8px);
+    }
+    
+    body {
+      font-family: var(--font-family);
+      background-color: var(--color-background);
+      color: var(--color-text);
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    h1, h2, h3 {
+      color: var(--color-primary);
+    }
+    
+    .chart-container {
+      margin-bottom: 40px;
+    }
+    
+    .tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 4px 4px 0 0;
+      margin-right: 5px;
+    }
+    
+    .tab.active {
+      background-color: white;
+      border-color: var(--color-border);
+      border-bottom-color: white;
+      color: var(--color-primary);
+      font-weight: bold;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .summary-card {
+      background-color: white;
+      border: 1px solid var(--color-border);
+      border-radius: 5px;
+      padding: 15px;
+      text-align: center;
+    }
+    
+    .summary-card h3 {
+      margin-top: 0;
+      color: var(--color-text);
+    }
+    
+    .summary-value {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    
+    .table th, .table td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+    }
+    
+    .table th {
+      background-color: var(--color-primary);
+      color: white;
+    }
+    
+    .table tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    
+    .trend-up {
+      color: var(--color-error);
+    }
+    
+    .trend-down {
+      color: var(--color-success);
+    }
+    
+    .trend-stable {
+      color: var(--color-text);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ESLint Warning Reduction Progress</h1>
+    <p>Last updated: 5/11/2025, 8:19:27 PM</p>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="component">Component-Level Warnings</div>
+      <div class="tab" data-tab="rule">Rule-Specific Warnings</div>
+      <div class="tab" data-tab="priority">Prioritized Issues</div>
+    </div>
+    
+    <div class="tab-content active" id="component-tab">
+      <div class="chart-container">
+        <canvas id="componentChart"></canvas>
+      </div>
+      
+      <h2>Component Warning Trends</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Current Warnings</th>
+            <th>Change</th>
+            <th>Trend</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+              <tr>
+                <td>src/features</td>
+                <td>0</td>
+                <td class="trend-stable">
+                  -
+                </td>
+                <td>
+                  ➡️ Stable
+                </td>
+              </tr>
+            
+              <tr>
+                <td>src/components/UI</td>
+                <td>0</td>
+                <td class="trend-stable">
+                  -
+                </td>
+                <td>
+                  ➡️ Stable
+                </td>
+              </tr>
+            
+              <tr>
+                <td>src/utils</td>
+                <td>10</td>
+                <td class="trend-stable">
+                  -
+                </td>
+                <td>
+                  ➡️ Stable
+                </td>
+              </tr>
+            
+              <tr>
+                <td>src/services</td>
+                <td>0</td>
+                <td class="trend-stable">
+                  -
+                </td>
+                <td>
+                  ➡️ Stable
+                </td>
+              </tr>
+            
+              <tr>
+                <td>src/hooks</td>
+                <td>14</td>
+                <td class="trend-stable">
+                  -
+                </td>
+                <td>
+                  ➡️ Stable
+                </td>
+              </tr>
+            
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="tab-content" id="rule-tab">
+      <div class="chart-container">
+        <canvas id="ruleChart"></canvas>
+      </div>
+      
+      <h2>Top ESLint Rule Violations</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Rule</th>
+            <th>Current Violations</th>
+            <th>Change</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+                <tr>
+                  <td>@typescript-eslint/no-explicit-any</td>
+                  <td>75</td>
+                  <td class="trend-stable">
+                    -
+                  </td>
+                  <td>High</td>
+                </tr>
+              
+                <tr>
+                  <td>@typescript-eslint/no-unused-vars</td>
+                  <td>20</td>
+                  <td class="trend-stable">
+                    -
+                  </td>
+                  <td>Medium</td>
+                </tr>
+              
+                <tr>
+                  <td>fitcopilot/use-logger</td>
+                  <td>20</td>
+                  <td class="trend-stable">
+                    -
+                  </td>
+                  <td>Medium</td>
+                </tr>
+              
+                <tr>
+                  <td>verification-error</td>
+                  <td>10</td>
+                  <td class="trend-stable">
+                    -
+                  </td>
+                  <td>Medium</td>
+                </tr>
+              
+                <tr>
+                  <td>react-hooks/exhaustive-deps</td>
+                  <td>5</td>
+                  <td class="trend-stable">
+                    -
+                  </td>
+                  <td>Medium</td>
+                </tr>
+              
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="tab-content" id="priority-tab">
+      <h2>Prioritized Issues</h2>
+      
+      <div class="summary">
+        <div class="summary-card">
+          <h3>Type Safety Issues</h3>
+          <div class="summary-value">
+            75
+          </div>
+          <div>High Priority Fixes</div>
+        </div>
+        
+        <div class="summary-card">
+          <h3>React Hooks Issues</h3>
+          <div class="summary-value">
+            5
+          </div>
+          <div>Medium Priority Fixes</div>
+        </div>
+        
+        <div class="summary-card">
+          <h3>Style Issues</h3>
+          <div class="summary-value">
+            0
+          </div>
+          <div>Low Priority Fixes</div>
+        </div>
+      </div>
+      
+      <h3>Recommended Actions</h3>
+      <ol>
+        <li>
+          <strong>Focus on explicit 'any' type replacements</strong> - 
+          These present the highest type safety risk
+        </li>
+        <li>
+          <strong>Address React hook dependencies</strong> - 
+          These can cause hard-to-debug rendering issues
+        </li>
+        <li>
+          <strong>Create proper interfaces for untyped data</strong> - 
+          Especially for API responses and complex objects
+        </li>
+        <li>
+          <strong>Implement proper component prop interfaces</strong> - 
+          Ensure consistent typing across component hierarchies
+        </li>
+      </ol>
+      
+      <h3>Component Fix Priority</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Priority</th>
+            <th>Type Issues</th>
+            <th>Estimated Effort</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+                <tr>
+                  <td>src/hooks</td>
+                  <td>High</td>
+                  <td>9</td>
+                  <td>Medium</td>
+                </tr>
+              
+                <tr>
+                  <td>src/utils</td>
+                  <td>Medium</td>
+                  <td>7</td>
+                  <td>Medium</td>
+                </tr>
+              
+                <tr>
+                  <td>src/features</td>
+                  <td>Low</td>
+                  <td>0</td>
+                  <td>Small</td>
+                </tr>
+              
+                <tr>
+                  <td>src/components/UI</td>
+                  <td>Low</td>
+                  <td>0</td>
+                  <td>Small</td>
+                </tr>
+              
+                <tr>
+                  <td>src/services</td>
+                  <td>Low</td>
+                  <td>0</td>
+                  <td>Small</td>
+                </tr>
+              
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <script>
+    // Chart.js configuration
+    const componentCtx = document.getElementById('componentChart').getContext('2d');
+    const componentChart = new Chart(componentCtx, {
+      type: 'line',
+      data: {
+        labels: ["2025-05-12"],
+        datasets: [{"label":"src/features","data":[0],"fill":false,"tension":0.1,"borderColor":"#0078D4","backgroundColor":"#0078D4"},{"label":"src/components/UI","data":[0],"fill":false,"tension":0.1,"borderColor":"#107C10","backgroundColor":"#107C10"},{"label":"src/utils","data":[10],"fill":false,"tension":0.1,"borderColor":"#D83B01","backgroundColor":"#D83B01"},{"label":"src/services","data":[0],"fill":false,"tension":0.1,"borderColor":"#FFB900","backgroundColor":"#FFB900"},{"label":"src/hooks","data":[14],"fill":false,"tension":0.1,"borderColor":"#8661C5","backgroundColor":"#8661C5"}]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'ESLint Warnings by Component Over Time'
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+        scales: {
+          y: {
+            title: {
+              display: true,
+              text: 'Warning Count'
+            },
+            min: 0
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Date'
+            }
+          }
+        }
+      }
+    });
+    
+    const ruleCtx = document.getElementById('ruleChart').getContext('2d');
+    const ruleChart = new Chart(ruleCtx, {
+      type: 'bar',
+      data: {
+        labels: ["2025-05-12"],
+        datasets: [{"label":"@typescript-eslint/no-explicit-any","data":[75],"backgroundColor":"#0078D4"},{"label":"@typescript-eslint/no-unused-vars","data":[20],"backgroundColor":"#107C10"},{"label":"fitcopilot/use-logger","data":[20],"backgroundColor":"#D83B01"},{"label":"verification-error","data":[10],"backgroundColor":"#FFB900"},{"label":"react-hooks/exhaustive-deps","data":[5],"backgroundColor":"#8661C5"}]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Top 5 ESLint Rule Violations Over Time'
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+        scales: {
+          y: {
+            title: {
+              display: true,
+              text: 'Violation Count'
+            },
+            min: 0,
+            stacked: true
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Date'
+            },
+            stacked: true
+          }
+        }
+      }
+    });
+    
+    // Tab switching logic
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Remove active class from all tabs
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab + '-tab').classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
+  

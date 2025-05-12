@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 /**
  * A hook that safely handles async functions in useEffect
@@ -13,7 +13,14 @@ function useAsyncEffect(
     dependencies: React.DependencyList = [],
     onError?: (error: Error) => void
 ): void {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Use refs to avoid including function identities in dependencies
+    const asyncEffectRef = useRef(asyncEffect);
+    const onErrorRef = useRef(onError);
+
+    // Keep refs updated with the latest values
+    asyncEffectRef.current = asyncEffect;
+    onErrorRef.current = onError;
+
     useEffect(() => {
         // Track if the component is still mounted
         let isMounted = true;
@@ -24,11 +31,11 @@ function useAsyncEffect(
         const execute = async () => {
             try {
                 // Run the async effect
-                cleanup = await asyncEffect();
+                cleanup = await asyncEffectRef.current();
             } catch (error) {
                 // If there's an error and the component is still mounted, call the error handler
-                if (isMounted && onError && error instanceof Error) {
-                    onError(error);
+                if (isMounted && onErrorRef.current && error instanceof Error) {
+                    onErrorRef.current(error);
                 }
             }
         };
@@ -46,7 +53,8 @@ function useAsyncEffect(
                 cleanup();
             }
         };
-    }, dependencies);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [...dependencies]); // Spread dependencies to ensure it's always an array
 }
 
 export default useAsyncEffect; 

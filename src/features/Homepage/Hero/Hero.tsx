@@ -4,9 +4,10 @@ import Button from '../../../components/UI/Button';
 import { Tooltip, TooltipThemeProvider } from '../../../components/UI/Tooltip';
 // Temporarily comment out the module style import until we fix the SCSS issues
 // import styles from './Hero.module.scss';
+import { ThemeCSSProperties } from '../../../types/theme';
 import './Hero.scss';
 import FloatingIcons from './components/FloatingIcons';
-import { HeroProps } from './types';
+import { HeroProps, TooltipKey, TooltipStates } from './types';
 
 export const Hero: React.FC<HeroProps> = ({
   registrationLink = "#splash-section",
@@ -15,7 +16,7 @@ export const Hero: React.FC<HeroProps> = ({
   onRegistrationStart
 }) => {
   // Animation states for tooltips
-  const [tooltipStates, setTooltipStates] = useState({
+  const [tooltipStates, setTooltipStates] = useState<TooltipStates>({
     freeWorkout: {
       show: false,
       isHovered: false,
@@ -43,7 +44,7 @@ export const Hero: React.FC<HeroProps> = ({
   }, []);
 
   // Mouse enter handler
-  const handleMouseEnter = (button: 'freeWorkout' | 'createAccount') => {
+  const handleMouseEnter = (button: TooltipKey) => {
     setTooltipStates(prev => ({
       ...prev,
       [button]: {
@@ -55,7 +56,7 @@ export const Hero: React.FC<HeroProps> = ({
   };
 
   // Mouse leave handler
-  const handleMouseLeave = (button: 'freeWorkout' | 'createAccount') => {
+  const handleMouseLeave = (button: TooltipKey) => {
     setTooltipStates(prev => ({
       ...prev,
       [button]: {
@@ -67,7 +68,7 @@ export const Hero: React.FC<HeroProps> = ({
   };
 
   // Handle scroll to splash
-  const handleScrollToSplash = (e: React.MouseEvent) => {
+  const handleScrollToSplash = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     e.preventDefault();
 
     // Option 1: Use onRegistrationStart callback if available
@@ -85,6 +86,12 @@ export const Hero: React.FC<HeroProps> = ({
 
     // Option 3: Fallback to registration page
     window.location.href = registrationLink;
+  };
+
+  // Calculate gradient styles
+  const gradientStyles: ThemeCSSProperties = {
+    '--hero-gradient-start': 'var(--color-primary, #4CAF50)',
+    '--hero-gradient-end': 'var(--color-accent, #8BC34A)'
   };
 
   return (
@@ -120,7 +127,7 @@ export const Hero: React.FC<HeroProps> = ({
               id="hero-heading"
               className="hero-heading"
             >
-              <span className="hero-divider-gradient" data-text="AI-Powered Workouts">
+              <span className="hero-divider-gradient" data-text="AI-Powered Workouts" style={gradientStyles}>
                 AI-Powered Workouts
               </span> Tailored Just for You
             </h1>
@@ -204,31 +211,29 @@ export const Hero: React.FC<HeroProps> = ({
               </div>
             </div>
 
-            {/* Sign In Link */}
-            <div className="hero-signin">
-              <a
-                href={loginLink}
-                className="signin-link"
-              >
-                <LogIn size={16} className="signin-icon" />
-                Already have an account? Sign in
-              </a>
+            {/* Login Link */}
+            <div className="hero-login-link">
+              <p>
+                Already have an account? <a href={loginLink} className="login-link">
+                  <LogIn className="login-icon" size={14} /> Log in
+                </a>
+              </p>
             </div>
-          </div>
 
-          {/* Features Pills */}
-          <div className="hero-features">
-            <div className="hero-feature-pill">
-              <Dumbbell size={14} className="feature-icon" />
-              <span>Personalized Workouts</span>
-            </div>
-            <div className="hero-feature-pill">
-              <Flame size={14} className="feature-icon" />
-              <span>AI-Optimized Routines</span>
-            </div>
-            <div className="hero-feature-pill">
-              <Heart size={14} className="feature-icon" />
-              <span>Expert Guidance</span>
+            {/* Feature Icons */}
+            <div className="hero-features">
+              <div className="hero-feature" title="Beginner Friendly">
+                <Heart className="hero-feature-icon" />
+                <span>Beginner Friendly</span>
+              </div>
+              <div className="hero-feature" title="Strength & Cardio">
+                <Dumbbell className="hero-feature-icon" />
+                <span>Strength & Cardio</span>
+              </div>
+              <div className="hero-feature" title="HIIT Workouts">
+                <Flame className="hero-feature-icon" />
+                <span>HIIT Workouts</span>
+              </div>
             </div>
           </div>
         </div>

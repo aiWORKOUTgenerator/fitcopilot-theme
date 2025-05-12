@@ -12,7 +12,7 @@ import { useCallback, useRef } from 'react';
  * @param dependencies Dependencies array that will trigger a new callback when changed
  * @returns A memoized callback function
  */
-function useEventCallback<T extends (...args: unknown[]) => any>(
+function useEventCallback<T extends (...args: unknown[]) => unknown>(
     callback: T,
     dependencies: React.DependencyList
 ): T {

@@ -3,6 +3,7 @@
  * Provides environment-aware logging and support for different log levels
  */
 
+import { CommonEventHandler } from '../types/events';
 import { LOG_LEVEL_VALUES, LogLevel } from './logLevels';
 
 // Determine environment
@@ -355,6 +356,60 @@ export const setLogLevel = (level: number): void => {
     configureLogger({ minLevel: level });
 };
 
+/**
+ * Log React component events with structured data
+ * @param componentName Name of the component generating the event
+ * @param eventName Name of the event (e.g., 'click', 'change')
+ * @param event The React synthetic event
+ */
+export const logComponentEvent = <T extends Element, E extends React.SyntheticEvent<T>>(
+    componentName: string,
+    eventName: string,
+    event: E
+): void => {
+    // Prevent logging in production unless configured
+    if (isProduction && !activeConfig.enableRemoteLogging) return;
+
+    // Extract useful information from the event
+    const targetInfo = {
+        id: event.currentTarget.id || undefined,
+        className: event.currentTarget.className || undefined,
+        tagName: event.currentTarget.tagName || undefined,
+        type: event.type || undefined
+    };
+
+    // Log with context
+    debug(`${componentName}:${eventName}`, {
+        component: componentName,
+        event: eventName,
+        target: targetInfo,
+        timestamp: new Date().toISOString()
+    });
+};
+
+/**
+ * Create a wrapped event handler that logs the event before calling the original handler
+ * @param componentName Name of the component
+ * @param eventName Name of the event (e.g., 'click', 'submit')
+ * @param handler The original event handler
+ * @returns A new function that logs and then calls the original handler
+ */
+export const createLoggedEventHandler = <T extends Element, E extends React.SyntheticEvent<T>>(
+    componentName: string,
+    eventName: string,
+    handler?: CommonEventHandler<T, E>
+): CommonEventHandler<T, E> => {
+    return (event: E) => {
+        // Log the event
+        logComponentEvent(componentName, eventName, event);
+
+        // Call the original handler if provided
+        if (handler) {
+            handler(event);
+        }
+    };
+};
+
 // Create the logger object
 const logger = {
     debug,
@@ -368,7 +423,9 @@ const logger = {
     addContext,
     setLogLevel,
     configureLogger,
-    LogLevel // Re-export for compatibility
+    LogLevel, // Re-export for compatibility
+    logComponentEvent,
+    createLoggedEventHandler
 };
 
 // Make logger globally available as a fallback

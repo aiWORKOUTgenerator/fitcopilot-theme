@@ -1,33 +1,58 @@
 /**
- * Common event handler type definitions
- * Used to replace 'any' type usage throughout the codebase
+ * Common event handler type definitions for consistent typing across components
  */
 
 import React from 'react';
 
 /**
- * Button event handler types
+ * Base event handler type for synthetic events
  */
-export type ButtonClickEvent = React.MouseEvent<HTMLButtonElement, MouseEvent>;
-export type ButtonClickHandler = React.MouseEventHandler<HTMLButtonElement>;
+export type CommonEventHandler<T extends Element, E extends React.SyntheticEvent<T>> =
+    (event: E) => void;
+
+/**
+ * Mouse event handlers
+ */
+export type MouseEventHandler<T extends Element = Element> =
+    CommonEventHandler<T, React.MouseEvent<T>>;
+
+export type ButtonClickHandler = MouseEventHandler<HTMLButtonElement>;
+export type LinkClickHandler = MouseEventHandler<HTMLAnchorElement>;
+
+/**
+ * Form event handlers
+ */
+export type FormEventHandler<T extends Element = Element> =
+    CommonEventHandler<T, React.FormEvent<T>>;
+
+export type InputChangeHandler = FormEventHandler<HTMLInputElement>;
+export type SelectChangeHandler = FormEventHandler<HTMLSelectElement>;
+export type FormSubmitHandler = FormEventHandler<HTMLFormElement>;
+
+/**
+ * Media event handlers
+ */
+export type MediaEventHandler<T extends HTMLMediaElement = HTMLMediaElement> =
+    CommonEventHandler<T, React.SyntheticEvent<T>>;
+
+export type VideoLoadHandler = MediaEventHandler<HTMLVideoElement>;
+export type AudioLoadHandler = MediaEventHandler<HTMLAudioElement>;
+
+/**
+ * Keyboard event handlers
+ */
+export type KeyboardEventHandler<T extends Element = Element> =
+    CommonEventHandler<T, React.KeyboardEvent<T>>;
+
+export type InputKeyPressHandler = KeyboardEventHandler<HTMLInputElement>;
+export type ButtonKeyPressHandler = KeyboardEventHandler<HTMLButtonElement>;
 
 /**
  * Input event handler types
  */
 export type InputChangeEvent = React.ChangeEvent<HTMLInputElement>;
-export type InputChangeHandler = React.ChangeEventHandler<HTMLInputElement>;
-
 export type TextAreaChangeEvent = React.ChangeEvent<HTMLTextAreaElement>;
 export type TextAreaChangeHandler = (event: TextAreaChangeEvent) => void;
-
-export type SelectChangeEvent = React.ChangeEvent<HTMLSelectElement>;
-export type SelectChangeHandler = React.ChangeEventHandler<HTMLSelectElement>;
-
-/**
- * Form event handler types
- */
-export type FormSubmitEvent = React.FormEvent<HTMLFormElement>;
-export type FormSubmitHandler = React.FormEventHandler<HTMLFormElement>;
 
 /**
  * Focus event handler types
@@ -45,9 +70,7 @@ export type ElementClickHandler = (event: ElementClickEvent) => void;
 /**
  * Keyboard event handler types
  */
-export type KeyboardEvent = React.KeyboardEvent<HTMLElement>;
 export type KeyboardHandler = (event: KeyboardEvent) => void;
-export type KeyboardEventHandler<T = Element> = React.KeyboardEventHandler<T>;
 
 /**
  * Drag event handler types

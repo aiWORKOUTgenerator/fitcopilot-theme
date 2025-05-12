@@ -5,17 +5,59 @@ import { RegistrationData } from '../types';
 const apiLogger = logger.addContext('RegistrationAPI');
 
 /**
+ * WordPress global data interface
+ */
+interface WordPressGlobalData {
+    wpData?: {
+        restUrl?: string;
+        nonce?: string;
+    };
+}
+
+/**
+ * Registration API response interface
+ */
+interface RegistrationResponse {
+    user_id: number;
+    status: string;
+    message?: string;
+    redirect_url?: string;
+}
+
+/**
+ * Email validation response interface
+ */
+interface EmailValidationResponse {
+    isValid: boolean;
+    message?: string;
+}
+
+/**
+ * Workout recommendation response interface
+ */
+interface WorkoutRecommendationResponse {
+    id: string;
+    programs?: Array<{
+        id: string;
+        name: string;
+        description: string;
+        level: string;
+    }>;
+    message?: string;
+}
+
+/**
  * Submit registration data to WordPress backend
  * 
  * @param data - Registration data to submit
  * @returns Promise with the submission response
  */
-export const submitRegistration = async (data: RegistrationData) => {
+export const submitRegistration = async (data: RegistrationData): Promise<RegistrationResponse> => {
     const timerId = apiLogger.time('submitRegistration');
 
     try {
         // Get the WordPress REST API URL and nonce from the global variable
-        const wpData = (window as any).athleteDashboardData?.wpData || {};
+        const wpData = ((window as unknown) as WordPressGlobalData).athleteDashboardData?.wpData || {};
         const restUrl = wpData.restUrl || '/wp-json';
         const nonce = wpData.nonce || '';
 
@@ -39,7 +81,7 @@ export const submitRegistration = async (data: RegistrationData) => {
 
         // Check if the request was successful
         if (!response.ok) {
-            const errorData = await response.json();
+            const errorData = await response.json() as { message?: string };
             const errorMessage = errorData.message || 'Failed to submit registration';
             apiLogger.error('Registration submission failed', {
                 status: response.status,
@@ -50,7 +92,7 @@ export const submitRegistration = async (data: RegistrationData) => {
         }
 
         // Parse the response data
-        const result = await response.json();
+        const result = await response.json() as RegistrationResponse;
         apiLogger.info('Registration submission successful', {
             userId: result.user_id,
             status: result.status
@@ -71,11 +113,11 @@ export const submitRegistration = async (data: RegistrationData) => {
  * @param email - Email address to validate
  * @returns Promise with validation result
  */
-export const validateEmail = async (email: string) => {
+export const validateEmail = async (email: string): Promise<EmailValidationResponse> => {
     const timerId = apiLogger.time('validateEmail');
 
     try {
-        const wpData = (window as any).athleteDashboardData?.wpData || {};
+        const wpData = ((window as unknown) as WordPressGlobalData).athleteDashboardData?.wpData || {};
         const restUrl = wpData.restUrl || '/wp-json';
         const nonce = wpData.nonce || '';
 
@@ -95,7 +137,7 @@ export const validateEmail = async (email: string) => {
         );
 
         if (!response.ok) {
-            const errorData = await response.json();
+            const errorData = await response.json() as { message?: string };
             const errorMessage = errorData.message || 'Failed to validate email';
             apiLogger.error('Email validation failed', {
                 status: response.status,
@@ -105,7 +147,7 @@ export const validateEmail = async (email: string) => {
             throw new Error(errorMessage);
         }
 
-        const result = await response.json();
+        const result = await response.json() as EmailValidationResponse;
         apiLogger.debug('Email validation successful', { isValid: result.isValid });
 
         apiLogger.timeEnd(timerId);
@@ -123,11 +165,11 @@ export const validateEmail = async (email: string) => {
  * @param data - User profile data
  * @returns Promise with workout recommendation data
  */
-export const getWorkoutRecommendation = async (data: Partial<RegistrationData>) => {
+export const getWorkoutRecommendation = async (data: Partial<RegistrationData>): Promise<WorkoutRecommendationResponse> => {
     const timerId = apiLogger.time('getWorkoutRecommendation');
 
     try {
-        const wpData = (window as any).athleteDashboardData?.wpData || {};
+        const wpData = ((window as unknown) as WordPressGlobalData).athleteDashboardData?.wpData || {};
         const restUrl = wpData.restUrl || '/wp-json';
         const nonce = wpData.nonce || '';
 
@@ -153,7 +195,7 @@ export const getWorkoutRecommendation = async (data: Partial<RegistrationData>) 
         });
 
         if (!response.ok) {
-            const errorData = await response.json();
+            const errorData = await response.json() as { message?: string };
             const errorMessage = errorData.message || 'Failed to get workout recommendation';
             apiLogger.error('Workout recommendation failed', {
                 status: response.status,
@@ -163,7 +205,7 @@ export const getWorkoutRecommendation = async (data: Partial<RegistrationData>) 
             throw new Error(errorMessage);
         }
 
-        const result = await response.json();
+        const result = await response.json() as WorkoutRecommendationResponse;
         apiLogger.info('Workout recommendation successful', {
             recommendationId: result.id,
             programCount: result.programs?.length || 0

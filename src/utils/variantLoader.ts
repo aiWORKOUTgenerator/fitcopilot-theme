@@ -1,4 +1,5 @@
 import React from 'react';
+import { ThemeVariant } from '../types/theme';
 import logger from './logger';
 
 /**
@@ -10,22 +11,26 @@ import logger from './logger';
  */
 
 // Type definitions for variant components
-export type VariantKey = 'default' | 'modern' | 'wellness' | 'sports' | 'boutique' | 'classic' | 'minimalist' | 'registration';
+export type VariantKey = ThemeVariant;
 
 // Map of variant to component path (for dynamic imports)
-const variantPaths: Record<string, string> = {
+const variantPaths: Record<ThemeVariant, string> = {
     'default': 'default',
     'modern': 'modern',
     'wellness': 'wellness',
     'sports': 'sports',
+    'gym': 'gym',
     'boutique': 'boutique',
     'classic': 'classic',
     'minimalist': 'minimalist',
     'registration': 'registration'
 };
 
+// Generic component type
+export type GenericComponent<P = Record<string, unknown>> = React.ComponentType<P>;
+
 // Cache for loaded variant components
-const variantCache: Record<string, Record<VariantKey, any>> = {};
+const variantCache: Record<string, Record<VariantKey, GenericComponent>> = {};
 
 /**
  * Dynamic variant importer function
@@ -34,7 +39,10 @@ const variantCache: Record<string, Record<VariantKey, any>> = {};
  * @param variant Variant key to load
  * @returns Promise that resolves to the variant component
  */
-export const importVariant = async (featurePath: string, variant: VariantKey = 'default') => {
+export const importVariant = async (
+    featurePath: string,
+    variant: VariantKey = 'default'
+): Promise<GenericComponent> => {
     try {
         // Use actual variant path or fallback to default
         const variantPathKey = variantPaths[variant] || 'default';
@@ -66,10 +74,10 @@ export const importVariant = async (featurePath: string, variant: VariantKey = '
  * @param defaultVariant Default variant to use if none matches
  * @returns The appropriate variant component
  */
-export const getComponentVariant = (
-    variantMap: Record<VariantKey, React.ComponentType<any>>,
-    defaultVariant: React.ComponentType<any>
-): React.ComponentType<any> => {
+export const getComponentVariant = <P extends Record<string, unknown>>(
+    variantMap: Record<VariantKey, GenericComponent<P>>,
+    defaultVariant: GenericComponent<P>
+): GenericComponent<P> => {
     // Determine which variant to use from data-theme attribute or default
     const bodyTheme = document.body.getAttribute('data-theme') as VariantKey;
 
@@ -83,17 +91,25 @@ export const getComponentVariant = (
 };
 
 /**
+ * Component props type with optional variant
+ */
+export interface VariantComponentProps extends Record<string, unknown> {
+    variant?: VariantKey;
+    fallback?: React.ReactNode;
+}
+
+/**
  * Creates a React component that dynamically loads the appropriate variant
  * 
  * @param featurePath Path to the feature (e.g., 'Homepage/Hero')
  * @returns A component that will render the appropriate variant
  */
-export const createVariantComponent = (featurePath: string) => {
+export const createVariantComponent = <P extends VariantComponentProps>(featurePath: string): React.FC<P> => {
     // Create a React component
-    const VariantLoader = (props: Record<string, unknown>) => {
+    const VariantLoader: React.FC<P> = (props) => {
         // Determine which variant to use (from data-theme attribute or props)
-        const [variant, setVariant] = React.useState<VariantKey>('default');
-        const [VariantComponent, setVariantComponent] = React.useState<React.ComponentType<any> | null>(null);
+        const [_variant, setVariant] = React.useState<VariantKey>('default');
+        const [VariantComponent, setVariantComponent] = React.useState<GenericComponent<P> | null>(null);
         const [isLoading, setIsLoading] = React.useState(true);
         const [error, setError] = React.useState<Error | null>(null);
 
@@ -101,13 +117,13 @@ export const createVariantComponent = (featurePath: string) => {
         React.useEffect(() => {
             const determineVariant = () => {
                 // First check props for variant
-                if (props.variant && variantPaths[props.variant]) {
+                if (props.variant && variantPaths[props.variant as ThemeVariant]) {
                     return props.variant as VariantKey;
                 }
 
                 // Then check for body data-theme attribute
                 const bodyTheme = document.body.getAttribute('data-theme');
-                if (bodyTheme && variantPaths[bodyTheme]) {
+                if (bodyTheme && variantPaths[bodyTheme as ThemeVariant]) {
                     return bodyTheme as VariantKey;
                 }
 
@@ -120,12 +136,12 @@ export const createVariantComponent = (featurePath: string) => {
 
             // Load the variant if not already cached
             if (!variantCache[featurePath]) {
-                variantCache[featurePath] = {} as Record<VariantKey, any>;
+                variantCache[featurePath] = {} as Record<VariantKey, GenericComponent<P>>;
             }
 
             // If we have the component in cache, use it
             if (variantCache[featurePath][selectedVariant]) {
-                setVariantComponent(variantCache[featurePath][selectedVariant]);
+                setVariantComponent(variantCache[featurePath][selectedVariant] as GenericComponent<P>);
                 setIsLoading(false);
                 return;
             }
@@ -137,19 +153,19 @@ export const createVariantComponent = (featurePath: string) => {
                     // Cache the component
                     const Component = module.default || module;
                     variantCache[featurePath][selectedVariant] = Component;
-                    setVariantComponent(() => Component);
+                    setVariantComponent(() => Component as GenericComponent<P>);
                     setIsLoading(false);
                 })
                 .catch(err => {
                     logger.error(`Failed to load variant ${selectedVariant} for ${featurePath}:`, err);
-                    setError(err);
+                    setError(err as Error);
                     setIsLoading(false);
                 });
         }, [props.variant]);  // Remove featurePath dependency as it doesn't change
 
         // Show loading state
         if (isLoading) {
-            return props.fallback || React.createElement('div', { className: "lazy-loading-skeleton" });
+            return props.fallback as React.ReactElement || React.createElement('div', { className: "lazy-loading-skeleton" });
         }
 
         // Show error state
@@ -162,7 +178,7 @@ export const createVariantComponent = (featurePath: string) => {
         }
 
         // Render the variant component with props
-        return React.createElement(VariantComponent, props);
+        return React.createElement(VariantComponent, props as unknown as P);
     };
 
     // Add display name to fix linting error
@@ -177,17 +193,17 @@ export const createVariantComponent = (featurePath: string) => {
  * @param featurePath Path to the feature (e.g., 'Homepage/Hero')
  * @returns A lazy-loaded component that will render the appropriate variant
  */
-export const createLazyVariantComponent = (featurePath: string) => {
+export const createLazyVariantComponent = <P extends Record<string, unknown>>(featurePath: string): React.LazyExoticComponent<React.ComponentType<P>> => {
     return React.lazy(() => {
         // Determine variant from data-theme attribute
         const bodyTheme = document.body.getAttribute('data-theme');
-        const variant = (bodyTheme && variantPaths[bodyTheme]) ?
+        const variant = (bodyTheme && variantPaths[bodyTheme as ThemeVariant]) ?
             bodyTheme as VariantKey : 'default';
 
         return importVariant(featurePath, variant)
             .then(module => {
                 // Return in the format expected by React.lazy
-                return { default: module.default || module };
+                return { default: module as React.ComponentType<P> };
             });
     });
 };
@@ -198,19 +214,22 @@ export const createLazyVariantComponent = (featurePath: string) => {
  * @param featurePath Path to the feature
  * @param variants Array of variants to preload
  */
-export const preloadVariants = (featurePath: string, variants: VariantKey[] = ['default']) => {
+export const preloadVariants = (featurePath: string, variants: VariantKey[] = ['default']): void => {
     variants.forEach(variant => {
-        // Create a prefetch link element
-        const link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = `/wp-content/themes/fitcopilot/dist/chunks/variant-${variant.toLowerCase()}.js`;
-        link.as = 'script';
-        document.head.appendChild(link);
+        // Preload the variant
+        importVariant(featurePath, variant)
+            .then(module => {
+                // Cache the module
+                if (!variantCache[featurePath]) {
+                    variantCache[featurePath] = {} as Record<VariantKey, GenericComponent>;
+                }
 
-        // Also start the actual import (but don't wait for it)
-        importVariant(featurePath, variant).catch(() => {
-            // Silently catch any errors during preloading
-        });
+                variantCache[featurePath][variant] = module;
+                logger.debug(`Preloaded variant ${variant} for ${featurePath}`);
+            })
+            .catch(err => {
+                logger.error(`Failed to preload variant ${variant} for ${featurePath}:`, err);
+            });
     });
 };
 

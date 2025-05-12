@@ -67,6 +67,24 @@ export interface ProgressIndicatorProps {
 }
 
 /**
+ * User data returned after successful registration
+ */
+export interface UserData {
+    /** Unique user ID */
+    id: string | number;
+    /** User email */
+    email: string;
+    /** User display name */
+    displayName?: string;
+    /** Profile completion percentage */
+    profileCompletion?: number;
+    /** Account verification status */
+    verified?: boolean;
+    /** Custom user fields */
+    [key: string]: unknown;
+}
+
+/**
  * Registration form submission result
  */
 export interface RegistrationResult {
@@ -76,6 +94,6 @@ export interface RegistrationResult {
     /** User ID or error message */
     message: string;
 
-    /** Any additional data returned from the registration process */
-    data?: any;
+    /** User data returned from the registration process */
+    data?: UserData;
 } 

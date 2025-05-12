@@ -1,0 +1,112 @@
+// Canonical design system import - MUST BE FIRST
+@use '../../../styles/design-system' as ds;
+
+.button-group {
+    display: flex;
+    width: 100%;
+
+    &--horizontal {
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .button,
+        .btn,
+        button {
+            &:not(:last-child) {
+                margin-right: var(--button-group-spacing, 1rem);
+            }
+        }
+    }
+
+    &--vertical {
+        flex-direction: column;
+
+        .button,
+        .btn,
+        button {
+            &:not(:last-child) {
+                margin-bottom: var(--button-group-spacing, 1rem);
+            }
+        }
+    }
+
+    // Spacing variants
+    &--spacing-none {
+        --button-group-spacing: 0;
+    }
+
+    &--spacing-small {
+        --button-group-spacing: var(--spacing-xs, 0.25rem);
+    }
+
+    &--spacing-medium {
+        --button-group-spacing: var(--spacing-sm, 0.5rem);
+    }
+
+    &--spacing-large {
+        --button-group-spacing: var(--spacing-md, 1rem);
+    }
+
+    // Alignment variants
+    &--align-start {
+        justify-content: flex-start;
+    }
+
+    &--align-center {
+        justify-content: center;
+    }
+
+    &--align-end {
+        justify-content: flex-end;
+    }
+
+    &--align-stretch {
+        &.button-group--horizontal {
+
+            .button,
+            .btn,
+            button {
+                flex: 1;
+            }
+        }
+    }
+
+    // Equal width buttons
+    &--equal-width {
+        &.button-group--horizontal {
+
+            .button,
+            .btn,
+            button {
+                flex: 1;
+            }
+        }
+
+        &.button-group--vertical {
+            width: 100%;
+
+            .button,
+            .btn,
+            button {
+                width: 100%;
+            }
+        }
+    }
+
+    // Theme variants
+    [data-theme="default"] & {
+        --button-group-spacing: var(--spacing-sm, 0.5rem);
+    }
+
+    [data-theme="gym"] & {
+        --button-group-spacing: var(--spacing-md, 0.75rem);
+    }
+
+    [data-theme="sports"] & {
+        --button-group-spacing: var(--spacing-sm, 0.5rem);
+    }
+
+    [data-theme="wellness"] & {
+        --button-group-spacing: var(--spacing-xs, 0.25rem);
+    }
+}

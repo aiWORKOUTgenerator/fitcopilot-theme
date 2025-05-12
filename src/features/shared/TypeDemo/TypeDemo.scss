@@ -1,0 +1,195 @@
+// TypeDemo Component Styles
+// This demonstrates proper usage of our token system
+
+// Canonical design system import - MUST BE FIRST
+@use '../../../styles/design-system' as ds;
+
+// Import consolidated theme tokens
+@use '../../../styles/design-system/tokens/theme-tokens' as tokens;
+
+.type-demo {
+    // Use our token system for consistent styling
+    --type-demo-border-radius: var(--fc-border-radius-base, 4px);
+    --type-demo-padding: var(--fc-spacing-base, 8px);
+    --type-demo-margin: var(--fc-spacing-md, 16px);
+    --type-demo-background: var(--fc-color-background, #ffffff);
+    --type-demo-text-color: var(--fc-color-text, #333333);
+    --type-demo-border-color: var(--fc-color-border, #e0e0e0);
+    --type-demo-item-spacing: var(--fc-spacing-sm, 8px);
+    --type-demo-highlight-color: var(--fc-color-primary-light, #f0f7ff);
+    --type-demo-selected-color: var(--fc-color-primary, #0078d4);
+
+    // Base styling
+    background-color: var(--type-demo-background);
+    border: 1px solid var(--type-demo-border-color);
+    border-radius: var(--type-demo-border-radius);
+    color: var(--type-demo-text-color);
+    padding: var(--type-demo-padding);
+    margin-bottom: var(--type-demo-margin);
+
+    // Responsive padding on larger screens
+    @media (min-width: 768px) {
+        padding: calc(var(--type-demo-padding) * 2);
+    }
+
+    // Title styling
+    &__title {
+        font-size: var(--fc-font-size-lg, 1.25rem);
+        margin-top: 0;
+        margin-bottom: var(--type-demo-padding);
+        color: var(--fc-color-primary, #0078d4);
+    }
+
+    // Description styling
+    &__description {
+        font-size: var(--fc-font-size-sm, 0.875rem);
+        margin-bottom: var(--type-demo-margin);
+        color: var(--fc-color-text-muted, #666666);
+    }
+
+    // List container
+    &__list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        // Expanded mode
+        &--expanded {
+            display: flex;
+            flex-direction: column;
+            gap: var(--type-demo-item-spacing);
+        }
+
+        // Compact mode
+        &--compact {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--type-demo-item-spacing) / 2);
+        }
+
+        // Grid mode
+        &--grid {
+            display: grid;
+            gap: var(--type-demo-item-spacing);
+        }
+    }
+
+    // List item styling
+    &__item {
+        padding: var(--type-demo-padding);
+        border: 1px solid var(--type-demo-border-color);
+        border-radius: var(--type-demo-border-radius);
+        background-color: var(--fc-color-background-alt, #f9f9f9);
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: var(--fc-color-primary-light, #2b88d8);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        // Selected state
+        &--selected {
+            border-color: var(--type-demo-selected-color);
+            box-shadow: 0 0 0 1px var(--type-demo-selected-color);
+        }
+
+        // Highlighted state
+        &--highlighted {
+            background-color: var(--type-demo-highlight-color);
+        }
+
+        // Variant specific styling
+        &--compact {
+            padding: calc(var(--type-demo-padding) / 2);
+            font-size: var(--fc-font-size-sm, 0.875rem);
+        }
+
+        &--expanded {
+            padding: calc(var(--type-demo-padding) * 1.5);
+        }
+    }
+
+    // Label and value styling
+    &__label {
+        font-weight: var(--fc-font-weight-semibold, 600);
+        display: block;
+    }
+
+    &__value {
+        display: block;
+        color: var(--fc-color-text-muted, #666666);
+        font-size: var(--fc-font-size-sm, 0.875rem);
+    }
+
+    // Empty state
+    &__empty {
+        color: var(--fc-color-text-muted, #666666);
+        font-style: italic;
+        padding: var(--type-demo-padding);
+        text-align: center;
+    }
+
+    // Loading state
+    &--loading {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    &__loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100px;
+
+        &::after {
+            content: "";
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--fc-color-border, #e0e0e0);
+            border-top-color: var(--fc-color-primary, #0078d4);
+            border-radius: 50%;
+            animation: type-demo-spinner 0.8s linear infinite;
+        }
+    }
+
+    // Screen reader only class
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+
+    // Theme variant styling
+    &--theme-default {
+        // Default theme values are already applied
+    }
+
+    &--theme-gym {
+        --type-demo-selected-color: var(--fc-color-gym-primary, #E53935);
+        --type-demo-highlight-color: var(--fc-color-gym-primary-light, #FFEBEE);
+    }
+
+    &--theme-sports {
+        --type-demo-selected-color: var(--fc-color-sports-primary, #2196F3);
+        --type-demo-highlight-color: var(--fc-color-sports-primary-light, #E3F2FD);
+    }
+
+    &--theme-wellness {
+        --type-demo-selected-color: var(--fc-color-wellness-primary, #4CAF50);
+        --type-demo-highlight-color: var(--fc-color-wellness-primary-light, #E8F5E9);
+    }
+}
+
+// Animation for loading spinner
+@keyframes type-demo-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
