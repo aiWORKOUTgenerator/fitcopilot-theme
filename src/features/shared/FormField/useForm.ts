@@ -132,7 +132,7 @@ const formReducer = (state: FormState, action: FormAction): FormState => {
 
         case 'RESET_FORM': {
             // Reset to initial values but keep validators
-            const resetFields: Record<string, any> = {};
+            const resetFields: Record<string, unknown> = {};
 
             Object.entries(state.fields).forEach(([fieldName, field]) => {
                 resetFields[fieldName] = {

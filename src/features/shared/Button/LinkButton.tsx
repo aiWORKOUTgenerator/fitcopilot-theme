@@ -99,7 +99,7 @@ export const withLinkButton = <P extends LinkButtonProps>(
         return <Component {...props} />;
     };
 
-    WithLinkButton.displayName = `withLinkButton(${Component.displayName || Component.name || 'Component'})`;
+    WithLinkButton.displayName = `WithLinkButton(${Component.displayName || Component.name || 'Component'})`;
 
     return WithLinkButton;
 }; 

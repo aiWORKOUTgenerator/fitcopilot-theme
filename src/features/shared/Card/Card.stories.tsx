@@ -1,5 +1,6 @@
 import { Meta, Story } from '@storybook/react';
 import React from 'react';
+import logger from '../../../utils/logger';
 import Media from '../Media/Media';
 import Card from './Card';
 
@@ -49,7 +50,7 @@ export const Workout: Story = (args) => (
         difficulty="intermediate"
         duration={30}
         isBookmarked={false}
-        onBookmark={(id, isBookmarked) => { /* Log bookmark actions */ }}
+        onBookmark={(id, isBookmarked) => logger.info('Bookmark', { id, isBookmarked })}
         {...args}
     />
 );

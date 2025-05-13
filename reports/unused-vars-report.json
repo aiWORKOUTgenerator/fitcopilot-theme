@@ -1,0 +1,87 @@
+{
+  "totalFiles": 854,
+  "totalWarnings": 4147,
+  "topFiles": [
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/vendors-node_modules_testing-library_jest-dom_dist_index_mjs.007349ae443d70960a23.js",
+      "count": 255
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/vendors-node_modules_jest-axe_index_js.a7b96febc8cafa151212.js",
+      "count": 51
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/252.b40a894edea499fefda8.js",
+      "count": 25
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/958.76da648258e75cd4019c.js",
+      "count": 25
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.091cc36d88aab9f08baf.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.0a6b3925c515f4656a95.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.139969e32a6c90227068.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.23d15651012041be123e.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.25eaeabed1dbaef90ed7.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.26ffd0f338aae61ca185.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.2f29c653a83fbd823be2.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.34f55639536fba6eaae6.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.35e4b32d1ad9f3ea023f.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.36c855f91916b8ea81a2.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.3ea444d486082a74354d.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.58f1804248a5cae2bf22.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.5c956ec1815a4d96112f.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.5dab0a3f9959cc4e25c3.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.6ae7cfcefd59c9a7612b.js",
+      "count": 21
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/dist/homepage.6c14cc9d0a5f10bf403f.js",
+      "count": 21
+    }
+  ],
+  "timestamp": "2025-05-13T13:46:54.779Z"
+}

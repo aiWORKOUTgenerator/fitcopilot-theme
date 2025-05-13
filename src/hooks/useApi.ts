@@ -131,7 +131,7 @@ function useApi<T>(initialState?: Partial<ApiRequestState<T>>) {
                 let errorData: { message?: string } = {};
                 try {
                     errorData = await response.json();
-                } catch (e) {
+                } catch (_e) {
                     // If JSON parsing failed, use status text
                     errorData = { message: response.statusText };
                 }

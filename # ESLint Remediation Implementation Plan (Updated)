@@ -1,0 +1,128 @@
+# ESLint Remediation Implementation Plan (Updated)
+
+## Overview
+
+This updated implementation plan builds on our successful elimination of all ESLint errors. Our focus now shifts to addressing remaining warnings in source files (not build/dist files) and implementing prevention strategies to maintain code quality. The plan is organized into three phases, focusing on specific categories of warnings and establishing sustainable patterns.
+
+## Phase 1: Component Type Safety (1-week sprint)
+
+**Focus:** Eliminate `@typescript-eslint/no-explicit-any` warnings (34 total in 19 files)
+
+### Top Priority Files
+
+**Hook & Utility Focus:**
+1. useMediaPlayer.ts (8 warnings)
+2. debug.tsx (4 warnings)
+3. FormExample.tsx (3 warnings)
+
+**Tasks:**
+1. Create type models for media events and player states
+2. Implement proper event typing in media components
+3. Create debug utility interfaces
+4. Apply type guards and generics for flexible typing
+5. Document the type patterns for reuse
+
+**Deliverables:**
+- All media components free of any types
+- Debug utility fully typed with proper interfaces
+- 100% reduction in explicit-any warnings
+
+## Phase 2: Unused Variable Cleanup (1-week sprint)
+
+**Focus:** Address `@typescript-eslint/no-unused-vars` warnings (23 total in 19 files)
+
+### Top Priority Files
+
+**Component Focus:**
+1. Homepage.stories.tsx (2 warnings)
+2. Journey.tsx (2 warnings)
+3. CustomizeExperience.tsx (2 warnings)
+
+**Tasks:**
+1. Review all 19 files with unused variables
+2. Prefix unused parameters with underscore
+3. Remove truly unused imports and variables
+4. Add ESLint directives where appropriate
+5. Create guidelines for variable naming conventions
+
+**Deliverables:**
+- Zero unused variable warnings in source files
+- Consistent naming pattern for unused parameters
+- Updated documentation for variable naming conventions
+
+## Phase 3: Hook Optimization & Configuration (1-week sprint)
+
+**Focus:** Fix exhaustive-deps warnings and ESLint configuration
+
+### Part 1: Hook Dependencies (2 warnings in 2 files)
+
+**Files:**
+1. AudioPlayer.tsx (1 warning)
+2. useEventCallback.ts (1 warning)
+
+**Tasks:**
+1. Add missing dependencies to useEffect in AudioPlayer
+2. Fix useCallback implementation in useEventCallback
+3. Document hook dependency patterns
+4. Create reusable hook patterns for consistent implementation
+
+**Deliverables:**
+- Zero exhaustive-deps warnings
+- Documented hook dependency patterns
+- Optimized hook implementations
+
+### Part 2: ESLint Configuration
+
+**Tasks:**
+1. Update .eslintignore to exclude dist/build files
+2. Create separate configurations for test vs. production code
+3. Implement pre-commit hooks for ESLint validation
+4. Create simplified warning report for developers
+
+**Deliverables:**
+- Clean ESLint output focusing only on source files
+- Pre-commit hooks preventing new issues
+- Developer-friendly warning reports
+
+## Implementation Strategy
+
+### Integration with Architecture
+
+- Follow feature-first organization when updating components
+- Maintain the established token system during refactoring
+- Ensure theme variant compatibility is preserved
+- Verify accessibility requirements during type updates
+
+### Prioritization Guidelines
+
+1. Files with the most warnings per category
+2. Shared utility functions and hooks
+3. Core component implementations
+4. Feature-specific implementations
+
+### Documentation Requirements
+
+For each sprint:
+1. Update type documentation
+2. Create usage examples
+3. Add type patterns to developer guide
+4. Document migration approaches for legacy code
+
+### Testing Requirements
+
+1. Verify component functionality after warning fixes
+2. Add TypeScript-specific tests for type guards
+3. Test boundary conditions with type checking
+4. Ensure proper theme variant handling is preserved
+
+## Success Metrics
+
+- **Primary Goal:** Zero ESLint errors and warnings in source files
+- **Secondary Goals:**
+  - Improved type safety across the codebase
+  - Reduced runtime errors related to type issues
+  - Enhanced developer experience with better autocompletion
+  - Faster onboarding of new developers
+  - Proper ESLint configuration that focuses on relevant warnings
+
+This updated plan provides a focused approach to eliminating all remaining ESLint warnings in source files while establishing sustainable patterns that align with our architecture principles and prevent future regressions. 

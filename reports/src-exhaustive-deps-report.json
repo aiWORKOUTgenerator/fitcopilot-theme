@@ -1,0 +1,27 @@
+{
+  "totalFiles": 2,
+  "totalWarnings": 2,
+  "files": [
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Media/AudioPlayer.tsx",
+      "count": 1,
+      "details": [
+        {
+          "line": 248,
+          "message": "React Hook useEffect has a missing dependency: 'audioRef'. Either include it or remove the dependency array."
+        }
+      ]
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useEventCallback.ts",
+      "count": 1,
+      "details": [
+        {
+          "line": 32,
+          "message": "React Hook useCallback was passed a dependency list that is not an array literal. This means we can't statically verify whether you've passed the correct dependencies."
+        }
+      ]
+    }
+  ],
+  "timestamp": "2025-05-13T13:48:29.222Z"
+}

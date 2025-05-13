@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from 'react';
+import { PropChanges } from '../types/debug';
+import { hasMemoryInfo, hasPropChanged } from './debugTypeGuards';
 import logger from './logger';
 
 declare global {
@@ -31,7 +33,8 @@ export const isDebugMode = (): boolean => {
 export const debugLog = (message: string, type: 'log' | 'warn' | 'error' = 'log'): void => {
     if (!isDebugMode()) return;
 
-    const styles = {
+    // Define styles for console output in browser - currently unused but kept for future use
+    const _styles = {
         log: 'background: #1f2937; color: #a3e635; padding: 2px 4px;',
         warn: 'background: #fbbf24; color: #1f2937; padding: 2px 4px;',
         error: 'background: #ef4444; color: white; padding: 2px 4px;'
@@ -118,12 +121,12 @@ export const useDebugProps = <P extends object>(props: P, componentName: string)
         if (!isDebugMode()) return;
 
         if (prevProps.current) {
-            const changes: Record<string, { from: any, to: any }> = {};
+            const changes: PropChanges = {};
             let hasChanges = false;
 
             Object.keys(props).forEach((key) => {
                 const propKey = key as keyof P;
-                if (props[propKey] !== prevProps.current![propKey]) {
+                if (hasPropChanged(prevProps.current![propKey], props[propKey])) {
                     changes[key] = {
                         from: prevProps.current![propKey],
                         to: props[propKey]
@@ -189,9 +192,9 @@ export const PerformanceMonitor: React.FC = () => {
                 lastTime = now;
             }
 
-            // Update memory usage if available
-            if (memoryRef.current && (performance as any).memory) {
-                const memory = (performance as any).memory;
+            // Update memory usage if available using our type guard
+            if (memoryRef.current && hasMemoryInfo(performance)) {
+                const memory = performance.memory;
                 const usedMemory = Math.round(memory.usedJSHeapSize / (1024 * 1024));
                 const totalMemory = Math.round(memory.jsHeapSizeLimit / (1024 * 1024));
 

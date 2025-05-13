@@ -1,5 +1,14 @@
 #!/bin/bash
-LATEST_REPORT=$(ls -t reports/prod-errors-*.json | head -1)
+
+# Check if any error reports exist, and run production-lint.sh if none found
+if [ -z "$(ls -A reports/prod-errors-*.json 2>/dev/null)" ]; then
+  echo "No error reports found. Running production lint..."
+  ./scripts/production-lint.sh
+  # Get the newly created report
+  LATEST_REPORT=$(ls -t reports/prod-errors-*.json | head -1)
+else
+  LATEST_REPORT=$(ls -t reports/prod-errors-*.json | head -1)
+fi
 
 if [ -z "$LATEST_REPORT" ]; then
   echo "No error reports found. Run './scripts/production-lint.sh' first."

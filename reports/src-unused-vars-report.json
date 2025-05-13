@@ -1,0 +1,83 @@
+{
+  "totalFiles": 19,
+  "totalWarnings": 23,
+  "topFiles": [
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+      "count": 2
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/Journey.tsx",
+      "count": 2
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx",
+      "count": 2
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useMediaPlayer.ts",
+      "count": 2
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Pricing/Pricing.tsx",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/validators.ts",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/utils/validators.ts",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/CustomizationContainer.tsx",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/hooks/useRegistrationForm.ts",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/tests/analytics.test.tsx",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/useForm.ts",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Media/AudioPlayer.tsx",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/TypeDemo/TypeDemo.stories.tsx",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/examples/FormExample.tsx",
+      "count": 1
+    },
+    {
+      "path": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/utils/debug.tsx",
+      "count": 1
+    }
+  ],
+  "timestamp": "2025-05-13T13:47:28.340Z"
+}

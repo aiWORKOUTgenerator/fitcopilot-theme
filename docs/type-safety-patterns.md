@@ -1,328 +1,436 @@
-# TypeScript Patterns - Quick Reference
+# TypeScript Type-Safety Patterns
 
-This guide provides a quick reference to common TypeScript patterns used throughout the FitCopilot theme. Use these patterns to maintain consistency and type safety across the codebase.
+This document outlines proven patterns for eliminating `any` types in TypeScript code, improving type safety while maintaining browser compatibility and runtime reliability.
 
-## Component Props
+## Why Eliminate `any` Types?
 
-### Basic Component Props
+Using `any` types bypasses TypeScript's type checking, leading to:
 
+- Runtime errors that could have been caught at compile time
+- Reduced code discoverability and IDE assistance
+- Diminished confidence in type guarantees
+- Propagation of `any` types throughout the codebase
+
+## 1. Create Strong Type Definitions
+
+### Before:
 ```typescript
-// Good: Clear interface with JSDoc comments and proper optional properties
-interface ButtonProps {
-  /** Button text content */
-  children: React.ReactNode;
-  /** Optional click handler */
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  /** Button appearance variant */
-  variant?: 'primary' | 'secondary' | 'tertiary';
-  /** Additional class names */
-  className?: string;
-}
+// Using any for browser compatibility
+const enterFullscreen = async (): Promise<void> => {
+  const media = mediaRef.current;
+  if (!media) return;
 
-// Bad: Missing JSDoc, unclear optional vs required props
-interface ButtonProps {
-  children: React.ReactNode;
-  onClick: (e: any) => void; // ❌ Uses any
-  variant: string; // ❌ Should use union type
-  className: string;
-}
-```
-
-### Theme-Specific Props
-
-```typescript
-// Good: Clean extension of base props
-interface GymThemeButtonProps extends ButtonProps {
-  /** Intensity level (gym theme specific) */
-  intensity?: 'low' | 'medium' | 'high';
-}
-```
-
-## Event Handlers
-
-### Event Handler Types
-
-```typescript
-// Good: Specific event types
-type FormSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => void;
-type InputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => void;
-type SelectChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => void;
-
-// Bad: Using any
-type GenericHandler = (event: any) => void; // ❌ Avoid this
-```
-
-### Inside Components
-
-```typescript
-// Good: Properly typed event handler
-const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
-  event.preventDefault();
-  // handle click logic
-};
-
-// Bad: Using any for event
-const handleClick = (event: any): void => { // ❌ Avoid this
-  event.preventDefault();
-  // handle click logic
+  try {
+    if (media.requestFullscreen) {
+      await media.requestFullscreen();
+    } else if ((media as any).webkitRequestFullscreen) {
+      await (media as any).webkitRequestFullscreen();
+    } else if ((media as any).msRequestFullscreen) {
+      await (media as any).msRequestFullscreen();
+    }
+  } catch (error) {
+    console.error('Fullscreen error:', error);
+  }
 };
 ```
 
-## Discriminated Unions
-
-### For Feature Configuration
-
+### After:
 ```typescript
-// Good: Clear discriminated union with appropriate properties
-type DisplayMode = 
-  | { mode: 'compact'; maxItems: number }
-  | { mode: 'expanded'; showDescriptions: boolean }
-  | { mode: 'grid'; columns: number };
+// Vendor-specific interfaces
+interface WebKitHTMLVideoElement extends HTMLVideoElement {
+  webkitRequestFullscreen: () => Promise<void>;
+}
 
-// Bad: Not using discriminated property
-type DisplayMode = {
-  mode: 'compact' | 'expanded' | 'grid';
-  maxItems?: number; // ❌ Should only exist for compact
-  showDescriptions?: boolean; // ❌ Should only exist for expanded
-  columns?: number; // ❌ Should only exist for grid
+interface MSHTMLVideoElement extends HTMLVideoElement {
+  msRequestFullscreen: () => Promise<void>;
+}
+
+// Combined type
+type VendorExtendedVideoElement = HTMLVideoElement & 
+  WebKitHTMLVideoElement & 
+  MSHTMLVideoElement;
+
+// Type guard interfaces
+interface WebkitRequestFullscreen {
+  webkitRequestFullscreen: () => Promise<void>;
+}
+
+interface MsRequestFullscreen {
+  msRequestFullscreen: () => Promise<void>;
+}
+
+// Type guards
+function hasWebkitFullscreenMethods(element: HTMLVideoElement): element is VendorExtendedVideoElement & WebkitRequestFullscreen {
+  return 'webkitRequestFullscreen' in element && 
+    typeof (element as HTMLVideoElement & WebkitRequestFullscreen).webkitRequestFullscreen === 'function';
+}
+
+function hasMsFullscreenMethods(element: HTMLVideoElement): element is VendorExtendedVideoElement & MsRequestFullscreen {
+  return 'msRequestFullscreen' in element && 
+    typeof (element as HTMLVideoElement & MsRequestFullscreen).msRequestFullscreen === 'function';
+}
+
+// Usage with type guards
+const enterFullscreen = async (): Promise<void> => {
+  const media = mediaRef.current as HTMLVideoElement;
+  if (!media || !(media instanceof HTMLVideoElement)) return;
+
+  try {
+    if (media.requestFullscreen) {
+      await media.requestFullscreen();
+    } else if (hasWebkitFullscreenMethods(media)) {
+      await media.webkitRequestFullscreen();
+    } else if (hasMsFullscreenMethods(media)) {
+      await media.msRequestFullscreen();
+    }
+  } catch (error) {
+    logger.error('Fullscreen error:', error);
+  }
 };
 ```
 
-### Type Narrowing with Discriminated Unions
+### Pattern Details:
 
+1. **Define Vendor-Specific Interfaces**
+   - Create interfaces for non-standard browser features
+   - Extend standard DOM interfaces rather than using `any`
+   - Group related methods in logical interfaces
+
+2. **Create Combined Type Extensions**
+   - Combine multiple vendor interfaces to create comprehensive types
+   - Use intersection types (`&`) to compose interfaces
+   - Enable strong typing across browser-specific features
+
+3. **Use Discriminated Unions for Variants**
+   - Add type discriminator fields (`_variant`, `type`, etc.)
+   - Create union types for components with multiple variants
+   - Enable compile-time checks for conditional rendering
+
+## 2. Implement Runtime Type Guards
+
+### Before:
 ```typescript
-// Good: Proper type narrowing
-function renderContent(mode: DisplayMode): React.ReactNode {
-  switch (mode.mode) {
-    case 'compact':
-      return <CompactView maxItems={mode.maxItems} />; // Type-safe access to maxItems
-    case 'expanded':
-      return <ExpandedView showDescriptions={mode.showDescriptions} />; // Type-safe access to showDescriptions
-    case 'grid':
-      return <GridView columns={mode.columns} />; // Type-safe access to columns
+// Unsafe type casting
+function handleVideoElement(element: any) {
+  if (element && element.play && element.pause) {
+    // Assume it's a video element
+    element.play();
   }
 }
 ```
 
-## WordPress API Types
-
-### Response Structures
-
+### After:
 ```typescript
-// Good: Proper typing of WordPress content
-interface WordPressPost {
-  id: number;
-  title: {
-    rendered: string;
-  };
-  content: {
-    rendered: string;
-  };
-  excerpt: {
-    rendered: string;
-  };
-  date: string;
-  modified: string;
-  slug: string;
-  featured_media: number;
-  _embedded?: {
-    'wp:featuredmedia'?: Array<{
-      source_url: string;
-      alt_text: string;
-    }>;
-  };
+// Type guard for video elements
+function isVideoElement(element: unknown): element is HTMLVideoElement {
+  return element instanceof HTMLVideoElement;
+}
+
+// Type guard for audio elements
+function isAudioElement(element: unknown): element is HTMLAudioElement {
+  return element instanceof HTMLAudioElement;
+}
+
+// Type guard for any media element
+function isMediaElement(element: unknown): element is HTMLMediaElement {
+  return isVideoElement(element) || isAudioElement(element);
+}
+
+// Safe usage with type guards
+function handleMediaElement(element: unknown) {
+  if (isVideoElement(element)) {
+    // TypeScript knows this is HTMLVideoElement
+    element.play();
+  } else if (isAudioElement(element)) {
+    // TypeScript knows this is HTMLAudioElement
+    element.play();
+  } else {
+    // Handle non-media elements
+    console.warn('Not a media element');
+  }
 }
 ```
 
-### API Functions
+### Pattern Details:
 
+1. **Create Type Predicates**
+   - Use `is` syntax to define type guards
+   - Return boolean indicating if value meets type constraints
+   - Check both existence and type of properties
+
+2. **Prefer `unknown` Over `any`**
+   - Start with `unknown` for parameters of uncertain type
+   - Force explicit type checking before use
+   - Prevent accidental type leakage
+
+3. **Validate at Property Level**
+   - Check for existence of required methods/properties
+   - Verify correct types of properties when needed
+   - Handle edge cases like null/undefined
+
+4. **Common Type Guard Templates**
+
+   ```typescript
+   // Instance check guard
+   function isInstance<T extends new (...args: any[]) => any>(
+     value: unknown,
+     constructor: T
+   ): value is InstanceType<T> {
+     return value instanceof constructor;
+   }
+
+   // Object shape guard
+   function isShape<T extends object>(
+     value: unknown,
+     props: Array<keyof T>
+   ): value is T {
+     return (
+       value !== null &&
+       typeof value === 'object' &&
+       props.every(prop => prop in value)
+     );
+   }
+
+   // String literal guard
+   function isLiteralType<T extends string>(
+     value: string,
+     literals: T[]
+   ): value is T {
+     return literals.includes(value as T);
+   }
+   ```
+
+## 3. Use Utility Types Over `any`
+
+### Before:
 ```typescript
-// Good: Proper typing of API request/response
-async function fetchPosts(): Promise<WordPressPost[]> {
-  const response = await fetch('/wp-json/wp/v2/posts?_embed');
-  if (!response.ok) {
-    throw new Error('Failed to fetch posts');
+// Generic error handler with any
+function handleError(error: any) {
+  console.error('Error:', error.message || 'Unknown error');
+}
+
+// Generic object storage
+const cache: { [key: string]: any } = {};
+
+// Generic event handler
+const onClick = (e: any) => {
+  e.preventDefault();
+  console.log(e.target.value);
+};
+```
+
+### After:
+```typescript
+// Typed error handler
+function handleError(error: unknown) {
+  if (error instanceof Error) {
+    console.error('Error:', error.message);
+  } else if (typeof error === 'string') {
+    console.error('Error:', error);
+  } else {
+    console.error('Unknown error:', error);
   }
+}
+
+// Typed cache with generics
+const cache = new Map<string, unknown>();
+
+// Generic but type-safe storage
+function setCache<T>(key: string, value: T): void {
+  cache.set(key, value);
+}
+
+function getCache<T>(key: string): T | undefined {
+  return cache.get(key) as T | undefined;
+}
+
+// Typed event handler
+const onClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  e.preventDefault();
+  console.log(e.currentTarget.value);
+};
+```
+
+### Pattern Details:
+
+1. **Replace Common `any` Usages**
+
+   | Instead of... | Use... | When to use |
+   |---------------|--------|-------------|
+   | `any` | `unknown` | For values of uncertain type that require narrowing |
+   | `{ [key: string]: any }` | `Record<string, unknown>` | For objects with unknown property values |
+   | `Function` | Specific function type | For callbacks and handlers |
+   | `object` | Interface or type | For structured data |
+   | `any[]` | `Array<Type>` or `unknown[]` | For arrays of values |
+   | `Promise<any>` | `Promise<unknown>` | For promises with unknown resolution type |
+
+2. **Generic Type Parameters**
+   - Use generics for flexible but type-safe functions
+   - Constrain generics when applicable (`<T extends HTMLElement>`)
+   - Use default type parameters when appropriate
+
+3. **Event Handling**
+   - Use specific event types for handlers
+   - Leverage React's typed events for components
+   - Include element type in event generics
+
+## 4. Add Comprehensive Tests
+
+### Before (minimal testing):
+```typescript
+// Basic test without type checking
+test('video element works', () => {
+  const video = document.createElement('video');
+  expect(video.play).toBeDefined();
+});
+```
+
+### After (comprehensive type testing):
+```typescript
+describe('Media Type Guards', () => {
+  describe('Element type checks', () => {
+    let videoElement: HTMLVideoElement;
+    let audioElement: HTMLAudioElement;
+    let divElement: HTMLDivElement;
+
+    beforeEach(() => {
+      videoElement = document.createElement('video');
+      audioElement = document.createElement('audio');
+      divElement = document.createElement('div');
+    });
+
+    test('isVideoElement correctly identifies video elements', () => {
+      expect(isVideoElement(videoElement)).toBe(true);
+      expect(isVideoElement(audioElement)).toBe(false);
+      expect(isVideoElement(divElement)).toBe(false);
+      expect(isVideoElement(null)).toBe(false);
+    });
+
+    // More tests...
+  });
+
+  describe('Browser feature detection', () => {
+    test('hasWebkitFullscreenMethods detects webkit fullscreen methods', () => {
+      const videoElement = document.createElement('video');
+      
+      // Original should not have webkit methods
+      expect(hasWebkitFullscreenMethods(videoElement)).toBe(false);
+      
+      // Add webkit method
+      Object.defineProperty(videoElement, 'webkitRequestFullscreen', {
+        value: jest.fn(),
+        configurable: true
+      });
+      
+      expect(hasWebkitFullscreenMethods(videoElement)).toBe(true);
+    });
+
+    // More tests...
+  });
+});
+```
+
+### Pattern Details:
+
+1. **Test Type Guards Thoroughly**
+   - Test positive and negative cases
+   - Test edge cases (null, undefined)
+   - Test type narrowing behavior
+
+2. **Mock Browser-Specific Features**
+   - Use `Object.defineProperty` for non-standard properties
+   - Mock vendor-specific methods for testing
+   - Clean up mocks after tests
+
+3. **Verify Runtime Behavior**
+   - Ensure type guards work as expected at runtime
+   - Test conditional logic that depends on types
+   - Verify error handling for type mismatches
+
+## Common Replacement Patterns for `any`
+
+### API Responses
+
+#### Before:
+```typescript
+async function fetchData(): Promise<any> {
+  const response = await fetch('/api/data');
   return response.json();
 }
 ```
 
-## React Hooks
-
-### useState with Type Inference
-
+#### After:
 ```typescript
-// Good: Proper type definition in useState
-const [count, setCount] = useState<number>(0);
-const [user, setUser] = useState<User | null>(null);
-
-// Alternative approach letting TypeScript infer the type
-const [count, setCount] = useState(0); // Inferred as number
-const [user, setUser] = useState<User>(); // Undefined is allowed initially
-```
-
-### useEffect with Proper Dependency Arrays
-
-```typescript
-// Good: Properly typed dependency array
-useEffect(() => {
-  // Fetch data logic
-}, [userId, filter]); // Only dependencies used inside the effect
-
-// With cleanup
-useEffect(() => {
-  const controller = new AbortController();
-  
-  fetchData(userId, { signal: controller.signal })
-    .then(setData)
-    .catch(setError);
-  
-  return () => {
-    controller.abort();
-  };
-}, [userId]);
-```
-
-### Custom Hooks with Generic Types
-
-```typescript
-// Good: Proper generic typing for custom hooks
-function useLocalStorage<T>(key: string, initialValue: T): [T, (value: T) => void] {
-  const [storedValue, setStoredValue] = useState<T>(() => {
-    try {
-      const item = window.localStorage.getItem(key);
-      return item ? JSON.parse(item) : initialValue;
-    } catch (error) {
-      console.error(error);
-      return initialValue;
-    }
-  });
-
-  const setValue = (value: T): void => {
-    try {
-      setStoredValue(value);
-      window.localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return [storedValue, setValue];
+interface ApiResponse<T> {
+  data: T;
+  status: string;
+  message?: string;
 }
 
-// Usage
-const [preferences, setPreferences] = useLocalStorage<UserPreferences>('preferences', defaultPreferences);
-```
-
-## CSS Variable Types
-
-### Component-Specific CSS Props
-
-```typescript
-// Good: Typed CSS variables for components
-interface ButtonCSSProperties extends React.CSSProperties {
-  '--button-bg-color'?: string;
-  '--button-text-color'?: string;
-  '--button-border-radius'?: string;
+interface UserData {
+  id: number;
+  name: string;
+  email: string;
 }
 
-// Usage in component props
-interface ButtonProps {
-  // ...other props
-  style?: ButtonCSSProperties;
-}
-
-// Usage in component
-<button
-  style={{
-    '--button-bg-color': 'var(--fc-color-primary)',
-    '--button-text-color': 'white',
-    '--button-border-radius': '4px'
-  } as ButtonCSSProperties}
->
-  Click me
-</button>
-```
-
-## Type Assertions
-
-### Using Type Assertions Safely
-
-```typescript
-// Good: const assertion for objects
-const THEME_COLORS = {
-  primary: '#0078d4',
-  secondary: '#2b88d8',
-  success: '#107c10',
-  warning: '#ff8c00',
-  error: '#d83b01'
-} as const;
-
-// Type derived from the const assertion
-type ThemeColor = typeof THEME_COLORS[keyof typeof THEME_COLORS];
-
-// Good: using satisfies for validation while preserving type inference
-const WORKOUT_TYPES = {
-  cardio: { icon: 'running', color: 'red' },
-  strength: { icon: 'dumbbell', color: 'blue' },
-  flexibility: { icon: 'yoga', color: 'green' }
-} satisfies Record<string, { icon: string; color: string }>;
-
-// Still allows accessing specific properties with correct type
-const cardioIcon = WORKOUT_TYPES.cardio.icon; // Type is string
-```
-
-## Enums vs Union Types
-
-```typescript
-// Good: Using union types (preferred in most cases)
-type WorkoutType = 'cardio' | 'strength' | 'flexibility';
-
-// Alternative: Using enums (only when needed)
-enum WorkoutTypeEnum {
-  Cardio = 'cardio',
-  Strength = 'strength',
-  Flexibility = 'flexibility'
+async function fetchUsers(): Promise<ApiResponse<UserData[]>> {
+  const response = await fetch('/api/users');
+  return response.json();
 }
 ```
 
-## Type Guards
+### Event Handlers
 
+#### Before:
 ```typescript
-// Good: Type guard function
-function isWorkout(obj: unknown): obj is Workout {
-  return (
-    typeof obj === 'object' &&
-    obj !== null && 
-    'id' in obj &&
-    'name' in obj &&
-    'exercises' in obj
-  );
-}
-
-// Usage
-function processItem(item: unknown): void {
-  if (isWorkout(item)) {
-    // Type-safe access to Workout properties
-    console.log(item.exercises.length);
-  }
+function handleChange(event: any) {
+  const value = event.target.value;
+  // Use value
 }
 ```
 
-## Tips for Improving Type Safety
+#### After:
+```typescript
+function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const value = event.currentTarget.value;
+  // Use value with confidence
+}
+```
 
-1. **Avoid `any` type**: Use `unknown` instead when type is truly unknown
-2. **Use discriminated unions** for variants instead of optional properties
-3. **Add JSDoc comments** to interfaces for better documentation
-4. **Use type assertion only when necessary** and with appropriate type guards
-5. **Create specific event handler types** instead of generic ones
-6. **Use proper dependency arrays** in React hooks
-7. **Utilize non-null assertion (`!`) sparingly** and only when you're certain
-8. **Type CSS variables** for better style integration
-9. **Use readonly arrays/properties** for values that shouldn't change
+### Dynamic Properties
 
-## Further Resources
+#### Before:
+```typescript
+function getProperty(obj: any, key: string): any {
+  return obj[key];
+}
+```
 
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/handbook/intro.html)
-- [React TypeScript Cheatsheet](https://react-typescript-cheatsheet.netlify.app/)
-- [ESLint TypeScript Plugin](https://github.com/typescript-eslint/typescript-eslint) 
+#### After:
+```typescript
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+```
+
+## When to Use Each Approach
+
+| Approach | When to Use |
+|----------|-------------|
+| **Interface Extensions** | When working with vendor-specific browser APIs or external libraries with incomplete types |
+| **Type Guards** | When working with values whose type can't be determined at compile time or when narrowing union types |
+| **Utility Types** | When dealing with common patterns like partial objects, record types, or pick/omit scenarios |
+| **Generics** | When creating reusable functions and components that work with various types |
+| **Union Types** | When a value can be one of several specific types |
+| **Discriminated Unions** | When working with different variants of a type that need different handling |
+
+## Conclusion
+
+By following these patterns, you can eliminate `any` types from your codebase while maintaining browser compatibility and runtime reliability. This leads to:
+
+- Improved developer experience with better autocompletion
+- Earlier detection of type errors at compile time
+- Clearer code contracts and documentation
+- More maintainable and refactorable code
+
+Remember that the goal isn't just to satisfy the TypeScript compiler but to create genuinely type-safe code that prevents runtime errors and improves code quality. 

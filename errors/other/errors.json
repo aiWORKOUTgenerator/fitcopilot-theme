@@ -1,9 +1,1 @@
-[
-  {
-    "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/ExperienceLevel/ExperienceLevel.tsx",
-    "line": 10,
-    "column": 11,
-    "rule": "@typescript-eslint/no-empty-object-type",
-    "message": "An interface declaring no members is equivalent to its supertype."
-  }
-]
+[]

@@ -95,7 +95,7 @@ export const withToggleButton = <P extends ToggleButtonProps>(
         return <Component {...props} />;
     };
 
-    WithToggleButton.displayName = `withToggleButton(${Component.displayName || Component.name || 'Component'})`;
+    WithToggleButton.displayName = `WithToggleButton(${Component.displayName || Component.name || 'Component'})`;
 
     return WithToggleButton;
 }; 

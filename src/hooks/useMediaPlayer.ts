@@ -5,7 +5,15 @@ import {
     MediaPlayerState,
     UseMediaPlayerOptions
 } from '../types/media';
+import { VendorExtendedDocument } from '../types/vendor';
 import logger from '../utils/logger';
+import {
+    documentHasMsFullscreen,
+    documentHasWebkitFullscreen,
+    hasMsFullscreenMethods,
+    hasWebkitFullscreenMethods,
+    supportsPictureInPicture
+} from '../utils/mediaTypeGuards';
 
 /**
  * Custom hook for controlling media elements (audio and video)
@@ -21,7 +29,7 @@ export const useMediaPlayer = (options: UseMediaPlayerOptions = {}): {
     const {
         initialPlaybackRate = 1,
         initialVolume = 1,
-        autoAdvance = false,
+        _autoAdvance = false, // Prefix with underscore to mark as intentionally unused
         autoPlay = false,
         playWhenVisible = false,
         onEnded,
@@ -239,10 +247,10 @@ export const useMediaPlayer = (options: UseMediaPlayerOptions = {}): {
         try {
             if (media.requestFullscreen) {
                 await media.requestFullscreen();
-            } else if ((media as any).webkitRequestFullscreen) {
-                await (media as any).webkitRequestFullscreen();
-            } else if ((media as any).msRequestFullscreen) {
-                await (media as any).msRequestFullscreen();
+            } else if (hasWebkitFullscreenMethods(media)) {
+                await media.webkitRequestFullscreen();
+            } else if (hasMsFullscreenMethods(media)) {
+                await media.msRequestFullscreen();
             }
         } catch (error) {
             logger.error('Fullscreen error:', error);
@@ -254,10 +262,10 @@ export const useMediaPlayer = (options: UseMediaPlayerOptions = {}): {
         try {
             if (document.exitFullscreen) {
                 await document.exitFullscreen();
-            } else if ((document as any).webkitExitFullscreen) {
-                await (document as any).webkitExitFullscreen();
-            } else if ((document as any).msExitFullscreen) {
-                await (document as any).msExitFullscreen();
+            } else if (documentHasWebkitFullscreen()) {
+                await (document as VendorExtendedDocument).webkitExitFullscreen();
+            } else if (documentHasMsFullscreen()) {
+                await (document as VendorExtendedDocument).msExitFullscreen();
             }
         } catch (error) {
             logger.error('Exit fullscreen error:', error);
@@ -279,7 +287,7 @@ export const useMediaPlayer = (options: UseMediaPlayerOptions = {}): {
         if (!media || !(media instanceof HTMLVideoElement)) return;
 
         try {
-            if (document.pictureInPictureElement !== media && 'requestPictureInPicture' in media) {
+            if (document.pictureInPictureElement !== media && supportsPictureInPicture(media)) {
                 await media.requestPictureInPicture();
             }
         } catch (error) {
@@ -381,7 +389,10 @@ export const useMediaPlayer = (options: UseMediaPlayerOptions = {}): {
             setPartialState({ isBuffering: true });
         };
 
-        const handleError = (e: Event) => {
+        const handleError = (_e: Event) => {
+            const media = mediaRef.current;
+            if (!media) return;
+
             const mediaError: MediaErrorInfo = {
                 code: media.error?.code,
                 message: media.error ? media.error.message : 'Unknown media error',

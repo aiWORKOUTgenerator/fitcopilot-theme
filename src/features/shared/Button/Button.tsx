@@ -5,11 +5,8 @@
 
 import classNames from 'classnames';
 import React from 'react';
-import { createLoggedEventHandler } from '../../../utils/logger';
-import LinkButton from './LinkButton';
-import ToggleButton from './ToggleButton';
+import { ButtonProps } from '../../../types/button';
 import {
-    ButtonProps,
     isFloatingActionButton,
     isIconButton,
     isLinkButton,
@@ -18,7 +15,10 @@ import {
     isTextButton,
     isToggleButton,
     isWorkoutButton
-} from './types';
+} from '../../../utils/buttonTypeGuards';
+import { createLoggedEventHandler } from '../../../utils/logger';
+import LinkButton from './LinkButton';
+import ToggleButton from './ToggleButton';
 
 /**
  * Button component that renders different button variants based on props

@@ -115,7 +115,7 @@
     "test-storybook": "test-storybook",
     "chromatic": "chromatic --exit-zero-on-changes",
     "chromatic:baseline": "chromatic --skip-visual-regression --exit-zero-on-changes",
-    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --max-warnings=150",
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --max-warnings=20",
     "lint-strict": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --max-warnings=0",
     "lint-stories": "eslint \"src/**/*.stories.{js,jsx,ts,tsx}\" --max-warnings=0",
     "lint:fix": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",

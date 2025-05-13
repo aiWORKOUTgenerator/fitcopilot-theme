@@ -1,31 +1,29 @@
 import React from 'react';
 import Button from '../components/UI/Button/Button';
+import { ButtonProps as GlobalButtonProps } from '../types/button';
 import logger from '../utils/logger';
 
 // Create component-specific logger
 const tracingLogger = logger.addContext('ButtonPropsTracing');
 
-// Type copied from the original Button component
-interface ButtonProps {
+// Type for debug component that extends the global button props
+// This maintains compatibility with the original Button component
+interface DebugButtonProps extends Omit<GlobalButtonProps, 'variant' | 'size'> {
     variant?: 'primary' | 'secondary' | 'tertiary';
     size?: 'small' | 'medium' | 'large';
     themeContext?: string;
     fullWidth?: boolean;
     leftIcon?: React.ReactNode;
     rightIcon?: React.ReactNode;
-    className?: string;
-    children: React.ReactNode;
-    onClick?: () => void;
-    disabled?: boolean;
-    type?: 'button' | 'submit' | 'reset';
     loading?: boolean;
-    [key: string]: any; // Allow any other props
+    // Type-safe index signature for additional data attributes
+    [key: `data-${string}`]: string | number | boolean;
 }
 
 /**
  * Wrapper component that logs all Button props before passing them through
  */
-export const TracedButton: React.FC<ButtonProps> = (props) => {
+export const TracedButton: React.FC<DebugButtonProps> = (props) => {
     // Log props using structured logger
     tracingLogger.group('Button Props Tracing', () => {
         tracingLogger.debug('Props received:', { ...props });

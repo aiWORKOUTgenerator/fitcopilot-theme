@@ -141,7 +141,7 @@ export const withTextField = <P extends TextFieldProps>(
         return <Component {...props} />;
     };
 
-    WithTextField.displayName = `withTextField(${Component.displayName || Component.name || 'Component'})`;
+    WithTextField.displayName = `WithTextField(${Component.displayName || Component.name || 'Component'})`;
 
     return WithTextField;
 }; 
