@@ -4,9 +4,8 @@
  */
 
 import React from 'react';
-import { error } from '../../../utils/logger';
+import { FormFieldProps } from '../../../types/form';
 import {
-  FormFieldProps,
   isCheckboxField,
   isDateField,
   isFileField,
@@ -16,7 +15,8 @@ import {
   isSwitchField,
   isTextAreaField,
   isTextField
-} from './types';
+} from '../../../utils/formTypeGuards';
+import { error } from '../../../utils/logger';
 
 // Form field type components
 import Checkbox from './fields/Checkbox';

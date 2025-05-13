@@ -1,12 +1,12 @@
 import React from 'react';
-import './card.scss';
+import { CardProps } from '../../../types/card';
 import {
-    CardProps,
     isContentCard,
     isProfileCard,
     isProgramCard,
     isWorkoutCard
-} from './types';
+} from '../../../utils/cardTypeGuards';
+import './card.scss';
 
 const getCardClassName = (props: CardProps) => {
     const baseClass = `card card--${props.variant}`;
@@ -21,79 +21,129 @@ const getCardClassName = (props: CardProps) => {
         .join(' ');
 };
 
-const ContentCard: React.FC<CardProps> = (props) => (
-    <div
-        className={getCardClassName(props)}
-        data-theme={props.theme}
-        data-loading={props.isLoading}
-        data-testid={props['data-testid']}
-        style={props.style}
-    >
-        {props.media && <div className="card-media">{props.media}</div>}
-        <h2>{props.title}</h2>
-        {props.description && <p>{props.description}</p>}
-        {props.children}
-    </div>
-);
+const ContentCard: React.FC<CardProps> = (props) => {
+    if (!isContentCard(props)) return null;
 
-const ProfileCard: React.FC<CardProps> = (props) => (
-    <div
-        className={getCardClassName(props)}
-        data-theme={props.theme}
-        data-loading={props.isLoading}
-        data-testid={props['data-testid']}
-        style={props.style}
-    >
-        {props.media && <div className="card-media">{props.media}</div>}
-        {props.avatarUrl && <img src={props.avatarUrl} alt={props.name} className="card-avatar" />}
-        <h2>{props.name}</h2>
-        {props.bio && <p>{props.bio}</p>}
-        {props.children}
-    </div>
-);
+    return (
+        <div
+            className={getCardClassName(props)}
+            data-theme={props.theme}
+            data-loading={props.isLoading}
+            data-testid={props['data-testid']}
+            style={props.style}
+            onClick={props.onClick}
+        >
+            {props.media && <div className="card-media">{props.media}</div>}
+            <h2>{props.title}</h2>
+            {props.description && <p>{props.description}</p>}
+            {props.children}
+            {props.footer && <div className="card-footer">{props.footer}</div>}
+        </div>
+    );
+};
 
-const WorkoutCard: React.FC<CardProps> = (props) => (
-    <div
-        className={getCardClassName(props)}
-        data-theme={props.theme}
-        data-loading={props.isLoading}
-        data-testid={props['data-testid']}
-        style={props.style}
-    >
-        {props.media && <div className="card-media">{props.media}</div>}
-        <h2>{props.workoutName}</h2>
-        {props.difficulty && <span className="card-difficulty">{props.difficulty}</span>}
-        {props.duration && <span className="card-duration">{props.duration} min</span>}
-        {props.isBookmarked !== undefined && (
-            <button onClick={() => props.onBookmark?.(props.id || '', !props.isBookmarked)}>
-                {props.isBookmarked ? 'Unbookmark' : 'Bookmark'}
-            </button>
-        )}
-        {props.children}
-    </div>
-);
+const ProfileCard: React.FC<CardProps> = (props) => {
+    if (!isProfileCard(props)) return null;
 
-const ProgramCard: React.FC<CardProps> = (props) => (
-    <div
-        className={getCardClassName(props)}
-        data-theme={props.theme}
-        data-loading={props.isLoading}
-        data-testid={props['data-testid']}
-        style={props.style}
-    >
-        {props.media && <div className="card-media">{props.media}</div>}
-        <h2>{props.programName}</h2>
-        {props.level && <span className="card-level">{props.level}</span>}
-        {props.summary && <p>{props.summary}</p>}
-        {props.children}
-    </div>
-);
+    return (
+        <div
+            className={getCardClassName(props)}
+            data-theme={props.theme}
+            data-loading={props.isLoading}
+            data-testid={props['data-testid']}
+            style={props.style}
+            onClick={props.onClick}
+        >
+            {props.media && <div className="card-media">{props.media}</div>}
+            {props.avatarUrl && <img src={props.avatarUrl} alt={props.name} className="card-avatar" />}
+            <h2>{props.name}</h2>
+            {props.role && <div className="card-role">{props.role}</div>}
+            {props.bio && <p>{props.bio}</p>}
+            {props.children}
+        </div>
+    );
+};
+
+const WorkoutCard: React.FC<CardProps> = (props) => {
+    if (!isWorkoutCard(props)) return null;
+
+    return (
+        <div
+            className={getCardClassName(props)}
+            data-theme={props.theme}
+            data-loading={props.isLoading}
+            data-testid={props['data-testid']}
+            style={props.style}
+            onClick={props.onClick}
+        >
+            {props.media && <div className="card-media">{props.media}</div>}
+            <h2>{props.workoutName}</h2>
+            {props.difficulty && <span className="card-difficulty">{props.difficulty}</span>}
+            {props.duration && <span className="card-duration">{props.duration} min</span>}
+            {props.calories && <span className="card-calories">{props.calories} cal</span>}
+            {props.targets && props.targets.length > 0 && (
+                <div className="card-targets">
+                    {props.targets.map((target, index) => (
+                        <span key={index} className="card-target">{target}</span>
+                    ))}
+                </div>
+            )}
+            {props.isBookmarked !== undefined && (
+                <button
+                    className="card-bookmark"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        props.onBookmark?.(props.id || '', !props.isBookmarked);
+                    }}
+                >
+                    {props.isBookmarked ? 'Unbookmark' : 'Bookmark'}
+                </button>
+            )}
+            {props.children}
+        </div>
+    );
+};
+
+const ProgramCard: React.FC<CardProps> = (props) => {
+    if (!isProgramCard(props)) return null;
+
+    return (
+        <div
+            className={getCardClassName(props)}
+            data-theme={props.theme}
+            data-loading={props.isLoading}
+            data-testid={props['data-testid']}
+            style={props.style}
+            onClick={props.onClick}
+        >
+            {props.media && <div className="card-media">{props.media}</div>}
+            <h2>{props.programName}</h2>
+            {props.level && <span className="card-level">{props.level}</span>}
+            {props.summary && <p>{props.summary}</p>}
+            {props.workoutCount && (
+                <span className="card-workout-count">{props.workoutCount} workouts</span>
+            )}
+            {props.completionPercentage !== undefined && (
+                <div className="card-progress">
+                    <div
+                        className="card-progress-bar"
+                        style={{ width: `${props.completionPercentage}%` }}
+                    />
+                </div>
+            )}
+            {props.children}
+        </div>
+    );
+};
 
 export const Card: React.FC<CardProps> = (props) => {
     if (isContentCard(props)) return <ContentCard {...props} />;
     if (isProfileCard(props)) return <ProfileCard {...props} />;
     if (isWorkoutCard(props)) return <WorkoutCard {...props} />;
     if (isProgramCard(props)) return <ProgramCard {...props} />;
+
+    // Handle unsupported card variants
+    console.error(`Unsupported card variant: ${(props as any).variant}`);
     return null;
 };
 

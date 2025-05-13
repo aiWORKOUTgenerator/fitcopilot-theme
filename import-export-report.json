@@ -204,6 +204,12 @@
     "importedBy": "debug/ButtonDebug.tsx"
   },
   {
+    "file": "types/button.ts",
+    "exportName": "GlobalButtonProps",
+    "type": "missing",
+    "importedBy": "debug/ButtonPropsTracing.tsx"
+  },
+  {
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",

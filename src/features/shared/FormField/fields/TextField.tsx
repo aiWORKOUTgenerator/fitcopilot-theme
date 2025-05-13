@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { TextFieldProps } from '../types';
+import { TextFieldProps } from '../../../../types/form';
 
 /**
  * TextField component for text input fields
