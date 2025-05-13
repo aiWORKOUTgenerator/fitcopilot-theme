@@ -1,3 +1,4 @@
+import { VendorExtendedDocument } from '../../types/vendor';
 import {
     browserSupportsPictureInPicture,
     documentHasMsFullscreen,
@@ -47,7 +48,7 @@ describe('Media Type Guards', () => {
     describe('Browser feature detection', () => {
         test('documentHasWebkitFullscreen detects webkit fullscreen support', () => {
             // Save original document
-            const originalDocument = { ...document };
+            const _originalDocument = { ...document };
 
             // Define property to make the mock work with 'in' operator
             Object.defineProperty(document, 'webkitExitFullscreen', {
@@ -58,7 +59,7 @@ describe('Media Type Guards', () => {
             expect(documentHasWebkitFullscreen()).toBe(true);
 
             // Clean up
-            delete (document as any).webkitExitFullscreen;
+            delete (document as VendorExtendedDocument).webkitExitFullscreen;
         });
 
         test('documentHasMsFullscreen detects MS fullscreen support', () => {
@@ -71,7 +72,7 @@ describe('Media Type Guards', () => {
             expect(documentHasMsFullscreen()).toBe(true);
 
             // Clean up
-            delete (document as any).msExitFullscreen;
+            delete (document as VendorExtendedDocument).msExitFullscreen;
         });
 
         test('hasWebkitFullscreenMethods detects webkit fullscreen methods on element', () => {
@@ -134,8 +135,8 @@ describe('Media Type Guards', () => {
             expect(browserSupportsPictureInPicture()).toBe(true);
 
             // Clean up
-            delete (document as any).pictureInPictureElement;
-            delete (document as any).exitPictureInPicture;
+            delete (document as VendorExtendedDocument).pictureInPictureElement;
+            delete (document as VendorExtendedDocument).exitPictureInPicture;
         });
     });
 }); 

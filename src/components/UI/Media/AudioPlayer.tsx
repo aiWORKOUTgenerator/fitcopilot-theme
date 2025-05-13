@@ -4,6 +4,7 @@ import {
     AudioPlayerProps,
     MediaSource
 } from '../../../types/media';
+import { VendorExtendedWindow } from '../../../types/vendor';
 import logger from '../../../utils/logger';
 import './AudioPlayer.scss';
 
@@ -200,8 +201,16 @@ const AudioPlayer = forwardRef<HTMLAudioElement, AudioPlayerProps>(
                 const drawWaveform = () => {
                     if (!audioRef.current) return;
 
-                    // Create audio context and analyzer
-                    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+                    // Create audio context and analyzer with proper typing
+                    const AudioContextClass = window.AudioContext ||
+                        (window as VendorExtendedWindow).webkitAudioContext;
+
+                    if (!AudioContextClass) {
+                        logger.warn('AudioContext not supported in this browser');
+                        return;
+                    }
+
+                    const audioContext = new AudioContextClass();
                     const analyzer = audioContext.createAnalyser();
                     analyzer.fftSize = 256;
 

@@ -41,6 +41,13 @@ export interface MSDocument extends Document {
 }
 
 /**
+ * WebKit-specific AudioContext
+ */
+export interface WebkitAudioContext extends AudioContext {
+    // This is the same as AudioContext but has a different constructor name
+}
+
+/**
  * Comprehensive video element type that includes all vendor prefixes
  */
 export type VendorExtendedVideoElement = HTMLVideoElement & WebKitHTMLVideoElement & MSHTMLVideoElement;
@@ -48,4 +55,11 @@ export type VendorExtendedVideoElement = HTMLVideoElement & WebKitHTMLVideoEleme
 /**
  * Comprehensive document type that includes all vendor prefixes
  */
-export type VendorExtendedDocument = Document & WebKitDocument & MSDocument; 
+export type VendorExtendedDocument = Document & WebKitDocument & MSDocument;
+
+/**
+ * Extend Window interface with webkit-prefixed classes
+ */
+export interface VendorExtendedWindow extends Window {
+    webkitAudioContext?: typeof AudioContext;
+} 

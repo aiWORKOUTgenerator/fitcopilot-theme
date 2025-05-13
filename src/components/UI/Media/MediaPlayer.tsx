@@ -38,7 +38,7 @@ const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
 
     // TypeScript should prevent this case, but we handle it for safety
     // This should never be reached due to our discriminated union types
-    throw new Error(`Unknown media variant: ${(props as any)._variant}`);
+    throw new Error(`Unknown media variant: ${props._variant}`);
 };
 
 export default MediaPlayer; 

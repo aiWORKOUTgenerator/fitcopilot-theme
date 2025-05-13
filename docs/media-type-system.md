@@ -1,222 +1,189 @@
 # Media Component Type System
 
-This document outlines the type system for media components in the FitCopilot theme, providing a consistent pattern for type-safe media implementations.
+This document outlines the complete type system for media components in the FitCopilot theme, addressing browser compatibility and type safety concerns.
 
-## Core Type Pattern
+## Overview
 
-Media components use a discriminated union pattern with the following structure:
-
-1. **Base Props Interface**: Common properties for all media variants
-2. **Variant Interfaces**: Extended interfaces for specific media types
-3. **Union Type**: Combined type representing all possible variants
-4. **Type Guards**: Functions to safely check component variants
+The media type system provides strongly-typed definitions for cross-browser media playback, ensuring compatibility across different browsers and preventing runtime errors due to vendor-specific API usage.
 
 ## Type Hierarchy
 
-```
-BaseMediaProps
-  ├── ImageMediaProps (variant: 'image')
-  ├── VideoMediaProps (variant: 'video')
-  ├── AudioMediaProps (variant: 'audio')
-  ├── YouTubeMediaProps (variant: 'youtube')
-  ├── ImageGalleryProps (variant: 'imageGallery')
-  └── MediaCarouselProps (variant: 'carousel')
-```
-
-These types are combined into the `MediaProps` discriminated union:
+### Media Player Props
 
 ```typescript
-export type MediaProps =
-  | ImageMediaProps
-  | VideoMediaProps
-  | AudioMediaProps
-  | YouTubeMediaProps
-  | ImageGalleryProps
-  | MediaCarouselProps;
+export type MediaPlayerProps =
+    | (VideoPlayerProps & { _variant: 'video' })
+    | (AudioPlayerProps & { _variant: 'audio' });
 ```
 
-## Type Guards
+This discriminated union pattern ensures type safety when rendering either a video or audio player.
 
-Type guards are implemented in two locations:
+### Base Media Player Props
 
-1. **Element Type Guards** in `src/utils/mediaTypeGuards.ts` for checking DOM element types:
+```typescript
+export interface BaseMediaPlayerProps {
+    sources: MediaSource[];
+    tracks?: MediaTrack[];
+    autoPlay?: boolean;
+    // ...other common media properties
+}
+```
+
+The base interface provides common properties shared between video and audio players.
+
+### Specialized Media Components
+
+```typescript
+export interface VideoPlayerProps extends BaseMediaPlayerProps {
+    _variant: 'video';
+    aspectRatio?: '16:9' | '4:3' | '1:1' | 'cover' | string;
+    // ...video-specific properties
+}
+
+export interface AudioPlayerProps extends BaseMediaPlayerProps {
+    _variant: 'audio';
+    showWaveform?: boolean;
+    // ...audio-specific properties
+}
+```
+
+Each specialized component extends the base props with specific functionality.
+
+## Vendor-Specific Browser Compatibility
+
+### Vendor Extension Types
+
+```typescript
+export interface WebKitHTMLVideoElement extends HTMLVideoElement {
+    webkitRequestFullscreen: () => Promise<void>;
+    // ...other webkit-specific methods
+}
+
+export interface MSHTMLVideoElement extends HTMLVideoElement {
+    msRequestFullscreen: () => Promise<void>;
+    // ...other MS-specific methods
+}
+
+export type VendorExtendedVideoElement = HTMLVideoElement & WebKitHTMLVideoElement & MSHTMLVideoElement;
+```
+
+These interfaces provide type-safe access to vendor-specific methods without using `any` type casts.
+
+### Comprehensive Browser Feature Detection
+
+```typescript
+export interface FullscreenSupport {
+    standard: boolean;
+    webkit: boolean;
+    ms: boolean;
+    moz: boolean;
+    isSupported: boolean;
+    requestMethod: 'requestFullscreen' | 'webkitRequestFullscreen' | 'msRequestFullscreen' | 'mozRequestFullscreen' | null;
+    exitMethod: 'exitFullscreen' | 'webkitExitFullscreen' | 'msExitFullscreen' | 'mozCancelFullScreen' | null;
+    elementProperty: 'fullscreenElement' | 'webkitFullscreenElement' | 'msFullscreenElement' | 'mozFullScreenElement' | null;
+}
+```
+
+This interface detects and provides a unified API for handling fullscreen functionality across browsers.
+
+## Type Guards for Runtime Validation
+
+### Element Type Guards
+
 ```typescript
 export function isVideoElement(element: HTMLElement | null): element is HTMLVideoElement {
-  return element instanceof HTMLVideoElement;
+    return element instanceof HTMLVideoElement;
+}
+
+export function isAudioElement(element: HTMLElement | null): element is HTMLAudioElement {
+    return element instanceof HTMLAudioElement;
+}
+
+export function isMediaElement(element: HTMLElement | null): element is HTMLMediaElement {
+    return isVideoElement(element) || isAudioElement(element);
 }
 ```
 
-2. **Component Type Guards** in the shared Media component types for checking component variants:
-```typescript
-export const isVideoMedia = (props: MediaProps): props is VideoMediaProps =>
-  props.variant === 'video';
-```
+These type guards validate element types at runtime for safe property access.
 
-## Media Component Implementation
-
-The `Media` component acts as a discriminated union switcher, using type guards to render the appropriate component:
+### Browser Feature Type Guards
 
 ```typescript
-export const Media: React.FC<MediaProps> = (props) => {
-  if (isVideoMedia(props)) return <VideoPlayer {...props} />;
-  if (isAudioMedia(props)) return <AudioPlayer {...props} />;
-  if (isImageMedia(props)) return <img {...props} />;
-  // Additional media types...
-  return null;
-};
-```
+export function hasWebkitFullscreenMethods(element: HTMLVideoElement): element is VendorExtendedVideoElement & WebkitRequestFullscreen {
+    return 'webkitRequestFullscreen' in element &&
+        typeof (element as HTMLVideoElement & WebkitRequestFullscreen).webkitRequestFullscreen === 'function';
+}
 
-## Usage Examples
-
-### Basic Media
-
-```tsx
-import { Media } from 'features/shared/Media';
-import { VideoMediaProps } from 'features/shared/Media/types';
-
-const MyComponent: React.FC = () => {
-  const videoProps: VideoMediaProps = {
-    variant: 'video',
-    src: '/videos/workout.mp4',
-    poster: '/images/workout-thumbnail.jpg',
-    controls: true,
-    autoPlay: false,
-    loop: false,
-    muted: true,
-    alt: 'Workout demonstration'
-  };
-
-  return <Media {...videoProps} />;
-};
-```
-
-### Conditional Media Rendering
-
-```tsx
-import { MediaProps } from 'features/shared/Media/types';
-import { isVideoMedia, isImageMedia } from 'features/shared/Media/types';
-
-const MediaDetails: React.FC<{ media: MediaProps }> = ({ media }) => {
-  // Type-safe handling based on media variant
-  if (isVideoMedia(media)) {
-    return (
-      <div>
-        Video: {media.src}
-        <span>Duration: {media.duration || 'unknown'}</span>
-      </div>
-    );
-  }
-  
-  if (isImageMedia(media)) {
-    return (
-      <div>
-        Image: {media.src}
-        <span>Size: {media.width}x{media.height}</span>
-      </div>
-    );
-  }
-  
-  // Handle other media types...
-};
-```
-
-### Media Events with Type Safety
-
-```tsx
-import { VideoMediaProps } from 'features/shared/Media/types';
-import { Media } from 'features/shared/Media';
-
-const VideoWithEvents: React.FC = () => {
-  const handlePlay = (): void => {
-    console.log('Video started playing');
-  };
-
-  const handlePause = (): void => {
-    console.log('Video paused');
-  };
-
-  const handleEnded = (): void => {
-    console.log('Video playback completed');
-  };
-
-  const mediaProps: VideoMediaProps = {
-    variant: 'video',
-    src: '/videos/exercise.mp4',
-    controls: true,
-    onPlay: handlePlay,
-    onPause: handlePause,
-    onEnded: handleEnded
-  };
-
-  return <Media {...mediaProps} />;
-};
-```
-
-## Media Element Type Guards
-
-For DOM-level operations, use the element type guards in `mediaTypeGuards.ts`:
-
-```typescript
-import { isVideoElement, isAudioElement } from 'utils/mediaTypeGuards';
-
-function handleMediaElement(element: HTMLElement): void {
-  if (isVideoElement(element)) {
-    // TypeScript knows this is HTMLVideoElement
-    element.play();
-  } else if (isAudioElement(element)) {
-    // TypeScript knows this is HTMLAudioElement
-    element.volume = 0.5;
-  } else {
-    console.warn('Not a media element');
-  }
+export function supportsWebAudio(): boolean {
+    return typeof AudioContext !== 'undefined' || 
+        typeof (window as VendorExtendedWindow).webkitAudioContext !== 'undefined';
 }
 ```
 
-## Media Variant Descriptions
+These guards check for specific browser features before attempting to use them.
 
-### Image Media
-For displaying static images with responsive options.
-
-### Video Media
-For playing video content with playback controls and event handlers.
-
-### Audio Media
-For playing audio content with visualization options.
-
-### YouTube Media
-For embedding YouTube videos with configuration options.
-
-### Image Gallery
-For displaying multiple images in a gallery format with navigation.
-
-### Media Carousel
-For displaying mixed media types in a carousel format.
-
-## Browser Compatibility
-
-The media type system includes support for vendor-specific browser APIs:
+## Media State Tracking
 
 ```typescript
-function enterFullscreen(videoElement: HTMLVideoElement): void {
-  if (videoElement.requestFullscreen) {
-    videoElement.requestFullscreen();
-  } else if (hasWebkitFullscreenMethods(videoElement)) {
-    videoElement.webkitRequestFullscreen();
-  } else if (hasMsFullscreenMethods(videoElement)) {
-    videoElement.msRequestFullscreen();
-  }
+export interface MediaPlayerState {
+    isPlaying: boolean;
+    currentTime: number;
+    duration: number;
+    // ...other state properties
 }
+
+export interface MediaPlayerControls {
+    play: () => Promise<void>;
+    pause: () => void;
+    // ...other control methods
+}
+```
+
+These interfaces provide type-safe state and control interactions.
+
+## Usage Pattern
+
+```typescript
+// Using the discriminated union for type safety
+const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
+    if (props._variant === 'video') {
+        return <VideoPlayer {...props} />;
+    }
+
+    if (props._variant === 'audio') {
+        return <AudioPlayer {...props} />;
+    }
+
+    // TypeScript ensures this is unreachable with a properly typed union
+    throw new Error(`Unknown media variant: ${props._variant}`);
+};
+
+// Safe browser API usage with type guards
+const enterFullscreen = async (): Promise<void> => {
+    const element = videoRef.current;
+    if (!element) return;
+
+    try {
+        if (element.requestFullscreen) {
+            await element.requestFullscreen();
+        } else if (hasWebkitFullscreenMethods(element)) {
+            await element.webkitRequestFullscreen();
+        } else if (hasMsFullscreenMethods(element)) {
+            await element.msRequestFullscreen();
+        }
+    } catch (error) {
+        logger.error('Failed to enter fullscreen:', error);
+    }
+};
 ```
 
 ## Benefits
 
-This type system provides several advantages:
-
-1. **Type Safety**: Ensures that component props are properly typed and validated
-2. **Intellisense Support**: Provides code completion based on the specific media type
-3. **Runtime Type Checking**: Guards work at runtime to ensure correct component rendering
-4. **Consistency**: Establishes a uniform pattern for all media components
-5. **Browser Compatibility**: Safely handles vendor-specific APIs
+1. **Type Safety**: Eliminates runtime errors from accessing non-existent browser API methods
+2. **Developer Experience**: Provides autocompletion and documentation for media APIs
+3. **Cross-Browser Compatibility**: Safely handles vendor-specific implementations
+4. **Maintainability**: Centralizes browser compatibility concerns
+5. **Performance**: Allows for feature detection without unnecessary polyfills
 
 ## Media Types Organization
 

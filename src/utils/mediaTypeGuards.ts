@@ -2,7 +2,12 @@
  * Type guards for media elements and events
  * These utilities help properly validate types at runtime
  */
-import { VendorExtendedVideoElement } from '../types/vendor';
+import {
+    FullscreenSupport,
+    MediaAPIMethod,
+    PictureInPictureSupport
+} from '../types/mediaTypes';
+import { VendorExtendedVideoElement, VendorExtendedWindow } from '../types/vendor';
 
 /**
  * Type guards for vendor-specific APIs that haven't been standardized
@@ -136,4 +141,157 @@ export function browserSupportsPictureInPicture(): boolean {
         'pictureInPictureElement' in document &&
         'exitPictureInPicture' in document &&
         typeof document['exitPictureInPicture'] === 'function';
+}
+
+/**
+ * Determines the fullscreen capabilities of the current browser environment
+ * @returns Fullscreen support information
+ */
+export function getFullscreenSupport(): FullscreenSupport {
+    const standard = supportsStandardFullscreen();
+    const webkit = supportsWebkitFullscreen();
+    const ms = supportsMsFullscreen();
+    const moz = document.documentElement !== null &&
+        'mozRequestFullScreen' in document.documentElement;
+
+    const isSupported = standard || webkit || ms || moz;
+
+    let requestMethod: FullscreenSupport['requestMethod'] = null;
+    let exitMethod: FullscreenSupport['exitMethod'] = null;
+    let elementProperty: FullscreenSupport['elementProperty'] = null;
+
+    if (standard) {
+        requestMethod = 'requestFullscreen';
+        exitMethod = 'exitFullscreen';
+        elementProperty = 'fullscreenElement';
+    } else if (webkit) {
+        requestMethod = 'webkitRequestFullscreen';
+        exitMethod = 'webkitExitFullscreen';
+        elementProperty = 'webkitFullscreenElement';
+    } else if (ms) {
+        requestMethod = 'msRequestFullscreen';
+        exitMethod = 'msExitFullscreen';
+        elementProperty = 'msFullscreenElement';
+    } else if (moz) {
+        requestMethod = 'mozRequestFullscreen';
+        exitMethod = 'mozCancelFullScreen';
+        elementProperty = 'mozFullScreenElement';
+    }
+
+    return {
+        standard,
+        webkit,
+        ms,
+        moz,
+        isSupported,
+        requestMethod,
+        exitMethod,
+        elementProperty
+    };
+}
+
+/**
+ * Determines the picture-in-picture capabilities of the current browser
+ * @returns Picture-in-picture support information
+ */
+export function getPictureInPictureSupport(): PictureInPictureSupport {
+    const standard = 'pictureInPictureElement' in document &&
+        'exitPictureInPicture' in document;
+
+    const webkit = 'webkitPictureInPictureElement' in document ||
+        (document.documentElement !== null &&
+            'webkitRequestPictureInPicture' in document.documentElement);
+
+    const isSupported = standard || webkit;
+
+    let requestMethod: PictureInPictureSupport['requestMethod'] = null;
+    let exitMethod: PictureInPictureSupport['exitMethod'] = null;
+    let elementProperty: PictureInPictureSupport['elementProperty'] = null;
+
+    if (standard) {
+        requestMethod = 'requestPictureInPicture';
+        exitMethod = 'exitPictureInPicture';
+        elementProperty = 'pictureInPictureElement';
+    } else if (webkit) {
+        requestMethod = 'webkitRequestPictureInPicture';
+        exitMethod = 'webkitExitPictureInPicture';
+        elementProperty = 'webkitPictureInPictureElement';
+    }
+
+    return {
+        standard,
+        webkit,
+        isSupported,
+        requestMethod,
+        exitMethod,
+        elementProperty
+    };
+}
+
+/**
+ * Checks if the browser supports a specific media API method
+ * @param method Method name to check
+ * @returns Whether the method is supported
+ */
+export function supportsMediaMethod(method: MediaAPIMethod): boolean {
+    if (method === 'requestFullscreen' ||
+        method === 'webkitRequestFullscreen' ||
+        method === 'msRequestFullscreen' ||
+        method === 'mozRequestFullscreen') {
+        return document.documentElement !== null &&
+            method in document.documentElement;
+    }
+
+    if (method === 'exitFullscreen' ||
+        method === 'webkitExitFullscreen' ||
+        method === 'msExitFullscreen' ||
+        method === 'mozCancelFullScreen') {
+        return method in document;
+    }
+
+    if (method === 'requestPictureInPicture' ||
+        method === 'exitPictureInPicture') {
+        return method in document;
+    }
+
+    if (method === 'webkitEnterFullscreen' ||
+        method === 'webkitExitFullscreen') {
+        const testVideo = document.createElement('video');
+        return method in testVideo;
+    }
+
+    if (method === 'play' ||
+        method === 'pause' ||
+        method === 'load' ||
+        method === 'canPlayType') {
+        const testVideo = document.createElement('video');
+        return method in testVideo;
+    }
+
+    return false;
+}
+
+/**
+ * Checks if the browser supports WebAudio API
+ * @returns Whether WebAudio is supported
+ */
+export function supportsWebAudio(): boolean {
+    return typeof AudioContext !== 'undefined' ||
+        typeof (window as VendorExtendedWindow).webkitAudioContext !== 'undefined';
+}
+
+/**
+ * Gets the compatible AudioContext constructor
+ * @returns The AudioContext constructor or null if not supported
+ */
+export function getAudioContextConstructor(): typeof AudioContext | null {
+    if (typeof AudioContext !== 'undefined') {
+        return AudioContext;
+    }
+
+    if (typeof (window as VendorExtendedWindow).webkitAudioContext !== 'undefined') {
+        return (window as VendorExtendedWindow).webkitAudioContext as unknown as typeof AudioContext;
+    }
+
+    return null;
 } 
