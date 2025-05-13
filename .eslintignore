@@ -1,0 +1,32 @@
+# Build artifacts
+build/
+dist/
+coverage/
+
+# Generated files
+**/*.generated.ts
+**/*.generated.tsx
+**/generated/
+**/__generated__/
+
+# Test fixtures
+**/__fixtures__/
+**/__mocks__/
+
+# Third-party code
+node_modules/
+vendor/
+
+# Configuration files
+*.config.js
+*.config.ts
+
+# Legacy code marked for future refactoring
+# (remove these entries as files are refactored)
+legacy/
+
+# WordPress integrations
+*.php
+
+# Specific problematic files that will be fixed in later phases
+# TODO: Remove these exceptions as files are fixed 
