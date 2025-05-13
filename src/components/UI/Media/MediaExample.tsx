@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useMediaPlayer } from '../../../hooks';
+import logger from '../../../utils/logger';
 import { MediaPlayer } from './index';
 import './MediaExample.scss';
 
@@ -111,10 +112,10 @@ const CustomVideoPlayerWithHook: React.FC = () => {
         initialVolume: 0.8,
         autoPlay: false,
         playWhenVisible: true,
-        onEnded: () => console.log('Video ended'),
-        onPlay: () => console.log('Video playing'),
-        onPause: () => console.log('Video paused'),
-        onError: (error) => console.error('Video error:', error)
+        onEnded: () => logger.debug('Video ended'),
+        onPlay: () => logger.debug('Video playing'),
+        onPause: () => logger.debug('Video paused'),
+        onError: (error) => logger.error('Video error:', error)
     });
 
     // Create a ref for the video element
@@ -126,6 +127,9 @@ const CustomVideoPlayerWithHook: React.FC = () => {
             controls.initMediaElement(videoRef.current);
         }
     }, [controls]);
+
+    logger.debug('Media state:', state);
+    logger.debug('Media refs:', videoRef);
 
     return (
         <div className="custom-player">

@@ -81,34 +81,30 @@ let timerCounter = 0;
 const safeConsole = {
     log: (...args: unknown[]) => {
         try {
-            // eslint-disable-next-line no-console
-            console.log(...args);
+            logger.debug(...args);
         } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
-            // Silent fallback if console is not available
+            // Silent fallback if logger is not available
         }
     },
     info: (...args: unknown[]) => {
         try {
-            // eslint-disable-next-line no-console
-            console.info(...args);
+            logger.info(...args);
         } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
-            // Silent fallback if console is not available
+            // Silent fallback if logger is not available
         }
     },
     warn: (...args: unknown[]) => {
         try {
-            // eslint-disable-next-line no-console
-            console.warn(...args);
+            logger.warn(...args);
         } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
-            // Silent fallback if console is not available
+            // Silent fallback if logger is not available
         }
     },
     error: (...args: unknown[]) => {
         try {
-            // eslint-disable-next-line no-console
-            console.error(...args);
+            logger.error(...args);
         } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
-            // Silent fallback if console is not available
+            // Silent fallback if logger is not available
         }
     },
     group: (label: string) => {
@@ -410,7 +406,7 @@ export const createLoggedEventHandler = <T extends Element, E extends React.Synt
     };
 };
 
-// Create the logger object
+// Create and export the logger object
 const logger = {
     debug,
     info,
@@ -422,21 +418,9 @@ const logger = {
     timeEnd,
     addContext,
     setLogLevel,
-    configureLogger,
-    LogLevel, // Re-export for compatibility
     logComponentEvent,
-    createLoggedEventHandler
+    createLoggedEventHandler,
+    configureLogger
 };
 
-// Make logger globally available as a fallback
-if (typeof window !== 'undefined') {
-    try {
-        // @ts-expect-error - Explicitly adding to window
-        window.logger = logger;
-    } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
-        // Silent fallback if window is not available or cannot be modified
-    }
-}
-
-// Default export for normal import usage
 export default logger; 

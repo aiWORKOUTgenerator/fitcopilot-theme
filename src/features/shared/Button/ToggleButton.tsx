@@ -19,7 +19,7 @@ import { ToggleButtonProps, isToggleButton } from './types';
  *   onToggle={(active) => setIsPlaying(active)}
  * />
  */
-const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>((props, ref) => {
+const ToggleButtonInner = (props: ToggleButtonProps, ref: React.Ref<HTMLButtonElement>) => {
     const {
         isActive,
         activeLabel,
@@ -74,9 +74,9 @@ const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>((props, re
             {buttonText}
         </button>
     );
-});
-
-ToggleButton.displayName = 'ToggleButton';
+};
+ToggleButtonInner.displayName = 'ToggleButton';
+const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>(ToggleButtonInner);
 
 export default ToggleButton;
 
@@ -86,12 +86,13 @@ export default ToggleButton;
 export const withToggleButton = <P extends ToggleButtonProps>(
     Component: React.ComponentType<P>
 ): React.FC<P> => {
-    return (props: P) => {
+    const Wrapped: React.FC<P> = (props: P) => {
         if (!isToggleButton(props)) {
             warn('Component expected ToggleButtonProps but received incompatible props');
             return null;
         }
-
         return <Component {...props} />;
     };
+    Wrapped.displayName = `withToggleButton(${Component.displayName || Component.name || 'Component'})`;
+    return Wrapped;
 }; 

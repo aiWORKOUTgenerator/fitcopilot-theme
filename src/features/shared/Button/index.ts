@@ -3,16 +3,17 @@
  */
 
 // Main Button component
-export * from './Button';
-export { default } from './Button';
+export { default as Button } from './Button';
+export type { ButtonProps } from './Button';
 
 // Button variants
-export * from './ButtonGroup';
 export { default as ButtonGroup } from './ButtonGroup';
-export * from './LinkButton';
+export type { ButtonGroupProps } from './ButtonGroup';
 export { default as LinkButton } from './LinkButton';
-export * from './ToggleButton';
+export type { LinkButtonProps } from './LinkButton';
 export { default as ToggleButton } from './ToggleButton';
+export type { ToggleButtonProps } from './ToggleButton';
 
 // Types
-export * from './types';
+export type { ButtonSize, ButtonTheme, ButtonVariant } from './types';
+

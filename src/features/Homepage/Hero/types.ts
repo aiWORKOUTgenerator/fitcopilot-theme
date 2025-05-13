@@ -6,6 +6,11 @@ import { SectionProps } from '../../../components/shared/Section';
 export type HeroVariantKey = 'default' | 'gym' | 'mobile' | 'sports' | 'wellness' | 'registration' | 'boutique' | 'classic' | 'minimalist' | 'modern';
 
 /**
+ * Available variant keys for all components
+ */
+export type VariantKey = 'default' | 'gym' | 'mobile' | 'sports' | 'wellness' | 'registration' | 'boutique' | 'classic' | 'minimalist' | 'modern';
+
+/**
  * Interface for floating icon props
  */
 export interface FloatingIconProps {

@@ -3,18 +3,19 @@
  */
 
 // Main components
-export * from './FormField';
-export { default } from './FormField';
-export * from './TextField';
+export { default as FormField } from './FormField';
+export type { FormFieldProps } from './FormField';
 export { default as TextField } from './TextField';
+export type { TextFieldProps } from './TextField';
 
 // Form hooks
 export { useForm } from './useForm';
 export type { UseFormOptions, UseFormReturn } from './useForm';
 
 // Types
-export * from './types';
+export type { FormFieldType, FormFieldVariant } from './types';
 
 // Validation
-export * from './formState';
-export * from './validation';
+export type { FormState, ValidationError } from './formState';
+export type { ValidationResult, Validator } from './validation';
+

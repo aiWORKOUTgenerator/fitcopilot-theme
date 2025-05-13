@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import logger from '../../../utils/logger';
 import { Button, ButtonGroup } from '../Button';
 import FormField from '../FormField/FormField';
 import { useForm } from '../FormField/useForm';
@@ -51,7 +52,7 @@ export const FormExample: React.FC = () => {
         },
         onSubmit: async (data) => {
             // Simulate API call
-            console.log('Form submitted with data:', data);
+            logger.log('Form submitted with data:', values);
             await new Promise(resolve => setTimeout(resolve, 1000));
             alert('Form submitted successfully!');
         }

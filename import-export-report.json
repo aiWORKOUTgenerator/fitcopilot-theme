@@ -12,12 +12,6 @@
     "importedBy": "Homepage.tsx"
   },
   {
-    "file": "features/Homepage/Hero/types.ts",
-    "exportName": "VariantKey",
-    "type": "missing",
-    "importedBy": "components/DemoNav.tsx"
-  },
-  {
     "file": "utils/debug.tsx",
     "exportName": "debug",
     "type": "missing",
@@ -30,10 +24,22 @@
     "importedBy": "components/Layout/Header/Header.stories.tsx"
   },
   {
+    "file": "components/Layout/Header/Header.tsx",
+    "exportName": "Header",
+    "type": "missing",
+    "importedBy": "components/Layout/Header/index.ts"
+  },
+  {
     "file": "components/Layout/Page/Page.tsx",
     "exportName": "Page",
     "type": "missing",
     "importedBy": "components/Layout/Page/Page.stories.tsx"
+  },
+  {
+    "file": "components/Layout/Page/Page.tsx",
+    "exportName": "Page",
+    "type": "missing",
+    "importedBy": "components/Layout/Page/index.ts"
   },
   {
     "file": "components/OptimizedImage/OptimizedImage.tsx",
@@ -46,6 +52,12 @@
     "exportName": "logger",
     "type": "missing",
     "importedBy": "components/UI/Media/AudioPlayer.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "components/UI/Media/MediaExample.tsx"
   },
   {
     "file": "components/UI/Media/AudioPlayer.tsx",
@@ -506,12 +518,6 @@
   {
     "file": "features/Registration/Registration.tsx",
     "exportName": "Registration",
-    "type": "missing",
-    "importedBy": "features/Homepage/Homepage.tsx"
-  },
-  {
-    "file": "features/Homepage/Hero/types.ts",
-    "exportName": "VariantKey",
     "type": "missing",
     "importedBy": "features/Homepage/Homepage.tsx"
   },
@@ -1086,12 +1092,6 @@
     "importedBy": "features/Homepage/TrainingFeatures/variants/wellness/index.ts"
   },
   {
-    "file": "features/Homepage/Hero/types.ts",
-    "exportName": "VariantKey",
-    "type": "missing",
-    "importedBy": "features/Homepage/components/DemoNav/DemoNav.tsx"
-  },
-  {
     "file": "features/Homepage/components/DemoNav/DemoNav.tsx",
     "exportName": "DemoNav",
     "type": "missing",
@@ -1596,6 +1596,12 @@
     "importedBy": "features/shared/Button/Button.tsx"
   },
   {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/shared/Card/Card.stories.tsx"
+  },
+  {
     "file": "features/shared/FormField/fields/Checkbox.tsx",
     "exportName": "Checkbox",
     "type": "missing",
@@ -1648,6 +1654,12 @@
     "exportName": "TextField",
     "type": "missing",
     "importedBy": "features/shared/FormField/FormField.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/shared/FormField/TextField.tsx"
   },
   {
     "file": "utils/logger.ts",
@@ -1743,6 +1755,12 @@
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",
+    "importedBy": "features/shared/examples/FormExample.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
     "importedBy": "hooks/useAnimation.ts"
   },
   {
@@ -1792,6 +1810,12 @@
     "exportName": "wordPressServiceImpl",
     "type": "missing",
     "importedBy": "services/index.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "styles/design-system/color-validation.js"
   },
   {
     "file": "utils/logger.ts",

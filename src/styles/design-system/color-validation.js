@@ -7,7 +7,8 @@
  * Run with: node color-validation.js
  */
 
-const logger = require('../../utils/logger').default;
+import logger from '../../utils/logger';
+
 const designLogger = logger.addContext('DesignSystem');
 
 // Color definitions from our design system
