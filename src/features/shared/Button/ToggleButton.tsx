@@ -4,7 +4,8 @@
  */
 
 import React, { forwardRef } from 'react';
-import { createLoggedEventHandler } from '../../../utils/logger';
+import { ButtonClickHandler } from '../../../types/events';
+import { createLoggedEventHandler, warn } from '../../../utils/logger';
 import { ToggleButtonProps, isToggleButton } from './types';
 
 /**
@@ -18,7 +19,7 @@ import { ToggleButtonProps, isToggleButton } from './types';
  *   onToggle={(active) => setIsPlaying(active)}
  * />
  */
-function ToggleButton(props: ToggleButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) {
+const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>((props, ref) => {
     const {
         isActive,
         activeLabel,
@@ -31,7 +32,7 @@ function ToggleButton(props: ToggleButtonProps, ref: React.ForwardedRef<HTMLButt
     } = props;
 
     // Internal handler for toggle state
-    const handleToggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleToggle: ButtonClickHandler = (event) => {
         // Call user's onClick handler if provided
         if (onClick) {
             onClick(event);
@@ -39,12 +40,12 @@ function ToggleButton(props: ToggleButtonProps, ref: React.ForwardedRef<HTMLButt
 
         // Call onToggle with the new state if provided
         if (onToggle) {
-            onToggle(!isActive);
+            onToggle(!isActive, event);
         }
     };
 
     // Create logged event handler
-    const loggedHandleToggle = createLoggedEventHandler(
+    const loggedHandleToggle = createLoggedEventHandler<HTMLButtonElement, React.MouseEvent<HTMLButtonElement>>(
         'ToggleButton',
         'toggle',
         handleToggle
@@ -64,6 +65,7 @@ function ToggleButton(props: ToggleButtonProps, ref: React.ForwardedRef<HTMLButt
 
     return (
         <button
+            ref={ref}
             className={buttonClasses}
             onClick={loggedHandleToggle}
             aria-pressed={isActive}
@@ -72,11 +74,11 @@ function ToggleButton(props: ToggleButtonProps, ref: React.ForwardedRef<HTMLButt
             {buttonText}
         </button>
     );
-}
+});
 
-const ForwardedToggleButton = forwardRef(ToggleButton);
-ForwardedToggleButton.displayName = 'ToggleButton';
-export default ForwardedToggleButton;
+ToggleButton.displayName = 'ToggleButton';
+
+export default ToggleButton;
 
 /**
  * Type guard to ensure a component is a Toggle Button
@@ -86,7 +88,7 @@ export const withToggleButton = <P extends ToggleButtonProps>(
 ): React.FC<P> => {
     return (props: P) => {
         if (!isToggleButton(props)) {
-            console.warn('Component expected ToggleButtonProps but received incompatible props');
+            warn('Component expected ToggleButtonProps but received incompatible props');
             return null;
         }
 

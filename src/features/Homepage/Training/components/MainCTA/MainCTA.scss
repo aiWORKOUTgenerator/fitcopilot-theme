@@ -25,69 +25,61 @@
     width: 100%;
 
     // Apply styles to match the Journey CTA
-    .button {
-        &--primary {
-            // Match Journey CTA size and shape
-            min-width: 280px;
-            font-size: 1.125rem;
-            font-weight: 600;
-            padding: 1rem 2.5rem;
-            border-radius: 9999px;
+    .training-button-primary {
+        // Match Journey CTA size and shape
+        min-width: 280px;
+        font-size: 1.125rem;
+        font-weight: 600;
+        padding: 1rem 2.5rem;
+        border-radius: 9999px;
 
-            // Match Journey CTA gradient and glow
-            background: linear-gradient(to right, var(--color-amber-300, #FCD34D), var(--color-orange-400, #FB923C));
-            box-shadow: 0 0 30px 5px rgba(251, 191, 36, 0.3);
-            position: relative;
+        // Match Journey CTA gradient and glow
+        background: linear-gradient(to right, var(--color-amber-300, #FCD34D), var(--color-orange-400, #FB923C)) !important;
+        box-shadow: 0 0 30px 5px rgba(251, 191, 36, 0.3);
+        position: relative;
 
-            // Glow effect via pseudo element
+        // Glow effect via pseudo element
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: inherit;
+            z-index: -1;
+            filter: blur(25px);
+            opacity: 0.6;
+            background: inherit;
+            transition: opacity 0.3s ease, filter 0.3s ease;
+        }
+
+        // Enhanced hover state
+        &:hover:not(:disabled) {
+            transform: translateY(-4px);
+            box-shadow: 0 0 40px 10px rgba(251, 191, 36, 0.5);
+
             &::after {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                border-radius: inherit;
-                z-index: -1;
-                filter: blur(25px);
-                opacity: 0.6;
-                background: inherit;
-                transition: opacity 0.3s ease, filter 0.3s ease;
+                opacity: 0.8;
+                filter: blur(30px);
             }
 
-            // Enhanced hover state
-            &:hover:not(:disabled) {
-                transform: translateY(-4px);
-                box-shadow: 0 0 40px 10px rgba(251, 191, 36, 0.5);
-
-                &::after {
-                    opacity: 0.8;
-                    filter: blur(30px);
-                }
-            }
-
-            // Improved icon animation
-            .button__icon--right {
-                transition: transform 0.3s ease;
-                margin-left: 0.5rem;
-            }
-
-            &:hover .button__icon--right {
+            .ml-2 {
                 transform: translateX(5px);
             }
+        }
 
-            // Medium/large screens
-            @media (min-width: 768px) {
-                min-width: 320px;
-                padding: 1.125rem 3rem;
-                font-size: 1.25rem;
-            }
+        // Medium/large screens
+        @media (min-width: 768px) {
+            min-width: 320px;
+            padding: 1.125rem 3rem;
+            font-size: 1.25rem;
         }
     }
 
     // Reduced motion preference
     @media (prefers-reduced-motion: reduce) {
-        .button--primary {
+        .training-button-primary {
             transition: none;
 
             &::after {
@@ -99,7 +91,7 @@
                 box-shadow: 0 0 15px 2px rgba(251, 191, 36, 0.2);
             }
 
-            &:hover .button__icon--right {
+            &:hover .ml-2 {
                 transform: none;
             }
         }

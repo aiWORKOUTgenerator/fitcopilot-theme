@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Section } from '../../../../../components/shared';
-import Button from '../../../../../components/UI/Button';
+import { Button } from '../../../../../features/shared/Button';
 import '../../TrainingFeatures.scss';
 import { BoutiqueVariantProps, TrainingFeature } from '../../types';
 
@@ -153,11 +153,11 @@ const BoutiqueTrainingFeatures: React.FC<BoutiqueVariantProps> = (props) => {
 
                         <Button
                             variant="ghost"
-                            size="small"
+                            size="sm"
                             className="mt-4 text-rose-300 font-serif"
-                            rightIcon={<ChevronRight size={16} />}
                         >
                             {expandedFeature === index ? 'Show Less' : 'Learn More'}
+                            <ChevronRight size={16} className="ml-2" />
                         </Button>
                     </div>
                 ))}

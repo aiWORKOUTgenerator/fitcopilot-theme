@@ -1,6 +1,7 @@
-import { Check, ChevronDown, ChevronUp, Clock, Crown, Shield, Sparkles, Star, Users } from 'lucide-react';
+import { ArrowRight, Check, ChevronDown, ChevronUp, Clock, Crown, Shield, Star, Users } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { Tooltip, TooltipThemeProvider } from '../../../components/UI/Tooltip';
+import { Button } from '../../../features/shared/Button';
 import './Pricing.scss';
 import { PricingProps } from './types';
 
@@ -518,27 +519,15 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
 
                   {/* CTA button */}
                   <div className="pt-4 mt-auto">
-                    <a
-                      href={plan.ctaLink}
-                      onClick={plan.popular ? handleProClick : undefined}
-                      className={`block text-center py-3 px-6 rounded-lg font-medium transition-all duration-300 ${plan.popular
-                        ? 'bg-gradient-to-r from-lime-400 to-emerald-500 text-gray-900 hover:shadow-md hover:shadow-lime-500/20'
-                        : plan.name === 'Basic'
-                          ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:shadow-md hover:shadow-blue-500/20'
-                          : plan.name === 'Elite'
-                            ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:shadow-md hover:shadow-purple-500/20'
-                            : 'bg-[#0B1121] text-white border border-gray-700 hover:border-[#CCFF00]'
-                        }`}
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      className={`pricing-cta-button ${plan.name.toLowerCase()}-cta`}
+                      onClick={() => window.location.href = plan.ctaLink}
                     >
-                      {plan.popular ? (
-                        <>
-                          <span>{plan.ctaText}</span>
-                          <Sparkles className="w-4 h-4 ml-2 inline-block" aria-hidden="true" />
-                        </>
-                      ) : (
-                        <span>{plan.ctaText}</span>
-                      )}
-                    </a>
+                      {plan.ctaText}
+                      <ArrowRight size={18} className="ml-2" />
+                    </Button>
                   </div>
                 </div>
               </div>

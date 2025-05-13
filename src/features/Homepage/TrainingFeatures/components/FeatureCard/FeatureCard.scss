@@ -215,6 +215,23 @@
             }
         }
     }
+
+    .feature-card-button {
+        background: transparent !important;
+        border: none !important;
+        padding: 0.5rem 0.75rem !important;
+        font-weight: 500 !important;
+        transition: all 0.2s ease !important;
+
+        &:hover {
+            background: rgba(132, 204, 22, 0.1) !important;
+            transform: translateY(-1px) !important;
+        }
+
+        &:active {
+            transform: translateY(0) !important;
+        }
+    }
 }
 
 // Individual card variants

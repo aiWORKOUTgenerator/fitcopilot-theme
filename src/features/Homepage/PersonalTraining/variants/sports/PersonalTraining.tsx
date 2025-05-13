@@ -8,7 +8,7 @@ import {
     User
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import Button from '../../../../../components/UI/Button';
+import { Button } from '../../../../../features/shared/Button';
 import MediaContainer from '../../components/MediaContainer';
 import '../../PersonalTraining.scss';
 import { PersonalTrainingProps, Trainer } from '../../types';
@@ -59,6 +59,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             featured: true,
             videoCard: {
                 title: wordpressVideoData?.personalTraining?.featuredTrainer?.title || 'Strength Training Introduction',
+                image: wordpressVideoData?.personalTraining?.featuredTrainer?.image || 'https://plus.unsplash.com/premium_photo-1661359682704-f17a7e38cbff?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                 videoUrl: wordpressVideoData?.personalTraining?.featuredTrainer?.url || 'https://www.youtube.com/embed/dQw4w9WgXcQ'
             }
         },
@@ -71,8 +72,10 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             bio: 'Expert in high-intensity interval training and cardiovascular fitness programs.',
             clients: 95,
             years: 6,
+            featured: false,
             videoCard: {
                 title: 'HIIT Workout Demo',
+                image: 'https://images.unsplash.com/photo-1658203897339-989718522126?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                 videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
             }
         },
@@ -85,8 +88,10 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             bio: 'Focuses on building practical strength for everyday activities, improving mobility and balance.',
             clients: 85,
             years: 7,
+            featured: false,
             videoCard: {
                 title: 'Functional Training Basics',
+                image: 'https://images.unsplash.com/photo-1652880042886-cdb6cebb9ab5?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                 videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
             }
         },
@@ -99,8 +104,10 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             bio: 'Certified nutrition specialist helping clients transform their health through personalized meal plans.',
             clients: 110,
             years: 5,
+            featured: false,
             videoCard: {
                 title: 'Nutrition Fundamentals',
+                image: 'https://images.unsplash.com/photo-1559595500-c747065f4cd9?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                 videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
             }
         }
@@ -187,13 +194,12 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                         Schedule a free consultation session with one of our expert trainers. We'll create a personalized plan to help you reach your goals.
                     </p>
                     <Button
-                        variant="gradient"
-                        size="large"
-                        rightIcon={<ArrowRight size={18} />}
-                        themeContext="sports"
+                        variant="primary"
+                        size="lg"
                         className="mb-4"
                     >
                         Book Your Consultation
+                        <ArrowRight size={18} className="ml-2" />
                     </Button>
                     {/* Date selection hint */}
                     <p className="text-sm text-white/70 mt-4 flex items-center justify-center">

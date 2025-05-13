@@ -6,6 +6,15 @@ import React from 'react';
 import { ButtonClickHandler } from '../../../types/events';
 
 /**
+ * Icon type definition for button icons
+ */
+export type IconType = React.ComponentType<{
+    className?: string;
+    size?: number;
+    color?: string;
+}>;
+
+/**
  * Base button props used across all button variants
  */
 export interface BaseButtonProps {
@@ -73,7 +82,7 @@ export interface IconButtonProps extends BaseButtonProps {
     /** The button variant */
     variant: 'icon';
     /** Icon component */
-    icon: React.ReactNode;
+    icon: IconType;
     /** Icon position */
     iconPosition?: 'left' | 'right';
     /** Additional text */
@@ -93,7 +102,7 @@ export interface ToggleButtonProps extends BaseButtonProps {
     /** Label to show when inactive */
     inactiveLabel?: string;
     /** Toggle callback with new state */
-    onToggle?: (isActive: boolean) => void;
+    onToggle?: (isActive: boolean, event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 /**
@@ -119,11 +128,14 @@ export interface FloatingActionButtonProps extends BaseButtonProps {
     /** The button variant */
     variant: 'floating';
     /** Icon component */
-    icon: React.ReactNode;
+    icon: IconType;
     /** Button position */
     position?: 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left';
     /** Show label on hover */
-    tooltip?: string;
+    tooltip?: {
+        text: string;
+        position?: 'top' | 'bottom' | 'left' | 'right';
+    };
 }
 
 /**

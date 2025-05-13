@@ -637,3 +637,36 @@
     box-shadow: 0 0 12px 4px rgba(249, 115, 22, 0.5);
   }
 }
+
+// Button styles
+.features-button-primary {
+  background: linear-gradient(to right, var(--color-accent-400), var(--color-accent-300)) !important;
+  color: var(--color-gray-900) !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(to right, var(--color-accent-300), var(--color-accent-400)) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
+    transform: translateY(-2px);
+  }
+}
+
+.features-divider-gradient-btn {
+  background: linear-gradient(to right, var(--color-accent-400), var(--color-accent-300)) !important;
+  color: var(--color-gray-900) !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: linear-gradient(to right, var(--color-accent-300), var(--color-accent-400)) !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4) !important;
+    transform: translateY(-2px);
+  }
+}
+
+.features-cta {
+  display: inline-block;
+  width: 75%;
+  margin: 0 auto;
+}

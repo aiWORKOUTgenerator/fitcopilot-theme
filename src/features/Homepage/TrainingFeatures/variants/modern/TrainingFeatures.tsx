@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Section } from '../../../../../components/shared';
-import Button from '../../../../../components/UI/Button';
+import { Button } from '../../../../../features/shared/Button';
 import '../../TrainingFeatures.scss';
 import { ModernVariantProps, TrainingFeature } from '../../types';
 
@@ -169,11 +169,11 @@ const ModernTrainingFeatures: React.FC<ModernVariantProps> = (props) => {
 
                             <Button
                                 variant="ghost"
-                                size="small"
+                                size="sm"
                                 className={`mt-4 ${expandedFeature === index ? 'text-white border-cyan-500 hover:bg-cyan-900/30' : 'text-cyan-300'}`}
-                                rightIcon={expandedFeature === index ? <RotateCw size={16} /> : <Info size={16} />}
                             >
                                 {expandedFeature === index ? 'Show Less' : 'Learn More'}
+                                {expandedFeature === index ? <RotateCw size={16} className="ml-2" /> : <Info size={16} className="ml-2" />}
                             </Button>
                         </div>
                     ))}

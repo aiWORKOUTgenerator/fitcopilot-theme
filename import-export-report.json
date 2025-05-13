@@ -42,24 +42,6 @@
     "importedBy": "components/OptimizedImage/index.ts"
   },
   {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "components/UI/Button/__tests__/Button.stories.tsx"
-  },
-  {
-    "file": "components/UI/Button/hero/Button.tsx",
-    "exportName": "HeroButton",
-    "type": "missing",
-    "importedBy": "components/UI/Button/index.ts"
-  },
-  {
-    "file": "types/components.ts",
-    "exportName": "GlobalButtonProps",
-    "type": "missing",
-    "importedBy": "components/UI/Button/types.ts"
-  },
-  {
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",
@@ -226,12 +208,6 @@
     "exportName": "logger",
     "type": "missing",
     "importedBy": "debug/ButtonStyleAudit.tsx"
-  },
-  {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "debug/ButtonVariantsDemo.tsx"
   },
   {
     "file": "utils/logger.ts",
@@ -442,12 +418,6 @@
     "exportName": "Features",
     "type": "missing",
     "importedBy": "features/Homepage/Features/variants/wellness/index.ts"
-  },
-  {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/Hero/Hero.tsx"
   },
   {
     "file": "features/Homepage/Hero/components/FloatingIcons/FloatingIcon.tsx",
@@ -696,12 +666,6 @@
     "importedBy": "features/Homepage/Journey/variants/wellness/index.ts"
   },
   {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/PersonalTraining/PersonalTraining.tsx"
-  },
-  {
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",
@@ -810,12 +774,6 @@
     "importedBy": "features/Homepage/PersonalTraining/variants/modern/index.ts"
   },
   {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/PersonalTraining/variants/sports/PersonalTraining.tsx"
-  },
-  {
     "file": "features/Homepage/PersonalTraining/components/MediaContainer/index.ts",
     "exportName": "MediaContainer",
     "type": "missing",
@@ -900,12 +858,6 @@
     "importedBy": "features/Homepage/Training/components/BenefitsList/index.ts"
   },
   {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/Training/components/MainCTA/MainCTA.tsx"
-  },
-  {
     "file": "features/Homepage/Training/components/MainCTA/MainCTA.tsx",
     "exportName": "MainCTA",
     "type": "missing",
@@ -916,12 +868,6 @@
     "exportName": "ProgramCard",
     "type": "missing",
     "importedBy": "features/Homepage/Training/components/ProgramCard/index.ts"
-  },
-  {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/Training/components/ProgramsList/ProgramsList.tsx"
   },
   {
     "file": "features/Homepage/Training/components/ProgramsList/ProgramsList.tsx",
@@ -948,22 +894,10 @@
     "importedBy": "features/Homepage/Training/index.ts"
   },
   {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/Training/variants/boutique/Training.tsx"
-  },
-  {
     "file": "features/Homepage/Training/variants/boutique/Training.tsx",
     "exportName": "BoutiqueTraining",
     "type": "missing",
     "importedBy": "features/Homepage/Training/variants/boutique/index.ts"
-  },
-  {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/Training/variants/classic/Training.tsx"
   },
   {
     "file": "features/Homepage/Training/variants/classic/Training.tsx",
@@ -1020,22 +954,10 @@
     "importedBy": "features/Homepage/Training/variants/index.ts"
   },
   {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/Training/variants/minimalist/Training.tsx"
-  },
-  {
     "file": "features/Homepage/Training/variants/minimalist/Training.tsx",
     "exportName": "MinimalistTraining",
     "type": "missing",
     "importedBy": "features/Homepage/Training/variants/minimalist/index.ts"
-  },
-  {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/Training/variants/modern/Training.tsx"
   },
   {
     "file": "features/Homepage/Training/variants/modern/Training.tsx",
@@ -1044,40 +966,16 @@
     "importedBy": "features/Homepage/Training/variants/modern/index.ts"
   },
   {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/Training/variants/sports/Training.tsx"
-  },
-  {
     "file": "features/Homepage/Training/variants/sports/Training.tsx",
     "exportName": "Training",
     "type": "missing",
     "importedBy": "features/Homepage/Training/variants/sports/index.ts"
   },
   {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/Training/variants/wellness/Training.tsx"
-  },
-  {
     "file": "features/Homepage/Training/variants/wellness/Training.tsx",
     "exportName": "WellnessTraining",
     "type": "missing",
     "importedBy": "features/Homepage/Training/variants/wellness/index.ts"
-  },
-  {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx"
-  },
-  {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/TrainingFeatures/components/FeatureCard/FeatureCard.tsx"
   },
   {
     "file": "features/Homepage/TrainingFeatures/components/FeatureCard/FeatureCard.tsx",
@@ -1128,12 +1026,6 @@
     "importedBy": "features/Homepage/TrainingFeatures/components/VideoPlayer/index.ts"
   },
   {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx"
-  },
-  {
     "file": "features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx",
     "exportName": "BoutiqueTrainingFeatures",
     "type": "missing",
@@ -1174,12 +1066,6 @@
     "exportName": "DefaultTrainingFeatures",
     "type": "missing",
     "importedBy": "features/Homepage/TrainingFeatures/variants/minimalist/index.ts"
-  },
-  {
-    "file": "components/UI/Button/index.ts",
-    "exportName": "Button",
-    "type": "missing",
-    "importedBy": "features/Homepage/TrainingFeatures/variants/modern/TrainingFeatures.tsx"
   },
   {
     "file": "features/Homepage/TrainingFeatures/variants/modern/TrainingFeatures.tsx",
@@ -1696,6 +1582,18 @@
     "exportName": "logger",
     "type": "missing",
     "importedBy": "features/Registration/utils/registrationApi.ts"
+  },
+  {
+    "file": "features/shared/Button/LinkButton.tsx",
+    "exportName": "LinkButton",
+    "type": "missing",
+    "importedBy": "features/shared/Button/Button.tsx"
+  },
+  {
+    "file": "features/shared/Button/ToggleButton.tsx",
+    "exportName": "ToggleButton",
+    "type": "missing",
+    "importedBy": "features/shared/Button/Button.tsx"
   },
   {
     "file": "features/shared/FormField/fields/Checkbox.tsx",

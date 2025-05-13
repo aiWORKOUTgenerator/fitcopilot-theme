@@ -1,20 +1,20 @@
-/* eslint-disable */
-
-// Import test setup
+import { AnalyticsEvent, AnalyticsUser } from '../events/analyticsTypes';
 import './setup';
 
-// Create mock for analytics service
-const mockAnalyticsTrack = jest.fn();
-const mockAnalyticsIdentify = jest.fn();
+// Create mock for analytics service with proper typing
+const mockAnalyticsTrack = jest.fn<void, [AnalyticsEvent]>();
+const mockAnalyticsIdentify = jest.fn<void, [AnalyticsUser]>();
+const mockAnalyticsPageView = jest.fn<void, [string]>();
+
 const mockAnalyticsService = {
     trackEvent: mockAnalyticsTrack,
     identifyUser: mockAnalyticsIdentify,
-    pageView: jest.fn()
+    pageView: mockAnalyticsPageView
 };
 
-// Mock the useTransitionAnalytics hook
-const mockTrackStepView = jest.fn();
-const mockTrackTransition = jest.fn();
+// Mock the useTransitionAnalytics hook with proper typing
+const mockTrackStepView = jest.fn<void, [string, Record<string, unknown>]>();
+const mockTrackTransition = jest.fn<void, [string, string, Record<string, unknown>]>();
 
 jest.mock('../events/analyticsIntegration', () => ({
     useTransitionAnalytics: () => ({

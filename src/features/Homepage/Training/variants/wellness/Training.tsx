@@ -1,6 +1,6 @@
 import { Leaf } from 'lucide-react';
 import React from 'react';
-import Button from '../../../../../components/UI/Button';
+import { Button } from '../../../../../features/shared/Button';
 import { BenefitsList, ProgramCard } from '../../components';
 import { useTrainingPrograms } from '../../hooks';
 import '../../styles/theme-variants.scss';
@@ -73,11 +73,11 @@ const WellnessTraining: React.FC<TrainingProps> = ({
                                 <div className="training-expanded__cta mt-8">
                                     <Button
                                         variant="secondary"
-                                        size="medium"
-                                        rightIcon={<Leaf size={16} />}
+                                        size="md"
                                         onClick={() => navigateToProgram(program.title)}
                                     >
                                         Begin Your Journey
+                                        <Leaf size={16} className="ml-2" />
                                     </Button>
                                 </div>
                             </div>
@@ -95,11 +95,11 @@ const WellnessTraining: React.FC<TrainingProps> = ({
             <div className="training-section__cta">
                 <Button
                     variant="primary"
-                    size="large"
-                    rightIcon={<Leaf size={20} />}
+                    size="lg"
                     onClick={() => navigateToProgram('all')}
                 >
                     Start Your Wellness Journey
+                    <Leaf size={20} className="ml-2" />
                 </Button>
             </div>
         </section>

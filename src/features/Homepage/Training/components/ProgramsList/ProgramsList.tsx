@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react';
 import React, { memo } from 'react';
 import { BenefitsList, ProgramCard } from '..';
-import Button from '../../../../../components/UI/Button';
+import { Button } from '../../../../../features/shared/Button';
 import { ProgramType } from '../../types';
 import { generateProgramAriaIds } from '../../utils/accessibilityHelpers';
 import './ProgramsList.scss';

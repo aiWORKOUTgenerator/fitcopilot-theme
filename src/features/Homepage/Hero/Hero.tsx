@@ -1,7 +1,7 @@
 import { Dumbbell, Flame, Heart, LogIn, Shield, UserPlus, Zap } from 'lucide-react';
 import React, { useRef, useState } from 'react';
-import Button from '../../../components/UI/Button';
 import { Tooltip, TooltipThemeProvider } from '../../../components/UI/Tooltip';
+import { Button } from '../../../features/shared/Button';
 // Temporarily comment out the module style import until we fix the SCSS issues
 // import styles from './Hero.module.scss';
 import { ThemeCSSProperties } from '../../../types/theme';
@@ -146,14 +146,12 @@ export const Hero: React.FC<HeroProps> = ({
                 onMouseLeave={() => handleMouseLeave('freeWorkout')}
               >
                 <Button
-                  href="#splash-section"
                   variant="primary"
-                  themeContext="hero"
-                  leftIcon={<Zap className="hero-icon" />}
-                  fullWidth
-                  className="hero-button-primary hero-divider-gradient-btn"
+                  size="lg"
+                  className="inline-flex items-center rounded-full font-medium hero-button-primary hero-divider-gradient-btn"
                   onClick={handleScrollToSplash}
                 >
+                  <Zap className="hero-icon" />
                   Get a Free Workout
                 </Button>
 
@@ -181,14 +179,12 @@ export const Hero: React.FC<HeroProps> = ({
                 onMouseLeave={() => handleMouseLeave('createAccount')}
               >
                 <Button
-                  href={registrationLink}
                   variant="secondary"
-                  themeContext="hero"
-                  leftIcon={<UserPlus className="hero-icon-userplus" />}
-                  fullWidth
-                  className="hero-button-secondary"
+                  size="lg"
+                  className="inline-flex items-center rounded-full font-medium hero-button-secondary"
                   onClick={handleScrollToSplash}
                 >
+                  <UserPlus className="hero-icon-userplus" />
                   Create Your Account
                 </Button>
 

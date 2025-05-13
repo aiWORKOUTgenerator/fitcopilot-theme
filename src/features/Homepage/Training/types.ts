@@ -1,12 +1,18 @@
 /**
  * Type definitions for the Training component
  */
+import { ReactNode } from 'react';
 import { ProgramTypeKey } from './utils/gradientTokens';
 
 /**
  * Supported theme variant keys for the Training component
  */
 export type VariantKey = 'default' | 'boutique' | 'classic' | 'minimalist' | 'modern' | 'sports' | 'wellness';
+
+/**
+ * Icon type that can be either a string emoji or a React node
+ */
+export type ProgramIcon = string | ReactNode;
 
 /**
  * Program data structure for displaying training programs
@@ -23,9 +29,10 @@ export interface ProgramType {
     description: string;
 
     /**
-     * Icon React element to display for the program
+     * Icon to display for the program
+     * Can be either a string emoji or a React node
      */
-    icon: React.ReactNode;
+    icon: ProgramIcon;
 
     /**
      * List of program benefits to display

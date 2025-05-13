@@ -17,7 +17,7 @@ import {
     Video
 } from 'lucide-react';
 import React from 'react';
-import Button from '../../../components/UI/Button';
+import Button from '../../../features/shared/Button';
 import FeatureCard from './components/FeatureCard';
 import './TrainingFeatures.scss';
 import { DefaultVariantProps, TrainingFeature } from './types';

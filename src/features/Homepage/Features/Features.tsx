@@ -1,6 +1,6 @@
 // src/features/Homepage/Features/Features.tsx
 
-import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, LucideIcon, Medal, Pause, Play, Timer } from 'lucide-react';
+import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, LucideIcon, Medal, Pause, Play, Timer, Zap } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import RegistrationButton from '../../../features/Registration/components/RegistrationButton';
 import logger from '../../../utils/logger';
@@ -270,7 +270,7 @@ const VideoPlayer: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> = (
 /**
  * Background video player component
  */
-const BackgroundVideoPlayer: React.FC = () => {
+const BackgroundVideoPlayer: React.FC<{ onScrollToSplash: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void }> = ({ onScrollToSplash }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -298,14 +298,15 @@ const BackgroundVideoPlayer: React.FC = () => {
           <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Experience Fitness Evolution</h3>
           <p className="text-gray-300 mb-6">Our technology adapts to your unique fitness journey, helping you achieve optimal results safely and efficiently.</p>
 
-          <div className="inline-block w-3/4 mx-auto">
+          <div className="features-cta">
             <RegistrationButton
-              leftIcon={<Play size={20} />}
               variant="primary"
-              size="medium"
-              className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 w-full text-center flex justify-center"
+              size="lg"
+              className="inline-flex items-center rounded-full font-medium features-button-primary features-divider-gradient-btn"
+              onClick={onScrollToSplash}
             >
-              Watch Full Demo
+              <Zap className="features-icon" />
+              Get Started
             </RegistrationButton>
           </div>
         </div>
@@ -395,6 +396,15 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
     }
   };
 
+  // Handle scroll to splash
+  const handleScrollToSplash = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+    e.preventDefault();
+    const splashSection = document.getElementById('splash-section');
+    if (splashSection) {
+      splashSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section
       className="features-section w-full py-16 md:pt-8 md:pb-24 px-4 bg-gray-900 overflow-hidden relative"
@@ -448,14 +458,14 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
         </div>
 
         {/* Background video player */}
-        <BackgroundVideoPlayer />
+        <BackgroundVideoPlayer onScrollToSplash={handleScrollToSplash} />
 
         {/* CTA Button */}
         <div className="mt-16 text-center">
           <div className="inline-block w-3/4 md:w-1/2 mx-auto">
             <RegistrationButton
               variant="primary"
-              size="large"
+              size="lg"
               className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 shadow-lg hover:shadow-xl hover:-translate-y-1 w-full border-[4px] border-orange-500"
             >
               Start Your Fitness Journey

@@ -1,6 +1,6 @@
 import { Info, RotateCw } from 'lucide-react';
 import React, { useState } from 'react';
-import Button from '../../../../../components/UI/Button';
+import { Button } from '../../../../../features/shared/Button';
 import { MediaContainer } from '../MediaContainer';
 import './FeatureCard.scss';
 import { FeatureCardProps } from './types';
@@ -43,9 +43,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
                     </div>
                     <p className="text-gray-300 mt-4">{feature.flipFront}</p>
                     <Button
-                        variant="ghost"
-                        size="small"
-                        className="mt-4 text-lime-300 hover:text-lime-400"
+                        variant="secondary"
+                        size="sm"
+                        className="mt-4 text-lime-300 hover:text-lime-400 feature-card-button"
                         onClick={(e) => toggleFlip(e)}
                     >
                         <Info size={16} className="mr-1" />
@@ -107,9 +107,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
                                 ))}
                             </ul>
                             <Button
-                                variant="ghost"
-                                size="small"
-                                className="mt-2 text-xs text-lime-300 hover:text-lime-400"
+                                variant="secondary"
+                                size="sm"
+                                className="mt-2 text-xs text-lime-300 hover:text-lime-400 feature-card-button"
                                 onClick={(e) => toggleFlip(e)}
                             >
                                 <RotateCw size={12} className="mr-1" />

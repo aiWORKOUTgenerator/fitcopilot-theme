@@ -1,5 +1,7 @@
+import { ArrowRight } from 'lucide-react';
 import React from 'react';
 import Section from '../../../components/UI/Section';
+import { Button } from '../../../features/shared/Button';
 import { TestimonialCard } from './components/TestimonialCard';
 import './Testimonials.scss';
 import { TestimonialsProps } from './types';
@@ -113,16 +115,14 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
       </div>
 
       <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
-        <a
+        <Button
+          variant="link"
           href="#"
-          className="inline-flex items-center font-medium transition-colors"
-          style={{ color: '#d1d5db' }}
+          className="inline-flex items-center font-medium transition-colors text-gray-300 testimonials-readmore-btn"
         >
           Read More Success Stories
-          <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-          </svg>
-        </a>
+          <ArrowRight className="ml-2 w-5 h-5" />
+        </Button>
       </div>
     </Section>
   );

@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import React from 'react';
+import { Button } from '../../../../features/shared/Button';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { JourneyCTAProps } from '../types';
 
@@ -18,13 +19,6 @@ const JourneyCTA: React.FC<JourneyCTAProps> = ({
 }) => {
     const prefersReducedMotion = useReducedMotion();
 
-    // Get size classes
-    const sizeClasses = {
-        small: 'px-4 py-2 text-sm',
-        medium: 'px-6 py-3 text-base',
-        large: 'px-8 py-4 text-base'
-    };
-
     // Get gradient classes
     const gradientClasses = {
         lime: 'journey-gradient-lime',
@@ -33,18 +27,31 @@ const JourneyCTA: React.FC<JourneyCTAProps> = ({
         amber: 'journey-gradient-amber'
     };
 
-    // Determine the button classes
+    // Get size classes
+    const sizeClasses = {
+        small: 'px-4 py-2 text-sm',
+        medium: 'px-6 py-3 text-base',
+        large: 'px-8 py-4 text-base'
+    };
+
+    // Compose all original utility classes
     const buttonClasses = [
-        'journey-button inline-flex items-center rounded-full font-medium',
+        'inline-flex',
+        'items-center',
+        'rounded-full',
+        'font-medium',
+        'journey-button',
         sizeClasses[buttonSize],
         buttonVariant === 'gradient' ? gradientClasses[gradientColor] : '',
-        prefersReducedMotion ? '' : 'hover:-translate-y-1'
-    ].join(' ');
+        prefersReducedMotion ? '' : 'hover:-translate-y-1',
+    ].filter(Boolean).join(' ');
 
+    // Since we're using href, we need to use the link variant
     return (
-        <a
-            href={href}
+        <Button
+            variant="link"
             className={buttonClasses}
+            href={href}
             data-theme={variant !== 'default' ? variant : undefined}
         >
             {text}
@@ -57,7 +64,7 @@ const JourneyCTA: React.FC<JourneyCTAProps> = ({
                     <ArrowRight size={buttonSize === 'small' ? 16 : 20} className="ml-2" aria-hidden="true" />
                 )
             )}
-        </a>
+        </Button>
     );
 };
 

@@ -2,14 +2,15 @@ import { X } from 'lucide-react';
 import React, { useCallback, useEffect } from 'react';
 import { AnimatedTransition, ProgressIndicator, RegistrationLayout } from './components';
 import { useTransitionAnalytics } from './events/analyticsIntegration';
+import { RegistrationFlowEvent } from './events/analyticsTypes';
 import ExperienceLevel from './ExperienceLevel';
 import { useRegistrationData, useRegistrationProgress } from './hooks';
 import { REGISTRATION_STEPS } from './hooks/useRegistrationProgress';
 import Journey from './Journey';
-import Pricing from './Pricing';
+import { PricingComponent } from './Pricing/Pricing';
 import './Registration.scss';
 import Splash from './Splash';
-import { RegistrationProps, RegistrationStep } from './types';
+import { RegistrationProps, RegistrationStep, RegistrationStepProps } from './types';
 
 /**
  * Main Registration component that orchestrates the multi-step registration flow
@@ -21,30 +22,47 @@ const Registration: React.FC<RegistrationProps> = ({
     onCancel
 }) => {
     // Initialize analytics tracking for registration flow
-    const { trackCustomEvent } = useTransitionAnalytics();
+    const { trackCustomEvent, trackStepView } = useTransitionAnalytics();
 
     // Get registration state and handlers from hooks
     const { data, updateData } = useRegistrationData();
-    const { currentStep, nextStep, previousStep, goToStep } = useRegistrationProgress(initialStep);
+    const { currentStep, nextStep, previousStep } = useRegistrationProgress(initialStep);
 
     // Calculate the current step index from the current step
     const currentStepIndex = REGISTRATION_STEPS.indexOf(currentStep);
 
     // Track registration flow initialization
     useEffect(() => {
-        trackCustomEvent('registration_flow_initiated', {
-            initial_step: initialStep,
-            timestamp: new Date().toISOString()
-        });
+        const initEvent: RegistrationFlowEvent = {
+            type: 'registration_flow_initiated',
+            properties: {
+                initialStep: initialStep.toString(),
+                timestamp: new Date().toISOString()
+            }
+        };
+        trackCustomEvent(initEvent);
     }, [trackCustomEvent, initialStep]);
+
+    // Track step views
+    useEffect(() => {
+        trackStepView(currentStep.toString(), {
+            stepName: currentStep.toString(),
+            stepNumber: currentStepIndex + 1,
+            totalSteps: REGISTRATION_STEPS.length
+        });
+    }, [currentStep, currentStepIndex, trackStepView]);
 
     // Handle completion of the registration flow
     const handleComplete = useCallback(() => {
         // Track registration completion
-        trackCustomEvent('registration_completed', {
-            final_step: currentStep,
-            timestamp: new Date().toISOString()
-        });
+        const completeEvent: RegistrationFlowEvent = {
+            type: 'registration_completed',
+            properties: {
+                finalStep: currentStep.toString(),
+                timestamp: new Date().toISOString()
+            }
+        };
+        trackCustomEvent(completeEvent);
 
         if (onComplete && data) {
             onComplete(data);
@@ -54,10 +72,14 @@ const Registration: React.FC<RegistrationProps> = ({
     // Handle cancellation of registration
     const handleCancel = useCallback(() => {
         // Track registration cancellation
-        trackCustomEvent('registration_cancelled', {
-            cancelled_at_step: currentStep,
-            timestamp: new Date().toISOString()
-        });
+        const cancelEvent: RegistrationFlowEvent = {
+            type: 'registration_cancelled',
+            properties: {
+                cancelledAtStep: currentStep.toString(),
+                timestamp: new Date().toISOString()
+            }
+        };
+        trackCustomEvent(cancelEvent);
 
         if (onCancel) {
             onCancel();
@@ -66,23 +88,25 @@ const Registration: React.FC<RegistrationProps> = ({
 
     // Render the current step based on the current step value
     const renderCurrentStep = () => {
+        const stepProps: RegistrationStepProps = {
+            data,
+            updateData,
+            onNext: nextStep,
+            onBack: previousStep
+        };
+
         switch (currentStep) {
             case RegistrationStep.SPLASH:
                 return (
                     <Splash
-                        data={data}
-                        updateData={updateData}
-                        onNext={nextStep}
+                        {...stepProps}
                     />
                 );
 
             case RegistrationStep.EXPERIENCE_LEVEL:
                 return (
                     <ExperienceLevel
-                        data={data}
-                        updateData={updateData}
-                        onNext={nextStep}
-                        onBack={previousStep}
+                        {...stepProps}
                     />
                 );
 
@@ -91,21 +115,15 @@ const Registration: React.FC<RegistrationProps> = ({
             case RegistrationStep.TIME_COMMITMENT:
                 return (
                     <Journey
-                        data={data}
-                        updateData={updateData}
-                        onNext={nextStep}
-                        onBack={previousStep}
+                        {...stepProps}
                         currentStep={currentStep}
                     />
                 );
 
             case RegistrationStep.PRICING:
                 return (
-                    <Pricing
-                        data={data}
-                        updateData={updateData}
-                        onNext={nextStep}
-                        onBack={previousStep}
+                    <PricingComponent
+                        {...stepProps}
                         onComplete={handleComplete}
                     />
                 );
@@ -114,11 +132,8 @@ const Registration: React.FC<RegistrationProps> = ({
 
             default:
                 return (
-                    <Pricing
-                        data={data}
-                        updateData={updateData}
-                        onNext={nextStep}
-                        onBack={previousStep}
+                    <PricingComponent
+                        {...stepProps}
                         onComplete={handleComplete}
                     />
                 );

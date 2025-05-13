@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import React from 'react';
-import Button from '../../../../../components/UI/Button';
+import { Button } from '../../../../../features/shared/Button';
 import { BenefitsList, ProgramCard, SectionHeader } from '../../components';
 import { useTrainingPrograms } from '../../hooks';
 import '../../Training.scss';
@@ -143,11 +143,11 @@ const Training: React.FC<Omit<TrainingProps, 'variant'>> = ({
                                     <div className="mt-8 text-center">
                                         <Button
                                             variant="secondary"
-                                            size="small"
-                                            rightIcon={<ArrowRight size={14} />}
+                                            size="sm"
                                             onClick={() => navigateToProgram(program.title)}
                                         >
                                             Learn More
+                                            <ArrowRight size={14} className="ml-2" />
                                         </Button>
                                     </div>
                                 </div>
@@ -160,11 +160,11 @@ const Training: React.FC<Omit<TrainingProps, 'variant'>> = ({
                 <div className="training-section__cta">
                     <Button
                         variant="primary"
-                        size="large"
-                        rightIcon={<ArrowRight size={20} />}
+                        size="lg"
                         onClick={() => navigateToProgram('all')}
                     >
                         Get Your Custom Program
+                        <ArrowRight size={20} className="ml-2" />
                     </Button>
                 </div>
             </div>

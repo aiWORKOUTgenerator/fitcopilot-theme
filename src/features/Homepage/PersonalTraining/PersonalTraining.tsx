@@ -7,7 +7,7 @@ import {
     Users
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import Button from '../../../components/UI/Button';
+import { Button } from '../../../features/shared/Button';
 import logger from '../../../utils/logger';
 import MediaContainer from './components/MediaContainer';
 import './PersonalTraining.scss';
@@ -27,14 +27,6 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             setWordpressVideoData(window.fitcopilotVideoData);
             logger.debug('WordPress video data loaded from fitcopilotVideoData:', window.fitcopilotVideoData);
         }
-        // If not found in fitcopilotVideoData, try athleteDashboardData
-        else if (window.athleteDashboardData?.wpData?.videoData) {
-            const athleteVideoData: WordPressVideoData = {
-                personalTraining: window.athleteDashboardData.wpData.videoData.personalTraining
-            };
-            setWordpressVideoData(athleteVideoData);
-            logger.debug('WordPress video data loaded from athleteDashboardData:', athleteVideoData);
-        }
         else {
             logger.debug('No WordPress video data found');
             logger.debug('Debug - window.athleteDashboardData:', window.athleteDashboardData);
@@ -51,10 +43,19 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
         const wpVideoTitle = wordpressVideoData?.personalTraining?.featuredTrainer?.title;
         const wpVideoImage = wordpressVideoData?.personalTraining?.featuredTrainer?.image;
 
-        // Try athleteDashboardData as a backup
-        const athleteVideoUrl = window.athleteDashboardData?.wpData?.videoData?.personalTraining?.featuredTrainer?.url;
-        const athleteVideoTitle = window.athleteDashboardData?.wpData?.videoData?.personalTraining?.featuredTrainer?.title;
-        const athleteVideoImage = window.athleteDashboardData?.wpData?.videoData?.personalTraining?.featuredTrainer?.image;
+        // Type guard for athleteDashboardData.wpData.videoData
+        let athleteVideoUrl, athleteVideoTitle, athleteVideoImage;
+        if (
+            window.athleteDashboardData &&
+            window.athleteDashboardData.wpData &&
+            'videoData' in window.athleteDashboardData.wpData &&
+            (window.athleteDashboardData.wpData as any).videoData.personalTraining?.featuredTrainer
+        ) {
+            const videoData = (window.athleteDashboardData.wpData as any).videoData;
+            athleteVideoUrl = videoData.personalTraining.featuredTrainer.url;
+            athleteVideoTitle = videoData.personalTraining.featuredTrainer.title;
+            athleteVideoImage = videoData.personalTraining.featuredTrainer.image;
+        }
 
         // Return the best available values, with fallbacks
         return {
@@ -169,13 +170,12 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
 
                             {/* Action Button */}
                             <Button
-                                variant="violet-indigo"
-                                rightIcon={<ArrowRight size={18} />}
-                                fullWidth={true}
+                                variant="primary"
+                                size="lg"
                                 className="mt-auto debug-button-default"
-                                themeContext="default"
                             >
                                 Schedule Session
+                                <ArrowRight size={18} className="ml-2" />
                             </Button>
 
                             {/* Video display - direct instead of flip card */}
@@ -243,13 +243,12 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
 
                             {/* Action Button */}
                             <Button
-                                variant="violet-indigo"
-                                rightIcon={<ArrowRight size={18} />}
-                                fullWidth={true}
+                                variant="primary"
+                                size="lg"
                                 className="mt-auto debug-button-default"
-                                themeContext="default"
                             >
                                 Schedule Session
+                                <ArrowRight size={18} className="ml-2" />
                             </Button>
                         </div>
                     ))}
@@ -263,13 +262,11 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                             Schedule a free consultation with one of our expert trainers. We'll discuss your goals, fitness level, and create a plan tailored just for you.
                         </p>
                         <Button
-                            variant="violet-indigo"
-                            rightIcon={<ArrowRight size={20} />}
-                            fullWidth={true}
-                            themeContext="default"
-                            className="debug-button-cta"
+                            variant="primary"
+                            className="debug-button-cta bg-gradient-to-r from-violet-500 to-indigo-500 w-full text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center"
                         >
                             Book Consultation
+                            <ArrowRight size={20} className="ml-2" />
                         </Button>
                     </div>
 
@@ -277,6 +274,24 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                     <div className="absolute right-0 bottom-0 opacity-20 hidden md:block" aria-hidden="true">
                         <Users size={180} />
                     </div>
+                </div>
+
+                {/* Personal Training CTA */}
+                <div className="personal-training-cta max-w-4xl mx-auto text-center mt-20">
+                    <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
+                        Ready to Transform Your Fitness Journey?
+                    </h3>
+                    <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+                        Join our community of dedicated trainers and start your path to a healthier, stronger you today.
+                    </p>
+                    <Button
+                        variant="primary"
+                        size="lg"
+                        className="personal-training-cta-button"
+                    >
+                        Start Your Journey
+                        <ArrowRight size={20} className="ml-2" />
+                    </Button>
                 </div>
             </div>
         </section>

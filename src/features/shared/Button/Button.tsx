@@ -3,6 +3,7 @@
  * Renders different button variants based on the variant prop
  */
 
+import classNames from 'classnames';
 import React from 'react';
 import { createLoggedEventHandler } from '../../../utils/logger';
 import LinkButton from './LinkButton';
@@ -50,38 +51,31 @@ export const Button: React.FC<ButtonProps> = (props) => {
         : undefined;
 
     // Base classes for all button types
-    let buttonClasses = [
+    const buttonClasses = classNames(
         className,
         'btn',
-        `btn-${variant}`
-    ];
-
-    // Add variant-specific classes
-    if (isPrimaryButton(props)) {
-        buttonClasses.push(props.isLoading ? 'loading' : '');
-        buttonClasses.push(`btn-${props.size || 'md'}`);
-    }
-
-    if (isSecondaryButton(props)) {
-        buttonClasses.push(props.outline ? 'outline' : '');
-        buttonClasses.push(`btn-${props.size || 'md'}`);
-    }
-
-    if (isTextButton(props)) {
-        buttonClasses.push(props.underline ? 'underline' : '');
-    }
-
-    if (isFloatingActionButton(props)) {
-        buttonClasses.push('btn-floating');
-        buttonClasses.push(props.position || 'bottom-right');
-    }
-
-    if (isWorkoutButton(props)) {
-        buttonClasses.push(`level-${props.level || 'beginner'}`);
-    }
-
-    // Filter out empty strings and join
-    const classes = buttonClasses.filter(Boolean).join(' ');
+        `btn-${variant}`,
+        {
+            'loading': isPrimaryButton(props) && props.isLoading,
+            'outline': isSecondaryButton(props) && props.outline,
+            'underline': isTextButton(props) && props.underline,
+            'btn-floating': isFloatingActionButton(props),
+            'level-beginner': isWorkoutButton(props) && props.level === 'beginner',
+            'level-intermediate': isWorkoutButton(props) && props.level === 'intermediate',
+            'level-advanced': isWorkoutButton(props) && props.level === 'advanced',
+            'btn-md': !props.size || props.size === 'md',
+            'btn-sm': props.size === 'sm',
+            'btn-lg': props.size === 'lg',
+            'btn-primary': isPrimaryButton(props),
+            'btn-secondary': isSecondaryButton(props),
+            'btn-text': isTextButton(props),
+            'btn-toggle': isToggleButton(props),
+            'btn-floating-bottom-right': isFloatingActionButton(props) && props.position === 'bottom-right',
+            'btn-floating-top-right': isFloatingActionButton(props) && props.position === 'top-right',
+            'btn-floating-bottom-left': isFloatingActionButton(props) && props.position === 'bottom-left',
+            'btn-floating-top-left': isFloatingActionButton(props) && props.position === 'top-left'
+        }
+    );
 
     // Special case for icon buttons
     if (isIconButton(props)) {
@@ -89,7 +83,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
 
         return (
             <button
-                className={`${classes} icon-${iconPosition}`}
+                className={`${buttonClasses} icon-${iconPosition}`}
                 onClick={handleClick}
                 {...restProps}
             >
@@ -104,7 +98,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
     // Default button render
     return (
         <button
-            className={classes}
+            className={buttonClasses}
             onClick={handleClick}
             {...restProps}
         >

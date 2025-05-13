@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import logger from '../../../utils/logger';
+import { AnalyticsEvent, AnalyticsUser, StepViewEvent, StepViewParams, TransitionEvent } from './analyticsTypes';
 import { transitionEventManager } from './transitionEventManager';
 import { StepTransitionEvent } from './transitionEvents';
 
@@ -7,7 +8,9 @@ import { StepTransitionEvent } from './transitionEvents';
  * Interface for analytics service integration
  */
 interface AnalyticsService {
-    trackEvent(eventName: string, properties: Record<string, unknown>): void;
+    trackEvent(event: AnalyticsEvent): void;
+    identifyUser(user: AnalyticsUser): void;
+    pageView(path: string): void;
 }
 
 /**
@@ -15,10 +18,20 @@ interface AnalyticsService {
  * This would be replaced with actual service implementations (Google Analytics, Mixpanel, etc.)
  */
 const analyticsService: AnalyticsService = {
-    trackEvent: (eventName, properties) => {
+    trackEvent: (event) => {
         // In a real implementation, this would send to Google Analytics, Mixpanel, etc.
         if (process.env.NODE_ENV !== 'production') {
-            logger.debug(`[Analytics] ${eventName}`, properties);
+            logger.debug(`[Analytics] ${event.type}`, event.properties);
+        }
+    },
+    identifyUser: (user) => {
+        if (process.env.NODE_ENV !== 'production') {
+            logger.debug('[Analytics] Identify User', user);
+        }
+    },
+    pageView: (path) => {
+        if (process.env.NODE_ENV !== 'production') {
+            logger.debug('[Analytics] Page View', { path });
         }
     }
 };
@@ -32,14 +45,17 @@ export const useTransitionAnalytics = () => {
         // Subscribe to all transition events
         const unsubscribe = transitionEventManager.subscribe((event: StepTransitionEvent) => {
             // Map our event to analytics format
-            analyticsService.trackEvent('registration_step_change', {
-                from_step: event.sourceStep,
-                to_step: event.destinationStep,
-                transition_type: event.transitionType,
-                timestamp: new Date(event.timestamp).toISOString(),
-                duration_ms: Date.now() - event.timestamp,
-                ...event.metadata
-            });
+            const transitionEvent: TransitionEvent = {
+                type: 'transition',
+                properties: {
+                    fromStep: event.sourceStep,
+                    toStep: event.destinationStep,
+                    transitionType: event.transitionType as 'next' | 'back' | 'skip'
+                },
+                timestamp: new Date(event.timestamp).toISOString()
+            };
+
+            analyticsService.trackEvent(transitionEvent);
         });
 
         // Cleanup subscription on unmount
@@ -47,9 +63,27 @@ export const useTransitionAnalytics = () => {
     }, []);
 
     // Expose direct access to analytics service for custom events
-    const trackCustomEvent = (eventName: string, properties: Record<string, unknown>) => {
-        analyticsService.trackEvent(eventName, properties);
+    const trackCustomEvent = (event: AnalyticsEvent) => {
+        analyticsService.trackEvent(event);
     };
 
-    return { trackCustomEvent };
+    const trackStepView = (stepId: string, params: StepViewParams) => {
+        const stepViewEvent: StepViewEvent = {
+            type: 'step_view',
+            properties: {
+                stepId,
+                stepName: params.stepName,
+                stepNumber: params.stepNumber,
+                totalSteps: params.totalSteps
+            },
+            timestamp: new Date().toISOString()
+        };
+
+        analyticsService.trackEvent(stepViewEvent);
+    };
+
+    return {
+        trackCustomEvent,
+        trackStepView
+    };
 }; 

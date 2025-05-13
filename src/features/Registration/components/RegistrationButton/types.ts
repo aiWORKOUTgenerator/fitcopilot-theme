@@ -1,46 +1,17 @@
-export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
-export type ButtonSize = 'small' | 'medium' | 'large';
+import { ButtonProps } from '../../../../features/shared/Button/types';
 
-export interface RegistrationButtonProps {
-    /**
-     * Button label text or content
-     */
-    children: React.ReactNode;
-
-    /**
-     * Optional click handler
-     */
-    onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-
-    /**
-     * Button type attribute
-     * @default 'button'
-     */
-    type?: 'button' | 'submit' | 'reset';
-
-    /**
-     * Visual style variant
-     * @default 'primary'
-     */
-    variant?: ButtonVariant;
-
+type BaseRegistrationButtonProps = Omit<ButtonProps, 'variant'> & {
     /**
      * Button size
-     * @default 'medium'
+     * @default 'md'
      */
-    size?: ButtonSize;
+    size?: 'sm' | 'md' | 'lg';
 
     /**
      * Whether the button is in loading state
      * @default false
      */
     isLoading?: boolean;
-
-    /**
-     * Whether the button is disabled
-     * @default false
-     */
-    disabled?: boolean;
 
     /**
      * Optional icon to display after text
@@ -53,13 +24,27 @@ export interface RegistrationButtonProps {
     leftIcon?: React.ReactNode;
 
     /**
-     * Optional additional class names
-     */
-    className?: string;
-
-    /**
      * Make button take full width of container
      * @default false
      */
     fullWidth?: boolean;
-} 
+};
+
+type PrimaryRegistrationButtonProps = BaseRegistrationButtonProps & {
+    variant: 'primary';
+};
+
+type SecondaryRegistrationButtonProps = BaseRegistrationButtonProps & {
+    variant: 'secondary';
+};
+
+type LinkRegistrationButtonProps = BaseRegistrationButtonProps & {
+    variant: 'link';
+    href: string;
+    openInNewTab?: boolean;
+};
+
+export type RegistrationButtonProps =
+    | PrimaryRegistrationButtonProps
+    | SecondaryRegistrationButtonProps
+    | LinkRegistrationButtonProps; 

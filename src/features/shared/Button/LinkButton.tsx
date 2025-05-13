@@ -19,7 +19,7 @@ import { LinkButtonProps, isLinkButton } from './types';
  *   Visit Website
  * </LinkButton>
  */
-function LinkButton(props: LinkButtonProps, ref: React.ForwardedRef<HTMLAnchorElement>) {
+const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>((props, ref) => {
     const {
         href,
         openInNewTab,
@@ -78,11 +78,11 @@ function LinkButton(props: LinkButtonProps, ref: React.ForwardedRef<HTMLAnchorEl
             {children}
         </a>
     );
-}
+});
 
-const ForwardedLinkButton = forwardRef(LinkButton);
-ForwardedLinkButton.displayName = 'LinkButton';
-export default ForwardedLinkButton;
+LinkButton.displayName = 'LinkButton';
+
+export default LinkButton;
 
 /**
  * Type guard to ensure a component is a Link Button
