@@ -406,7 +406,7 @@ export const createLoggedEventHandler = <T extends Element, E extends React.Synt
     };
 };
 
-// Create and export the logger object
+// Create the logger object
 const logger = {
     debug,
     info,
@@ -418,9 +418,21 @@ const logger = {
     timeEnd,
     addContext,
     setLogLevel,
+    configureLogger,
+    LogLevel, // Re-export for compatibility
     logComponentEvent,
-    createLoggedEventHandler,
-    configureLogger
+    createLoggedEventHandler
 };
 
+// Make logger globally available as a fallback
+if (typeof window !== 'undefined') {
+    try {
+        // @ts-expect-error - Explicitly adding to window
+        window.logger = logger;
+    } catch (_e) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // Silent fallback if window is not available or cannot be modified
+    }
+}
+
+// Default export for normal import usage
 export default logger; 

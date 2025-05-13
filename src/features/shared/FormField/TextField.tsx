@@ -3,7 +3,7 @@
  */
 
 import React, { forwardRef } from 'react';
-import logger, { createLoggedEventHandler } from '../../../utils/logger';
+import { createLoggedEventHandler, warn } from '../../../utils/logger';
 import { TextFieldProps, isTextField } from './types';
 
 /**
@@ -20,7 +20,7 @@ import { TextFieldProps, isTextField } from './types';
  *   required
  * />
  */
-const TextFieldInner = (props: TextFieldProps, ref: React.Ref<HTMLInputElement>) => {
+const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
     const {
         fieldType,
         name,
@@ -121,10 +121,9 @@ const TextFieldInner = (props: TextFieldProps, ref: React.Ref<HTMLInputElement>)
             )}
         </div>
     );
-};
-TextFieldInner.displayName = 'TextField';
-const TextField = forwardRef<HTMLInputElement, TextFieldProps>(TextFieldInner);
+});
 
+TextField.displayName = 'TextField';
 export default TextField;
 
 /**
@@ -133,13 +132,16 @@ export default TextField;
 export const withTextField = <P extends TextFieldProps>(
     Component: React.ComponentType<P>
 ): React.FC<P> => {
-    const Wrapped: React.FC<P> = (props: P) => {
+    const WithTextField: React.FC<P> = (props: P) => {
         if (!isTextField(props)) {
-            logger.warn('Component expected TextFieldProps but received incompatible props');
+            warn('Component expected TextFieldProps but received incompatible props');
             return null;
         }
+
         return <Component {...props} />;
     };
-    Wrapped.displayName = `withTextField(${Component.displayName || Component.name || 'Component'})`;
-    return Wrapped;
+
+    WithTextField.displayName = `withTextField(${Component.displayName || Component.name || 'Component'})`;
+
+    return WithTextField;
 }; 

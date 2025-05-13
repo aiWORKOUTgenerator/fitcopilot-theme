@@ -2,13 +2,12 @@
  * Form field validation utilities
  */
 
-import { ValidatorFn } from './types';
 
 /**
  * Required field validator
  */
-export const required = <T>(errorMessage = 'This field is required'): ValidatorFn<T> => {
-    return (value: T) => {
+export const required = (errorMessage = 'This field is required') => {
+    return (value) => {
         if (
             value === undefined ||
             value === null ||
@@ -24,8 +23,8 @@ export const required = <T>(errorMessage = 'This field is required'): ValidatorF
 /**
  * Minimum length validator for string values
  */
-export const minLength = (min: number, errorMessage?: string): ValidatorFn<string> => {
-    return (value: string) => {
+export const minLength = (min, errorMessage) => {
+    return (value) => {
         if (!value) return null; // Skip if empty (use required validator for that)
 
         if (value.length < min) {
@@ -38,8 +37,8 @@ export const minLength = (min: number, errorMessage?: string): ValidatorFn<strin
 /**
  * Maximum length validator for string values
  */
-export const maxLength = (max: number, errorMessage?: string): ValidatorFn<string> => {
-    return (value: string) => {
+export const maxLength = (max, errorMessage) => {
+    return (value) => {
         if (!value) return null;
 
         if (value.length > max) {
@@ -52,10 +51,10 @@ export const maxLength = (max: number, errorMessage?: string): ValidatorFn<strin
 /**
  * Email format validator
  */
-export const email = (errorMessage = 'Please enter a valid email address'): ValidatorFn<string> => {
+export const email = (errorMessage = 'Please enter a valid email address') => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    return (value: string) => {
+    return (value) => {
         if (!value) return null;
 
         if (!emailRegex.test(value)) {
@@ -68,8 +67,8 @@ export const email = (errorMessage = 'Please enter a valid email address'): Vali
 /**
  * Numeric value validator
  */
-export const numeric = (errorMessage = 'Please enter a valid number'): ValidatorFn<string> => {
-    return (value: string) => {
+export const numeric = (errorMessage = 'Please enter a valid number') => {
+    return (value) => {
         if (!value) return null;
 
         if (isNaN(Number(value))) {
@@ -82,8 +81,8 @@ export const numeric = (errorMessage = 'Please enter a valid number'): Validator
 /**
  * Minimum value validator for numeric strings
  */
-export const min = (minValue: number, errorMessage?: string): ValidatorFn<string> => {
-    return (value: string) => {
+export const min = (minValue, errorMessage) => {
+    return (value) => {
         if (!value) return null;
 
         const numValue = Number(value);
@@ -97,8 +96,8 @@ export const min = (minValue: number, errorMessage?: string): ValidatorFn<string
 /**
  * Maximum value validator for numeric strings
  */
-export const max = (maxValue: number, errorMessage?: string): ValidatorFn<string> => {
-    return (value: string) => {
+export const max = (maxValue, errorMessage) => {
+    return (value) => {
         if (!value) return null;
 
         const numValue = Number(value);
@@ -113,10 +112,10 @@ export const max = (maxValue: number, errorMessage?: string): ValidatorFn<string
  * Pattern validator using regular expression
  */
 export const pattern = (
-    regex: RegExp,
+    regex,
     errorMessage = 'Please enter a valid value'
-): ValidatorFn<string> => {
-    return (value: string) => {
+) => {
+    return (value) => {
         if (!value) return null;
 
         if (!regex.test(value)) {
@@ -129,11 +128,11 @@ export const pattern = (
 /**
  * Custom validator function
  */
-export const custom = <T>(
-    validateFn: (value: T) => boolean,
-    errorMessage: string
-): ValidatorFn<T> => {
-    return (value: T) => {
+export const custom = (
+    validateFn,
+    errorMessage
+) => {
+    return (value) => {
         if (!validateFn(value)) {
             return errorMessage;
         }
@@ -145,10 +144,10 @@ export const custom = <T>(
  * File size validator
  */
 export const fileSize = (
-    maxSizeInBytes: number,
-    errorMessage?: string
-): ValidatorFn<File | null> => {
-    return (file: File | null) => {
+    maxSizeInBytes,
+    errorMessage
+) => {
+    return (file) => {
         if (!file) return null;
 
         if (file.size > maxSizeInBytes) {
@@ -163,10 +162,10 @@ export const fileSize = (
  * File type validator
  */
 export const fileType = (
-    allowedTypes: string[],
-    errorMessage?: string
-): ValidatorFn<File | null> => {
-    return (file: File | null) => {
+    allowedTypes,
+    errorMessage
+) => {
+    return (file) => {
         if (!file) return null;
 
         const fileType = file.type.toLowerCase();
@@ -181,7 +180,7 @@ export const fileType = (
  * Run all validators on a value
  * Returns the first error message found, or null if all pass
  */
-export const runValidators = <T>(value: T, validators?: ValidatorFn<T>[]): string | null => {
+export const runValidators = (value, validators) => {
     if (!validators || validators.length === 0) return null;
 
     for (const validator of validators) {

@@ -8,9 +8,9 @@ import { runValidators } from './validation';
 /**
  * Field state type
  */
-export interface FieldState<T = unknown> {
+export interface FieldState {
     /** Field value */
-    value: T;
+    value: any;
     /** Whether the field has been touched (focused and blurred) */
     touched: boolean;
     /** Whether the field is currently dirty (value has changed) */
@@ -20,7 +20,7 @@ export interface FieldState<T = unknown> {
     /** Whether the field is currently being validated */
     validating: boolean;
     /** Validators for this field */
-    validators?: ValidatorFn<T>[];
+    validators?: ValidatorFn[];
 }
 
 /**
@@ -59,10 +59,10 @@ export type FormAction =
 /**
  * Create initial field state
  */
-export const createInitialFieldState = <T>(
-    value: T,
-    validators?: ValidatorFn<T>[]
-): FieldState<T> => {
+export const createInitialFieldState = (
+    value,
+    validators
+) => {
     return {
         value,
         touched: false,
@@ -77,10 +77,10 @@ export const createInitialFieldState = <T>(
  * Create initial form state from fields
  */
 export const createInitialFormState = (
-    initialValues: Record<string, unknown>,
-    validators?: Record<string, Array<ValidatorFn<unknown>>>
-): FormState => {
-    const fields: Record<string, FieldState> = {};
+    initialValues,
+    validators
+) => {
+    const fields = {};
 
     // Create field states for each field
     Object.entries(initialValues).forEach(([fieldName, value]) => {
@@ -103,7 +103,7 @@ export const createInitialFormState = (
 /**
  * Validate a single field
  */
-export const validateField = <T>(field: FieldState<T>): FieldState<T> => {
+export const validateField = (field) => {
     const { value, validators } = field;
 
     if (!validators || validators.length === 0) {
@@ -122,8 +122,8 @@ export const validateField = <T>(field: FieldState<T>): FieldState<T> => {
 /**
  * Validate all fields in a form
  */
-export const validateForm = (formState: FormState): FormState => {
-    const validatedFields: Record<string, FieldState> = {};
+export const validateForm = (formState) => {
+    const validatedFields = {};
     let isValid = true;
 
     // Validate each field
@@ -147,14 +147,14 @@ export const validateForm = (formState: FormState): FormState => {
 /**
  * Extract values from form state
  */
-export const getFormValues = <T extends Record<string, unknown>>(
-    formState: FormState
-): T => {
-    const values: Record<string, unknown> = {};
+export const getFormValues = (
+    formState
+) => {
+    const values = {};
 
     Object.entries(formState.fields).forEach(([fieldName, field]) => {
         values[fieldName] = field.value;
     });
 
-    return values as T;
+    return values;
 }; 

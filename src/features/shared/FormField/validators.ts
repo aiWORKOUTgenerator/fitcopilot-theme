@@ -6,13 +6,13 @@
  * Validator function type
  * Returns error message (string) if validation fails, null otherwise
  */
-export type ValidatorFn<T> = (value: T) => string | null;
+export type ValidatorFn = (value) => string | null;
 
 /**
  * Required field validator
  */
-export const required = <T>(message = 'This field is required'): ValidatorFn<T> =>
-    (value: T): string | null => {
+export const required = (message = 'This field is required') =>
+    (value) => {
         if (value === null || value === undefined) return message;
 
         if (typeof value === 'string' && value.trim() === '') return message;
@@ -25,8 +25,8 @@ export const required = <T>(message = 'This field is required'): ValidatorFn<T> 
 /**
  * Min length validator
  */
-export const minLength = (min: number, message?: string): ValidatorFn<string> =>
-    (value: string): string | null =>
+export const minLength = (min, message) =>
+    (value) =>
         !value || value.length < min
             ? message || `Minimum length is ${min} characters`
             : null;
@@ -34,8 +34,8 @@ export const minLength = (min: number, message?: string): ValidatorFn<string> =>
 /**
  * Max length validator
  */
-export const maxLength = (max: number, message?: string): ValidatorFn<string> =>
-    (value: string): string | null =>
+export const maxLength = (max, message) =>
+    (value) =>
         value && value.length > max
             ? message || `Maximum length is ${max} characters`
             : null;
@@ -43,8 +43,8 @@ export const maxLength = (max: number, message?: string): ValidatorFn<string> =>
 /**
  * Email validator
  */
-export const email = (message = 'Please enter a valid email address'): ValidatorFn<string> =>
-    (value: string): string | null => {
+export const email = (message = 'Please enter a valid email address') =>
+    (value) => {
         if (!value) return null;
 
         // Simple email regex, could be more comprehensive
@@ -55,8 +55,8 @@ export const email = (message = 'Please enter a valid email address'): Validator
 /**
  * Pattern validator
  */
-export const pattern = (regex: RegExp, message: string): ValidatorFn<string> =>
-    (value: string): string | null => {
+export const pattern = (regex, message) =>
+    (value) => {
         if (!value) return null;
 
         return regex.test(value) ? null : message;
@@ -65,8 +65,8 @@ export const pattern = (regex: RegExp, message: string): ValidatorFn<string> =>
 /**
  * Min value validator
  */
-export const min = (minValue: number, message?: string): ValidatorFn<number> =>
-    (value: number): string | null =>
+export const min = (minValue, message) =>
+    (value) =>
         value < minValue
             ? message || `Value must be at least ${minValue}`
             : null;
@@ -74,8 +74,8 @@ export const min = (minValue: number, message?: string): ValidatorFn<number> =>
 /**
  * Max value validator
  */
-export const max = (maxValue: number, message?: string): ValidatorFn<number> =>
-    (value: number): string | null =>
+export const max = (maxValue, message) =>
+    (value) =>
         value > maxValue
             ? message || `Value must be at most ${maxValue}`
             : null;
@@ -83,15 +83,15 @@ export const max = (maxValue: number, message?: string): ValidatorFn<number> =>
 /**
  * Custom validator
  */
-export const custom = <T>(validationFn: (value: T) => boolean, message: string): ValidatorFn<T> =>
-    (value: T): string | null =>
+export const custom = (validationFn, message) =>
+    (value) =>
         !validationFn(value) ? message : null;
 
 /**
  * Compose multiple validators
  */
-export const compose = <T>(...validators: ValidatorFn<T>[]): ValidatorFn<T> =>
-    (value: T): string | null => {
+export const compose = (...validators) =>
+    (value) => {
         for (const validator of validators) {
             const error = validator(value);
             if (error) return error;

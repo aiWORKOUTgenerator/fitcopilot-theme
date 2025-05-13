@@ -3,7 +3,6 @@
  */
 
 import logger from "../../../../../utils/logger";
-import { AnthropometricsData, InjuriesData, LiabilityWaiverData, MedicalClearanceData } from '../types';
 
 /**
  * Validators for each section
@@ -12,7 +11,7 @@ export const validators = {
     /**
      * Anthropometrics is valid if height and weight are provided
      */
-    anthropometrics: (data: AnthropometricsData | null): boolean => {
+    anthropometrics: (data) => {
         if (!data) return false;
 
         // Height validation
@@ -28,7 +27,7 @@ export const validators = {
     /**
      * Injuries is valid if selection has been made
      */
-    injuries: (data: InjuriesData | null): boolean => {
+    injuries: (data) => {
         if (!data) return false;
 
         // Valid if user made a selection (either has injuries or doesn't)
@@ -46,7 +45,7 @@ export const validators = {
     /**
      * Medical clearance is valid if proper acknowledgment is provided
      */
-    medicalClearance: (data: MedicalClearanceData | null): boolean => {
+    medicalClearance: (data) => {
         if (!data) return false;
 
         // Valid if user acknowledged medical conditions
@@ -63,7 +62,7 @@ export const validators = {
     /**
      * Liability waiver is valid if accepted
      */
-    liabilityWaiver: (data: LiabilityWaiverData | null): boolean => {
+    liabilityWaiver: (data) => {
         if (!data) return false;
 
         return data.hasAcceptedWaiver === true;
@@ -73,7 +72,7 @@ export const validators = {
 /**
  * Get validation error message for a section
  */
-export const getValidationMessage = (sectionId: string): string => {
+export const getValidationMessage = (sectionId) => {
     switch (sectionId) {
         case 'anthropometrics':
             return 'Please provide your height and weight';
@@ -91,14 +90,14 @@ export const getValidationMessage = (sectionId: string): string => {
 /**
  * Helper to safely save data with basic retry functionality
  */
-export const saveWithRetry = async <T>(
-    saveFunction: (data: T) => Promise<boolean>,
-    data: T,
+export const saveWithRetry = async (
+    saveFunction,
+    data,
     maxRetries = 1
-): Promise<{ success: boolean; error?: string }> => {
+) => {
     let attempts = 0;
 
-    const attempt = async (): Promise<{ success: boolean; error?: string }> => {
+    const attempt = async () => {
         try {
             const result = await saveFunction(data);
             return { success: true };

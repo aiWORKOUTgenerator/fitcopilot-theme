@@ -70,7 +70,7 @@ export interface OptimizedImageProps {
     style?: React.CSSProperties;
 
     /** Additional image attributes */
-    additionalAttributes?: React.ImgHTMLAttributes<HTMLImageElement>;
+    [key: string]: any;
 }
 
 /**
@@ -107,7 +107,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
     onError,
     priority = false,
     style,
-    additionalAttributes,
+    ...props
 }) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [error, setError] = useState(false);
@@ -201,7 +201,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
                     }}
                     width={width}
                     height={height}
-                    {...additionalAttributes}
+                    {...props}
                 />
 
                 {/* LQIP overlay that fades out when main image loads */}
@@ -244,7 +244,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
                 style={combinedStyles}
                 width={width}
                 height={height}
-                {...additionalAttributes}
+                {...props}
             />
 
             {error && (

@@ -2,17 +2,6 @@ import { useEffect, useState } from 'react';
 import { WordPressData } from '../types/wordpress';
 
 /**
- * Extended Window interface with WordPress data
- */
-declare global {
-  interface Window {
-    athleteDashboardData?: {
-      wpData: WordPressData;
-    };
-  }
-}
-
-/**
  * Custom hook to access WordPress data
  * @returns WordPress data from window or fallback
  */
@@ -20,7 +9,8 @@ export const useWordPress = (): WordPressData => {
   const [wpData, setWpData] = useState<WordPressData>(() => {
     // Try to get data from window object
     if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
-      const wpObj = window.athleteDashboardData.wpData;
+      // Cast to any to avoid TypeScript errors
+      const wpObj = window.athleteDashboardData.wpData as any;
 
       return {
         siteLinks: wpObj.siteLinks || {
@@ -63,7 +53,8 @@ export const useWordPress = (): WordPressData => {
     // Update data if window.athleteDashboardData changes
     const handleDataChange = () => {
       if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
-        const wpObj = window.athleteDashboardData.wpData;
+        // Cast to any to avoid TypeScript errors
+        const wpObj = window.athleteDashboardData.wpData as any;
 
         setWpData({
           siteLinks: wpObj.siteLinks || wpData.siteLinks,

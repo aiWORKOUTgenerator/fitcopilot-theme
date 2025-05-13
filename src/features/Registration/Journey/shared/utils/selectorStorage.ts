@@ -1,5 +1,4 @@
 import logger from "../../../../../utils/logger";
-import { RegistrationData } from "../../../types";
 import { useJourney } from "../../components/JourneyContext";
 
 // Create a context-specific logger
@@ -8,9 +7,9 @@ const storageLogger = logger.addContext('SelectorStorage');
 /**
  * Interface for selector storage operations
  */
-export interface SelectorStorage<T> {
-    save: (data: T) => void;
-    load: () => T;
+export interface SelectorStorage {
+    save: (data) => void;
+    load: () => any;
     clear: () => void;
 }
 
@@ -23,15 +22,15 @@ export interface SelectorStorage<T> {
  * @param registrationDataKey - Key in RegistrationData to also update
  * @returns Storage utility object
  */
-export const createSelectorStorage = <T>(
-    storageKey: string,
-    defaultValue: T,
-    _registrationDataKey?: keyof RegistrationData
-): SelectorStorage<T> => {
+export const createSelectorStorage = (
+    storageKey,
+    defaultValue,
+    _registrationDataKey
+) => {
     storageLogger.debug('Creating selector storage', { storageKey });
 
     return {
-        save: (data: T) => {
+        save: (data) => {
             try {
                 // Store in sessionStorage
                 sessionStorage.setItem(storageKey, JSON.stringify(data));
@@ -41,7 +40,7 @@ export const createSelectorStorage = <T>(
             }
         },
 
-        load: (): T => {
+        load: () => {
             try {
                 // Try to load from sessionStorage
                 const stored = sessionStorage.getItem(storageKey);
@@ -72,19 +71,17 @@ export const createSelectorStorage = <T>(
 /**
  * Hook for using selector storage with JourneyContext integration
  */
-export const useSelectorStorage = <T>(
-    storageKey: string,
-    defaultValue: T,
-    registrationDataKey?: keyof RegistrationData
-): SelectorStorage<T> & {
-    syncWithContext: (data: T) => void
-} => {
+export const useSelectorStorage = (
+    storageKey,
+    defaultValue,
+    registrationDataKey
+) => {
     const { updateRegistrationData } = useJourney();
     const storage = createSelectorStorage(storageKey, defaultValue);
 
     return {
         ...storage,
-        syncWithContext: (data: T) => {
+        syncWithContext: (data) => {
             if (registrationDataKey) {
                 storageLogger.debug('Syncing with journey context', {
                     storageKey,
@@ -93,7 +90,7 @@ export const useSelectorStorage = <T>(
 
                 updateRegistrationData({
                     [registrationDataKey]: data
-                } as Partial<RegistrationData>);
+                });
             }
             storage.save(data);
         }

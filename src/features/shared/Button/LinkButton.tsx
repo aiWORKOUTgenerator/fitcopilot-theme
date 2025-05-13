@@ -19,7 +19,7 @@ import { LinkButtonProps, isLinkButton } from './types';
  *   Visit Website
  * </LinkButton>
  */
-const LinkButtonInner = (props: LinkButtonProps, ref: React.Ref<HTMLAnchorElement>) => {
+const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>((props, ref) => {
     const {
         href,
         openInNewTab,
@@ -78,9 +78,9 @@ const LinkButtonInner = (props: LinkButtonProps, ref: React.Ref<HTMLAnchorElemen
             {children}
         </a>
     );
-};
-LinkButtonInner.displayName = 'LinkButton';
-const LinkButton = forwardRef<HTMLAnchorElement, LinkButtonProps>(LinkButtonInner);
+});
+
+LinkButton.displayName = 'LinkButton';
 
 export default LinkButton;
 
@@ -90,13 +90,16 @@ export default LinkButton;
 export const withLinkButton = <P extends LinkButtonProps>(
     Component: React.ComponentType<P>
 ): React.FC<P> => {
-    const Wrapped: React.FC<P> = (props: P) => {
+    const WithLinkButton: React.FC<P> = (props: P) => {
         if (!isLinkButton(props)) {
             warn('Component expected LinkButtonProps but received incompatible props');
             return null;
         }
+
         return <Component {...props} />;
     };
-    Wrapped.displayName = `withLinkButton(${Component.displayName || Component.name || 'Component'})`;
-    return Wrapped;
+
+    WithLinkButton.displayName = `withLinkButton(${Component.displayName || Component.name || 'Component'})`;
+
+    return WithLinkButton;
 }; 

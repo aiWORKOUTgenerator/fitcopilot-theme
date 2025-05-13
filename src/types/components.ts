@@ -240,8 +240,8 @@ export interface StepCTAProps {
     ctaUrl?: string;
     /** CSS class for the CTA */
     className?: string;
-    /** Additional HTML attributes */
-    additionalAttributes?: React.HTMLAttributes<HTMLAnchorElement | HTMLButtonElement>;
+    /** Additional attributes */
+    [key: string]: any;
 }
 
 /**

@@ -1,11 +1,11 @@
 import Registration from './Registration';
-import type { RegistrationData, RegistrationStep } from './types';
+import { RegistrationData, RegistrationStep } from './types';
 
 // Export the main Registration component as the default export
 export default Registration;
 
 // Export types
-export type { RegistrationData, RegistrationStep };
+export { RegistrationData, RegistrationStep };
 
 // Export hooks for reuse
 export * from './hooks';

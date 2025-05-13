@@ -244,14 +244,11 @@ export const PerformanceMonitor: React.FC = () => {
     );
 };
 
-// Create and export the debug object
-const debug = {
+export default {
     isDebugMode,
     debugLog,
     useRenderTime,
     withDebug,
     useDebugProps,
     PerformanceMonitor
-};
-
-export default debug; 
+}; 
