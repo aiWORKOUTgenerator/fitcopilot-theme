@@ -6,6 +6,7 @@ import {
     isProgramCard,
     isWorkoutCard
 } from '../../../utils/cardTypeGuards';
+import { logger } from '../../../utils/logger';
 import './card.scss';
 
 const getCardClassName = (props: CardProps) => {
@@ -143,7 +144,7 @@ export const Card: React.FC<CardProps> = (props) => {
     if (isProgramCard(props)) return <ProgramCard {...props} />;
 
     // Handle unsupported card variants
-    console.error(`Unsupported card variant: ${(props as any).variant}`);
+    logger.error(`Unsupported card variant: ${props.variant}`);
     return null;
 };
 

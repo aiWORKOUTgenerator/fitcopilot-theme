@@ -279,7 +279,7 @@ export interface FormTouched {
 }
 
 /**
- * Form context types
+ * Form context props interface for form state and handlers
  */
 export interface FormContextProps {
     values: FormValues;
@@ -290,7 +290,7 @@ export interface FormContextProps {
     handleChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
     handleBlur: (event: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
     handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-    setFieldValue: (field: string, value: any) => void;
+    setFieldValue: (field: string, value: FormValues[keyof FormValues]) => void;
     setFieldTouched: (field: string, isTouched: boolean) => void;
     setFieldError: (field: string, error: string | null) => void;
     resetForm: () => void;
@@ -317,13 +317,13 @@ export interface FormProps {
 }
 
 /**
- * Form validation props
+ * Validation props interface
  */
 export interface ValidationProps {
     /** Function to validate values */
     validate?: (values: FormValues) => FormErrors;
     /** Individual field validators */
     fieldValidators?: {
-        [field: string]: ValidatorFn<any>[];
+        [field: string]: ValidatorFn<FormValues[keyof FormValues]>[];
     };
 } 

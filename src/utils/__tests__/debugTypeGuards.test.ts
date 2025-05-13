@@ -1,90 +1,199 @@
-import { PerformanceWithMemory, PropChange } from '../../types/debug';
-import { hasMemoryInfo, hasPropChanged, isPropChange } from '../debugTypeGuards';
+/**
+ * Tests for debug type guards
+ */
+
+import { PerformanceMemory, PropChange } from '../../types/debug';
+import {
+    getPerformanceMemory,
+    hasMemoryInfo,
+    hasPerformanceMemorySupport,
+    hasPropChanged,
+    isDebugModeEnabled
+} from '../debugTypeGuards';
 
 describe('Debug Type Guards', () => {
     describe('hasMemoryInfo', () => {
-        it('should return true if performance object has memory property', () => {
-            // Create a mock performance object with memory
-            const mockPerformance = {
-                ...performance,
-                memory: {
-                    jsHeapSizeLimit: 1000,
-                    totalJSHeapSize: 500,
-                    usedJSHeapSize: 200
-                }
-            } as PerformanceWithMemory;
-
-            expect(hasMemoryInfo(mockPerformance)).toBe(true);
-        });
-
-        it('should return false if performance object does not have memory property', () => {
-            // Mock performance without memory property
-            const mockPerformance = { ...performance };
-
-            expect(hasMemoryInfo(mockPerformance)).toBe(false);
-        });
-    });
-
-    describe('isPropChange', () => {
-        it('should return true for valid PropChange objects', () => {
-            const validPropChange: PropChange<string> = {
-                from: 'oldValue',
-                to: 'newValue'
+        it('should identify objects with memory info properties', () => {
+            const validMemory: PerformanceMemory = {
+                jsHeapSizeLimit: 2000000000,
+                totalJSHeapSize: 50000000,
+                usedJSHeapSize: 40000000
             };
 
-            expect(isPropChange(validPropChange)).toBe(true);
-        });
+            const partialMemory = {
+                jsHeapSizeLimit: 2000000000
+            };
 
-        it('should return false for non-objects', () => {
-            expect(isPropChange('string')).toBe(false);
-            expect(isPropChange(123)).toBe(false);
-            expect(isPropChange(null)).toBe(false);
-            expect(isPropChange(undefined)).toBe(false);
-        });
+            const invalidObject = {
+                someOtherProperty: 'value'
+            };
 
-        it('should return false for objects missing from or to properties', () => {
-            expect(isPropChange({ from: 'oldValue' })).toBe(false);
-            expect(isPropChange({ to: 'newValue' })).toBe(false);
-            expect(isPropChange({})).toBe(false);
+            expect(hasMemoryInfo(validMemory)).toBe(true);
+            expect(hasMemoryInfo(partialMemory)).toBe(true);
+            expect(hasMemoryInfo(invalidObject)).toBe(false);
+            expect(hasMemoryInfo(null)).toBe(false);
+            expect(hasMemoryInfo(undefined)).toBe(false);
+            expect(hasMemoryInfo('string')).toBe(false);
         });
     });
 
     describe('hasPropChanged', () => {
-        it('should correctly detect changes in primitive values', () => {
-            expect(hasPropChanged(1, 2)).toBe(true);
-            expect(hasPropChanged('a', 'b')).toBe(true);
-            expect(hasPropChanged(true, false)).toBe(true);
-            expect(hasPropChanged(1, 1)).toBe(false);
-            expect(hasPropChanged('a', 'a')).toBe(false);
-            expect(hasPropChanged(true, true)).toBe(false);
+        it('should identify valid prop change objects', () => {
+            const validPropChange: PropChange<{ count: number }> = {
+                propName: 'count',
+                prevValue: 1,
+                newValue: 2,
+                isSignificant: true
+            };
+
+            const invalidPropChange1 = {
+                propName: 'count',
+                prevValue: 1
+                // Missing properties
+            };
+
+            const invalidPropChange2 = {
+                propName: 'count',
+                prevValue: 1,
+                newValue: 2,
+                isSignificant: 'yes' // Wrong type
+            };
+
+            expect(hasPropChanged(validPropChange)).toBe(true);
+            expect(hasPropChanged(invalidPropChange1)).toBe(false);
+            expect(hasPropChanged(invalidPropChange2)).toBe(false);
+            expect(hasPropChanged(null)).toBe(false);
+            expect(hasPropChanged(undefined)).toBe(false);
+            expect(hasPropChanged('string')).toBe(false);
+        });
+    });
+
+    describe('hasPerformanceMemorySupport', () => {
+        const originalPerformance = window.performance;
+
+        beforeEach(() => {
+            // Reset performance object before each test
+            Object.defineProperty(window, 'performance', {
+                value: originalPerformance,
+                writable: true
+            });
         });
 
-        it('should correctly detect changes in arrays', () => {
-            expect(hasPropChanged([1, 2, 3], [1, 2, 3, 4])).toBe(true);
-            expect(hasPropChanged([1, 2, 3], [1, 2, 4])).toBe(true);
-            expect(hasPropChanged([1, 2, 3], [1, 2, 3])).toBe(false);
+        it('should detect when performance.memory is available', () => {
+            // Mock performance.memory
+            Object.defineProperty(window.performance, 'memory', {
+                value: {
+                    jsHeapSizeLimit: 2000000000,
+                    totalJSHeapSize: 50000000,
+                    usedJSHeapSize: 40000000
+                },
+                configurable: true
+            });
+
+            expect(hasPerformanceMemorySupport()).toBe(true);
         });
 
-        it('should correctly detect changes in Date objects', () => {
-            const date1 = new Date('2023-01-01');
-            const date2 = new Date('2023-01-02');
-            const date3 = new Date('2023-01-01');
+        it('should detect when performance.memory is not available', () => {
+            // Create a mock performance without memory
+            const mockPerformance = {
+                now: jest.fn()
+            };
 
-            expect(hasPropChanged(date1, date2)).toBe(true);
-            expect(hasPropChanged(date1, date3)).toBe(false);
+            // @ts-ignore - intentionally removing memory
+            delete window.performance.memory;
+
+            expect(hasPerformanceMemorySupport()).toBe(false);
         });
 
-        it('should correctly detect changes in objects', () => {
-            expect(hasPropChanged({ a: 1 }, { a: 2 })).toBe(true);
-            expect(hasPropChanged({ a: 1 }, { a: 1, b: 2 })).toBe(true);
-            expect(hasPropChanged({ a: 1, b: 2 }, { a: 1, b: 2 })).toBe(false);
+        it('should handle when performance is undefined', () => {
+            // @ts-ignore - intentionally setting to undefined
+            window.performance = undefined;
+
+            expect(hasPerformanceMemorySupport()).toBe(false);
+        });
+    });
+
+    describe('getPerformanceMemory', () => {
+        const originalPerformance = window.performance;
+
+        beforeEach(() => {
+            // Reset performance object before each test
+            Object.defineProperty(window, 'performance', {
+                value: originalPerformance,
+                writable: true
+            });
         });
 
-        it('should handle null and undefined values', () => {
-            expect(hasPropChanged(null, { a: 1 })).toBe(true);
-            expect(hasPropChanged(undefined, null)).toBe(true);
-            expect(hasPropChanged(null, null)).toBe(false);
-            expect(hasPropChanged(undefined, undefined)).toBe(false);
+        it('should return memory information when available', () => {
+            const mockMemory = {
+                jsHeapSizeLimit: 2000000000,
+                totalJSHeapSize: 50000000,
+                usedJSHeapSize: 40000000
+            };
+
+            // Mock performance.memory
+            Object.defineProperty(window.performance, 'memory', {
+                value: mockMemory,
+                configurable: true
+            });
+
+            const result = getPerformanceMemory();
+            expect(result).toEqual(mockMemory);
+        });
+
+        it('should return null when memory is not available', () => {
+            // @ts-ignore - intentionally removing memory
+            delete window.performance.memory;
+
+            const result = getPerformanceMemory();
+            expect(result).toBeNull();
+        });
+    });
+
+    describe('isDebugModeEnabled', () => {
+        const originalWindow = { ...window };
+
+        afterEach(() => {
+            // @ts-ignore - Reset DEBUG_MODE
+            delete window.DEBUG_MODE;
+        });
+
+        it('should return true when DEBUG_MODE is truthy', () => {
+            // @ts-ignore - Setting debug mode
+            window.DEBUG_MODE = true;
+            expect(isDebugModeEnabled()).toBe(true);
+
+            // @ts-ignore - Setting debug mode
+            window.DEBUG_MODE = 1;
+            expect(isDebugModeEnabled()).toBe(true);
+
+            // @ts-ignore - Setting debug mode
+            window.DEBUG_MODE = 'enabled';
+            expect(isDebugModeEnabled()).toBe(true);
+        });
+
+        it('should return false when DEBUG_MODE is falsy', () => {
+            // @ts-ignore - Setting debug mode
+            window.DEBUG_MODE = false;
+            expect(isDebugModeEnabled()).toBe(false);
+
+            // @ts-ignore - Setting debug mode
+            window.DEBUG_MODE = 0;
+            expect(isDebugModeEnabled()).toBe(false);
+
+            // @ts-ignore - Setting debug mode
+            window.DEBUG_MODE = '';
+            expect(isDebugModeEnabled()).toBe(false);
+
+            // @ts-ignore - Setting debug mode
+            window.DEBUG_MODE = null;
+            expect(isDebugModeEnabled()).toBe(false);
+        });
+
+        it('should return false when DEBUG_MODE is not defined', () => {
+            // @ts-ignore - Removing debug mode
+            delete window.DEBUG_MODE;
+            expect(isDebugModeEnabled()).toBe(false);
         });
     });
 }); 

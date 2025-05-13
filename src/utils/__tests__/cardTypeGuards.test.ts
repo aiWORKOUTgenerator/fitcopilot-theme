@@ -99,7 +99,7 @@ describe('Card Type Guards', () => {
                 variant: 'content',
                 title: 'Test Content',
                 media: <div>Media Content</ div >
-      };
+            };
 
         const cardWithoutMedia: ContentCardProps = {
             ...baseCardProps,
