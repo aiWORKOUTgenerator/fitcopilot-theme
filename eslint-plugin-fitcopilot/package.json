@@ -1,0 +1,14 @@
+{
+    "name": "eslint-plugin-fitcopilot",
+    "version": "1.0.0",
+    "description": "Custom ESLint rules for FitCopilot theme",
+    "main": "index.js",
+    "author": "FitCopilot Team",
+    "license": "MIT",
+    "dependencies": {
+        "eslint": "^8.0.0"
+    },
+    "peerDependencies": {
+        "eslint": "^8.0.0"
+    }
+}

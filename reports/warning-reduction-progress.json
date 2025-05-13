@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2025-05-12T02:43:15.846Z",
+  "generatedAt": "2025-05-13T19:07:36.886Z",
   "summary": {
     "baselineWarnings": 42,
-    "currentWarnings": 73,
-    "reductionPercent": -74,
-    "reductionCount": -31
+    "currentWarnings": 56,
+    "reductionPercent": -33,
+    "reductionCount": -14
   },
   "warningRules": [
     {
       "rule": "@typescript-eslint/no-explicit-any",
-      "count": 43
+      "count": 25
     },
     {
       "rule": "@typescript-eslint/no-unused-vars",
-      "count": 20
+      "count": 21
     },
     {
       "rule": "fitcopilot/use-logger",
@@ -26,32 +26,16 @@
   ],
   "mostAffectedFiles": [
     {
-      "filePath": "src/hooks/useMediaPlayer.ts",
-      "warningCount": 10
+      "filePath": "src/utils/logger/index.ts",
+      "warningCount": 8
     },
     {
-      "filePath": "src/services/implementations/WordPressService.ts",
-      "warningCount": 9
+      "filePath": "src/utils/events/index.ts",
+      "warningCount": 6
     },
     {
-      "filePath": "src/utils/variantLoader.ts",
-      "warningCount": 7
-    },
-    {
-      "filePath": "src/utils/debug.tsx",
-      "warningCount": 5
-    },
-    {
-      "filePath": "src/components/UI/Media/MediaExample.tsx",
+      "filePath": "src/features/shared/examples/FormExample.tsx",
       "warningCount": 4
-    },
-    {
-      "filePath": "src/utils/logger.ts",
-      "warningCount": 4
-    },
-    {
-      "filePath": "src/components/UI/Media/AudioPlayer.tsx",
-      "warningCount": 2
     },
     {
       "filePath": "src/features/Homepage/Homepage.stories.tsx",
@@ -62,7 +46,23 @@
       "warningCount": 2
     },
     {
+      "filePath": "src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+      "warningCount": 2
+    },
+    {
       "filePath": "src/features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx",
+      "warningCount": 2
+    },
+    {
+      "filePath": "src/features/Registration/utils/scrollUtils.ts",
+      "warningCount": 2
+    },
+    {
+      "filePath": "src/hooks/useWordPress.ts",
+      "warningCount": 2
+    },
+    {
+      "filePath": "src/utils/__tests__/debugTypeGuards.test.ts",
       "warningCount": 2
     }
   ]

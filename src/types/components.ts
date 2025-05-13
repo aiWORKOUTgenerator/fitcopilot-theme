@@ -11,10 +11,11 @@ export interface BaseComponentProps {
 }
 
 /**
- * Extended CSS Properties interface with support for custom properties
+ * Extended CSS Properties type that allows for custom properties with string values
+ * This avoids using any while still allowing for CSS variables
  */
 export interface ExtendedCSSProperties extends React.CSSProperties {
-    [key: `--${string}`]: string | number;
+    [key: string]: string | number | React.CSSProperties | undefined;
 }
 
 /**
@@ -240,8 +241,8 @@ export interface StepCTAProps {
     ctaUrl?: string;
     /** CSS class for the CTA */
     className?: string;
-    /** Additional attributes */
-    [key: string]: any;
+    /** Additional attributes - use a more specific approach to avoid type conflicts */
+    [key: string]: string | number | boolean | React.ReactNode | undefined | JourneyStep;
 }
 
 /**

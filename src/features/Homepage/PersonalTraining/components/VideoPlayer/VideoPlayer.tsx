@@ -550,6 +550,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         }, [errorAction, handleRetry]);
 
         // Handle iframe errors
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const handleIframeError = useCallback((e: React.SyntheticEvent<HTMLIFrameElement, Event>) => {
             // Convert synthetic event to standard event for the error handler
             const errorEvent = new ErrorEvent('error', {

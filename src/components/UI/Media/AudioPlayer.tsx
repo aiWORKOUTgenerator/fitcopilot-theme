@@ -190,6 +190,7 @@ const AudioPlayer = forwardRef<HTMLAudioElement, AudioPlayerProps>(
         }, [currentTime, duration]);
 
         // Draw waveform visualization if enabled
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         useEffect(() => {
             if (showWaveform && waveformCanvasRef.current && isPlaying && !hasError) {
                 const canvas = waveformCanvasRef.current;
@@ -254,6 +255,7 @@ const AudioPlayer = forwardRef<HTMLAudioElement, AudioPlayerProps>(
                     cancelAnimationFrame(animationFrameId);
                 };
             }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [showWaveform, isPlaying, hasError, visualizationColor]);
 
         return (

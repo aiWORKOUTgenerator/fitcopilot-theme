@@ -203,7 +203,7 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({
   isExpanded,
   variant = 'default'
 }) => {
-  const prefersReducedMotion = useReducedMotion();
+  const _prefersReducedMotion = useReducedMotion();
 
   // Don't render content at all when collapsed to save memory and prevent space issues
   if (!isExpanded) {

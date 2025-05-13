@@ -64,7 +64,7 @@ const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps | LegacyVideoP
             allowPictureInPicture = false,
             _allowFullscreen = true,
             _playbackRate = 1,
-            onPlaybackRateChange,
+            _onPlaybackRateChange,
             // Destructure additional props
             ...restProps
         } = normalizedProps;

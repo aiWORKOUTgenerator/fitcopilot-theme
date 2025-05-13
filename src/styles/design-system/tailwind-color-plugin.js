@@ -1,7 +1,7 @@
 /**
  * Tailwind CSS plugin to integrate the FitCopilot enhanced color system
  */
-module.exports = function ({ addUtilities, addComponents, theme, e }) {
+module.exports = function ({ addUtilities, addComponents, _theme, _e }) {
     /**
      * Add utilities for background colors
      */

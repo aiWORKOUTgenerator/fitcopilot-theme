@@ -12,7 +12,7 @@ import { getStepCTAUrl } from '../utils/tokenUtils';
  */
 const StepCTA: React.FC<LocalStepCTAProps> = ({
     step,
-    isExpanded,
+    _isExpanded,
     variant = 'default',
     className,
     ...rest

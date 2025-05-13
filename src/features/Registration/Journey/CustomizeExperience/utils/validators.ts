@@ -75,7 +75,7 @@ export const saveWithRetry = async <T>(
 
     const attempt = async (): Promise<{ success: boolean; error?: string }> => {
         try {
-            const result = await saveFunction(data);
+            const _result = await saveFunction(data);
             return { success: true };
         } catch (error) {
             logger.error(`Error saving data (attempt ${attempts + 1}):`, error);

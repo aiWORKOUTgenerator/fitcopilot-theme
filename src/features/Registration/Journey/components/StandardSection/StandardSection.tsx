@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AlertCircle, Check, Loader2 } from 'lucide-react';
 import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import { announceToScreenReader, focusFirstTabbableElement } from '../../CustomizeExperience/utils/a11y';

@@ -165,40 +165,4 @@ export type MediaProps =
     | AudioMediaProps
     | YouTubeMediaProps
     | ImageGalleryProps
-    | MediaCarouselProps;
-
-/**
- * Type guard for image media
- */
-export const isImageMedia = (props: MediaProps): props is ImageMediaProps =>
-    props.variant === 'image';
-
-/**
- * Type guard for video media
- */
-export const isVideoMedia = (props: MediaProps): props is VideoMediaProps =>
-    props.variant === 'video';
-
-/**
- * Type guard for audio media
- */
-export const isAudioMedia = (props: MediaProps): props is AudioMediaProps =>
-    props.variant === 'audio';
-
-/**
- * Type guard for YouTube media
- */
-export const isYouTubeMedia = (props: MediaProps): props is YouTubeMediaProps =>
-    props.variant === 'youtube';
-
-/**
- * Type guard for image gallery media
- */
-export const isImageGallery = (props: MediaProps): props is ImageGalleryProps =>
-    props.variant === 'imageGallery';
-
-/**
- * Type guard for media carousel
- */
-export const isMediaCarousel = (props: MediaProps): props is MediaCarouselProps =>
-    props.variant === 'carousel'; 
+    | MediaCarouselProps; 

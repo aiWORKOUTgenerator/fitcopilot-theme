@@ -1,0 +1,59 @@
+/**
+ * {{ComponentName}} component type definitions
+ * 
+ * This file provides centralized type definitions for all {{componentName}}-related components
+ * using a discriminated union pattern for strong typing.
+ */
+
+import React from 'react';
+import { {{ComponentName}}ClickHandler } from './events';
+import { ExtendedCSSProperties } from './components';
+
+/**
+ * Base {{componentName}} props shared across all variants
+ */
+export interface Base{{ComponentName}}Props {
+  /** Optional ID attribute */
+  id?: string;
+  /** Additional CSS class name */
+  className?: string;
+  /** Custom inline styles */
+  style?: ExtendedCSSProperties;
+  /** Whether the component is in loading state */
+  isLoading?: boolean;
+  /** Error message to display */
+  error?: string;
+  /** Data test ID for testing */
+  'data-testid'?: string;
+  /** Component content */
+  children?: React.ReactNode;
+  /** Optional click handler */
+  onClick?: {{ComponentName}}ClickHandler;
+}
+
+/**
+ * {{VariantA}} variant props
+ */
+export interface {{VariantA}}{{ComponentName}}Props extends Base{{ComponentName}}Props {
+  /** Variant discriminator */
+  {{discriminator}}: '{{variant-a}}';
+  /** {{VariantA}}-specific property */
+  {{variantAProperty}}?: string;
+}
+
+/**
+ * {{VariantB}} variant props
+ */
+export interface {{VariantB}}{{ComponentName}}Props extends Base{{ComponentName}}Props {
+  /** Variant discriminator */
+  {{discriminator}}: '{{variant-b}}';
+  /** {{VariantB}}-specific property */
+  {{variantBProperty}}?: string;
+}
+
+/**
+ * Discriminated union type of all {{componentName}} variants
+ */
+export type {{ComponentName}}Props =
+  | {{VariantA}}{{ComponentName}}Props
+  | {{VariantB}}{{ComponentName}}Props; 

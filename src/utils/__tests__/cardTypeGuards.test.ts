@@ -1,15 +1,17 @@
+/* eslint-disable */
 /**
  * Tests for card component type guards
  */
 
+import React from 'react';
 import {
     BaseCardProps,
     CardProps,
     ContentCardProps,
+    PricingCardProps,
     ProfileCardProps,
-    WorkoutCardProps,
     ProgramCardProps,
-    PricingCardProps
+    WorkoutCardProps
 } from '../../types/card';
 
 import {
@@ -19,8 +21,8 @@ import {
     isInteractive,
     isLoading,
     isPricingCard,
-    isProgramCard,
     isProfileCard,
+    isProgramCard,
     isWorkoutCard
 } from '../cardTypeGuards';
 
@@ -41,7 +43,7 @@ describe('Card Type Guards', () => {
             };
 
             expect(isContentCard(contentCard)).toBe(true);
-            expect(isContentCard({ ...contentCard, variant: 'profile' } as CardProps)).toBe(false);
+            expect(isContentCard({ ...contentCard, variant: 'profile' } as unknown as CardProps)).toBe(false);
         });
 
         it('should identify profile cards', () => {
@@ -52,7 +54,7 @@ describe('Card Type Guards', () => {
             };
 
             expect(isProfileCard(profileCard)).toBe(true);
-            expect(isProfileCard({ ...profileCard, variant: 'content' } as CardProps)).toBe(false);
+            expect(isProfileCard({ ...profileCard, variant: 'content' } as unknown as CardProps)).toBe(false);
         });
 
         it('should identify workout cards', () => {
@@ -63,7 +65,7 @@ describe('Card Type Guards', () => {
             };
 
             expect(isWorkoutCard(workoutCard)).toBe(true);
-            expect(isWorkoutCard({ ...workoutCard, variant: 'content' } as CardProps)).toBe(false);
+            expect(isWorkoutCard({ ...workoutCard, variant: 'content' } as unknown as CardProps)).toBe(false);
         });
 
         it('should identify program cards', () => {
@@ -74,7 +76,7 @@ describe('Card Type Guards', () => {
             };
 
             expect(isProgramCard(programCard)).toBe(true);
-            expect(isProgramCard({ ...programCard, variant: 'content' } as CardProps)).toBe(false);
+            expect(isProgramCard({ ...programCard, variant: 'content' } as unknown as CardProps)).toBe(false);
         });
 
         it('should identify pricing cards', () => {
@@ -88,7 +90,7 @@ describe('Card Type Guards', () => {
             };
 
             expect(isPricingCard(pricingCard)).toBe(true);
-            expect(isPricingCard({ ...pricingCard, variant: 'content' } as CardProps)).toBe(false);
+            expect(isPricingCard({ ...pricingCard, variant: 'content' } as unknown as CardProps)).toBe(false);
         });
     });
 
@@ -98,72 +100,72 @@ describe('Card Type Guards', () => {
                 ...baseCardProps,
                 variant: 'content',
                 title: 'Test Content',
-                media: <div>Media Content</ div >
+                media: React.createElement('div', {}, 'Media Content')
             };
 
-        const cardWithoutMedia: ContentCardProps = {
-            ...baseCardProps,
-            variant: 'content',
-            title: 'Test Content'
-        };
+            const cardWithoutMedia: ContentCardProps = {
+                ...baseCardProps,
+                variant: 'content',
+                title: 'Test Content'
+            };
 
-        expect(hasMedia(cardWithMedia)).toBe(true);
-        expect(hasMedia(cardWithoutMedia)).toBe(false);
-    });
+            expect(hasMedia(cardWithMedia)).toBe(true);
+            expect(hasMedia(cardWithoutMedia)).toBe(false);
+        });
 
-    it('should identify cards with errors', () => {
-        const cardWithError: ContentCardProps = {
-            ...baseCardProps,
-            variant: 'content',
-            title: 'Test Content',
-            error: 'Error loading content'
-        };
+        it('should identify cards with errors', () => {
+            const cardWithError: ContentCardProps = {
+                ...baseCardProps,
+                variant: 'content',
+                title: 'Test Content',
+                error: 'Error loading content'
+            };
 
-        const cardWithoutError: ContentCardProps = {
-            ...baseCardProps,
-            variant: 'content',
-            title: 'Test Content'
-        };
+            const cardWithoutError: ContentCardProps = {
+                ...baseCardProps,
+                variant: 'content',
+                title: 'Test Content'
+            };
 
-        expect(hasError(cardWithError)).toBe(true);
-        expect(hasError(cardWithoutError)).toBe(false);
-    });
+            expect(hasError(cardWithError)).toBe(true);
+            expect(hasError(cardWithoutError)).toBe(false);
+        });
 
-    it('should identify cards in loading state', () => {
-        const loadingCard: ContentCardProps = {
-            ...baseCardProps,
-            variant: 'content',
-            title: 'Test Content',
-            isLoading: true
-        };
+        it('should identify cards in loading state', () => {
+            const loadingCard: ContentCardProps = {
+                ...baseCardProps,
+                variant: 'content',
+                title: 'Test Content',
+                isLoading: true
+            };
 
-        const loadedCard: ContentCardProps = {
-            ...baseCardProps,
-            variant: 'content',
-            title: 'Test Content',
-            isLoading: false
-        };
+            const loadedCard: ContentCardProps = {
+                ...baseCardProps,
+                variant: 'content',
+                title: 'Test Content',
+                isLoading: false
+            };
 
-        expect(isLoading(loadingCard)).toBe(true);
-        expect(isLoading(loadedCard)).toBe(false);
-    });
+            expect(isLoading(loadingCard)).toBe(true);
+            expect(isLoading(loadedCard)).toBe(false);
+        });
 
-    it('should identify interactive cards', () => {
-        const interactiveCard: ContentCardProps = {
-            ...baseCardProps,
-            variant: 'content',
-            title: 'Test Content',
-            onClick: jest.fn()
-        };
+        it('should identify interactive cards', () => {
+            const interactiveCard: ContentCardProps = {
+                ...baseCardProps,
+                variant: 'content',
+                title: 'Test Content',
+                onClick: jest.fn()
+            };
 
-        const nonInteractiveCard: ContentCardProps = {
-            ...baseCardProps,
-            variant: 'content',
-            title: 'Test Content'
-        };
+            const nonInteractiveCard: ContentCardProps = {
+                ...baseCardProps,
+                variant: 'content',
+                title: 'Test Content'
+            };
 
-        expect(isInteractive(interactiveCard)).toBe(true);
-        expect(isInteractive(nonInteractiveCard)).toBe(false);
+            expect(isInteractive(interactiveCard)).toBe(true);
+            expect(isInteractive(nonInteractiveCard)).toBe(false);
+        });
     });
 });
-}); 

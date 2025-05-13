@@ -3,104 +3,81 @@
  * Renders different button variants based on the variant prop
  */
 
-import classNames from 'classnames';
 import React from 'react';
-import { ButtonProps } from '../../../types/button';
-import {
-    isFloatingActionButton,
-    isIconButton,
-    isLinkButton,
-    isPrimaryButton,
-    isSecondaryButton,
-    isTextButton,
-    isToggleButton,
-    isWorkoutButton
-} from '../../../utils/buttonTypeGuards';
-import { createLoggedEventHandler } from '../../../utils/logger';
-import LinkButton from './LinkButton';
-import ToggleButton from './ToggleButton';
+import logger from '../../../utils/logger';
+import { ButtonProps, isLinkButton } from './types';
 
 /**
- * Button component that renders different button variants based on props
+ * Button component that can render as either a button element or a link
+ * based on the props provided.
+ * 
+ * @param props - Button properties
+ * @returns React component
  */
 export const Button: React.FC<ButtonProps> = (props) => {
-    // Use type guards to determine which button variant to render
-
-    // Link Button
-    if (isLinkButton(props)) {
-        return <LinkButton {...props} />;
+    // Handle null/undefined props with default empty object
+    if (!props) {
+        logger.warn('Button component received undefined props');
+        return null; // Return null if props are undefined
     }
 
-    // Toggle Button
-    if (isToggleButton(props)) {
-        return <ToggleButton {...props} />;
-    }
-
-    // Default button with variant-specific rendering
     const {
-        variant,
-        children,
-        onClick,
+        variant = 'primary',
         className = '',
-        ...restProps
+        children,
+        'aria-label': ariaLabel,
+        'data-testid': testId,
+        disabled = false,
     } = props;
 
-    // Set up event handler with logging
-    const handleClick = onClick
-        ? createLoggedEventHandler('Button', `click:${variant}`, onClick)
-        : undefined;
+    // Compose class names
+    const baseClasses = 'btn';
+    const variantClasses = `btn-${variant}`;
+    const classes = [baseClasses, variantClasses, className].filter(Boolean).join(' ');
 
-    // Base classes for all button types
-    const buttonClasses = classNames(
-        className,
-        'btn',
-        `btn-${variant}`,
-        {
-            'loading': isPrimaryButton(props) && props.isLoading,
-            'outline': isSecondaryButton(props) && props.outline,
-            'underline': isTextButton(props) && props.underline,
-            'btn-floating': isFloatingActionButton(props),
-            'level-beginner': isWorkoutButton(props) && props.level === 'beginner',
-            'level-intermediate': isWorkoutButton(props) && props.level === 'intermediate',
-            'level-advanced': isWorkoutButton(props) && props.level === 'advanced',
-            'btn-md': !props.size || props.size === 'md',
-            'btn-sm': props.size === 'sm',
-            'btn-lg': props.size === 'lg',
-            'btn-primary': isPrimaryButton(props),
-            'btn-secondary': isSecondaryButton(props),
-            'btn-text': isTextButton(props),
-            'btn-toggle': isToggleButton(props),
-            'btn-floating-bottom-right': isFloatingActionButton(props) && props.position === 'bottom-right',
-            'btn-floating-top-right': isFloatingActionButton(props) && props.position === 'top-right',
-            'btn-floating-bottom-left': isFloatingActionButton(props) && props.position === 'bottom-left',
-            'btn-floating-top-left': isFloatingActionButton(props) && props.position === 'top-left'
-        }
-    );
-
-    // Special case for icon buttons
-    if (isIconButton(props)) {
-        const { icon, text, iconPosition = 'left' } = props;
+    // If we have an href prop, render as a link
+    if (isLinkButton(props)) {
+        const { href, target, rel } = props;
 
         return (
-            <button
-                className={`${buttonClasses} icon-${iconPosition}`}
-                onClick={handleClick}
-                {...restProps}
+            <a
+                href={href}
+                target={target}
+                rel={target === '_blank' ? (rel || 'noopener noreferrer') : rel}
+                className={classes}
+                aria-label={ariaLabel}
+                data-testid={testId}
             >
-                {iconPosition === 'left' && icon}
-                {text && <span className="icon-button-text">{text}</span>}
-                {!text && children}
-                {iconPosition === 'right' && icon}
-            </button>
+                {children}
+            </a>
         );
     }
 
-    // Default button render
+    // Otherwise, render as a button
+    const { onClick, type = 'button' } = props;
+
+    // Create a simple logged click handler with null check
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        logger.info('Button clicked', {
+            component: 'Button',
+            variant,
+            type
+        });
+
+        // Safely call onClick if it exists
+        if (onClick) {
+            onClick(event);
+        }
+    };
+
     return (
         <button
-            className={buttonClasses}
+            type={type}
             onClick={handleClick}
-            {...restProps}
+            disabled={disabled}
+            className={classes}
+            aria-label={ariaLabel}
+            data-testid={testId}
         >
             {children}
         </button>

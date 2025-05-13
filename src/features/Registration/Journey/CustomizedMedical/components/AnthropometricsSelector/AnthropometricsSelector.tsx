@@ -263,7 +263,7 @@ const AnthropometricsSelector = forwardRef<AccordionSectionRef, AnthropometricsS
     isCompleted = false,
     onConfirm
 }, ref) => {
-    const { updateSectionValidity, state, error, isLoading, markSectionComplete } = useMedicalCustomization();
+    const { updateSectionValidity, _state, error, isLoading, markSectionComplete } = useMedicalCustomization();
 
     // Handle validity change
     const handleValidChange = (isValid: boolean) => {

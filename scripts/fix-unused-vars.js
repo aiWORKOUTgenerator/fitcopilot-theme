@@ -1,109 +1,140 @@
+#!/usr/bin/env node
+
+/**
+ * Fix Unused Variables Script
+ * 
+ * This script finds unused variables reported by ESLint and adds an underscore prefix to them.
+ * It handles catch variables, function parameters, and object/array destructuring.
+ */
+
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
-// Get list of files with unused variable warnings
-const getFilesWithUnusedVarsWarnings = () => {
+// Get eslint output
+const getEslintWarnings = () => {
     try {
-        const eslintOutput = execSync(
-            'npx eslint "src/**/*.{ts,tsx}" --rule "@typescript-eslint/no-unused-vars: error" --format json',
-            { encoding: 'utf8' }
-        );
-
-        const results = JSON.parse(eslintOutput);
-        return results
-            .filter(result => result.messages.some(msg => msg.ruleId === '@typescript-eslint/no-unused-vars'))
-            .map(result => ({
-                filePath: result.filePath,
-                messages: result.messages.filter(msg => msg.ruleId === '@typescript-eslint/no-unused-vars')
-            }));
+        const output = execSync('npx eslint src --no-fix --format json', { encoding: 'utf8' });
+        return JSON.parse(output);
     } catch (error) {
-        // If eslint exits with error (which it does when finding errors)
-        const output = error.stdout;
-        try {
-            const results = JSON.parse(output);
-            return results
-                .filter(result => result.messages.some(msg => msg.ruleId === '@typescript-eslint/no-unused-vars'))
-                .map(result => ({
-                    filePath: result.filePath,
-                    messages: result.messages.filter(msg => msg.ruleId === '@typescript-eslint/no-unused-vars')
-                }));
-        } catch (e) {
-            console.error('Error parsing ESLint output:', e);
-            return [];
-        }
+        // When ESLint finds issues, it exits with a non-zero code, but we still want the output
+        return JSON.parse(error.stdout);
     }
 };
 
-// Fix unused variables by adding underscore prefix
-const fixUnusedVars = (file) => {
-    console.log(`Processing: ${file.filePath}`);
+// Get unused variable warnings
+const getUnusedVarsWarnings = (eslintOutput) => {
+    const unusedVars = [];
 
-    // Read file content
-    let content = fs.readFileSync(file.filePath, 'utf-8');
-    let replacementsMade = 0;
+    eslintOutput.forEach(fileResult => {
+        const filePath = fileResult.filePath;
 
-    // Process file in reverse order to handle line number changes
-    // (processing from bottom to top preserves line numbers)
-    const sortedMessages = [...file.messages].sort((a, b) => b.line - a.line);
+        fileResult.messages
+            .filter(msg => msg.ruleId === '@typescript-eslint/no-unused-vars')
+            .forEach(warning => {
+                unusedVars.push({
+                    filePath,
+                    line: warning.line,
+                    column: warning.column,
+                    varName: warning.message.match(/'([^']+)'/)?.[1]
+                });
+            });
+    });
 
-    for (const message of sortedMessages) {
-        // Check if the message contains info about an unused variable
-        const match = message.message.match(/'([^']+)' is defined but never used/);
-        if (!match) continue;
+    return unusedVars;
+};
 
-        const variableName = match[1];
+// Fix unused variables in a file
+const fixUnusedVarsInFile = (filePath, unusedVars) => {
+    if (unusedVars.length === 0) return;
 
-        // Get the line where the unused variable is defined
-        const lines = content.split('\n');
-        const line = lines[message.line - 1];
+    console.log(`Fixing ${unusedVars.length} unused variables in ${path.basename(filePath)}`);
 
-        // Find the variable in the line
-        const variableRegex = new RegExp(`\\b${variableName}\\b(?!\\s*:)`);
-        const variableMatch = line.match(variableRegex);
+    let content = fs.readFileSync(filePath, 'utf8');
+    const lines = content.split('\n');
 
-        if (variableMatch) {
-            // Add an underscore prefix to the variable name
-            const newLine = line.replace(variableRegex, `_${variableName}`);
-            lines[message.line - 1] = newLine;
+    // Group by line for efficiency
+    const varsByLine = {};
+    unusedVars.forEach(v => {
+        if (!varsByLine[v.line]) varsByLine[v.line] = [];
+        varsByLine[v.line].push(v);
+    });
 
-            // Update the content with the modified lines
-            content = lines.join('\n');
-            replacementsMade++;
+    // Process line by line
+    Object.keys(varsByLine).forEach(lineNum => {
+        const lineIndex = parseInt(lineNum) - 1;
+        let line = lines[lineIndex];
 
-            console.log(`  - Line ${message.line}: Renamed '${variableName}' to '_${variableName}'`);
-        } else {
-            console.log(`  ⚠️ Could not locate variable '${variableName}' on line ${message.line}`);
-        }
-    }
+        // Sort by column in descending order to avoid position shifts
+        const varsInLine = varsByLine[lineNum].sort((a, b) => b.column - a.column);
 
-    if (replacementsMade > 0) {
-        fs.writeFileSync(file.filePath, content);
-        console.log(`  ✅ Made ${replacementsMade} replacements in ${file.filePath}`);
-    } else {
-        console.log(`  ℹ️ No replacements made in ${file.filePath}`);
-    }
+        varsInLine.forEach(v => {
+            if (!v.varName) return;
+
+            // Handle different variable declaration patterns
+            if (line.includes(`const ${v.varName}`) || line.includes(`let ${v.varName}`) || line.includes(`var ${v.varName}`)) {
+                // Variable declaration
+                line = line.replace(
+                    new RegExp(`(const|let|var)\\s+${v.varName}\\b`),
+                    `$1 _${v.varName}`
+                );
+            } else if (line.includes(`function ${v.varName}`) || line.match(new RegExp(`\\(([^)]*\\b${v.varName}\\b[^)]*)`))) {
+                // Function declaration or parameter
+                line = line.replace(
+                    new RegExp(`\\b${v.varName}\\b(?![:\\.])`),
+                    `_${v.varName}`
+                );
+            } else if (line.includes('{') && line.includes('}')) {
+                // Object destructuring
+                line = line.replace(
+                    new RegExp(`\\b${v.varName}\\b(?!:)`),
+                    `_${v.varName}`
+                );
+            } else if (line.includes('[') && line.includes(']')) {
+                // Array destructuring
+                line = line.replace(
+                    new RegExp(`\\b${v.varName}\\b`),
+                    `_${v.varName}`
+                );
+            } else {
+                // Other cases
+                line = line.replace(
+                    new RegExp(`\\b${v.varName}\\b(?![:\\.])`),
+                    `_${v.varName}`
+                );
+            }
+        });
+
+        lines[lineIndex] = line;
+    });
+
+    // Write changes back to file
+    fs.writeFileSync(filePath, lines.join('\n'), 'utf8');
 };
 
 // Main function
 const main = () => {
-    console.log('Finding files with unused variable warnings...');
-    const files = getFilesWithUnusedVarsWarnings();
+    console.log('Getting ESLint warnings...');
+    const eslintOutput = getEslintWarnings();
 
-    if (files.length === 0) {
-        console.log('No files with unused variable warnings found.');
-        return;
-    }
+    console.log('Finding unused variables...');
+    const unusedVars = getUnusedVarsWarnings(eslintOutput);
 
-    console.log(`Found ${files.length} files with unused variable warnings.`);
+    console.log(`Found ${unusedVars.length} unused variables across ${new Set(unusedVars.map(v => v.filePath)).size} files`);
 
-    // Process each file
-    for (const file of files) {
-        fixUnusedVars(file);
-    }
+    // Group by file for efficiency
+    const varsByFile = {};
+    unusedVars.forEach(v => {
+        if (!varsByFile[v.filePath]) varsByFile[v.filePath] = [];
+        varsByFile[v.filePath].push(v);
+    });
 
-    console.log('\nProcessing complete.');
-    console.log('Run ESLint again to verify fixes.');
+    // Fix each file
+    Object.keys(varsByFile).forEach(filePath => {
+        fixUnusedVarsInFile(filePath, varsByFile[filePath]);
+    });
+
+    console.log('Done!');
 };
 
 main(); 

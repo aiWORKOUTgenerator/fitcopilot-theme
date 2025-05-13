@@ -23,7 +23,7 @@ const CustomizationContainer: React.FC<CustomizationContainerProps> = ({ onValid
     // Track valid sections and completed sections
     // validSections will be used with the planned CompletionContext integration
     // to track validation state of each section before allowing completion
-    const [validSections, setValidSections] = useState({
+    const [_validSections, setValidSections] = useState({
         [SECTION_IDS.equipment]: false,
         [SECTION_IDS.timeManagement]: false,
         [SECTION_IDS.workoutPreference]: false

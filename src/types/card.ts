@@ -6,6 +6,8 @@
  */
 
 import React from 'react';
+import { ExtendedCSSProperties } from './components';
+import { CardButtonClickHandler, CardClickHandler } from './events';
 
 /**
  * Base card props shared across all card variants
@@ -16,7 +18,7 @@ export interface BaseCardProps {
     /** Additional CSS class name */
     className?: string;
     /** Custom inline styles */
-    style?: React.CSSProperties;
+    style?: ExtendedCSSProperties;
     /** Whether the card is in loading state */
     isLoading?: boolean;
     /** Error message to display */
@@ -32,7 +34,7 @@ export interface BaseCardProps {
     /** Card layout orientation */
     layout?: 'vertical' | 'horizontal';
     /** Optional click handler */
-    onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+    onClick?: CardClickHandler;
     /** Whether the card has a border */
     bordered?: boolean;
     /** Card elevation level */
@@ -151,7 +153,7 @@ export interface PricingCardProps extends BaseCardProps {
     /** Whether this is the most popular plan */
     popular?: boolean;
     /** CTA button click handler */
-    onCtaClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    onCtaClick?: CardButtonClickHandler;
     /** Discount percentage or amount */
     discount?: string | number;
 }

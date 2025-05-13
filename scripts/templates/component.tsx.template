@@ -1,0 +1,41 @@
+import React from 'react';
+import { {{ComponentName}}Props } from '../../types/{{componentName}}';
+import { is{{VariantA}}{{ComponentName}}, is{{VariantB}}{{ComponentName}} } from '../../utils/typeGuards/{{componentName}}TypeGuards';
+import { logger } from '../../utils/logger';
+import './{{componentName}}.scss';
+
+const {{VariantA}}{{ComponentName}}: React.FC<{{ComponentName}}Props> = (props) => {
+  if (!is{{VariantA}}{{ComponentName}}(props)) return null;
+  
+  return (
+    <div className={`{{component-name}} {{component-name}}--{{variant-a}}`}>
+      {/* {{VariantA}}-specific rendering */}
+      {props.children}
+    </div>
+  );
+};
+
+const {{VariantB}}{{ComponentName}}: React.FC<{{ComponentName}}Props> = (props) => {
+  if (!is{{VariantB}}{{ComponentName}}(props)) return null;
+  
+  return (
+    <div className={`{{component-name}} {{component-name}}--{{variant-b}}`}>
+      {/* {{VariantB}}-specific rendering */}
+      {props.children}
+    </div>
+  );
+};
+
+/**
+ * {{ComponentName}} component that renders different variants based on the discriminator prop
+ */
+export const {{ComponentName}}: React.FC<{{ComponentName}}Props> = (props) => {
+  if (is{{VariantA}}{{ComponentName}}(props)) return <{{VariantA}}{{ComponentName}} {...props} />;
+  if (is{{VariantB}}{{ComponentName}}(props)) return <{{VariantB}}{{ComponentName}} {...props} />;
+  
+  // Handle unsupported variants
+  logger.error(`Unsupported {{componentName}} variant: ${props.variant}`);
+  return null;
+};
+
+export default {{ComponentName}}; 

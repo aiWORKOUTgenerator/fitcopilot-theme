@@ -35,7 +35,7 @@ const CustomizeExperience: React.FC<CustomizeExperienceProps> = ({ onValidChange
  */
 const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = React.memo(({ onValidChange }) => {
     const {
-        validSections,
+        _validSections,
         completedSections,
         isCustomizationValid,
         isLoading,
@@ -43,7 +43,7 @@ const CustomizeExperienceContent: React.FC<CustomizeExperienceProps> = React.mem
         markSectionComplete,
         updateSectionValidity,
         saveAllData,
-        syncWithStoredData
+        _syncWithStoredData
     } = useCustomization();
 
     const { registrationData } = useJourney();

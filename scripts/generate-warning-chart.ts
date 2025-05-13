@@ -1,696 +1,329 @@
+#!/usr/bin/env ts-node
+
 /**
- * Warning Metrics Chart Generator
+ * Warning Trend Chart Generator
  * 
- * This script generates visualizations of ESLint warning reduction over time.
- * It creates both a component-level chart and a rule-specific chart to help 
- * track progress in improving type safety across the codebase.
+ * This script generates a visual chart of ESLint warning counts over time.
+ * It reads all reports in the reports directory and creates an SVG chart.
+ * 
+ * Usage:
+ * npm run generate-warning-chart
  */
 
 import * as fs from 'fs';
+import * as glob from 'glob';
 import * as path from 'path';
 
-// Interface for warning data
-interface WarningData {
-    date: string;
-    component: string;
-    warningCount: number;
-    errorCount: number;
-    warningsByRule: Record<string, number>;
+interface WarningReport {
+  generatedAt: string;
+  totalWarnings: number;
+  topRules: { rule: string; count: number }[];
 }
 
-interface ChartData {
-    components: Array<{
-        name: string;
-        data: Array<{
-            date: string;
-            warningCount: number;
-            errorCount: number;
-        }>;
-    }>;
-    rules: Array<{
-        name: string;
-        data: Array<{
-            date: string;
-            count: number;
-        }>;
-    }>;
-    dates: string[];
+interface ComparisonReport {
+  date: string;
+  reduction: {
+    absolute: number;
+    percentage: number;
+  };
+  current: {
+    totalWarnings: number;
+  };
 }
 
-/**
- * Load historical warning data from file or create empty array if file doesn't exist
- */
-function loadWarningHistory(): WarningData[] {
-    const historyFile = path.join(process.cwd(), 'reports', 'warning-history.json');
+interface DataPoint {
+  date: Date;
+  warnings: number;
+  rules?: Record<string, number>;
+}
 
-    if (fs.existsSync(historyFile)) {
-        return JSON.parse(fs.readFileSync(historyFile, 'utf8'));
-    }
+// Find all report files
+const findReportFiles = (): string[] => {
+  const reportsDir = path.resolve('reports');
 
+  if (!fs.existsSync(reportsDir)) {
+    console.log('Creating reports directory...');
+    fs.mkdirSync(reportsDir, { recursive: true });
     return [];
-}
+  }
 
-/**
- * Save warning metrics data to history file
- */
-function saveWarningHistory(history: WarningData[]): void {
-    const historyFile = path.join(process.cwd(), 'reports', 'warning-history.json');
-    fs.writeFileSync(historyFile, JSON.stringify(history, null, 2));
-}
+  const warningReportPattern = path.join(reportsDir, 'warnings-*.json');
+  const comparisonReportPattern = path.join(reportsDir, 'warning-reduction-*.json');
 
-/**
- * Load latest verification report and extract warning data
- */
-function loadLatestVerificationData(): WarningData[] {
-    const reportFile = path.join(process.cwd(), 'reports', 'component-verification-report.json');
+  const warningReports = glob.sync(warningReportPattern);
+  const comparisonReports = glob.sync(comparisonReportPattern);
 
-    if (!fs.existsSync(reportFile)) {
-        console.error('Verification report not found. Please run verification first.');
-        process.exit(1);
+  return [...warningReports, ...comparisonReports];
+};
+
+// Parse reports into data points
+const parseReports = (filePaths: string[]): DataPoint[] => {
+  const dataPoints: DataPoint[] = [];
+
+  filePaths.forEach(filePath => {
+    try {
+      const fileName = path.basename(filePath);
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      const report = JSON.parse(fileContent);
+
+      let dataPoint: DataPoint | null = null;
+
+      // Parse warning report
+      if (fileName.startsWith('warnings-')) {
+        const warningReport = report as WarningReport;
+        const date = new Date(warningReport.generatedAt);
+
+        dataPoint = {
+          date,
+          warnings: warningReport.totalWarnings,
+          rules: warningReport.topRules.reduce((acc, { rule, count }) => {
+            acc[rule] = count;
+            return acc;
+          }, {} as Record<string, number>)
+        };
+      }
+
+      // Parse comparison report
+      else if (fileName.startsWith('warning-reduction-')) {
+        const comparisonReport = report as ComparisonReport;
+        const date = new Date(comparisonReport.date);
+
+        dataPoint = {
+          date,
+          warnings: comparisonReport.current.totalWarnings
+        };
+      }
+
+      if (dataPoint) {
+        dataPoints.push(dataPoint);
+      }
+    } catch (error) {
+      console.error(`Error parsing ${filePath}:`, error);
+    }
+  });
+
+  // Sort by date
+  return dataPoints.sort((a, b) => a.date.getTime() - b.date.getTime());
+};
+
+// Generate SVG chart
+const generateSVGChart = (dataPoints: DataPoint[]): string => {
+  if (dataPoints.length === 0) {
+    return `<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+      <text x="400" y="200" text-anchor="middle" font-family="Arial" font-size="20">No data available</text>
+    </svg>`;
+  }
+
+  const width = 800;
+  const height = 400;
+  const padding = 50;
+
+  const chartWidth = width - (padding * 2);
+  const chartHeight = height - (padding * 2);
+
+  // Find max warning count
+  const maxWarnings = Math.max(...dataPoints.map(d => d.warnings));
+  // Round max warnings up to nearest 100
+  const yMax = Math.ceil(maxWarnings / 100) * 100;
+
+  // Generate X axis points
+  const xStep = chartWidth / (dataPoints.length - 1 || 1);
+
+  // Generate SVG path for the warning line
+  const getLine = (): string => {
+    let path = `M ${padding},${height - padding - (dataPoints[0].warnings / yMax * chartHeight)}`;
+
+    for (let i = 1; i < dataPoints.length; i++) {
+      const x = padding + (i * xStep);
+      const y = height - padding - (dataPoints[i].warnings / yMax * chartHeight);
+      path += ` L ${x},${y}`;
     }
 
-    const report = JSON.parse(fs.readFileSync(reportFile, 'utf8'));
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    return path;
+  };
 
-    return report.components.map((component: any) => ({
-        date: today,
-        component: component.component,
-        warningCount: component.warningCount,
-        errorCount: component.errorCount,
-        warningsByRule: report.warningsByRule
-    }));
-}
+  // Create date labels
+  const dateLabels = dataPoints.map((point, i) => {
+    const x = padding + (i * xStep);
+    const y = height - (padding / 2);
+    const date = point.date.toISOString().slice(0, 10);
+    return `<text x="${x}" y="${y}" text-anchor="middle" font-family="Arial" font-size="10" transform="rotate(-45 ${x},${y})">${date}</text>`;
+  }).join('\n    ');
 
-/**
- * Generate chart data from warning history
- */
-function generateChartData(history: WarningData[]): ChartData {
-    // Get unique components and dates
-    const components = [...new Set(history.map(entry => entry.component))];
-    const dates = [...new Set(history.map(entry => entry.date))].sort();
+  // Create Y axis labels
+  const yLabels = [];
+  for (let i = 0; i <= 5; i++) {
+    const value = Math.round(yMax * (i / 5));
+    const y = height - padding - (chartHeight * (i / 5));
+    yLabels.push(`<text x="${padding - 10}" y="${y}" text-anchor="end" font-family="Arial" font-size="12">${value}</text>`);
+  }
 
-    // Generate component-level data
-    const componentData = components.map(component => {
-        const data = dates.map(date => {
-            const entry = history.find(h => h.component === component && h.date === date);
-            return {
-                date,
-                warningCount: entry ? entry.warningCount : 0,
-                errorCount: entry ? entry.errorCount : 0
-            };
-        });
+  // Create data points with tooltips
+  const dataPointCircles = dataPoints.map((point, i) => {
+    const x = padding + (i * xStep);
+    const y = height - padding - (point.warnings / yMax * chartHeight);
+    const date = point.date.toISOString().slice(0, 10);
+    return `<circle cx="${x}" cy="${y}" r="4" fill="#2c3e50">
+      <title>Date: ${date}
+Warnings: ${point.warnings}</title>
+    </circle>`;
+  }).join('\n    ');
 
-        return {
-            name: component,
-            data
-        };
-    });
-
-    // Get all unique rules
-    const allRules = new Set<string>();
-    history.forEach(entry => {
-        if (entry.warningsByRule) {
-            Object.keys(entry.warningsByRule).forEach(rule => allRules.add(rule));
-        }
-    });
-
-    // Generate rule-specific data
-    const ruleData = Array.from(allRules).map(rule => {
-        const data = dates.map(date => {
-            // For each date, sum the counts for this rule across all components
-            const count = history
-                .filter(h => h.date === date && h.warningsByRule && h.warningsByRule[rule])
-                .reduce((sum, h) => sum + (h.warningsByRule[rule] || 0), 0);
-
-            return { date, count };
-        });
-
-        return {
-            name: rule,
-            data
-        };
-    });
-
-    return {
-        components: componentData,
-        rules: ruleData,
-        dates
-    };
-}
-
-/**
- * Returns a color from the theme palette based on index
- */
-function getColorForChart(index: number): string {
-    const colors = [
-        '#0078D4', '#107C10', '#D83B01', '#FFB900', '#8661C5',
-        '#2B88D8', '#50E6FF', '#C239B3', '#00B294', '#FF8C00'
-    ];
-    return colors[index % colors.length];
-}
-
-/**
- * Generate HTML chart using our design token system
- */
-function generateHtmlChart(chartData: ChartData): string {
-    const html = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ESLint Warning Reduction Progress</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  // Build SVG
+  return `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
   <style>
-    :root {
-      --color-primary: var(--fc-color-primary, #0078d4);
-      --color-secondary: var(--fc-color-secondary, #2b88d8);
-      --color-background: var(--fc-color-background, #f9f9f9);
-      --color-text: var(--fc-color-text, #333333);
-      --color-success: var(--fc-color-success, #107c10);
-      --color-warning: var(--fc-color-warning, #ff8c00);
-      --color-error: var(--fc-color-error, #d83b01);
-      --color-border: var(--fc-color-border, #e0e0e0);
-      --font-family: var(--fc-font-family-base, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif);
-      --spacing-base: var(--fc-spacing-base, 8px);
-    }
-    
-    body {
-      font-family: var(--font-family);
-      background-color: var(--color-background);
-      color: var(--color-text);
-      margin: 0;
-      padding: 20px;
-    }
-    
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: white;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    
-    h1, h2, h3 {
-      color: var(--color-primary);
-    }
-    
-    .chart-container {
-      margin-bottom: 40px;
-    }
-    
-    .tabs {
-      display: flex;
-      margin-bottom: 20px;
-      border-bottom: 1px solid var(--color-border);
-    }
-    
-    .tab {
-      padding: 10px 20px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      border-bottom: none;
-      border-radius: 4px 4px 0 0;
-      margin-right: 5px;
-    }
-    
-    .tab.active {
-      background-color: white;
-      border-color: var(--color-border);
-      border-bottom-color: white;
-      color: var(--color-primary);
-      font-weight: bold;
-    }
-    
-    .tab-content {
-      display: none;
-    }
-    
-    .tab-content.active {
-      display: block;
-    }
-    
-    .summary {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-bottom: 20px;
-    }
-    
-    .summary-card {
-      background-color: white;
-      border: 1px solid var(--color-border);
-      border-radius: 5px;
-      padding: 15px;
-      text-align: center;
-    }
-    
-    .summary-card h3 {
-      margin-top: 0;
-      color: var(--color-text);
-    }
-    
-    .summary-value {
-      font-size: 24px;
-      font-weight: bold;
-      margin: 10px 0;
-    }
-    
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-    
-    .table th, .table td {
-      padding: 12px 15px;
-      text-align: left;
-      border-bottom: 1px solid var(--color-border);
-    }
-    
-    .table th {
-      background-color: var(--color-primary);
-      color: white;
-    }
-    
-    .table tr:nth-child(even) {
-      background-color: #f2f2f2;
-    }
-    
-    .trend-up {
-      color: var(--color-error);
-    }
-    
-    .trend-down {
-      color: var(--color-success);
-    }
-    
-    .trend-stable {
-      color: var(--color-text);
-    }
+    text { font-family: Arial, sans-serif; }
+    .title { font-size: 20px; font-weight: bold; }
+    .gridline { stroke: #e0e0e0; stroke-width: 1; }
+    .axis { stroke: #333; stroke-width: 2; }
+    .line { stroke: #2980b9; stroke-width: 3; fill: none; }
+    .area { fill: #3498db; opacity: 0.2; }
   </style>
-</head>
-<body>
-  <div class="container">
-    <h1>ESLint Warning Reduction Progress</h1>
-    <p>Last updated: ${new Date().toLocaleString()}</p>
-    
-    <div class="tabs">
-      <div class="tab active" data-tab="component">Component-Level Warnings</div>
-      <div class="tab" data-tab="rule">Rule-Specific Warnings</div>
-      <div class="tab" data-tab="priority">Prioritized Issues</div>
-    </div>
-    
-    <div class="tab-content active" id="component-tab">
-      <div class="chart-container">
-        <canvas id="componentChart"></canvas>
-      </div>
-      
-      <h2>Component Warning Trends</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Component</th>
-            <th>Current Warnings</th>
-            <th>Change</th>
-            <th>Trend</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${chartData.components.map(component => {
-        const currentWarnings = component.data[component.data.length - 1]?.warningCount || 0;
-        const previousWarnings = component.data.length > 1
-            ? component.data[component.data.length - 2]?.warningCount || 0
-            : currentWarnings;
-        const change = currentWarnings - previousWarnings;
-        const trend = change === 0
-            ? 'stable'
-            : change < 0 ? 'down' : 'up';
-
-        return `
-              <tr>
-                <td>${component.name}</td>
-                <td>${currentWarnings}</td>
-                <td class="trend-${trend}">
-                  ${change === 0 ? '-' : (change > 0 ? '+' : '') + change}
-                </td>
-                <td>
-                  ${trend === 'down'
-                ? '⬇️ Improving'
-                : trend === 'up'
-                    ? '⬆️ Needs Attention'
-                    : '➡️ Stable'}
-                </td>
-              </tr>
-            `;
-    }).join('')}
-        </tbody>
-      </table>
-    </div>
-    
-    <div class="tab-content" id="rule-tab">
-      <div class="chart-container">
-        <canvas id="ruleChart"></canvas>
-      </div>
-      
-      <h2>Top ESLint Rule Violations</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Rule</th>
-            <th>Current Violations</th>
-            <th>Change</th>
-            <th>Priority</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${chartData.rules
-            .sort((a, b) => {
-                const aCount = a.data[a.data.length - 1]?.count || 0;
-                const bCount = b.data[b.data.length - 1]?.count || 0;
-                return bCount - aCount;
-            })
-            .slice(0, 10)
-            .map(rule => {
-                const currentCount = rule.data[rule.data.length - 1]?.count || 0;
-                const previousCount = rule.data.length > 1
-                    ? rule.data[rule.data.length - 2]?.count || 0
-                    : currentCount;
-                const change = currentCount - previousCount;
-                const trend = change === 0
-                    ? 'stable'
-                    : change < 0 ? 'down' : 'up';
-
-                // Assign priority based on rule type and count
-                let priority = 'Medium';
-                if (rule.name.includes('no-explicit-any') ||
-                    rule.name.includes('no-unsafe-') ||
-                    rule.name.includes('strict-')) {
-                    priority = currentCount > 5 ? 'High' : 'Medium';
-                } else if (rule.name.includes('prefer-') || rule.name.includes('style')) {
-                    priority = 'Low';
-                }
-
-                return `
-                <tr>
-                  <td>${rule.name}</td>
-                  <td>${currentCount}</td>
-                  <td class="trend-${trend}">
-                    ${change === 0 ? '-' : (change > 0 ? '+' : '') + change}
-                  </td>
-                  <td>${priority}</td>
-                </tr>
-              `;
-            }).join('')}
-        </tbody>
-      </table>
-    </div>
-    
-    <div class="tab-content" id="priority-tab">
-      <h2>Prioritized Issues</h2>
-      
-      <div class="summary">
-        <div class="summary-card">
-          <h3>Type Safety Issues</h3>
-          <div class="summary-value">
-            ${chartData.rules
-            .filter(rule =>
-                rule.name.includes('no-explicit-any') ||
-                rule.name.includes('no-unsafe-'))
-            .reduce((sum, rule) => {
-                const lastEntry = rule.data[rule.data.length - 1];
-                return sum + (lastEntry?.count || 0);
-            }, 0)}
-          </div>
-          <div>High Priority Fixes</div>
-        </div>
-        
-        <div class="summary-card">
-          <h3>React Hooks Issues</h3>
-          <div class="summary-value">
-            ${chartData.rules
-            .filter(rule => rule.name.includes('react-hooks'))
-            .reduce((sum, rule) => {
-                const lastEntry = rule.data[rule.data.length - 1];
-                return sum + (lastEntry?.count || 0);
-            }, 0)}
-          </div>
-          <div>Medium Priority Fixes</div>
-        </div>
-        
-        <div class="summary-card">
-          <h3>Style Issues</h3>
-          <div class="summary-value">
-            ${chartData.rules
-            .filter(rule =>
-                rule.name.includes('style') ||
-                rule.name.includes('format') ||
-                rule.name.includes('indent'))
-            .reduce((sum, rule) => {
-                const lastEntry = rule.data[rule.data.length - 1];
-                return sum + (lastEntry?.count || 0);
-            }, 0)}
-          </div>
-          <div>Low Priority Fixes</div>
-        </div>
-      </div>
-      
-      <h3>Recommended Actions</h3>
-      <ol>
-        <li>
-          <strong>Focus on explicit 'any' type replacements</strong> - 
-          These present the highest type safety risk
-        </li>
-        <li>
-          <strong>Address React hook dependencies</strong> - 
-          These can cause hard-to-debug rendering issues
-        </li>
-        <li>
-          <strong>Create proper interfaces for untyped data</strong> - 
-          Especially for API responses and complex objects
-        </li>
-        <li>
-          <strong>Implement proper component prop interfaces</strong> - 
-          Ensure consistent typing across component hierarchies
-        </li>
-      </ol>
-      
-      <h3>Component Fix Priority</h3>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Component</th>
-            <th>Priority</th>
-            <th>Type Issues</th>
-            <th>Estimated Effort</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${chartData.components
-            .map(component => {
-                const currentWarnings = component.data[component.data.length - 1]?.warningCount || 0;
-
-                // Simplified estimation logic
-                let priority = 'Medium';
-                if (currentWarnings > 10) {
-                    priority = 'High';
-                } else if (currentWarnings < 3) {
-                    priority = 'Low';
-                }
-
-                const typeIssues = Math.floor(currentWarnings * 0.7); // Rough estimation
-
-                let effort = 'Medium';
-                if (currentWarnings > 15) {
-                    effort = 'Large';
-                } else if (currentWarnings < 5) {
-                    effort = 'Small';
-                }
-
-                return `
-                <tr>
-                  <td>${component.name}</td>
-                  <td>${priority}</td>
-                  <td>${typeIssues}</td>
-                  <td>${effort}</td>
-                </tr>
-              `;
-            })
-            .sort((a, b) => {
-                // Sort by priority (High > Medium > Low)
-                const priorityOrder: Record<string, number> = { 'High': 0, 'Medium': 1, 'Low': 2 };
-
-                // Safely extract priority from the HTML string
-                const aMatch = a.match(/<td>(High|Medium|Low)<\/td>/);
-                const bMatch = b.match(/<td>(High|Medium|Low)<\/td>/);
-
-                const aPriority = aMatch && aMatch[1] ? priorityOrder[aMatch[1]] : 1; // Default to Medium
-                const bPriority = bMatch && bMatch[1] ? priorityOrder[bMatch[1]] : 1; // Default to Medium
-
-                return aPriority - bPriority;
-            })
-            .join('')}
-        </tbody>
-      </table>
-    </div>
-  </div>
   
-  <script>
-    // Chart.js configuration
-    const componentCtx = document.getElementById('componentChart').getContext('2d');
-    const componentChart = new Chart(componentCtx, {
-      type: 'line',
-      data: {
-        labels: ${JSON.stringify(chartData.dates)},
-        datasets: ${JSON.stringify(chartData.components.map((component, index) => ({
-                label: component.name,
-                data: component.data.map(d => d.warningCount),
-                fill: false,
-                tension: 0.1,
-                borderColor: getColorForChart(index),
-                backgroundColor: getColorForChart(index)
-            })))}
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'ESLint Warnings by Component Over Time'
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: false
-          }
-        },
-        scales: {
-          y: {
-            title: {
-              display: true,
-              text: 'Warning Count'
-            },
-            min: 0
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Date'
-            }
-          }
-        }
+  <!-- Title -->
+  <text x="${width / 2}" y="${padding / 2}" class="title" text-anchor="middle">ESLint Warning Count Over Time</text>
+  
+  <!-- Grid Lines -->
+  ${Array.from({ length: 6 }, (_, i) => {
+    const y = height - padding - (chartHeight * (i / 5));
+    return `<line x1="${padding}" y1="${y}" x2="${width - padding}" y2="${y}" class="gridline" />`;
+  }).join('\n  ')}
+  
+  <!-- Axes -->
+  <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" class="axis" />
+  <line x1="${padding}" y1="${padding}" x2="${padding}" y2="${height - padding}" class="axis" />
+  
+  <!-- Warning Area -->
+  <path d="${getLine()} L ${padding + ((dataPoints.length - 1) * xStep)},${height - padding} L ${padding},${height - padding} Z" class="area" />
+  
+  <!-- Warning Line -->
+  <path d="${getLine()}" class="line" />
+  
+  <!-- Data Points -->
+  ${dataPointCircles}
+  
+  <!-- X Axis Labels -->
+  ${dateLabels}
+  
+  <!-- Y Axis Labels -->
+  ${yLabels.join('\n  ')}
+  
+  <!-- Axis Titles -->
+  <text x="${width / 2}" y="${height - 10}" text-anchor="middle" font-size="14">Date</text>
+  <text x="${padding / 4}" y="${height / 2}" text-anchor="middle" font-size="14" transform="rotate(-90 ${padding / 4},${height / 2})">Warning Count</text>
+</svg>`;
+};
+
+const generateMarkdownReport = (dataPoints: DataPoint[]): string => {
+  if (dataPoints.length === 0) {
+    return '# ESLint Warning Trend\n\nNo data available yet. Run `npm run warning-report` to generate warning reports.';
+  }
+
+  // Sort data points by date (newest first)
+  const sortedPoints = [...dataPoints].sort((a, b) => b.date.getTime() - a.date.getTime());
+
+  // Calculate changes
+  let markdown = '# ESLint Warning Trend\n\n';
+  markdown += '## Summary\n\n';
+
+  if (sortedPoints.length >= 1) {
+    markdown += `**Current warning count**: ${sortedPoints[0].warnings}\n\n`;
+  }
+
+  if (sortedPoints.length >= 2) {
+    const current = sortedPoints[0];
+    const previous = sortedPoints[1];
+    const change = current.warnings - previous.warnings;
+    const percentChange = ((change / previous.warnings) * 100).toFixed(1);
+
+    markdown += `**Change from last report**: ${change > 0 ? '+' : ''}${change} (${percentChange}%)\n\n`;
+  }
+
+  if (sortedPoints.length >= 3) {
+    // Get first report
+    const first = sortedPoints[sortedPoints.length - 1];
+    const current = sortedPoints[0];
+    const totalChange = current.warnings - first.warnings;
+    const percentChange = ((totalChange / first.warnings) * 100).toFixed(1);
+
+    markdown += `**Total progress since first report**: ${totalChange > 0 ? '+' : ''}${totalChange} (${percentChange}%)\n\n`;
+  }
+
+  // Add trend data
+  markdown += '## Trend Data\n\n';
+  markdown += '| Date | Warnings | Change |\n';
+  markdown += '|------|----------|--------|\n';
+
+  sortedPoints.forEach((point, i) => {
+    const date = point.date.toISOString().slice(0, 10);
+    let change = '';
+
+    if (i < sortedPoints.length - 1) {
+      const diff = point.warnings - sortedPoints[i + 1].warnings;
+      const diffPercent = ((diff / sortedPoints[i + 1].warnings) * 100).toFixed(1);
+      change = `${diff > 0 ? '+' : ''}${diff} (${diffPercent}%)`;
+    }
+
+    markdown += `| ${date} | ${point.warnings} | ${change} |\n`;
+  });
+
+  // Include chart image reference
+  markdown += '\n## Trend Chart\n\n';
+  markdown += '![ESLint Warning Trend](./eslint-warning-trend.svg)\n';
+
+  return markdown;
+};
+
+// Main execution
+const main = async () => {
+  try {
+    // Create reports directory if it doesn't exist
+    const reportsDir = path.resolve('reports');
+    if (!fs.existsSync(reportsDir)) {
+      fs.mkdirSync(reportsDir, { recursive: true });
+    }
+
+    // Find and parse reports
+    const reportFiles = findReportFiles();
+
+    if (reportFiles.length === 0) {
+      console.log('No warning reports found. Generate reports with npm run warning-report first.');
+      // Create empty baseline file if none exists
+      const baselinePath = path.join(reportsDir, 'warning-baseline.json');
+      if (!fs.existsSync(baselinePath)) {
+        const emptyBaseline = {
+          generatedAt: new Date().toISOString(),
+          totalWarnings: 0,
+          topRules: [],
+          topFiles: [],
+          topDirectories: []
+        };
+        fs.writeFileSync(baselinePath, JSON.stringify(emptyBaseline, null, 2));
+        console.log(`Created empty baseline file at ${baselinePath}`);
       }
-    });
-    
-    const ruleCtx = document.getElementById('ruleChart').getContext('2d');
-    const ruleChart = new Chart(ruleCtx, {
-      type: 'bar',
-      data: {
-        labels: ${JSON.stringify(chartData.dates)},
-        datasets: ${JSON.stringify(chartData.rules
-                .sort((a, b) => {
-                    const aCount = a.data[a.data.length - 1]?.count || 0;
-                    const bCount = b.data[b.data.length - 1]?.count || 0;
-                    return bCount - aCount;
-                })
-                .slice(0, 5)
-                .map((rule, index) => ({
-                    label: rule.name,
-                    data: rule.data.map(d => d.count),
-                    backgroundColor: getColorForChart(index)
-                }))
-            )}
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Top 5 ESLint Rule Violations Over Time'
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: false
-          }
-        },
-        scales: {
-          y: {
-            title: {
-              display: true,
-              text: 'Violation Count'
-            },
-            min: 0,
-            stacked: true
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Date'
-            },
-            stacked: true
-          }
-        }
-      }
-    });
-    
-    // Tab switching logic
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        // Remove active class from all tabs
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        
-        // Add active class to clicked tab
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.tab + '-tab').classList.add('active');
-      });
-    });
-  </script>
-</body>
-</html>
-  `;
+      return;
+    }
 
-    return html;
-}
+    console.log(`Found ${reportFiles.length} report files.`);
+    const dataPoints = parseReports(reportFiles);
+    console.log(`Parsed ${dataPoints.length} data points.`);
 
-/**
- * Main function to update history and generate chart
- */
-function generateWarningChart(): void {
-    // Load historical data
-    const history = loadWarningHistory();
+    // Generate SVG chart
+    const svgChart = generateSVGChart(dataPoints);
+    const svgPath = path.join(reportsDir, 'eslint-warning-trend.svg');
+    fs.writeFileSync(svgPath, svgChart);
+    console.log(`SVG chart saved to ${svgPath}`);
 
-    // Load latest verification data
-    const latestData = loadLatestVerificationData();
+    // Generate markdown report
+    const markdown = generateMarkdownReport(dataPoints);
+    const markdownPath = path.join(reportsDir, 'eslint-warning-trend.md');
+    fs.writeFileSync(markdownPath, markdown);
+    console.log(`Markdown report saved to ${markdownPath}`);
 
-    // Add latest data to history (avoid duplicates for same date + component)
-    latestData.forEach(data => {
-        const existingIndex = history.findIndex(
-            h => h.date === data.date && h.component === data.component
-        );
+  } catch (error) {
+    console.error('Error generating warning trend chart:', error);
+    process.exit(1);
+  }
+};
 
-        if (existingIndex >= 0) {
-            history[existingIndex] = data;
-        } else {
-            history.push(data);
-        }
-    });
-
-    // Save updated history
-    saveWarningHistory(history);
-
-    // Generate chart data
-    const chartData = generateChartData(history);
-
-    // Generate HTML chart
-    const html = generateHtmlChart(chartData);
-
-    // Write HTML to file
-    const outputFile = path.join(process.cwd(), 'reports', 'warning-chart.html');
-    fs.writeFileSync(outputFile, html);
-
-    console.log(`Warning chart generated: ${outputFile}`);
-}
-
-// Run the chart generation
-generateWarningChart(); 
+main(); 

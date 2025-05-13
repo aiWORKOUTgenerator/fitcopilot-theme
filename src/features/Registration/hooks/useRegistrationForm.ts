@@ -53,7 +53,7 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
 
     // Use our API hooks with proper typing
     const registrationApi = useApi<RegistrationResponse>();
-    const emailValidationApi = useApi<EmailValidationResponse>();
+    const _emailValidationApi = useApi<EmailValidationResponse>();
 
     /**
      * Update form data with new values
@@ -92,11 +92,11 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
     }, [currentStep, validation.errors]);
 
     /**
-     * Validate an email address
+     * Validate an _email address
      */
-    const validateEmail = useCallback(async (email: string): Promise<boolean> => {
+    const validateEmail = useCallback(async (_email: string): Promise<boolean> => {
         try {
-            const response = await emailValidationApi.fetchApi('/fitcopilot/v1/validate-email', {
+            const response = await _emailValidationApi.fetchApi('/fitcopilot/v1/validate-_email', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -111,12 +111,12 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
                 isValid: false,
                 errors: {
                     ...prev.errors,
-                    email: 'Failed to validate email. Please try again.'
+                    _email: 'Failed to validate _email. Please try again.'
                 }
             }));
             return false;
         }
-    }, [emailValidationApi]);
+    }, [_emailValidationApi]);
 
     /**
      * Validate form data for the current step
@@ -152,11 +152,11 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
                 break;
 
             case RegistrationStep.ACCOUNT_CREATION:
-                if (!formData.email) {
-                    errors.email = 'Email is required';
+                if (!formData._email) {
+                    errors._email = 'Email is required';
                     isValid = false;
-                } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-                    errors.email = 'Please enter a valid email address';
+                } else if (!/\S+@\S+\.\S+/.test(formData._email)) {
+                    errors._email = 'Please enter a valid _email address';
                     isValid = false;
                 }
                 if (!formData.password) {

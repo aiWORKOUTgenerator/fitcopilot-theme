@@ -251,7 +251,7 @@ export const LoadingState: Story = {
 };
 
 // Full Demo Example Story
-const metaExample: Meta<typeof TypeDemoExample> = {
+const _metaExample: Meta<typeof TypeDemoExample> = {
     title: 'Features/Shared/TypeDemoExample',
     component: TypeDemoExample,
     parameters: {

@@ -1,12 +1,13 @@
 import React from 'react';
-import { CardProps } from '../../../types/card';
+import { CardButtonClickHandler, CardProps } from '../../../types/card';
+import { logger } from '../../../utils/logger';
 import {
     isContentCard,
+    isPricingCard,
     isProfileCard,
     isProgramCard,
     isWorkoutCard
-} from '../../../utils/cardTypeGuards';
-import { logger } from '../../../utils/logger';
+} from '../../../utils/typeGuards/cardTypeGuards';
 import './card.scss';
 
 const getCardClassName = (props: CardProps) => {
@@ -137,11 +138,49 @@ const ProgramCard: React.FC<CardProps> = (props) => {
     );
 };
 
+const PricingCard: React.FC<CardProps> = (props) => {
+    if (!isPricingCard(props)) return null;
+
+    const handleCtaClick: CardButtonClickHandler = (e) => {
+        e.stopPropagation();
+        props.onCtaClick?.(e);
+    };
+
+    return (
+        <div
+            className={getCardClassName(props)}
+            data-theme={props.theme}
+            data-loading={props.isLoading}
+            data-testid={props['data-testid']}
+            style={props.style}
+            onClick={props.onClick}
+        >
+            {props.popular && <div className="card-popular-badge">Most Popular</div>}
+            <h2>{props.planName}</h2>
+            <div className="card-pricing">
+                <span className="card-price">{props.price}</span>
+                {props.period && <span className="card-period">/{props.period}</span>}
+                {props.discount && <span className="card-discount">Save {props.discount}</span>}
+            </div>
+            <ul className="card-features">
+                {props.features.map((feature, index) => (
+                    <li key={index} className="card-feature-item">{feature}</li>
+                ))}
+            </ul>
+            {props.children}
+            <button className="card-cta" onClick={handleCtaClick}>
+                {props.ctaText}
+            </button>
+        </div>
+    );
+};
+
 export const Card: React.FC<CardProps> = (props) => {
     if (isContentCard(props)) return <ContentCard {...props} />;
     if (isProfileCard(props)) return <ProfileCard {...props} />;
     if (isWorkoutCard(props)) return <WorkoutCard {...props} />;
     if (isProgramCard(props)) return <ProgramCard {...props} />;
+    if (isPricingCard(props)) return <PricingCard {...props} />;
 
     // Handle unsupported card variants
     logger.error(`Unsupported card variant: ${props.variant}`);

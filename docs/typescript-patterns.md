@@ -8,6 +8,7 @@ This guide outlines common TypeScript patterns used throughout the FitCopilot co
 - [Hooks Patterns](#hooks-patterns)
 - [API Integration Patterns](#api-integration-patterns)
 - [Avoiding `any` Types](#avoiding-any-types)
+- [Discriminated Union Pattern](#discriminated-union-pattern)
 
 ## Event Handling Patterns
 
@@ -267,6 +268,119 @@ interface Item {
 
 function processItems(items: Item[]) {
   return items.map(item => item.name);
+}
+```
+
+## Discriminated Union Pattern
+
+We use discriminated unions as our primary pattern for type-safe component hierarchies. The pattern follows this structure:
+
+1. Create a base interface for common properties
+2. Extend the base interface for specific variants with a discriminator property
+3. Combine variant interfaces into a union type
+4. Implement type guards for runtime type checking
+
+### Discriminator Property Naming Convention
+
+We use two different discriminator property names based on the nature of the variation:
+
+- **`type`**: Use when components represent fundamentally different HTML elements or behaviors
+  - Example: Media component uses `type` because "image" vs "video" are different HTML elements
+  
+- **`variant`**: Use when components are styling variations of the same base element
+  - Example: Card component uses `variant` because all variants are div-based with styling differences
+
+```typescript
+// Example using 'type' as discriminator (for different HTML elements)
+export interface BaseMediaProps {
+  id?: string;
+  className?: string;
+  alt: string;
+}
+
+export interface ImageMediaProps extends BaseMediaProps {
+  type: 'image';  // Fundamental difference discriminator
+  src: string;
+  // ...image-specific properties
+}
+
+export interface VideoMediaProps extends BaseMediaProps {
+  type: 'video';  // Fundamental difference discriminator
+  src: string;
+  controls?: boolean;
+  // ...video-specific properties
+}
+
+export type MediaProps = ImageMediaProps | VideoMediaProps;
+
+// Example using 'variant' as discriminator (for styling differences)
+export interface BaseCardProps {
+  id?: string;
+  className?: string;
+  children?: React.ReactNode;
+}
+
+export interface ContentCardProps extends BaseCardProps {
+  variant: 'content';  // Styling difference discriminator
+  title: string;
+  // ...content card-specific properties
+}
+
+export interface ProfileCardProps extends BaseCardProps {
+  variant: 'profile';  // Styling difference discriminator
+  name: string;
+  // ...profile card-specific properties
+}
+
+export type CardProps = ContentCardProps | ProfileCardProps;
+```
+
+## Type Guard Organization
+
+Type guards follow a consistent organization pattern:
+
+1. **Interface/Type Definitions**: Located in `/types/[component].ts`
+2. **Type Guards**: Located in `/utils/typeGuards/[component]TypeGuards.ts`
+
+This separation provides cleaner separation of concerns:
+- Type files define "what things are"
+- Type guard files define "how to verify them"
+
+```typescript
+// In /types/card.ts
+export interface ContentCardProps extends BaseCardProps {
+  variant: 'content';
+  title: string;
+}
+
+export type CardProps = ContentCardProps | ProfileCardProps;
+
+// In /utils/typeGuards/cardTypeGuards.ts
+import { CardProps, ContentCardProps } from '../../types/card';
+
+export function isContentCard(props: CardProps): props is ContentCardProps {
+  return props.variant === 'content';
+}
+```
+
+## Event Handler Pattern
+
+Event handlers use a centralized approach:
+
+1. **Central Definitions**: Located in `/types/events.ts`
+2. **Naming Convention**: `[Component][Event]Handler` (e.g., `ButtonClickHandler`, `CardSelectHandler`)
+3. **Usage**: Import these in component-specific type files
+
+```typescript
+// In /types/events.ts
+export type ButtonClickEvent = React.MouseEvent<HTMLButtonElement>;
+export type ButtonClickHandler = (event: ButtonClickEvent) => void;
+
+// In /types/button.ts
+import { ButtonClickHandler } from './events';
+
+export interface ActionButtonProps extends BaseButtonProps {
+  onClick: ButtonClickHandler;
 }
 ```
 

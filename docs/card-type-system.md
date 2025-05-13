@@ -35,12 +35,16 @@ export type CardProps =
 
 ## Type Guards
 
-Type guards are centralized in `src/utils/cardTypeGuards.ts` and provide type-safe narrowing:
+Type guards are provided for each card variant:
 
 ```typescript
-export function isContentCard(props: CardProps): props is ContentCardProps {
+export const isContentCard = (props: CardProps): props is ContentCardProps => {
   return props.variant === 'content';
-}
+};
+
+export const isProfileCard = (props: CardProps): props is ProfileCardProps => {
+  return props.variant === 'profile';
+};
 
 // Additional guards for each card variant...
 ```
@@ -55,81 +59,114 @@ export const Card: React.FC<CardProps> = (props) => {
   if (isProfileCard(props)) return <ProfileCard {...props} />;
   if (isWorkoutCard(props)) return <WorkoutCard {...props} />;
   if (isProgramCard(props)) return <ProgramCard {...props} />;
-  // Handle other variants...
+  if (isPricingCard(props)) return <PricingCard {...props} />;
+  
+  // Handle unsupported card variants
+  logger.error(`Unsupported card variant: ${props.variant}`);
   return null;
 };
 ```
 
 ## Usage Examples
 
-### Basic Card
+### Content Card
 
 ```tsx
 import { Card } from 'features/shared/Card';
-import { ContentCardProps } from 'types/card';
 
-const MyComponent: React.FC = () => {
-  const cardProps: ContentCardProps = {
-    variant: 'content',
-    title: 'Getting Started',
-    description: 'Learn how to use the FitCopilot platform',
-    media: <img src="/images/getting-started.jpg" alt="Getting Started" />
-  };
-
-  return <Card {...cardProps} />;
-};
+<Card 
+  variant="content"
+  title="Getting Started with FitCopilot"
+  description="Learn how to use our platform to optimize your training."
+  media={<img src="/images/getting-started.jpg" alt="Getting started" />}
+  footer={<Button variant="primary">Learn More</Button>}
+/>
 ```
 
-### Conditional Card Rendering
+### Profile Card
 
 ```tsx
-import { CardProps } from 'types/card';
-import { isContentCard, isWorkoutCard } from 'utils/cardTypeGuards';
+import { Card } from 'features/shared/Card';
 
-const CardDetails: React.FC<{ card: CardProps }> = ({ card }) => {
-  // Type-safe handling based on card variant
-  if (isContentCard(card)) {
-    return (
-      <div>
-        Content Card: {card.title}
-        <p>{card.description}</p>
-      </div>
-    );
-  }
-  
-  if (isWorkoutCard(card)) {
-    return (
-      <div>
-        Workout: {card.workoutName}
-        <span>Difficulty: {card.difficulty}</span>
-        <span>Duration: {card.duration} min</span>
-      </div>
-    );
-  }
-  
-  // Handle other variants...
-};
+<Card 
+  variant="profile"
+  name="Jane Smith"
+  role="Fitness Trainer"
+  bio="Certified personal trainer with 10+ years of experience."
+  avatarUrl="/images/trainers/jane-smith.jpg"
+/>
 ```
 
-### Card State Guards
-
-In addition to type guards for card variants, utility guards are available for checking card states:
+### Workout Card
 
 ```tsx
-import { CardProps } from 'types/card';
-import { hasError, isLoading, hasMedia } from 'utils/cardTypeGuards';
+import { Card } from 'features/shared/Card';
 
-const CardWrapper: React.FC<{ card: CardProps }> = ({ card }) => {
-  return (
-    <div className="card-container">
-      {isLoading(card) && <div className="loading-overlay">Loading...</div>}
-      {hasError(card) && <div className="error-message">{card.error}</div>}
-      {!isLoading(card) && !hasError(card) && <Card {...card} />}
-      {hasMedia(card) && <div className="media-badge">Has Media</div>}
-    </div>
-  );
-};
+<Card 
+  variant="workout"
+  workoutName="High Intensity Interval Training"
+  difficulty="intermediate"
+  duration={45}
+  calories={450}
+  targets={["Cardio", "Full Body"]}
+  isBookmarked={false}
+  onBookmark={(id, isBookmarked) => handleBookmark(id, isBookmarked)}
+/>
 ```
+
+## Enhanced Styling with ExtendedCSSProperties
+
+Card components support theme tokens through `ExtendedCSSProperties`:
+
+```tsx
+import { Card } from 'features/shared/Card';
+import { ExtendedCSSProperties } from '../types/components';
+
+const customStyles: ExtendedCSSProperties = {
+  '--card-accent-color': 'var(--color-brand-primary)',
+  '--card-padding': 'var(--spacing-lg)',
+};
+
+<Card 
+  variant="content"
+  title="Custom Styled Card"
+  style={customStyles}
+/>
+```
+
+## Event Handling
+
+Cards support type-safe event handlers:
+
+```typescript
+export type CardClickHandler = (event: React.MouseEvent<HTMLDivElement>) => void;
+export type CardButtonClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => void;
+```
+
+Example usage:
+
+```tsx
+import { Card, CardClickHandler } from 'features/shared/Card';
+
+const handleCardClick: CardClickHandler = (event) => {
+  // Type-safe event handling
+  console.log('Card clicked', event.currentTarget.dataset.id);
+};
+
+<Card 
+  variant="content"
+  title="Interactive Card"
+  onClick={handleCardClick}
+/>
+```
+
+## Best Practices
+
+1. **Always use the variant discriminator** to ensure proper type checking
+2. **Implement type guards** for conditional rendering
+3. **Make cards accessible** with proper ARIA attributes and keyboard navigation
+4. **Keep card content focused** on a single purpose
+5. **Support responsive layouts** for different viewport sizes
 
 ## Card Variant Descriptions
 

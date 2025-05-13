@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Unified utility functions for scrolling in the Registration feature
  * These are provided as helpers but don't forcibly prevent user scrolling

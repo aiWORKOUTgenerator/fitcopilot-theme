@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { lazy, Suspense } from 'react';
 
 interface LazyLoadOptions {

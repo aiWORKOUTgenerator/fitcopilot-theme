@@ -346,4 +346,69 @@ export function convertToMediaSources(
     }
 
     return sources;
-} 
+}
+
+/**
+ * Media component type definitions using discriminated unions for different media types
+ */
+
+// Base media props shared by all media types
+export interface BaseMediaProps {
+    id?: string;
+    className?: string;
+    style?: ExtendedCSSProperties;
+    alt: string;
+    loading?: 'lazy' | 'eager';
+    width?: number | string;
+    height?: number | string;
+}
+
+// Image-specific props
+export interface ImageMediaProps extends BaseMediaProps {
+    type: 'image';  // Using 'type' as discriminator for fundamental HTML differences
+    src: string;
+    srcSet?: string;
+    sizes?: string;
+    objectFit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+    objectPosition?: string;
+}
+
+// Video-specific props
+export interface VideoMediaProps extends BaseMediaProps {
+    type: 'video';  // Using 'type' as discriminator for fundamental HTML differences
+    src: string;
+    poster?: string;
+    autoPlay?: boolean;
+    loop?: boolean;
+    muted?: boolean;
+    controls?: boolean;
+    playsInline?: boolean;
+}
+
+// Icon-specific props
+export interface IconMediaProps extends BaseMediaProps {
+    type: 'icon';  // Using 'type' as discriminator for fundamental HTML differences
+    icon: string;
+    size?: 'small' | 'medium' | 'large';
+    color?: string;
+}
+
+// Avatar-specific props
+export interface AvatarMediaProps extends BaseMediaProps {
+    type: 'avatar';  // Using 'type' as discriminator for fundamental HTML differences
+    src: string;
+    size?: 'small' | 'medium' | 'large';
+    shape?: 'circle' | 'square' | 'rounded';
+    fallback?: React.ReactNode;
+}
+
+// Composite discriminated union type
+export type MediaProps =
+    | ImageMediaProps
+    | VideoMediaProps
+    | IconMediaProps
+    | AvatarMediaProps;
+
+// Event handler types
+export type MediaLoadHandler = (event: React.SyntheticEvent<HTMLImageElement | HTMLVideoElement>) => void;
+export type MediaErrorHandler = (event: React.SyntheticEvent<HTMLImageElement | HTMLVideoElement>) => void; 

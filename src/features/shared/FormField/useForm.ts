@@ -3,7 +3,7 @@
  */
 
 import { useCallback, useReducer } from 'react';
-import { FormSubmitHandler, InputChangeHandler } from '../../../types/events';
+import { FormSubmitHandler, InputChangeHandler } from '../../../types/_events';
 import { createLoggedEventHandler } from '../../../utils/logger';
 import {
     FormAction,
@@ -260,10 +260,10 @@ export function useForm<T extends Record<string, unknown>>(
             onChange: createLoggedEventHandler(
                 'FormField',
                 `change:${String(fieldName)}`,
-                (event: React.ChangeEvent<HTMLInputElement>) => {
-                    const value = event.target.type === 'checkbox'
-                        ? event.target.checked
-                        : event.target.value;
+                (_event: React.ChangeEvent<HTMLInputElement>) => {
+                    const value = _event.target.type === 'checkbox'
+                        ? _event.target.checked
+                        : _event.target.value;
 
                     dispatch({
                         type: 'FIELD_CHANGE',
@@ -279,7 +279,7 @@ export function useForm<T extends Record<string, unknown>>(
                     }
                 }
             ),
-            onBlur: (event: React.FocusEvent<HTMLInputElement>) => {
+            onBlur: (_event: React.FocusEvent<HTMLInputElement>) => {
                 dispatch({
                     type: 'FIELD_BLUR',
                     fieldName: fieldName as string
@@ -297,9 +297,9 @@ export function useForm<T extends Record<string, unknown>>(
     }, [formState.fields, validateOnChange, validateOnBlur]);
 
     // Handle form submission
-    const handleSubmit = useCallback<FormSubmitHandler>((event) => {
-        // Prevent default form submission
-        event.preventDefault();
+    const handleSubmit = useCallback<FormSubmitHandler>((_event) => {
+        // Pr_event default form submission
+        _event.pr_eventDefault();
 
         // Validate all fields
         dispatch({ type: 'VALIDATE_ALL' });

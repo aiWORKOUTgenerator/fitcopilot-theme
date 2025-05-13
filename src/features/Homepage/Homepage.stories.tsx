@@ -146,7 +146,7 @@ const mockWordPressData: WordPressData = {
 };
 
 // Create mock data context provider for the story by mocking the useWordPress hook
-const MockDataDecorator = (Story: React.ComponentType) => {
+const _MockDataDecorator = (Story: React.ComponentType) => {
   // Mock the useWordPress hook to return our mock data
   jest.spyOn(WordPressHooks, 'useWordPress').mockImplementation(() => mockWordPressData);
 
@@ -154,7 +154,7 @@ const MockDataDecorator = (Story: React.ComponentType) => {
 };
 
 // Restore the mock after the story
-const mockRestore = () => {
+const _mockRestore = () => {
   jest.restoreAllMocks();
 };
 

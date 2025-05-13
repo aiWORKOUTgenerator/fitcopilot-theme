@@ -3,18 +3,18 @@
  */
 
 import React from 'react';
-import AudioPlayer from './AudioPlayer';
-import ImageGallery from './ImageGallery';
-import MediaCarousel from './MediaCarousel';
 import {
-    MediaProps,
     isAudioMedia,
     isImageGallery,
     isImageMedia,
     isMediaCarousel,
     isVideoMedia,
     isYouTubeMedia
-} from './types';
+} from '../../../utils/typeGuards/featureMediaTypeGuards';
+import AudioPlayer from './AudioPlayer';
+import ImageGallery from './ImageGallery';
+import MediaCarousel from './MediaCarousel';
+import { MediaProps } from './types';
 import VideoPlayer from './VideoPlayer';
 
 /**

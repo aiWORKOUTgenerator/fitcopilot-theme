@@ -3,8 +3,8 @@
  */
 
 // Main Button component
-export * from './Button';
-export { default } from './Button';
+export { Button, default } from './Button';
+export * from './types';
 
 // Button variants
 export * from './ButtonGroup';
@@ -14,5 +14,3 @@ export { default as LinkButton } from './LinkButton';
 export * from './ToggleButton';
 export { default as ToggleButton } from './ToggleButton';
 
-// Types
-export * from './types';

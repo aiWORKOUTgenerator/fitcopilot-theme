@@ -95,18 +95,18 @@ describe('Debug Type Guards', () => {
 
         it('should detect when performance.memory is not available', () => {
             // Create a mock performance without memory
-            const mockPerformance = {
+            const _mockPerformance = {
                 now: jest.fn()
             };
 
-            // @ts-ignore - intentionally removing memory
+            // @ts-expect-error - intentionally removing memory
             delete window.performance.memory;
 
             expect(hasPerformanceMemorySupport()).toBe(false);
         });
 
         it('should handle when performance is undefined', () => {
-            // @ts-ignore - intentionally setting to undefined
+            // @ts-expect-error - intentionally setting to undefined
             window.performance = undefined;
 
             expect(hasPerformanceMemorySupport()).toBe(false);
@@ -142,7 +142,7 @@ describe('Debug Type Guards', () => {
         });
 
         it('should return null when memory is not available', () => {
-            // @ts-ignore - intentionally removing memory
+            // @ts-expect-error - intentionally removing memory
             delete window.performance.memory;
 
             const result = getPerformanceMemory();
@@ -151,47 +151,47 @@ describe('Debug Type Guards', () => {
     });
 
     describe('isDebugModeEnabled', () => {
-        const originalWindow = { ...window };
+        const _originalWindow = { ...window };
 
         afterEach(() => {
-            // @ts-ignore - Reset DEBUG_MODE
+            // @ts-expect-error - Reset DEBUG_MODE
             delete window.DEBUG_MODE;
         });
 
         it('should return true when DEBUG_MODE is truthy', () => {
-            // @ts-ignore - Setting debug mode
+            // @ts-expect-error - Setting debug mode
             window.DEBUG_MODE = true;
             expect(isDebugModeEnabled()).toBe(true);
 
-            // @ts-ignore - Setting debug mode
+            // @ts-expect-error - Setting debug mode
             window.DEBUG_MODE = 1;
             expect(isDebugModeEnabled()).toBe(true);
 
-            // @ts-ignore - Setting debug mode
+            // @ts-expect-error - Setting debug mode
             window.DEBUG_MODE = 'enabled';
             expect(isDebugModeEnabled()).toBe(true);
         });
 
         it('should return false when DEBUG_MODE is falsy', () => {
-            // @ts-ignore - Setting debug mode
+            // @ts-expect-error - Setting debug mode
             window.DEBUG_MODE = false;
             expect(isDebugModeEnabled()).toBe(false);
 
-            // @ts-ignore - Setting debug mode
+            // @ts-expect-error - Setting debug mode
             window.DEBUG_MODE = 0;
             expect(isDebugModeEnabled()).toBe(false);
 
-            // @ts-ignore - Setting debug mode
+            // @ts-expect-error - Setting debug mode
             window.DEBUG_MODE = '';
             expect(isDebugModeEnabled()).toBe(false);
 
-            // @ts-ignore - Setting debug mode
+            // @ts-expect-error - Setting debug mode
             window.DEBUG_MODE = null;
             expect(isDebugModeEnabled()).toBe(false);
         });
 
         it('should return false when DEBUG_MODE is not defined', () => {
-            // @ts-ignore - Removing debug mode
+            // @ts-expect-error - Removing debug mode
             delete window.DEBUG_MODE;
             expect(isDebugModeEnabled()).toBe(false);
         });

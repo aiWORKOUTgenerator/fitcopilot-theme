@@ -87,7 +87,7 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
   };
 
   // Handle Pro Plan click with animation sequence
-  const handleProClick = () => {
+  const _handleProClick = () => {
     if (animationState === 'normal') {
       // Start animation sequence
       setAnimationState('exploding');

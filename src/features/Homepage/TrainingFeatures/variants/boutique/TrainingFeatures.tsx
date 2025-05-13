@@ -22,7 +22,7 @@ const BoutiqueTrainingFeatures: React.FC<BoutiqueVariantProps> = (props) => {
         sectionTitle = "Premium Training Features",
         sectionDescription = "Elevate your fitness journey with our exclusive training technology",
         sectionTagText = "Exclusive Features",
-        className = ''
+        _className = ''
     } = props;
 
     // Default features for boutique variant

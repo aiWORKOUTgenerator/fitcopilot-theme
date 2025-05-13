@@ -50,7 +50,7 @@ interface FloatingIconProps {
   top: number;
 }
 
-const FloatingIcon: React.FC<FloatingIconProps> = ({
+const _FloatingIcon: React.FC<FloatingIconProps> = ({
   children,
   delay,
   speed,
@@ -295,7 +295,7 @@ const Journey: React.FC<JourneyProps> = ({
   };
 
   // Create variant-specific props for the Section component
-  const sectionProps = {
+  const _sectionProps = {
     id: "how-it-works",
     className: "journey-section",
     backgroundColor: "secondary" as const,

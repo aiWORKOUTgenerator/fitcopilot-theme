@@ -169,25 +169,25 @@ export type ButtonProps =
  * Type guards for button variants
  */
 export const isPrimaryButton = (props: ButtonProps): props is PrimaryButtonProps =>
-    props.variant === 'primary';
+    props && props.variant === 'primary';
 
 export const isSecondaryButton = (props: ButtonProps): props is SecondaryButtonProps =>
-    props.variant === 'secondary';
+    props && props.variant === 'secondary';
 
 export const isTextButton = (props: ButtonProps): props is TextButtonProps =>
-    props.variant === 'text';
+    props && props.variant === 'text';
 
 export const isIconButton = (props: ButtonProps): props is IconButtonProps =>
-    props.variant === 'icon';
+    props && props.variant === 'icon';
 
 export const isToggleButton = (props: ButtonProps): props is ToggleButtonProps =>
-    props.variant === 'toggle';
+    props && props.variant === 'toggle';
 
 export const isLinkButton = (props: ButtonProps): props is LinkButtonProps =>
-    props.variant === 'link';
+    props && props.variant === 'link';
 
 export const isFloatingActionButton = (props: ButtonProps): props is FloatingActionButtonProps =>
-    props.variant === 'floating';
+    props && props.variant === 'floating';
 
 export const isWorkoutButton = (props: ButtonProps): props is WorkoutButtonProps =>
-    props.variant === 'workout'; 
+    props && props.variant === 'workout'; 

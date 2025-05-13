@@ -22,7 +22,7 @@ import { TextFieldProps, isTextField } from './types';
  */
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
     const {
-        fieldType,
+        _fieldType,
         name,
         type = 'text',
         value,

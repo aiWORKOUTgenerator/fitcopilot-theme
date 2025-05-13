@@ -10,9 +10,25 @@ fi
 echo "🔍 Running ESLint checks..."
 npm run lint
 
+# Optimize imports automatically
+echo "🧹 Optimizing imports..."
+npm run lint:optimize-imports
+
+# Check for deprecated code
+echo "🔍 Checking for deprecated code patterns..."
+npm run lint:scan-deprecated
+
 # Verify imports
 echo "🔍 Verifying imports..."
 npm run verify:imports
+
+# Check type coverage
+echo "📊 Checking TypeScript type coverage..."
+npm run lint:type-coverage || echo "⚠️ Type coverage below threshold - please fix any 'any' types"
+
+# Generate ESLint warning report
+echo "📝 Generating ESLint warning report..."
+npm run lint:warning-report
 
 # Run tests
 echo "🧪 Running tests..."

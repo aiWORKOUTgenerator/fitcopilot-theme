@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * Form Example Component
  * Demonstrates integration of typed form components with useForm hook
@@ -28,7 +29,7 @@ interface ContactFormData {
 export const FormExample: React.FC = () => {
     // Initialize form with useForm hook
     const {
-        values,
+        _values,
         register,
         handleSubmit,
         formState,

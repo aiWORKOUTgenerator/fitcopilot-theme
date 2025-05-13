@@ -42,9 +42,15 @@ export interface MSDocument extends Document {
 
 /**
  * WebKit-specific AudioContext
+ * Note: This interface extends AudioContext but exists to type-check WebKit implementations.
+ * It may appear empty, but it serves to properly type webkitAudioContext when encountered.
+ * 
+ * We need to include at least one property to avoid the no-empty-object-type error.
  */
 export interface WebkitAudioContext extends AudioContext {
-    // This is the same as AudioContext but has a different constructor name
+    // WebkitAudioContext has the same methods/properties as standard AudioContext
+    // but with a different constructor name/implementation
+    readonly webkitAudioContextImplementation: true;
 }
 
 /**

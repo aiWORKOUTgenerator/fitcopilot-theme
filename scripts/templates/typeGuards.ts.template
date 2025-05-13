@@ -1,0 +1,60 @@
+/**
+ * Type guards for {{componentName}} components
+ * 
+ * This file contains type guard implementations for safely working with
+ * {{componentName}} component variants. These guards help with type narrowing to ensure
+ * type safety when handling different {{componentName}} variants.
+ */
+
+import {
+  {{ComponentName}}Props,
+  {{VariantA}}{{ComponentName}}Props,
+  {{VariantB}}{{ComponentName}}Props
+} from '../../types/{{componentName}}';
+
+/**
+ * Type guard to check if props are for a {{variantA}} {{componentName}}
+ * 
+ * @param props The {{componentName}} props to check
+ * @returns Type predicate indicating if props are for a {{variantA}} {{componentName}}
+ */
+export function is{{VariantA}}{{ComponentName}}(props: {{ComponentName}}Props): props is {{VariantA}}{{ComponentName}}Props {
+  return props.{{discriminator}} === '{{variant-a}}';
+}
+
+/**
+ * Type guard to check if props are for a {{variantB}} {{componentName}}
+ * 
+ * @param props The {{componentName}} props to check
+ * @returns Type predicate indicating if props are for a {{variantB}} {{componentName}}
+ */
+export function is{{VariantB}}{{ComponentName}}(props: {{ComponentName}}Props): props is {{VariantB}}{{ComponentName}}Props {
+  return props.{{discriminator}} === '{{variant-b}}';
+}
+
+/**
+ * Type guard to check if a {{componentName}} has an error
+ * 
+ * @param props The {{componentName}} props to check
+ * @returns Whether the {{componentName}} has an error
+ */
+export function hasError(props: {{ComponentName}}Props): boolean {
+  return 'error' in props && !!props.error;
+}
+
+/**
+ * Type guard to check if a {{componentName}} is in loading state
+ * 
+ * @param props The {{componentName}} props to check
+ * @returns Whether the {{componentName}} is in loading state
+ */
+export function isLoading(props: {{ComponentName}}Props): boolean {
+  return 'isLoading' in props && !!props.isLoading;
+}
+
+export default {
+  is{{VariantA}}{{ComponentName}},
+  is{{VariantB}}{{ComponentName}},
+  hasError,
+  isLoading
+}; 
