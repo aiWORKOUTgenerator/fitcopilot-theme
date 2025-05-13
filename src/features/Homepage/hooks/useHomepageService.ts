@@ -9,6 +9,45 @@ import { useEffect, useState } from 'react';
 import { wordPressService, WordPressServiceData } from '../../../services';
 import logger from '../../../utils/logger';
 
+export interface Feature {
+    id: string;
+    title: string;
+    description: string;
+    icon?: string;
+    link?: string;
+}
+
+export interface JourneyStep {
+    id: string;
+    title: string;
+    description: string;
+    icon?: string;
+    order: number;
+}
+
+export interface Testimonial {
+    id: string;
+    author: string;
+    content: string;
+    rating: number;
+    avatar?: string;
+}
+
+export interface PricingPlan {
+    id: string;
+    name: string;
+    price: number;
+    features: string[];
+    popular?: boolean;
+}
+
+export interface FooterLink {
+    id: string;
+    title: string;
+    url: string;
+    category: string;
+}
+
 export interface HomepageData {
     siteLinks: {
         registration: string;
@@ -17,11 +56,11 @@ export interface HomepageData {
     assets: {
         logo: string;
     };
-    features: unknown[];
-    journey: unknown[];
-    testimonials: unknown[];
-    pricing: unknown[];
-    footerLinks: unknown[];
+    features: Feature[];
+    journey: JourneyStep[];
+    testimonials: Testimonial[];
+    pricing: PricingPlan[];
+    footerLinks: FooterLink[];
     demoMode: boolean;
 }
 
