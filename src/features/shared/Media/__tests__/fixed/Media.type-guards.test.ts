@@ -1,4 +1,4 @@
-import { createMediaProps } from '../../../../utils/test/fixtures';
+import { createMediaProps } from '../../../../../utils/test/fixtures';
 import {
     isAudioMedia,
     isImageGallery,
@@ -6,8 +6,8 @@ import {
     isMediaCarousel,
     isVideoMedia,
     isYouTubeMedia
-} from '../../../../utils/typeGuards/featureMediaTypeGuards';
-import { MediaProps } from '../types';
+} from '../../../../../utils/typeGuards/featureMediaTypeGuards';
+import { MediaProps } from '../../types';
 
 describe('Media Type Guards', () => {
     test('isImageMedia correctly identifies image media', () => {

@@ -1,0 +1,2339 @@
+{
+  "generatedAt": "2025-05-13T19:57:33.682Z",
+  "summary": {
+    "totalFiles": 533,
+    "filesWithDeprecations": 86,
+    "totalDeprecations": 269,
+    "bySeverity": {
+      "high": 13,
+      "medium": 0,
+      "low": 256
+    }
+  },
+  "findings": {
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/media.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/media.ts",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/media.ts",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/media.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/media.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/media.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/media.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "legacy",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/form.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/form.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/form.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/form.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/form.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/form.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/types/form.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useMediaPlayer.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useMediaPlayer.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useIntersectionObserver.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useIntersectionObserver.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useIntersectionObserver.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useIntersectionObserver.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/hooks/useIntersectionObserver.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/types.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/types.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/types.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/types.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/types.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/types.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/types.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/types/index.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/types/index.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/types/index.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/types/index.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/types/index.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/types/index.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/types/index.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/types/index.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/types.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/types.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/utils/validation.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/utils/validation.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/scrollUtils.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/scrollUtils.ts",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/scrollUtils.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/scrollUtils.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/scrollUtils.ts",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/scrollUtils.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/customizationStorage.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/customizationStorage.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/customizationStorage.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/utils/customizationStorage.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/types.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/types.ts",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/types.ts",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/types.ts",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/types.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/types.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/types.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/utils/themeUtils.ts": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/utils/themeUtils.ts",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/Homepage.stories.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/stories/features/Homepage/Hero.stories.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/stories/features/Homepage/Hero.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/stories/Foundations/Components.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/stories/Foundations/Components.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/stories/Foundations/Components.stories.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/stories/Foundations/Components.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/stories/Foundations/Components.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/stories/Foundations/Components.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/TextField.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/TextField.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/TextField.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/TextField.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/TextField.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/TextField.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/TextField.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/TextField.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/TextArea.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/TextArea.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/TextArea.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/TextArea.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/Select.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/Select.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/Select.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/FormField/fields/Select.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/TextField.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/TextField.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/TextField.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/shared/Form/TextField.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/components/SectionTitle.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/components/SectionTitle.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Splash/Splash.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Splash/Splash.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Splash/Splash.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Splash/Splash.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Splash/Splash.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Splash/Splash.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Splash/Splash.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Splash/Splash.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Splash/Splash.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Pricing/Pricing.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Pricing/Pricing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Pricing/Pricing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Pricing/Pricing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/Journey.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/Journey.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/JourneyStepCard.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/JourneyStepCard.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/JourneyStepCard.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/JourneyStepCard.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/JourneyStepCard.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/AnalyticsSelector.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/AnalyticsSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/GoalSelector/GoalSelector.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/components/GoalSelector/GoalSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/MedicalClearanceSelector.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/MedicalClearanceSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/InjuriesSelector.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/InjuriesSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/components/TimeCommitmentSelector/TimeCommitmentSelector.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/components/TimeCommitmentSelector/TimeCommitmentSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/components/EquipmentSelector/EquipmentSelector.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/components/EquipmentSelector/EquipmentSelector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/__tests__/CustomizeExperience.test.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Registration/Journey/CustomizeExperience/__tests__/CustomizeExperience.test.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Homepage.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/components/DemoNav/DemoNav.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/components/DemoNav/DemoNav.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/components/DemoNav/DemoNav.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/TrainingFeatures.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/modern/TrainingFeatures.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/modern/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/modern/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/modern/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/default/TrainingFeatures.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/default/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/default/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/default/TrainingFeatures.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/components/VideoPlayer/VideoPlayer.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/components/VideoPlayer/VideoPlayer.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/components/MediaContainer/MediaContainer.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/TrainingFeatures/components/MediaContainer/MediaContainer.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/hooks/useReducedMotion.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/hooks/useReducedMotion.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/hooks/useReducedMotion.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/hooks/useReducedMotion.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/examples/VisualEnhancementsExample.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/examples/VisualEnhancementsExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/examples/VisualEnhancementsExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/examples/VisualEnhancementsExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/examples/VisualEnhancementsExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/examples/VisualEnhancementsExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/examples/VisualEnhancementsExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/components/ProgramCard/ProgramCard.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Training/components/ProgramCard/ProgramCard.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "legacy",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Testimonials/Testimonials.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Testimonials/Testimonials.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Testimonials/Testimonials.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Testimonials/Testimonials.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Testimonials/Testimonials.stories.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Testimonials/Testimonials.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Testimonials/components/TestimonialCard.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Testimonials/components/TestimonialCard.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Testimonials/components/TestimonialCard.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Pricing/Pricing.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Pricing/Pricing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Pricing/Pricing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Pricing/Pricing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Pricing/Pricing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Pricing/Pricing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Pricing/Pricing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Pricing/Pricing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.stories.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/PersonalTraining.stories.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/variants/sports/PersonalTraining.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/variants/sports/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/variants/sports/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/variants/sports/PersonalTraining.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/SectionHeader.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/SectionHeader.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/SectionHeader.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyStep.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyFeatureCard.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Journey/components/JourneyFeatureCard.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/sports/Hero.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/sports/Hero.tsx",
+        "line": 1,
+        "pattern": "/@deprecated/",
+        "match": "@deprecated",
+        "type": "comment",
+        "severity": "high"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/sports/Hero.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "deprecated",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/sports/Hero.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/sports/Hero.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/registration/RegistrationHero.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Hero/variants/registration/RegistrationHero.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Footer/Footer.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Footer/Footer.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Footer/Footer.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Footer/Footer.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Footer/components/FooterLinkGroup.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Footer/components/FooterLinkGroup.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/Features.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/variants/sports/Features.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/variants/sports/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/variants/sports/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/variants/sports/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/default/Features.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/default/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/default/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/default/Features.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/components/FeatureCardDemos.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/components/FeatureCardDemos.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/components/FeatureCardDemos.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/components/FeatureCard.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/components/FeatureCard.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/features/Homepage/Features/components/FeatureCard.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/Implementation.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/Implementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/Implementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/Implementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/Implementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/Implementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/Implementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/Implementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/DebugRunner.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/DebugRunner.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/DebugRunner.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ClassNameDebug.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ClassNameDebug.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ClassNameDebug.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ClassNameDebug.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/CSSVarInspector.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/CSSVarInspector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/CSSVarInspector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/CSSVarInspector.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonStyleAudit.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonStyleAudit.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonStyleAudit.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonStyleAudit.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonPropsTracing.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonPropsTracing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonPropsTracing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonPropsTracing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonPropsTracing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonPropsTracing.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonImplementation.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonImplementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonImplementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonImplementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonImplementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonImplementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonImplementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonImplementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonImplementation.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonDebug.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonDebug.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonDebug.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonDebug.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonDebug.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/debug/ButtonDebug.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/DemoNav.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/DemoNav.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/DemoNav.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/TooltipExample.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/TooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/TooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/TooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/TooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/TooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/TooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/TooltipShowcase.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/TooltipShowcase.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/TooltipShowcase.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/TooltipExamples.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/TooltipExamples.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/PricingTooltipExample.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/PricingTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/PricingTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/PricingTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/PricingTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/PricingTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/PricingTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/PricingTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/PricingTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/HeroTooltipExample.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/HeroTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/HeroTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/DefaultTooltipExample.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Tooltip/examples/DefaultTooltipExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/ThemeSwitcher/ThemeSwitcher.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/ThemeSwitcher/ThemeSwitcher.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Media/VideoPlayer.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Media/VideoPlayer.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "legacy",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Media/MediaExample.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Media/MediaExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "legacy",
+        "type": "naming",
+        "severity": "low"
+      },
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/UI/Media/MediaExample.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "legacy",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/OptimizedImage/OptimizedImage.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/OptimizedImage/OptimizedImage.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ],
+    "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/Layout/Page/Page.tsx": [
+      {
+        "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/components/Layout/Page/Page.tsx",
+        "line": 1,
+        "pattern": "/legacy|deprecated|old|outdated/i",
+        "match": "old",
+        "type": "naming",
+        "severity": "low"
+      }
+    ]
+  }
+}

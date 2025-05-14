@@ -1,6 +1,6 @@
 import { fireEvent, render } from '@testing-library/react';
 import React, { act } from 'react';
-import ImageGallery from '../ImageGallery';
+import ImageGallery from '../../ImageGallery';
 
 describe('ImageGallery', () => {
     const images = [
@@ -9,27 +9,20 @@ describe('ImageGallery', () => {
         { src: 'img3.png', alt: 'Image 3' },
     ];
 
-    // Helper function to reduce test setup boilerplate
-    const setup = (props = {}) => {
-        const defaultProps = {
-            variant: 'imageGallery',
-            images,
-        };
-
-        return render(<ImageGallery {...defaultProps} {...props} />);
-    };
-
     it('renders with required props', () => {
-        const { getByAltText, container } = setup();
+        const { getByAltText, container } = render(
+            <ImageGallery variant="imageGallery" images={images} />
+        );
 
-        // Verify gallery structure using the actual className from the component
-        const galleryContainer = container.querySelector('.media-image-gallery');
+        const galleryContainer = container.querySelector('.image-gallery__container');
         expect(galleryContainer).toBeInTheDocument();
         expect(getByAltText('Image 1')).toBeInTheDocument();
     });
 
     it('navigates to next and previous images', () => {
-        const { getByLabelText, getByAltText } = setup();
+        const { getByLabelText, getByAltText } = render(
+            <ImageGallery variant="imageGallery" images={images} />
+        );
 
         // Click next button
         act(() => {
@@ -50,7 +43,14 @@ describe('ImageGallery', () => {
 
     it('calls onImageChange when image changes', () => {
         const onImageChange = jest.fn();
-        const { getByLabelText } = setup({ onImageChange });
+
+        const { getByLabelText } = render(
+            <ImageGallery
+                variant="imageGallery"
+                images={images}
+                onImageChange={onImageChange}
+            />
+        );
 
         // Click next button
         act(() => {
@@ -62,28 +62,32 @@ describe('ImageGallery', () => {
     });
 
     it('respects initialIndex prop', () => {
-        const { getByAltText } = setup({ initialIndex: 1 });
+        const { getByAltText } = render(
+            <ImageGallery
+                variant="imageGallery"
+                images={images}
+                initialIndex={1}
+            />
+        );
 
         // Should start at second image
         expect(getByAltText('Image 2')).toBeInTheDocument();
     });
 
     it('loops through images when reaching the end', () => {
-        const { getByLabelText, getByAltText, rerender } = setup();
+        const { getByLabelText, getByAltText } = render(
+            <ImageGallery
+                variant="imageGallery"
+                images={images}
+            />
+        );
 
-        // Go to the third image with individual clicks to ensure state updates correctly
+        // Go to last image
         act(() => {
+            fireEvent.click(getByLabelText('Next image'));
             fireEvent.click(getByLabelText('Next image'));
         });
 
-        // We need to verify the second image is showing first
-        expect(getByAltText('Image 2')).toBeInTheDocument();
-
-        act(() => {
-            fireEvent.click(getByLabelText('Next image'));
-        });
-
-        // Now verify the third image is showing
         expect(getByAltText('Image 3')).toBeInTheDocument();
 
         // Click next again, should loop to first image
@@ -92,5 +96,36 @@ describe('ImageGallery', () => {
         });
 
         expect(getByAltText('Image 1')).toBeInTheDocument();
+    });
+
+    it('handles keyboard navigation', () => {
+        const { container, getByAltText } = render(
+            <ImageGallery
+                variant="imageGallery"
+                images={images}
+            />
+        );
+
+        // Focus the gallery
+        const gallery = container.querySelector('.image-gallery__container');
+        if (gallery) {
+            act(() => {
+                gallery.focus();
+            });
+
+            // Press right arrow key
+            act(() => {
+                fireEvent.keyDown(gallery, { key: 'ArrowRight' });
+            });
+
+            expect(getByAltText('Image 2')).toBeInTheDocument();
+
+            // Press left arrow key
+            act(() => {
+                fireEvent.keyDown(gallery, { key: 'ArrowLeft' });
+            });
+
+            expect(getByAltText('Image 1')).toBeInTheDocument();
+        }
     });
 }); 

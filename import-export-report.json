@@ -1740,6 +1740,12 @@
     "importedBy": "features/shared/Media/Media.tsx"
   },
   {
+    "file": "features/shared/Media/ImageMedia.tsx",
+    "exportName": "ImageMedia",
+    "type": "missing",
+    "importedBy": "features/shared/Media/Media.tsx"
+  },
+  {
     "file": "features/shared/Media/MediaCarousel.tsx",
     "exportName": "MediaCarousel",
     "type": "missing",
@@ -1752,10 +1758,22 @@
     "importedBy": "features/shared/Media/Media.tsx"
   },
   {
+    "file": "features/shared/Media/YouTubePlayer.tsx",
+    "exportName": "YouTubePlayer",
+    "type": "missing",
+    "importedBy": "features/shared/Media/Media.tsx"
+  },
+  {
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",
     "importedBy": "features/shared/Media/VideoPlayer.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "features/shared/Media/YouTubePlayer.tsx"
   },
   {
     "file": "features/shared/TypeDemo/TypeDemo.tsx",

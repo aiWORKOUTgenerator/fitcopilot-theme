@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2025-05-13T19:57:48.369Z",
+  "totalWarnings": 0,
+  "topRules": [],
+  "topFiles": [],
+  "topDirectories": [
+    {
+      "directory": "src",
+      "count": 0
+    },
+    {
+      "directory": "src/components",
+      "count": 0
+    },
+    {
+      "directory": "src/components/Layout/Header",
+      "count": 0
+    },
+    {
+      "directory": "src/components/Layout/Page",
+      "count": 0
+    },
+    {
+      "directory": "src/components/Layout/Section",
+      "count": 0
+    },
+    {
+      "directory": "src/components/OptimizedImage",
+      "count": 0
+    },
+    {
+      "directory": "src/components/UI/Card",
+      "count": 0
+    },
+    {
+      "directory": "src/components/UI/Error",
+      "count": 0
+    },
+    {
+      "directory": "src/components/UI/ErrorMessage",
+      "count": 0
+    },
+    {
+      "directory": "src/components/UI/Loading",
+      "count": 0
+    }
+  ],
+  "warnings": []
+}

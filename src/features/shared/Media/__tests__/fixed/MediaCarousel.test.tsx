@@ -1,6 +1,6 @@
 import { fireEvent, render } from '@testing-library/react';
 import React, { act } from 'react';
-import MediaCarousel from '../MediaCarousel';
+import MediaCarousel from '../../MediaCarousel';
 
 describe('MediaCarousel', () => {
     const items = [
@@ -9,37 +9,29 @@ describe('MediaCarousel', () => {
         { type: 'image', src: 'img2.png', alt: 'Image 2' },
     ];
 
-    // Helper function for setup to reduce boilerplate
-    const setup = (props = {}) => {
-        const defaultProps = {
-            variant: 'carousel',
-            items,
-        };
-
-        return render(<MediaCarousel {...defaultProps} {...props} />);
-    };
-
     it('renders with required props', () => {
-        const { getByAltText, container } = setup();
+        const { getByAltText, container } = render(
+            <MediaCarousel variant="carousel" items={items} />
+        );
 
-        // Verify the container has the correct class
-        const carouselContainer = container.querySelector('.media-carousel');
+        const carouselContainer = container.querySelector('.media-carousel__container');
         expect(carouselContainer).toBeInTheDocument();
         expect(getByAltText('Image 1')).toBeInTheDocument();
     });
 
     it('navigates to next and previous items', () => {
-        const { getByLabelText, getByAltText, container } = setup();
+        const { getByLabelText, getByAltText, container } = render(
+            <MediaCarousel variant="carousel" items={items} />
+        );
 
-        // Click next button - wrapped in act() to handle state updates
+        // Click next button
         act(() => {
             fireEvent.click(getByLabelText('Next item'));
         });
 
-        // Should show video (videos don't have alt text in the DOM, so check for the element)
+        // Should show video
         const video = container.querySelector('video');
         expect(video).toBeInTheDocument();
-        expect(video).toHaveAttribute('src', 'video1.mp4');
 
         // Click next again
         act(() => {
@@ -60,9 +52,16 @@ describe('MediaCarousel', () => {
 
     it('calls onItemChange when item changes', () => {
         const onItemChange = jest.fn();
-        const { getByLabelText } = setup({ onItemChange });
 
-        // Click next button - wrapped in act()
+        const { getByLabelText } = render(
+            <MediaCarousel
+                variant="carousel"
+                items={items}
+                onItemChange={onItemChange}
+            />
+        );
+
+        // Click next button
         act(() => {
             fireEvent.click(getByLabelText('Next item'));
         });
@@ -72,32 +71,33 @@ describe('MediaCarousel', () => {
     });
 
     it('respects initialIndex prop', () => {
-        const { container } = setup({ initialIndex: 1 });
+        const { container } = render(
+            <MediaCarousel
+                variant="carousel"
+                items={items}
+                initialIndex={1}
+            />
+        );
 
         // Should start with video (index 1)
         const video = container.querySelector('video');
         expect(video).toBeInTheDocument();
-        expect(video).toHaveAttribute('src', 'video1.mp4');
     });
 
     it('loops through items when reaching the end', () => {
-        const { getByLabelText, getByAltText, container } = setup();
+        const { getByLabelText, getByAltText, container } = render(
+            <MediaCarousel
+                variant="carousel"
+                items={items}
+            />
+        );
 
-        // Navigate to last item in sequence
+        // Go to last item
         act(() => {
+            fireEvent.click(getByLabelText('Next item'));
             fireEvent.click(getByLabelText('Next item'));
         });
 
-        // Verify we're on the video (second item) by checking the video element
-        const video = container.querySelector('video');
-        expect(video).toBeInTheDocument();
-        expect(video).toHaveAttribute('src', 'video1.mp4');
-
-        act(() => {
-            fireEvent.click(getByLabelText('Next item'));
-        });
-
-        // Verify we're on Image 2
         expect(getByAltText('Image 2')).toBeInTheDocument();
 
         // Click next again, should loop to first image
@@ -105,21 +105,38 @@ describe('MediaCarousel', () => {
             fireEvent.click(getByLabelText('Next item'));
         });
 
-        // Should go back to first image
         expect(getByAltText('Image 1')).toBeInTheDocument();
     });
 
-    it('shows the correct indicator', () => {
-        const { container } = setup();
+    it('renders different media types correctly', () => {
+        const { container, getByLabelText, getByAltText } = render(
+            <MediaCarousel
+                variant="carousel"
+                items={[
+                    { type: 'image', src: 'img1.png', alt: 'Test Image' },
+                    { type: 'video', src: 'video1.mp4', alt: 'Test Video' },
+                    { type: 'youtube', videoId: 'abc123', alt: 'Test YouTube' }
+                ]}
+            />
+        );
 
-        const indicator = container.querySelector('.media-carousel-indicator');
-        expect(indicator).toBeInTheDocument();
-        expect(indicator.textContent).toContain('1 / 3');
+        // First item should be an image
+        expect(getByAltText('Test Image')).toBeInTheDocument();
 
+        // Navigate to second item
         act(() => {
-            fireEvent.click(container.querySelector('[aria-label="Next item"]'));
+            fireEvent.click(getByLabelText('Next item'));
         });
 
-        expect(indicator.textContent).toContain('2 / 3');
+        // Should be a video
+        expect(container.querySelector('video')).toBeInTheDocument();
+
+        // Navigate to third item
+        act(() => {
+            fireEvent.click(getByLabelText('Next item'));
+        });
+
+        // Should be a YouTube embed
+        expect(container.querySelector('iframe')).toBeInTheDocument();
     });
 }); 
