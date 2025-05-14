@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import logger from '../../../utils/logger';
+import './styles/YouTubePlayer.scss';
 import { YouTubeMediaProps } from './types';
 
 /**
@@ -13,80 +14,93 @@ const YouTubePlayer: React.FC<YouTubeMediaProps> = ({
     muted = false,
     showRelated = false,
     className = '',
-    alt,
+    startTime = 0,
+    _alt,
     caption,
+    onLoad,
+    onError,
     ...rest
 }) => {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const playerRef = useRef<any>(null);
+    const playerRef = useRef<HTMLDivElement>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
-    const [ytApiReady, setYtApiReady] = useState(typeof window !== 'undefined' && window.YT !== undefined);
+    const [player, setPlayer] = useState<YT.Player | null>(null);
 
     // Load YouTube API Script
     useEffect(() => {
-        if (ytApiReady) return;
+        if (!window.YT) {
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
 
-        const tag = document.createElement('script');
-        tag.src = 'https://www.youtube.com/iframe_api';
-        const firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+            // Create YouTube API callback
+            window.onYouTubeIframeAPIReady = initializePlayer;
 
-        // Define callback for when YouTube API is ready
-        window.onYouTubeIframeAPIReady = () => {
-            setYtApiReady(true);
-        };
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+        } else {
+            // API already loaded
+            initializePlayer();
+        }
 
-        return () => {
-            // Cleanup global callback
-            window.onYouTubeIframeAPIReady = null;
-        };
-    }, [ytApiReady]);
+        function initializePlayer() {
+            if (!playerRef.current) return;
 
-    // Initialize YouTube player
-    useEffect(() => {
-        if (!ytApiReady || !containerRef.current) return;
-
-        try {
-            playerRef.current = new window.YT.Player(containerRef.current, {
-                width,
-                height,
-                videoId,
-                playerVars: {
-                    autoplay: autoPlay ? 1 : 0,
-                    mute: muted ? 1 : 0,
-                    rel: showRelated ? 1 : 0,
-                    modestbranding: 1,
-                    playsinline: 1,
-                },
-                events: {
-                    onReady: () => {
-                        setIsLoading(false);
+            try {
+                const ytPlayer = new window.YT.Player(playerRef.current, {
+                    videoId,
+                    width: width.toString(),
+                    height: height.toString(),
+                    playerVars: {
+                        autoplay: autoPlay ? 1 : 0,
+                        mute: muted ? 1 : 0,
+                        start: startTime,
+                        playsinline: 1,
+                        modestbranding: 1,
+                        rel: showRelated ? 1 : 0
                     },
-                    onError: () => {
-                        logger.error('YouTube Player Error', { videoId });
-                        setHasError(true);
-                        setIsLoading(false);
-                    },
-                },
-            });
-        } catch (error) {
-            logger.error('YouTube Player Initialization Error', { error, videoId });
-            setHasError(true);
-            setIsLoading(false);
+                    events: {
+                        onReady: handleReady,
+                        onError: handleError,
+                        onStateChange: handleStateChange
+                    }
+                });
+
+                setPlayer(ytPlayer);
+            } catch (error) {
+                logger.error('YouTube Player Initialization Error', { error, videoId });
+                setHasError(true);
+                setIsLoading(false);
+                onError?.();
+            }
         }
 
         return () => {
-            // Cleanup player
-            if (playerRef.current) {
-                try {
-                    playerRef.current.destroy();
-                } catch (error) {
-                    logger.error('YouTube Player Destroy Error', { error });
-                }
+            // Cleanup
+            if (player) {
+                player.destroy();
             }
         };
-    }, [ytApiReady, videoId, width, height, autoPlay, muted, showRelated]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [videoId]);
+
+    const handleReady = () => {
+        setIsLoading(false);
+        onLoad?.();
+    };
+
+    const handleError = () => {
+        logger.error('YouTube Player Error', { videoId });
+        setHasError(true);
+        setIsLoading(false);
+        onError?.();
+    };
+
+    const handleStateChange = (event: YT.OnStateChangeEvent) => {
+        // Handle state changes if needed
+        if (event.data === window.YT.PlayerState.ENDED) {
+            // Video ended
+        }
+    };
 
     return (
         <div
@@ -97,7 +111,7 @@ const YouTubePlayer: React.FC<YouTubeMediaProps> = ({
             {...rest}
         >
             {/* YouTube Player Container */}
-            <div ref={containerRef} className="youtube-player__element">
+            <div ref={playerRef} className="youtube-player__element">
                 {/* This div will be replaced by the YT player */}
             </div>
 

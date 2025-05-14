@@ -1,11 +1,11 @@
 /* eslint-disable */
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-import { JourneyProvider } from '../../../components/JourneyContext';
+import { JourneyProvider } from '../../components/JourneyContext';
 import CustomizeExperience from '../CustomizeExperience';
 
 // Mock implementation for journey context
-jest.mock('../../../components/JourneyContext', () => ({
+jest.mock('../../components/JourneyContext', () => ({
     useJourney: () => ({
         registrationData: {
             experienceLevel: 'beginner',
@@ -16,6 +16,31 @@ jest.mock('../../../components/JourneyContext', () => ({
     JourneyProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
+// Mock CustomizationContext
+jest.mock('../context/CustomizationContext', () => {
+    return {
+        useCustomization: () => ({
+            validSections: { equipment: true, timeCommitment: false, workoutPreference: false },
+            completedSections: [],
+            isCustomizationValid: false,
+            equipmentData: { selectedEquipment: [], hasNoEquipment: false },
+            timeCommitmentData: null,
+            workoutPreferenceData: null,
+            isLoading: false,
+            error: null,
+            updateSectionValidity: jest.fn(),
+            markSectionComplete: jest.fn(),
+            resetCustomizationState: jest.fn(),
+            updateEquipmentData: jest.fn(),
+            updateTimeCommitmentData: jest.fn(),
+            updateWorkoutPreferenceData: jest.fn(),
+            saveAllData: jest.fn().mockResolvedValue(true),
+            syncWithStoredData: jest.fn().mockResolvedValue(true),
+        }),
+        CustomizationProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    };
+});
+
 // Mock storage functions
 jest.mock('../utils/customizationStorage', () => ({
     loadCustomizationData: jest.fn(() => null),
@@ -23,6 +48,20 @@ jest.mock('../utils/customizationStorage', () => ({
 }));
 
 describe('CustomizeExperience', () => {
+    // Helper to get the confirm button for the equipment section
+    const getEquipmentConfirmButton = () => {
+        // First find the equipment section
+        const equipmentSection = screen.getByText('Equipment Selection').closest('#section-equipment');
+
+        // Then find the confirm button within that section
+        if (equipmentSection) {
+            return screen.getAllByText('Confirm Selection').find(button =>
+                equipmentSection.contains(button)
+            );
+        }
+        return null;
+    };
+
     const renderComponent = () => {
         const handleValidChange = jest.fn();
         render(
@@ -45,8 +84,9 @@ describe('CustomizeExperience', () => {
         const dumbbellsOption = await screen.findByText('Dumbbells');
         fireEvent.click(dumbbellsOption);
 
-        // Confirm button should be enabled
-        const confirmButton = screen.getByText('Confirm Selection');
+        // Find the specific confirm button for equipment section
+        const confirmButton = screen.getAllByText('Confirm Selection')[0];
+        expect(confirmButton).toBeInTheDocument();
         expect(confirmButton).not.toBeDisabled();
 
         // Click confirm button
@@ -66,8 +106,9 @@ describe('CustomizeExperience', () => {
             expect(screen.getByText('Equipment Selection')).toBeInTheDocument();
         });
 
-        // Try to interact with confirm button, which should be disabled
-        const confirmButton = screen.getByText('Confirm Selection');
+        // Find the specific confirm button for equipment section
+        const confirmButton = screen.getAllByText('Confirm Selection')[0];
+        expect(confirmButton).toBeInTheDocument();
         expect(confirmButton).toBeDisabled();
 
         // Fill and clear a text field to trigger validation
@@ -104,8 +145,11 @@ describe('CustomizeExperience', () => {
         const dumbbellsOption = await screen.findByText('Dumbbells');
         fireEvent.click(dumbbellsOption);
 
+        // Find the specific confirm button for equipment section
+        const confirmButton = screen.getAllByText('Confirm Selection')[0];
+        expect(confirmButton).toBeInTheDocument();
+
         // Click confirm button - this should fail
-        const confirmButton = screen.getByText('Confirm Selection');
         fireEvent.click(confirmButton);
 
         // Error message should appear

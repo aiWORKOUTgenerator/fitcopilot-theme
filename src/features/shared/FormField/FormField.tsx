@@ -1,6 +1,6 @@
 /**
  * FormField Component
- * Renders different form field types based on fieldType prop
+ * Renders different form field types based on variant prop
  */
 
 import React from 'react';
@@ -71,7 +71,7 @@ export const FormField: React.FC<FormFieldProps> = (props) => {
   }
 
   // Default case - unsupported field type
-  error(`Unsupported field type: ${props.fieldType}`);
+  error(`Unsupported field variant: ${props.variant}`);
   return null;
 };
 

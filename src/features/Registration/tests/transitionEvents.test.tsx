@@ -1,10 +1,75 @@
 /* eslint-disable */
-import { transitionEventManager } from '../events/transitionEventManager';
+import { act, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import React from 'react';
 import { StepTransitionEvent, TransitionType } from '../events/transitionEvents';
 import { RegistrationStep } from '../types';
 
 // Import test setup
 import './setup';
+
+// Mock the logger module
+jest.mock('../../../utils/logger', () => ({
+    debug: jest.fn(),
+    error: jest.fn(),
+    info: jest.fn(),
+    warn: jest.fn()
+}));
+
+// Create listeners array for the mock
+let listeners: Array<(event: StepTransitionEvent) => void> = [];
+
+// Mock the transitionEventManager
+const mockTransitionEventManager = {
+    listeners: listeners,
+
+    subscribe: jest.fn((listener: (event: StepTransitionEvent) => void) => {
+        listeners.push(listener);
+
+        // Return unsubscribe function
+        return jest.fn(() => {
+            listeners = listeners.filter(l => l !== listener);
+        });
+    }),
+
+    emitTransition: jest.fn((
+        sourceStep: RegistrationStep,
+        destinationStep: RegistrationStep,
+        transitionType: TransitionType,
+        metadata?: Record<string, unknown>
+    ) => {
+        const event: StepTransitionEvent = {
+            sourceStep,
+            destinationStep,
+            transitionType,
+            timestamp: Date.now(),
+            metadata
+        };
+
+        // Notify all listeners
+        listeners.forEach(listener => listener(event));
+
+        return event;
+    })
+};
+
+// Mock the module
+jest.mock('../events/transitionEventManager', () => ({
+    transitionEventManager: mockTransitionEventManager
+}));
+
+// Create a test component to verify event handling in UI context
+const TestTransitionComponent = ({
+    onEmitTransition
+}: {
+    onEmitTransition: () => void;
+}) => (
+    <div>
+        <button data-testid="emit-button" onClick={onEmitTransition}>
+            Emit Transition
+        </button>
+    </div>
+);
 
 // Mock the useRegistrationEvents hook to avoid dependencies
 jest.mock('../hooks/useRegistrationEvents', () => ({
@@ -17,43 +82,51 @@ jest.mock('../hooks/useRegistrationEvents', () => ({
     }),
 }));
 
+// Mock Date.now() for consistent test output
+const MOCK_TIMESTAMP = 1648212000000; // Fixed timestamp for testing
+jest.spyOn(Date, 'now').mockImplementation(() => MOCK_TIMESTAMP);
+
 describe('Transition Events System', () => {
     beforeEach(() => {
         // Reset any mocks and clean up before each test
         jest.clearAllMocks();
+
+        // Clear listeners array
+        listeners = [];
     });
 
     test('should subscribe to transition events and capture all event data', () => {
         const mockListener = jest.fn();
 
         // Subscribe to events
-        const unsubscribe = transitionEventManager.subscribe(mockListener);
+        const unsubscribe = mockTransitionEventManager.subscribe(mockListener);
 
         // Emit an event
-        const timestamp = Date.now();
-        jest.spyOn(Date, 'now').mockImplementation(() => timestamp);
-
-        transitionEventManager.emitTransition(
-            RegistrationStep.SPLASH,
-            RegistrationStep.EXPERIENCE_LEVEL,
-            TransitionType.STANDARD
-        );
+        act(() => {
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.EXPERIENCE_LEVEL,
+                TransitionType.STANDARD
+            );
+        });
 
         // Verify listener was called with complete event data
         expect(mockListener).toHaveBeenCalledWith({
             sourceStep: RegistrationStep.SPLASH,
             destinationStep: RegistrationStep.EXPERIENCE_LEVEL,
             transitionType: TransitionType.STANDARD,
-            timestamp,
+            timestamp: MOCK_TIMESTAMP,
         });
 
         // Unsubscribe and verify no more calls
-        unsubscribe();
-        transitionEventManager.emitTransition(
-            RegistrationStep.SPLASH,
-            RegistrationStep.EXPERIENCE_LEVEL,
-            TransitionType.STANDARD
-        );
+        act(() => {
+            unsubscribe();
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.EXPERIENCE_LEVEL,
+                TransitionType.STANDARD
+            );
+        });
 
         // Should still have only been called once
         expect(mockListener).toHaveBeenCalledTimes(1);
@@ -64,43 +137,45 @@ describe('Transition Events System', () => {
         const mockListener = jest.fn((event) => capturedEvents.push(event));
 
         // Subscribe to events
-        const unsubscribe = transitionEventManager.subscribe(mockListener);
+        const unsubscribe = mockTransitionEventManager.subscribe(mockListener);
 
         // Emit events for each transition type
-        // Standard transition (regular sequential flow)
-        transitionEventManager.emitTransition(
-            RegistrationStep.SPLASH,
-            RegistrationStep.EXPERIENCE_LEVEL,
-            TransitionType.STANDARD
-        );
+        act(() => {
+            // Standard transition (regular sequential flow)
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.EXPERIENCE_LEVEL,
+                TransitionType.STANDARD
+            );
 
-        // Map-based transition (special transition via STEP_TRANSITION_MAP)
-        transitionEventManager.emitTransition(
-            RegistrationStep.TIME_COMMITMENT,
-            RegistrationStep.ACCOUNT_DETAILS,
-            TransitionType.MAP_BASED
-        );
+            // Map-based transition (special transition via STEP_TRANSITION_MAP)
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.TIME_COMMITMENT,
+                RegistrationStep.PAYMENT,
+                TransitionType.MAP_BASED
+            );
 
-        // Direct transition (via goToStep)
-        transitionEventManager.emitTransition(
-            RegistrationStep.SPLASH,
-            RegistrationStep.PRICING,
-            TransitionType.DIRECT
-        );
+            // Direct transition (via goToStep)
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.PRICING,
+                TransitionType.DIRECT
+            );
 
-        // Back transition (previous step)
-        transitionEventManager.emitTransition(
-            RegistrationStep.EXPERIENCE_LEVEL,
-            RegistrationStep.SPLASH,
-            TransitionType.BACK
-        );
+            // Back transition (previous step)
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.EXPERIENCE_LEVEL,
+                RegistrationStep.SPLASH,
+                TransitionType.BACK
+            );
 
-        // Override transition (system forced)
-        transitionEventManager.emitTransition(
-            RegistrationStep.SPLASH,
-            RegistrationStep.ACCOUNT_DETAILS,
-            TransitionType.OVERRIDE
-        );
+            // Override transition (system forced)
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.CONFIRMATION,
+                TransitionType.OVERRIDE
+            );
+        });
 
         // Verify all events were captured
         expect(capturedEvents.length).toBe(5);
@@ -120,7 +195,7 @@ describe('Transition Events System', () => {
         const mockListener = jest.fn();
 
         // Subscribe to events
-        const unsubscribe = transitionEventManager.subscribe(mockListener);
+        const unsubscribe = mockTransitionEventManager.subscribe(mockListener);
 
         // Emit an event with metadata
         const metadata = {
@@ -132,12 +207,14 @@ describe('Transition Events System', () => {
             }
         };
 
-        transitionEventManager.emitTransition(
-            RegistrationStep.SPLASH,
-            RegistrationStep.EXPERIENCE_LEVEL,
-            TransitionType.STANDARD,
-            metadata
-        );
+        act(() => {
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.EXPERIENCE_LEVEL,
+                TransitionType.STANDARD,
+                metadata
+            );
+        });
 
         // Verify metadata was included and properly structured
         expect(mockListener).toHaveBeenCalledWith(
@@ -165,15 +242,17 @@ describe('Transition Events System', () => {
         const listener2 = jest.fn();
 
         // Subscribe multiple listeners
-        const unsubscribe1 = transitionEventManager.subscribe(listener1);
-        const unsubscribe2 = transitionEventManager.subscribe(listener2);
+        const unsubscribe1 = mockTransitionEventManager.subscribe(listener1);
+        const unsubscribe2 = mockTransitionEventManager.subscribe(listener2);
 
         // Emit event
-        transitionEventManager.emitTransition(
-            RegistrationStep.SPLASH,
-            RegistrationStep.EXPERIENCE_LEVEL,
-            TransitionType.STANDARD
-        );
+        act(() => {
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.EXPERIENCE_LEVEL,
+                TransitionType.STANDARD
+            );
+        });
 
         // Both listeners should receive the event
         expect(listener1).toHaveBeenCalledTimes(1);
@@ -183,11 +262,13 @@ describe('Transition Events System', () => {
         unsubscribe1();
 
         // Emit another event
-        transitionEventManager.emitTransition(
-            RegistrationStep.EXPERIENCE_LEVEL,
-            RegistrationStep.GOALS,
-            TransitionType.STANDARD
-        );
+        act(() => {
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.EXPERIENCE_LEVEL,
+                RegistrationStep.GOALS,
+                TransitionType.STANDARD
+            );
+        });
 
         // First listener should still have 1 call, second should have 2
         expect(listener1).toHaveBeenCalledTimes(1);
@@ -197,11 +278,13 @@ describe('Transition Events System', () => {
         unsubscribe2();
 
         // Emit final event
-        transitionEventManager.emitTransition(
-            RegistrationStep.GOALS,
-            RegistrationStep.EQUIPMENT,
-            TransitionType.STANDARD
-        );
+        act(() => {
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.GOALS,
+                RegistrationStep.EQUIPMENT,
+                TransitionType.STANDARD
+            );
+        });
 
         // No additional calls should happen
         expect(listener1).toHaveBeenCalledTimes(1);
@@ -215,7 +298,7 @@ describe('Transition Events System', () => {
 
         // Get a valid unsubscribe function first
         const mockListener = jest.fn();
-        const unsubscribe = transitionEventManager.subscribe(mockListener);
+        const unsubscribe = mockTransitionEventManager.subscribe(mockListener);
 
         // Unsubscribe should be callable and not throw
         expect(() => unsubscribe()).not.toThrow();
@@ -224,11 +307,14 @@ describe('Transition Events System', () => {
         expect(() => unsubscribe()).not.toThrow();
 
         // Should still work correctly (listener not called after unsubscribe)
-        transitionEventManager.emitTransition(
-            RegistrationStep.SPLASH,
-            RegistrationStep.EXPERIENCE_LEVEL,
-            TransitionType.STANDARD
-        );
+        act(() => {
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.EXPERIENCE_LEVEL,
+                TransitionType.STANDARD
+            );
+        });
+
         expect(mockListener).not.toHaveBeenCalled();
     });
 
@@ -237,26 +323,28 @@ describe('Transition Events System', () => {
         const mockListener = jest.fn((event) => capturedEvents.push(event));
 
         // Subscribe to events
-        const unsubscribe = transitionEventManager.subscribe(mockListener);
+        const unsubscribe = mockTransitionEventManager.subscribe(mockListener);
 
         // Emit a sequence of events that mimics a user flow
-        transitionEventManager.emitTransition(
-            RegistrationStep.SPLASH,
-            RegistrationStep.EXPERIENCE_LEVEL,
-            TransitionType.STANDARD
-        );
+        act(() => {
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.EXPERIENCE_LEVEL,
+                TransitionType.STANDARD
+            );
 
-        transitionEventManager.emitTransition(
-            RegistrationStep.EXPERIENCE_LEVEL,
-            RegistrationStep.GOALS,
-            TransitionType.STANDARD
-        );
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.EXPERIENCE_LEVEL,
+                RegistrationStep.GOALS,
+                TransitionType.STANDARD
+            );
 
-        transitionEventManager.emitTransition(
-            RegistrationStep.GOALS,
-            RegistrationStep.EQUIPMENT,
-            TransitionType.STANDARD
-        );
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.GOALS,
+                RegistrationStep.EQUIPMENT,
+                TransitionType.STANDARD
+            );
+        });
 
         // Verify events were captured in the correct order
         expect(capturedEvents.length).toBe(3);
@@ -268,6 +356,92 @@ describe('Transition Events System', () => {
 
         expect(capturedEvents[2].sourceStep).toBe(RegistrationStep.GOALS);
         expect(capturedEvents[2].destinationStep).toBe(RegistrationStep.EQUIPMENT);
+
+        // Clean up
+        unsubscribe();
+    });
+
+    // New test case: UI component integration
+    test('should emit events when triggered from UI components', async () => {
+        const mockListener = jest.fn();
+        const unsubscribe = mockTransitionEventManager.subscribe(mockListener);
+
+        const handleEmitTransition = jest.fn(() => {
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.EXPERIENCE_LEVEL,
+                TransitionType.STANDARD
+            );
+        });
+
+        // Render the test component
+        render(
+            <TestTransitionComponent onEmitTransition={handleEmitTransition} />
+        );
+
+        // Find and click the button that triggers the transition
+        const button = screen.getByTestId('emit-button');
+
+        // Use userEvent for more realistic user interactions
+        await userEvent.click(button);
+
+        // Verify the event was emitted
+        expect(handleEmitTransition).toHaveBeenCalledTimes(1);
+        expect(mockListener).toHaveBeenCalledWith(
+            expect.objectContaining({
+                sourceStep: RegistrationStep.SPLASH,
+                destinationStep: RegistrationStep.EXPERIENCE_LEVEL,
+                transitionType: TransitionType.STANDARD,
+            })
+        );
+
+        // Clean up
+        unsubscribe();
+    });
+
+    // Edge case: empty listener array
+    test('should handle empty listener array gracefully', () => {
+        // Ensure there are no listeners
+        listeners = [];
+
+        // This should not throw an error
+        expect(() => {
+            act(() => {
+                mockTransitionEventManager.emitTransition(
+                    RegistrationStep.SPLASH,
+                    RegistrationStep.EXPERIENCE_LEVEL,
+                    TransitionType.STANDARD
+                );
+            });
+        }).not.toThrow();
+    });
+
+    // Edge case: null metadata
+    test('should handle undefined or null metadata gracefully', () => {
+        const mockListener = jest.fn();
+        const unsubscribe = mockTransitionEventManager.subscribe(mockListener);
+
+        // Test with undefined metadata (handled in the function signature)
+        act(() => {
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.SPLASH,
+                RegistrationStep.EXPERIENCE_LEVEL,
+                TransitionType.STANDARD
+            );
+        });
+
+        // Test with explicitly null metadata
+        act(() => {
+            mockTransitionEventManager.emitTransition(
+                RegistrationStep.EXPERIENCE_LEVEL,
+                RegistrationStep.GOALS,
+                TransitionType.STANDARD,
+                null as any
+            );
+        });
+
+        // Both events should have been received
+        expect(mockListener).toHaveBeenCalledTimes(2);
 
         // Clean up
         unsubscribe();

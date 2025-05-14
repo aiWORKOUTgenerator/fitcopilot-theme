@@ -40,6 +40,19 @@ module.exports = {
         'react/prop-types': 'off', // Use TypeScript for prop validation
         'react/no-unescaped-entities': 'off', // Allow quotes in JSX
 
+        // JSX specific rules
+        'react/jsx-curly-spacing': ['error', { 'when': 'never', 'children': { 'when': 'never' } }],
+        'react/jsx-curly-brace-presence': ['error', { 'props': 'never', 'children': 'never' }],
+        'react/jsx-equals-spacing': ['error', 'never'],
+        'react/jsx-indent': ['error', 2],
+        'react/jsx-indent-props': ['error', 2],
+        'react/jsx-tag-spacing': ['error', {
+            'closingSlash': 'never',
+            'beforeSelfClosing': 'always',
+            'afterOpening': 'never',
+            'beforeClosing': 'never'
+        }],
+
         // TypeScript rules
         '@typescript-eslint/no-unused-vars': ['error', {
             argsIgnorePattern: '^_',
@@ -76,6 +89,20 @@ module.exports = {
             rules: {
                 '@typescript-eslint/no-unused-vars': 'warn',
             },
+        },
+        {
+            // Special rules for test utilities to enforce proper JSX syntax
+            files: ['**/tests/utils/**/*.{js,jsx,ts,tsx}'],
+            rules: {
+                'react/jsx-curly-spacing': ['error', { 'when': 'never' }],
+                'react/jsx-equals-spacing': ['error', 'never'],
+                'react/jsx-tag-spacing': ['error', {
+                    'closingSlash': 'never',
+                    'beforeSelfClosing': 'always',
+                    'afterOpening': 'never',
+                    'beforeClosing': 'never'
+                }],
+            }
         },
         {
             // Disable typescript-eslint in test files temporarily

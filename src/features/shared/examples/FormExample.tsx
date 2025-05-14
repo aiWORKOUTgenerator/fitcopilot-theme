@@ -9,7 +9,7 @@ import logger from '../../../utils/logger';
 import { Button, ButtonGroup } from '../Button';
 import FormField from '../FormField/FormField';
 import { useForm } from '../FormField/useForm';
-import { email, minLength, required } from '../FormField/validators';
+import { validateEmail, validateMinLength, validateRequired } from '../FormField/validators';
 
 /**
  * Form data interface
@@ -46,10 +46,10 @@ export const FormExample: React.FC = () => {
             subscribe: false
         },
         validators: {
-            firstName: [required()],
-            lastName: [required()],
-            email: [required(), email()],
-            message: [required(), minLength(10)]
+            firstName: [validateRequired('First name is required')],
+            lastName: [validateRequired('Last name is required')],
+            email: [validateRequired('Email is required'), validateEmail('Please enter a valid email address')],
+            message: [validateRequired('Message is required'), validateMinLength(10, 'Message must be at least 10 characters')]
         },
         onSubmit: async (data) => {
             // Simulate API call

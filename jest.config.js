@@ -8,10 +8,18 @@ module.exports = {
         '^src/(.*)$': '<rootDir>/src/$1',
         '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     },
-    setupFilesAfterEnv: ['<rootDir>/src/features/Registration/tests/setup.ts'],
+    testPathIgnorePatterns: [
+        '/node_modules/',
+        '/dist/',
+        '/__fixtures__/',
+        '/__mocks__/',
+        '/__tests__/utils/'
+    ],
+    setupFilesAfterEnv: ['<rootDir>/src/features/Registration/tests/setup.ts', '<rootDir>/jest.setup.js'],
     transform: {
         '^.+\\.(ts|tsx)$': ['ts-jest', {
             tsconfig: 'tsconfig.json',
+            isolatedModules: true,
         }],
     },
     testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],

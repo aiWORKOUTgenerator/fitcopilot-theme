@@ -26,7 +26,7 @@ import {
  * @returns Type predicate indicating if props are for a text field
  */
 export function isTextField(props: FormFieldProps): props is TextFieldProps {
-    return props.fieldType === 'text';
+    return props.variant === 'text';
 }
 
 /**
@@ -36,7 +36,7 @@ export function isTextField(props: FormFieldProps): props is TextFieldProps {
  * @returns Type predicate indicating if props are for a textarea field
  */
 export function isTextAreaField(props: FormFieldProps): props is TextAreaFieldProps {
-    return props.fieldType === 'textarea';
+    return props.variant === 'textarea';
 }
 
 /**
@@ -46,7 +46,7 @@ export function isTextAreaField(props: FormFieldProps): props is TextAreaFieldPr
  * @returns Type predicate indicating if props are for a select field
  */
 export function isSelectField(props: FormFieldProps): props is SelectFieldProps {
-    return props.fieldType === 'select';
+    return props.variant === 'select';
 }
 
 /**
@@ -56,7 +56,7 @@ export function isSelectField(props: FormFieldProps): props is SelectFieldProps 
  * @returns Type predicate indicating if props are for a checkbox field
  */
 export function isCheckboxField(props: FormFieldProps): props is CheckboxFieldProps {
-    return props.fieldType === 'checkbox';
+    return props.variant === 'checkbox';
 }
 
 /**
@@ -66,7 +66,7 @@ export function isCheckboxField(props: FormFieldProps): props is CheckboxFieldPr
  * @returns Type predicate indicating if props are for a radio field
  */
 export function isRadioField(props: FormFieldProps): props is RadioFieldProps {
-    return props.fieldType === 'radio';
+    return props.variant === 'radio';
 }
 
 /**
@@ -76,7 +76,7 @@ export function isRadioField(props: FormFieldProps): props is RadioFieldProps {
  * @returns Type predicate indicating if props are for a radio group field
  */
 export function isRadioGroupField(props: FormFieldProps): props is RadioGroupFieldProps {
-    return props.fieldType === 'radiogroup';
+    return props.variant === 'radiogroup';
 }
 
 /**
@@ -86,7 +86,7 @@ export function isRadioGroupField(props: FormFieldProps): props is RadioGroupFie
  * @returns Type predicate indicating if props are for a switch field
  */
 export function isSwitchField(props: FormFieldProps): props is SwitchFieldProps {
-    return props.fieldType === 'switch';
+    return props.variant === 'switch';
 }
 
 /**
@@ -96,7 +96,7 @@ export function isSwitchField(props: FormFieldProps): props is SwitchFieldProps 
  * @returns Type predicate indicating if props are for a date field
  */
 export function isDateField(props: FormFieldProps): props is DateFieldProps {
-    return props.fieldType === 'date';
+    return props.variant === 'date';
 }
 
 /**
@@ -106,7 +106,7 @@ export function isDateField(props: FormFieldProps): props is DateFieldProps {
  * @returns Type predicate indicating if props are for a file field
  */
 export function isFileField(props: FormFieldProps): props is FileFieldProps {
-    return props.fieldType === 'file';
+    return props.variant === 'file';
 }
 
 /**

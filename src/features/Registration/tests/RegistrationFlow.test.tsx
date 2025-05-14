@@ -7,14 +7,15 @@ import { RegistrationStep } from '../types';
 import './setup';
 
 // Extend RegistrationStep enum for testing
-enum TestRegistrationStep {
-    JOURNEY = 'journey'
-}
+// Use a type that merges with RegistrationStep to avoid type errors
+type ExtendedRegistrationStepType = typeof RegistrationStep & {
+    JOURNEY: 'journey'
+};
 
 // Combine existing enum with test enum
-const ExtendedRegistrationStep = {
+const ExtendedRegistrationStep: ExtendedRegistrationStepType = {
     ...RegistrationStep,
-    ...TestRegistrationStep
+    JOURNEY: 'journey'
 };
 
 // Create event mocks for tracking component interactions
@@ -47,7 +48,7 @@ const MockRegistration = jest.fn(({ initialStep = RegistrationStep.SPLASH, onCom
         setCurrentStep(RegistrationStep.EXPERIENCE_LEVEL);
     }, []);
 
-    const handleExperienceSelect = React.useCallback((level) => {
+    const handleExperienceSelect = React.useCallback((level: string) => {
         mockComponentEvents.onExperienceSelect(level);
         setExperienceLevel(level);
     }, []);
@@ -121,7 +122,8 @@ const MockRegistration = jest.fn(({ initialStep = RegistrationStep.SPLASH, onCom
     // Reset mock functions on each render
     React.useEffect(() => {
         Object.keys(mockComponentEvents).forEach(key => {
-            mockComponentEvents[key].mockClear();
+            const eventKey = key as keyof typeof mockComponentEvents;
+            mockComponentEvents[eventKey].mockClear();
         });
     }, []);
 
@@ -145,7 +147,7 @@ const MockRegistration = jest.fn(({ initialStep = RegistrationStep.SPLASH, onCom
                             data-testid="beginner-button"
                             data-value="beginner"
                             onClick={() => handleExperienceSelect('beginner')}
-                            data-selected={experienceLevel === 'beginner'}
+                            data-selected={experienceLevel === 'beginner' ? 'true' : 'false'}
                         >
                             Beginner
                         </button>
@@ -153,7 +155,7 @@ const MockRegistration = jest.fn(({ initialStep = RegistrationStep.SPLASH, onCom
                             data-testid="intermediate-button"
                             data-value="intermediate"
                             onClick={() => handleExperienceSelect('intermediate')}
-                            data-selected={experienceLevel === 'intermediate'}
+                            data-selected={experienceLevel === 'intermediate' ? 'true' : 'false'}
                         >
                             Intermediate
                         </button>
@@ -161,7 +163,7 @@ const MockRegistration = jest.fn(({ initialStep = RegistrationStep.SPLASH, onCom
                             data-testid="advanced-button"
                             data-value="advanced"
                             onClick={() => handleExperienceSelect('advanced')}
-                            data-selected={experienceLevel === 'advanced'}
+                            data-selected={experienceLevel === 'advanced' ? 'true' : 'false'}
                         >
                             Advanced
                         </button>
@@ -193,17 +195,24 @@ const MockRegistration = jest.fn(({ initialStep = RegistrationStep.SPLASH, onCom
                     <div>
                         <button
                             data-testid="visual-analytics"
-                            data-selected={selectedAnalytics.includes('visual_analytics')}
+                            data-selected={selectedAnalytics.includes('visual_analytics') ? 'true' : 'false'}
                             onClick={() => handleAnalyticsSelect('visual_analytics')}
                         >
                             Visual Analytics
                         </button>
                         <button
-                            data-testid="achievements"
-                            data-selected={selectedAnalytics.includes('achievements')}
-                            onClick={() => handleAnalyticsSelect('achievements')}
+                            data-testid="goal-tracking"
+                            data-selected={selectedAnalytics.includes('goal_tracking') ? 'true' : 'false'}
+                            onClick={() => handleAnalyticsSelect('goal_tracking')}
                         >
-                            Achievement System
+                            Goal Tracking
+                        </button>
+                        <button
+                            data-testid="workout-tracking"
+                            data-selected={selectedAnalytics.includes('workout_tracking') ? 'true' : 'false'}
+                            onClick={() => handleAnalyticsSelect('workout_tracking')}
+                        >
+                            Workout Tracking
                         </button>
                     </div>
                     <button onClick={handleAnalyticsContinue}>Continue</button>
@@ -213,17 +222,19 @@ const MockRegistration = jest.fn(({ initialStep = RegistrationStep.SPLASH, onCom
         case RegistrationStep.PRICING:
             stepContent = (
                 <div data-testid="pricing-screen">
-                    <h2>Choose your plan</h2>
+                    <h2>Choose Your Plan</h2>
                     <div>
                         <button
-                            data-plan="monthly"
-                            onClick={() => mockComponentEvents.onPlanSelect('monthly')}
+                            onClick={() => {
+                                mockComponentEvents.onPlanSelect('monthly');
+                            }}
                         >
                             Monthly
                         </button>
                         <button
-                            data-plan="annual"
-                            onClick={() => mockComponentEvents.onPlanSelect('annual')}
+                            onClick={() => {
+                                mockComponentEvents.onPlanSelect('annual');
+                            }}
                         >
                             Annual
                         </button>
