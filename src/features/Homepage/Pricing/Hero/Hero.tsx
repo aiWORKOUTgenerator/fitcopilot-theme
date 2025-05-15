@@ -1,13 +1,14 @@
-import { Tooltip } from '@components/UI/Tooltip';
 import { Button } from '@features/shared/Button';
 import { Dumbbell, Flame, Heart, LogIn, UserPlus, Zap } from 'lucide-react';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
+// Tooltip component has been deprecated
+// import { Tooltip } from '@components/UI/Tooltip';
 // Temporarily comment out the module style import until we fix the SCSS issues
 // import styles from './Hero.module.scss';
 import { ThemeCSSProperties } from '../../../types/theme';
 import './Hero.scss';
 import FloatingIcons from './components/FloatingIcons';
-import { HeroProps, TooltipKey, TooltipStates } from './types';
+import { HeroProps } from './types';
 
 export const Hero: React.FC<HeroProps> = ({
   registrationLink = "#splash-section",
@@ -15,18 +16,6 @@ export const Hero: React.FC<HeroProps> = ({
   logoUrl = '/wp-content/themes/fitcopilot/assets/images/logo.png',
   onRegistrationStart
 }) => {
-  // Animation states for tooltips
-  const [tooltipStates, setTooltipStates] = useState<TooltipStates>({
-    freeWorkout: {
-      show: false,
-      isHovered: false,
-    },
-    createAccount: {
-      show: false,
-      isHovered: false,
-    }
-  });
-
   // Cleanup reference
   const timeoutsRef = useRef<number[]>([]);
 
@@ -42,30 +31,6 @@ export const Hero: React.FC<HeroProps> = ({
       clearAllTimeouts();
     };
   }, []);
-
-  // Mouse enter handler
-  const handleMouseEnter = (button: TooltipKey) => {
-    setTooltipStates(prev => ({
-      ...prev,
-      [button]: {
-        ...prev[button],
-        show: true,
-        isHovered: true,
-      }
-    }));
-  };
-
-  // Mouse leave handler
-  const handleMouseLeave = (button: TooltipKey) => {
-    setTooltipStates(prev => ({
-      ...prev,
-      [button]: {
-        ...prev[button],
-        show: false,
-        isHovered: false,
-      }
-    }));
-  };
 
   // Handle scroll to splash
   const handleScrollToSplash = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
@@ -140,69 +105,31 @@ export const Hero: React.FC<HeroProps> = ({
           {/* CTA Buttons Container */}
           <div className="hero-cta__container">
             {/* Primary CTA: Get a Free Workout */}
-            <div className="hero-cta__wrapper"
-              onMouseEnter={() => handleMouseEnter('freeWorkout')}
-              onMouseLeave={() => handleMouseLeave('freeWorkout')}
-            >
+            <div className="hero-cta__wrapper">
               <Button
                 variant="primary"
                 size="lg"
                 className="inline-flex items-center rounded-full font-medium hero-button-primary hero-divider-gradient-btn"
                 onClick={handleScrollToSplash}
+                aria-label="Generate a personalized workout plan in seconds with our AI technology - no registration required"
               >
                 <Zap className="hero-icon" />
                 Get a Free Workout
               </Button>
-
-              {/* Tooltip */}
-              <Tooltip
-                content={
-                  <p className="hero-tooltip-content">
-                    Generate a personalized workout plan in seconds with our AI technology - no registration required.
-                  </p>
-                }
-                title="Quick Workout Builder"
-                isVisible={tooltipStates.freeWorkout.show}
-                showOnHover={false}
-                position="bottom"
-                theme="dark"
-                className="hero-tooltip"
-              >
-                <div></div> {/* Empty div as child since we're controlling visibility externally */}
-              </Tooltip>
             </div>
 
             {/* Secondary CTA: Create Your Account */}
-            <div className="hero-cta__wrapper"
-              onMouseEnter={() => handleMouseEnter('createAccount')}
-              onMouseLeave={() => handleMouseLeave('createAccount')}
-            >
+            <div className="hero-cta__wrapper">
               <Button
                 variant="secondary"
                 size="lg"
                 className="inline-flex items-center rounded-full font-medium hero-button-secondary"
                 onClick={handleScrollToSplash}
+                aria-label="Save workouts, track progress, and access premium features with your free account"
               >
                 <UserPlus className="hero-icon-userplus" />
                 Create Your Account
               </Button>
-
-              {/* Tooltip */}
-              <Tooltip
-                content={
-                  <p className="hero-tooltip-content">
-                    Save workouts, track progress, and access premium features with your free account.
-                  </p>
-                }
-                title="Member Benefits"
-                isVisible={tooltipStates.createAccount.show}
-                showOnHover={false}
-                position="bottom"
-                theme="dark"
-                className="hero-tooltip"
-              >
-                <div></div> {/* Empty div as child since we're controlling visibility externally */}
-              </Tooltip>
             </div>
           </div>
 

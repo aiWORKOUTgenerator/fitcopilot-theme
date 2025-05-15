@@ -3,7 +3,8 @@
 
 // Component-specific variables and dependencies
 @use './hero-theme-variables' as hero;
-@use '../../../components/UI/Tooltip/variants/hero/Tooltip' as heroTooltip;
+// Tooltip component has been deprecated
+// @use '../../../components/UI/Tooltip/variants/hero/Tooltip' as heroTooltip;
 
 // src/features/Homepage/Hero/Hero.scss
 
@@ -374,102 +375,82 @@
   height: var(--hero-icon-size-md);
 }
 
-/* Tooltip container */
-.tooltip-container {
-  position: absolute;
-  width: 100%;
-  top: calc(100% + 5px);
-  left: 0;
-  display: flex;
-  justify-content: center;
-  z-index: 1000;
-  pointer-events: none;
-}
+/* Tooltip container - DEPRECATED */
+// .tooltip-container {
+//   position: absolute;
+//   width: 100%;
+//   top: calc(100% + 5px);
+//   left: 0;
+//   display: flex;
+//   justify-content: center;
+//   z-index: 1000;
+//   pointer-events: none;
+// }
 
-/* Tooltip styling */
-.tooltip {
-  position: relative;
-  background: #1f2937;
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 12px;
-  line-height: 1.4;
-  max-width: 220px;
-  width: 220px;
-  color: #d1d5db;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  border: none;
-  opacity: 0;
-  transform: translateY(8px);
-  visibility: hidden;
-  transition: all 0.3s ease;
-  will-change: transform, opacity;
-  z-index: 1000;
+/* Tooltip styling - DEPRECATED */
+// .tooltip {
+//   position: relative;
+//   background: #1f2937;
+//   border-radius: 8px;
+//   padding: 10px;
+//   font-size: 12px;
+//   line-height: 1.4;
+//   max-width: 220px;
+//   width: 220px;
+//   color: #d1d5db;
+//   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+//   border: none;
+//   opacity: 0;
+//   transform: translateY(8px);
+//   visibility: hidden;
+//   transition: all 0.3s ease;
+//   will-change: transform, opacity;
+//   z-index: 1000;
+// }
 
-  /* Add subtle pointer to ensure tooltip is visible */
-  &:after {
-    content: "";
-    position: absolute;
-    top: -8px;
-    left: 50%;
-    margin-left: -8px;
-    border-width: 0 8px 8px;
-    border-style: solid;
-    border-color: transparent transparent #1f2937 transparent;
-    z-index: 1001;
-  }
+/* Tooltip content - DEPRECATED */
+// .tooltip-content {
+//   display: flex;
+//   align-items: flex-start;
+//   margin-bottom: 8px;
+// }
 
-  &.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
+/* Tooltip icon - DEPRECATED */
+// .tooltip-icon {
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: center;
+//   margin-right: 8px;
+//   flex-shrink: 0;
+//   margin-top: 2px;
+// }
 
-  &.hide {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(8px);
-  }
+/* Tooltip text - DEPRECATED */
+// .tooltip-text {
+//   flex: 1;
+// }
 
-  // Arrow for tooltip - removed as we're using the :after pseudo-element instead
-}
+/* Tooltip title - DEPRECATED */
+// .tooltip-title {
+//   font-size: 14px;
+//   font-weight: 500;
+//   color: #a3e635;
+//   margin-bottom: 4px;
+// }
 
-/* Tooltip content */
-.tooltip-content {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 8px;
-}
+/* Tooltip styles - DEPRECATED */
+// .hero-tooltip-content {
+//   font-size: 12px;
+//   color: var(--color-hero-text-secondary);
+//   line-height: 1.3;
+//   margin: 0;
+//   padding: 0;
+// }
 
-/* Tooltip icon */
-.tooltip-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 8px;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-/* Icon in tooltip */
-.tooltip-icon-svg {
-  width: 16px;
-  height: 16px;
-  color: #a3e635;
-}
-
-/* Tooltip text */
-.tooltip-text {
-  flex: 1;
-}
-
-/* Tooltip title */
-.tooltip-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: #a3e635;
-  margin-bottom: 4px;
-}
+// .hero-tooltip-icon {
+//   width: 14px;
+//   height: 14px;
+// }
 
 /* Shadow optimizations */
 .shadow-optimized {

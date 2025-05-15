@@ -108,6 +108,12 @@
     "importedBy": "components/UI/Tooltip/Tooltip.tsx"
   },
   {
+    "file": "types/components.ts",
+    "exportName": "TooltipThemeContext",
+    "type": "missing",
+    "importedBy": "components/UI/Tooltip/Tooltip.tsx"
+  },
+  {
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",
@@ -188,6 +194,12 @@
   {
     "file": "types/components.ts",
     "exportName": "GlobalTooltipProps",
+    "type": "missing",
+    "importedBy": "components/UI/Tooltip/types.ts"
+  },
+  {
+    "file": "types/components.ts",
+    "exportName": "TooltipPlanType",
     "type": "missing",
     "importedBy": "components/UI/Tooltip/types.ts"
   },

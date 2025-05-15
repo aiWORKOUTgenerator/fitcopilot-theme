@@ -5,7 +5,8 @@ export { default as Loading } from './Loading';
 export { PricingCard } from './PricingCard';
 export { default as Section } from './Section';
 export { default as ThemeSwitcher } from './ThemeSwitcher';
-export { default as Tooltip } from './Tooltip';
+// Tooltip component has been deprecated
+// export { default as Tooltip } from './Tooltip';
 
 // Import Media components
 export * from './Media';
@@ -18,7 +19,8 @@ export type { LoadingProps } from './Loading';
 export type { PlanFeature, PricingCardProps, PricingPlan } from './PricingCard';
 export type { BackgroundVariant, ContainerSize, SectionProps, SpacingSize, VariantKey } from './Section';
 export type { ThemeSwitcherProps } from './ThemeSwitcher';
-export type { TooltipProps } from './Tooltip';
+// Tooltip types have been deprecated
+// export type { TooltipProps } from './Tooltip';
 
 // Export Media types
 export type {

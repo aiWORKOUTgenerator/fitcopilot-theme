@@ -85,24 +85,4 @@ export interface HeroProps extends Omit<SectionProps, 'variant'> {
    * Callback function to trigger when registration starts
    */
   onRegistrationStart?: () => void;
-}
-
-/**
- * Tooltip key types
- */
-export type TooltipKey = 'freeWorkout' | 'createAccount';
-
-/**
- * Individual tooltip state
- */
-export interface TooltipState {
-  show: boolean;
-  isHovered: boolean;
-}
-
-/**
- * Combined tooltip states
- */
-export interface TooltipStates {
-  [key: string]: TooltipState;
 } 

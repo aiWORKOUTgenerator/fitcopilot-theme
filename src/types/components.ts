@@ -72,92 +72,99 @@ export type ButtonProps =
     | (HeroButtonProps & { _variant: 'hero' });
 
 /**
+ * @deprecated The Tooltip component has been deprecated and will be removed in a future release.
  * Tooltip position options
  */
-export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+// export type TooltipPosition = 'top' | 'right' | 'bottom' | 'left' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
 /**
+ * @deprecated The Tooltip component has been deprecated and will be removed in a future release.
  * Theme context for Tooltip
  */
-export type TooltipThemeContext = 'default' | 'hero' | 'pricing';
+// export type TooltipThemeContext = 'default' | 'hero' | 'pricing';
 
 /**
+ * @deprecated The Tooltip component has been deprecated and will be removed in a future release.
  * Plan type for pricing tooltips
  */
-export type TooltipPlanType = 'basic' | 'pro' | 'elite';
+// export type TooltipPlanType = 'basic' | 'pro' | 'elite';
 
 /**
+ * @deprecated The Tooltip component has been deprecated and will be removed in a future release.
  * Base Tooltip component props
  */
-export interface BaseTooltipProps extends BaseComponentProps {
-    /** Content to display inside the tooltip */
-    content: React.ReactNode;
-    /** Element that triggers the tooltip */
-    children: React.ReactNode;
-    /** Optional title for the tooltip */
-    title?: string;
-    /** Title color class (Tailwind color class) */
-    titleColor?: string;
-    /** Optional icon */
-    icon?: React.ReactNode;
-    /** Position of the tooltip relative to the trigger */
-    position?: TooltipPosition;
-    /** Width of the tooltip in pixels or any valid CSS width */
-    width?: string;
-    /** Whether to show on hover */
-    showOnHover?: boolean;
-    /** Whether to show on focus */
-    showOnFocus?: boolean;
-    /** Delay before showing tooltip (ms) */
-    showDelay?: number;
-    /** Delay before hiding tooltip (ms) */
-    hideDelay?: number;
-    /** Additional classes for styling */
-    className?: string;
-    /** Theme context (default, hero, pricing, etc) */
-    themeContext?: TooltipThemeContext;
-    /** Whether the tooltip is initially visible */
-    initialVisible?: boolean;
-    /** Whether tooltip should be visible */
-    isVisible?: boolean;
-    /** Border accent color (in rgba format) */
-    accentColor?: string;
-    /** Maximum width of the tooltip */
-    maxWidth?: number | string;
-    /** Custom CSS properties for token overrides */
-    style?: ExtendedCSSProperties;
-}
+// export interface BaseTooltipProps extends BaseComponentProps {
+//     /** Content to display inside the tooltip */
+//     content: React.ReactNode;
+//     /** Element that triggers the tooltip */
+//     children: React.ReactNode;
+//     /** Optional title for the tooltip */
+//     title?: string;
+//     /** Title color class (Tailwind color class) */
+//     titleColor?: string;
+//     /** Optional icon */
+//     icon?: React.ReactNode;
+//     /** Position of the tooltip relative to the trigger */
+//     position?: TooltipPosition;
+//     /** Width of the tooltip in pixels or any valid CSS width */
+//     width?: string;
+//     /** Whether to show on hover */
+//     showOnHover?: boolean;
+//     /** Whether to show on focus */
+//     showOnFocus?: boolean;
+//     /** Delay before showing tooltip (ms) */
+//     showDelay?: number;
+//     /** Delay before hiding tooltip (ms) */
+//     hideDelay?: number;
+//     /** Additional classes for styling */
+//     className?: string;
+//     /** Theme context (default, hero, pricing, etc) */
+//     themeContext?: TooltipThemeContext;
+//     /** Whether the tooltip is initially visible */
+//     initialVisible?: boolean;
+//     /** Whether tooltip should be visible */
+//     isVisible?: boolean;
+//     /** Border accent color (in rgba format) */
+//     accentColor?: string;
+//     /** Maximum width of the tooltip */
+//     maxWidth?: number | string;
+//     /** Custom CSS properties for token overrides */
+//     style?: ExtendedCSSProperties;
+// }
 
 /**
+ * @deprecated The Tooltip component has been deprecated and will be removed in a future release.
  * Exercise Tooltip specific props
  */
-export interface ExerciseTooltipProps extends BaseTooltipProps {
-    /** Exercise data to display in tooltip */
-    exerciseData: {
-        name: string;
-        muscleGroups: string[];
-        difficulty: 'beginner' | 'intermediate' | 'advanced';
-        thumbnailUrl?: string;
-    };
-}
+// export interface ExerciseTooltipProps extends BaseTooltipProps {
+//     /** Exercise data to display in tooltip */
+//     exerciseData: {
+//         name: string;
+//         muscleGroups: string[];
+//         difficulty: 'beginner' | 'intermediate' | 'advanced';
+//         thumbnailUrl?: string;
+//     };
+// }
 
 /**
+ * @deprecated The Tooltip component has been deprecated and will be removed in a future release.
  * Help Tooltip specific props
  */
-export interface HelpTooltipProps extends BaseTooltipProps {
-    /** Icon to use for the help trigger */
-    iconVariant?: 'question' | 'info' | 'lightbulb';
-    /** Size of the help icon */
-    iconSize?: 'sm' | 'md' | 'lg';
-}
+// export interface HelpTooltipProps extends BaseTooltipProps {
+//     /** Icon to use for the help trigger */
+//     iconVariant?: 'question' | 'info' | 'lightbulb';
+//     /** Size of the help icon */
+//     iconSize?: 'sm' | 'md' | 'lg';
+// }
 
 /**
+ * @deprecated The Tooltip component has been deprecated and will be removed in a future release.
  * Tooltip props using discriminated union for type safety
  */
-export type TooltipProps =
-    | (BaseTooltipProps & { _variant?: 'default' })
-    | (ExerciseTooltipProps & { _variant: 'exercise' })
-    | (HelpTooltipProps & { _variant: 'help' });
+// export type TooltipProps =
+//     | (BaseTooltipProps & { _variant?: 'default' })
+//     | (ExerciseTooltipProps & { _variant: 'exercise' })
+//     | (HelpTooltipProps & { _variant: 'help' });
 
 /**
  * JourneyStep status types
