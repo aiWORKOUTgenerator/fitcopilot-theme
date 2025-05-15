@@ -15,6 +15,11 @@ export type IconType = React.ComponentType<{
 }>;
 
 /**
+ * Button size type
+ */
+export type ButtonSize = 'sm' | 'md' | 'lg' | 'large';
+
+/**
  * Base button props used across all button variants
  */
 export interface BaseButtonProps {
@@ -30,6 +35,8 @@ export interface BaseButtonProps {
     onClick?: ButtonClickHandler;
     /** Button type attribute */
     type?: 'button' | 'submit' | 'reset';
+    /** Button size */
+    size?: ButtonSize;
     /** ARIA attributes */
     'aria-label'?: string;
     'aria-controls'?: string;
@@ -39,6 +46,12 @@ export interface BaseButtonProps {
     /** Data attributes */
     'data-testid'?: string;
     'data-track'?: string;
+    /** URL to navigate to (for link buttons) */
+    href?: string;
+    /** Link relation */
+    rel?: string;
+    /** Link target */
+    target?: string;
 }
 
 /**
@@ -47,8 +60,6 @@ export interface BaseButtonProps {
 export interface PrimaryButtonProps extends BaseButtonProps {
     /** The button variant */
     variant: 'primary';
-    /** Button size */
-    size?: 'sm' | 'md' | 'lg';
     /** Loading state */
     isLoading?: boolean;
 }
@@ -59,8 +70,6 @@ export interface PrimaryButtonProps extends BaseButtonProps {
 export interface SecondaryButtonProps extends BaseButtonProps {
     /** The button variant */
     variant: 'secondary';
-    /** Button size */
-    size?: 'sm' | 'md' | 'lg';
     /** Outline style */
     outline?: boolean;
 }
@@ -115,10 +124,6 @@ export interface LinkButtonProps extends BaseButtonProps {
     href: string;
     /** Open in new tab */
     openInNewTab?: boolean;
-    /** Link relation */
-    rel?: string;
-    /** Link target */
-    target?: string;
 }
 
 /**
@@ -150,6 +155,8 @@ export interface WorkoutButtonProps extends BaseButtonProps {
     duration?: number;
     /** Calories burned estimate */
     calories?: number;
+    /** Exercise ID */
+    exerciseId: string;
 }
 
 /**
@@ -184,10 +191,16 @@ export const isToggleButton = (props: ButtonProps): props is ToggleButtonProps =
     props && props.variant === 'toggle';
 
 export const isLinkButton = (props: ButtonProps): props is LinkButtonProps =>
-    props && props.variant === 'link';
+    props && 'href' in props && Boolean(props.href);
 
 export const isFloatingActionButton = (props: ButtonProps): props is FloatingActionButtonProps =>
     props && props.variant === 'floating';
 
 export const isWorkoutButton = (props: ButtonProps): props is WorkoutButtonProps =>
-    props && props.variant === 'workout'; 
+    props && props.variant === 'workout';
+
+/**
+ * Type guard to check if a button is an action button (has onClick handler)
+ */
+export const isActionButton = (props: ButtonProps): boolean =>
+    props && 'onClick' in props && typeof props.onClick === 'function'; 

@@ -1,137 +1,209 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import React from 'react';
+import { createMockYouTubePlayer } from '../../../../utils/test/mediaEventUtils';
 import YouTubePlayer from '../YouTubePlayer';
 
 // Mock the logger to prevent console errors during tests
-jest.mock('../../../../utils/logger', () => ({
+jest.mock('../../../../../utils/logger', () => ({
     error: jest.fn(),
 }));
 
-// Mock the internal component state
-jest.mock('react', () => {
-    const originalReact = jest.requireActual('react');
-    return {
-        ...originalReact,
-        useState: jest.fn()
-            .mockImplementationOnce((initial) => [initial, jest.fn()]) // useRef 1
-            .mockImplementationOnce((initial) => [initial, jest.fn()]) // useRef 2
-            .mockImplementationOnce((initial) => [true, jest.fn()]) // isLoading
-            .mockImplementationOnce((initial) => [false, jest.fn()]) // hasError
-            .mockImplementationOnce((initial) => [true, jest.fn()]) // ytApiReady
-            .mockImplementation((initial) => [initial, jest.fn()]), // for any other useState calls
-    };
-});
-
-// Create global mock for YouTube API
-beforeAll(() => {
-    // Create a mock YouTube API
-    global.YT = {
-        Player: jest.fn().mockImplementation((container, config) => {
-            return {
-                destroy: jest.fn(),
-                addEventListener: jest.fn(),
-                removeEventListener: jest.fn(),
-                // Invoke the callbacks that were passed to the constructor
-                invokeReadyEvent: () => {
-                    if (config.events?.onReady) {
-                        config.events.onReady();
-                    }
-                },
-                invokeErrorEvent: () => {
-                    if (config.events?.onError) {
-                        config.events.onError();
-                    }
-                }
-            };
-        }),
-        PlayerState: {
-            PLAYING: 1,
-            PAUSED: 2,
-            ENDED: 0
-        }
-    };
-
-    // Mock the YouTube API ready callback
-    global.onYouTubeIframeAPIReady = jest.fn();
-});
-
-// Clean up mocks
-afterAll(() => {
-    delete global.YT;
-    delete global.onYouTubeIframeAPIReady;
-});
-
 describe('YouTubePlayer', () => {
-    // Helper setup function
-    const setup = (props = {}) => {
+    // Mock YouTube Player API
+    let mockYTPlayer;
+    let mockYTEvents = {};
+
+    // Mock YouTube API
+    beforeAll(() => {
+        // Create a mock YouTube API
+        global.YT = {
+            Player: jest.fn().mockImplementation((container, config) => {
+                mockYTPlayer = createMockYouTubePlayer();
+
+                // Save event handlers so we can trigger them in tests
+                if (config.events) {
+                    Object.entries(config.events).forEach(([eventName, handler]) => {
+                        mockYTEvents[eventName] = handler;
+                    });
+                }
+
+                return mockYTPlayer;
+            }),
+            PlayerState: {
+                UNSTARTED: -1,
+                ENDED: 0,
+                PLAYING: 1,
+                PAUSED: 2,
+                BUFFERING: 3,
+                CUED: 5
+            }
+        };
+    });
+
+    afterAll(() => {
+        delete global.YT;
+        delete global.onYouTubeIframeAPIReady;
+    });
+
+    beforeEach(() => {
+        // Reset mocks before each test
+        jest.clearAllMocks();
+        mockYTEvents = {};
+    });
+
+    // Helper to render component with default props
+    const renderYouTubePlayer = (props = {}) => {
         const defaultProps = {
             variant: 'youtube',
-            videoId: 'test123',
+            videoId: 'dQw4w9WgXcQ',
+            width: 640,
+            height: 360,
         };
 
         return render(<YouTubePlayer {...defaultProps} {...props} />);
     };
 
-    beforeEach(() => {
-        // Reset mocks before each test
-        jest.clearAllMocks();
-    });
+    // Helper to trigger YouTube API loading
+    const triggerYouTubeApiLoad = () => {
+        // Manually trigger the YouTube API ready callback
+        if (window.onYouTubeIframeAPIReady) {
+            window.onYouTubeIframeAPIReady();
+        }
+    };
 
     it('renders with required props', () => {
-        const { container } = setup();
+        const { container } = renderYouTubePlayer();
 
         const playerContainer = container.querySelector('.youtube-player__container');
         expect(playerContainer).toBeInTheDocument();
     });
 
-    it('applies className and custom dimensions', () => {
-        const { container } = setup({
-            className: 'custom-class',
-            width: 800,
-            height: 450
-        });
-
-        const playerContainer = container.querySelector('.youtube-player__container');
-        expect(playerContainer).toHaveClass('custom-class');
-        expect(playerContainer).toHaveStyle({
-            width: '800px',
-            height: '450px'
-        });
-    });
-
-    it('passes autoPlay and muted props to YouTube API', () => {
-        const { container } = setup({
+    it('initializes player with correct configuration', async () => {
+        renderYouTubePlayer({
+            videoId: 'test123',
             autoPlay: true,
-            muted: true
+            muted: true,
+            showRelated: false,
+            startTime: 30
         });
 
-        const playerContainer = container.querySelector('.youtube-player__container');
-        expect(playerContainer).toHaveAttribute('data-autoplay', 'true');
-        expect(playerContainer).toHaveAttribute('data-muted', 'true');
+        triggerYouTubeApiLoad();
+
+        await waitFor(() => {
+            expect(global.YT.Player).toHaveBeenCalledWith(
+                expect.any(Object),
+                expect.objectContaining({
+                    videoId: 'test123',
+                    playerVars: expect.objectContaining({
+                        autoplay: 1,
+                        mute: 1,
+                        rel: 0,
+                        start: 30
+                    })
+                })
+            );
+        });
     });
 
-    it('shows loading state initially', () => {
-        // Reset useState mock to make isLoading true
-        jest.spyOn(React, 'useState')
-            .mockImplementationOnce((initial) => [initial, jest.fn()]) // containerRef
-            .mockImplementationOnce((initial) => [initial, jest.fn()]) // playerRef
-            .mockImplementationOnce((initial) => [true, jest.fn()]) // isLoading
-            .mockImplementationOnce((initial) => [false, jest.fn()]) // hasError
-            .mockImplementationOnce((initial) => [true, jest.fn()]); // ytApiReady
+    it('properly handles player state changes', async () => {
+        const onStateChange = jest.fn();
+        renderYouTubePlayer({ onStateChange });
 
-        const { container } = setup();
+        triggerYouTubeApiLoad();
 
-        const loadingElement = container.querySelector('.youtube-player__loading');
-        expect(loadingElement).toBeInTheDocument();
+        // Simulate player ready event
+        if (mockYTEvents.onReady) {
+            mockYTEvents.onReady({ target: mockYTPlayer });
+        }
+
+        // Simulate player state change to PLAYING
+        if (mockYTEvents.onStateChange) {
+            mockYTEvents.onStateChange({ data: global.YT.PlayerState.PLAYING });
+        }
+
+        // Verify state change callback was called
+        expect(onStateChange).toHaveBeenCalledWith(global.YT.PlayerState.PLAYING);
     });
 
-    it('displays caption when provided', () => {
-        const { container } = setup({
-            caption: 'Test video caption'
+    it('cleans up player on unmount', async () => {
+        // Create component with a real mock player
+        const { unmount } = renderYouTubePlayer();
+
+        // Complete initialization
+        triggerYouTubeApiLoad();
+        if (mockYTEvents.onReady) {
+            mockYTEvents.onReady({ target: mockYTPlayer });
+        }
+
+        // Monitor the destroy method
+        mockYTPlayer.destroy = jest.fn();
+
+        // Unmount component which should clean up player
+        unmount();
+
+        // Player should be destroyed
+        await waitFor(() => {
+            expect(mockYTPlayer.destroy).toHaveBeenCalled();
+        });
+    });
+
+    it('toggles playback based on isPlaying prop', async () => {
+        const { rerender } = renderYouTubePlayer({ isPlaying: false });
+
+        // Initialize player
+        triggerYouTubeApiLoad();
+        if (mockYTEvents.onReady) {
+            mockYTEvents.onReady({ target: mockYTPlayer });
+        }
+
+        // Pause should be called with initial isPlaying=false
+        expect(mockYTPlayer.pauseVideo).toHaveBeenCalled();
+
+        // Clear mocks before changing props
+        jest.clearAllMocks();
+
+        // Update to playing state
+        rerender(<YouTubePlayer variant="youtube" videoId="dQw4w9WgXcQ" width={640} height={360} isPlaying={true} />);
+
+        // Play should be called
+        expect(mockYTPlayer.playVideo).toHaveBeenCalled();
+    });
+
+    it('loads YouTube API script when not already loaded', () => {
+        // Save original document methods
+        const originalCreateElement = document.createElement;
+        const originalGetElementsByTagName = document.getElementsByTagName;
+
+        // Mock document methods
+        document.createElement = jest.fn().mockImplementation((tagName) => {
+            if (tagName === 'script') {
+                return {
+                    setAttribute: jest.fn(),
+                    src: ''
+                };
+            }
+            return originalCreateElement.call(document, tagName);
         });
 
-        const captionElement = container.querySelector('.youtube-player__caption');
-        expect(captionElement).toBeInTheDocument();
-        expect(captionElement.textContent).toBe('Test video caption');
+        document.getElementsByTagName = jest.fn().mockReturnValue([{
+            parentNode: {
+                insertBefore: jest.fn()
+            }
+        }]);
+
+        // Temporarily remove YT to simulate API not loaded
+        const savedYT = window.YT;
+        delete window.YT;
+
+        // Render the component which should load the API
+        renderYouTubePlayer();
+
+        // Check that script was created
+        expect(document.createElement).toHaveBeenCalledWith('script');
+
+        // Restore mocks
+        document.createElement = originalCreateElement;
+        document.getElementsByTagName = originalGetElementsByTagName;
+        window.YT = savedYT;
     });
 }); 

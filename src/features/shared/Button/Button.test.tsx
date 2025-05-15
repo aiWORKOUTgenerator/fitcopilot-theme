@@ -2,7 +2,8 @@
  * Button Component Tests
  */
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import {
     ButtonProps,
@@ -28,33 +29,34 @@ jest.mock('../../../utils/logger', () => ({
 
 describe('Button component', () => {
     // Test rendering as button
-    test('renders as a button when onClick is provided', () => {
+    test('renders as a button when onClick is provided', async () => {
         const handleClick = jest.fn();
 
         render(
-            <Button onClick={handleClick} data-testid="test-button">
+            <Button onClick={handleClick}>
                 Click Me
             </Button>
         );
 
-        const button = screen.getByTestId('test-button');
-        expect(button.tagName).toBe('BUTTON');
+        // Using role-based selector instead of data-testid
+        const button = screen.getByRole('button', { name: /click me/i });
+        expect(button).toBeInTheDocument();
 
-        // Test clicking the button
-        fireEvent.click(button);
+        // Using userEvent instead of fireEvent
+        await userEvent.click(button);
         expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     // Test rendering as a link
     test('renders as a link when href is provided', () => {
         render(
-            <Button href="https://example.com" data-testid="test-link">
+            <Button href="https://example.com">
                 Visit Site
             </Button>
         );
 
-        const link = screen.getByTestId('test-link');
-        expect(link.tagName).toBe('A');
+        // Using role-based selector instead of data-testid
+        const link = screen.getByRole('link', { name: /visit site/i });
         expect(link).toHaveAttribute('href', 'https://example.com');
     });
 
@@ -64,13 +66,13 @@ describe('Button component', () => {
             <Button
                 onClick={jest.fn()}
                 variant="secondary"
-                data-testid="test-button"
             >
                 Secondary Button
             </Button>
         );
 
-        const button = screen.getByTestId('test-button');
+        // Using role-based selector instead of data-testid
+        const button = screen.getByRole('button', { name: /secondary button/i });
         expect(button).toHaveClass('btn-secondary');
     });
 
@@ -80,13 +82,13 @@ describe('Button component', () => {
             <Button
                 onClick={jest.fn()}
                 size="large"
-                data-testid="test-button"
             >
                 Large Button
             </Button>
         );
 
-        const button = screen.getByTestId('test-button');
+        // Using role-based selector instead of data-testid
+        const button = screen.getByRole('button', { name: /large button/i });
         expect(button).toHaveClass('btn-large');
     });
 
@@ -96,14 +98,16 @@ describe('Button component', () => {
             <Button
                 onClick={jest.fn()}
                 disabled={true}
-                data-testid="test-button"
             >
                 Disabled Button
             </Button>
         );
 
-        const button = screen.getByTestId('test-button');
+        // Using role-based selector instead of data-testid
+        const button = screen.getByRole('button', { name: /disabled button/i });
         expect(button).toBeDisabled();
+        // Additional accessibility check
+        expect(button).toHaveAttribute('aria-disabled', 'true');
     });
 
     // Test adding custom classes
@@ -112,14 +116,40 @@ describe('Button component', () => {
             <Button
                 onClick={jest.fn()}
                 className="custom-class"
-                data-testid="test-button"
             >
                 Custom Button
             </Button>
         );
 
-        const button = screen.getByTestId('test-button');
+        // Using role-based selector instead of data-testid
+        const button = screen.getByRole('button', { name: /custom button/i });
         expect(button).toHaveClass('custom-class');
+    });
+
+    // Test keyboard interaction for accessibility
+    test('responds to keyboard interaction', async () => {
+        const handleClick = jest.fn();
+        render(
+            <Button
+                onClick={handleClick}
+            >
+                Keyboard Button
+            </Button>
+        );
+
+        const button = screen.getByRole('button', { name: /keyboard button/i });
+
+        // Focus the button
+        button.focus();
+        expect(button).toHaveFocus();
+
+        // Press Enter key
+        await userEvent.keyboard('{Enter}');
+        expect(handleClick).toHaveBeenCalledTimes(1);
+
+        // Press Space key
+        await userEvent.keyboard(' ');
+        expect(handleClick).toHaveBeenCalledTimes(2);
     });
 
     // Test type guards

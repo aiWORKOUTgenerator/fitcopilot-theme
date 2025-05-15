@@ -5,7 +5,7 @@
 
 import React from 'react';
 import logger from '../../../utils/logger';
-import { ButtonProps, isLinkButton } from './types';
+import { ButtonProps } from './types';
 
 /**
  * Button component that can render as either a button element or a link
@@ -24,6 +24,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
     const {
         variant = 'primary',
         className = '',
+        size,
         children,
         'aria-label': ariaLabel,
         'data-testid': testId,
@@ -33,11 +34,12 @@ export const Button: React.FC<ButtonProps> = (props) => {
     // Compose class names
     const baseClasses = 'btn';
     const variantClasses = `btn-${variant}`;
-    const classes = [baseClasses, variantClasses, className].filter(Boolean).join(' ');
+    const sizeClasses = size ? `btn-${size}` : '';
+    const classes = [baseClasses, variantClasses, sizeClasses, className].filter(Boolean).join(' ');
 
     // If we have an href prop, render as a link
-    if (isLinkButton(props)) {
-        const { href, target, rel } = props;
+    if ('href' in props && props.href) {
+        const { href, target, rel } = props as { href: string; target?: string; rel?: string };
 
         return (
             <a
@@ -47,6 +49,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
                 className={classes}
                 aria-label={ariaLabel}
                 data-testid={testId}
+                role="link"
             >
                 {children}
             </a>
@@ -75,6 +78,7 @@ export const Button: React.FC<ButtonProps> = (props) => {
             type={type}
             onClick={handleClick}
             disabled={disabled}
+            aria-disabled={disabled ? 'true' : 'false'}
             className={classes}
             aria-label={ariaLabel}
             data-testid={testId}

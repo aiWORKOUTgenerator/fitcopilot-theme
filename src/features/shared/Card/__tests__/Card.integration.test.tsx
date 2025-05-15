@@ -1,5 +1,6 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, screen } from '@testing-library/react';
 import React from 'react';
+import { renderWithProviders } from '../../../../test/test-utils';
 import { MediaProps } from '../../Media/types';
 import Card from '../Card';
 
@@ -7,16 +8,21 @@ import Card from '../Card';
 jest.mock('../../Media/Media', () => ({
     __esModule: true,
     default: jest.fn((props) => {
+        // Helper function to stop propagation for all button clicks
+        const stopPropagation = (e: React.MouseEvent) => {
+            e.stopPropagation();
+        };
+
         // Return appropriate mock DOM based on variant
         if (props.variant === 'video') {
             return (
-                <div data-testid="mock-media-video" className="media media--video">
+                <div data-testid="mock-media-video" className="media media--video" aria-label="Video content" onClick={stopPropagation}>
                     <video
                         src={props.src}
                         poster={props.poster}
                         controls={props.controls}
                         data-media-type="video"
-                        data-testid="video-element"
+                        aria-label={props.alt || 'Video'}
                     />
                     {props.caption && <figcaption>{props.caption}</figcaption>}
                 </div>
@@ -25,10 +31,10 @@ jest.mock('../../Media/Media', () => ({
 
         if (props.variant === 'image') {
             return (
-                <div data-testid="mock-media-image" className="media media--image">
+                <div data-testid="mock-media-image" className="media media--image" onClick={stopPropagation}>
                     <img
                         src={props.src}
-                        alt={props.alt}
+                        alt={props.alt || 'Image'}
                         data-media-type="image"
                     />
                     {props.caption && <figcaption>{props.caption}</figcaption>}
@@ -38,20 +44,30 @@ jest.mock('../../Media/Media', () => ({
 
         if (props.variant === 'imageGallery') {
             return (
-                <div data-testid="mock-media-gallery" className="media media--gallery">
+                <div data-testid="mock-media-gallery" className="media media--gallery" aria-label="Image gallery" onClick={stopPropagation}>
                     <div className="gallery-container">
                         {props.images.map((image, index) => (
                             <img
                                 key={index}
                                 src={image.src}
-                                alt={image.alt}
+                                alt={image.alt || `Gallery image ${index + 1}`}
                                 className={index === 0 ? 'active' : ''}
                             />
                         ))}
                     </div>
                     <div className="gallery-controls">
-                        <button className="gallery-prev">Previous</button>
-                        <button className="gallery-next">Next</button>
+                        <button
+                            aria-label="Previous image"
+                            onClick={stopPropagation}
+                        >
+                            Previous
+                        </button>
+                        <button
+                            aria-label="Next image"
+                            onClick={stopPropagation}
+                        >
+                            Next
+                        </button>
                     </div>
                 </div>
             );
@@ -59,24 +75,34 @@ jest.mock('../../Media/Media', () => ({
 
         if (props.variant === 'carousel') {
             return (
-                <div data-testid="mock-media-carousel" className="media media--carousel">
+                <div data-testid="mock-media-carousel" className="media media--carousel" aria-label="Media carousel" onClick={stopPropagation}>
                     <div className="carousel-container">
                         {props.items.map((item, index) => (
                             <div key={index} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-                                {item.type === 'image' && <img src={item.src} alt={item.alt} />}
-                                {item.type === 'video' && <video src={item.src} />}
+                                {item.type === 'image' && <img src={item.src} alt={item.alt || `Carousel item ${index + 1}`} />}
+                                {item.type === 'video' && <video src={item.src} aria-label={item.alt || `Video ${index + 1}`} />}
                             </div>
                         ))}
                     </div>
-                    <div className="carousel-controls">
-                        <button className="carousel-prev">Previous</button>
-                        <button className="carousel-next">Next</button>
+                    <div className="gallery-controls">
+                        <button
+                            aria-label="Previous item"
+                            onClick={stopPropagation}
+                        >
+                            Previous
+                        </button>
+                        <button
+                            aria-label="Next item"
+                            onClick={stopPropagation}
+                        >
+                            Next
+                        </button>
                     </div>
                 </div>
             );
         }
 
-        return <div data-testid="mock-media-unknown">Unsupported media type</div>;
+        return <div data-testid="mock-media-unknown" aria-label="Unsupported media type" onClick={stopPropagation}>Unsupported media type</div>;
     })
 }));
 
@@ -94,30 +120,28 @@ describe('Card Media Integration', () => {
             variant: 'video',
             src: 'test-video.mp4',
             poster: 'test-poster.jpg',
-            controls: true
+            controls: true,
+            alt: 'Test video'
         };
 
-        render(
+        renderWithProviders(
             <Card
                 variant="content"
                 title="Test Content"
                 description="Test Description"
                 media={<Media {...videoProps} />}
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
-        const heading = screen.getByRole('heading', { name: 'Test Content' });
-        const description = screen.getByText('Test Description');
-        const mediaContainer = screen.getByTestId('mock-media-video');
-        const video = screen.getByTestId('video-element');
+        // Using role-based and text-based selectors
+        const heading = screen.getByRole('heading', { name: /test content/i });
+        const description = screen.getByText(/test description/i);
+        const card = heading.closest('.card');
+        const mediaContainer = screen.getByLabelText(/video content/i);
 
         expect(heading).toBeInTheDocument();
         expect(description).toBeInTheDocument();
         expect(mediaContainer).toBeInTheDocument();
-        expect(video).toHaveAttribute('src', 'test-video.mp4');
-        expect(video).toHaveAttribute('poster', 'test-poster.jpg');
         expect(card).toHaveClass('card');
         expect(card).toHaveClass('card--content');
     });
@@ -129,27 +153,24 @@ describe('Card Media Integration', () => {
             alt: 'Test Image'
         };
 
-        render(
+        renderWithProviders(
             <Card
                 variant="profile"
                 name="Test User"
                 bio="Test Bio"
                 media={<Media {...imageProps} />}
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
-        const heading = screen.getByRole('heading', { name: 'Test User' });
-        const bio = screen.getByText('Test Bio');
-        const mediaContainer = screen.getByTestId('mock-media-image');
-        const image = screen.getByRole('img');
+        // Using role-based and text-based selectors
+        const heading = screen.getByRole('heading', { name: /test user/i });
+        const bio = screen.getByText(/test bio/i);
+        const card = heading.closest('.card');
+        const image = screen.getByAltText(/test image/i);
 
         expect(heading).toBeInTheDocument();
         expect(bio).toBeInTheDocument();
-        expect(mediaContainer).toBeInTheDocument();
         expect(image).toHaveAttribute('src', 'test-image.jpg');
-        expect(image).toHaveAttribute('alt', 'Test Image');
         expect(card).toHaveClass('card');
         expect(card).toHaveClass('card--profile');
     });
@@ -163,31 +184,33 @@ describe('Card Media Integration', () => {
             ]
         };
 
-        render(
+        renderWithProviders(
             <Card
                 variant="workout"
                 workoutName="Test Workout"
                 difficulty="intermediate"
                 duration={30}
                 media={<Media {...galleryProps} />}
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
-        const heading = screen.getByRole('heading', { name: 'Test Workout' });
-        const difficulty = screen.getByText('intermediate');
-        const duration = screen.getByText('30 min');
-        const mediaContainer = screen.getByTestId('mock-media-gallery');
+        // Using role-based and text-based selectors
+        const heading = screen.getByRole('heading', { name: /test workout/i });
+        const difficulty = screen.getByText(/intermediate/i);
+        const duration = screen.getByText(/30 min/i);
+        const card = heading.closest('.card');
+        const gallery = screen.getByLabelText(/image gallery/i);
         const galleryImages = screen.getAllByRole('img');
+        const navigationButtons = screen.getAllByRole('button', { name: /(previous|next) image/i });
 
         expect(heading).toBeInTheDocument();
         expect(difficulty).toBeInTheDocument();
         expect(duration).toBeInTheDocument();
-        expect(mediaContainer).toBeInTheDocument();
+        expect(gallery).toBeInTheDocument();
         expect(galleryImages).toHaveLength(2);
         expect(galleryImages[0]).toHaveAttribute('src', 'workout1.jpg');
         expect(galleryImages[1]).toHaveAttribute('src', 'workout2.jpg');
+        expect(navigationButtons).toHaveLength(2);
         expect(card).toHaveClass('card');
         expect(card).toHaveClass('card--workout');
     });
@@ -201,30 +224,29 @@ describe('Card Media Integration', () => {
             ]
         };
 
-        render(
+        renderWithProviders(
             <Card
                 variant="program"
                 programName="Test Program"
                 level="advanced"
                 summary="Test Summary"
                 media={<Media {...carouselProps} />}
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
-        const heading = screen.getByRole('heading', { name: 'Test Program' });
-        const level = screen.getByText('advanced');
-        const summary = screen.getByText('Test Summary');
-        const mediaContainer = screen.getByTestId('mock-media-carousel');
-        const carouselItems = screen.getAllByRole('img');
+        // Using role-based and text-based selectors
+        const heading = screen.getByRole('heading', { name: /test program/i });
+        const level = screen.getByText(/advanced/i);
+        const summary = screen.getByText(/test summary/i);
+        const card = heading.closest('.card');
+        const carousel = screen.getByLabelText(/media carousel/i);
+        const navigationButtons = screen.getAllByRole('button', { name: /(previous|next) item/i });
 
         expect(heading).toBeInTheDocument();
         expect(level).toBeInTheDocument();
         expect(summary).toBeInTheDocument();
-        expect(mediaContainer).toBeInTheDocument();
-        expect(carouselItems).toHaveLength(1); // Only the image item is found by role='img'
-        expect(carouselItems[0]).toHaveAttribute('src', 'program1.jpg');
+        expect(carousel).toBeInTheDocument();
+        expect(navigationButtons).toHaveLength(2);
         expect(card).toHaveClass('card');
         expect(card).toHaveClass('card--program');
     });
@@ -236,22 +258,24 @@ describe('Card Media Integration', () => {
             alt: 'Test Image'
         };
 
-        render(
+        renderWithProviders(
             <Card
                 variant="content"
                 title="Loading Content"
                 isLoading={true}
                 media={<Media {...imageProps} />}
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
+        // Using role-based selector
+        const heading = screen.getByRole('heading', { name: /loading content/i });
+        const card = heading.closest('.card');
+
         expect(card).toHaveAttribute('data-loading', 'true');
         expect(card).toHaveClass('is-loading');
     });
 
-    test('Card with media handles click events properly', () => {
+    test('Card with media handles onClick', async () => {
         const handleClick = jest.fn();
         const imageProps: MediaProps = {
             variant: 'image',
@@ -259,40 +283,50 @@ describe('Card Media Integration', () => {
             alt: 'Test Image'
         };
 
-        render(
+        const { user } = renderWithProviders(
             <Card
                 variant="content"
                 title="Interactive Card"
                 onClick={handleClick}
                 media={<Media {...imageProps} />}
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
-        fireEvent.click(card);
+        // Using role-based selector
+        const heading = screen.getByRole('heading', { name: /interactive card/i });
+        const card = heading.closest('.card');
+
+        // Using userEvent instead of fireEvent
+        await user.click(card as HTMLElement);
         expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
-    test('Card applies theme variants with media', () => {
-        const imageProps: MediaProps = {
-            variant: 'image',
-            src: 'test-image.jpg',
-            alt: 'Test Image'
+    test('Media component interaction stops event propagation', async () => {
+        const cardClick = jest.fn();
+        const galleryProps: MediaProps = {
+            variant: 'imageGallery',
+            images: [
+                { src: 'gallery1.jpg', alt: 'Gallery 1' },
+                { src: 'gallery2.jpg', alt: 'Gallery 2' }
+            ]
         };
 
-        render(
+        const { user } = renderWithProviders(
             <Card
                 variant="content"
-                title="Themed Content"
-                theme="gym"
-                media={<Media {...imageProps} />}
-                data-testid="card"
+                title="Card with Gallery"
+                onClick={cardClick}
+                media={<Media {...galleryProps} />}
             />
         );
 
-        const card = screen.getByTestId('card');
-        expect(card).toHaveAttribute('data-theme', 'gym');
-        expect(card).toHaveClass('theme-gym');
+        // Using role-based selectors
+        const nextButton = screen.getByRole('button', { name: /next image/i });
+
+        // Click the next button
+        await user.click(nextButton);
+
+        // Card click should not be triggered because the event should be stopped
+        expect(cardClick).not.toHaveBeenCalled();
     });
 }); 

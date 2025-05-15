@@ -1,5 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import React from 'react';
+import { renderWithProviders } from '../../../../test/test-utils';
 import Card from '../Card';
 
 // Test utility for verifying BEM class names
@@ -15,7 +16,7 @@ const assertCardClasses = (element: HTMLElement, variant: string, expectedClasse
 
 describe('Card Variants', () => {
     test('ContentCard renders with all props', () => {
-        render(
+        renderWithProviders(
             <Card
                 variant="content"
                 title="Test Content"
@@ -23,24 +24,24 @@ describe('Card Variants', () => {
                 theme="gym"
                 size="lg"
                 layout="vertical"
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
-        const heading = screen.getByRole('heading', { name: 'Test Content' });
-        const description = screen.getByText('Test Description');
+        // Using role-based and text-based selectors instead of data-testid
+        const heading = screen.getByRole('heading', { name: /test content/i });
+        const description = screen.getByText(/test description/i);
+        const card = heading.closest('.card');
 
         expect(heading).toBeInTheDocument();
         expect(description).toBeInTheDocument();
         expect(card).toHaveAttribute('data-theme', 'gym');
 
         // Check proper BEM class usage
-        assertCardClasses(card, 'content', ['theme-gym', 'card--size-lg', 'card--layout-vertical']);
+        assertCardClasses(card as HTMLElement, 'content', ['theme-gym', 'card--size-lg', 'card--layout-vertical']);
     });
 
     test('ProfileCard renders with all props', () => {
-        render(
+        renderWithProviders(
             <Card
                 variant="profile"
                 name="Test User"
@@ -48,14 +49,14 @@ describe('Card Variants', () => {
                 avatarUrl="test-avatar.jpg"
                 theme="sports"
                 size="md"
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
-        const heading = screen.getByRole('heading', { name: 'Test User' });
-        const bio = screen.getByText('Test Bio');
-        const avatar = screen.getByRole('img');
+        // Using role-based and text-based selectors
+        const heading = screen.getByRole('heading', { name: /test user/i });
+        const bio = screen.getByText(/test bio/i);
+        const avatar = screen.getByRole('img', { name: /test user/i });
+        const card = heading.closest('.card');
 
         expect(heading).toBeInTheDocument();
         expect(bio).toBeInTheDocument();
@@ -64,12 +65,12 @@ describe('Card Variants', () => {
         expect(card).toHaveAttribute('data-theme', 'sports');
 
         // Check proper BEM class usage
-        assertCardClasses(card, 'profile', ['theme-sports', 'card--size-md']);
+        assertCardClasses(card as HTMLElement, 'profile', ['theme-sports', 'card--size-md']);
     });
 
-    test('WorkoutCard renders with all props', () => {
+    test('WorkoutCard renders with all props', async () => {
         const onBookmark = jest.fn();
-        render(
+        const { user } = renderWithProviders(
             <Card
                 variant="workout"
                 workoutName="Test Workout"
@@ -79,15 +80,15 @@ describe('Card Variants', () => {
                 onBookmark={onBookmark}
                 theme="wellness"
                 size="sm"
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
-        const heading = screen.getByRole('heading', { name: 'Test Workout' });
-        const difficulty = screen.getByText('advanced');
-        const duration = screen.getByText('45 min');
+        // Using role-based and text-based selectors
+        const heading = screen.getByRole('heading', { name: /test workout/i });
+        const difficulty = screen.getByText(/advanced/i);
+        const duration = screen.getByText(/45 min/i);
         const bookmarkButton = screen.getByRole('button', { name: /unbookmark/i });
+        const card = heading.closest('.card');
 
         expect(heading).toBeInTheDocument();
         expect(difficulty).toBeInTheDocument();
@@ -95,16 +96,16 @@ describe('Card Variants', () => {
         expect(bookmarkButton).toBeInTheDocument();
         expect(card).toHaveAttribute('data-theme', 'wellness');
 
-        // Test interaction using fireEvent instead of userEvent for more direct firing
-        fireEvent.click(bookmarkButton);
+        // Using userEvent instead of fireEvent
+        await user.click(bookmarkButton);
         expect(onBookmark).toHaveBeenCalledWith(expect.any(String), false);
 
         // Check proper BEM class usage
-        assertCardClasses(card, 'workout', ['theme-wellness', 'card--size-sm']);
+        assertCardClasses(card as HTMLElement, 'workout', ['theme-wellness', 'card--size-sm']);
     });
 
     test('ProgramCard renders with all props', () => {
-        render(
+        renderWithProviders(
             <Card
                 variant="program"
                 programName="Test Program"
@@ -112,14 +113,14 @@ describe('Card Variants', () => {
                 summary="Test Summary"
                 theme="default"
                 layout="horizontal"
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
-        const heading = screen.getByRole('heading', { name: 'Test Program' });
-        const level = screen.getByText('Intermediate');
-        const summary = screen.getByText('Test Summary');
+        // Using role-based and text-based selectors
+        const heading = screen.getByRole('heading', { name: /test program/i });
+        const level = screen.getByText(/intermediate/i);
+        const summary = screen.getByText(/test summary/i);
+        const card = heading.closest('.card');
 
         expect(heading).toBeInTheDocument();
         expect(level).toBeInTheDocument();
@@ -127,12 +128,12 @@ describe('Card Variants', () => {
         expect(card).toHaveAttribute('data-theme', 'default');
 
         // Check proper BEM class usage
-        assertCardClasses(card, 'program', ['theme-default', 'card--layout-horizontal']);
+        assertCardClasses(card as HTMLElement, 'program', ['theme-default', 'card--layout-horizontal']);
     });
 
-    test('PricingCard renders with all props', () => {
+    test('PricingCard renders with all props', async () => {
         const handleCtaClick = jest.fn();
-        render(
+        const { user } = renderWithProviders(
             <Card
                 variant="pricing"
                 planName="Premium Plan"
@@ -142,17 +143,17 @@ describe('Card Variants', () => {
                 ctaText="Subscribe Now"
                 popular={true}
                 onCtaClick={handleCtaClick}
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
-        const heading = screen.getByRole('heading', { name: 'Premium Plan' });
+        // Using role-based and text-based selectors
+        const heading = screen.getByRole('heading', { name: /premium plan/i });
         const price = screen.getByText('$19.99');
         const period = screen.getByText(/month/);
         const popular = screen.getByText(/most popular/i);
         const features = screen.getAllByRole('listitem');
-        const ctaButton = screen.getByRole('button', { name: 'Subscribe Now' });
+        const ctaButton = screen.getByRole('button', { name: /subscribe now/i });
+        const card = heading.closest('.card');
 
         expect(heading).toBeInTheDocument();
         expect(price).toBeInTheDocument();
@@ -161,61 +162,88 @@ describe('Card Variants', () => {
         expect(features).toHaveLength(3);
         expect(ctaButton).toBeInTheDocument();
 
-        // Test interaction using fireEvent instead of userEvent
-        fireEvent.click(ctaButton);
+        // Using userEvent instead of fireEvent
+        await user.click(ctaButton);
         expect(handleCtaClick).toHaveBeenCalledTimes(1);
 
         // Check proper BEM class usage
-        assertCardClasses(card, 'pricing');
+        assertCardClasses(card as HTMLElement, 'pricing');
     });
 
     test('Card handles loading state', () => {
-        render(
+        renderWithProviders(
             <Card
                 variant="content"
                 title="Loading Content"
                 isLoading={true}
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
+        // Using role-based selector
+        const heading = screen.getByRole('heading', { name: /loading content/i });
+        const card = heading.closest('.card');
+
         expect(card).toHaveAttribute('data-loading', 'true');
         expect(card).toHaveClass('is-loading');
     });
 
     test('Card applies custom className and style', () => {
         const customStyle = { backgroundColor: 'red' };
-        render(
+        renderWithProviders(
             <Card
                 variant="content"
                 title="Custom Styling"
                 className="custom-class"
                 style={customStyle}
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
+        // Using role-based selector
+        const heading = screen.getByRole('heading', { name: /custom styling/i });
+        const card = heading.closest('.card');
+
         expect(card).toHaveClass('custom-class');
         expect(card).toHaveStyle('background-color: red');
     });
 
-    test('Card with onClick becomes interactive', () => {
+    test('Card with onClick becomes interactive', async () => {
         const handleClick = jest.fn();
-        render(
+        const { user } = renderWithProviders(
             <Card
                 variant="content"
                 title="Interactive Card"
                 onClick={handleClick}
-                data-testid="card"
             />
         );
 
-        const card = screen.getByTestId('card');
+        // Using role-based selector
+        const card = screen.getByRole('button', { name: /interactive card/i });
 
-        // Use fireEvent instead of userEvent for more direct event firing
-        fireEvent.click(card);
+        // Using userEvent instead of fireEvent
+        await user.click(card);
+        expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+
+    // Test for keyboard accessibility
+    test('Card handles keyboard interaction', async () => {
+        const handleClick = jest.fn();
+        const { user } = renderWithProviders(
+            <Card
+                variant="content"
+                title="Keyboard Card"
+                onClick={handleClick}
+            />
+        );
+
+        // Tab to focus the interactive element
+        await user.tab();
+
+        // Verify the card is focused
+        const card = screen.getByRole('button', { name: /keyboard card/i });
+        expect(card).toHaveFocus();
+
+        // Press Enter key
+        await user.keyboard('{Enter}');
         expect(handleClick).toHaveBeenCalledTimes(1);
     });
 }); 

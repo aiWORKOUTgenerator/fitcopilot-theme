@@ -2,8 +2,9 @@
  * TextField Component Tests
  */
 
-import { fireEvent, render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import React from 'react';
+import { renderWithProviders } from '../../../../test/test-utils';
 import { createTextFieldProps } from '../__fixtures__/formFieldFixtures';
 import TextField from '../fields/TextField';
 
@@ -14,9 +15,9 @@ describe('TextField Component', () => {
             value: 'John Doe'
         });
 
-        render(<TextField {...props} />);
+        renderWithProviders(<TextField {...props} />);
 
-        const input = screen.getByLabelText('Name');
+        const input = screen.getByRole('textbox', { name: /name/i });
         expect(input).toBeInTheDocument();
         expect(input).toHaveValue('John Doe');
         expect(input).toHaveAttribute('type', 'text');
@@ -30,13 +31,13 @@ describe('TextField Component', () => {
             className: 'custom-class'
         });
 
-        render(<TextField {...props} />);
+        renderWithProviders(<TextField {...props} />);
 
-        const input = screen.getByLabelText('Email');
+        const input = screen.getByRole('textbox', { name: /email/i });
         expect(input).toHaveClass('form-input', 'form-input--email', 'custom-class');
     });
 
-    it('handles onChange events', () => {
+    it('handles onChange events', async () => {
         const handleChange = jest.fn();
         const props = createTextFieldProps({
             label: 'Username',
@@ -44,12 +45,12 @@ describe('TextField Component', () => {
             onChange: handleChange
         });
 
-        render(<TextField {...props} />);
+        const { user } = renderWithProviders(<TextField {...props} />);
 
-        const input = screen.getByLabelText('Username');
-        fireEvent.change(input, { target: { value: 'newuser' } });
+        const input = screen.getByRole('textbox', { name: /username/i });
+        await user.type(input, 'newuser');
 
-        expect(handleChange).toHaveBeenCalledTimes(1);
+        expect(handleChange).toHaveBeenCalled();
     });
 
     it('renders error message when provided', () => {
@@ -59,13 +60,14 @@ describe('TextField Component', () => {
             error: 'Password must be at least 8 characters'
         });
 
-        render(<TextField {...props} />);
+        renderWithProviders(<TextField {...props} />);
 
         const errorMessage = screen.getByText('Password must be at least 8 characters');
         expect(errorMessage).toBeInTheDocument();
 
         const input = screen.getByLabelText('Password');
         expect(input).toHaveAttribute('aria-invalid', 'true');
+        expect(input).toHaveAccessibleDescription(/Password must be at least 8 characters/i);
     });
 
     it('renders with helper text when provided', () => {
@@ -75,24 +77,33 @@ describe('TextField Component', () => {
             helperText: 'Choose a unique username'
         });
 
-        render(<TextField {...props} />);
+        renderWithProviders(<TextField {...props} />);
 
         const helperText = screen.getByText('Choose a unique username');
         expect(helperText).toBeInTheDocument();
+
+        const input = screen.getByRole('textbox', { name: /username/i });
+        expect(input).toHaveAccessibleDescription(/Choose a unique username/i);
     });
 
-    it('disables the input when disabled prop is true', () => {
+    it('disables the input when disabled prop is true', async () => {
+        const handleChange = jest.fn();
         const props = createTextFieldProps({
             label: 'Username',
             value: 'johndoe',
-            disabled: true
+            disabled: true,
+            onChange: handleChange
         });
 
-        render(<TextField {...props} />);
+        const { user } = renderWithProviders(<TextField {...props} />);
 
-        const input = screen.getByLabelText('Username');
+        const input = screen.getByRole('textbox', { name: /username/i });
         expect(input).toBeDisabled();
         expect(input).toHaveClass('form-input--disabled');
+
+        // Verify that typing in a disabled input doesn't trigger onChange
+        await user.type(input, 'test');
+        expect(handleChange).not.toHaveBeenCalled();
     });
 
     it('adds required attribute and styling when required prop is true', () => {
@@ -102,9 +113,9 @@ describe('TextField Component', () => {
             required: true
         });
 
-        render(<TextField {...props} />);
+        renderWithProviders(<TextField {...props} />);
 
-        const input = screen.getByLabelText('Email');
+        const input = screen.getByRole('textbox', { name: /email/i });
         expect(input).toHaveAttribute('required');
 
         const label = screen.getByText('Email');
@@ -118,9 +129,34 @@ describe('TextField Component', () => {
             type: 'password'
         });
 
-        render(<TextField {...props} />);
+        renderWithProviders(<TextField {...props} />);
 
+        // Password inputs don't have a textbox role
         const input = screen.getByLabelText('Password');
         expect(input).toHaveAttribute('type', 'password');
+    });
+
+    it('handles keyboard navigation correctly', async () => {
+        const handleFocus = jest.fn();
+        const handleKeyPress = jest.fn();
+        const props = createTextFieldProps({
+            label: 'Search',
+            value: '',
+            onFocus: handleFocus,
+            onKeyPress: handleKeyPress
+        });
+
+        const { user } = renderWithProviders(<TextField {...props} />);
+
+        // Tab to focus the input
+        await user.tab();
+
+        const input = screen.getByRole('textbox', { name: /search/i });
+        expect(input).toHaveFocus();
+        expect(handleFocus).toHaveBeenCalled();
+
+        // Test keypress event
+        await user.keyboard('{Enter}');
+        expect(handleKeyPress).toHaveBeenCalled();
     });
 }); 

@@ -16,15 +16,25 @@ const getCardClassName = (props: CardProps) => {
     const sizeClass = props.size ? `card--size-${props.size}` : '';
     const layoutClass = props.layout ? `card--layout-${props.layout}` : '';
     const loadingClass = props.isLoading ? 'is-loading' : '';
+    const interactiveClass = props.onClick ? 'card--interactive' : '';
     const customClass = props.className || '';
 
-    return [baseClass, themeClass, sizeClass, layoutClass, loadingClass, customClass]
+    return [baseClass, themeClass, sizeClass, layoutClass, loadingClass, interactiveClass, customClass]
         .filter(Boolean)
         .join(' ');
 };
 
+const handleKeyDown = (e: React.KeyboardEvent, onClick?: Function) => {
+    if (onClick && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        onClick(e);
+    }
+};
+
 const ContentCard: React.FC<CardProps> = (props) => {
     if (!isContentCard(props)) return null;
+
+    const isInteractive = Boolean(props.onClick);
 
     return (
         <div
@@ -34,8 +44,12 @@ const ContentCard: React.FC<CardProps> = (props) => {
             data-testid={props['data-testid']}
             style={props.style}
             onClick={props.onClick}
+            role={isInteractive ? 'button' : undefined}
+            tabIndex={isInteractive ? 0 : undefined}
+            onKeyDown={isInteractive ? (e) => handleKeyDown(e, props.onClick) : undefined}
+            aria-pressed={isInteractive ? 'false' : undefined}
         >
-            {props.media && <div className="card-media">{props.media}</div>}
+            {props.media && <div className="card-media" onClick={(e) => e.stopPropagation()}>{props.media}</div>}
             <h2>{props.title}</h2>
             {props.description && <p>{props.description}</p>}
             {props.children}
@@ -47,6 +61,8 @@ const ContentCard: React.FC<CardProps> = (props) => {
 const ProfileCard: React.FC<CardProps> = (props) => {
     if (!isProfileCard(props)) return null;
 
+    const isInteractive = Boolean(props.onClick);
+
     return (
         <div
             className={getCardClassName(props)}
@@ -55,8 +71,12 @@ const ProfileCard: React.FC<CardProps> = (props) => {
             data-testid={props['data-testid']}
             style={props.style}
             onClick={props.onClick}
+            role={isInteractive ? 'button' : undefined}
+            tabIndex={isInteractive ? 0 : undefined}
+            onKeyDown={isInteractive ? (e) => handleKeyDown(e, props.onClick) : undefined}
+            aria-pressed={isInteractive ? 'false' : undefined}
         >
-            {props.media && <div className="card-media">{props.media}</div>}
+            {props.media && <div className="card-media" onClick={(e) => e.stopPropagation()}>{props.media}</div>}
             {props.avatarUrl && <img src={props.avatarUrl} alt={props.name} className="card-avatar" />}
             <h2>{props.name}</h2>
             {props.role && <div className="card-role">{props.role}</div>}
@@ -69,6 +89,8 @@ const ProfileCard: React.FC<CardProps> = (props) => {
 const WorkoutCard: React.FC<CardProps> = (props) => {
     if (!isWorkoutCard(props)) return null;
 
+    const isInteractive = Boolean(props.onClick);
+
     return (
         <div
             className={getCardClassName(props)}
@@ -77,8 +99,12 @@ const WorkoutCard: React.FC<CardProps> = (props) => {
             data-testid={props['data-testid']}
             style={props.style}
             onClick={props.onClick}
+            role={isInteractive ? 'button' : undefined}
+            tabIndex={isInteractive ? 0 : undefined}
+            onKeyDown={isInteractive ? (e) => handleKeyDown(e, props.onClick) : undefined}
+            aria-pressed={isInteractive ? 'false' : undefined}
         >
-            {props.media && <div className="card-media">{props.media}</div>}
+            {props.media && <div className="card-media" onClick={(e) => e.stopPropagation()}>{props.media}</div>}
             <h2>{props.workoutName}</h2>
             {props.difficulty && <span className="card-difficulty">{props.difficulty}</span>}
             {props.duration && <span className="card-duration">{props.duration} min</span>}
@@ -109,6 +135,8 @@ const WorkoutCard: React.FC<CardProps> = (props) => {
 const ProgramCard: React.FC<CardProps> = (props) => {
     if (!isProgramCard(props)) return null;
 
+    const isInteractive = Boolean(props.onClick);
+
     return (
         <div
             className={getCardClassName(props)}
@@ -117,8 +145,12 @@ const ProgramCard: React.FC<CardProps> = (props) => {
             data-testid={props['data-testid']}
             style={props.style}
             onClick={props.onClick}
+            role={isInteractive ? 'button' : undefined}
+            tabIndex={isInteractive ? 0 : undefined}
+            onKeyDown={isInteractive ? (e) => handleKeyDown(e, props.onClick) : undefined}
+            aria-pressed={isInteractive ? 'false' : undefined}
         >
-            {props.media && <div className="card-media">{props.media}</div>}
+            {props.media && <div className="card-media" onClick={(e) => e.stopPropagation()}>{props.media}</div>}
             <h2>{props.programName}</h2>
             {props.level && <span className="card-level">{props.level}</span>}
             {props.summary && <p>{props.summary}</p>}
@@ -141,6 +173,8 @@ const ProgramCard: React.FC<CardProps> = (props) => {
 const PricingCard: React.FC<CardProps> = (props) => {
     if (!isPricingCard(props)) return null;
 
+    const isInteractive = Boolean(props.onClick);
+
     const handleCtaClick: CardButtonClickHandler = (e) => {
         e.stopPropagation();
         props.onCtaClick?.(e);
@@ -154,6 +188,10 @@ const PricingCard: React.FC<CardProps> = (props) => {
             data-testid={props['data-testid']}
             style={props.style}
             onClick={props.onClick}
+            role={isInteractive ? 'button' : undefined}
+            tabIndex={isInteractive ? 0 : undefined}
+            onKeyDown={isInteractive ? (e) => handleKeyDown(e, props.onClick) : undefined}
+            aria-pressed={isInteractive ? 'false' : undefined}
         >
             {props.popular && <div className="card-popular-badge">Most Popular</div>}
             <h2>{props.planName}</h2>

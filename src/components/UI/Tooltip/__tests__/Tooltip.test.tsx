@@ -5,15 +5,58 @@ import { axe } from 'jest-axe';
 import React from 'react';
 import { Tooltip } from '../';
 
-// Mock the lazy loaded components
+// Mock the variant components directly
+jest.mock('../variants/default/Tooltip', () => {
+    return {
+        __esModule: true,
+        default: (props) => {
+            const { children, content, isVisible, initialVisible, className, ...rest } = props;
+            const visible = isVisible !== undefined ? isVisible : initialVisible || false;
+
+            return (
+                <div className={`tooltip-wrapper ${className || ''}`}>
+                    <div
+                        className="tooltip-trigger"
+                        onMouseEnter={() => { }}
+                        onMouseLeave={() => { }}
+                        onFocus={() => { }}
+                        onBlur={() => { }}
+                    >
+                        {children}
+                    </div>
+                    <div
+                        className="tooltip-content tooltip-position-top"
+                        role="tooltip"
+                        aria-hidden={!visible ? 'true' : 'false'}
+                    >
+                        {content}
+                        {props.title && <div className="tooltip-title">{props.title}</div>}
+                        {props.icon && <div className="tooltip-icon">{props.icon}</div>}
+                    </div>
+                </div>
+            );
+        }
+    };
+});
+
+// Mock the hero variant to return the same mock component
+jest.mock('../variants/hero/Tooltip', () => {
+    return jest.requireMock('../variants/default/Tooltip');
+});
+
+// Mock the pricing variant to return the same mock component
+jest.mock('../variants/pricing/Tooltip', () => {
+    return jest.requireMock('../variants/default/Tooltip');
+});
+
+// Replace the original React.lazy mock with a simpler version
 jest.mock('react', () => {
     const originalReact = jest.requireActual('react');
     return {
         ...originalReact,
         lazy: (factory) => {
-            const Component = factory();
-            Component.then = (resolve) => resolve(Component);
-            return Component;
+            // Return the component factory result directly
+            return factory();
         },
     };
 });
