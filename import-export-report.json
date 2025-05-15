@@ -804,6 +804,72 @@
     "importedBy": "features/Homepage/PersonalTraining/variants/wellness/index.ts"
   },
   {
+    "file": "features/Homepage/Pricing/Hero/components/FloatingIcons/FloatingIcon.tsx",
+    "exportName": "FloatingIcon",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/components/FloatingIcons/FloatingIcons.tsx"
+  },
+  {
+    "file": "features/Homepage/Pricing/Hero/components/FloatingIcon.tsx",
+    "exportName": "FloatingIcon",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/components/FloatingIcons.tsx"
+  },
+  {
+    "file": "features/Homepage/Pricing/Hero/variants/boutique/index.ts",
+    "exportName": "BoutiqueVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/Hero/variants/classic/index.ts",
+    "exportName": "ClassicVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/Hero/variants/default/index.ts",
+    "exportName": "DefaultVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/Hero/variants/minimalist/index.ts",
+    "exportName": "MinimalistVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/Hero/variants/modern/index.ts",
+    "exportName": "ModernVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/Hero/variants/registration/index.ts",
+    "exportName": "RegistrationVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/Hero/variants/sports/index.ts",
+    "exportName": "SportsVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/Hero/variants/wellness/index.ts",
+    "exportName": "WellnessVariant",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/variants/index.ts"
+  },
+  {
+    "file": "features/Homepage/Pricing/Hero/variants/registration/RegistrationHero.tsx",
+    "exportName": "RegistrationHero",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Hero/variants/registration/index.ts"
+  },
+  {
     "file": "features/Homepage/Pricing/variants/boutique/index.ts",
     "exportName": "BoutiqueVariant",
     "type": "missing",
