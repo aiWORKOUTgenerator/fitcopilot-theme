@@ -30,16 +30,44 @@ const userService = {
     /**
      * Authenticate a user with email and password
      */
-    login: async (email: string, password: string): Promise<LoginResponse> => {
-        // In a real implementation, this would call an API
+    login: async (email: string, _password: string): Promise<LoginResponse> => {
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Mock response based on email
+        if (email === 'test@example.com') {
+            return {
+                user: {
+                    id: 'user123',
+                    email: 'test@example.com',
+                    name: 'Test User',
+                    role: 'user'
+                },
+                token: 'mock-jwt-token'
+            };
+        }
+
+        if (email === 'admin@example.com') {
+            return {
+                user: {
+                    id: 'admin456',
+                    email: 'admin@example.com',
+                    name: 'Admin User',
+                    role: 'admin'
+                },
+                token: 'mock-admin-jwt-token'
+            };
+        }
+
+        // Error response for invalid credentials
         return {
             user: {
-                id: 'user-123',
-                displayName: email.split('@')[0],
-                email,
-                roles: ['user']
+                id: '',
+                email: '',
+                name: '',
+                role: ''
             },
-            token: 'mock-jwt-token'
+            token: ''
         };
     },
 

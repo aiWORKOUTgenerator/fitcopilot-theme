@@ -58,17 +58,17 @@ const _FloatingIcon: React.FC<FloatingIconProps> = ({
   top
 }) => {
   return (
-    <div
-      className="journey-floating-icon"
-      style={{
+      <div
+          className="journey-floating-icon"
+          style={{
         left: `${left}%`,
         top: `${top}%`,
         animation: `float ${speed}s ease-in-out infinite ${delay}s`
       }}
-      aria-hidden="true"
+          aria-hidden="true"
     >
-      {children}
-    </div>
+          {children}
+      </div>
   );
 };
 
@@ -94,22 +94,22 @@ const FloatingIcons: React.FC<{ variant?: string }> = ({ variant: _variant = 'de
   ];
 
   return (
-    <div className="journey-floating-icons">
-      {floatingIcons.map(({ Icon, size, left, top, delay, speed }, index) => (
-        <div
-          key={index}
-          className="journey-floating-icon"
-          style={{
+      <div className="journey-floating-icons">
+          {floatingIcons.map(({ Icon, size, left, top, delay, speed }, index) => (
+              <div
+                  key={index}
+                  className="journey-floating-icon"
+                  style={{
             left: `${left}%`,
             top: `${top}%`,
             animationDelay: `${delay}s`,
             animationDuration: `${speed}s`
           }}
         >
-          <Icon size={size} />
-        </div>
+                  <Icon size={size} />
+              </div>
       ))}
-    </div>
+      </div>
   );
 };
 
@@ -306,70 +306,70 @@ const Journey: React.FC<JourneyProps> = ({
   };
 
   return (
-    <section
-      className="w-full py-16 md:pt-8 md:pb-24 px-4 bg-journey-bg relative overflow-hidden"
-      data-theme={_variant !== 'default' ? _variant : undefined}
+      <section
+          className="w-full py-16 md:pt-8 md:pb-24 px-4 bg-journey-bg relative overflow-hidden"
+          data-theme={_variant !== 'default' ? _variant : undefined}
     >
-      {/* Create a visual connector from Features to Journey */}
-      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background-primary to-transparent z-0"></div>
+          {/* Create a visual connector from Features to Journey */}
+          <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background-primary to-transparent z-0"></div>
 
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Section Header */}
-        <SectionHeader
-          title={<>Your Fitness <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">Journey</span></>}
-          description="Four simple steps to transform your fitness routine with AI-powered workouts"
-          variant={_variant}
+          <div className="max-w-6xl mx-auto relative z-10">
+              {/* Section Header */}
+              <SectionHeader
+                  title={<>Your Fitness <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">Journey</span></>}
+                  description="Four simple steps to transform your fitness routine with AI-powered workouts"
+                  variant={_variant}
         />
 
-        {/* Journey Steps - Wrapped in a cohesive container */}
-        <div
-          className="journey-steps mt-16"
-          data-aos={prefersReducedMotion ? undefined : 'fade-up'}
-          data-aos-delay={prefersReducedMotion ? undefined : '100'}
+              {/* Journey Steps - Wrapped in a cohesive container */}
+              <div
+                  className="journey-steps mt-16"
+                  data-aos={prefersReducedMotion ? undefined : 'fade-up'}
+                  data-aos-delay={prefersReducedMotion ? undefined : '100'}
         >
-          <div className="journey-container rounded-3xl bg-journey-bg-alt p-6 md:p-10 relative overflow-hidden border journey-border">
-            {/* Add floating icons as the background */}
-            <FloatingIcons variant={_variant} />
+                  <div className="journey-container rounded-3xl bg-journey-bg-alt p-6 md:p-10 relative overflow-hidden border journey-border">
+                      {/* Add floating icons as the background */}
+                      <FloatingIcons variant={_variant} />
 
-            <div className={`journey-timeline ${timelineColorClass}`}>
-              {journeySteps.map((step: JourneyStepType, index: number) => (
-                <div
-                  key={step.id}
-                  className="journey-step-container"
-                  id={`journey-step-${index}`}
+                      <div className={`journey-timeline ${timelineColorClass}`}>
+                          {journeySteps.map((step: JourneyStepType, index: number) => (
+                              <div
+                                  key={step.id}
+                                  className="journey-step-container"
+                                  id={`journey-step-${index}`}
                 >
-                  <JourneyStep
-                    step={step}
-                    index={index}
-                    isExpanded={expandedStep === index}
-                    onToggle={() => handleStepClick(index)}
-                    isLast={index === journeySteps.length - 1}
-                    variant={_variant}
+                                  <JourneyStep
+                                      step={step}
+                                      index={index}
+                                      isExpanded={expandedStep === index}
+                                      onToggle={() => handleStepClick(index)}
+                                      isLast={index === journeySteps.length - 1}
+                                      variant={_variant}
                   />
-                </div>
+                              </div>
               ))}
-            </div>
-          </div>
-        </div>
+                      </div>
+                  </div>
+              </div>
 
-        {/* Main CTA */}
-        <div
-          className="text-center mt-16"
-          data-aos={prefersReducedMotion ? undefined : 'fade-up'}
-          data-aos-delay={prefersReducedMotion ? undefined : '500'}
+              {/* Main CTA */}
+              <div
+                  className="text-center mt-16"
+                  data-aos={prefersReducedMotion ? undefined : 'fade-up'}
+                  data-aos-delay={prefersReducedMotion ? undefined : '500'}
         >
-          <JourneyCTA
-            text="Start Your Journey Now"
-            href="https://aigymengine.com/workout-generator-registration"
-            buttonVariant="gradient"
-            gradientColor="lime"
-            buttonSize="large"
-            showIcon={true}
-            variant={_variant}
+                  <JourneyCTA
+                      text="Start Your Journey Now"
+                      href="https://aigymengine.com/workout-generator-registration"
+                      buttonVariant="gradient"
+                      gradientColor="lime"
+                      buttonSize="large"
+                      showIcon={true}
+                      variant={_variant}
           />
-        </div>
-      </div>
-    </section>
+              </div>
+          </div>
+      </section>
   );
 };
 

@@ -36,7 +36,7 @@ export function collectTestResults(testPattern?: string): TestResultsData {
     try {
         // Run tests with detailed output
         const command = `jest ${testPattern || ''} --verbose --json --outputFile=${outputPath}`;
-        console.log(`Running: ${command}`);
+        logger.info(`Running: ${command}`);
         execSync(command, { stdio: 'inherit' });
 
         // Read and parse results

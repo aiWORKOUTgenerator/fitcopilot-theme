@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Tooltip.scss';
 
 export interface TooltipProps {
@@ -32,6 +32,16 @@ export interface TooltipProps {
     id?: string;
 }
 
+export type TooltipMouseEnterEvent = React.MouseEvent<HTMLDivElement>;
+export type TooltipMouseLeaveEvent = React.MouseEvent<HTMLDivElement>;
+export type TooltipFocusEvent = React.FocusEvent<HTMLDivElement>;
+export type TooltipBlurEvent = React.FocusEvent<HTMLDivElement>;
+
+export type TooltipMouseEnterHandler = (event: TooltipMouseEnterEvent) => void;
+export type TooltipMouseLeaveHandler = (event: TooltipMouseLeaveEvent) => void;
+export type TooltipFocusHandler = (event: TooltipFocusEvent) => void;
+export type TooltipBlurHandler = (event: TooltipBlurEvent) => void;
+
 /**
  * Simple tooltip component - shows content on hover or with controlled visibility
  */
@@ -53,7 +63,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 }) => {
     // Internal state for uncontrolled mode
     const [isVisible, setIsVisible] = useState(initialVisible);
-    const [timeoutId, setTimeoutId] = useState<number | null>(null);
+    const timeoutRef = useRef<number | null>(null);
 
     // Determine if component is in controlled mode
     const isControlled = controlledIsVisible !== undefined;
@@ -62,11 +72,11 @@ const Tooltip: React.FC<TooltipProps> = ({
     // Clear timeout on unmount
     useEffect(() => {
         return () => {
-            if (timeoutId) {
-                window.clearTimeout(timeoutId);
+            if (timeoutRef.current) {
+                window.clearTimeout(timeoutRef.current);
             }
         };
-    }, [timeoutId]);
+    }, []);
 
     // Update based on controlled state
     useEffect(() => {
@@ -76,25 +86,24 @@ const Tooltip: React.FC<TooltipProps> = ({
     }, [controlledIsVisible, isControlled, isVisible]);
 
     // Event handlers for showing/hiding tooltip
-    const handleShow = () => {
+    const handleShow: TooltipMouseEnterHandler & TooltipFocusHandler = () => {
         if (isControlled) return;
 
         if (delay > 0) {
-            const id = window.setTimeout(() => {
+            timeoutRef.current = window.setTimeout(() => {
                 setIsVisible(true);
             }, delay);
-            setTimeoutId(id);
         } else {
             setIsVisible(true);
         }
     };
 
-    const handleHide = () => {
+    const handleHide: TooltipMouseLeaveHandler & TooltipBlurHandler = () => {
         if (isControlled) return;
 
-        if (timeoutId) {
-            window.clearTimeout(timeoutId);
-            setTimeoutId(null);
+        if (timeoutRef.current) {
+            window.clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
         }
         setIsVisible(false);
     };

@@ -154,7 +154,7 @@ export function setupGlobalMocks() {
 
     // Mock intersection observer
     global.IntersectionObserver = class IntersectionObserver {
-        constructor(callback: IntersectionObserverCallback) { }
+        constructor(_callback: IntersectionObserverCallback) { }
         observe = jest.fn();
         unobserve = jest.fn();
         disconnect = jest.fn();

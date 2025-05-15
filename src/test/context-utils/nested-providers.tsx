@@ -95,7 +95,11 @@ export function renderWithAllProviders(
  * Creates a wrapper function for use with renderHook
  */
 export function createTestProvidersWrapper(providerProps: Omit<TestProvidersProps, 'children'> = {}) {
-    return ({ children }: { children?: ReactNode }) => (
+    const TestProviderWrapper = ({ children }: { children?: ReactNode }) => (
         <TestProviders {...providerProps}>{children}</TestProviders>
     );
+
+    TestProviderWrapper.displayName = 'TestProviderWrapper';
+
+    return TestProviderWrapper;
 } 

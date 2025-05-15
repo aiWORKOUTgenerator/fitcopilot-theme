@@ -80,7 +80,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
                                 </>
                             ) : (
                                 <>
-                                    <div className={`w-full h-48 secondary-bg flex items-center justify-center`}>
+                                    <div className="w-full h-48 secondary-bg flex items-center justify-center">
                                         <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center">
                                             {React.isValidElement(feature.icon)
                                                 ? <div className="text-white opacity-80">{feature.icon}</div>

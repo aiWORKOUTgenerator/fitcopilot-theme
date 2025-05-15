@@ -84,13 +84,24 @@ export const createTransitionMetadata = (overrides?: Record<string, unknown>) =>
 });
 
 /**
+ * Define a type for event listeners
+ */
+type TransitionEventListener = (event: {
+    sourceStep: RegistrationStep;
+    destinationStep: RegistrationStep;
+    transitionType: string;
+    timestamp: number;
+    metadata: Record<string, unknown>;
+}) => void;
+
+/**
  * Mock the event manager for tests
  */
 export const setupMockEventManager = () => {
-    const listeners: Array<Function> = [];
+    const listeners: Array<TransitionEventListener> = [];
 
     const mockEventManager = {
-        subscribe: jest.fn((listener) => {
+        subscribe: jest.fn((listener: TransitionEventListener) => {
             listeners.push(listener);
             return () => {
                 const index = listeners.indexOf(listener);

@@ -18,9 +18,13 @@ export function createProviderWrapper<T>(
     Provider: React.ComponentType<{ children?: ReactNode } & T>,
     providerProps: T
 ) {
-    return ({ children }: { children?: ReactNode }) => (
+    const ProviderWrapper = ({ children }: { children?: ReactNode }) => (
         <Provider {...providerProps}>{children}</Provider>
     );
+
+    ProviderWrapper.displayName = `${Provider.displayName || Provider.name}Wrapper`;
+
+    return ProviderWrapper;
 }
 
 /**
@@ -35,7 +39,7 @@ export function createNestedProviders(
         props: Record<string, any>;
     }>
 ) {
-    return ({ children }: { children?: ReactNode }) => (
+    const NestedProviders = ({ children }: { children?: ReactNode }) => (
         <>
             {providers.reduce(
                 (acc, { Provider, props }) => (
@@ -45,6 +49,10 @@ export function createNestedProviders(
             )}
         </>
     );
+
+    NestedProviders.displayName = 'NestedProviders';
+
+    return NestedProviders;
 }
 
 /**

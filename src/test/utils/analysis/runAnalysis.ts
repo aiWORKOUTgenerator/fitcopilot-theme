@@ -9,7 +9,7 @@ import { findSharedDependencies, generateDependencyReport } from './findSharedDe
  * @param testPattern Optional pattern to filter tests
  */
 export async function runTestAnalysis(testPattern?: string): Promise<void> {
-    console.log('Starting test analysis...');
+    logger.info('Starting test analysis...');
 
     // Create output directory
     const outputDir = path.resolve(process.cwd(), 'test-analysis');
@@ -19,21 +19,21 @@ export async function runTestAnalysis(testPattern?: string): Promise<void> {
 
     try {
         // Step 1: Collect test results
-        console.log('Running tests and collecting results...');
+        logger.info('Running tests and collecting results...');
         const results = collectTestResults(testPattern);
 
-        console.log(`Tests completed. Found ${results.numFailedTests} failing tests out of ${results.numFailedTests + results.numPassedTests} total.`);
+        logger.info(`Tests completed. Found ${results.numFailedTests} failing tests out of ${results.numFailedTests + results.numPassedTests} total.`);
 
         // Step 2: Categorize failures
-        console.log('Categorizing test failures...');
+        logger.info('Categorizing test failures...');
         const categories = categorizeFailures(results);
 
         // Step 3: Find shared dependencies
-        console.log('Analyzing shared dependencies...');
+        logger.info('Analyzing shared dependencies...');
         const dependencies = findSharedDependencies(categories);
 
         // Step 4: Generate reports
-        console.log('Generating reports...');
+        logger.info('Generating reports...');
 
         const failureReport = generateFailureReport(categories);
         fs.writeFileSync(path.join(outputDir, 'failure-report.md'), failureReport);
@@ -63,12 +63,12 @@ export async function runTestAnalysis(testPattern?: string): Promise<void> {
             }, null, 2)
         );
 
-        console.log(`Analysis complete! Reports saved to ${outputDir}`);
-        console.log(`- Failure report: ${path.join(outputDir, 'failure-report.md')}`);
-        console.log(`- Dependency report: ${path.join(outputDir, 'dependency-report.md')}`);
+        logger.info(`Analysis complete! Reports saved to ${outputDir}`);
+        logger.info(`- Failure report: ${path.join(outputDir, 'failure-report.md')}`);
+        logger.info(`- Dependency report: ${path.join(outputDir, 'dependency-report.md')}`);
 
     } catch (error) {
-        console.error('Error during analysis:', error);
+        logger.error('Error during analysis:', error);
         throw error;
     }
 }
@@ -80,10 +80,10 @@ if (require.main === module) {
 
     runTestAnalysis(testPattern)
         .then(() => {
-            console.log('Analysis completed successfully');
+            logger.info('Analysis completed successfully');
         })
         .catch(error => {
-            console.error('Analysis failed:', error);
+            logger.error('Analysis failed:', error);
             process.exit(1);
         });
 } 

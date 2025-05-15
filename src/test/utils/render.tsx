@@ -23,9 +23,9 @@ export function renderWithProviders(
 ) {
     const {
         providerProps = {},
-        route,
-        initialState,
-        routerProps,
+        _route,
+        _initialState,
+        _routerProps,
         ...renderOptions
     } = options;
 
@@ -126,3 +126,4 @@ function HookWrapper<Result, Props>({
  */
 export * from '@testing-library/react';
 export { renderWithProviders as render };
+

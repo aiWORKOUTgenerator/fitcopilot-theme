@@ -107,7 +107,7 @@ const workoutService = {
     /**
      * Save a workout (create or update)
      */
-    saveWorkout: async (workout: Workout): Promise<boolean> => {
+    saveWorkout: async (_workout: Workout): Promise<boolean> => {
         // In a real implementation, this would call an API
         return true;
     },
@@ -115,7 +115,7 @@ const workoutService = {
     /**
      * Delete a workout
      */
-    deleteWorkout: async (id: string): Promise<boolean> => {
+    deleteWorkout: async (_id: string): Promise<boolean> => {
         // In a real implementation, this would call an API
         return true;
     }
@@ -129,4 +129,17 @@ export const mockWorkoutService = {
     deleteWorkout: jest.fn().mockImplementation(workoutService.deleteWorkout)
 };
 
-export default workoutService; 
+export default workoutService;
+
+// Add _workout and _id parameters with underscore prefix to indicate they're intentionally unused
+export const updateWorkout = async (_workout: Workout): Promise<Workout> => {
+    // Mock implementation
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return mockWorkouts[0];
+};
+
+export const deleteWorkout = async (_id: string): Promise<boolean> => {
+    // Mock implementation
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return true;
+}; 

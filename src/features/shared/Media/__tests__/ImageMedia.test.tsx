@@ -95,7 +95,7 @@ describe('ImageMedia component', () => {
                 variant="image"
                 src="test-image.jpg"
                 alt="Test image"
-                // @ts-ignore - onLoad prop for testing purposes
+                // @ts-expect-error - onLoad prop for testing purposes
                 onLoad={onLoad}
             />
         );
@@ -113,7 +113,7 @@ describe('ImageMedia component', () => {
                 variant="image"
                 src="broken-image.jpg"
                 alt="Test image"
-                // @ts-ignore - onError prop for testing purposes
+                // @ts-expect-error - onError prop for testing purposes
                 onError={onError}
                 fallbackSrc="fallback.jpg"
             />

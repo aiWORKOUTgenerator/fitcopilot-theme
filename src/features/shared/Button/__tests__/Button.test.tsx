@@ -162,7 +162,7 @@ describe('Button Component', () => {
         // Test the component function directly with undefined props
         const warnSpy = jest.spyOn(logger, 'warn');
 
-        // @ts-ignore - Intentionally passing undefined to test handling
+        // @ts-expect-error - Intentionally passing undefined to test handling
         const result = Button(undefined);
 
         expect(result).toBeNull();

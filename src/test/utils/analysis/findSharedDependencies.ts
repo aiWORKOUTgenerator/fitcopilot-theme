@@ -1,4 +1,5 @@
 import fs from 'fs';
+import logger from '../../../utils/logger';
 import { FailureCategories } from './categorizeFailures';
 
 export interface DependencyNode {
@@ -49,7 +50,7 @@ export function findSharedDependencies(categories: FailureCategories): Dependenc
             const imports = extractImports(content);
 
             // Add each import to the dependency map
-            imports.forEach(({ name, path: importPath, type }) => {
+            imports.forEach(({ _name, path: importPath, type }) => {
                 // Skip excluded imports
                 if (EXCLUDED_IMPORTS.some(excluded => importPath.includes(excluded))) {
                     return;
@@ -71,7 +72,7 @@ export function findSharedDependencies(categories: FailureCategories): Dependenc
                 }
             });
         } catch (error) {
-            console.error(`Error processing ${testPath}:`, error);
+            logger.error(`Error processing ${testPath}:`, error);
         }
     });
 

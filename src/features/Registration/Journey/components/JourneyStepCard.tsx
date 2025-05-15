@@ -108,7 +108,7 @@ const JourneyStepCard: React.FC<JourneyStepCardProps> = ({
         // Default content for other steps
         else {
             return (
-                <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 animate-fade-slide-up`}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 animate-fade-slide-up">
                     {step.detailedFeatures.map((feature, featureIndex) => (
                         <div
                             key={featureIndex}

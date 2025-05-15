@@ -1608,6 +1608,12 @@
     "importedBy": "features/shared/Card/Card.tsx"
   },
   {
+    "file": "features/shared/Card/types.ts",
+    "exportName": "CardClickHandler",
+    "type": "missing",
+    "importedBy": "features/shared/Card/Card.tsx"
+  },
+  {
     "file": "features/shared/Form/types/index.ts",
     "exportName": "TextFieldProps",
     "type": "missing",
@@ -1752,6 +1758,12 @@
     "importedBy": "features/shared/Media/YouTubePlayer.tsx"
   },
   {
+    "file": "features/shared/Tooltip/Tooltip.tsx",
+    "exportName": "Tooltip",
+    "type": "missing",
+    "importedBy": "features/shared/Tooltip/stories/Tooltip.stories.tsx"
+  },
+  {
     "file": "features/shared/TypeDemo/TypeDemo.tsx",
     "exportName": "TypeDemo",
     "type": "missing",
@@ -1846,6 +1858,18 @@
     "exportName": "logger",
     "type": "missing",
     "importedBy": "styles/design-system/color-validation.js"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "test/utils/analysis/findSharedDependencies.ts"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
+    "importedBy": "test/utils/helpers.ts"
   },
   {
     "file": "utils/logger.ts",

@@ -204,57 +204,57 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   const accentColor = getAccentColor();
 
   return (
-    <div
-      className="flip-card h-96"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      data-theme-variant={variant}
+      <div
+          className="flip-card h-96"
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          data-theme-variant={variant}
     >
-      <div className="flip-card-inner w-full h-full">
-        {/* Front of card - styled to match the original version */}
-        <div
-          className={`flip-card-front absolute w-full h-full group flex flex-col items-center justify-center p-8 rounded-2xl bg-gray-800/70 backdrop-blur-lg border border-gray-700 transition-all duration-500 ${cardHoverClass}`}
+          <div className="flip-card-inner w-full h-full">
+              {/* Front of card - styled to match the original version */}
+              <div
+                  className={`flip-card-front absolute w-full h-full group flex flex-col items-center justify-center p-8 rounded-2xl bg-gray-800/70 backdrop-blur-lg border border-gray-700 transition-all duration-500 ${cardHoverClass}`}
         >
-          {/* Feature icon container - icon now directly inside container */}
-          <div
-            className={`h-24 w-24 rounded-2xl mb-6 mx-auto flex items-center justify-center ${gradientClass}`}
+                  {/* Feature icon container - icon now directly inside container */}
+                  <div
+                      className={`h-24 w-24 rounded-2xl mb-6 mx-auto flex items-center justify-center ${gradientClass}`}
           >
-            {React.cloneElement(icon as React.ReactElement, {
+                      {React.cloneElement(icon as React.ReactElement, {
               size: 48,
               strokeWidth: 1.5,
               className: `${iconColor} group-hover:scale-110 transition-transform duration-300`
             })}
-          </div>
+                  </div>
 
-          {/* Feature title */}
-          <h3
-            className={`text-white text-xl font-bold mb-4 transition-colors duration-300 ${titleHoverClass}`}
+                  {/* Feature title */}
+                  <h3
+                      className={`text-white text-xl font-bold mb-4 transition-colors duration-300 ${titleHoverClass}`}
           >
-            {title}
-          </h3>
+                      {title}
+                  </h3>
 
-          {/* Feature description */}
-          <p
-            className="text-gray-400 text-center transition-colors duration-300 group-hover:text-gray-300"
+                  {/* Feature description */}
+                  <p
+                      className="text-gray-400 text-center transition-colors duration-300 group-hover:text-gray-300"
           >
-            {description}
-          </p>
+                      {description}
+                  </p>
 
-          {/* Hover badge */}
-          <div className="mt-6">
-            <span
-              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-700/50 transition-colors duration-300 ${badgeHoverClass}`}
-              style={badgeStyle}
+                  {/* Hover badge */}
+                  <div className="mt-6">
+                      <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-700/50 transition-colors duration-300 ${badgeHoverClass}`}
+                          style={badgeStyle}
             >
-              Hover to Preview
-            </span>
-          </div>
-        </div>
+                          Hover to Preview
+                      </span>
+                  </div>
+              </div>
 
-        {/* Back of card (demo) - styled to match the original version */}
-        <div
-          className="flip-card-back absolute w-full h-full backdrop-blur-lg rounded-2xl p-6 flex flex-col"
-          style={{
+              {/* Back of card (demo) - styled to match the original version */}
+              <div
+                  className="flip-card-back absolute w-full h-full backdrop-blur-lg rounded-2xl p-6 flex flex-col"
+                  style={{
             backgroundColor: 'rgba(31, 41, 55, 0.9)',
             borderColor: accentColor,
             borderWidth: '1px',
@@ -262,28 +262,28 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
             boxShadow: `0 10px 25px -5px ${accentColor.replace(/rgb/g, 'rgba').replace(/\)/, ', 0.2)')}`,
           }}
         >
-          <h3
-            className={`text-lg font-bold mb-3 text-center flex items-center justify-center ${iconColor}`}
+                  <h3
+                      className={`text-lg font-bold mb-3 text-center flex items-center justify-center ${iconColor}`}
           >
-            {title} <CheckCircle className="ml-2 animate-pulse" size={20} />
-          </h3>
-          <div className="flex-1 px-2 relative mb-6">
-            {demoComponent}
-          </div>
-          <div className="text-center mt-auto pt-1">
-            <span
-              className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
-              style={{
+                      {title} <CheckCircle className="ml-2 animate-pulse" size={20} />
+                  </h3>
+                  <div className="flex-1 px-2 relative mb-6">
+                      {demoComponent}
+                  </div>
+                  <div className="text-center mt-auto pt-1">
+                      <span
+                          className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium"
+                          style={{
                 backgroundColor: `${accentColor.replace(/rgb/g, 'rgba').replace(/\)/, ', 0.2)')}`,
                 color: accentColor
               }}
             >
-              Hover to Flip Back
-            </span>
+                          Hover to Flip Back
+                      </span>
+                  </div>
+              </div>
           </div>
-        </div>
       </div>
-    </div>
   );
 };
 

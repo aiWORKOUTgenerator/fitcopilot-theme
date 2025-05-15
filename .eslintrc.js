@@ -44,8 +44,8 @@ module.exports = {
         'react/jsx-curly-spacing': ['error', { 'when': 'never', 'children': { 'when': 'never' } }],
         'react/jsx-curly-brace-presence': ['error', { 'props': 'never', 'children': 'never' }],
         'react/jsx-equals-spacing': ['error', 'never'],
-        'react/jsx-indent': ['error', 2],
-        'react/jsx-indent-props': ['error', 2],
+        'react/jsx-indent': ['error', 4],
+        'react/jsx-indent-props': ['error', 4],
         'react/jsx-tag-spacing': ['error', {
             'closingSlash': 'never',
             'beforeSelfClosing': 'always',

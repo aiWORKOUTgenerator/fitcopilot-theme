@@ -73,20 +73,20 @@ export const VariantComparison: Story = {
     },
   },
   render: (args) => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <div>
-        <h2 style={{ padding: '1rem', background: '#333', color: 'white', textAlign: 'center' }}>
-          Default Variant
-        </h2>
-        <Hero {...args} variant="default" />
-      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <div>
+              <h2 style={{ padding: '1rem', background: '#333', color: 'white', textAlign: 'center' }}>
+                  Default Variant
+              </h2>
+              <Hero {...args} variant="default" />
+          </div>
 
-      <div>
-        <h2 style={{ padding: '1rem', background: '#333', color: 'white', textAlign: 'center' }}>
-          Gym Variant
-        </h2>
-        <Hero {...args} variant="gym" />
+          <div>
+              <h2 style={{ padding: '1rem', background: '#333', color: 'white', textAlign: 'center' }}>
+                  Gym Variant
+              </h2>
+              <Hero {...args} variant="gym" />
+          </div>
       </div>
-    </div>
   ),
 };

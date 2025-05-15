@@ -5,7 +5,7 @@ import React from 'react';
  * @param defaultValue Default implementation
  * @returns A mock object with jest.fn() for methods
  */
-function createMock<T extends object>(defaultValue: T): T {
+function _createMock<T extends object>(defaultValue: T): T {
     return Object.entries(defaultValue).reduce((mock, [key, value]) => {
         // If the value is a function, replace with jest.fn()
         if (typeof value === 'function') {
@@ -66,7 +66,7 @@ export function createUserContextMock(overrides = {}) {
     // Import actual context dynamically to avoid circular dependencies
     // This is a placeholder - replace with actual import
     const UserContext = {
-        Provider: ({ children, value }: { children: React.ReactNode; value: any }) => (
+        Provider: ({ children, _value }: { children: React.ReactNode; _value: any }) => (
             <div data-testid="mock-user-context">{children}</div>
         ),
     };
@@ -92,7 +92,7 @@ export function createWorkoutContextMock(overrides = {}) {
     // Import actual context dynamically to avoid circular dependencies
     // This is a placeholder - replace with actual import
     const WorkoutContext = {
-        Provider: ({ children, value }: { children: React.ReactNode; value: any }) => (
+        Provider: ({ children, _value }: { children: React.ReactNode; _value: any }) => (
             <div data-testid="mock-workout-context">{children}</div>
         ),
     };
@@ -118,7 +118,7 @@ export function createAnalyticsContextMock(overrides = {}) {
     // Import actual context dynamically to avoid circular dependencies
     // This is a placeholder - replace with actual import
     const AnalyticsContext = {
-        Provider: ({ children, value }: { children: React.ReactNode; value: any }) => (
+        Provider: ({ children, _value }: { children: React.ReactNode; _value: any }) => (
             <div data-testid="mock-analytics-context">{children}</div>
         ),
     };
@@ -163,7 +163,7 @@ export function createTestProviders(options: TestProviderOptions = {}): React.FC
     const { AnalyticsProvider } = createAnalyticsContextMock(analyticsContext);
 
     // Return composed provider wrapper
-    return ({ children }) => {
+    const TestProviderComponent: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         // Start with the innermost children
         let wrappedChildren = <>{children}</>;
 
@@ -185,4 +185,8 @@ export function createTestProviders(options: TestProviderOptions = {}): React.FC
 
         return wrappedChildren;
     };
+
+    TestProviderComponent.displayName = 'ComposedTestProviders';
+
+    return TestProviderComponent;
 } 

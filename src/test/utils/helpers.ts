@@ -1,4 +1,5 @@
 import { waitFor } from '@testing-library/react';
+import logger from '../../utils/logger';
 
 /**
  * Waits for all pending promises to resolve
@@ -27,7 +28,7 @@ export function withAsync(fn: (...args: any[]) => Promise<any>) {
         try {
             return await fn(...args);
         } catch (error) {
-            console.error('Error in async test:', error);
+            logger.error('Error in async test:', error);
             throw error;
         }
     };
@@ -73,12 +74,15 @@ export function mockConsole(...methods: Array<keyof Console>) {
     const originalMethods: Record<string, any> = {};
 
     methods.forEach(method => {
+        // eslint-disable-next-line no-console
         originalMethods[method] = console[method];
+        // eslint-disable-next-line no-console
         console[method] = jest.fn();
     });
 
     return () => {
         methods.forEach(method => {
+            // eslint-disable-next-line no-console
             console[method] = originalMethods[method];
         });
     };
@@ -126,7 +130,7 @@ export function mockResizeObserver() {
     };
 
     return () => {
-        // @ts-ignore - we know this exists as we just defined it
+        // @ts-expect-error - we know this exists as we just defined it
         delete window.ResizeObserver;
     };
 }
@@ -170,7 +174,7 @@ export function mockIntersectionObserver() {
     };
 
     return () => {
-        // @ts-ignore - we know this exists as we just defined it
+        // @ts-expect-error - we know this exists as we just defined it
         delete window.IntersectionObserver;
     };
 } 

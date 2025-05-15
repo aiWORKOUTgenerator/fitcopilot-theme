@@ -9,6 +9,7 @@ import {
     isWorkoutCard
 } from '../../../utils/typeGuards/cardTypeGuards';
 import './card.scss';
+import { CardClickHandler } from './types';
 
 const getCardClassName = (props: CardProps) => {
     const baseClass = `card card--${props.variant}`;
@@ -24,7 +25,7 @@ const getCardClassName = (props: CardProps) => {
         .join(' ');
 };
 
-const handleKeyDown = (e: React.KeyboardEvent, onClick?: Function) => {
+const handleKeyDown = (e: React.KeyboardEvent, onClick?: CardClickHandler) => {
     if (onClick && (e.key === 'Enter' || e.key === ' ')) {
         e.preventDefault();
         onClick(e);

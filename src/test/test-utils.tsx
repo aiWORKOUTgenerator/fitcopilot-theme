@@ -4,9 +4,13 @@
  * Shared utilities for consistent component testing
  */
 
-import { render, RenderOptions } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import React, { ReactElement } from 'react';
+import { render, RenderOptions, RenderResult } from '@testing-library/react';
+import React, { ReactNode } from 'react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { AnalyticsProvider } from '../context/AnalyticsContext';
+import { AppProvider } from '../context/AppContext';
+import { ThemeProvider } from '../context/ThemeContext';
+import { WorkoutProvider } from '../context/WorkoutContext';
 
 // Define the type for provider props
 interface ProviderProps {
@@ -14,38 +18,73 @@ interface ProviderProps {
 }
 
 // Define render options with provider props
-interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
+interface _CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
     providerProps?: ProviderProps;
 }
 
+interface ExtendedRenderOptions extends Omit<RenderOptions, 'wrapper'> {
+    route?: string;
+    initialState?: any;
+    routerProps?: any;
+    providerProps?: {
+        appContext?: Record<string, unknown>;
+        workoutContext?: Record<string, unknown>;
+        themeContext?: Record<string, unknown>;
+        analyticsContext?: Record<string, unknown>;
+    };
+}
+
 /**
- * Custom render function that wraps components with necessary providers
- * 
- * @param ui - The component to render
- * @param options - Render options including provider props
- * @returns The rendered component with testing utilities
+ * Custom render function that includes common providers
  */
 export function renderWithProviders(
-    ui: ReactElement,
-    { providerProps = {}, ...renderOptions }: CustomRenderOptions = {}
-) {
-    // Create user event instance
-    const user = userEvent.setup();
+    ui: React.ReactElement,
+    options: ExtendedRenderOptions = {}
+): RenderResult {
+    const {
+        _route = '/',  // Prefix with underscore to indicate unused variable
+        _initialState = {},  // Prefix with underscore to indicate unused variable
+        _routerProps = {},  // Prefix with underscore to indicate unused variable
+        providerProps = {},
+        ...renderOptions
+    } = options;
 
-    // Return the rendered component with user event instance added
-    return {
-        user,
-        ...render(ui, {
-            // Add a wrapper with providers if needed
-            wrapper: ({ children }) => (
-                <>
-                    {/* Add context providers here as needed */}
-                    {children}
-                </>
-            ),
-            ...renderOptions,
-        }),
+    const { appContext, workoutContext, themeContext, analyticsContext } = providerProps;
+
+    const Wrapper = ({ children }: { children: ReactNode }) => {
+        return (
+            <MemoryRouter initialEntries={[_route]}>
+                <AppProvider initialState={appContext}>
+                    <WorkoutProvider initialState={workoutContext}>
+                        <ThemeProvider initialState={themeContext}>
+                            <AnalyticsProvider initialState={analyticsContext}>
+                                {children}
+                            </AnalyticsProvider>
+                        </ThemeProvider>
+                    </WorkoutProvider>
+                </AppProvider>
+            </MemoryRouter>
+        );
     };
+
+    return render(ui, { wrapper: Wrapper, ...renderOptions });
+}
+
+/**
+ * Custom render function for testing routes
+ */
+export function renderWithRouter(
+    ui: React.ReactElement,
+    { route = '/', ...renderOptions }: ExtendedRenderOptions = {}
+): RenderResult {
+    return render(
+        <MemoryRouter initialEntries={[route]}>
+            <Routes>
+                <Route path={route} element={ui} />
+            </Routes>
+        </MemoryRouter>,
+        renderOptions
+    );
 }
 
 /**

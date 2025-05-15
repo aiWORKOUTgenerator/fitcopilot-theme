@@ -4,7 +4,7 @@
  * This file provides reusable utilities for testing components that use the user context.
  */
 import { act, render, RenderOptions, RenderResult } from '@testing-library/react';
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 import { AppProvider, UserInfo, useUser } from '../../context/AppContext';
 
 // Default mock user for testing
@@ -104,23 +104,44 @@ export async function waitForAuthState(
     return new Promise((resolve, reject) => {
         const startTime = Date.now();
 
-        const checkAuthState = () => {
+        // Create a component that uses the hook properly
+        const AuthStateChecker: FC<{ onStateMatch: () => void }> = ({ onStateMatch }) => {
             const { user } = useUser();
 
-            if (user.isAuthenticated === isAuthenticated) {
-                resolve();
-                return;
-            }
+            useEffect(() => {
+                if (user.isAuthenticated === isAuthenticated) {
+                    onStateMatch();
+                }
+            }, [user.isAuthenticated, onStateMatch]);
 
-            if (Date.now() - startTime > timeout) {
-                reject(new Error(`Timed out waiting for auth state to be ${isAuthenticated}`));
-                return;
-            }
-
-            setTimeout(checkAuthState, 100);
+            return null;
         };
 
-        checkAuthState();
+        let cleanup: () => void = () => { };
+
+        // Set up an interval to check for timeout
+        const intervalId = setInterval(() => {
+            if (Date.now() - startTime > timeout) {
+                clearInterval(intervalId);
+                cleanup();
+                reject(new Error(`Timed out waiting for auth state to be ${isAuthenticated}`));
+            }
+        }, 100);
+
+        // Render the component to properly use the hook
+        const { unmount } = render(
+            <MockAppProvider>
+                <AuthStateChecker
+                    onStateMatch={() => {
+                        clearInterval(intervalId);
+                        cleanup();
+                        resolve();
+                    }}
+                />
+            </MockAppProvider>
+        );
+
+        cleanup = unmount;
     });
 }
 

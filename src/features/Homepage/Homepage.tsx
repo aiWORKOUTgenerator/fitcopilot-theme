@@ -188,101 +188,101 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
   const activeTheme = variants.hero;
 
   return (
-    <main
-      className={`homepage-container text-white transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${showRegistration ? 'with-registration' : ''}`}
+      <main
+          className={`homepage-container text-white transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${showRegistration ? 'with-registration' : ''}`}
     >
-      {/* Global theme-aware background */}
-      <GlobalBackground variant={activeTheme} pattern="grid" />
+          {/* Global theme-aware background */}
+          <GlobalBackground variant={activeTheme} pattern="grid" />
 
-      {/* Demo Mode Navigation - only shown in demo mode */}
-      {demoMode && (
-        <>
-          <DemoNav
-            sections={demoSections}
-            currentVariants={variants}
-            onVariantChange={handleVariantChange}
+          {/* Demo Mode Navigation - only shown in demo mode */}
+          {demoMode && (
+          <>
+              <DemoNav
+                  sections={demoSections}
+                  currentVariants={variants}
+                  onVariantChange={handleVariantChange}
           />
-          {/* Debug indicator */}
-          <div className="demo-mode-indicator">
-            Demo Mode Active: {String(demoMode)}
-          </div>
-        </>
+              {/* Debug indicator */}
+              <div className="demo-mode-indicator">
+                  Demo Mode Active: {String(demoMode)}
+              </div>
+          </>
       )}
 
-      {/* Hero Section - Using dynamic variant */}
-      <section id="hero" ref={heroRef} className={showRegistration ? 'dimmed' : ''}>
-        <Hero
-          registrationLink={data.siteLinks.registration}
-          loginLink={data.siteLinks.login}
-          logoUrl={data.assets.logo}
-          onRegistrationStart={handleRegistrationStart}
-          variant={variants.hero}
+          {/* Hero Section - Using dynamic variant */}
+          <section id="hero" ref={heroRef} className={showRegistration ? 'dimmed' : ''}>
+              <Hero
+                  registrationLink={data.siteLinks.registration}
+                  loginLink={data.siteLinks.login}
+                  logoUrl={data.assets.logo}
+                  onRegistrationStart={handleRegistrationStart}
+                  variant={variants.hero}
         />
-      </section>
+          </section>
 
-      {/* Registration Section - inserted after Hero */}
-      {showRegistration && (
-        <div
-          ref={registrationRef}
-          id="registration"
-          className="registration-section"
-          tabIndex={-1}
+          {/* Registration Section - inserted after Hero */}
+          {showRegistration && (
+          <div
+              ref={registrationRef}
+              id="registration"
+              className="registration-section"
+              tabIndex={-1}
         >
-          <Registration
-            className="registration-component"
-            onComplete={handleRegistrationComplete}
-            onCancel={handleRegistrationCancel}
+              <Registration
+                  className="registration-component"
+                  onComplete={handleRegistrationComplete}
+                  onCancel={handleRegistrationCancel}
           />
-        </div>
+          </div>
       )}
 
-      {/* Features Section */}
-      <div id="features" className={showRegistration ? 'dimmed' : ''}>
-        <Features
-          variant={variants.features}
+          {/* Features Section */}
+          <div id="features" className={showRegistration ? 'dimmed' : ''}>
+              <Features
+                  variant={variants.features}
         />
-      </div>
+          </div>
 
-      {/* Journey Section */}
-      <div id="journey" className={showRegistration ? 'dimmed' : ''}>
-        <Journey journey={data.journey} />
-      </div>
+          {/* Journey Section */}
+          <div id="journey" className={showRegistration ? 'dimmed' : ''}>
+              <Journey journey={data.journey} />
+          </div>
 
-      {/* Training Programs Section */}
-      <div id="training" className={showRegistration ? 'dimmed' : ''}>
-        <Training variant={variants.training} />
-      </div>
+          {/* Training Programs Section */}
+          <div id="training" className={showRegistration ? 'dimmed' : ''}>
+              <Training variant={variants.training} />
+          </div>
 
-      {/* Training Features Section */}
-      <div id="trainingFeatures" className={showRegistration ? 'dimmed' : ''}>
-        <TrainingFeatures variant={variants.trainingFeatures} />
-      </div>
+          {/* Training Features Section */}
+          <div id="trainingFeatures" className={showRegistration ? 'dimmed' : ''}>
+              <TrainingFeatures variant={variants.trainingFeatures} />
+          </div>
 
-      {/* Personal Training Section */}
-      <div id="personalTraining" className={showRegistration ? 'dimmed' : ''}>
-        <PersonalTraining variant={variants.personalTraining} />
-      </div>
+          {/* Personal Training Section */}
+          <div id="personalTraining" className={showRegistration ? 'dimmed' : ''}>
+              <PersonalTraining variant={variants.personalTraining} />
+          </div>
 
-      {/* Testimonials Section */}
-      <div id="testimonials" className={showRegistration ? 'dimmed' : ''}>
-        <Testimonials />
-      </div>
+          {/* Testimonials Section */}
+          <div id="testimonials" className={showRegistration ? 'dimmed' : ''}>
+              <Testimonials />
+          </div>
 
-      {/* Pricing Section */}
-      <div id="pricing" className={showRegistration ? 'dimmed' : ''}>
-        <Pricing />
-      </div>
+          {/* Pricing Section */}
+          <div id="pricing" className={showRegistration ? 'dimmed' : ''}>
+              <Pricing />
+          </div>
 
-      {/* Footer */}
-      <div id="footer" className={showRegistration ? 'dimmed' : ''}>
-        <Footer
-          logoUrl={data.assets.logo}
-          socialLinks={data.socialLinks}
-          legalLinks={data.legalLinks}
-          mainLinks={data.mainLinks}
+          {/* Footer */}
+          <div id="footer" className={showRegistration ? 'dimmed' : ''}>
+              <Footer
+                  logoUrl={data.assets.logo}
+                  socialLinks={data.socialLinks}
+                  legalLinks={data.legalLinks}
+                  mainLinks={data.mainLinks}
         />
-      </div>
-    </main>
+          </div>
+      </main>
   );
 };
 

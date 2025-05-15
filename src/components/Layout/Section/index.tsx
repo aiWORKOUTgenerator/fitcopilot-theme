@@ -29,18 +29,18 @@ const Section: React.FC<SectionProps> = ({
   };
 
   return (
-    <section
-      id={id}
-      className={`
+      <section
+          id={id}
+          className={`
         ${backgroundClasses[background]}
         ${paddingClasses[paddingY]}
         ${className}
       `}
     >
-      <div className="container mx-auto px-4">
-        {children}
-      </div>
-    </section>
+          <div className="container mx-auto px-4">
+              {children}
+          </div>
+      </section>
   );
 };
 

@@ -101,7 +101,7 @@ export const validateEmail = (message: string): ValidatorFn<string> => {
         if (value.includes('..')) return message;
 
         // Simplified check for special characters in wrong places
-        if (/[!#$%^&*()=+{}[\]|\\:;<>\/?,]/.test(value)) return message;
+        if (/[!#$%^&*()=+{}[\]|\\:;<>?,]/.test(value)) return message;
 
         return null;
     };

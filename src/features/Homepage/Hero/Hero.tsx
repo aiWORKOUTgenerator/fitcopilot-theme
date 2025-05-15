@@ -60,23 +60,23 @@ export const Hero: React.FC<HeroProps> = ({
   };
 
   return (
-    <section
-      className="hero-section"
-      aria-labelledby="hero-heading"
+      <section
+          className="hero-section"
+          aria-labelledby="hero-heading"
     >
-      {/* Floating fitness icons - decorative */}
-      <FloatingIcons />
+          {/* Floating fitness icons - decorative */}
+          <FloatingIcons />
 
-      <div className="hero-content">
-        {/* Content Card with Backdrop Blur */}
-        <div className="hero-card">
-          {/* Logo */}
-          <div className="hero-logo">
-            <img
-              src={logoUrl}
-              alt="AI Workout Generator Logo"
-              style={{ maxWidth: '25%' }}
-              onError={(e) => {
+          <div className="hero-content">
+              {/* Content Card with Backdrop Blur */}
+              <div className="hero-card">
+                  {/* Logo */}
+                  <div className="hero-logo">
+                      <img
+                          src={logoUrl}
+                          alt="AI Workout Generator Logo"
+                          style={{ maxWidth: '25%' }}
+                          onError={(e) => {
                 // Fallback mechanism if the direct path fails
                 const target = e.target as HTMLImageElement;
                 // Try alternative paths
@@ -85,98 +85,98 @@ export const Hero: React.FC<HeroProps> = ({
                 }
               }}
             />
-          </div>
+                  </div>
 
-          <h1
-            id="hero-heading"
-            className="hero-heading"
+                  <h1
+                      id="hero-heading"
+                      className="hero-heading"
           >
-            <span className="hero-divider-gradient" data-text="AI-Powered Workouts" style={gradientStyles}>
-              AI-Powered Workouts
-            </span> Tailored Just for You
-          </h1>
+                      <span className="hero-divider-gradient" data-text="AI-Powered Workouts" style={gradientStyles}>
+                          AI-Powered Workouts
+                      </span> Tailored Just for You
+                  </h1>
 
-          <div className="hero-divider"></div>
+                  <div className="hero-divider"></div>
 
-          <p className="hero-subtitle">
-            Achieve your fitness goals with <span className="citron-text">customized plans</span> designed by AI and expert trainers. Advanced AI technology creates workouts tailored to your goals, fitness level, and available equipment.
-          </p>
+                  <p className="hero-subtitle">
+                      Achieve your fitness goals with <span className="citron-text">customized plans</span> designed by AI and expert trainers. Advanced AI technology creates workouts tailored to your goals, fitness level, and available equipment.
+                  </p>
 
-          {/* CTA Buttons Container */}
-          <div className="hero-cta__container">
-            {/* Primary CTA: Get a Free Workout */}
-            <div className="hero-cta__wrapper">
-              <Tooltip
-                content={
-                  <p>Generate a personalized workout plan in seconds with our AI technology - no registration required.</p>
+                  {/* CTA Buttons Container */}
+                  <div className="hero-cta__container">
+                      {/* Primary CTA: Get a Free Workout */}
+                      <div className="hero-cta__wrapper">
+                          <Tooltip
+                              content={
+                                  <p>Generate a personalized workout plan in seconds with our AI technology - no registration required.</p>
                 }
-                title="Quick Workout Builder"
-                icon={<Zap className="w-4 h-4 text-lime-300" />}
-                width="264px"
+                              title="Quick Workout Builder"
+                              icon={<Zap className="w-4 h-4 text-lime-300" />}
+                              width="264px"
               >
-                <Button
-                  variant="primary"
-                  size="lg"
-                  className="inline-flex items-center rounded-full font-medium hero-button-primary hero-divider-gradient-btn"
-                  onClick={handleScrollToSplash}
-                  aria-label="Generate a personalized workout plan in seconds with our AI technology - no registration required"
+                              <Button
+                                  variant="primary"
+                                  size="lg"
+                                  className="inline-flex items-center rounded-full font-medium hero-button-primary hero-divider-gradient-btn"
+                                  onClick={handleScrollToSplash}
+                                  aria-label="Generate a personalized workout plan in seconds with our AI technology - no registration required"
                 >
-                  <Zap className="hero-icon" />
-                  Get a Free Workout
-                </Button>
-              </Tooltip>
-            </div>
+                                  <Zap className="hero-icon" />
+                                  Get a Free Workout
+                              </Button>
+                          </Tooltip>
+                      </div>
 
-            {/* Secondary CTA: Create Your Account */}
-            <div className="hero-cta__wrapper">
-              <Tooltip
-                content={
-                  <p>Save workouts, track progress, and access premium features with your free account.</p>
+                      {/* Secondary CTA: Create Your Account */}
+                      <div className="hero-cta__wrapper">
+                          <Tooltip
+                              content={
+                                  <p>Save workouts, track progress, and access premium features with your free account.</p>
                 }
-                title="Member Benefits"
-                icon={<UserPlus className="w-4 h-4 text-lime-300" />}
-                width="264px"
+                              title="Member Benefits"
+                              icon={<UserPlus className="w-4 h-4 text-lime-300" />}
+                              width="264px"
               >
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className="inline-flex items-center rounded-full font-medium hero-button-secondary"
-                  onClick={handleScrollToSplash}
-                  aria-label="Save workouts, track progress, and access premium features with your free account"
+                              <Button
+                                  variant="secondary"
+                                  size="lg"
+                                  className="inline-flex items-center rounded-full font-medium hero-button-secondary"
+                                  onClick={handleScrollToSplash}
+                                  aria-label="Save workouts, track progress, and access premium features with your free account"
                 >
-                  <UserPlus className="hero-icon-userplus" />
-                  Create Your Account
-                </Button>
-              </Tooltip>
-            </div>
-          </div>
+                                  <UserPlus className="hero-icon-userplus" />
+                                  Create Your Account
+                              </Button>
+                          </Tooltip>
+                      </div>
+                  </div>
 
-          {/* Login Link */}
-          <div className="hero-signin">
-            <a href={loginLink} className="signin-link">
-              <LogIn className="signin-icon" />
-              <span>Already have an account? Log in</span>
-            </a>
-          </div>
+                  {/* Login Link */}
+                  <div className="hero-signin">
+                      <a href={loginLink} className="signin-link">
+                          <LogIn className="signin-icon" />
+                          <span>Already have an account? Log in</span>
+                      </a>
+                  </div>
 
-          {/* Feature Icons */}
-          <div className="hero-features">
-            <div className="hero-feature-pill" title="Beginner Friendly">
-              <Heart className="feature-icon" />
-              <span>Beginner Friendly</span>
-            </div>
-            <div className="hero-feature-pill" title="Strength & Cardio">
-              <Dumbbell className="feature-icon" />
-              <span>Strength & Cardio</span>
-            </div>
-            <div className="hero-feature-pill" title="HIIT Workouts">
-              <Flame className="feature-icon" />
-              <span>HIIT Workouts</span>
-            </div>
+                  {/* Feature Icons */}
+                  <div className="hero-features">
+                      <div className="hero-feature-pill" title="Beginner Friendly">
+                          <Heart className="feature-icon" />
+                          <span>Beginner Friendly</span>
+                      </div>
+                      <div className="hero-feature-pill" title="Strength & Cardio">
+                          <Dumbbell className="feature-icon" />
+                          <span>Strength & Cardio</span>
+                      </div>
+                      <div className="hero-feature-pill" title="HIIT Workouts">
+                          <Flame className="feature-icon" />
+                          <span>HIIT Workouts</span>
+                      </div>
+                  </div>
+              </div>
           </div>
-        </div>
-      </div>
-    </section>
+      </section>
   );
 };
 
