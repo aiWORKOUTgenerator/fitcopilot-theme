@@ -1,0 +1,209 @@
+// Canonical design system import - MUST BE FIRST
+@use '../../../styles/design-system' as ds;
+
+// Tooltip wrapper - root container
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+// Tooltip trigger - contains the button
+.tooltip-trigger {
+    display: inline-block;
+    width: 100%;
+}
+
+// Main tooltip container with positioning variants
+.tooltip {
+    position: absolute;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+
+    // Positioning variants
+    &.tooltip-bottom {
+        top: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &.tooltip-top {
+        bottom: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    &.tooltip-left {
+        right: calc(100% + 10px);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &.tooltip-right {
+        left: calc(100% + 10px);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    // Visible state
+    &.visible {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+// Inner tooltip content container
+.tooltip-inner {
+    background: #1f2937;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 12px;
+    width: 250px;
+    font-size: 14px;
+    line-height: 1.5;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    position: relative;
+
+    // Arrows for different positions
+    .tooltip-bottom & {
+        &:before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: transparent transparent #1f2937 transparent;
+        }
+    }
+
+    .tooltip-top & {
+        &:before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: #1f2937 transparent transparent transparent;
+        }
+    }
+
+    .tooltip-left & {
+        &:before {
+            content: '';
+            position: absolute;
+            left: 100%;
+            top: 50%;
+            margin-top: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: transparent transparent transparent #1f2937;
+        }
+    }
+
+    .tooltip-right & {
+        &:before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            margin-top: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: transparent #1f2937 transparent transparent;
+        }
+    }
+}
+
+// Header styling
+.tooltip-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.tooltip-icon {
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.tooltip-title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #a3e635;
+}
+
+// Content styling
+.tooltip-content {
+    color: #ffffff;
+    font-size: 13px;
+
+    p {
+        margin: 0;
+        color: #ffffff;
+    }
+}
+
+// Plan-specific styling
+.tooltip-wrapper {
+
+    // Basic plan (blue)
+    &.tooltip-plan-basic {
+        .tooltip-inner {
+            border: 1px solid rgba(59, 130, 246, 0.3); // blue-300/30
+        }
+
+        .tooltip-title {
+            color: #60a5fa; // blue-300
+        }
+
+        .tooltip-icon svg {
+            color: #60a5fa; // blue-300
+        }
+    }
+
+    // Pro plan (lime)
+    &.tooltip-plan-pro {
+        .tooltip-inner {
+            border: 1px solid rgba(132, 204, 22, 0.3); // lime-300/30
+        }
+
+        .tooltip-title {
+            color: #a3e635; // lime-300
+        }
+
+        .tooltip-icon svg {
+            color: #a3e635; // lime-300
+        }
+    }
+
+    // Elite plan (purple)
+    &.tooltip-plan-elite {
+        .tooltip-inner {
+            border: 1px solid rgba(139, 92, 246, 0.3); // purple-300/30
+        }
+
+        .tooltip-title {
+            color: #c4b5fd; // purple-300
+        }
+
+        .tooltip-icon svg {
+            color: #c4b5fd; // purple-300
+        }
+    }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+    .tooltip {
+        transition: none;
+    }
+}

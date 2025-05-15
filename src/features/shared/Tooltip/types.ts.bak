@@ -1,0 +1,139 @@
+import React from 'react';
+
+/**
+ * Position options for tooltip placement
+ */
+export type TooltipPosition =
+    | 'top'
+    | 'right'
+    | 'bottom'
+    | 'left'
+    | 'top-left'
+    | 'top-right'
+    | 'bottom-left'
+    | 'bottom-right';
+
+/**
+ * Theme context for different tooltip styles
+ */
+export type TooltipThemeContext = 'default' | 'hero' | 'pricing';
+
+/**
+ * Plan types for pricing tooltips
+ */
+export type TooltipPlanType = 'basic' | 'pro' | 'elite';
+
+/**
+ * Base props for the Tooltip component
+ */
+export interface TooltipProps {
+    /** Content to display inside the tooltip */
+    content: React.ReactNode;
+
+    /** Element that triggers the tooltip */
+    children: React.ReactNode;
+
+    /** Optional title for the tooltip */
+    title?: string;
+
+    /** Title color - accepts any valid CSS color value */
+    titleColor?: string;
+
+    /** Optional icon to display in the tooltip header */
+    icon?: React.ReactNode;
+
+    /** Position of the tooltip relative to the trigger */
+    position?: TooltipPosition;
+
+    /** Width of the tooltip in pixels or any valid CSS width */
+    width?: string;
+
+    /** Maximum width of the tooltip in pixels or any valid CSS width */
+    maxWidth?: string | number;
+
+    /** Whether to show the tooltip on hover */
+    showOnHover?: boolean;
+
+    /** Whether to show the tooltip on focus */
+    showOnFocus?: boolean;
+
+    /** Delay before showing tooltip (ms) */
+    showDelay?: number;
+
+    /** Delay before hiding tooltip (ms) */
+    hideDelay?: number;
+
+    /** Additional CSS classes */
+    className?: string;
+
+    /** Whether the tooltip is initially visible */
+    initialVisible?: boolean;
+
+    /** Controlled visibility state */
+    isVisible?: boolean;
+
+    /** Border accent color (in rgba or other valid CSS color format) */
+    accentColor?: string;
+
+    /** CSS ID attribute */
+    id?: string;
+
+    /** Custom CSS styles */
+    style?: React.CSSProperties;
+}
+
+/**
+ * Context props for the TooltipThemeProvider
+ */
+export interface TooltipThemeContextProps {
+    /** Current theme */
+    theme: TooltipThemeContext;
+
+    /** Function to set the theme */
+    setTheme: (theme: TooltipThemeContext) => void;
+}
+
+/**
+ * Props for the TooltipThemeProvider component
+ */
+export interface TooltipThemeProviderProps {
+    /** Child components that will receive the theme context */
+    children: React.ReactNode;
+
+    /** Initial theme value */
+    theme?: TooltipThemeContext;
+}
+
+/**
+ * Props for the useTooltip hook
+ */
+export interface UseTooltipProps {
+    /** Delay before showing tooltip (ms) */
+    showDelay: number;
+
+    /** Delay before hiding tooltip (ms) */
+    hideDelay: number;
+
+    /** Controlled visibility state */
+    controlledVisible?: boolean;
+
+    /** Initial visibility state */
+    initialVisible: boolean;
+
+    /** State setter for visibility */
+    setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+/**
+ * Return type for the useTooltip hook
+ */
+export interface UseTooltipReturn {
+    /** Handler for showing the tooltip */
+    handleShow: () => void;
+
+    /** Handler for hiding the tooltip */
+    handleHide: () => void;
+
+    /** Current internal visibility state */
+    internalVisible: boolean;
+} 

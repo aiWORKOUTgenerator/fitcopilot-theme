@@ -1,8 +1,8 @@
 import { Dumbbell, Flame, Heart, LogIn, UserPlus, Zap } from 'lucide-react';
 import React, { useRef } from 'react';
-// Tooltip component has been deprecated
-// import { Tooltip, TooltipThemeProvider } from '../../../components/UI/Tooltip';
+// Import the new tooltip component
 import { Button } from '../../../features/shared/Button';
+import Tooltip from '../../../features/shared/Tooltip';
 // Temporarily comment out the module style import until we fix the SCSS issues
 // import styles from './Hero.module.scss';
 import { ThemeCSSProperties } from '../../../types/theme';
@@ -106,30 +106,48 @@ export const Hero: React.FC<HeroProps> = ({
           <div className="hero-cta__container">
             {/* Primary CTA: Get a Free Workout */}
             <div className="hero-cta__wrapper">
-              <Button
-                variant="primary"
-                size="lg"
-                className="inline-flex items-center rounded-full font-medium hero-button-primary hero-divider-gradient-btn"
-                onClick={handleScrollToSplash}
-                aria-label="Generate a personalized workout plan in seconds with our AI technology - no registration required"
+              <Tooltip
+                content={
+                  <p>Generate a personalized workout plan in seconds with our AI technology - no registration required.</p>
+                }
+                title="Quick Workout Builder"
+                icon={<Zap className="w-4 h-4 text-lime-300" />}
+                width="264px"
               >
-                <Zap className="hero-icon" />
-                Get a Free Workout
-              </Button>
+                <Button
+                  variant="primary"
+                  size="lg"
+                  className="inline-flex items-center rounded-full font-medium hero-button-primary hero-divider-gradient-btn"
+                  onClick={handleScrollToSplash}
+                  aria-label="Generate a personalized workout plan in seconds with our AI technology - no registration required"
+                >
+                  <Zap className="hero-icon" />
+                  Get a Free Workout
+                </Button>
+              </Tooltip>
             </div>
 
             {/* Secondary CTA: Create Your Account */}
             <div className="hero-cta__wrapper">
-              <Button
-                variant="secondary"
-                size="lg"
-                className="inline-flex items-center rounded-full font-medium hero-button-secondary"
-                onClick={handleScrollToSplash}
-                aria-label="Save workouts, track progress, and access premium features with your free account"
+              <Tooltip
+                content={
+                  <p>Save workouts, track progress, and access premium features with your free account.</p>
+                }
+                title="Member Benefits"
+                icon={<UserPlus className="w-4 h-4 text-lime-300" />}
+                width="264px"
               >
-                <UserPlus className="hero-icon-userplus" />
-                Create Your Account
-              </Button>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="inline-flex items-center rounded-full font-medium hero-button-secondary"
+                  onClick={handleScrollToSplash}
+                  aria-label="Save workouts, track progress, and access premium features with your free account"
+                >
+                  <UserPlus className="hero-icon-userplus" />
+                  Create Your Account
+                </Button>
+              </Tooltip>
             </div>
           </div>
 
