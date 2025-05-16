@@ -1,0 +1,2148 @@
+{
+  "nodes": [
+    {
+      "id": "Homepage",
+      "group": 2,
+      "dependents": 0,
+      "path": "Homepage.tsx"
+    },
+    {
+      "id": "App",
+      "group": 2,
+      "dependents": 0,
+      "path": "App.tsx"
+    },
+    {
+      "id": "variantLoader",
+      "group": 2,
+      "dependents": 0,
+      "path": "utils/variantLoader.ts"
+    },
+    {
+      "id": "logger",
+      "group": 2,
+      "dependents": 0,
+      "path": "utils/logger.ts"
+    },
+    {
+      "id": "lazyLoad",
+      "group": 2,
+      "dependents": 0,
+      "path": "utils/lazyLoad.tsx"
+    },
+    {
+      "id": "debug",
+      "group": 2,
+      "dependents": 0,
+      "path": "utils/debug.tsx"
+    },
+    {
+      "id": "Events",
+      "group": 2,
+      "dependents": 0,
+      "path": "utils/events/index.ts"
+    },
+    {
+      "id": "media",
+      "group": 1,
+      "dependents": 10,
+      "path": "types/media.ts"
+    },
+    {
+      "id": "Card",
+      "group": 2,
+      "dependents": 0,
+      "path": "types/components/examples/Card.ts"
+    },
+    {
+      "id": "Button",
+      "group": 2,
+      "dependents": 0,
+      "path": "types/components/examples/Button.ts"
+    },
+    {
+      "id": "test-utils",
+      "group": 2,
+      "dependents": 0,
+      "path": "test/test-utils.tsx"
+    },
+    {
+      "id": "render",
+      "group": 2,
+      "dependents": 0,
+      "path": "test/utils/render.tsx"
+    },
+    {
+      "id": "providers",
+      "group": 2,
+      "dependents": 0,
+      "path": "test/utils/providers.tsx"
+    },
+    {
+      "id": "workout-context",
+      "group": 2,
+      "dependents": 2,
+      "path": "test/context-utils/workout-context.tsx"
+    },
+    {
+      "id": "user-context",
+      "group": 2,
+      "dependents": 1,
+      "path": "test/context-utils/user-context.tsx"
+    },
+    {
+      "id": "testing-library",
+      "group": 2,
+      "dependents": 0,
+      "path": "test/context-utils/testing-library.tsx"
+    },
+    {
+      "id": "nested-providers",
+      "group": 2,
+      "dependents": 0,
+      "path": "test/context-utils/nested-providers.tsx"
+    },
+    {
+      "id": "generic-provider",
+      "group": 2,
+      "dependents": 0,
+      "path": "test/context-utils/generic-provider.tsx"
+    },
+    {
+      "id": "Components",
+      "group": 2,
+      "dependents": 0,
+      "path": "stories/Foundations/Components.tsx"
+    },
+    {
+      "id": "useWordPress",
+      "group": 2,
+      "dependents": 0,
+      "path": "hooks/useWordPress.ts"
+    },
+    {
+      "id": "useMediaPlayer",
+      "group": 2,
+      "dependents": 0,
+      "path": "hooks/useMediaPlayer.ts"
+    },
+    {
+      "id": "useIntersectionObserver",
+      "group": 2,
+      "dependents": 0,
+      "path": "hooks/useIntersectionObserver.ts"
+    },
+    {
+      "id": "useEventCallback",
+      "group": 2,
+      "dependents": 0,
+      "path": "hooks/useEventCallback.ts"
+    },
+    {
+      "id": "useAsyncEffect",
+      "group": 2,
+      "dependents": 0,
+      "path": "hooks/useAsyncEffect.ts"
+    },
+    {
+      "id": "useApi",
+      "group": 2,
+      "dependents": 0,
+      "path": "hooks/useApi.ts"
+    },
+    {
+      "id": "useAnimation",
+      "group": 2,
+      "dependents": 0,
+      "path": "hooks/useAnimation.ts"
+    },
+    {
+      "id": "FormExample",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/examples/FormExample.tsx"
+    },
+    {
+      "id": "TypeDemoExample",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/TypeDemo/TypeDemoExample.tsx"
+    },
+    {
+      "id": "TypeDemo",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/TypeDemo/TypeDemo.tsx"
+    },
+    {
+      "id": "Tooltip",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Tooltip/Tooltip.tsx"
+    },
+    {
+      "id": "Modal",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Modal/Modal.tsx"
+    },
+    {
+      "id": "useMediaPlayer",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Media/useMediaPlayer.ts"
+    },
+    {
+      "id": "YouTubePlayer",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/Media/YouTubePlayer.tsx"
+    },
+    {
+      "id": "VideoPlayer",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/shared/Media/VideoPlayer.tsx"
+    },
+    {
+      "id": "MediaCarousel",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/Media/MediaCarousel.tsx"
+    },
+    {
+      "id": "Media",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Media/Media.tsx"
+    },
+    {
+      "id": "ImageMedia",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/Media/ImageMedia.tsx"
+    },
+    {
+      "id": "ImageGallery",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/Media/ImageGallery.tsx"
+    },
+    {
+      "id": "AudioPlayer",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/shared/Media/AudioPlayer.tsx"
+    },
+    {
+      "id": "useForm",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/FormField/useForm.ts"
+    },
+    {
+      "id": "types",
+      "group": 1,
+      "dependents": 32,
+      "path": "features/shared/FormField/types.ts"
+    },
+    {
+      "id": "TextField",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/TextField.tsx"
+    },
+    {
+      "id": "FormField",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/FormField.tsx"
+    },
+    {
+      "id": "TextField",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/fields/TextField.tsx"
+    },
+    {
+      "id": "TextArea",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/fields/TextArea.tsx"
+    },
+    {
+      "id": "Switch",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/fields/Switch.tsx"
+    },
+    {
+      "id": "Select",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/fields/Select.tsx"
+    },
+    {
+      "id": "RadioGroup",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/fields/RadioGroup.tsx"
+    },
+    {
+      "id": "Radio",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/fields/Radio.tsx"
+    },
+    {
+      "id": "FileUpload",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/fields/FileUpload.tsx"
+    },
+    {
+      "id": "DatePicker",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/fields/DatePicker.tsx"
+    },
+    {
+      "id": "Checkbox",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/FormField/fields/Checkbox.tsx"
+    },
+    {
+      "id": "TextField",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/shared/Form/TextField.tsx"
+    },
+    {
+      "id": "Form",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Form/Form.tsx"
+    },
+    {
+      "id": "types",
+      "group": 1,
+      "dependents": 32,
+      "path": "features/shared/Card/types.ts"
+    },
+    {
+      "id": "Card",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Card/Card.tsx"
+    },
+    {
+      "id": "types",
+      "group": 1,
+      "dependents": 32,
+      "path": "features/shared/Button/types.ts"
+    },
+    {
+      "id": "ToggleButton",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Button/ToggleButton.tsx"
+    },
+    {
+      "id": "LinkButton",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Button/LinkButton.tsx"
+    },
+    {
+      "id": "ButtonGroup",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Button/ButtonGroup.tsx"
+    },
+    {
+      "id": "Button",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Button/Button.tsx"
+    },
+    {
+      "id": "Types",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/shared/Button/types/index.ts"
+    },
+    {
+      "id": "Registration",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Registration.tsx"
+    },
+    {
+      "id": "testIntegration",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/tests/utils/testIntegration.ts"
+    },
+    {
+      "id": "useRegistrationSubmit",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/hooks/useRegistrationSubmit.ts"
+    },
+    {
+      "id": "useRegistrationProgress",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/hooks/useRegistrationProgress.ts"
+    },
+    {
+      "id": "useRegistrationForm",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/hooks/useRegistrationForm.ts"
+    },
+    {
+      "id": "useRegistrationEvents",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/hooks/useRegistrationEvents.ts"
+    },
+    {
+      "id": "useRegistrationData",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/hooks/useRegistrationData.ts"
+    },
+    {
+      "id": "useNavigationOverrides",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/hooks/useNavigationOverrides.ts"
+    },
+    {
+      "id": "analyticsIntegration",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/events/analyticsIntegration.ts"
+    },
+    {
+      "id": "SectionTitle",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/components/SectionTitle.tsx"
+    },
+    {
+      "id": "RegistrationLayout",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/components/RegistrationLayout.tsx"
+    },
+    {
+      "id": "ProgressBar",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/components/ProgressBar.tsx"
+    },
+    {
+      "id": "NavigationButtons",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/components/NavigationButtons.tsx"
+    },
+    {
+      "id": "AnimatedTransition",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/components/AnimatedTransition.tsx"
+    },
+    {
+      "id": "RegistrationButton",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/components/RegistrationButton/RegistrationButton.tsx"
+    },
+    {
+      "id": "ProgressIndicator",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/components/ProgressIndicator/ProgressIndicator.tsx"
+    },
+    {
+      "id": "Splash",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Splash/Splash.tsx"
+    },
+    {
+      "id": "Pricing",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Pricing/Pricing.tsx"
+    },
+    {
+      "id": "Journey",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/Journey.tsx"
+    },
+    {
+      "id": "SelectionSummary",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/shared/components/SelectionSummary.tsx"
+    },
+    {
+      "id": "SectionCard",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/shared/components/SectionCard.tsx"
+    },
+    {
+      "id": "WorkoutPreferenceSelector",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/components/WorkoutPreferenceSelector.tsx"
+    },
+    {
+      "id": "StepValidator",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/components/StepValidator.tsx"
+    },
+    {
+      "id": "SavingIndicator",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/components/SavingIndicator.tsx"
+    },
+    {
+      "id": "JourneyStepCard",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/components/JourneyStepCard.tsx"
+    },
+    {
+      "id": "JourneyContext",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Registration/Journey/components/JourneyContext.tsx"
+    },
+    {
+      "id": "CustomizationContainer",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/components/CustomizationContainer.tsx"
+    },
+    {
+      "id": "ConfirmSectionButton",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/components/ConfirmSectionButton.tsx"
+    },
+    {
+      "id": "AnalyticsSelector",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/components/AnalyticsSelector.tsx"
+    },
+    {
+      "id": "AccordionSection",
+      "group": 1,
+      "dependents": 10,
+      "path": "features/Registration/Journey/components/AccordionSection.tsx"
+    },
+    {
+      "id": "StandardSection",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/components/StandardSection/StandardSection.tsx"
+    },
+    {
+      "id": "JourneySelector",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/components/JourneySelector/JourneySelector.tsx"
+    },
+    {
+      "id": "constants",
+      "group": 1,
+      "dependents": 7,
+      "path": "features/Registration/Journey/components/GoalSelector/constants.tsx"
+    },
+    {
+      "id": "GoalSelector",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/components/GoalSelector/GoalSelector.tsx"
+    },
+    {
+      "id": "constants",
+      "group": 1,
+      "dependents": 7,
+      "path": "features/Registration/Journey/components/AnalyticsSelector/constants.ts"
+    },
+    {
+      "id": "AnalyticsSelector",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/components/AnalyticsSelector/AnalyticsSelector.tsx"
+    },
+    {
+      "id": "CustomizedMedicalContent",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/CustomizedMedical/CustomizedMedicalContent.tsx"
+    },
+    {
+      "id": "CustomizedMedical",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizedMedical/CustomizedMedical.tsx"
+    },
+    {
+      "id": "useMedicalCustomizationState",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizedMedical/hooks/useMedicalCustomizationState.ts"
+    },
+    {
+      "id": "MedicalCustomizationContext",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/CustomizedMedical/context/MedicalCustomizationContext.tsx"
+    },
+    {
+      "id": "CustomizationProgress",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizedMedical/components/shared/CustomizationProgress.tsx"
+    },
+    {
+      "id": "ConfirmButton",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizedMedical/components/shared/ConfirmButton.tsx"
+    },
+    {
+      "id": "StandardSection",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizedMedical/components/StandardSection/StandardSection.tsx"
+    },
+    {
+      "id": "SectionErrorState",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizedMedical/components/SectionErrorState/SectionErrorState.tsx"
+    },
+    {
+      "id": "MedicalClearanceSelector",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizedMedical/components/MedicalClearanceSelector/MedicalClearanceSelector.tsx"
+    },
+    {
+      "id": "LiabilityWaiverSelector",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizedMedical/components/LiabilityWaiverSelector/LiabilityWaiverSelector.tsx"
+    },
+    {
+      "id": "InjuriesSelector",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizedMedical/components/InjuriesSelector/InjuriesSelector.tsx"
+    },
+    {
+      "id": "AnthropometricsSelector",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizedMedical/components/AnthropometricsSelector/AnthropometricsSelector.tsx"
+    },
+    {
+      "id": "CustomizeExperience",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizeExperience/CustomizeExperience.tsx"
+    },
+    {
+      "id": "useCustomizationState",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizeExperience/hooks/useCustomizationState.ts"
+    },
+    {
+      "id": "CustomizationContext",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/CustomizeExperience/context/CustomizationContext.tsx"
+    },
+    {
+      "id": "CustomizationProgress",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizeExperience/components/CustomizationProgress.tsx"
+    },
+    {
+      "id": "ConfirmButton",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizeExperience/components/shared/ConfirmButton.tsx"
+    },
+    {
+      "id": "WorkoutPreferenceSelector",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/Journey/CustomizeExperience/components/WorkoutPreferenceSelector/WorkoutPreferenceSelector.tsx"
+    },
+    {
+      "id": "ValidationSummary",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizeExperience/components/ValidationSummary/ValidationSummary.tsx"
+    },
+    {
+      "id": "TimeCommitmentSelector",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizeExperience/components/TimeCommitmentSelector/TimeCommitmentSelector.tsx"
+    },
+    {
+      "id": "SelectableOption",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizeExperience/components/SelectableOption/SelectableOption.tsx"
+    },
+    {
+      "id": "SectionErrorState",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizeExperience/components/SectionErrorState/SectionErrorState.tsx"
+    },
+    {
+      "id": "ExperienceLevelIndicator",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizeExperience/components/ExperienceLevelIndicator/ExperienceLevelIndicator.tsx"
+    },
+    {
+      "id": "EquipmentSelector",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/Journey/CustomizeExperience/components/EquipmentSelector/EquipmentSelector.tsx"
+    },
+    {
+      "id": "ExperienceLevel",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Registration/ExperienceLevel/ExperienceLevel.tsx"
+    },
+    {
+      "id": "LevelComparison",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/ExperienceLevel/components/LevelComparison.tsx"
+    },
+    {
+      "id": "LevelCard",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Registration/ExperienceLevel/components/LevelCard.tsx"
+    },
+    {
+      "id": "Homepage",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Homepage.tsx"
+    },
+    {
+      "id": "variantLoader",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/utils/variantLoader.ts"
+    },
+    {
+      "id": "useHomepageService",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/hooks/useHomepageService.ts"
+    },
+    {
+      "id": "useHomepageData",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/hooks/useHomepageData.ts"
+    },
+    {
+      "id": "useAnimation",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/hooks/useAnimation.ts"
+    },
+    {
+      "id": "DemoNav",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/components/DemoNav/DemoNav.tsx"
+    },
+    {
+      "id": "types",
+      "group": 1,
+      "dependents": 32,
+      "path": "features/Homepage/TrainingFeatures/types.ts"
+    },
+    {
+      "id": "TrainingFeatures",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/TrainingFeatures/TrainingFeatures.tsx"
+    },
+    {
+      "id": "TrainingFeatures",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/TrainingFeatures/variants/modern/TrainingFeatures.tsx"
+    },
+    {
+      "id": "TrainingFeatures",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/TrainingFeatures/variants/boutique/TrainingFeatures.tsx"
+    },
+    {
+      "id": "VideoPlayer",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/TrainingFeatures/components/VideoPlayer/VideoPlayer.tsx"
+    },
+    {
+      "id": "MediaContainer",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/TrainingFeatures/components/MediaContainer/MediaContainer.tsx"
+    },
+    {
+      "id": "FeatureCard",
+      "group": 1,
+      "dependents": 5,
+      "path": "features/Homepage/TrainingFeatures/components/FeatureCard/FeatureCard.tsx"
+    },
+    {
+      "id": "GymFeatureCard",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/TrainingFeatures/components/FeatureCard/variants/GymFeatureCard.tsx"
+    },
+    {
+      "id": "DefaultFeatureCard",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/TrainingFeatures/components/FeatureCard/variants/DefaultFeatureCard.tsx"
+    },
+    {
+      "id": "Training",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Training/Training.tsx"
+    },
+    {
+      "id": "Variants",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/variants/index.ts"
+    },
+    {
+      "id": "Training",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Training/variants/wellness/Training.tsx"
+    },
+    {
+      "id": "Training",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Training/variants/sports/Training.tsx"
+    },
+    {
+      "id": "Training",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Training/variants/modern/Training.tsx"
+    },
+    {
+      "id": "Training",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Training/variants/minimalist/Training.tsx"
+    },
+    {
+      "id": "Training",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Training/variants/classic/Training.tsx"
+    },
+    {
+      "id": "Training",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Training/variants/boutique/Training.tsx"
+    },
+    {
+      "id": "programUtils",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/utils/programUtils.ts"
+    },
+    {
+      "id": "applyThemeTokens",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/utils/applyThemeTokens.ts"
+    },
+    {
+      "id": "accessibilityHelpers",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/utils/accessibilityHelpers.tsx"
+    },
+    {
+      "id": "useTrainingPrograms",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/hooks/useTrainingPrograms.ts"
+    },
+    {
+      "id": "useReducedMotion",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/hooks/useReducedMotion.tsx"
+    },
+    {
+      "id": "VisualEnhancementsExample",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/examples/VisualEnhancementsExample.tsx"
+    },
+    {
+      "id": "TokenExample",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/examples/TokenExample.tsx"
+    },
+    {
+      "id": "ProgramTokenExample",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/examples/ProgramTokenExample.tsx"
+    },
+    {
+      "id": "SectionHeader",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/components/SectionHeader/SectionHeader.tsx"
+    },
+    {
+      "id": "ProgramsList",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/components/ProgramsList/ProgramsList.tsx"
+    },
+    {
+      "id": "ProgramCard",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/components/ProgramCard/ProgramCard.tsx"
+    },
+    {
+      "id": "MainCTA",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/components/MainCTA/MainCTA.tsx"
+    },
+    {
+      "id": "BenefitsList",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Training/components/BenefitsList/BenefitsList.tsx"
+    },
+    {
+      "id": "Testimonials",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Testimonials/Testimonials.tsx"
+    },
+    {
+      "id": "TestimonialCard",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Homepage/Testimonials/components/TestimonialCard.tsx"
+    },
+    {
+      "id": "Pricing",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Homepage/Pricing/Pricing.tsx"
+    },
+    {
+      "id": "Variants",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Pricing/variants/index.ts"
+    },
+    {
+      "id": "PricingCard",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Pricing/components/PricingCard.tsx"
+    },
+    {
+      "id": "Tooltip",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Pricing/Tooltip/Tooltip.tsx"
+    },
+    {
+      "id": "Hero",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Pricing/Hero/Hero.tsx"
+    },
+    {
+      "id": "Variants",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Pricing/Hero/variants/index.ts"
+    },
+    {
+      "id": "Hero",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Pricing/Hero/variants/sports/Hero.tsx"
+    },
+    {
+      "id": "RegistrationHero",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Pricing/Hero/variants/registration/RegistrationHero.tsx"
+    },
+    {
+      "id": "useRegistrationForm",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Pricing/Hero/variants/registration/hooks/useRegistrationForm.ts"
+    },
+    {
+      "id": "VideoPlayer",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Pricing/Hero/components/VideoPlayer.tsx"
+    },
+    {
+      "id": "FloatingIcons",
+      "group": 1,
+      "dependents": 4,
+      "path": "features/Homepage/Pricing/Hero/components/FloatingIcons.tsx"
+    },
+    {
+      "id": "FloatingIcon",
+      "group": 1,
+      "dependents": 4,
+      "path": "features/Homepage/Pricing/Hero/components/FloatingIcon.tsx"
+    },
+    {
+      "id": "FloatingIcons",
+      "group": 1,
+      "dependents": 4,
+      "path": "features/Homepage/Pricing/Hero/components/FloatingIcons/FloatingIcons.tsx"
+    },
+    {
+      "id": "FloatingIcon",
+      "group": 1,
+      "dependents": 4,
+      "path": "features/Homepage/Pricing/Hero/components/FloatingIcons/FloatingIcon.tsx"
+    },
+    {
+      "id": "PersonalTraining",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Homepage/PersonalTraining/index.ts"
+    },
+    {
+      "id": "PersonalTraining",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Homepage/PersonalTraining/PersonalTraining.tsx"
+    },
+    {
+      "id": "PersonalTraining",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Homepage/PersonalTraining/variants/sports/PersonalTraining.tsx"
+    },
+    {
+      "id": "VideoPlayer",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/PersonalTraining/components/VideoPlayer/VideoPlayer.tsx"
+    },
+    {
+      "id": "MediaContainer",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/PersonalTraining/components/MediaContainer/MediaContainer.tsx"
+    },
+    {
+      "id": "types",
+      "group": 1,
+      "dependents": 32,
+      "path": "features/Homepage/Journey/types.ts"
+    },
+    {
+      "id": "Journey",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/Journey.tsx"
+    },
+    {
+      "id": "Variants",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/variants/index.ts"
+    },
+    {
+      "id": "Journey",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/variants/sports/Journey.tsx"
+    },
+    {
+      "id": "Journey",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/variants/modern/Journey.tsx"
+    },
+    {
+      "id": "useReducedMotion",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/hooks/useReducedMotion.ts"
+    },
+    {
+      "id": "JourneyCTAExamples",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/examples/JourneyCTAExamples.tsx"
+    },
+    {
+      "id": "ButtonExample",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/examples/ButtonExample.tsx"
+    },
+    {
+      "id": "VideoPlayer",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Journey/components/VideoPlayer.tsx"
+    },
+    {
+      "id": "StepCTA",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Homepage/Journey/components/StepCTA.tsx"
+    },
+    {
+      "id": "SectionHeader",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/components/SectionHeader.tsx"
+    },
+    {
+      "id": "JourneyStep",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/components/JourneyStep.tsx"
+    },
+    {
+      "id": "JourneyFeatureCard",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/components/JourneyFeatureCard.tsx"
+    },
+    {
+      "id": "JourneyCTA",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Journey/components/JourneyCTA.tsx"
+    },
+    {
+      "id": "Hero",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Hero/Hero.tsx"
+    },
+    {
+      "id": "Variants",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Hero/variants/index.ts"
+    },
+    {
+      "id": "Hero",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Hero/variants/sports/Hero.tsx"
+    },
+    {
+      "id": "RegistrationHero",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Hero/variants/registration/RegistrationHero.tsx"
+    },
+    {
+      "id": "useRegistrationForm",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Hero/variants/registration/hooks/useRegistrationForm.ts"
+    },
+    {
+      "id": "VideoPlayer",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Hero/components/VideoPlayer.tsx"
+    },
+    {
+      "id": "FloatingIcons",
+      "group": 1,
+      "dependents": 4,
+      "path": "features/Homepage/Hero/components/FloatingIcons.tsx"
+    },
+    {
+      "id": "FloatingIcon",
+      "group": 1,
+      "dependents": 4,
+      "path": "features/Homepage/Hero/components/FloatingIcon.tsx"
+    },
+    {
+      "id": "FloatingIcons",
+      "group": 1,
+      "dependents": 4,
+      "path": "features/Homepage/Hero/components/FloatingIcons/FloatingIcons.tsx"
+    },
+    {
+      "id": "FloatingIcon",
+      "group": 1,
+      "dependents": 4,
+      "path": "features/Homepage/Hero/components/FloatingIcons/FloatingIcon.tsx"
+    },
+    {
+      "id": "Footer",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Footer/Footer.tsx"
+    },
+    {
+      "id": "FooterLinkGroup",
+      "group": 2,
+      "dependents": 1,
+      "path": "features/Homepage/Footer/components/FooterLinkGroup.tsx"
+    },
+    {
+      "id": "Features",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Features/Features.tsx"
+    },
+    {
+      "id": "Variants",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Features/variants/index.ts"
+    },
+    {
+      "id": "Features",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Features/variants/sports/Features.tsx"
+    },
+    {
+      "id": "RegistrationFeatures",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Features/variants/registration/RegistrationFeatures.tsx"
+    },
+    {
+      "id": "Features",
+      "group": 2,
+      "dependents": 0,
+      "path": "features/Homepage/Features/default/Features.tsx"
+    },
+    {
+      "id": "VideoPlayer",
+      "group": 2,
+      "dependents": 2,
+      "path": "features/Homepage/Features/components/VideoPlayer.tsx"
+    },
+    {
+      "id": "FloatingIcon",
+      "group": 1,
+      "dependents": 4,
+      "path": "features/Homepage/Features/components/FloatingIcon.tsx"
+    },
+    {
+      "id": "FeatureCardDemos",
+      "group": 1,
+      "dependents": 6,
+      "path": "features/Homepage/Features/components/FeatureCardDemos.tsx"
+    },
+    {
+      "id": "FeatureCard",
+      "group": 1,
+      "dependents": 5,
+      "path": "features/Homepage/Features/components/FeatureCard.tsx"
+    },
+    {
+      "id": "TestPage",
+      "group": 2,
+      "dependents": 0,
+      "path": "debug/TestPage.tsx"
+    },
+    {
+      "id": "Implementation",
+      "group": 2,
+      "dependents": 1,
+      "path": "debug/Implementation.tsx"
+    },
+    {
+      "id": "DebugRunner",
+      "group": 2,
+      "dependents": 1,
+      "path": "debug/DebugRunner.tsx"
+    },
+    {
+      "id": "ClassNameDebug",
+      "group": 2,
+      "dependents": 0,
+      "path": "debug/ClassNameDebug.tsx"
+    },
+    {
+      "id": "CSSVarInspector",
+      "group": 2,
+      "dependents": 0,
+      "path": "debug/CSSVarInspector.tsx"
+    },
+    {
+      "id": "ButtonVariantsDemo",
+      "group": 2,
+      "dependents": 0,
+      "path": "debug/ButtonVariantsDemo.tsx"
+    },
+    {
+      "id": "ButtonStyleAudit",
+      "group": 2,
+      "dependents": 0,
+      "path": "debug/ButtonStyleAudit.tsx"
+    },
+    {
+      "id": "ButtonPropsTracing",
+      "group": 2,
+      "dependents": 0,
+      "path": "debug/ButtonPropsTracing.tsx"
+    },
+    {
+      "id": "ButtonImplementation",
+      "group": 2,
+      "dependents": 1,
+      "path": "debug/ButtonImplementation.tsx"
+    },
+    {
+      "id": "ButtonDebug",
+      "group": 2,
+      "dependents": 0,
+      "path": "debug/ButtonDebug.tsx"
+    },
+    {
+      "id": "AppContext",
+      "group": 1,
+      "dependents": 4,
+      "path": "context/AppContext.tsx"
+    },
+    {
+      "id": "ExampleComponent",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/ExampleComponent.tsx"
+    },
+    {
+      "id": "DesignSystemDemo",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/DesignSystemDemo.tsx"
+    },
+    {
+      "id": "DemoNav",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/DemoNav.tsx"
+    },
+    {
+      "id": "Section",
+      "group": 2,
+      "dependents": 1,
+      "path": "components/shared/Section.tsx"
+    },
+    {
+      "id": "GlobalBackground",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/shared/GlobalBackground.tsx"
+    },
+    {
+      "id": "Section",
+      "group": 2,
+      "dependents": 1,
+      "path": "components/UI/Section.tsx"
+    },
+    {
+      "id": "ThemeSwitcher",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/UI/ThemeSwitcher/ThemeSwitcher.tsx"
+    },
+    {
+      "id": "PricingCard",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/UI/PricingCard/PricingCard.tsx"
+    },
+    {
+      "id": "VideoPlayer",
+      "group": 2,
+      "dependents": 2,
+      "path": "components/UI/Media/VideoPlayer.tsx"
+    },
+    {
+      "id": "MediaPlayer",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/UI/Media/MediaPlayer.tsx"
+    },
+    {
+      "id": "MediaExample",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/UI/Media/MediaExample.tsx"
+    },
+    {
+      "id": "AudioPlayer",
+      "group": 2,
+      "dependents": 2,
+      "path": "components/UI/Media/AudioPlayer.tsx"
+    },
+    {
+      "id": "Loading",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/UI/Loading/Loading.tsx"
+    },
+    {
+      "id": "ErrorMessage",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/UI/Error/ErrorMessage.tsx"
+    },
+    {
+      "id": "Card",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/UI/Card/Card.tsx"
+    },
+    {
+      "id": "OptimizedImage",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/OptimizedImage/OptimizedImage.tsx"
+    },
+    {
+      "id": "Section",
+      "group": 2,
+      "dependents": 1,
+      "path": "components/Layout/Section/index.tsx"
+    },
+    {
+      "id": "Page",
+      "group": 2,
+      "dependents": 0,
+      "path": "components/Layout/Page/Page.tsx"
+    },
+    {
+      "id": "Header",
+      "group": 2,
+      "dependents": 1,
+      "path": "components/Layout/Header/Header.tsx"
+    }
+  ],
+  "links": [
+    {
+      "source": "App",
+      "target": "Header",
+      "value": 1
+    },
+    {
+      "source": "test-utils",
+      "target": "AppContext",
+      "value": 1
+    },
+    {
+      "source": "user-context",
+      "target": "AppContext",
+      "value": 1
+    },
+    {
+      "source": "user-context",
+      "target": "AppContext",
+      "value": 1
+    },
+    {
+      "source": "nested-providers",
+      "target": "AppContext",
+      "value": 1
+    },
+    {
+      "source": "nested-providers",
+      "target": "JourneyContext",
+      "value": 1
+    },
+    {
+      "source": "nested-providers",
+      "target": "user-context",
+      "value": 1
+    },
+    {
+      "source": "nested-providers",
+      "target": "workout-context",
+      "value": 1
+    },
+    {
+      "source": "nested-providers",
+      "target": "workout-context",
+      "value": 1
+    },
+    {
+      "source": "useMediaPlayer",
+      "target": "media",
+      "value": 1
+    },
+    {
+      "source": "useMediaPlayer",
+      "target": "media",
+      "value": 1
+    },
+    {
+      "source": "useMediaPlayer",
+      "target": "media",
+      "value": 1
+    },
+    {
+      "source": "useMediaPlayer",
+      "target": "media",
+      "value": 1
+    },
+    {
+      "source": "FormExample",
+      "target": "FormField",
+      "value": 1
+    },
+    {
+      "source": "Media",
+      "target": "AudioPlayer",
+      "value": 1
+    },
+    {
+      "source": "Media",
+      "target": "ImageGallery",
+      "value": 1
+    },
+    {
+      "source": "Media",
+      "target": "ImageMedia",
+      "value": 1
+    },
+    {
+      "source": "Media",
+      "target": "MediaCarousel",
+      "value": 1
+    },
+    {
+      "source": "Media",
+      "target": "VideoPlayer",
+      "value": 1
+    },
+    {
+      "source": "Media",
+      "target": "YouTubePlayer",
+      "value": 1
+    },
+    {
+      "source": "useForm",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "TextField",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "FormField",
+      "target": "Checkbox",
+      "value": 1
+    },
+    {
+      "source": "FormField",
+      "target": "DatePicker",
+      "value": 1
+    },
+    {
+      "source": "FormField",
+      "target": "FileUpload",
+      "value": 1
+    },
+    {
+      "source": "FormField",
+      "target": "Radio",
+      "value": 1
+    },
+    {
+      "source": "FormField",
+      "target": "RadioGroup",
+      "value": 1
+    },
+    {
+      "source": "FormField",
+      "target": "Select",
+      "value": 1
+    },
+    {
+      "source": "FormField",
+      "target": "Switch",
+      "value": 1
+    },
+    {
+      "source": "FormField",
+      "target": "TextArea",
+      "value": 1
+    },
+    {
+      "source": "FormField",
+      "target": "TextField",
+      "value": 1
+    },
+    {
+      "source": "TextArea",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Switch",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Select",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "RadioGroup",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Radio",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "FileUpload",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "DatePicker",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Checkbox",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Card",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "ToggleButton",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "LinkButton",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Button",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Registration",
+      "target": "useRegistrationProgress",
+      "value": 1
+    },
+    {
+      "source": "Registration",
+      "target": "Pricing",
+      "value": 1
+    },
+    {
+      "source": "Journey",
+      "target": "JourneyContext",
+      "value": 1
+    },
+    {
+      "source": "Journey",
+      "target": "SavingIndicator",
+      "value": 1
+    },
+    {
+      "source": "WorkoutPreferenceSelector",
+      "target": "ConfirmSectionButton",
+      "value": 1
+    },
+    {
+      "source": "JourneyStepCard",
+      "target": "AnalyticsSelector",
+      "value": 1
+    },
+    {
+      "source": "JourneyStepCard",
+      "target": "GoalSelector",
+      "value": 1
+    },
+    {
+      "source": "JourneyStepCard",
+      "target": "StepValidator",
+      "value": 1
+    },
+    {
+      "source": "CustomizationContainer",
+      "target": "AccordionSection",
+      "value": 1
+    },
+    {
+      "source": "CustomizationContainer",
+      "target": "WorkoutPreferenceSelector",
+      "value": 1
+    },
+    {
+      "source": "AnalyticsSelector",
+      "target": "JourneyStepCard",
+      "value": 1
+    },
+    {
+      "source": "JourneySelector",
+      "target": "AccordionSection",
+      "value": 1
+    },
+    {
+      "source": "GoalSelector",
+      "target": "AccordionSection",
+      "value": 1
+    },
+    {
+      "source": "GoalSelector",
+      "target": "JourneySelector",
+      "value": 1
+    },
+    {
+      "source": "GoalSelector",
+      "target": "constants",
+      "value": 1
+    },
+    {
+      "source": "GoalSelector",
+      "target": "constants",
+      "value": 1
+    },
+    {
+      "source": "GoalSelector",
+      "target": "constants",
+      "value": 1
+    },
+    {
+      "source": "GoalSelector",
+      "target": "constants",
+      "value": 1
+    },
+    {
+      "source": "AnalyticsSelector",
+      "target": "AccordionSection",
+      "value": 1
+    },
+    {
+      "source": "AnalyticsSelector",
+      "target": "constants",
+      "value": 1
+    },
+    {
+      "source": "AnalyticsSelector",
+      "target": "constants",
+      "value": 1
+    },
+    {
+      "source": "AnalyticsSelector",
+      "target": "constants",
+      "value": 1
+    },
+    {
+      "source": "CustomizedMedicalContent",
+      "target": "AccordionSection",
+      "value": 1
+    },
+    {
+      "source": "CustomizedMedical",
+      "target": "MedicalCustomizationContext",
+      "value": 1
+    },
+    {
+      "source": "CustomizedMedical",
+      "target": "CustomizedMedicalContent",
+      "value": 1
+    },
+    {
+      "source": "MedicalClearanceSelector",
+      "target": "AccordionSection",
+      "value": 1
+    },
+    {
+      "source": "LiabilityWaiverSelector",
+      "target": "AccordionSection",
+      "value": 1
+    },
+    {
+      "source": "InjuriesSelector",
+      "target": "AccordionSection",
+      "value": 1
+    },
+    {
+      "source": "AnthropometricsSelector",
+      "target": "AccordionSection",
+      "value": 1
+    },
+    {
+      "source": "CustomizeExperience",
+      "target": "AccordionSection",
+      "value": 1
+    },
+    {
+      "source": "CustomizeExperience",
+      "target": "CustomizationContext",
+      "value": 1
+    },
+    {
+      "source": "ExperienceLevel",
+      "target": "LevelCard",
+      "value": 1
+    },
+    {
+      "source": "ExperienceLevel",
+      "target": "LevelComparison",
+      "value": 1
+    },
+    {
+      "source": "Homepage",
+      "target": "Registration",
+      "value": 1
+    },
+    {
+      "source": "Homepage",
+      "target": "PersonalTraining",
+      "value": 1
+    },
+    {
+      "source": "TrainingFeatures",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "TrainingFeatures",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "TrainingFeatures",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "TrainingFeatures",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "TrainingFeatures",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "TrainingFeatures",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "GymFeatureCard",
+      "target": "FeatureCard",
+      "value": 1
+    },
+    {
+      "source": "DefaultFeatureCard",
+      "target": "FeatureCard",
+      "value": 1
+    },
+    {
+      "source": "Variants",
+      "target": "Training",
+      "value": 1
+    },
+    {
+      "source": "VisualEnhancementsExample",
+      "target": "Training",
+      "value": 1
+    },
+    {
+      "source": "Testimonials",
+      "target": "Section",
+      "value": 1
+    },
+    {
+      "source": "Testimonials",
+      "target": "TestimonialCard",
+      "value": 1
+    },
+    {
+      "source": "Hero",
+      "target": "FloatingIcons",
+      "value": 1
+    },
+    {
+      "source": "RegistrationHero",
+      "target": "FloatingIcons",
+      "value": 1
+    },
+    {
+      "source": "FloatingIcons",
+      "target": "FloatingIcon",
+      "value": 1
+    },
+    {
+      "source": "FloatingIcons",
+      "target": "FloatingIcon",
+      "value": 1
+    },
+    {
+      "source": "Journey",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Journey",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Journey",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Journey",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "StepCTA",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "SectionHeader",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "JourneyStep",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "JourneyStep",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "JourneyStep",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "JourneyStep",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "JourneyStep",
+      "target": "StepCTA",
+      "value": 1
+    },
+    {
+      "source": "JourneyFeatureCard",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "JourneyCTA",
+      "target": "types",
+      "value": 1
+    },
+    {
+      "source": "Hero",
+      "target": "FloatingIcons",
+      "value": 1
+    },
+    {
+      "source": "RegistrationHero",
+      "target": "FloatingIcons",
+      "value": 1
+    },
+    {
+      "source": "FloatingIcons",
+      "target": "FloatingIcon",
+      "value": 1
+    },
+    {
+      "source": "FloatingIcons",
+      "target": "FloatingIcon",
+      "value": 1
+    },
+    {
+      "source": "Footer",
+      "target": "FooterLinkGroup",
+      "value": 1
+    },
+    {
+      "source": "Features",
+      "target": "FeatureCard",
+      "value": 1
+    },
+    {
+      "source": "Features",
+      "target": "FeatureCard",
+      "value": 1
+    },
+    {
+      "source": "Features",
+      "target": "FeatureCardDemos",
+      "value": 1
+    },
+    {
+      "source": "Features",
+      "target": "FeatureCardDemos",
+      "value": 1
+    },
+    {
+      "source": "Features",
+      "target": "FeatureCardDemos",
+      "value": 1
+    },
+    {
+      "source": "Features",
+      "target": "FeatureCard",
+      "value": 1
+    },
+    {
+      "source": "Features",
+      "target": "FeatureCardDemos",
+      "value": 1
+    },
+    {
+      "source": "Features",
+      "target": "FeatureCardDemos",
+      "value": 1
+    },
+    {
+      "source": "Features",
+      "target": "FeatureCardDemos",
+      "value": 1
+    },
+    {
+      "source": "TestPage",
+      "target": "DebugRunner",
+      "value": 1
+    },
+    {
+      "source": "DebugRunner",
+      "target": "ButtonImplementation",
+      "value": 1
+    },
+    {
+      "source": "DebugRunner",
+      "target": "Implementation",
+      "value": 1
+    },
+    {
+      "source": "VideoPlayer",
+      "target": "media",
+      "value": 1
+    },
+    {
+      "source": "VideoPlayer",
+      "target": "media",
+      "value": 1
+    },
+    {
+      "source": "VideoPlayer",
+      "target": "media",
+      "value": 1
+    },
+    {
+      "source": "MediaPlayer",
+      "target": "media",
+      "value": 1
+    },
+    {
+      "source": "MediaPlayer",
+      "target": "AudioPlayer",
+      "value": 1
+    },
+    {
+      "source": "MediaPlayer",
+      "target": "VideoPlayer",
+      "value": 1
+    },
+    {
+      "source": "AudioPlayer",
+      "target": "media",
+      "value": 1
+    },
+    {
+      "source": "AudioPlayer",
+      "target": "media",
+      "value": 1
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "category": "typeSafety",
+    "subcategory": "anyType.other",
+    "count": 6,
+    "frequency": 1,
+    "impact": 1,
+    "complexity": 4,
+    "businessValue": 3,
+    "totalScore": 1.9500000000000002,
+    "affectedFiles": [
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/test/context-utils/testing-library.tsx",
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/test/test-utils.tsx"
+    ]
+  },
+  {
+    "category": "codeStyle",
+    "subcategory": "unusedVariables",
+    "count": 3,
+    "frequency": 1,
+    "impact": 1,
+    "complexity": 1,
+    "businessValue": 2,
+    "totalScore": 1.25,
+    "affectedFiles": [
+      "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/test/utils/providers.tsx"
+    ]
+  }
+]

@@ -1,0 +1,102 @@
+{
+  "typeSafety": {
+    "anyInProps": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    },
+    "anyInEventHandlers": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    },
+    "missingPropTypes": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    },
+    "incompatiblePropTypes": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    },
+    "discriminatedUnionMissing": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    }
+  },
+  "reactHooks": {
+    "missingDependencies": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    },
+    "unusedDependencies": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    }
+  },
+  "eventHandling": {
+    "incorrectEventType": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    }
+  },
+  "codeStyle": {
+    "unusedVariables": {
+      "count": 3,
+      "examples": [
+        {
+          "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/test/utils/providers.tsx",
+          "line": 107,
+          "column": 32,
+          "code": "@typescript-eslint/no-unused-vars",
+          "message": "'value' is defined but never used. Allowed unused args must match /^_/u.",
+          "severity": 1
+        },
+        {
+          "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/test/utils/providers.tsx",
+          "line": 135,
+          "column": 32,
+          "code": "@typescript-eslint/no-unused-vars",
+          "message": "'value' is defined but never used. Allowed unused args must match /^_/u.",
+          "severity": 1
+        },
+        {
+          "filePath": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/test/utils/providers.tsx",
+          "line": 163,
+          "column": 32,
+          "code": "@typescript-eslint/no-unused-vars",
+          "message": "'value' is defined but never used. Allowed unused args must match /^_/u.",
+          "severity": 1
+        }
+      ],
+      "affectedFiles": [
+        {
+          "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/test/utils/providers.tsx",
+          "count": 3
+        }
+      ]
+    },
+    "consoleStatements": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    },
+    "missingReturnType": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    }
+  },
+  "apiIntegration": {
+    "apiTypeMismatch": {
+      "count": 0,
+      "examples": [],
+      "affectedFiles": []
+    }
+  }
+}

@@ -1683,6 +1683,24 @@
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
+  },
+  {
+    "file": "features/shared/FormField/types.ts",
+    "exportName": "generateFieldId",
+    "type": "missing",
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
+  },
+  {
+    "file": "features/shared/FormField/types.ts",
+    "exportName": "isTextareaField",
+    "type": "missing",
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
+  },
+  {
+    "file": "utils/logger.ts",
+    "exportName": "logger",
+    "type": "missing",
     "importedBy": "features/shared/Media/AudioPlayer.tsx"
   },
   {

@@ -1,0 +1,103 @@
+[
+  {
+    "pattern": "discriminatedUnionMissing",
+    "frequency": 0,
+    "complexity": 5,
+    "impact": 5,
+    "priorityScore": 2.5,
+    "affectedFiles": []
+  },
+  {
+    "pattern": "unusedVariables",
+    "frequency": 3,
+    "complexity": 1,
+    "impact": 2,
+    "priorityScore": 2.3000000000000003,
+    "affectedFiles": [
+      {
+        "file": "/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot/src/test/utils/providers.tsx",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "pattern": "anyInEventHandlers",
+    "frequency": 0,
+    "complexity": 4,
+    "impact": 5,
+    "priorityScore": 2.3,
+    "affectedFiles": []
+  },
+  {
+    "pattern": "apiTypeMismatch",
+    "frequency": 0,
+    "complexity": 4,
+    "impact": 5,
+    "priorityScore": 2.3,
+    "affectedFiles": []
+  },
+  {
+    "pattern": "anyInProps",
+    "frequency": 0,
+    "complexity": 3,
+    "impact": 5,
+    "priorityScore": 2.1,
+    "affectedFiles": []
+  },
+  {
+    "pattern": "incompatiblePropTypes",
+    "frequency": 0,
+    "complexity": 3,
+    "impact": 4,
+    "priorityScore": 1.8,
+    "affectedFiles": []
+  },
+  {
+    "pattern": "incorrectEventType",
+    "frequency": 0,
+    "complexity": 3,
+    "impact": 4,
+    "priorityScore": 1.8,
+    "affectedFiles": []
+  },
+  {
+    "pattern": "missingPropTypes",
+    "frequency": 0,
+    "complexity": 2,
+    "impact": 4,
+    "priorityScore": 1.6,
+    "affectedFiles": []
+  },
+  {
+    "pattern": "missingDependencies",
+    "frequency": 0,
+    "complexity": 2,
+    "impact": 3,
+    "priorityScore": 1.2999999999999998,
+    "affectedFiles": []
+  },
+  {
+    "pattern": "missingReturnType",
+    "frequency": 0,
+    "complexity": 2,
+    "impact": 3,
+    "priorityScore": 1.2999999999999998,
+    "affectedFiles": []
+  },
+  {
+    "pattern": "unusedDependencies",
+    "frequency": 0,
+    "complexity": 1,
+    "impact": 2,
+    "priorityScore": 0.8,
+    "affectedFiles": []
+  },
+  {
+    "pattern": "consoleStatements",
+    "frequency": 0,
+    "complexity": 1,
+    "impact": 2,
+    "priorityScore": 0.8,
+    "affectedFiles": []
+  }
+]
