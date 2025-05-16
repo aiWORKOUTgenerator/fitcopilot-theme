@@ -308,4 +308,9 @@ export const isDateField = (props: FormFieldProps): props is DateFieldProps =>
  * Type guard for FileField
  */
 export const isFileField = (props: FormFieldProps): props is FileFieldProps =>
-    props.fieldType === 'file'; 
+    props.fieldType === 'file';
+
+// Add a utility function to generate field IDs
+export const generateFieldId = (name: string, label: string): string => {
+  return `field-${name}-${label.replace(/\s+/g, '-').toLowerCase()}`;
+}; 

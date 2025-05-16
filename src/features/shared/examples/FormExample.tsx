@@ -7,7 +7,7 @@
 import React from 'react';
 import logger from '../../../utils/logger';
 import { Button, ButtonGroup } from '../Button';
-import FormField from '../FormField/FormField';
+import FormField from '../FormField';
 import { useForm } from '../FormField/useForm';
 import { validateEmail, validateMinLength, validateRequired } from '../FormField/validators';
 

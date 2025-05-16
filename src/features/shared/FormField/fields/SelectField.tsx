@@ -5,9 +5,10 @@
  */
 
 import React, { forwardRef } from 'react';
-import { SelectChangeHandler } from '../../../types/events';
-import { logger } from '../../../utils/logger';
-import { SelectFieldProps, isSelectField } from './types';
+import { SelectChangeHandler } from '../../../../types/events';
+import { debug } from '../../../../utils/logger';
+import { SelectFieldProps } from '../types';
+import { filterComponentProps } from './FormField';
 
 // Props that should not be passed to HTML elements
 const COMPONENT_ONLY_PROPS = [
@@ -19,20 +20,17 @@ const COMPONENT_ONLY_PROPS = [
   'validators', 
   'prefix', 
   'suffix',
+  'autoResize',
+  'indeterminate',
   'options',
+  'maxSize',
+  'onText',
+  'offText',
+  'buttonText',
+  'dropText',
+  'labelPosition',
   'isLoading'
 ] as const;
-
-// Filter out component-only props
-const filterComponentProps = <T extends Record<string, any>>(props: T): Omit<T, typeof COMPONENT_ONLY_PROPS[number]> => {
-  const filteredProps = { ...props };
-  COMPONENT_ONLY_PROPS.forEach(prop => {
-    if (prop in filteredProps) {
-      delete filteredProps[prop];
-    }
-  });
-  return filteredProps;
-};
 
 /**
  * SelectField component for dropdown selection
@@ -93,7 +91,7 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>((props, ref)
 
   // Event handlers with logging
   const handleChange: SelectChangeHandler = (e) => {
-    logger.debug('SelectField changed', {
+    debug('SelectField changed', {
       name,
       value: e.currentTarget.value
     });
@@ -132,65 +130,65 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>((props, ref)
   ].filter(Boolean).join(' ');
 
   return (
-    <div className={rootClasses} data-testid={testId}>
-      {label && (
-        <label htmlFor={fieldId} className="form-field__label">
-          {label}
-          {required && <span className="form-field__required">*</span>}
-        </label>
+      <div className={rootClasses} data-testid={testId}>
+          {label && (
+          <label htmlFor={fieldId} className="form-field__label">
+              {label}
+              {required && <span className="form-field__required">*</span>}
+          </label>
       )}
       
-      <div className="form-field__input-wrapper">
-        {prefix && <span className="form-field__prefix">{prefix}</span>}
+          <div className="form-field__input-wrapper">
+              {prefix && <span className="form-field__prefix">{prefix}</span>}
         
-        <select
-          {...htmlProps}
-          ref={ref}
-          id={fieldId}
-          name={name}
-          value={value}
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          disabled={disabled || isLoading}
-          required={required}
-          aria-describedby={describedBy}
-          aria-invalid={Boolean(error)}
-          multiple={multiple}
-          className="form-field__select"
+              <select
+                  {...htmlProps}
+                  ref={ref}
+                  id={fieldId}
+                  name={name}
+                  value={value}
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  disabled={disabled || isLoading}
+                  required={required}
+                  aria-describedby={describedBy}
+                  aria-invalid={Boolean(error)}
+                  multiple={multiple}
+                  className="form-field__select"
         >
-          {placeholder && (
-            <option value="" disabled>
-              {placeholder}
-            </option>
+                  {placeholder && (
+                  <option value="" disabled>
+                      {placeholder}
+                  </option>
           )}
           
-          {options.map((option) => (
-            <option 
-              key={option.value} 
-              value={option.value} 
-              disabled={option.disabled}
+                  {options.map((option) => (
+                      <option 
+                          key={option.value} 
+                          value={option.value} 
+                          disabled={option.disabled}
             >
-              {option.label}
-            </option>
+                          {option.label}
+                      </option>
           ))}
-        </select>
+              </select>
         
-        {suffix && <span className="form-field__suffix">{suffix}</span>}
-      </div>
+              {suffix && <span className="form-field__suffix">{suffix}</span>}
+          </div>
 
-      {helpText && !error && (
-        <div id={helpTextId} className="form-field__help-text">
-          {helpText}
-        </div>
+          {helpText && !error && (
+          <div id={helpTextId} className="form-field__help-text">
+              {helpText}
+          </div>
       )}
       
-      {error && (
-        <div id={errorId} className="form-field__error" aria-live="polite">
-          {error}
-        </div>
+          {error && (
+          <div id={errorId} className="form-field__error" aria-live="polite">
+              {error}
+          </div>
       )}
-    </div>
+      </div>
   );
 });
 
@@ -205,7 +203,7 @@ export const withSelectField = <P extends SelectFieldProps>(
 ): React.FC<P> => {
   const WithSelectField: React.FC<P> = (props: P) => {
     if (!isSelectField(props)) {
-      logger.warn('Component expected SelectFieldProps but received incompatible props');
+      debug.warn('Component expected SelectFieldProps but received incompatible props');
       return null;
     }
     

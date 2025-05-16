@@ -5,28 +5,26 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import {
-    FormFieldProps
-} from '../../../../types/form';
-import {
-    isCheckboxField,
-    isDateField,
-    isFileField,
-    isRadioField,
-    isRadioGroupField,
-    isSelectField,
-    isSwitchField,
-    isTextAreaField,
-    isTextField
-} from '../../../../utils/formTypeGuards';
+  FormFieldProps,
+  isCheckboxField,
+  isDateField,
+  isFileField,
+  isRadioField,
+  isRadioGroupField,
+  isSelectField,
+  isSwitchField,
+  isTextAreaField,
+  isTextField
+} from '../types';
 
 // Import the FormField component
-import FormField from '../FormField';
 import {
-    createCheckboxFieldProps,
-    createSelectFieldProps,
-    createTextAreaFieldProps,
-    createTextFieldProps
+  createCheckboxFieldProps,
+  createSelectFieldProps,
+  createTextAreaFieldProps,
+  createTextFieldProps
 } from '../__fixtures__/formFieldFixtures';
+import FormField from '../fields/FormField';
 
 describe('FormField Type Guards', () => {
     describe('isTextField', () => {
