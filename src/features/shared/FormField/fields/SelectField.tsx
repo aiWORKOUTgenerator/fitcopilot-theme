@@ -7,30 +7,33 @@
 import React, { forwardRef } from 'react';
 import { SelectChangeHandler } from '../../../../types/events';
 import { debug } from '../../../../utils/logger';
-import { SelectFieldProps } from '../types';
 import { filterComponentProps } from './FormField';
 
-// Props that should not be passed to HTML elements
-const COMPONENT_ONLY_PROPS = [
-  'label', 
-  'error', 
-  'helpText', 
-  'variant', 
-  'size', 
-  'validators', 
-  'prefix', 
-  'suffix',
-  'autoResize',
-  'indeterminate',
-  'options',
-  'maxSize',
-  'onText',
-  'offText',
-  'buttonText',
-  'dropText',
-  'labelPosition',
-  'isLoading'
-] as const;
+// Define a local interface that matches what we're actually using
+interface SelectFieldComponentProps {
+  id?: string;
+  name: string;
+  value: string;
+  onChange: SelectChangeHandler;
+  onBlur?: React.FocusEventHandler<HTMLSelectElement>;
+  onFocus?: React.FocusEventHandler<HTMLSelectElement>;
+  label?: string;
+  placeholder?: string;
+  error?: string;
+  helpText?: string;
+  required?: boolean;
+  disabled?: boolean;
+  className?: string;
+  'data-testid'?: string;
+  'aria-describedby'?: string;
+  options: Array<{value: string; label: string; disabled?: boolean}>;
+  multiple?: boolean;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
+  variant?: string;
+  size?: string;
+  isLoading?: boolean;
+}
 
 /**
  * SelectField component for dropdown selection
@@ -49,7 +52,7 @@ const COMPONENT_ONLY_PROPS = [
  *   ]}
  * />
  */
-const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>((props, ref) => {
+const SelectField = forwardRef<HTMLSelectElement, SelectFieldComponentProps>((props, ref) => {
   const {
     id,
     name,
@@ -100,19 +103,11 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>((props, ref)
 
   // Event handler adapters for focus/blur events
   const handleFocus = onFocus ? (e: React.FocusEvent<HTMLSelectElement>) => {
-    onFocus({
-      ...e,
-      currentTarget: e.currentTarget as unknown as HTMLInputElement,
-      target: e.target as unknown as HTMLInputElement
-    });
+    onFocus(e);
   } : undefined;
 
   const handleBlur = onBlur ? (e: React.FocusEvent<HTMLSelectElement>) => {
-    onBlur({
-      ...e,
-      currentTarget: e.currentTarget as unknown as HTMLInputElement,
-      target: e.target as unknown as HTMLInputElement
-    });
+    onBlur(e);
   } : undefined;
 
   // CSS classes
@@ -130,65 +125,65 @@ const SelectField = forwardRef<HTMLSelectElement, SelectFieldProps>((props, ref)
   ].filter(Boolean).join(' ');
 
   return (
-      <div className={rootClasses} data-testid={testId}>
-          {label && (
-          <label htmlFor={fieldId} className="form-field__label">
-              {label}
-              {required && <span className="form-field__required">*</span>}
-          </label>
+    <div className={rootClasses} data-testid={testId}>
+      {label && (
+        <label htmlFor={fieldId} className="form-field__label">
+          {label}
+          {required && <span className="form-field__required">*</span>}
+        </label>
       )}
       
-          <div className="form-field__input-wrapper">
-              {prefix && <span className="form-field__prefix">{prefix}</span>}
+      <div className="form-field__input-wrapper">
+        {prefix && <span className="form-field__prefix">{prefix}</span>}
         
-              <select
-                  {...htmlProps}
-                  ref={ref}
-                  id={fieldId}
-                  name={name}
-                  value={value}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  disabled={disabled || isLoading}
-                  required={required}
-                  aria-describedby={describedBy}
-                  aria-invalid={Boolean(error)}
-                  multiple={multiple}
-                  className="form-field__select"
+        <select
+          {...htmlProps}
+          ref={ref}
+          id={fieldId}
+          name={name}
+          value={value}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          disabled={disabled || isLoading}
+          required={required}
+          aria-describedby={describedBy}
+          aria-invalid={Boolean(error)}
+          multiple={multiple}
+          className="form-field__select"
         >
-                  {placeholder && (
-                  <option value="" disabled>
-                      {placeholder}
-                  </option>
+          {placeholder && (
+            <option value="" disabled>
+              {placeholder}
+            </option>
           )}
           
-                  {options.map((option) => (
-                      <option 
-                          key={option.value} 
-                          value={option.value} 
-                          disabled={option.disabled}
+          {options.map((option) => (
+            <option 
+              key={option.value} 
+              value={option.value} 
+              disabled={option.disabled}
             >
-                          {option.label}
-                      </option>
+              {option.label}
+            </option>
           ))}
-              </select>
+        </select>
         
-              {suffix && <span className="form-field__suffix">{suffix}</span>}
-          </div>
+        {suffix && <span className="form-field__suffix">{suffix}</span>}
+      </div>
 
-          {helpText && !error && (
-          <div id={helpTextId} className="form-field__help-text">
-              {helpText}
-          </div>
+      {helpText && !error && (
+        <div id={helpTextId} className="form-field__help-text">
+          {helpText}
+        </div>
       )}
       
-          {error && (
-          <div id={errorId} className="form-field__error" aria-live="polite">
-              {error}
-          </div>
+      {error && (
+        <div id={errorId} className="form-field__error" aria-live="polite">
+          {error}
+        </div>
       )}
-      </div>
+    </div>
   );
 });
 
@@ -196,14 +191,25 @@ SelectField.displayName = 'SelectField';
 export default SelectField;
 
 /**
+ * Type guard to check if props conform to SelectField requirements
+ */
+export const isSelectField = (props: any): props is SelectFieldComponentProps => {
+  return props && (
+    props.fieldType === 'select' || 
+    props.variant === 'select' || 
+    props.type === 'select'
+  );
+};
+
+/**
  * Type guard HOC to ensure a component is a SelectField
  */
-export const withSelectField = <P extends SelectFieldProps>(
+export const withSelectField = <P extends SelectFieldComponentProps>(
   Component: React.ComponentType<P>
 ): React.FC<P> => {
   const WithSelectField: React.FC<P> = (props: P) => {
     if (!isSelectField(props)) {
-      debug.warn('Component expected SelectFieldProps but received incompatible props');
+      debug('Component expected SelectField props but received incompatible props');
       return null;
     }
     

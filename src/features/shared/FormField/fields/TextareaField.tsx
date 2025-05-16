@@ -4,25 +4,39 @@
  * A standalone implementation of a textarea field using the centralized type system
  */
 
-import React, { forwardRef, useEffect, useRef } from 'react';
+import React, { forwardRef, useCallback, useEffect, useRef } from 'react';
 import { debug } from '../../../../utils/logger';
-import { TextAreaFieldProps } from '../types';
 import { filterComponentProps } from './FormField';
 
-// Props that should not be passed to HTML elements
-const COMPONENT_ONLY_PROPS = [
-  'label', 
-  'error', 
-  'helpText', 
-  'variant', 
-  'size', 
-  'validators', 
-  'prefix', 
-  'suffix',
-  'autoResize',
-  'minLength',
-  'indeterminate'
-] as const;
+// Define a local interface that matches what we're actually using
+interface TextareaFieldComponentProps {
+  id?: string;
+  name: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
+  onFocus?: React.FocusEventHandler<HTMLTextAreaElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  onKeyPress?: React.KeyboardEventHandler<HTMLTextAreaElement>;
+  label?: string;
+  placeholder?: string;
+  error?: string;
+  helpText?: string;
+  required?: boolean;
+  disabled?: boolean;
+  className?: string;
+  'data-testid'?: string;
+  'aria-describedby'?: string;
+  rows?: number;
+  autoResize?: boolean;
+  maxLength?: number;
+  minLength?: number;
+  prefix?: React.ReactNode;
+  suffix?: React.ReactNode;
+  variant?: string;
+  size?: string;
+  isLoading?: boolean;
+}
 
 /**
  * TextareaField component for multiline text input
@@ -38,7 +52,7 @@ const COMPONENT_ONLY_PROPS = [
  *   autoResize
  * />
  */
-const TextareaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>((props, ref) => {
+const TextareaField = forwardRef<HTMLTextAreaElement, TextareaFieldComponentProps>((props, ref) => {
   const {
     id,
     name,
@@ -82,10 +96,10 @@ const TextareaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>((props
   // Create internal ref for auto-resizing
   const internalRef = useRef<HTMLTextAreaElement>(null);
   
-  // Get the actual textarea element
-  const getTextarea = () => {
+  // Get the actual textarea element - wrapped in useCallback to avoid dependency issues
+  const getTextarea = useCallback(() => {
     return ref && typeof ref !== 'function' ? ref.current : internalRef.current;
-  };
+  }, [ref]);
 
   // Filter out any component-only props
   const htmlProps = filterComponentProps(otherProps);
@@ -99,7 +113,7 @@ const TextareaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>((props
         textarea.style.height = `${textarea.scrollHeight}px`;
       }
     }
-  }, [value, autoResize]);
+  }, [value, autoResize, getTextarea]);
 
   // Event handlers with adaptation to expected input types
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -108,45 +122,24 @@ const TextareaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>((props
       value: e.target.value
     });
     
-    // Adapt the event to match InputChangeHandler expectations
-    onChange({
-      ...e,
-      currentTarget: e.currentTarget as unknown as HTMLInputElement,
-      target: e.target as unknown as HTMLInputElement
-    });
+    onChange(e);
   };
 
   // Event handler adapters for focus, blur, and keyboard events
   const handleFocus = onFocus ? (e: React.FocusEvent<HTMLTextAreaElement>) => {
-    onFocus({
-      ...e,
-      currentTarget: e.currentTarget as unknown as HTMLInputElement,
-      target: e.target as unknown as HTMLInputElement
-    });
+    onFocus(e);
   } : undefined;
 
   const handleBlur = onBlur ? (e: React.FocusEvent<HTMLTextAreaElement>) => {
-    onBlur({
-      ...e,
-      currentTarget: e.currentTarget as unknown as HTMLInputElement,
-      target: e.target as unknown as HTMLInputElement
-    });
+    onBlur(e);
   } : undefined;
 
   const handleKeyDown = onKeyDown ? (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    onKeyDown({
-      ...e,
-      currentTarget: e.currentTarget as unknown as HTMLInputElement,
-      target: e.target as unknown as HTMLInputElement
-    });
+    onKeyDown(e);
   } : undefined;
 
   const handleKeyPress = onKeyPress ? (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    onKeyPress({
-      ...e,
-      currentTarget: e.currentTarget as unknown as HTMLInputElement,
-      target: e.target as unknown as HTMLInputElement
-    });
+    onKeyPress(e);
   } : undefined;
 
   // CSS classes
@@ -165,54 +158,54 @@ const TextareaField = forwardRef<HTMLTextAreaElement, TextAreaFieldProps>((props
   ].filter(Boolean).join(' ');
 
   return (
-      <div className={rootClasses} data-testid={testId}>
-          {label && (
-          <label htmlFor={fieldId} className="form-field__label">
-              {label}
-              {required && <span className="form-field__required">*</span>}
-          </label>
+    <div className={rootClasses} data-testid={testId}>
+      {label && (
+        <label htmlFor={fieldId} className="form-field__label">
+          {label}
+          {required && <span className="form-field__required">*</span>}
+        </label>
       )}
       
-          <div className="form-field__input-wrapper">
-              {prefix && <span className="form-field__prefix">{prefix}</span>}
+      <div className="form-field__input-wrapper">
+        {prefix && <span className="form-field__prefix">{prefix}</span>}
         
-              <textarea
-                  {...htmlProps}
-                  ref={ref || internalRef}
-                  id={fieldId}
-                  name={name}
-                  value={value}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  onKeyDown={handleKeyDown}
-                  onKeyPress={handleKeyPress}
-                  placeholder={placeholder}
-                  rows={rows}
-                  disabled={disabled || isLoading}
-                  required={required}
-                  aria-describedby={describedBy}
-                  aria-invalid={Boolean(error)}
-                  maxLength={maxLength}
-                  minLength={minLength}
-                  className="form-field__input form-field__textarea"
+        <textarea
+          {...htmlProps}
+          ref={ref || internalRef}
+          id={fieldId}
+          name={name}
+          value={value}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          onKeyPress={handleKeyPress}
+          placeholder={placeholder}
+          rows={rows}
+          disabled={disabled || isLoading}
+          required={required}
+          aria-describedby={describedBy}
+          aria-invalid={Boolean(error)}
+          maxLength={maxLength}
+          minLength={minLength}
+          className="form-field__input form-field__textarea"
         />
         
-              {suffix && <span className="form-field__suffix">{suffix}</span>}
-          </div>
+        {suffix && <span className="form-field__suffix">{suffix}</span>}
+      </div>
 
-          {helpText && !error && (
-          <div id={helpTextId} className="form-field__help-text">
-              {helpText}
-          </div>
+      {helpText && !error && (
+        <div id={helpTextId} className="form-field__help-text">
+          {helpText}
+        </div>
       )}
       
-          {error && (
-          <div id={errorId} className="form-field__error" aria-live="polite">
-              {error}
-          </div>
+      {error && (
+        <div id={errorId} className="form-field__error" aria-live="polite">
+          {error}
+        </div>
       )}
-      </div>
+    </div>
   );
 });
 
@@ -220,14 +213,25 @@ TextareaField.displayName = 'TextareaField';
 export default TextareaField;
 
 /**
+ * Type guard to check if props conform to TextareaField requirements
+ */
+export const isTextareaField = (props: any): props is TextareaFieldComponentProps => {
+  return props && (
+    props.fieldType === 'textarea' || 
+    props.variant === 'textarea' || 
+    props.type === 'textarea'
+  );
+};
+
+/**
  * Type guard HOC to ensure a component is a TextareaField
  */
-export const withTextareaField = <P extends TextAreaFieldProps>(
+export const withTextareaField = <P extends TextareaFieldComponentProps>(
   Component: React.ComponentType<P>
 ): React.FC<P> => {
   const WithTextareaField: React.FC<P> = (props: P) => {
     if (!isTextareaField(props)) {
-      debug.warn('Component expected TextareaFieldProps but received incompatible props');
+      debug('Component expected TextareaField props but received incompatible props');
       return null;
     }
     
