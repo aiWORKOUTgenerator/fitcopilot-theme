@@ -6,22 +6,22 @@
  */
 
 import {
-    CheckboxFieldProps,
-    DateFieldProps,
-    FileFieldProps,
-    RadioFieldProps,
-    RadioGroupFieldProps,
-    SelectFieldProps,
-    SwitchFieldProps,
-    TextAreaFieldProps,
-    TextFieldProps
-} from '../../../../types/form';
+  CheckboxFieldProps,
+  DateFieldProps,
+  FileFieldProps,
+  RadioFieldProps,
+  RadioGroupFieldProps,
+  SelectFieldProps,
+  SwitchFieldProps,
+  TextAreaFieldProps,
+  TextFieldProps
+} from '../types';
 
 /**
  * Creates props for a text field with default values
  */
 export const createTextFieldProps = (overrides: Partial<TextFieldProps> = {}): TextFieldProps => ({
-    variant: 'text',
+    fieldType: 'text',
     name: 'textField',
     value: '',
     type: 'text',
@@ -33,7 +33,7 @@ export const createTextFieldProps = (overrides: Partial<TextFieldProps> = {}): T
  * Creates props for a textarea field with default values
  */
 export const createTextAreaFieldProps = (overrides: Partial<TextAreaFieldProps> = {}): TextAreaFieldProps => ({
-    variant: 'textarea',
+    fieldType: 'textarea',
     name: 'textareaField',
     value: '',
     onChange: jest.fn(),
@@ -44,7 +44,7 @@ export const createTextAreaFieldProps = (overrides: Partial<TextAreaFieldProps> 
  * Creates props for a select field with default values
  */
 export const createSelectFieldProps = (overrides: Partial<SelectFieldProps> = {}): SelectFieldProps => ({
-    variant: 'select',
+    fieldType: 'select',
     name: 'selectField',
     value: '',
     options: [
@@ -59,7 +59,7 @@ export const createSelectFieldProps = (overrides: Partial<SelectFieldProps> = {}
  * Creates props for a checkbox field with default values
  */
 export const createCheckboxFieldProps = (overrides: Partial<CheckboxFieldProps> = {}): CheckboxFieldProps => ({
-    variant: 'checkbox',
+    fieldType: 'checkbox',
     name: 'checkboxField',
     checked: false,
     onChange: jest.fn(),
@@ -70,7 +70,7 @@ export const createCheckboxFieldProps = (overrides: Partial<CheckboxFieldProps> 
  * Creates props for a radio field with default values
  */
 export const createRadioFieldProps = (overrides: Partial<RadioFieldProps> = {}): RadioFieldProps => ({
-    variant: 'radio',
+    fieldType: 'radio',
     name: 'radioField',
     value: 'option1',
     selectedValue: '',
@@ -82,7 +82,7 @@ export const createRadioFieldProps = (overrides: Partial<RadioFieldProps> = {}):
  * Creates props for a radio group field with default values
  */
 export const createRadioGroupFieldProps = (overrides: Partial<RadioGroupFieldProps> = {}): RadioGroupFieldProps => ({
-    variant: 'radiogroup',
+    fieldType: 'radiogroup',
     name: 'radioGroupField',
     value: '',
     options: [
@@ -97,7 +97,7 @@ export const createRadioGroupFieldProps = (overrides: Partial<RadioGroupFieldPro
  * Creates props for a switch field with default values
  */
 export const createSwitchFieldProps = (overrides: Partial<SwitchFieldProps> = {}): SwitchFieldProps => ({
-    variant: 'switch',
+    fieldType: 'switch',
     name: 'switchField',
     checked: false,
     onChange: jest.fn(),
@@ -108,7 +108,7 @@ export const createSwitchFieldProps = (overrides: Partial<SwitchFieldProps> = {}
  * Creates props for a date field with default values
  */
 export const createDateFieldProps = (overrides: Partial<DateFieldProps> = {}): DateFieldProps => ({
-    variant: 'date',
+    fieldType: 'date',
     name: 'dateField',
     value: '',
     onChange: jest.fn(),
@@ -119,7 +119,7 @@ export const createDateFieldProps = (overrides: Partial<DateFieldProps> = {}): D
  * Creates props for a file field with default values
  */
 export const createFileFieldProps = (overrides: Partial<FileFieldProps> = {}): FileFieldProps => ({
-    variant: 'file',
+    fieldType: 'file',
     name: 'fileField',
     value: null,
     onChange: jest.fn(),
