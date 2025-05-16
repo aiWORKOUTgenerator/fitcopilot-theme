@@ -162,6 +162,10 @@
     "optimize:images:watch": "node scripts/optimize-images.js --watch",
     "optimize:images:clean": "node scripts/optimize-images.js --clean",
     "verify-components": "ts-node scripts/verify-components.ts",
-    "generate-warning-chart": "ts-node scripts/generate-warning-chart.ts"
+    "generate-warning-chart": "ts-node scripts/generate-warning-chart.ts",
+    "eslint:metrics": "node scripts/eslint-metrics.js",
+    "type:coverage": "node scripts/type-coverage.js",
+    "type:check-any": "node scripts/check-new-any-types.js",
+    "ci:lint": "npm run eslint:metrics && npm run type:coverage"
   }
 }

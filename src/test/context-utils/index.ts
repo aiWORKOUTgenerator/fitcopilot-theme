@@ -8,16 +8,19 @@
 // Export base testing library utilities
 export * from './testing-library';
 
+// Export generic provider utilities
+export * from './generic-provider';
+
 // Export user context utilities
-export { adminMockUser, authenticatedMockUser, createMockUser, defaultMockUser, MockAppProvider, renderWithUserContext, simulateLogin, simulateLogout, waitForAuthState } from './user-context';
+export { MockAppProvider, adminMockUser, authenticatedMockUser, createMockUser, defaultMockUser, renderWithUserContext, simulateLogin, simulateLogout, waitForAuthState } from './user-context';
 
 // Export workout context utilities
 export {
-    createMockExercise,
-    createMockWorkout, Exercise, mockApiFailures, mockApiResponses, MockWorkoutProvider, mockWorkouts,
-    renderWithWorkoutContext, useWorkoutContext, Workout, WorkoutContext
+    Exercise, MockWorkoutProvider, Workout, WorkoutContext, createMockExercise,
+    createMockWorkout, mockApiFailures, mockApiResponses, mockWorkouts,
+    renderWithWorkoutContext, useWorkoutContext
 } from './workout-context';
 
 // Export nested providers utilities
-export { createTestProvidersWrapper, renderWithAllProviders, TestProviders } from './nested-providers';
+export { TestProviders, createTestProvidersWrapper, renderWithAllProviders } from './nested-providers';
 

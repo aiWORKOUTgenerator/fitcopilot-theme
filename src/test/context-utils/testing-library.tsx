@@ -3,9 +3,31 @@
  * 
  * This file provides reusable utilities for testing React context providers.
  */
-import { render, RenderOptions, RenderResult } from '@testing-library/react';
-import { renderHook, RenderHookOptions, RenderHookResult } from '@testing-library/react-hooks';
+import { render, RenderOptions } from '@testing-library/react';
+import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
 import React, { ReactElement, ReactNode } from 'react';
+import {
+    BaseTestProviderProps,
+    ContextProvider,
+    MockContextValueOptions,
+    MockFunctionMapping,
+    ProviderConfig,
+    ProviderRenderHookResult,
+    ProviderRenderResult
+} from '../../types/context-test';
+
+/**
+ * Type for a context provider component with children and additional props
+ */
+export type ProviderComponent<T = unknown> = React.ComponentType<{ children?: ReactNode } & T>;
+
+/**
+ * Type for a provider descriptor to be used in nested providers
+ */
+export interface ProviderDescriptor<T = unknown> {
+    Provider: ProviderComponent<T>;
+    props: T;
+}
 
 /**
  * Creates a wrapper function for testing a context provider
@@ -15,10 +37,10 @@ import React, { ReactElement, ReactNode } from 'react';
  * @returns A wrapper function for use with testing-library render functions
  */
 export function createProviderWrapper<T>(
-    Provider: React.ComponentType<{ children?: ReactNode } & T>,
+    Provider: ContextProvider<T>,
     providerProps: T
 ) {
-    const ProviderWrapper = ({ children }: { children?: ReactNode }) => (
+    const ProviderWrapper = ({ children }: BaseTestProviderProps) => (
         <Provider {...providerProps}>{children}</Provider>
     );
 
@@ -33,13 +55,10 @@ export function createProviderWrapper<T>(
  * @param providers - Array of provider components with their props
  * @returns A wrapper function for use with testing-library render functions
  */
-export function createNestedProviders(
-    providers: Array<{
-        Provider: React.ComponentType<any>;
-        props: Record<string, any>;
-    }>
+export function createNestedProviders<T extends ProviderConfig[]>(
+    providers: T
 ) {
-    const NestedProviders = ({ children }: { children?: ReactNode }) => (
+    const NestedProviders = ({ children }: BaseTestProviderProps) => (
         <>
             {providers.reduce(
                 (acc, { Provider, props }) => (
@@ -66,10 +85,10 @@ export function createNestedProviders(
  */
 export function renderWithProvider<P>(
     ui: ReactElement,
-    Provider: React.ComponentType<{ children?: ReactNode } & P>,
+    Provider: ContextProvider<P>,
     providerProps: P,
     options?: Omit<RenderOptions, 'wrapper'>
-): RenderResult & { providerProps: P } {
+): ProviderRenderResult<P> {
     return {
         ...render(ui, {
             wrapper: createProviderWrapper(Provider, providerProps),
@@ -90,10 +109,10 @@ export function renderWithProvider<P>(
  */
 export function renderHookWithProvider<Result, Props, P>(
     hook: (props: Props) => Result,
-    Provider: React.ComponentType<{ children?: ReactNode } & P>,
+    Provider: ContextProvider<P>,
     providerProps: P,
     options?: Omit<RenderHookOptions<Props>, 'wrapper'>
-): RenderHookResult<Props, Result> & { providerProps: P } {
+): ProviderRenderHookResult<P, Result, Props> {
     return {
         ...renderHook(hook, {
             wrapper: createProviderWrapper(Provider, providerProps),
@@ -110,22 +129,59 @@ export function renderHookWithProvider<Result, Props, P>(
  * @param overrides - Optional overrides for specific properties
  * @returns Mocked context value
  */
-export function createMockContextValue<T extends Record<string, any>>(
+export function createMockContextValue<T extends Record<string, unknown>>(
     defaultValue: T,
     overrides: Partial<T> = {}
 ): T {
     // Create jest mock functions for all function properties
-    const mockedFunctions = Object.entries(defaultValue).reduce((acc, [key, value]) => {
+    const mockedFunctions = Object.entries(defaultValue).reduce<MockFunctionMapping<T>>((acc, [key, value]) => {
         if (typeof value === 'function') {
-            acc[key] = jest.fn();
+            acc[key as keyof T] = jest.fn() as any;
         }
         return acc;
-    }, {} as Record<string, jest.Mock>);
+    }, {});
 
     // Combine default values, mocked functions, and overrides
     return {
         ...defaultValue,
-        ...mockedFunctions,
+        ...mockedFunctions as Partial<T>,
+        ...overrides,
+    };
+}
+
+/**
+ * Enhanced version of createMockContextValue with more control
+ * 
+ * @param options - Configuration options for creating mock context value
+ * @returns Mocked context value
+ */
+export function createMockContext<T extends Record<string, unknown>>(
+    options: MockContextValueOptions<T>
+): T {
+    const { defaultValue, overrides = {}, mockFunctions = [] } = options;
+
+    // Create mock functions for specified keys
+    const mockedFunctions = mockFunctions.reduce<MockFunctionMapping<T>>((acc, key) => {
+        if (typeof defaultValue[key] === 'function') {
+            acc[key] = jest.fn() as any;
+        }
+        return acc;
+    }, {});
+
+    // Create automatic mock functions for any remaining function properties
+    const autoMockedFunctions = Object.entries(defaultValue).reduce<MockFunctionMapping<T>>((acc, [key, value]) => {
+        const k = key as keyof T;
+        if (typeof value === 'function' && !mockFunctions.includes(k) && !overrides[k]) {
+            acc[k] = jest.fn() as any;
+        }
+        return acc;
+    }, {});
+
+    // Combine everything with the correct precedence
+    return {
+        ...defaultValue,
+        ...autoMockedFunctions as Partial<T>,
+        ...mockedFunctions as Partial<T>,
         ...overrides,
     };
 } 

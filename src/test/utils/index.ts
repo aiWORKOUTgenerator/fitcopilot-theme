@@ -18,6 +18,9 @@ export * from './render';
 // Additional test helpers
 export * from './helpers';
 
+// Re-export test types
+export * from '../../types/test';
+
 /**
  * Common test data factory functions
  */

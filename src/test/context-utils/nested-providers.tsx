@@ -11,8 +11,11 @@ import { RegistrationData } from '../../features/Registration/types';
 import { MockAppProvider } from './user-context';
 import { MockWorkoutProvider, Workout } from './workout-context';
 
-// Props for the combined test provider
-interface TestProvidersProps {
+/**
+ * Props for the combined test provider
+ * Contains all the props for individual context providers
+ */
+export interface TestProvidersProps {
     // User context props
     initialUser?: UserInfo;
 
@@ -82,20 +85,23 @@ export function renderWithAllProviders(
     ui: React.ReactElement,
     providerProps: Omit<TestProvidersProps, 'children'> = {},
     renderOptions: Omit<RenderOptions, 'wrapper'> = {}
-): RenderResult {
-    return render(ui, {
-        wrapper: ({ children }) => (
-            <TestProviders {...providerProps}>{children}</TestProviders>
-        ),
-        ...renderOptions,
-    });
+): RenderResult & { providerProps: Omit<TestProvidersProps, 'children'> } {
+    return {
+        ...render(ui, {
+            wrapper: ({ children }) => (
+                <TestProviders {...providerProps}>{children}</TestProviders>
+            ),
+            ...renderOptions,
+        }),
+        providerProps,
+    };
 }
 
 /**
  * Creates a wrapper function for use with renderHook
  */
 export function createTestProvidersWrapper(providerProps: Omit<TestProvidersProps, 'children'> = {}) {
-    const TestProviderWrapper = ({ children }: { children?: ReactNode }) => (
+    const TestProviderWrapper: FC<{ children?: ReactNode }> = ({ children }) => (
         <TestProviders {...providerProps}>{children}</TestProviders>
     );
 

@@ -1,20 +1,21 @@
 import { waitFor } from '@testing-library/react';
+import { ConsoleMethods, TimeoutOptions } from '../../types/test';
 import logger from '../../utils/logger';
 
 /**
  * Waits for all pending promises to resolve
  * Useful for tests with multiple async operations
  */
-export async function waitForPromises() {
+export async function waitForPromises(): Promise<void> {
     // Execute all microtasks in the queue
-    await new Promise(resolve => setTimeout(resolve, 0));
+    await new Promise<void>(resolve => setTimeout(resolve, 0));
 }
 
 /**
  * Creates a promise that resolves after the specified time
  * @param ms Time to wait in milliseconds
  */
-export function wait(ms: number) {
+export function wait(ms: number): Promise<void> {
     return new Promise<void>(resolve => setTimeout(resolve, ms));
 }
 
@@ -23,8 +24,10 @@ export function wait(ms: number) {
  * @param fn The async test function
  * @returns A function that can be used with test/it
  */
-export function withAsync(fn: (...args: any[]) => Promise<any>) {
-    return async (...args: any[]) => {
+export function withAsync<Args extends unknown[], Return>(
+    fn: (...args: Args) => Promise<Return>
+): (...args: Args) => Promise<Return> {
+    return async (...args: Args) => {
         try {
             return await fn(...args);
         } catch (error) {
@@ -40,7 +43,7 @@ export function withAsync(fn: (...args: any[]) => Promise<any>) {
  */
 export async function retryAssertion(
     assertion: () => void | Promise<void>,
-    { timeout = 1000, interval = 50 }: { timeout?: number; interval?: number } = {}
+    { timeout = 1000, interval = 50 }: TimeoutOptions = {}
 ): Promise<void> {
     return waitFor(assertion, { timeout, interval });
 }
@@ -51,7 +54,7 @@ export async function retryAssertion(
  */
 export async function waitForCondition(
     condition: () => boolean | Promise<boolean>,
-    { timeout = 1000, interval = 50 }: { timeout?: number; interval?: number } = {}
+    { timeout = 1000, interval = 50 }: TimeoutOptions = {}
 ): Promise<void> {
     const startTime = Date.now();
 
@@ -70,8 +73,8 @@ export async function waitForCondition(
  * @param methods Console methods to mock
  * @returns A function to restore the original methods
  */
-export function mockConsole(...methods: Array<keyof Console>) {
-    const originalMethods: Record<string, any> = {};
+export function mockConsole(...methods: ConsoleMethods[]): () => void {
+    const originalMethods: Record<string, unknown> = {};
 
     methods.forEach(method => {
         // eslint-disable-next-line no-console
@@ -83,7 +86,7 @@ export function mockConsole(...methods: Array<keyof Console>) {
     return () => {
         methods.forEach(method => {
             // eslint-disable-next-line no-console
-            console[method] = originalMethods[method];
+            console[method] = originalMethods[method] as Console[ConsoleMethods];
         });
     };
 }
@@ -94,15 +97,19 @@ export function mockConsole(...methods: Array<keyof Console>) {
  * @param errorClass Expected error class or undefined for any error
  * @param messagePattern Optional regex or string to match against error message
  */
-export async function expectToThrow(
-    fn: () => any | Promise<any>,
-    errorClass?: any,
+export async function expectToThrow<T, E extends Error = Error>(
+    fn: () => T | Promise<T>,
+    errorClass?: new (...args: unknown[]) => E,
     messagePattern?: RegExp | string
-) {
+): Promise<Error> {
     try {
         await fn();
         throw new Error('Expected function to throw an error, but it did not');
     } catch (error) {
+        if (!(error instanceof Error)) {
+            throw new Error(`Expected error to be an Error instance, but got: ${typeof error}`);
+        }
+
         if (errorClass) {
             expect(error).toBeInstanceOf(errorClass);
         }
@@ -122,7 +129,7 @@ export async function expectToThrow(
 /**
  * Creates a mock ResizeObserver for tests
  */
-export function mockResizeObserver() {
+export function mockResizeObserver(): () => void {
     window.ResizeObserver = class ResizeObserver {
         observe = jest.fn();
         unobserve = jest.fn();
@@ -138,7 +145,7 @@ export function mockResizeObserver() {
 /**
  * Creates a mock IntersectionObserver for tests
  */
-export function mockIntersectionObserver() {
+export function mockIntersectionObserver(): () => void {
     window.IntersectionObserver = class IntersectionObserver {
         constructor(callback: IntersectionObserverCallback) {
             this.callback = callback;
@@ -156,7 +163,7 @@ export function mockIntersectionObserver() {
         /**
          * Helper to trigger the callback with mock entries
          */
-        simulateIntersection(entries: Partial<IntersectionObserverEntry>[]) {
+        simulateIntersection(entries: Partial<IntersectionObserverEntry>[]): void {
             this.callback(
                 entries.map(entry => ({
                     isIntersecting: false,

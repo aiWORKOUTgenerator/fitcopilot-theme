@@ -1,0 +1,102 @@
+name: Type Safety Check
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**/*.ts'
+      - 'src/**/*.tsx'
+  # Enable manual trigger
+  workflow_dispatch:
+
+jobs:
+  type-safety:
+    name: Check for new 'any' types
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v37
+        with:
+          files: |
+            src/**/*.ts
+            src/**/*.tsx
+            
+      - name: Check for new 'any' types
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "Checking files for new 'any' types:"
+          echo "${{ steps.changed-files.outputs.all_changed_files }}"
+          node scripts/check-new-any-types.js ${{ steps.changed-files.outputs.all_changed_files }}
+          
+      - name: No TypeScript files changed
+        if: steps.changed-files.outputs.any_changed != 'true'
+        run: echo "No TypeScript files were changed in this PR."
+      
+      # Generate a detailed report as a comment on the PR
+      - name: Generate report
+        if: steps.changed-files.outputs.any_changed == 'true'
+        id: generate-report
+        run: |
+          echo "## Type Safety Check Report" > type-safety-report.md
+          echo "" >> type-safety-report.md
+          
+          # Run check with status code handling
+          if node scripts/check-new-any-types.js ${{ steps.changed-files.outputs.all_changed_files }} > check-output.txt 2>&1; then
+            echo "### ✅ No new 'any' types detected" >> type-safety-report.md
+            echo "" >> type-safety-report.md
+            echo "Great job maintaining type safety! This PR doesn't introduce any new \`any\` types." >> type-safety-report.md
+            echo "safe=true" >> $GITHUB_OUTPUT
+          else
+            echo "### ❌ New 'any' types detected" >> type-safety-report.md
+            echo "" >> type-safety-report.md
+            echo "This PR introduces new \`any\` types. Please update your code to use proper TypeScript types:" >> type-safety-report.md
+            echo "" >> type-safety-report.md
+            echo '```' >> type-safety-report.md
+            cat check-output.txt >> type-safety-report.md
+            echo '```' >> type-safety-report.md
+            echo "" >> type-safety-report.md
+            echo "### How to fix" >> type-safety-report.md
+            echo "" >> type-safety-report.md
+            echo "- See [docs/type-safety-patterns.md](../blob/main/docs/type-safety-patterns.md) for guidance" >> type-safety-report.md
+            echo "- Use `Record<string, unknown>` instead of `any` for objects" >> type-safety-report.md
+            echo "- Use `unknown` with type guards for values of uncertain type" >> type-safety-report.md
+            echo "- Create proper interfaces for complex structures" >> type-safety-report.md
+            echo "safe=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Comment on PR
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('type-safety-report.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            });
+            
+      - name: Check result
+        if: steps.changed-files.outputs.any_changed == 'true' && steps.generate-report.outputs.safe == 'false'
+        run: |
+          echo "Failed due to new 'any' types introduced in PR"
+          exit 1 

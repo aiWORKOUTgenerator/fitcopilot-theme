@@ -192,4 +192,57 @@ export type CardButtonClickHandler = (event: React.MouseEvent<HTMLButtonElement>
 /**
  * Event handler for components with custom events
  */
-export type CustomEventHandler<T = Record<string, unknown>> = (data: T) => void; 
+export type CustomEventHandler<T = Record<string, unknown>> = (data: T) => void;
+
+/**
+ * Centralized event type definitions for the application
+ * 
+ * This file contains type definitions for DOM events used throughout the application,
+ * including tests. It provides consistent, type-safe event handling.
+ */
+
+// ========================================================================
+// DOM ELEMENT EVENTS
+// ========================================================================
+
+export type ButtonElement = HTMLButtonElement | HTMLAnchorElement;
+export type InputElement = HTMLInputElement | HTMLTextAreaElement;
+export type SelectElement = HTMLSelectElement;
+export type FormElement = HTMLFormElement;
+
+// ========================================================================
+// KEYBOARD EVENTS
+// ========================================================================
+
+export type InputKeyboardEvent = React.KeyboardEvent<InputElement>;
+export type InputKeyboardEventHandler = (event: InputKeyboardEvent) => void;
+
+// ========================================================================
+// FOCUS EVENTS
+// ========================================================================
+
+export type InputFocusEvent = React.FocusEvent<InputElement>;
+export type InputFocusHandler = (event: InputFocusEvent) => void;
+
+// ========================================================================
+// TESTING EVENT MAP
+// ========================================================================
+
+/**
+ * Maps event names to their corresponding event types for testing
+ * This is used to provide type-safety for fireEvent functions
+ */
+export interface TestEventMap {
+    click: ButtonClickEvent;
+    change: InputChangeEvent | SelectChangeEvent;
+    submit: FormSubmitEvent;
+    keyDown: KeyboardEvent;
+    keyUp: KeyboardEvent;
+    keyPress: KeyboardEvent;
+    focus: FocusEvent;
+    blur: FocusEvent;
+    mouseEnter: ElementClickEvent;
+    mouseLeave: ElementClickEvent;
+    mouseOver: ElementClickEvent;
+    mouseOut: ElementClickEvent;
+} 

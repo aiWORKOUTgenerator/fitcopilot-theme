@@ -133,4 +133,4 @@ export interface BaseTypeProps<T extends string> extends BaseComponentProps, Wit
  * @example
  * type CardProps = CombineProps<BaseComponentProps, WithChildrenProps, { title: string }>;
  */
-export type CombineProps<A, B = {}, C = {}, D = {}, E = {}> = A & B & C & D & E; 
+export type CombineProps<A, B = Record<string, unknown>, C = Record<string, unknown>, D = Record<string, unknown>, E = Record<string, unknown>> = A & B & C & D & E; 

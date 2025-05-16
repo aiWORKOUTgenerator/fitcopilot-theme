@@ -1,0 +1,118 @@
+name: ESLint Warning Metrics
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  # Enable manual trigger
+  workflow_dispatch:
+
+jobs:
+  eslint-metrics:
+    name: Generate ESLint Metrics
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Generate ESLint metrics
+        run: node scripts/eslint-metrics.js
+        
+      - name: Upload ESLint metrics
+        uses: actions/upload-artifact@v3
+        with:
+          name: eslint-metrics
+          path: eslint-metrics.json
+          retention-days: 90
+      
+      # Generate type coverage report if the package is installed
+      - name: Check if type-coverage is installed
+        id: check-type-coverage
+        run: |
+          if npm list type-coverage &> /dev/null; then
+            echo "type_coverage_installed=true" >> $GITHUB_OUTPUT
+          else
+            echo "type_coverage_installed=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Install type-coverage
+        if: steps.check-type-coverage.outputs.type_coverage_installed == 'false'
+        run: npm install -D type-coverage
+          
+      - name: Generate type coverage report
+        run: node scripts/type-coverage.js
+        
+      - name: Upload type coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: type-coverage
+          path: |
+            reports/type-coverage.json
+            reports/type-coverage-report.html
+          retention-days: 90
+      
+      # Add a summary comment to PRs with metrics
+      - name: Create metrics summary
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "## ESLint Warning Metrics" > metrics-summary.md
+          echo "" >> metrics-summary.md
+          echo "### Summary" >> metrics-summary.md
+          echo "" >> metrics-summary.md
+          node -e "
+            const metrics = require('./eslint-metrics.json');
+            const { summary } = metrics;
+            console.log(\`- **Total warnings:** \${summary.total}\`);
+            console.log(\`- **Any type warnings:** \${summary.anyType}\`);
+            console.log(\`- **Unused variables:** \${summary.unusedVars}\`);
+            console.log(\`- **Console statements:** \${summary.consoleStatements}\`);
+            console.log(\`- **Other warnings:** \${summary.otherWarnings}\`);
+            console.log();
+            console.log('### Top 5 directories with warnings');
+            console.log();
+            metrics.topOffenders.directories.forEach(dir => {
+              console.log(\`- **\${dir.directory}:** \${dir.warnings}\`);
+            });
+            console.log();
+            
+            // Add type coverage summary if available
+            try {
+              const typeCoverage = require('./reports/type-coverage.json');
+              console.log('### Type Coverage');
+              console.log();
+              console.log(\`- **Coverage:** \${typeCoverage.coverage.toFixed(2)}%\`);
+              console.log(\`- **Any types:** \${typeCoverage.anyCount}\`);
+              console.log(\`- **Threshold:** \${typeCoverage.threshold}%\`);
+              console.log(\`- **Status:** \${typeCoverage.pass ? '✅ PASS' : '❌ FAIL'}\`);
+            } catch(e) {
+              // Type coverage report may not exist
+            }
+          " >> metrics-summary.md
+      
+      - name: Add comment to PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('metrics-summary.md', 'utf8');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            }); 

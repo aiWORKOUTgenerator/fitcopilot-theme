@@ -137,4 +137,33 @@ Follow these best practices to avoid introducing new ESLint warnings:
 5. Replace `any` types with proper type definitions
 6. Use the `unknown` type rather than `any` when the type is truly unknown
 7. Always provide proper return types for functions
-8. Use strongly typed component props with interfaces 
+8. Use strongly typed component props with interfaces
+
+## Code Quality and Type Safety
+
+The FitCopilot theme uses several automated tools to maintain code quality and type safety:
+
+### ESLint and Type Safety Checks
+
+We enforce strict type safety rules through ESLint and TypeScript configurations. The following tools are available:
+
+```bash
+# Run ESLint
+npm run lint
+
+# Generate ESLint metrics report
+npm run eslint:metrics
+
+# Generate TypeScript type coverage report
+npm run type:coverage
+
+# Check specific files for new 'any' types (useful before PR submission)
+npm run type:check-any src/file1.ts src/file2.tsx
+```
+
+Our CI/CD pipeline automatically enforces these rules by:
+- Tracking ESLint warnings over time
+- Measuring TypeScript type coverage
+- Preventing introduction of new `any` types in PRs
+
+For more details, see the [CI/CD Type Safety documentation](./docs/ci-type-safety.md). 

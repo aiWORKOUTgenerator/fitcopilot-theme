@@ -1,0 +1,67 @@
+{
+  "timestamp": "2025-05-15T23:59:55.003Z",
+  "summary": {
+    "total": 10,
+    "anyType": 6,
+    "unusedVars": 4,
+    "consoleStatements": 0,
+    "otherWarnings": 0
+  },
+  "byDirectory": {
+    "test": {
+      "total": 10,
+      "anyType": 6,
+      "unusedVars": 4,
+      "consoleStatements": 0,
+      "otherWarnings": 0
+    }
+  },
+  "byFile": {
+    "src/test/context-utils/examples/generic-provider-example.tsx": {
+      "total": 1,
+      "rules": {
+        "@typescript-eslint/no-unused-vars": 1
+      }
+    },
+    "src/test/context-utils/testing-library.tsx": {
+      "total": 3,
+      "rules": {
+        "@typescript-eslint/no-explicit-any": 3
+      }
+    },
+    "src/test/test-utils.tsx": {
+      "total": 3,
+      "rules": {
+        "@typescript-eslint/no-explicit-any": 3
+      }
+    },
+    "src/test/utils/providers.tsx": {
+      "total": 3,
+      "rules": {
+        "@typescript-eslint/no-unused-vars": 3
+      }
+    }
+  },
+  "byRule": {
+    "@typescript-eslint/no-unused-vars": 4,
+    "@typescript-eslint/no-explicit-any": 6
+  },
+  "topOffenders": {
+    "directories": [
+      {
+        "directory": "test",
+        "warnings": 10
+      }
+    ],
+    "anyTypeFiles": [
+      {
+        "file": "src/test/context-utils/testing-library.tsx",
+        "count": 3
+      },
+      {
+        "file": "src/test/test-utils.tsx",
+        "count": 3
+      }
+    ]
+  }
+}

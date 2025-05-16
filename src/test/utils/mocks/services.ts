@@ -1,15 +1,28 @@
+import {
+    MediaMatchObject,
+    MockAnalyticsService,
+    MockApiService,
+    MockAuthService,
+    MockFetchOptions,
+    MockFetchResponse,
+    MockStorageService,
+    MockWorkoutService,
+    UserData,
+    WorkoutData
+} from '../../../types/test';
+
 /**
  * Mock implementation of API service
  * @param overrides Optional method overrides
  * @returns Mock API service with Jest spy functions
  */
-export function mockApiService(overrides = {}) {
+export function mockApiService(overrides = {}): MockApiService {
     return {
-        get: jest.fn().mockImplementation(() => Promise.resolve({ data: {} })),
-        post: jest.fn().mockImplementation(() => Promise.resolve({ data: {} })),
-        put: jest.fn().mockImplementation(() => Promise.resolve({ data: {} })),
-        delete: jest.fn().mockImplementation(() => Promise.resolve({ data: {} })),
-        patch: jest.fn().mockImplementation(() => Promise.resolve({ data: {} })),
+        get: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
+        post: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
+        put: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
+        delete: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
+        patch: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
         ...overrides
     };
 }
@@ -19,7 +32,7 @@ export function mockApiService(overrides = {}) {
  * @param initialData Optional initial storage data
  * @returns Mock storage service with Jest spy functions
  */
-export function mockStorageService(initialData: Record<string, string> = {}) {
+export function mockStorageService(initialData: Record<string, string> = {}): MockStorageService {
     const store = { ...initialData };
 
     return {
@@ -38,7 +51,7 @@ export function mockStorageService(initialData: Record<string, string> = {}) {
  * @param overrides Optional method overrides
  * @returns Mock analytics service with Jest spy functions
  */
-export function mockAnalyticsService(overrides = {}) {
+export function mockAnalyticsService(overrides = {}): MockAnalyticsService {
     return {
         trackEvent: jest.fn(),
         trackPageView: jest.fn(),
@@ -53,8 +66,8 @@ export function mockAnalyticsService(overrides = {}) {
  * @param overrides Optional method overrides
  * @returns Mock auth service with Jest spy functions
  */
-export function mockAuthService(overrides = {}) {
-    const defaultUser = {
+export function mockAuthService(overrides = {}): MockAuthService {
+    const defaultUser: UserData = {
         id: 'test-user-id',
         name: 'Test User',
         email: 'test@example.com',
@@ -77,8 +90,8 @@ export function mockAuthService(overrides = {}) {
  * @param overrides Optional method overrides
  * @returns Mock workout service with Jest spy functions
  */
-export function mockWorkoutService(overrides = {}) {
-    const defaultWorkouts = [
+export function mockWorkoutService(overrides = {}): MockWorkoutService {
+    const defaultWorkouts: WorkoutData[] = [
         { id: 'workout-1', name: 'Test Workout 1', exercises: [] },
         { id: 'workout-2', name: 'Test Workout 2', exercises: [] },
     ];
@@ -105,10 +118,10 @@ export function mockWorkoutService(overrides = {}) {
  * @param options Additional options like status code
  * @returns A function to use with jest.spyOn(global, 'fetch')
  */
-export function createMockFetch(
-    responseData: any,
-    options: { status?: number; headers?: Record<string, string> } = {}
-) {
+export function createMockFetch<T>(
+    responseData: T,
+    options: MockFetchOptions = {}
+): jest.Mock<Promise<MockFetchResponse<T>>, [RequestInfo | URL, RequestInit?]> {
     const {
         status = 200,
         headers = { 'Content-Type': 'application/json' }
@@ -130,7 +143,7 @@ export function createMockFetch(
  * @param matches Whether the media query matches
  * @returns An object to use with jest.spyOn
  */
-export function mockMatchMedia(matches = false) {
+export function mockMatchMedia(matches = false): () => MediaMatchObject {
     return () => ({
         matches,
         addListener: jest.fn(),
@@ -145,7 +158,7 @@ export function mockMatchMedia(matches = false) {
 /**
  * Setup common global mocks for tests
  */
-export function setupGlobalMocks() {
+export function setupGlobalMocks(): void {
     // Mock window.matchMedia
     Object.defineProperty(window, 'matchMedia', {
         writable: true,

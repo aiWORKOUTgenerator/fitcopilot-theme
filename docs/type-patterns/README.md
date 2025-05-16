@@ -1,4 +1,4 @@
-# TypeScript Type Patterns for FitCopilot
+d# TypeScript Type Patterns for FitCopilot
 
 ## Sprint 1.2: Establish Type Patterns
 

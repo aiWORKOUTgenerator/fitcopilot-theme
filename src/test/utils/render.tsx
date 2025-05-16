@@ -1,26 +1,26 @@
-import { render, RenderOptions } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { createTestProviders, TestProviderOptions } from './providers';
-
-/**
- * Extended render options for our custom render
- */
-interface CustomRenderOptions extends RenderOptions {
-    providerProps?: TestProviderOptions;
-    route?: string;
-    initialState?: Record<string, any>;
-    routerProps?: Record<string, any>;
-}
+import {
+    CustomRenderOptions,
+    TestProviderOptions,
+    TestRenderResult
+} from '../../types/test';
+import { createTestProviders } from './providers';
 
 /**
  * Custom render function with all providers
  * Use this as the default renderer for component testing
+ * 
+ * @template T HTML element type of the container
+ * @param ui React element to render
+ * @param options Custom render options including provider props
+ * @returns Enhanced render result with additional testing helpers
  */
-export function renderWithProviders(
+export function renderWithProviders<T = HTMLElement>(
     ui: React.ReactElement,
     options: CustomRenderOptions = {}
-) {
+): TestRenderResult<T> {
     const {
         providerProps = {},
         _route,
@@ -30,7 +30,7 @@ export function renderWithProviders(
     } = options;
 
     // Create wrapper with all providers
-    const Wrapper = createTestProviders(providerProps);
+    const Wrapper = createTestProviders(providerProps as TestProviderOptions);
 
     // Return render result with additional testing helpers
     const utils = render(ui, {
@@ -52,42 +52,78 @@ export function renderWithProviders(
             await callback();
             return utils;
         },
-    };
+    } as TestRenderResult<T>;
 }
 
 /**
  * Helper to create a custom render function with specific provider props
  * Useful when multiple tests need the same provider setup
+ * 
+ * @template T HTML element type of the container
+ * @param defaultProviderProps Default provider props to use
+ * @returns Render function with preconfigured provider props
  */
 export function createRenderWithProviders(defaultProviderProps: TestProviderOptions = {}) {
-    return (ui: React.ReactElement, options: CustomRenderOptions = {}) => {
-        return renderWithProviders(ui, {
+    return <T = HTMLElement>(ui: React.ReactElement, options: CustomRenderOptions = {}) => {
+        return renderWithProviders<T>(ui, {
             ...options,
             providerProps: {
                 ...defaultProviderProps,
                 ...options.providerProps,
-            },
+            } as TestProviderOptions,
         });
     };
 }
 
 /**
+ * Props for the hook wrapper component 
+ */
+interface HookWrapperProps<Result, Props> {
+    hook: (props: Props) => Result;
+    initialProps: Props;
+    onChange: (result: Result) => void;
+}
+
+/**
+ * Helper component to render hooks
+ */
+function HookWrapper<Result, Props>({
+    hook,
+    initialProps,
+    onChange,
+}: HookWrapperProps<Result, Props>) {
+    const result = hook(initialProps);
+
+    React.useEffect(() => {
+        onChange(result);
+    }, [onChange, result]);
+
+    return null;
+}
+
+/**
  * Renders a hook with all providers
+ * 
+ * @template Result The return type of the hook
+ * @template Props The props type of the hook
  * @param hook The hook to render
- * @param options Render options including provider props
- * @returns The rendered hook result
+ * @param options Render options including provider props and initial hook props
+ * @returns Object with the hook result and a rerender function
  */
 export function renderHook<Result, Props>(
     hook: (props: Props) => Result,
-    options: CustomRenderOptions & { initialProps?: Props } = {}
+    options: CustomRenderOptions & { initialProps: Props } = { initialProps: {} as Props }
 ) {
     const { initialProps, ...renderOptions } = options;
-    let result: { current: Result };
+    const result = { current: {} as Result };
 
     // Use renderWithProviders to render a component that calls the hook
     const { rerender } = renderWithProviders(
-        <HookWrapper hook={hook} initialProps={initialProps as Props}
-            onChange={r => { result = { current: r }; }} />,
+        <HookWrapper
+            hook={hook}
+            initialProps={initialProps}
+            onChange={(r: Result) => { result.current = r; }}
+        />,
         renderOptions
     );
 
@@ -95,30 +131,14 @@ export function renderHook<Result, Props>(
         result,
         rerender: (newProps: Props) => {
             rerender(
-                <HookWrapper hook={hook} initialProps={newProps}
-                    onChange={r => { result = { current: r }; }} />
+                <HookWrapper
+                    hook={hook}
+                    initialProps={newProps}
+                    onChange={(r: Result) => { result.current = r; }}
+                />
             );
         },
     };
-}
-
-// Helper component to render hooks
-function HookWrapper<Result, Props>({
-    hook,
-    initialProps,
-    onChange,
-}: {
-    hook: (props: Props) => Result;
-    initialProps?: Props;
-    onChange: (result: Result) => void;
-}) {
-    const result = hook(initialProps as Props);
-
-    React.useEffect(() => {
-        onChange(result);
-    }, [onChange, result]);
-
-    return null;
 }
 
 /**

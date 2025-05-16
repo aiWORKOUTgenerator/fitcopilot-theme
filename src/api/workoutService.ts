@@ -3,6 +3,8 @@
  * 
  * Service for workout data management
  */
+import { ApiResponse } from '../types/api-response';
+import { safeApiRequest } from '../utils/api-utils';
 
 // Workout type definitions matching the test mock structure
 export interface Exercise {
@@ -90,34 +92,50 @@ const workoutService = {
     /**
      * Get all workouts
      */
-    getWorkouts: async (): Promise<Workout[]> => {
-        // In a real implementation, this would call an API
-        return [...sampleWorkouts];
+    getWorkouts: async (): Promise<ApiResponse<Workout[]>> => {
+        return safeApiRequest(async () => {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 500));
+            // In a real implementation, this would call an API
+            return [...sampleWorkouts];
+        });
     },
 
     /**
      * Get a specific workout by ID
      */
-    getWorkout: async (id: string): Promise<Workout | null> => {
-        // In a real implementation, this would call an API
-        const workout = sampleWorkouts.find(w => w.id === id);
-        return workout ? { ...workout } : null;
+    getWorkout: async (id: string): Promise<ApiResponse<Workout | null>> => {
+        return safeApiRequest(async () => {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 500));
+            // In a real implementation, this would call an API
+            const workout = sampleWorkouts.find(w => w.id === id);
+            return workout ? { ...workout } : null;
+        });
     },
 
     /**
      * Save a workout (create or update)
      */
-    saveWorkout: async (_workout: Workout): Promise<boolean> => {
-        // In a real implementation, this would call an API
-        return true;
+    saveWorkout: async (workout: Workout): Promise<ApiResponse<Workout>> => {
+        return safeApiRequest(async () => {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 500));
+            // In a real implementation, this would call an API
+            return { ...workout };
+        });
     },
 
     /**
      * Delete a workout
      */
-    deleteWorkout: async (_id: string): Promise<boolean> => {
-        // In a real implementation, this would call an API
-        return true;
+    deleteWorkout: async (_id: string): Promise<ApiResponse<boolean>> => {
+        return safeApiRequest(async () => {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 500));
+            // In a real implementation, this would call an API
+            return true;
+        });
     }
 };
 
@@ -131,15 +149,5 @@ export const mockWorkoutService = {
 
 export default workoutService;
 
-// Add _workout and _id parameters with underscore prefix to indicate they're intentionally unused
-export const updateWorkout = async (_workout: Workout): Promise<Workout> => {
-    // Mock implementation
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return mockWorkouts[0];
-};
-
-export const deleteWorkout = async (_id: string): Promise<boolean> => {
-    // Mock implementation
-    await new Promise(resolve => setTimeout(resolve, 500));
-    return true;
-}; 
+// Mock workouts for external use
+export const mockWorkouts: Workout[] = [...sampleWorkouts]; 
