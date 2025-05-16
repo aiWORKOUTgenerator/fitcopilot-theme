@@ -34,6 +34,7 @@ module.exports = {
         // Core ESLint rules
         'no-console': ['error', { allow: ['warn', 'error'] }],
         'no-unused-vars': 'off', // Handled by TypeScript
+        'indent': ['error', 2],
 
         // React rules
         'react/react-in-jsx-scope': 'off', // Not needed in React 17+
@@ -44,8 +45,8 @@ module.exports = {
         'react/jsx-curly-spacing': ['error', { 'when': 'never', 'children': { 'when': 'never' } }],
         'react/jsx-curly-brace-presence': ['error', { 'props': 'never', 'children': 'never' }],
         'react/jsx-equals-spacing': ['error', 'never'],
-        'react/jsx-indent': ['error', 4],
-        'react/jsx-indent-props': ['error', 4],
+        'react/jsx-indent': ['error', 2],
+        'react/jsx-indent-props': ['error', 2],
         'react/jsx-tag-spacing': ['error', {
             'closingSlash': 'never',
             'beforeSelfClosing': 'always',
