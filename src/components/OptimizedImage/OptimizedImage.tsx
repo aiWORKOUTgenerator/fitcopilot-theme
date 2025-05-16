@@ -98,163 +98,163 @@ export interface OptimizedImageProps {
  * />
  */
 const OptimizedImage: React.FC<OptimizedImageProps> = ({
-    src,
-    alt,
-    responsive,
-    className = '',
-    fadeIn = true,
-    lazy = true,
-    onLoad,
-    onError,
-    priority = false,
-    style,
-    ...props
+  src,
+  alt,
+  responsive,
+  className = '',
+  fadeIn = true,
+  lazy = true,
+  onLoad,
+  onError,
+  priority = false,
+  style,
+  ...props
 }) => {
-    const [isLoaded, setIsLoaded] = useState(false);
-    const [error, setError] = useState(false);
-    const imgRef = useRef<HTMLImageElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [error, setError] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
-    // Extract responsive properties with fallbacks
-    const {
-        lqip,
-        srcset,
-        sizes,
-        formats = [],
-        width,
-        height
-    } = responsive || {};
+  // Extract responsive properties with fallbacks
+  const {
+    lqip,
+    srcset,
+    sizes,
+    formats = [],
+    width,
+    height
+  } = responsive || {};
 
-    // Generate srcset string from array if needed
-    const getSrcsetString = (srcsetData: string | Array<{ src: string; width: number }> | undefined): string => {
-        if (!srcsetData) return '';
-        if (typeof srcsetData === 'string') return srcsetData;
+  // Generate srcset string from array if needed
+  const getSrcsetString = (srcsetData: string | Array<{ src: string; width: number }> | undefined): string => {
+    if (!srcsetData) return '';
+    if (typeof srcsetData === 'string') return srcsetData;
 
-        return srcsetData.map(item => `${item.src} ${item.width}w`).join(', ');
-    };
+    return srcsetData.map(item => `${item.src} ${item.width}w`).join(', ');
+  };
 
-    // Handle image load
-    const handleLoad = () => {
-        setIsLoaded(true);
-        onLoad?.();
-    };
+  // Handle image load
+  const handleLoad = () => {
+    setIsLoaded(true);
+    onLoad?.();
+  };
 
-    // Handle image error
-    const handleError = () => {
-        setError(true);
-        onError?.();
-    };
+  // Handle image error
+  const handleError = () => {
+    setError(true);
+    onError?.();
+  };
 
-    // Check if image is in viewport on mount for eager loading prioritized images
-    useEffect(() => {
-        if (priority && imgRef.current) {
-            // For priority images, preload them immediately
-            const img = new Image();
-            img.src = src;
-        }
-    }, [src, priority]);
-
-    // Calculate aspect ratio for proper sizing
-    const aspectRatio = width && height ? { aspectRatio: `${width}/${height}` } : {};
-
-    // Combine styles
-    const combinedStyles: React.CSSProperties = {
-        ...aspectRatio,
-        ...style,
-    };
-
-    // Combine classes
-    const imageClasses = [
-        'optimized-image',
-        fadeIn ? 'optimized-image--fade' : '',
-        isLoaded ? 'optimized-image--loaded' : '',
-        error ? 'optimized-image--error' : '',
-        className,
-    ].filter(Boolean).join(' ');
-
-    // If we have responsive image data with multiple formats, use picture
-    if (formats.length > 0) {
-        return (
-            <picture>
-                {/* Modern format sources */}
-                {formats.map((format, index) => (
-                    <source
-                        key={`${format.format}-${index}`}
-                        type={`image/${format.format}`}
-                        srcSet={format.srcset}
-                        sizes={sizes}
-                    />
-                ))}
-
-                {/* Base format (fallback for all browsers) */}
-                <img
-                    ref={imgRef}
-                    src={src}
-                    alt={alt}
-                    srcSet={getSrcsetString(srcset)}
-                    sizes={sizes}
-                    loading={priority ? 'eager' : lazy ? 'lazy' : 'eager'}
-                    onLoad={handleLoad}
-                    onError={handleError}
-                    className={imageClasses}
-                    style={{
-                        ...combinedStyles,
-                        backgroundColor: (lqip && !isLoaded) ? 'transparent' : undefined,
-                    }}
-                    width={width}
-                    height={height}
-                    {...props}
-                />
-
-                {/* LQIP overlay that fades out when main image loads */}
-                {lqip && !isLoaded && !error && (
-                    <img
-                        src={lqip}
-                        alt=""
-                        aria-hidden="true"
-                        className="optimized-image__lqip"
-                        style={combinedStyles}
-                    />
-                )}
-            </picture>
-        );
+  // Check if image is in viewport on mount for eager loading prioritized images
+  useEffect(() => {
+    if (priority && imgRef.current) {
+      // For priority images, preload them immediately
+      const img = new Image();
+      img.src = src;
     }
+  }, [src, priority]);
 
-    // Simple image without formats
+  // Calculate aspect ratio for proper sizing
+  const aspectRatio = width && height ? { aspectRatio: `${width}/${height}` } : {};
+
+  // Combine styles
+  const combinedStyles: React.CSSProperties = {
+    ...aspectRatio,
+    ...style,
+  };
+
+  // Combine classes
+  const imageClasses = [
+    'optimized-image',
+    fadeIn ? 'optimized-image--fade' : '',
+    isLoaded ? 'optimized-image--loaded' : '',
+    error ? 'optimized-image--error' : '',
+    className,
+  ].filter(Boolean).join(' ');
+
+  // If we have responsive image data with multiple formats, use picture
+  if (formats.length > 0) {
     return (
-        <div className="optimized-image-container" style={aspectRatio}>
-            {lqip && !isLoaded && !error && (
-                <img
-                    src={lqip}
-                    alt=""
-                    aria-hidden="true"
-                    className="optimized-image__lqip"
-                    style={combinedStyles}
-                />
-            )}
+      <picture>
+        {/* Modern format sources */}
+        {formats.map((format, index) => (
+          <source
+            key={`${format.format}-${index}`}
+            type={`image/${format.format}`}
+            srcSet={format.srcset}
+            sizes={sizes}
+          />
+        ))}
 
-            <img
-                ref={imgRef}
-                src={src}
-                alt={alt}
-                srcSet={getSrcsetString(srcset)}
-                sizes={sizes}
-                loading={priority ? 'eager' : lazy ? 'lazy' : 'eager'}
-                onLoad={handleLoad}
-                onError={handleError}
-                className={imageClasses}
-                style={combinedStyles}
-                width={width}
-                height={height}
-                {...props}
-            />
+        {/* Base format (fallback for all browsers) */}
+        <img
+          ref={imgRef}
+          src={src}
+          alt={alt}
+          srcSet={getSrcsetString(srcset)}
+          sizes={sizes}
+          loading={priority ? 'eager' : lazy ? 'lazy' : 'eager'}
+          onLoad={handleLoad}
+          onError={handleError}
+          className={imageClasses}
+          style={{
+            ...combinedStyles,
+            backgroundColor: (lqip && !isLoaded) ? 'transparent' : undefined,
+          }}
+          width={width}
+          height={height}
+          {...props}
+        />
 
-            {error && (
-                <div className="optimized-image__error">
-                    <span>Failed to load image</span>
-                </div>
-            )}
-        </div>
+        {/* LQIP overlay that fades out when main image loads */}
+        {lqip && !isLoaded && !error && (
+          <img
+            src={lqip}
+            alt=""
+            aria-hidden="true"
+            className="optimized-image__lqip"
+            style={combinedStyles}
+          />
+        )}
+      </picture>
     );
+  }
+
+  // Simple image without formats
+  return (
+    <div className="optimized-image-container" style={aspectRatio}>
+      {lqip && !isLoaded && !error && (
+        <img
+          src={lqip}
+          alt=""
+          aria-hidden="true"
+          className="optimized-image__lqip"
+          style={combinedStyles}
+        />
+      )}
+
+      <img
+        ref={imgRef}
+        src={src}
+        alt={alt}
+        srcSet={getSrcsetString(srcset)}
+        sizes={sizes}
+        loading={priority ? 'eager' : lazy ? 'lazy' : 'eager'}
+        onLoad={handleLoad}
+        onError={handleError}
+        className={imageClasses}
+        style={combinedStyles}
+        width={width}
+        height={height}
+        {...props}
+      />
+
+      {error && (
+        <div className="optimized-image__error">
+          <span>Failed to load image</span>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default OptimizedImage; 

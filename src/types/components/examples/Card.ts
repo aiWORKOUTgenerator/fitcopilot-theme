@@ -6,8 +6,8 @@
  */
 
 import {
-    BaseComponentProps,
-    WithChildrenProps
+  BaseComponentProps,
+  WithChildrenProps
 } from '../commonProps';
 import { ExtendedCSSProperties } from '../cssTypes';
 
@@ -153,26 +153,26 @@ export interface CardCSSProperties extends ExtendedCSSProperties {
  * Type guard for Content card variant
  */
 export function isContentCard(props: CardProps): props is ContentCardProps {
-    return props.variant === 'content';
+  return props.variant === 'content';
 }
 
 /**
  * Type guard for Media card variant
  */
 export function isMediaCard(props: CardProps): props is MediaCardProps {
-    return props.variant === 'media';
+  return props.variant === 'media';
 }
 
 /**
  * Type guard for Profile card variant
  */
 export function isProfileCard(props: CardProps): props is ProfileCardProps {
-    return props.variant === 'profile';
+  return props.variant === 'profile';
 }
 
 /**
  * Type guard for Stats card variant
  */
 export function isStatsCard(props: CardProps): props is StatsCardProps {
-    return props.variant === 'stats';
+  return props.variant === 'stats';
 } 

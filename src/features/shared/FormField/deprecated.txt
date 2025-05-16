@@ -1,0 +1,16 @@
+# Deprecated Files in FormField Component System
+
+## [REMOVED] validation.ts
+This file has been removed in Phase 5 of the FormField component system cleanup.
+It has been replaced by validators.ts to break circular dependencies.
+
+The functions in validation.ts have been migrated to validators.ts with proper TypeScript typing.
+The runValidators function has been implemented directly in formState.ts to avoid circular dependencies.
+
+Additional enhancements to the validation system in Phase 5:
+1. Added async validation support with loading states
+2. Implemented cross-field validation (fieldsMatch, fieldsDiffer)
+3. Added conditional validators
+4. Created validation composition (composeValidators)
+5. Enhanced test coverage for all validation scenarios
+6. Improved documentation in README.md 

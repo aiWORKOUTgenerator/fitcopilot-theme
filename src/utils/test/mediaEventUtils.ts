@@ -7,79 +7,79 @@
  * that can be used in tests to simulate media behavior
  */
 export const createMockMediaElement = () => {
-    const eventListeners = {};
+  const eventListeners = {};
 
-    const mockElement = {
-        // Methods
-        play: jest.fn().mockResolvedValue(undefined),
-        pause: jest.fn(),
-        load: jest.fn(),
-        canPlayType: jest.fn().mockReturnValue('probably'),
+  const mockElement = {
+    // Methods
+    play: jest.fn().mockResolvedValue(undefined),
+    pause: jest.fn(),
+    load: jest.fn(),
+    canPlayType: jest.fn().mockReturnValue('probably'),
 
-        // Event handling
-        addEventListener: jest.fn((event, callback) => {
-            if (!eventListeners[event]) {
-                eventListeners[event] = [];
-            }
-            eventListeners[event].push(callback);
-        }),
+    // Event handling
+    addEventListener: jest.fn((event, callback) => {
+      if (!eventListeners[event]) {
+        eventListeners[event] = [];
+      }
+      eventListeners[event].push(callback);
+    }),
 
-        removeEventListener: jest.fn((event, callback) => {
-            if (eventListeners[event]) {
-                eventListeners[event] = eventListeners[event].filter(cb => cb !== callback);
-            }
-        }),
+    removeEventListener: jest.fn((event, callback) => {
+      if (eventListeners[event]) {
+        eventListeners[event] = eventListeners[event].filter(cb => cb !== callback);
+      }
+    }),
 
-        dispatchEvent: jest.fn(event => {
-            const listeners = eventListeners[event.type] || [];
-            listeners.forEach(callback => callback(event));
-            return true;
-        }),
+    dispatchEvent: jest.fn(event => {
+      const listeners = eventListeners[event.type] || [];
+      listeners.forEach(callback => callback(event));
+      return true;
+    }),
 
-        // DOM properties that React requires
-        setAttribute: jest.fn(),
-        getAttribute: jest.fn(),
-        removeAttribute: jest.fn(),
+    // DOM properties that React requires
+    setAttribute: jest.fn(),
+    getAttribute: jest.fn(),
+    removeAttribute: jest.fn(),
 
-        // Properties
-        currentTime: 0,
-        duration: 100,
-        volume: 1,
-        muted: false,
-        playbackRate: 1,
-        readyState: 0,
-        networkState: 0,
-        paused: true,
-        ended: false,
-        seeking: false,
-        loop: false,
-        controls: true,
-        autoplay: false,
-        defaultMuted: false,
-        error: null,
+    // Properties
+    currentTime: 0,
+    duration: 100,
+    volume: 1,
+    muted: false,
+    playbackRate: 1,
+    readyState: 0,
+    networkState: 0,
+    paused: true,
+    ended: false,
+    seeking: false,
+    loop: false,
+    controls: true,
+    autoplay: false,
+    defaultMuted: false,
+    error: null,
 
-        // Dimensions
-        videoWidth: 1280,
-        videoHeight: 720,
+    // Dimensions
+    videoWidth: 1280,
+    videoHeight: 720,
 
-        // DOM node properties
-        style: {},
-        className: '',
-        classList: {
-            add: jest.fn(),
-            remove: jest.fn(),
-            contains: jest.fn().mockReturnValue(false),
-            toggle: jest.fn()
-        },
+    // DOM node properties
+    style: {},
+    className: '',
+    classList: {
+      add: jest.fn(),
+      remove: jest.fn(),
+      contains: jest.fn().mockReturnValue(false),
+      toggle: jest.fn()
+    },
 
-        nodeName: 'VIDEO',
+    nodeName: 'VIDEO',
 
-        // Required for some React operations
-        ownerDocument: document,
-        nodeType: 1,
-    };
+    // Required for some React operations
+    ownerDocument: document,
+    nodeType: 1,
+  };
 
-    return mockElement;
+  return mockElement;
 };
 
 /**
@@ -90,14 +90,14 @@ export const createMockMediaElement = () => {
  * @returns The created event
  */
 export const simulateMediaEvent = (
-    element: HTMLMediaElement,
-    eventType: string,
-    eventData = {}
+  element: HTMLMediaElement,
+  eventType: string,
+  eventData = {}
 ) => {
-    const event = new Event(eventType);
-    Object.assign(event, eventData);
-    element.dispatchEvent(event);
-    return event;
+  const event = new Event(eventType);
+  Object.assign(event, eventData);
+  element.dispatchEvent(event);
+  return event;
 };
 
 /**
@@ -105,13 +105,13 @@ export const simulateMediaEvent = (
  * @param element - The HTML media element to update
  */
 export const simulateMediaLoading = (element: HTMLMediaElement) => {
-    element.readyState = 2; // HAVE_CURRENT_DATA
-    simulateMediaEvent(element, 'loadstart');
-    simulateMediaEvent(element, 'loadedmetadata');
-    element.readyState = 4; // HAVE_ENOUGH_DATA
-    simulateMediaEvent(element, 'canplay');
-    simulateMediaEvent(element, 'canplaythrough');
-    simulateMediaEvent(element, 'loadeddata');
+  element.readyState = 2; // HAVE_CURRENT_DATA
+  simulateMediaEvent(element, 'loadstart');
+  simulateMediaEvent(element, 'loadedmetadata');
+  element.readyState = 4; // HAVE_ENOUGH_DATA
+  simulateMediaEvent(element, 'canplay');
+  simulateMediaEvent(element, 'canplaythrough');
+  simulateMediaEvent(element, 'loadeddata');
 };
 
 /**
@@ -121,29 +121,29 @@ export const simulateMediaLoading = (element: HTMLMediaElement) => {
  *                    3: MEDIA_ERR_DECODE, 4: MEDIA_ERR_SRC_NOT_SUPPORTED)
  */
 export const simulateMediaError = (element: HTMLMediaElement, errorCode = 2) => {
-    // Create a MediaError
-    const error = new MediaError();
-    Object.defineProperty(error, 'code', { value: errorCode });
-    element.error = error;
-    simulateMediaEvent(element, 'error');
+  // Create a MediaError
+  const error = new MediaError();
+  Object.defineProperty(error, 'code', { value: errorCode });
+  element.error = error;
+  simulateMediaEvent(element, 'error');
 };
 
 /**
  * Creates a mock YouTube Player API
  */
 export const createMockYouTubePlayer = () => {
-    return {
-        playVideo: jest.fn(),
-        pauseVideo: jest.fn(),
-        mute: jest.fn(),
-        unMute: jest.fn(),
-        seekTo: jest.fn(),
-        setVolume: jest.fn(),
-        getPlayerState: jest.fn().mockReturnValue(2), // Default: paused
-        getCurrentTime: jest.fn().mockReturnValue(0),
-        getDuration: jest.fn().mockReturnValue(100),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        destroy: jest.fn(),
-    };
+  return {
+    playVideo: jest.fn(),
+    pauseVideo: jest.fn(),
+    mute: jest.fn(),
+    unMute: jest.fn(),
+    seekTo: jest.fn(),
+    setVolume: jest.fn(),
+    getPlayerState: jest.fn().mockReturnValue(2), // Default: paused
+    getCurrentTime: jest.fn().mockReturnValue(0),
+    getDuration: jest.fn().mockReturnValue(100),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    destroy: jest.fn(),
+  };
 }; 

@@ -176,31 +176,31 @@ export type ButtonProps =
  * Type guards for button variants
  */
 export const isPrimaryButton = (props: ButtonProps): props is PrimaryButtonProps =>
-    props && props.variant === 'primary';
+  props && props.variant === 'primary';
 
 export const isSecondaryButton = (props: ButtonProps): props is SecondaryButtonProps =>
-    props && props.variant === 'secondary';
+  props && props.variant === 'secondary';
 
 export const isTextButton = (props: ButtonProps): props is TextButtonProps =>
-    props && props.variant === 'text';
+  props && props.variant === 'text';
 
 export const isIconButton = (props: ButtonProps): props is IconButtonProps =>
-    props && props.variant === 'icon';
+  props && props.variant === 'icon';
 
 export const isToggleButton = (props: ButtonProps): props is ToggleButtonProps =>
-    props && props.variant === 'toggle';
+  props && props.variant === 'toggle';
 
 export const isLinkButton = (props: ButtonProps): props is LinkButtonProps =>
-    props && 'href' in props && Boolean(props.href);
+  props && 'href' in props && Boolean(props.href);
 
 export const isFloatingActionButton = (props: ButtonProps): props is FloatingActionButtonProps =>
-    props && props.variant === 'floating';
+  props && props.variant === 'floating';
 
 export const isWorkoutButton = (props: ButtonProps): props is WorkoutButtonProps =>
-    props && props.variant === 'workout';
+  props && props.variant === 'workout';
 
 /**
  * Type guard to check if a button is an action button (has onClick handler)
  */
 export const isActionButton = (props: ButtonProps): boolean =>
-    props && 'onClick' in props && typeof props.onClick === 'function'; 
+  props && 'onClick' in props && typeof props.onClick === 'function'; 

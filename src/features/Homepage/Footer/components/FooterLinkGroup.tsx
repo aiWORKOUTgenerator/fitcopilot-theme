@@ -12,21 +12,21 @@ interface FooterLinkGroupProps {
  */
 export const FooterLinkGroup: React.FC<FooterLinkGroupProps> = ({ title, links }) => {
   return (
-      <div className="footer-link-group">
-          <h4 className="text-white text-lg font-semibold mb-4">{title}</h4>
+    <div className="footer-link-group">
+      <h4 className="text-white text-lg font-semibold mb-4">{title}</h4>
       
-          <ul className="space-y-2">
-              {links.map(link => (
-                  <li key={link.id}>
-                      <a 
-                          href={link.url} 
-                          className="text-gray-400 hover:text-[#CCFF00] transition-colors duration-300"
+      <ul className="space-y-2">
+        {links.map(link => (
+          <li key={link.id}>
+            <a 
+              href={link.url} 
+              className="text-gray-400 hover:text-[#CCFF00] transition-colors duration-300"
             >
-                          {link.title}
-                      </a>
-                  </li>
+              {link.title}
+            </a>
+          </li>
         ))}
-          </ul>
-      </div>
+      </ul>
+    </div>
   );
 }; 

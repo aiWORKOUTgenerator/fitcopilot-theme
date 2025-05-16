@@ -14,26 +14,26 @@ import WellnessVariant from './variants/wellness';
  * Map of PersonalTraining component variants
  */
 export const PersonalTrainingMap: Record<VariantKey, React.ComponentType<Omit<PersonalTrainingProps, 'variant'>>> = {
-    default: DefaultVariant,
-    modern: ModernVariant,
-    classic: ClassicVariant,
-    minimalist: MinimalistVariant,
-    sports: SportsVariant,
-    wellness: WellnessVariant
+  default: DefaultVariant,
+  modern: ModernVariant,
+  classic: ClassicVariant,
+  minimalist: MinimalistVariant,
+  sports: SportsVariant,
+  wellness: WellnessVariant
 };
 
 /**
  * PersonalTraining component that dynamically loads the appropriate variant
  */
 const PersonalTraining = createVariantComponent<VariantKey, PersonalTrainingProps>(
-    PersonalTrainingMap, 'default'
+  PersonalTrainingMap, 'default'
 );
 
 /**
  * Get the PersonalTraining variant from WordPress settings
  */
 export const getPersonalTrainingVariant = (): VariantKey => {
-    return getComponentVariant<VariantKey>('personalTraining', 'default');
+  return getComponentVariant<VariantKey>('personalTraining', 'default');
 };
 
 export { PersonalTraining };

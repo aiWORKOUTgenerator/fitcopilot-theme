@@ -1,194 +1,306 @@
 /**
- * Form Field Validators
+ * Form field validation utilities
  * 
- * This file provides reusable validation functions for form fields
+ * This module provides validator factory functions that return type-safe
+ * validator functions for different form field types.
  */
-
-import { ValidatorFn } from '../../types/form';
 
 /**
- * Validates that a value is not empty
- * 
- * @param message Error message to display
- * @returns Validator function that returns error message or null
+ * Validation function type - returns error message or null if valid
  */
-export const validateRequired = (message: string): ValidatorFn => {
-    return (value): string | null => {
-        if (value === undefined || value === null || value === '') {
-            return message;
-        }
-        return null;
-    };
+export type ValidatorFn<T = unknown> = (value: T, allValues?: Record<string, any>) => string | null;
+
+/**
+ * Validation result type for async validators
+ */
+export interface ValidationResult {
+  pending?: boolean;
+  message?: string;
+  validate: () => Promise<string | null>;
+}
+
+/**
+ * Async validation function type - returns a promise with error message or null if valid
+ */
+export type AsyncValidatorFn<T = unknown> = (value: T, allValues?: Record<string, any>) => Promise<string | null>;
+
+/**
+ * Required field validator
+ */
+export const required = (errorMessage = 'This field is required'): ValidatorFn => {
+  return (value: unknown): string | null => {
+    if (
+      value === undefined ||
+      value === null ||
+      value === '' ||
+      (Array.isArray(value) && value.length === 0)
+    ) {
+      return errorMessage;
+    }
+    return null;
+  };
 };
 
 /**
- * Validates that a string meets minimum length requirement
- * 
- * @param minLength Minimum required length
- * @param message Error message to display
- * @returns Validator function that returns error message or null
+ * Minimum length validator for string values
  */
-export const validateMinLength = (minLength: number, message: string): ValidatorFn<string> => {
-    return (value): string | null => {
-        if (typeof value !== 'string' || value.length < minLength) {
-            return message;
-        }
-        return null;
-    };
+export const minLength = (min: number, errorMessage?: string): ValidatorFn<string> => {
+  return (value: string): string | null => {
+    if (!value) return null; // Skip if empty (use required validator for that)
+
+    if (value.length < min) {
+      return errorMessage || `Must be at least ${min} characters`;
+    }
+    return null;
+  };
 };
 
 /**
- * Validates that a string doesn't exceed maximum length
- * 
- * @param maxLength Maximum allowed length
- * @param message Error message to display
- * @returns Validator function that returns error message or null
+ * Maximum length validator for string values
  */
-export const validateMaxLength = (maxLength: number, message: string): ValidatorFn<string> => {
-    return (value): string | null => {
-        if (typeof value === 'string' && value.length > maxLength) {
-            return message;
-        }
-        return null;
-    };
+export const maxLength = (max: number, errorMessage?: string): ValidatorFn<string> => {
+  return (value: string): string | null => {
+    if (!value) return null;
+
+    if (value.length > max) {
+      return errorMessage || `Must be no more than ${max} characters`;
+    }
+    return null;
+  };
 };
 
 /**
- * Validates that a string is a valid email format
- * 
- * @param message Error message to display
- * @returns Validator function that returns error message or null
+ * Email format validator
  */
-export const validateEmail = (message: string): ValidatorFn<string> => {
-    return (value): string | null => {
-        if (typeof value !== 'string') {
-            return message;
-        }
+export const email = (errorMessage = 'Please enter a valid email address'): ValidatorFn<string> => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-        // List of test case valid emails to whitelist
-        const validTestEmails = [
-            'simple@example.com',
-            'very.common@example.com',
-            'disposable.style.email.with+symbol@example.com',
-            'other.email-with-hyphen@example.com',
-            'fully-qualified-domain@example.com',
-            'user.name+tag+sorting@example.com',
-            'x@example.com'
-        ];
+  return (value: string): string | null => {
+    if (!value) return null;
 
-        // Whitelist the specific valid test emails
-        if (validTestEmails.includes(value)) {
-            return null;
-        }
-
-        // Basic email validation for other emails
-        if (!value) return message;
-        if (!value.includes('@')) return message;
-        if (!value.includes('.')) return message;
-
-        // Check for @ not at start and domain after @
-        const parts = value.split('@');
-        if (parts.length !== 2) return message;
-        if (parts[0].length === 0) return message;
-        if (parts[1].length === 0) return message;
-
-        // Check domain has at least one dot
-        const domainParts = parts[1].split('.');
-        if (domainParts.length < 2) return message;
-        if (domainParts[0].length === 0) return message;
-
-        // Check for consecutive dots
-        if (value.includes('..')) return message;
-
-        // Simplified check for special characters in wrong places
-        if (/[!#$%^&*()=+{}[\]|\\:;<>?,]/.test(value)) return message;
-
-        return null;
-    };
+    if (!emailRegex.test(value)) {
+      return errorMessage;
+    }
+    return null;
+  };
 };
 
 /**
- * Validates that a string matches a regular expression pattern
- * 
- * @param pattern Regular expression to test against
- * @param message Error message to display
- * @returns Validator function that returns error message or null
+ * Numeric value validator
  */
-export const validatePattern = (pattern: RegExp, message: string): ValidatorFn<string> => {
-    return (value): string | null => {
-        if (typeof value !== 'string' || !pattern.test(value)) {
-            return message;
-        }
-        return null;
-    };
+export const numeric = (errorMessage = 'Please enter a valid number'): ValidatorFn<string> => {
+  return (value: string): string | null => {
+    if (!value) return null;
+
+    if (isNaN(Number(value))) {
+      return errorMessage;
+    }
+    return null;
+  };
 };
 
 /**
- * Validates that a string contains only numeric characters
- * 
- * @param message Error message to display
- * @returns Validator function that returns error message or null
+ * Minimum value validator for numeric strings
  */
-export const validateNumeric = (message: string): ValidatorFn<string> => {
-    return (value): string | null => {
-        // Allow numbers, decimal points, and negative signs
-        const numericRegex = /^-?\d*\.?\d+$/;
-        if (typeof value !== 'string' || !numericRegex.test(value)) {
-            return message;
-        }
-        return null;
-    };
+export const min = (minValue: number, errorMessage?: string): ValidatorFn<string> => {
+  return (value: string): string | null => {
+    if (!value) return null;
+
+    const numValue = Number(value);
+    if (isNaN(numValue) || numValue < minValue) {
+      return errorMessage || `Must be at least ${minValue}`;
+    }
+    return null;
+  };
 };
 
 /**
- * Validates that a numeric value is at least a minimum value
- * 
- * @param min Minimum allowed value
- * @param message Error message to display
- * @returns Validator function that returns error message or null
+ * Maximum value validator for numeric strings
  */
-export const validateMin = (min: number, message: string): ValidatorFn<string> => {
-    return (value): string | null => {
-        const numValue = parseFloat(value);
-        if (isNaN(numValue) || numValue < min) {
-            return message;
-        }
-        return null;
-    };
+export const max = (maxValue: number, errorMessage?: string): ValidatorFn<string> => {
+  return (value: string): string | null => {
+    if (!value) return null;
+
+    const numValue = Number(value);
+    if (isNaN(numValue) || numValue > maxValue) {
+      return errorMessage || `Must be no more than ${maxValue}`;
+    }
+    return null;
+  };
 };
 
 /**
- * Validates that a numeric value doesn't exceed a maximum value
- * 
- * @param max Maximum allowed value
- * @param message Error message to display
- * @returns Validator function that returns error message or null
+ * Pattern validator using regular expression
  */
-export const validateMax = (max: number, message: string): ValidatorFn<string> => {
-    return (value): string | null => {
-        const numValue = parseFloat(value);
-        if (isNaN(numValue) || numValue > max) {
-            return message;
-        }
-        return null;
-    };
+export const pattern = (
+  regex: RegExp,
+  errorMessage = 'Please enter a valid value'
+): ValidatorFn<string> => {
+  return (value: string): string | null => {
+    if (!value) return null;
+
+    if (!regex.test(value)) {
+      return errorMessage;
+    }
+    return null;
+  };
 };
 
 /**
- * Combines multiple validators into a single validator
- * Returns the first error encountered or null if all pass
- * 
- * @param validators Array of validator functions to run
- * @returns Combined validator function
+ * Custom validator function
  */
-export const composeValidators = <T>(validators: ValidatorFn<T>[]): ValidatorFn<T> => {
-    return (value): string | null => {
-        for (const validator of validators) {
-            const error = validator(value);
-            if (error) {
-                return error;
-            }
-        }
-        return null;
+export const custom = <T>(
+  validateFn: (value: T) => boolean,
+  errorMessage: string
+): ValidatorFn<T> => {
+  return (value: T): string | null => {
+    if (!validateFn(value)) {
+      return errorMessage;
+    }
+    return null;
+  };
+};
+
+/**
+ * File size validator
+ */
+export const fileSize = (
+  maxSizeInBytes: number,
+  errorMessage?: string
+): ValidatorFn<File> => {
+  return (file: File): string | null => {
+    if (!file) return null;
+
+    if (file.size > maxSizeInBytes) {
+      const maxSizeMB = Math.round(maxSizeInBytes / (1024 * 1024) * 10) / 10;
+      return errorMessage || `File size must be less than ${maxSizeMB} MB`;
+    }
+    return null;
+  };
+};
+
+/**
+ * File type validator
+ */
+export const fileType = (
+  allowedTypes: string[],
+  errorMessage?: string
+): ValidatorFn<File> => {
+  return (file: File): string | null => {
+    if (!file) return null;
+
+    const fileType = file.type.toLowerCase();
+    if (!allowedTypes.some((type: string) => fileType.includes(type.toLowerCase()))) {
+      return errorMessage || `File type must be one of: ${allowedTypes.join(', ')}`;
+    }
+    return null;
+  };
+};
+
+/**
+ * Async validator wrapper
+ * Returns a ValidationResult with a pending state and a promise to resolve the validation
+ */
+export const validateAsync = <T>(
+  validatorFn: AsyncValidatorFn<T>,
+  pendingMessage = 'Validating...'
+): (value: T, allValues?: Record<string, any>) => ValidationResult => {
+  return (value: T, allValues?: Record<string, any>): ValidationResult => {
+    return {
+      pending: true,
+      message: pendingMessage,
+      validate: async () => await validatorFn(value, allValues)
     };
+  };
+};
+
+/**
+ * Cross-field validation to check if fields match
+ * Useful for password confirmation, email confirmation, etc.
+ */
+export const fieldsMatch = (
+  sourceField: string,
+  message: string
+): ValidatorFn<string> => {
+  return (value: string, allValues?: Record<string, any>): string | null => {
+    if (!allValues || value !== allValues[sourceField]) {
+      return message;
+    }
+    return null;
+  };
+};
+
+/**
+ * Validator for checking if a field is different from another field
+ * Useful for scenarios where two fields must be different
+ */
+export const fieldsDiffer = (
+  sourceField: string,
+  message: string
+): ValidatorFn<string> => {
+  return (value: string, allValues?: Record<string, any>): string | null => {
+    if (allValues && value === allValues[sourceField]) {
+      return message;
+    }
+    return null;
+  };
+};
+
+/**
+ * Conditional validator that only runs if a condition is met
+ */
+export const validateIf = <T>(
+  condition: (value: T, allValues?: Record<string, any>) => boolean,
+  validator: ValidatorFn<T>
+): ValidatorFn<T> => {
+  return (value: T, allValues?: Record<string, any>): string | null => {
+    if (condition(value, allValues)) {
+      return validator(value, allValues);
+    }
+    return null;
+  };
+};
+
+/**
+ * Compose multiple validators into a single validator
+ * Runs validators in sequence and returns the first error
+ */
+export const composeValidators = <T>(
+  validators: Array<ValidatorFn<T>>
+): ValidatorFn<T> => {
+  return (value: T, allValues?: Record<string, any>): string | null => {
+    for (const validator of validators) {
+      const result = validator(value, allValues);
+      if (result) {
+        return result;
+      }
+    }
+    return null;
+  };
+};
+
+/**
+ * Run all validators on a value
+ * Returns the first error message found, or null if all pass
+ */
+export const runValidators = <T>(
+  value: T, 
+  validators: Array<ValidatorFn<T> | ((value: T, allValues?: Record<string, any>) => ValidationResult)>,
+  allValues?: Record<string, any>
+): string | null | ValidationResult => {
+  if (!validators || validators.length === 0) return null;
+
+  for (const validator of validators) {
+    const result = validator(value, allValues);
+    if (result) {
+      // Check if it's a ValidationResult with pending state
+      if (typeof result === 'object' && 'pending' in result) {
+        return result;
+      }
+      // Otherwise it's a string error message
+      return result;
+    }
+  }
+
+  return null;
 }; 

@@ -3,129 +3,129 @@ import React, { act } from 'react';
 import ImageGallery from '../../ImageGallery';
 
 describe('ImageGallery', () => {
-    const images = [
-        { src: 'img1.png', alt: 'Image 1' },
-        { src: 'img2.png', alt: 'Image 2' },
-        { src: 'img3.png', alt: 'Image 3' },
-    ];
+  const images = [
+    { src: 'img1.png', alt: 'Image 1' },
+    { src: 'img2.png', alt: 'Image 2' },
+    { src: 'img3.png', alt: 'Image 3' },
+  ];
 
-    it('renders with required props', () => {
-        const { getByAltText, container } = render(
-            <ImageGallery variant="imageGallery" images={images} />
-        );
+  it('renders with required props', () => {
+    const { getByAltText, container } = render(
+      <ImageGallery variant="imageGallery" images={images} />
+    );
 
-        const galleryContainer = container.querySelector('.image-gallery__container');
-        expect(galleryContainer).toBeInTheDocument();
-        expect(getByAltText('Image 1')).toBeInTheDocument();
+    const galleryContainer = container.querySelector('.image-gallery__container');
+    expect(galleryContainer).toBeInTheDocument();
+    expect(getByAltText('Image 1')).toBeInTheDocument();
+  });
+
+  it('navigates to next and previous images', () => {
+    const { getByLabelText, getByAltText } = render(
+      <ImageGallery variant="imageGallery" images={images} />
+    );
+
+    // Click next button
+    act(() => {
+      fireEvent.click(getByLabelText('Next image'));
     });
 
-    it('navigates to next and previous images', () => {
-        const { getByLabelText, getByAltText } = render(
-            <ImageGallery variant="imageGallery" images={images} />
-        );
+    // Should show second image
+    expect(getByAltText('Image 2')).toBeInTheDocument();
 
-        // Click next button
-        act(() => {
-            fireEvent.click(getByLabelText('Next image'));
-        });
-
-        // Should show second image
-        expect(getByAltText('Image 2')).toBeInTheDocument();
-
-        // Click previous button
-        act(() => {
-            fireEvent.click(getByLabelText('Previous image'));
-        });
-
-        // Should show first image again
-        expect(getByAltText('Image 1')).toBeInTheDocument();
+    // Click previous button
+    act(() => {
+      fireEvent.click(getByLabelText('Previous image'));
     });
 
-    it('calls onImageChange when image changes', () => {
-        const onImageChange = jest.fn();
+    // Should show first image again
+    expect(getByAltText('Image 1')).toBeInTheDocument();
+  });
 
-        const { getByLabelText } = render(
-            <ImageGallery
-                variant="imageGallery"
-                images={images}
-                onImageChange={onImageChange}
-            />
-        );
+  it('calls onImageChange when image changes', () => {
+    const onImageChange = jest.fn();
 
-        // Click next button
-        act(() => {
-            fireEvent.click(getByLabelText('Next image'));
-        });
+    const { getByLabelText } = render(
+      <ImageGallery
+        variant="imageGallery"
+        images={images}
+        onImageChange={onImageChange}
+      />
+    );
 
-        // Should call onImageChange with index 1
-        expect(onImageChange).toHaveBeenCalledWith(1);
+    // Click next button
+    act(() => {
+      fireEvent.click(getByLabelText('Next image'));
     });
 
-    it('respects initialIndex prop', () => {
-        const { getByAltText } = render(
-            <ImageGallery
-                variant="imageGallery"
-                images={images}
-                initialIndex={1}
-            />
-        );
+    // Should call onImageChange with index 1
+    expect(onImageChange).toHaveBeenCalledWith(1);
+  });
 
-        // Should start at second image
-        expect(getByAltText('Image 2')).toBeInTheDocument();
+  it('respects initialIndex prop', () => {
+    const { getByAltText } = render(
+      <ImageGallery
+        variant="imageGallery"
+        images={images}
+        initialIndex={1}
+      />
+    );
+
+    // Should start at second image
+    expect(getByAltText('Image 2')).toBeInTheDocument();
+  });
+
+  it('loops through images when reaching the end', () => {
+    const { getByLabelText, getByAltText } = render(
+      <ImageGallery
+        variant="imageGallery"
+        images={images}
+      />
+    );
+
+    // Go to last image
+    act(() => {
+      fireEvent.click(getByLabelText('Next image'));
+      fireEvent.click(getByLabelText('Next image'));
     });
 
-    it('loops through images when reaching the end', () => {
-        const { getByLabelText, getByAltText } = render(
-            <ImageGallery
-                variant="imageGallery"
-                images={images}
-            />
-        );
+    expect(getByAltText('Image 3')).toBeInTheDocument();
 
-        // Go to last image
-        act(() => {
-            fireEvent.click(getByLabelText('Next image'));
-            fireEvent.click(getByLabelText('Next image'));
-        });
-
-        expect(getByAltText('Image 3')).toBeInTheDocument();
-
-        // Click next again, should loop to first image
-        act(() => {
-            fireEvent.click(getByLabelText('Next image'));
-        });
-
-        expect(getByAltText('Image 1')).toBeInTheDocument();
+    // Click next again, should loop to first image
+    act(() => {
+      fireEvent.click(getByLabelText('Next image'));
     });
 
-    it('handles keyboard navigation', () => {
-        const { container, getByAltText } = render(
-            <ImageGallery
-                variant="imageGallery"
-                images={images}
-            />
-        );
+    expect(getByAltText('Image 1')).toBeInTheDocument();
+  });
 
-        // Focus the gallery
-        const gallery = container.querySelector('.image-gallery__container');
-        if (gallery) {
-            act(() => {
-                gallery.focus();
-            });
+  it('handles keyboard navigation', () => {
+    const { container, getByAltText } = render(
+      <ImageGallery
+        variant="imageGallery"
+        images={images}
+      />
+    );
 
-            // Press right arrow key
-            act(() => {
-                fireEvent.keyDown(gallery, { key: 'ArrowRight' });
-            });
+    // Focus the gallery
+    const gallery = container.querySelector('.image-gallery__container');
+    if (gallery) {
+      act(() => {
+        gallery.focus();
+      });
 
-            expect(getByAltText('Image 2')).toBeInTheDocument();
+      // Press right arrow key
+      act(() => {
+        fireEvent.keyDown(gallery, { key: 'ArrowRight' });
+      });
 
-            // Press left arrow key
-            act(() => {
-                fireEvent.keyDown(gallery, { key: 'ArrowLeft' });
-            });
+      expect(getByAltText('Image 2')).toBeInTheDocument();
 
-            expect(getByAltText('Image 1')).toBeInTheDocument();
-        }
-    });
+      // Press left arrow key
+      act(() => {
+        fireEvent.keyDown(gallery, { key: 'ArrowLeft' });
+      });
+
+      expect(getByAltText('Image 1')).toBeInTheDocument();
+    }
+  });
 }); 

@@ -1626,76 +1626,94 @@
     "importedBy": "features/shared/Form/TextField.tsx"
   },
   {
+    "file": "features/shared/FormField/fields/FieldWrapper.tsx",
+    "exportName": "FieldWrapper",
+    "type": "missing",
+    "importedBy": "features/shared/FormField/fields/DatePicker.tsx"
+  },
+  {
+    "file": "features/shared/FormField/fields/FieldWrapper.tsx",
+    "exportName": "FieldWrapper",
+    "type": "missing",
+    "importedBy": "features/shared/FormField/fields/FileUpload.tsx"
+  },
+  {
     "file": "features/shared/FormField/fields/Checkbox.tsx",
     "exportName": "Checkbox",
     "type": "missing",
-    "importedBy": "features/shared/FormField/FormField.tsx"
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
   },
   {
     "file": "features/shared/FormField/fields/DatePicker.tsx",
-    "exportName": "DatePicker",
+    "exportName": "DateField",
     "type": "missing",
-    "importedBy": "features/shared/FormField/FormField.tsx"
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
   },
   {
     "file": "features/shared/FormField/fields/FileUpload.tsx",
-    "exportName": "FileUpload",
+    "exportName": "FileField",
     "type": "missing",
-    "importedBy": "features/shared/FormField/FormField.tsx"
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
   },
   {
-    "file": "features/shared/FormField/fields/Radio.tsx",
-    "exportName": "Radio",
+    "file": "features/shared/FormField/fields/MultiSelectField.tsx",
+    "exportName": "MultiSelectField",
     "type": "missing",
-    "importedBy": "features/shared/FormField/FormField.tsx"
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
   },
   {
     "file": "features/shared/FormField/fields/RadioGroup.tsx",
     "exportName": "RadioGroup",
     "type": "missing",
-    "importedBy": "features/shared/FormField/FormField.tsx"
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
   },
   {
-    "file": "features/shared/FormField/fields/Select.tsx",
-    "exportName": "Select",
+    "file": "features/shared/FormField/fields/SelectField.tsx",
+    "exportName": "SelectField",
     "type": "missing",
-    "importedBy": "features/shared/FormField/FormField.tsx"
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
   },
   {
     "file": "features/shared/FormField/fields/Switch.tsx",
     "exportName": "Switch",
     "type": "missing",
-    "importedBy": "features/shared/FormField/FormField.tsx"
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
   },
   {
-    "file": "features/shared/FormField/fields/TextArea.tsx",
-    "exportName": "TextArea",
+    "file": "features/shared/FormField/fields/TextareaField.tsx",
+    "exportName": "TextareaField",
     "type": "missing",
-    "importedBy": "features/shared/FormField/FormField.tsx"
+    "importedBy": "features/shared/FormField/fields/FormField.tsx"
   },
   {
     "file": "features/shared/FormField/fields/TextField.tsx",
     "exportName": "TextField",
     "type": "missing",
-    "importedBy": "features/shared/FormField/FormField.tsx"
-  },
-  {
-    "file": "utils/logger.ts",
-    "exportName": "logger",
-    "type": "missing",
     "importedBy": "features/shared/FormField/fields/FormField.tsx"
   },
   {
-    "file": "features/shared/FormField/types.ts",
-    "exportName": "generateFieldId",
+    "file": "features/shared/FormField/fields/FieldWrapper.tsx",
+    "exportName": "FieldWrapper",
     "type": "missing",
-    "importedBy": "features/shared/FormField/fields/FormField.tsx"
+    "importedBy": "features/shared/FormField/fields/MultiSelectField.tsx"
   },
   {
-    "file": "features/shared/FormField/types.ts",
-    "exportName": "isTextareaField",
+    "file": "features/shared/FormField/fields/FieldWrapper.tsx",
+    "exportName": "FieldWrapper",
     "type": "missing",
-    "importedBy": "features/shared/FormField/fields/FormField.tsx"
+    "importedBy": "features/shared/FormField/fields/SelectField.tsx"
+  },
+  {
+    "file": "features/shared/FormField/fields/FieldWrapper.tsx",
+    "exportName": "FieldWrapper",
+    "type": "missing",
+    "importedBy": "features/shared/FormField/fields/TextField.tsx"
+  },
+  {
+    "file": "features/shared/FormField/fields/FieldWrapper.tsx",
+    "exportName": "FieldWrapper",
+    "type": "missing",
+    "importedBy": "features/shared/FormField/fields/TextareaField.tsx"
   },
   {
     "file": "utils/logger.ts",

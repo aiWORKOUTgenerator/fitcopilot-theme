@@ -15,22 +15,22 @@ import * as scrollUtils from './components/scrollUtils';
 import * as shared from './shared';
 
 export {
-    AccordionSection,
-    AnalyticsSelector,
-    CustomizeExperience,
-    EquipmentSelector,
-    GoalSelector,
-    Journey,
-    JourneyProvider,
-    JourneySelector,
-    JourneyStepCard,
-    SavingIndicator,
-    scrollUtils,
-    shared,
-    StepValidator,
-    TimeCommitmentSelector,
-    useJourney,
-    WorkoutPreferenceSelector
+  AccordionSection,
+  AnalyticsSelector,
+  CustomizeExperience,
+  EquipmentSelector,
+  GoalSelector,
+  Journey,
+  JourneyProvider,
+  JourneySelector,
+  JourneyStepCard,
+  SavingIndicator,
+  scrollUtils,
+  shared,
+  StepValidator,
+  TimeCommitmentSelector,
+  useJourney,
+  WorkoutPreferenceSelector
 };
 
 export default Journey; 

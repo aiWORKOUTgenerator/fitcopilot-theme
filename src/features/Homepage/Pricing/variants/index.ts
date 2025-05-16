@@ -18,28 +18,28 @@ export interface PricingProps {
 
 // Map variant keys to their React components
 export const PricingMap: Record<string, React.ComponentType<PricingProps>> = {
-    default: DefaultVariant,
-    boutique: BoutiqueVariant,
-    classic: ClassicVariant,
-    minimalist: MinimalistVariant,
-    modern: ModernVariant,
-    sports: SportsVariant,
-    wellness: WellnessVariant,
+  default: DefaultVariant,
+  boutique: BoutiqueVariant,
+  classic: ClassicVariant,
+  minimalist: MinimalistVariant,
+  modern: ModernVariant,
+  sports: SportsVariant,
+  wellness: WellnessVariant,
 };
 
 // Helper function to get the variant component based on WordPress settings
 export const getPricingVariant = () => {
-    const variant = getComponentVariant('pricing', 'default');
-    return PricingMap[variant] || PricingMap.default;
+  const variant = getComponentVariant('pricing', 'default');
+  return PricingMap[variant] || PricingMap.default;
 };
 
 // Export all variants
 export {
-    BoutiqueVariant,
-    ClassicVariant, DefaultVariant, MinimalistVariant,
-    ModernVariant,
-    SportsVariant,
-    WellnessVariant
+  BoutiqueVariant,
+  ClassicVariant, DefaultVariant, MinimalistVariant,
+  ModernVariant,
+  SportsVariant,
+  WellnessVariant
 };
 
 // Default export for backward compatibility

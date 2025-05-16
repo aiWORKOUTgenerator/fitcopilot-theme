@@ -2,395 +2,472 @@
  * Form hook for managing form state
  */
 
-import { useCallback, useReducer } from 'react';
-import { FormSubmitHandler, InputChangeHandler } from '../../../types/_events';
-import { createLoggedEventHandler } from '../../../utils/logger';
+import { useCallback, useMemo, useReducer } from 'react';
+import { FormSubmitHandler } from '../../../types/events';
 import {
-    FormAction,
+    FieldState,
     FormState,
-    createInitialFormState,
+    createFieldState,
+    createFormState,
     getFormValues,
-    validateField,
-    validateForm
+    runValidators,
+    validateFormState
 } from './formState';
-import { ValidatorFn } from './types';
+import { ValidatorFn } from './validators';
 
 /**
- * Form state reducer
+ * Form action types
  */
-const formReducer = (state: FormState, action: FormAction): FormState => {
-    switch (action.type) {
-        case 'FIELD_CHANGE': {
-            const { fieldName, value } = action;
-            const field = state.fields[fieldName];
+type FormAction =
+  | { type: 'SET_FIELD_VALUE'; fieldName: string; value: unknown }
+  | { type: 'SET_FIELD_TOUCHED'; fieldName: string; touched: boolean }
+  | { type: 'SET_FIELD_ERROR'; fieldName: string; error: string | null }
+  | { type: 'VALIDATE_FIELD'; fieldName: string }
+  | { type: 'VALIDATE_FORM' }
+  | { type: 'SUBMIT_FORM' }
+  | { type: 'SUBMIT_FORM_SUCCESS' }
+  | { type: 'SUBMIT_FORM_ERROR'; error: string }
+  | { type: 'RESET_FORM' }
+  | { type: 'INITIALIZE_FIELD'; fieldName: string; value: unknown; validators?: Array<ValidatorFn<unknown>> };
 
-            if (!field) return state;
+/**
+ * Form reducer to handle form state updates
+ */
+function formReducer(state: FormState, action: FormAction): FormState {
+  switch (action.type) {
+  case 'SET_FIELD_VALUE': {
+    const { fieldName, value } = action;
 
-            // Update field with new value and mark as dirty
-            const updatedField = validateField({
-                ...field,
-                value,
-                dirty: true
-            });
-
-            // Check if any field has errors to determine form validity
-            const fields = {
-                ...state.fields,
-                [fieldName]: updatedField
-            };
-
-            const hasErrors = Object.values(fields).some(f => !!f.error);
-
-            return {
-                ...state,
-                fields,
-                isValid: !hasErrors,
-                isDirty: true
-            };
-        }
-
-        case 'FIELD_BLUR': {
-            const { fieldName } = action;
-            const field = state.fields[fieldName];
-
-            if (!field) return state;
-
-            // Mark field as touched and validate
-            const updatedField = validateField({
-                ...field,
-                touched: true
-            });
-
-            return {
-                ...state,
-                fields: {
-                    ...state.fields,
-                    [fieldName]: updatedField
-                }
-            };
-        }
-
-        case 'FIELD_FOCUS': {
-            // No state changes needed for focus, but kept for completeness
-            return state;
-        }
-
-        case 'VALIDATE_FIELD': {
-            const { fieldName } = action;
-            const field = state.fields[fieldName];
-
-            if (!field) return state;
-
-            // Validate single field
-            const validatedField = validateField({
-                ...field,
-                validating: true
-            });
-
-            const fields = {
-                ...state.fields,
-                [fieldName]: validatedField
-            };
-
-            const hasErrors = Object.values(fields).some(f => !!f.error);
-
-            return {
-                ...state,
-                fields,
-                isValid: !hasErrors
-            };
-        }
-
-        case 'VALIDATE_ALL': {
-            // Validate all fields
-            return validateForm(state);
-        }
-
-        case 'SUBMIT_START': {
-            return {
-                ...state,
-                isSubmitting: true,
-                error: null
-            };
-        }
-
-        case 'SUBMIT_SUCCESS': {
-            return {
-                ...state,
-                isSubmitting: false,
-                isSubmitted: true
-            };
-        }
-
-        case 'SUBMIT_ERROR': {
-            return {
-                ...state,
-                isSubmitting: false,
-                error: action.error
-            };
-        }
-
-        case 'RESET_FORM': {
-            // Reset to initial values but keep validators
-            const resetFields: Record<string, unknown> = {};
-
-            Object.entries(state.fields).forEach(([fieldName, field]) => {
-                resetFields[fieldName] = {
-                    ...field,
-                    value: field.value, // Keep initial value
-                    touched: false,
-                    dirty: false,
-                    error: null,
-                    validating: false
-                };
-            });
-
-            return {
-                fields: resetFields,
-                isValid: true,
-                isDirty: false,
-                isSubmitting: false,
-                isSubmitted: false,
-                error: null
-            };
-        }
-
-        case 'SET_FORM_ERROR': {
-            return {
-                ...state,
-                error: action.error
-            };
-        }
-
-        default:
-            return state;
+    // Skip if field doesn't exist or value is the same
+    if (!state.fields[fieldName] || state.fields[fieldName].value === value) {
+      return state;
     }
-};
+
+    // Update field with new value
+    const field = state.fields[fieldName];
+    const updatedField: FieldState = {
+      ...field,
+      value,
+      dirty: true,
+      // Clear error when value changes
+      error: null
+    };
+
+    // Validate field if it has validators
+    const validatedField = field.validators?.length
+      ? {
+        ...updatedField,
+        error: runValidators(value, field.validators as Array<ValidatorFn<unknown>>)
+      }
+      : updatedField;
+
+    // Update state
+    const updatedFields = {
+      ...state.fields,
+      [fieldName]: validatedField
+    };
+
+    // Check if any field is dirty
+    const isDirty = Object.values(updatedFields).some(f => f.dirty);
+      
+    // Check if all fields are valid
+    const isValid = !Object.values(updatedFields).some(f => Boolean(f.error));
+
+    return {
+      ...state,
+      fields: updatedFields,
+      isDirty,
+      isValid
+    };
+  }
+
+  case 'SET_FIELD_TOUCHED': {
+    const { fieldName, touched } = action;
+
+    // Skip if field doesn't exist or touched state is the same
+    if (!state.fields[fieldName] || state.fields[fieldName].touched === touched) {
+      return state;
+    }
+
+    // Update field
+    const updatedFields = {
+      ...state.fields,
+      [fieldName]: {
+        ...state.fields[fieldName],
+        touched
+      }
+    };
+
+    return {
+      ...state,
+      fields: updatedFields
+    };
+  }
+
+  case 'SET_FIELD_ERROR': {
+    const { fieldName, error } = action;
+
+    // Skip if field doesn't exist or error is the same
+    if (!state.fields[fieldName] || state.fields[fieldName].error === error) {
+      return state;
+    }
+
+    // Update field
+    const updatedFields = {
+      ...state.fields,
+      [fieldName]: {
+        ...state.fields[fieldName],
+        error
+      }
+    };
+
+    // Check if all fields are valid
+    const isValid = !Object.values(updatedFields).some(f => Boolean(f.error));
+
+    return {
+      ...state,
+      fields: updatedFields,
+      isValid
+    };
+  }
+
+  case 'VALIDATE_FIELD': {
+    const { fieldName } = action;
+
+    // Skip if field doesn't exist
+    if (!state.fields[fieldName]) {
+      return state;
+    }
+
+    const field = state.fields[fieldName];
+      
+    // Skip if no validators
+    if (!field.validators || field.validators.length === 0) {
+      return state;
+    }
+
+    // Run validators
+    const error = runValidators(field.value, field.validators as Array<ValidatorFn<unknown>>);
+
+    // Skip if error is the same
+    if (field.error === error) {
+      return state;
+    }
+
+    // Update field
+    const updatedFields = {
+      ...state.fields,
+      [fieldName]: {
+        ...field,
+        error
+      }
+    };
+
+    // Check if all fields are valid
+    const isValid = !Object.values(updatedFields).some(f => Boolean(f.error));
+
+    return {
+      ...state,
+      fields: updatedFields,
+      isValid
+    };
+  }
+
+  case 'VALIDATE_FORM': {
+    return validateFormState(state);
+  }
+
+  case 'SUBMIT_FORM': {
+    // Validate all fields first
+    const validatedState = validateFormState(state);
+
+    return {
+      ...validatedState,
+      isSubmitting: validatedState.isValid,
+      isSubmitted: false,
+      error: null
+    };
+  }
+
+  case 'SUBMIT_FORM_SUCCESS': {
+    return {
+      ...state,
+      isSubmitting: false,
+      isSubmitted: true,
+      error: null
+    };
+  }
+
+  case 'SUBMIT_FORM_ERROR': {
+    return {
+      ...state,
+      isSubmitting: false,
+      isSubmitted: false,
+      error: action.error
+    };
+  }
+
+  case 'RESET_FORM': {
+    // Reset to initial values but keep validators
+    const resetFields: Record<string, FieldState> = {};
+
+    Object.entries(state.fields).forEach(([fieldName, field]) => {
+      resetFields[fieldName] = createFieldState(field.value, field.validators);
+    });
+
+    return {
+      fields: resetFields,
+      isValid: true,
+      isDirty: false,
+      isSubmitting: false,
+      isSubmitted: false,
+      error: null
+    };
+  }
+
+  case 'INITIALIZE_FIELD': {
+    const { fieldName, value, validators } = action;
+
+    // Check if field already exists
+    if (state.fields[fieldName]) {
+      // Skip if value and validators are the same
+      const currentField = state.fields[fieldName];
+      if (
+        currentField.value === value && 
+          JSON.stringify(currentField.validators) === JSON.stringify(validators)
+      ) {
+        return state;
+      }
+    }
+
+    // Create new field state
+    const field = createFieldState(value, validators);
+
+    // Update fields
+    const updatedFields = {
+      ...state.fields,
+      [fieldName]: field
+    };
+
+    return {
+      ...state,
+      fields: updatedFields
+    };
+  }
+
+  default:
+    return state;
+  }
+}
 
 /**
  * Form hook options
  */
-export interface UseFormOptions<T extends Record<string, unknown>> {
-    /** Initial form values */
-    initialValues: T;
-    /** Field validators */
-    validators?: Partial<Record<keyof T, Array<ValidatorFn<unknown>>>>;
-    /** Callback on successful form submission */
-    onSubmit?: (values: T) => void | Promise<void>;
-    /** Validate on change */
-    validateOnChange?: boolean;
-    /** Validate on blur */
-    validateOnBlur?: boolean;
+export interface UseFormOptions<T extends Record<string, unknown> = Record<string, unknown>> {
+  /** Initial form values */
+  initialValues?: T;
+  /** Field validators */
+  validators?: {
+    [K in keyof T]?: Array<ValidatorFn<T[K]>>;
+  };
+  /** Submit handler */
+  onSubmit?: (values: T) => void | Promise<void>;
 }
 
 /**
  * Form hook return value
  */
-export interface UseFormReturn<T extends Record<string, unknown>> {
-    /** Current form state */
-    formState: FormState;
-    /** Get current form values */
-    values: T;
-    /** Register field props */
-    register: (fieldName: keyof T) => {
-        name: string;
-        value: unknown;
-        onChange: InputChangeHandler;
-        onBlur: React.FocusEventHandler<HTMLInputElement>;
-        error: string | null;
-    };
-    /** Handle form submission */
-    handleSubmit: FormSubmitHandler;
-    /** Reset form to initial state */
-    resetForm: () => void;
-    /** Set value for a specific field */
-    setValue: (fieldName: keyof T, value: unknown) => void;
-    /** Set error for a specific field */
-    setError: (fieldName: keyof T, error: string | null) => void;
-    /** Set form-level error */
-    setFormError: (error: string | null) => void;
-    /** Check if form is valid */
-    isValid: boolean;
-    /** Check if form is submitting */
-    isSubmitting: boolean;
-    /** Check if form has been submitted */
-    isSubmitted: boolean;
-    /** Form-level error */
-    error: string | null;
+export interface UseFormReturn<T extends Record<string, unknown> = Record<string, unknown>> {
+  /** Current form state */
+  formState: FormState;
+  /** Get current form values as object */
+  values: T;
+  /** Set field value */
+  setFieldValue: <K extends keyof T>(fieldName: K, value: T[K]) => void;
+  /** Set field touched state */
+  setFieldTouched: (fieldName: keyof T, touched: boolean) => void;
+  /** Set field error message */
+  setFieldError: (fieldName: keyof T, error: string | null) => void;
+  /** Validate a specific field */
+  validateField: (fieldName: keyof T) => void;
+  /** Validate entire form */
+  validateForm: () => void;
+  /** Initialize or update a field */
+  initializeField: <K extends keyof T>(fieldName: K, value: T[K], validators?: Array<ValidatorFn<T[K]>>) => void;
+  /** Submit the form */
+  submitForm: FormSubmitHandler;
+  /** Reset form to initial state */
+  resetForm: () => void;
+  /** Check if field has error */
+  hasError: (fieldName: keyof T) => boolean;
+  /** Get field error message */
+  getFieldError: (fieldName: keyof T) => string | null;
+  /** Check if field is touched */
+  isTouched: (fieldName: keyof T) => boolean;
+  /** Check if field is dirty (value changed) */
+  isDirty: (fieldName: keyof T) => boolean;
 }
 
 /**
- * Custom hook for managing form state
+ * Custom hook for form state management
  */
-export function useForm<T extends Record<string, unknown>>(
-    options: UseFormOptions<T>
+export function useForm<T extends Record<string, unknown> = Record<string, unknown>>(
+  options: UseFormOptions<T> = {}
 ): UseFormReturn<T> {
-    const {
-        initialValues,
-        validators,
-        onSubmit,
-        validateOnChange = true,
-        validateOnBlur = true
-    } = options;
+  const { initialValues = {} as T, validators = {}, onSubmit } = options;
 
-    // Create initial form state
-    const initialFormState = createInitialFormState(
-        initialValues,
-        validators as Record<string, Array<ValidatorFn<unknown>>>
+  // Initialize form state
+  const initialState = useMemo(() => {
+    return createFormState(
+      initialValues as Record<string, unknown>,
+      validators as Record<string, Array<ValidatorFn<unknown>>>
     );
+  }, [initialValues, validators]);
 
-    // Set up form reducer
-    const [formState, dispatch] = useReducer(formReducer, initialFormState);
+  // Create reducer
+  const [formState, dispatch] = useReducer(formReducer, initialState);
 
-    // Get current values from form state
-    const values = getFormValues<T>(formState);
+  // Get current values
+  const values = useMemo(() => {
+    return getFormValues<T>(formState);
+  }, [formState]);
 
-    // Register field
-    const register = useCallback((fieldName: keyof T) => {
-        const field = formState.fields[fieldName as string];
+  // Field value handler
+  const setFieldValue = useCallback(<K extends keyof T>(fieldName: K, value: T[K]) => {
+    dispatch({
+      type: 'SET_FIELD_VALUE',
+      fieldName: fieldName as string,
+      value
+    });
+  }, []);
 
-        if (!field) {
-            throw new Error(`Field ${String(fieldName)} is not registered in the form`);
-        }
+  // Field touched handler
+  const setFieldTouched = useCallback((fieldName: keyof T, touched: boolean) => {
+    dispatch({
+      type: 'SET_FIELD_TOUCHED',
+      fieldName: fieldName as string,
+      touched
+    });
+  }, []);
 
-        // Create field props
-        return {
-            name: fieldName as string,
-            value: field.value,
-            onChange: createLoggedEventHandler(
-                'FormField',
-                `change:${String(fieldName)}`,
-                (_event: React.ChangeEvent<HTMLInputElement>) => {
-                    const value = _event.target.type === 'checkbox'
-                        ? _event.target.checked
-                        : _event.target.value;
+  // Field error handler
+  const setFieldError = useCallback((fieldName: keyof T, error: string | null) => {
+    dispatch({
+      type: 'SET_FIELD_ERROR',
+      fieldName: fieldName as string,
+      error
+    });
+  }, []);
 
-                    dispatch({
-                        type: 'FIELD_CHANGE',
-                        fieldName: fieldName as string,
-                        value
-                    });
+  // Field validation
+  const validateField = useCallback((fieldName: keyof T) => {
+    dispatch({
+      type: 'VALIDATE_FIELD',
+      fieldName: fieldName as string
+    });
+  }, []);
 
-                    if (validateOnChange) {
-                        dispatch({
-                            type: 'VALIDATE_FIELD',
-                            fieldName: fieldName as string
-                        });
-                    }
-                }
-            ),
-            onBlur: (_event: React.FocusEvent<HTMLInputElement>) => {
-                dispatch({
-                    type: 'FIELD_BLUR',
-                    fieldName: fieldName as string
-                });
+  // Form validation
+  const validateForm = useCallback(() => {
+    dispatch({ type: 'VALIDATE_FORM' });
+  }, []);
 
-                if (validateOnBlur) {
-                    dispatch({
-                        type: 'VALIDATE_FIELD',
-                        fieldName: fieldName as string
-                    });
-                }
-            },
-            error: field.touched ? field.error : null
-        };
-    }, [formState.fields, validateOnChange, validateOnBlur]);
+  // Initialize field
+  const initializeField = useCallback(<K extends keyof T>(
+    fieldName: K, 
+    value: T[K], 
+    fieldValidators?: Array<ValidatorFn<T[K]>>
+  ) => {
+    dispatch({
+      type: 'INITIALIZE_FIELD',
+      fieldName: fieldName as string,
+      value,
+      validators: fieldValidators as Array<ValidatorFn<unknown>>
+    });
+  }, []);
 
-    // Handle form submission
-    const handleSubmit = useCallback<FormSubmitHandler>((_event) => {
-        // Pr_event default form submission
-        _event.pr_eventDefault();
+  // Form submission
+  const submitForm = useCallback<FormSubmitHandler>(async (event) => {
+    // Prevent default form submission
+    if (event) {
+      event.preventDefault();
+    }
 
-        // Validate all fields
-        dispatch({ type: 'VALIDATE_ALL' });
+    // Submit action
+    dispatch({ type: 'SUBMIT_FORM' });
 
-        // Check if form is valid
-        const isValid = !Object.values(formState.fields).some(field => !!field.error);
+    // Validate form
+    dispatch({ type: 'VALIDATE_FORM' });
 
-        if (isValid) {
-            dispatch({ type: 'SUBMIT_START' });
+    // Get updated state after validation
+    const updatedValues = getFormValues<T>(formState);
 
-            try {
-                // Get current values
-                const currentValues = getFormValues<T>(formState);
+    // Check if form is valid
+    if (!formState.isValid) {
+      return;
+    }
 
-                // Call onSubmit callback
-                const result = onSubmit?.(currentValues);
-
-                // Handle promise if returned
-                if (result instanceof Promise) {
-                    result
-                        .then(() => {
-                            dispatch({ type: 'SUBMIT_SUCCESS' });
-                        })
-                        .catch((error) => {
-                            dispatch({
-                                type: 'SUBMIT_ERROR',
-                                error: error.message || 'Form submission failed'
-                            });
-                        });
-                } else {
-                    dispatch({ type: 'SUBMIT_SUCCESS' });
-                }
-            } catch (error) {
-                dispatch({
-                    type: 'SUBMIT_ERROR',
-                    error: error instanceof Error ? error.message : 'Form submission failed'
-                });
-            }
-        }
-    }, [formState, onSubmit]);
-
-    // Reset form
-    const resetForm = useCallback(() => {
-        dispatch({ type: 'RESET_FORM' });
-    }, []);
-
-    // Set value for a field
-    const setValue = useCallback((fieldName: keyof T, value: unknown) => {
+    // Submit handler
+    if (onSubmit) {
+      try {
+        await onSubmit(updatedValues);
+        dispatch({ type: 'SUBMIT_FORM_SUCCESS' });
+      } catch (error) {
         dispatch({
-            type: 'FIELD_CHANGE',
-            fieldName: fieldName as string,
-            value
+          type: 'SUBMIT_FORM_ERROR',
+          error: error instanceof Error ? error.message : 'An error occurred'
         });
-    }, []);
+      }
+    } else {
+      dispatch({ type: 'SUBMIT_FORM_SUCCESS' });
+    }
+  }, [formState, onSubmit]);
 
-    // Set error for a field
-    const setError = useCallback((fieldName: keyof T, error: string | null) => {
-        const field = formState.fields[fieldName as string];
+  // Reset form
+  const resetForm = useCallback(() => {
+    dispatch({ type: 'RESET_FORM' });
+  }, []);
 
-        if (!field) return;
+  // Utility functions
+  const hasError = useCallback(
+    (fieldName: keyof T) => 
+      Boolean(formState.fields[fieldName as string]?.error),
+    [formState]
+  );
 
-        dispatch({
-            type: 'FIELD_CHANGE',
-            fieldName: fieldName as string,
-            value: field.value
-        });
+  const getFieldError = useCallback(
+    (fieldName: keyof T) => 
+      formState.fields[fieldName as string]?.error ?? null,
+    [formState]
+  );
 
-        // This is a workaround to set error directly, since our reducer doesn't have a direct SET_ERROR action
-        formState.fields[fieldName as string].error = error;
-    }, [formState.fields]);
+  const isTouched = useCallback(
+    (fieldName: keyof T) => 
+      Boolean(formState.fields[fieldName as string]?.touched),
+    [formState]
+  );
 
-    // Set form-level error
-    const setFormError = useCallback((error: string | null) => {
-        dispatch({
-            type: 'SET_FORM_ERROR',
-            error
-        });
-    }, []);
+  const isDirty = useCallback(
+    (fieldName: keyof T) => 
+      Boolean(formState.fields[fieldName as string]?.dirty),
+    [formState]
+  );
 
-    return {
-        formState,
-        values,
-        register,
-        handleSubmit,
-        resetForm,
-        setValue,
-        setError,
-        setFormError,
-        isValid: formState.isValid,
-        isSubmitting: formState.isSubmitting,
-        isSubmitted: formState.isSubmitted,
-        error: formState.error
-    };
+  // Return form handlers and state
+  return {
+    formState,
+    values,
+    setFieldValue,
+    setFieldTouched,
+    setFieldError,
+    validateField,
+    validateForm,
+    initializeField,
+    submitForm,
+    resetForm,
+    hasError,
+    getFieldError,
+    isTouched,
+    isDirty
+  };
 } 

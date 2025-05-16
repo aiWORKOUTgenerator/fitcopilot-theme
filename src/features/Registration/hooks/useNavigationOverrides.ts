@@ -9,24 +9,24 @@ import { RegistrationStep } from '../types';
  * @returns The step to use after checking all possible overrides
  */
 export const useNavigationOverrides = (defaultStep: RegistrationStep): RegistrationStep => {
-    const [overrideStep, setOverrideStep] = useState<RegistrationStep | null>(null);
+  const [overrideStep, setOverrideStep] = useState<RegistrationStep | null>(null);
 
-    // Check for overrides on mount
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            // Check for forced pricing navigation
-            const forcePricing = window.sessionStorage.getItem('FORCE_GOTO_PRICING');
-            if (forcePricing === 'true') {
-                window.sessionStorage.removeItem('FORCE_GOTO_PRICING');
-                setOverrideStep(RegistrationStep.PRICING);
-                return;
-            }
+  // Check for overrides on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Check for forced pricing navigation
+      const forcePricing = window.sessionStorage.getItem('FORCE_GOTO_PRICING');
+      if (forcePricing === 'true') {
+        window.sessionStorage.removeItem('FORCE_GOTO_PRICING');
+        setOverrideStep(RegistrationStep.PRICING);
+        return;
+      }
 
-            // Add other override checks here if needed in the future
-        }
-    }, []);
+      // Add other override checks here if needed in the future
+    }
+  }, []);
 
-    return overrideStep || defaultStep;
+  return overrideStep || defaultStep;
 };
 
 export default useNavigationOverrides; 

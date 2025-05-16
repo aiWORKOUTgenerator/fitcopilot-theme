@@ -18,28 +18,28 @@ export interface JourneyProps {
 
 // Map variant keys to their React components
 export const JourneyMap: Record<string, React.ComponentType<JourneyProps>> = {
-    default: DefaultVariant,
-    boutique: BoutiqueVariant,
-    classic: ClassicVariant,
-    minimalist: MinimalistVariant,
-    modern: ModernVariant,
-    sports: SportsVariant,
-    wellness: WellnessVariant,
+  default: DefaultVariant,
+  boutique: BoutiqueVariant,
+  classic: ClassicVariant,
+  minimalist: MinimalistVariant,
+  modern: ModernVariant,
+  sports: SportsVariant,
+  wellness: WellnessVariant,
 };
 
 // Helper function to get the variant component based on WordPress settings
 export const getJourneyVariant = () => {
-    const variant = getComponentVariant('journey', 'default');
-    return JourneyMap[variant] || JourneyMap.default;
+  const variant = getComponentVariant('journey', 'default');
+  return JourneyMap[variant] || JourneyMap.default;
 };
 
 // Export all variants
 export {
-    BoutiqueVariant,
-    ClassicVariant, DefaultVariant, MinimalistVariant,
-    ModernVariant,
-    SportsVariant,
-    WellnessVariant
+  BoutiqueVariant,
+  ClassicVariant, DefaultVariant, MinimalistVariant,
+  ModernVariant,
+  SportsVariant,
+  WellnessVariant
 };
 
 // Default export for backward compatibility

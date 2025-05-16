@@ -20,13 +20,13 @@ import WellnessVariant from './wellness';
  * Map of variant keys to their component implementations
  */
 export const TrainingMap: Record<VariantKey, React.ComponentType<Omit<TrainingProps, 'variant'>>> = {
-    default: DefaultVariant,
-    boutique: BoutiqueVariant,
-    classic: ClassicVariant,
-    minimalist: MinimalistVariant,
-    modern: ModernVariant,
-    sports: SportsVariant,
-    wellness: WellnessVariant
+  default: DefaultVariant,
+  boutique: BoutiqueVariant,
+  classic: ClassicVariant,
+  minimalist: MinimalistVariant,
+  modern: ModernVariant,
+  sports: SportsVariant,
+  wellness: WellnessVariant
 };
 
 /**
@@ -34,10 +34,10 @@ export const TrainingMap: Record<VariantKey, React.ComponentType<Omit<TrainingPr
  * @returns The variant key to use
  */
 export const getTrainingVariant = (): VariantKey => {
-    const variant = getComponentVariant('training', 'default') as VariantKey;
+  const variant = getComponentVariant('training', 'default') as VariantKey;
 
-    // Return the variant, falling back to default if not found in our map
-    return Object.keys(TrainingMap).includes(variant) ? variant : 'default';
+  // Return the variant, falling back to default if not found in our map
+  return Object.keys(TrainingMap).includes(variant) ? variant : 'default';
 };
 
 /**
@@ -47,14 +47,14 @@ export const getTrainingVariant = (): VariantKey => {
  * @returns The component for the specified variant
  */
 export const getVariantComponent = (variant: VariantKey): React.ComponentType<Omit<TrainingProps, 'variant'>> => {
-    return TrainingMap[variant] || TrainingMap.default;
+  return TrainingMap[variant] || TrainingMap.default;
 };
 
 // Export all variants for direct import
 export {
-    BoutiqueVariant,
-    ClassicVariant, DefaultVariant, MinimalistVariant,
-    ModernVariant,
-    SportsVariant,
-    WellnessVariant
+  BoutiqueVariant,
+  ClassicVariant, DefaultVariant, MinimalistVariant,
+  ModernVariant,
+  SportsVariant,
+  WellnessVariant
 };

@@ -31,28 +31,28 @@ interface LazyLoadOptions {
  * Default skeleton loader for lazy loaded components
  */
 const DefaultSkeleton: React.FC<{ className?: string }> = ({ className = '' }) => (
-    <div
-        className={`lazy-loading-skeleton ${className}`}
-        role="status"
-        aria-busy="true"
-        aria-live="polite"
-    >
-        <div className="skeleton-animation"></div>
-        <span className="visually-hidden">Loading...</span>
-    </div>
+  <div
+    className={`lazy-loading-skeleton ${className}`}
+    role="status"
+    aria-busy="true"
+    aria-live="polite"
+  >
+    <div className="skeleton-animation"></div>
+    <span className="visually-hidden">Loading...</span>
+  </div>
 );
 
 /**
  * Default error fallback for lazy loaded components
  */
 const DefaultErrorFallback: React.FC<{ error: Error; retry: () => void }> = ({ error, retry }) => (
-    <div className="lazy-loading-error" role="alert">
-        <h3>Something went wrong</h3>
-        <p>{error.message || 'Failed to load component'}</p>
-        <button onClick={retry} className="retry-button">
-            Try Again
-        </button>
-    </div>
+  <div className="lazy-loading-error" role="alert">
+    <h3>Something went wrong</h3>
+    <p>{error.message || 'Failed to load component'}</p>
+    <button onClick={retry} className="retry-button">
+      Try Again
+    </button>
+  </div>
 );
 
 /**
@@ -65,29 +65,29 @@ class ErrorBoundary extends React.Component<
     },
     { hasError: boolean; error: Error | null }
 > {
-    constructor(props: { children: React.ReactNode; fallback: React.ComponentType<{ error: Error; retry: () => void }> }) {
-        super(props);
-        this.state = { hasError: false, error: null };
+  constructor(props: { children: React.ReactNode; fallback: React.ComponentType<{ error: Error; retry: () => void }> }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  handleRetry = () => {
+    this.setState({ hasError: false, error: null });
+  };
+
+  render() {
+    const { hasError, error } = this.state;
+    const { children, fallback: Fallback } = this.props;
+
+    if (hasError && error) {
+      return <Fallback error={error} retry={this.handleRetry} />;
     }
 
-    static getDerivedStateFromError(error: Error) {
-        return { hasError: true, error };
-    }
-
-    handleRetry = () => {
-        this.setState({ hasError: false, error: null });
-    };
-
-    render() {
-        const { hasError, error } = this.state;
-        const { children, fallback: Fallback } = this.props;
-
-        if (hasError && error) {
-            return <Fallback error={error} retry={this.handleRetry} />;
-        }
-
-        return children;
-    }
+    return children;
+  }
 }
 
 /**
@@ -112,51 +112,51 @@ class ErrorBoundary extends React.Component<
  * );
  */
 export function lazyLoad<T extends React.ComponentType<any>>(
-    factory: () => Promise<{ default: T }>,
-    options: LazyLoadOptions = {}
+  factory: () => Promise<{ default: T }>,
+  options: LazyLoadOptions = {}
 ): React.ComponentType<React.ComponentProps<T>> {
-    const {
-        fallback = <DefaultSkeleton />,
-        errorFallback = DefaultErrorFallback,
-        delay = 0,
-        prefetch = false
-    } = options;
+  const {
+    fallback = <DefaultSkeleton />,
+    errorFallback = DefaultErrorFallback,
+    delay = 0,
+    prefetch = false
+  } = options;
 
-    // Create the lazy component
-    const LazyComponent = lazy(() => {
-        if (delay > 0) {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                    resolve(factory());
-                }, delay);
-            });
-        }
-        return factory();
-    });
-
-    // Handle prefetching
-    if (prefetch) {
-        // Prefetch in the next idle period
-        window.requestIdleCallback?.(() => {
-            factory().catch(() => {
-                // Silent prefetch error
-            });
-        }, { timeout: 2000 });
+  // Create the lazy component
+  const LazyComponent = lazy(() => {
+    if (delay > 0) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(factory());
+        }, delay);
+      });
     }
+    return factory();
+  });
 
-    // Return wrapped component
-    const WrappedLazyComponent = (props: React.ComponentProps<T>) => (
-        <ErrorBoundary fallback={errorFallback}>
-            <Suspense fallback={fallback}>
-                <LazyComponent {...props} />
-            </Suspense>
-        </ErrorBoundary>
-    );
+  // Handle prefetching
+  if (prefetch) {
+    // Prefetch in the next idle period
+    window.requestIdleCallback?.(() => {
+      factory().catch(() => {
+        // Silent prefetch error
+      });
+    }, { timeout: 2000 });
+  }
 
-    // Add display name to fix the linting error
-    WrappedLazyComponent.displayName = `LazyLoaded(${factory.toString().split('(')[0].split(' ').pop() || 'Component'})`;
+  // Return wrapped component
+  const WrappedLazyComponent = (props: React.ComponentProps<T>) => (
+    <ErrorBoundary fallback={errorFallback}>
+      <Suspense fallback={fallback}>
+        <LazyComponent {...props} />
+      </Suspense>
+    </ErrorBoundary>
+  );
 
-    return WrappedLazyComponent;
+  // Add display name to fix the linting error
+  WrappedLazyComponent.displayName = `LazyLoaded(${factory.toString().split('(')[0].split(' ').pop() || 'Component'})`;
+
+  return WrappedLazyComponent;
 }
 
 /**
@@ -177,28 +177,28 @@ export function lazyLoad<T extends React.ComponentType<any>>(
  * <LazyFeatures variant="sports" />
  */
 export function lazyLoadVariant<V extends string, P extends { variant?: V }>(
-    variantMap: Record<string, () => Promise<{ default: React.ComponentType<P> }>>,
-    options: LazyLoadOptions = {}
+  variantMap: Record<string, () => Promise<{ default: React.ComponentType<P> }>>,
+  options: LazyLoadOptions = {}
 ): React.ComponentType<P> {
-    const lazyVariants: Record<string, React.ComponentType<P>> = {};
+  const lazyVariants: Record<string, React.ComponentType<P>> = {};
 
-    // Create lazy component for each variant
-    Object.entries(variantMap).forEach(([variant, factory]) => {
-        lazyVariants[variant] = lazyLoad(factory, options);
-    });
+  // Create lazy component for each variant
+  Object.entries(variantMap).forEach(([variant, factory]) => {
+    lazyVariants[variant] = lazyLoad(factory, options);
+  });
 
-    // Return component that renders the appropriate variant
-    const VariantComponent = function (props: P) {
-        const variant = (props.variant || 'default') as string;
-        const Component = lazyVariants[variant] || lazyVariants['default'];
+  // Return component that renders the appropriate variant
+  const VariantComponent = function (props: P) {
+    const variant = (props.variant || 'default') as string;
+    const Component = lazyVariants[variant] || lazyVariants['default'];
 
-        return <Component {...props} />;
-    };
+    return <Component {...props} />;
+  };
 
-    // Add display name to fix the linting error
-    VariantComponent.displayName = 'LazyLoadedVariant';
+  // Add display name to fix the linting error
+  VariantComponent.displayName = 'LazyLoadedVariant';
 
-    return VariantComponent;
+  return VariantComponent;
 }
 
 export default lazyLoad; 

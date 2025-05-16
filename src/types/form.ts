@@ -7,10 +7,10 @@
 
 import React from 'react';
 import {
-    InputChangeHandler,
-    InputKeyPressHandler,
-    SelectChangeHandler,
-    TextAreaChangeHandler
+  InputChangeHandler,
+  InputKeyPressHandler,
+  SelectChangeHandler,
+  TextAreaChangeHandler
 } from './events';
 
 /**

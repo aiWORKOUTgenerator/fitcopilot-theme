@@ -28,9 +28,9 @@ export { variants };
  * @returns Variant key from WordPress settings or default
  */
 export const getTrainingVariant = (): VariantKey => {
-    // This would typically read from WordPress settings or context
-    // For now, just return default
-    return 'default';
+  // This would typically read from WordPress settings or context
+  // For now, just return default
+  return 'default';
 };
 
 // Export the main component and its props

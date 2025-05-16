@@ -7,8 +7,8 @@
  */
 
 import {
-    WordPressServiceData,
-    WordPressServiceEventHandlers
+  WordPressServiceData,
+  WordPressServiceEventHandlers
 } from '../../types/wordpress';
 
 export interface WordPressService {

@@ -7,10 +7,10 @@
  */
 
 import {
-    ActionButtonProps,
-    ButtonProps,
-    IconButtonProps,
-    LinkButtonProps
+  ActionButtonProps,
+  ButtonProps,
+  IconButtonProps,
+  LinkButtonProps
 } from '../../types/button';
 
 /**
@@ -20,7 +20,7 @@ import {
  * @returns Type predicate indicating if props are for an action button
  */
 export function isActionButton(props: ButtonProps): props is ActionButtonProps {
-    return 'onClick' in props && typeof props.onClick === 'function';
+  return 'onClick' in props && typeof props.onClick === 'function';
 }
 
 /**
@@ -30,7 +30,7 @@ export function isActionButton(props: ButtonProps): props is ActionButtonProps {
  * @returns Type predicate indicating if props are for a link button
  */
 export function isLinkButton(props: ButtonProps): props is LinkButtonProps {
-    return 'href' in props && typeof props.href === 'string';
+  return 'href' in props && typeof props.href === 'string';
 }
 
 /**
@@ -40,7 +40,7 @@ export function isLinkButton(props: ButtonProps): props is LinkButtonProps {
  * @returns Type predicate indicating if props are for an icon button
  */
 export function isIconButton(props: ButtonProps): props is IconButtonProps {
-    return 'icon' in props && !!props.icon;
+  return 'icon' in props && !!props.icon;
 }
 
 /**
@@ -50,7 +50,7 @@ export function isIconButton(props: ButtonProps): props is IconButtonProps {
  * @returns Whether the button is disabled
  */
 export function isDisabled(props: ButtonProps): boolean {
-    return 'disabled' in props && !!props.disabled;
+  return 'disabled' in props && !!props.disabled;
 }
 
 /**
@@ -60,13 +60,13 @@ export function isDisabled(props: ButtonProps): boolean {
  * @returns Whether the button is in loading state
  */
 export function isLoading(props: ButtonProps): boolean {
-    return 'isLoading' in props && !!props.isLoading;
+  return 'isLoading' in props && !!props.isLoading;
 }
 
 export default {
-    isActionButton,
-    isLinkButton,
-    isIconButton,
-    isDisabled,
-    isLoading
+  isActionButton,
+  isLinkButton,
+  isIconButton,
+  isDisabled,
+  isLoading
 }; 

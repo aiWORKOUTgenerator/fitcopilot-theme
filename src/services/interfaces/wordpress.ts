@@ -7,11 +7,11 @@
  */
 
 import {
-    Feature,
-    FooterLinkGroup,
-    JourneyStep,
-    PricingPlan,
-    Testimonial
+  Feature,
+  FooterLinkGroup,
+  JourneyStep,
+  PricingPlan,
+  Testimonial
 } from '../../types/wordpress';
 
 export interface SiteLinks {

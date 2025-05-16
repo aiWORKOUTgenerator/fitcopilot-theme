@@ -3,15 +3,14 @@
  * Form state management types and utilities
  */
 
-import { ValidatorFn } from './types';
-import { runValidators } from './validation';
+import { ValidatorFn } from './validators';
 
 /**
  * Field state type
  */
 export interface FieldState {
     /** Field value */
-    value: any;
+    value: unknown;
     /** Whether the field has been touched (focused and blurred) */
     touched: boolean;
     /** Whether the field is currently dirty (value has changed) */
@@ -21,24 +20,24 @@ export interface FieldState {
     /** Whether the field is currently being validated */
     validating: boolean;
     /** Validators for this field */
-    validators?: ValidatorFn[];
+    validators?: Array<ValidatorFn<unknown>>;
 }
 
 /**
  * Form state type
  */
 export interface FormState {
-    /** Map of field names to field states */
+    /** Field states keyed by field name */
     fields: Record<string, FieldState>;
-    /** Whether the form is valid (no field errors) */
+    /** Whether the form is valid (no errors) */
     isValid: boolean;
-    /** Whether the form is dirty (any field value has changed) */
+    /** Whether the form is dirty (any field has changed) */
     isDirty: boolean;
-    /** Whether the form is currently being submitted */
+    /** Whether the form is currently submitting */
     isSubmitting: boolean;
     /** Whether the form has been submitted */
     isSubmitted: boolean;
-    /** General form error message, if any */
+    /** Form-level error message */
     error: string | null;
 }
 
@@ -58,104 +57,178 @@ export type FormAction =
     | { type: 'SET_FORM_ERROR'; error: string | null };
 
 /**
- * Create initial field state
+ * Create a new field state
  */
-export const createInitialFieldState = (
+export const createFieldState = (
+  value: unknown,
+  validators?: Array<ValidatorFn<unknown>>
+): FieldState => {
+  return {
     value,
+    touched: false,
+    dirty: false,
+    error: null,
+    validating: false,
     validators
-) => {
-    return {
-        value,
-        touched: false,
-        dirty: false,
-        error: null,
-        validating: false,
-        validators
-    };
+  };
 };
 
 /**
- * Create initial form state from fields
+ * Create a new form state
  */
-export const createInitialFormState = (
-    initialValues,
-    validators
-) => {
-    const fields = {};
+export const createFormState = (
+  fields: Record<string, unknown> = {},
+  fieldValidators: Record<string, Array<ValidatorFn<unknown>>> = {}
+): FormState => {
+  const fieldState: Record<string, FieldState> = {};
 
-    // Create field states for each field
-    Object.entries(initialValues).forEach(([fieldName, value]) => {
-        fields[fieldName] = createInitialFieldState(
-            value,
-            validators?.[fieldName]
-        );
+  Object.entries(fields).forEach(([name, value]) => {
+    fieldState[name] = createFieldState(value, fieldValidators[name]);
+  });
+
+  return {
+    fields: fieldState,
+    isValid: true,
+    isDirty: false,
+    isSubmitting: false,
+    isSubmitted: false,
+    error: null
+  };
+};
+
+/**
+ * Run validators on a field value
+ */
+export const runValidators = <T>(
+  value: T,
+  validators?: Array<ValidatorFn<T>>
+): string | null => {
+  if (!validators || validators.length === 0) {
+    return null;
+  }
+
+  for (const validator of validators) {
+    const error = validator(value);
+    if (error) {
+      return error;
+    }
+  }
+
+  return null;
+};
+
+/**
+ * Extract values from form state
+ * @template T - Type of the returned values object
+ * @param formState - The form state to extract values from
+ * @returns An object with field values
+ */
+export const getFormValues = <T extends Record<string, unknown> = Record<string, unknown>>(
+  formState: FormState
+): T => {
+  const values = {} as T;
+
+  Object.entries(formState.fields).forEach(([fieldName, field]) => {
+    // Use Object.defineProperty to handle potential symbol keys
+    Object.defineProperty(values, fieldName, {
+      value: field.value,
+      enumerable: true,
+      configurable: true
     });
+  });
 
-    return {
-        fields,
-        isValid: true,
-        isDirty: false,
-        isSubmitting: false,
-        isSubmitted: false,
-        error: null
+  return values;
+};
+
+/**
+ * Check if a form state has any validation errors
+ */
+export const hasErrors = (formState: FormState): boolean => {
+  // Check for form-level error
+  if (formState.error) {
+    return true;
+  }
+
+  // Check for field-level errors
+  return Object.values(formState.fields).some(field => Boolean(field.error));
+};
+
+/**
+ * Validate all fields in a form state
+ */
+export const validateFormState = (formState: FormState): FormState => {
+  const validatedFields: Record<string, FieldState> = {};
+  let isValid = true;
+
+  Object.entries(formState.fields).forEach(([fieldName, field]) => {
+    const error = runValidators(field.value, field.validators as Array<ValidatorFn<unknown>>);
+    validatedFields[fieldName] = {
+      ...field,
+      error
     };
+
+    if (error) {
+      isValid = false;
+    }
+  });
+
+  return {
+    ...formState,
+    fields: validatedFields,
+    isValid
+  };
 };
 
 /**
  * Validate a single field
  */
-export const validateField = (field) => {
-    const { value, validators } = field;
+export const validateField = (field: FieldState): FieldState => {
+  const { value, validators } = field;
 
-    if (!validators || validators.length === 0) {
-        return { ...field, error: null };
+  if (!validators || validators.length === 0) {
+    return { ...field, error: null };
+  }
+
+  // Use runValidators from local implementation instead of importing
+  let error: string | null = null;
+  
+  // Run validators until an error is found
+  for (const validator of validators) {
+    const validationError = validator(value);
+    if (validationError) {
+      error = validationError;
+      break;
     }
+  }
 
-    const error = runValidators(value, validators);
-
-    return {
-        ...field,
-        error,
-        validating: false
-    };
+  return {
+    ...field,
+    error,
+    validating: false
+  };
 };
 
 /**
  * Validate all fields in a form
  */
-export const validateForm = (formState) => {
-    const validatedFields = {};
-    let isValid = true;
+export const validateForm = (formState: FormState): FormState => {
+  const validatedFields: Record<string, FieldState> = {};
+  let isValid = true;
 
-    // Validate each field
-    Object.entries(formState.fields).forEach(([fieldName, field]) => {
-        const validatedField = validateField(field);
-        validatedFields[fieldName] = validatedField;
+  // Validate each field
+  Object.entries(formState.fields).forEach(([fieldName, field]) => {
+    const validatedField = validateField(field);
+    validatedFields[fieldName] = validatedField;
 
-        // Form is invalid if any field has an error
-        if (validatedField.error) {
-            isValid = false;
-        }
-    });
+    // Form is invalid if any field has an error
+    if (validatedField.error) {
+      isValid = false;
+    }
+  });
 
-    return {
-        ...formState,
-        fields: validatedFields,
-        isValid
-    };
-};
-
-/**
- * Extract values from form state
- */
-export const getFormValues = (
-    formState
-) => {
-    const values = {};
-
-    Object.entries(formState.fields).forEach(([fieldName, field]) => {
-        values[fieldName] = field.value;
-    });
-
-    return values;
+  return {
+    ...formState,
+    fields: validatedFields,
+    isValid
+  };
 }; 

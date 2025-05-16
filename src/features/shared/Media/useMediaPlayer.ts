@@ -9,39 +9,39 @@ export interface MediaPlayerState {
 }
 
 export const useMediaPlayer = () => {
-    const [state, setState] = useState<MediaPlayerState>({
-        isPlaying: false,
-        currentTime: 0,
-        duration: 0,
-        volume: 1,
-        isMuted: false,
-    });
-    const ref = useRef<HTMLMediaElement | null>(null);
+  const [state, setState] = useState<MediaPlayerState>({
+    isPlaying: false,
+    currentTime: 0,
+    duration: 0,
+    volume: 1,
+    isMuted: false,
+  });
+  const ref = useRef<HTMLMediaElement | null>(null);
 
-    // Typed event handlers
-    const handlePlay = useCallback(() => setState(s => ({ ...s, isPlaying: true })), []);
-    const handlePause = useCallback(() => setState(s => ({ ...s, isPlaying: false })), []);
-    const handleTimeUpdate = useCallback(() => {
-        if (ref.current) setState(s => ({ ...s, currentTime: ref.current!.currentTime }));
-    }, []);
-    const handleLoadedMetadata = useCallback(() => {
-        if (ref.current) setState(s => ({ ...s, duration: ref.current!.duration }));
-    }, []);
-    const handleVolumeChange = useCallback(() => {
-        if (ref.current) setState(s => ({
-            ...s,
-            volume: ref.current!.volume,
-            isMuted: ref.current!.muted,
-        }));
-    }, []);
+  // Typed event handlers
+  const handlePlay = useCallback(() => setState(s => ({ ...s, isPlaying: true })), []);
+  const handlePause = useCallback(() => setState(s => ({ ...s, isPlaying: false })), []);
+  const handleTimeUpdate = useCallback(() => {
+    if (ref.current) setState(s => ({ ...s, currentTime: ref.current!.currentTime }));
+  }, []);
+  const handleLoadedMetadata = useCallback(() => {
+    if (ref.current) setState(s => ({ ...s, duration: ref.current!.duration }));
+  }, []);
+  const handleVolumeChange = useCallback(() => {
+    if (ref.current) setState(s => ({
+      ...s,
+      volume: ref.current!.volume,
+      isMuted: ref.current!.muted,
+    }));
+  }, []);
 
-    return {
-        ref,
-        state,
-        handlePlay,
-        handlePause,
-        handleTimeUpdate,
-        handleLoadedMetadata,
-        handleVolumeChange,
-    };
+  return {
+    ref,
+    state,
+    handlePlay,
+    handlePause,
+    handleTimeUpdate,
+    handleLoadedMetadata,
+    handleVolumeChange,
+  };
 }; 

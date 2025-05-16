@@ -4,54 +4,54 @@ import { ProgramType } from '../types';
  * Default data for training programs
  */
 export const DEFAULT_PROGRAMS: ProgramType[] = [
-    {
-        title: "Strength Building",
-        description: "Focus on compound movements and progressive overload for maximum strength gains.",
-        icon: "💪",
-        benefits: [
-            "Scientifically proven strength progression",
-            "Focus on fundamental movement patterns",
-            "Optimal progressive overload protocols",
-            "Strategic deload periods for recovery"
-        ],
-        programType: "strength"
-    },
-    {
-        title: "Fat Loss",
-        description: "Combination of HIIT, metabolic conditioning, and strategic nutrition for effective fat loss.",
-        icon: "🔥",
-        benefits: [
-            "Metabolic conditioning protocols",
-            "Nutritional guidance and meal templates",
-            "Progressive cardiovascular training",
-            "Body composition tracking tools"
-        ],
-        programType: "fatLoss"
-    },
-    {
-        title: "General Fitness",
-        description: "Well-rounded approach to improve all aspects of fitness with balanced programming.",
-        icon: "⚡",
-        benefits: [
-            "Balanced strength and endurance training",
-            "Functional movement patterns",
-            "Flexibility and mobility work",
-            "Adaptable to all fitness levels"
-        ],
-        programType: "fitness"
-    },
-    {
-        title: "Athletic Performance",
-        description: "Advanced training methodologies to enhance speed, power, and sports-specific performance.",
-        icon: "🏆",
-        benefits: [
-            "Sport-specific movement optimization",
-            "Explosive power development",
-            "Speed and agility training protocols",
-            "Recovery and performance tracking"
-        ],
-        programType: "athletic"
-    }
+  {
+    title: "Strength Building",
+    description: "Focus on compound movements and progressive overload for maximum strength gains.",
+    icon: "💪",
+    benefits: [
+      "Scientifically proven strength progression",
+      "Focus on fundamental movement patterns",
+      "Optimal progressive overload protocols",
+      "Strategic deload periods for recovery"
+    ],
+    programType: "strength"
+  },
+  {
+    title: "Fat Loss",
+    description: "Combination of HIIT, metabolic conditioning, and strategic nutrition for effective fat loss.",
+    icon: "🔥",
+    benefits: [
+      "Metabolic conditioning protocols",
+      "Nutritional guidance and meal templates",
+      "Progressive cardiovascular training",
+      "Body composition tracking tools"
+    ],
+    programType: "fatLoss"
+  },
+  {
+    title: "General Fitness",
+    description: "Well-rounded approach to improve all aspects of fitness with balanced programming.",
+    icon: "⚡",
+    benefits: [
+      "Balanced strength and endurance training",
+      "Functional movement patterns",
+      "Flexibility and mobility work",
+      "Adaptable to all fitness levels"
+    ],
+    programType: "fitness"
+  },
+  {
+    title: "Athletic Performance",
+    description: "Advanced training methodologies to enhance speed, power, and sports-specific performance.",
+    icon: "🏆",
+    benefits: [
+      "Sport-specific movement optimization",
+      "Explosive power development",
+      "Speed and agility training protocols",
+      "Recovery and performance tracking"
+    ],
+    programType: "athletic"
+  }
 ];
 
 /**

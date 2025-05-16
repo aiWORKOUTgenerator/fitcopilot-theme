@@ -27,314 +27,314 @@ import {
 import FormField from '../fields/FormField';
 
 describe('FormField Type Guards', () => {
-    describe('isTextField', () => {
-        it('should return true for text field props', () => {
-            const props: FormFieldProps = {
-                variant: 'text',
-                name: 'testField',
-                value: 'test value',
-                type: 'text',
-                onChange: jest.fn()
-            };
+  describe('isTextField', () => {
+    it('should return true for text field props', () => {
+      const props: FormFieldProps = {
+        variant: 'text',
+        name: 'testField',
+        value: 'test value',
+        type: 'text',
+        onChange: jest.fn()
+      };
 
-            expect(isTextField(props)).toBe(true);
-        });
-
-        it('should return false for non-text field props', () => {
-            const props: FormFieldProps = {
-                variant: 'textarea',
-                name: 'testField',
-                value: 'test value',
-                onChange: jest.fn()
-            };
-
-            expect(isTextField(props)).toBe(false);
-        });
+      expect(isTextField(props)).toBe(true);
     });
 
-    describe('isTextAreaField', () => {
-        it('should return true for textarea field props', () => {
-            const props: FormFieldProps = {
-                variant: 'textarea',
-                name: 'testField',
-                value: 'test value',
-                onChange: jest.fn()
-            };
+    it('should return false for non-text field props', () => {
+      const props: FormFieldProps = {
+        variant: 'textarea',
+        name: 'testField',
+        value: 'test value',
+        onChange: jest.fn()
+      };
 
-            expect(isTextAreaField(props)).toBe(true);
-        });
+      expect(isTextField(props)).toBe(false);
+    });
+  });
 
-        it('should return false for non-textarea field props', () => {
-            const props: FormFieldProps = {
-                variant: 'text',
-                name: 'testField',
-                value: 'test value',
-                type: 'text',
-                onChange: jest.fn()
-            };
+  describe('isTextAreaField', () => {
+    it('should return true for textarea field props', () => {
+      const props: FormFieldProps = {
+        variant: 'textarea',
+        name: 'testField',
+        value: 'test value',
+        onChange: jest.fn()
+      };
 
-            expect(isTextAreaField(props)).toBe(false);
-        });
+      expect(isTextAreaField(props)).toBe(true);
     });
 
-    describe('isSelectField', () => {
-        it('should return true for select field props', () => {
-            const props: FormFieldProps = {
-                variant: 'select',
-                name: 'testField',
-                value: 'option1',
-                options: [
-                    { value: 'option1', label: 'Option 1' },
-                    { value: 'option2', label: 'Option 2' }
-                ],
-                onChange: jest.fn()
-            };
+    it('should return false for non-textarea field props', () => {
+      const props: FormFieldProps = {
+        variant: 'text',
+        name: 'testField',
+        value: 'test value',
+        type: 'text',
+        onChange: jest.fn()
+      };
 
-            expect(isSelectField(props)).toBe(true);
-        });
+      expect(isTextAreaField(props)).toBe(false);
+    });
+  });
 
-        it('should return false for non-select field props', () => {
-            const props: FormFieldProps = {
-                variant: 'text',
-                name: 'testField',
-                value: 'test value',
-                type: 'text',
-                onChange: jest.fn()
-            };
+  describe('isSelectField', () => {
+    it('should return true for select field props', () => {
+      const props: FormFieldProps = {
+        variant: 'select',
+        name: 'testField',
+        value: 'option1',
+        options: [
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' }
+        ],
+        onChange: jest.fn()
+      };
 
-            expect(isSelectField(props)).toBe(false);
-        });
+      expect(isSelectField(props)).toBe(true);
     });
 
-    describe('isCheckboxField', () => {
-        it('should return true for checkbox field props', () => {
-            const props: FormFieldProps = {
-                variant: 'checkbox',
-                name: 'testField',
-                checked: true,
-                onChange: jest.fn()
-            };
+    it('should return false for non-select field props', () => {
+      const props: FormFieldProps = {
+        variant: 'text',
+        name: 'testField',
+        value: 'test value',
+        type: 'text',
+        onChange: jest.fn()
+      };
 
-            expect(isCheckboxField(props)).toBe(true);
-        });
+      expect(isSelectField(props)).toBe(false);
+    });
+  });
 
-        it('should return false for non-checkbox field props', () => {
-            const props: FormFieldProps = {
-                variant: 'text',
-                name: 'testField',
-                value: 'test value',
-                type: 'text',
-                onChange: jest.fn()
-            };
+  describe('isCheckboxField', () => {
+    it('should return true for checkbox field props', () => {
+      const props: FormFieldProps = {
+        variant: 'checkbox',
+        name: 'testField',
+        checked: true,
+        onChange: jest.fn()
+      };
 
-            expect(isCheckboxField(props)).toBe(false);
-        });
+      expect(isCheckboxField(props)).toBe(true);
     });
 
-    describe('isRadioField', () => {
-        it('should return true for radio field props', () => {
-            const props: FormFieldProps = {
-                variant: 'radio',
-                name: 'testField',
-                value: 'option1',
-                selectedValue: 'option1',
-                onChange: jest.fn()
-            };
+    it('should return false for non-checkbox field props', () => {
+      const props: FormFieldProps = {
+        variant: 'text',
+        name: 'testField',
+        value: 'test value',
+        type: 'text',
+        onChange: jest.fn()
+      };
 
-            expect(isRadioField(props)).toBe(true);
-        });
+      expect(isCheckboxField(props)).toBe(false);
+    });
+  });
 
-        it('should return false for non-radio field props', () => {
-            const props: FormFieldProps = {
-                variant: 'text',
-                name: 'testField',
-                value: 'test value',
-                type: 'text',
-                onChange: jest.fn()
-            };
+  describe('isRadioField', () => {
+    it('should return true for radio field props', () => {
+      const props: FormFieldProps = {
+        variant: 'radio',
+        name: 'testField',
+        value: 'option1',
+        selectedValue: 'option1',
+        onChange: jest.fn()
+      };
 
-            expect(isRadioField(props)).toBe(false);
-        });
+      expect(isRadioField(props)).toBe(true);
     });
 
-    describe('isRadioGroupField', () => {
-        it('should return true for radio group field props', () => {
-            const props: FormFieldProps = {
-                variant: 'radiogroup',
-                name: 'testField',
-                value: 'option1',
-                options: [
-                    { value: 'option1', label: 'Option 1' },
-                    { value: 'option2', label: 'Option 2' }
-                ],
-                onChange: jest.fn()
-            };
+    it('should return false for non-radio field props', () => {
+      const props: FormFieldProps = {
+        variant: 'text',
+        name: 'testField',
+        value: 'test value',
+        type: 'text',
+        onChange: jest.fn()
+      };
 
-            expect(isRadioGroupField(props)).toBe(true);
-        });
+      expect(isRadioField(props)).toBe(false);
+    });
+  });
 
-        it('should return false for non-radio-group field props', () => {
-            const props: FormFieldProps = {
-                variant: 'text',
-                name: 'testField',
-                value: 'test value',
-                type: 'text',
-                onChange: jest.fn()
-            };
+  describe('isRadioGroupField', () => {
+    it('should return true for radio group field props', () => {
+      const props: FormFieldProps = {
+        variant: 'radiogroup',
+        name: 'testField',
+        value: 'option1',
+        options: [
+          { value: 'option1', label: 'Option 1' },
+          { value: 'option2', label: 'Option 2' }
+        ],
+        onChange: jest.fn()
+      };
 
-            expect(isRadioGroupField(props)).toBe(false);
-        });
+      expect(isRadioGroupField(props)).toBe(true);
     });
 
-    describe('isSwitchField', () => {
-        it('should return true for switch field props', () => {
-            const props: FormFieldProps = {
-                variant: 'switch',
-                name: 'testField',
-                checked: true,
-                onChange: jest.fn()
-            };
+    it('should return false for non-radio-group field props', () => {
+      const props: FormFieldProps = {
+        variant: 'text',
+        name: 'testField',
+        value: 'test value',
+        type: 'text',
+        onChange: jest.fn()
+      };
 
-            expect(isSwitchField(props)).toBe(true);
-        });
+      expect(isRadioGroupField(props)).toBe(false);
+    });
+  });
 
-        it('should return false for non-switch field props', () => {
-            const props: FormFieldProps = {
-                variant: 'text',
-                name: 'testField',
-                value: 'test value',
-                type: 'text',
-                onChange: jest.fn()
-            };
+  describe('isSwitchField', () => {
+    it('should return true for switch field props', () => {
+      const props: FormFieldProps = {
+        variant: 'switch',
+        name: 'testField',
+        checked: true,
+        onChange: jest.fn()
+      };
 
-            expect(isSwitchField(props)).toBe(false);
-        });
+      expect(isSwitchField(props)).toBe(true);
     });
 
-    describe('isDateField', () => {
-        it('should return true for date field props', () => {
-            const props: FormFieldProps = {
-                variant: 'date',
-                name: 'testField',
-                value: '2023-04-15',
-                onChange: jest.fn()
-            };
+    it('should return false for non-switch field props', () => {
+      const props: FormFieldProps = {
+        variant: 'text',
+        name: 'testField',
+        value: 'test value',
+        type: 'text',
+        onChange: jest.fn()
+      };
 
-            expect(isDateField(props)).toBe(true);
-        });
+      expect(isSwitchField(props)).toBe(false);
+    });
+  });
 
-        it('should return false for non-date field props', () => {
-            const props: FormFieldProps = {
-                variant: 'text',
-                name: 'testField',
-                value: 'test value',
-                type: 'text',
-                onChange: jest.fn()
-            };
+  describe('isDateField', () => {
+    it('should return true for date field props', () => {
+      const props: FormFieldProps = {
+        variant: 'date',
+        name: 'testField',
+        value: '2023-04-15',
+        onChange: jest.fn()
+      };
 
-            expect(isDateField(props)).toBe(false);
-        });
+      expect(isDateField(props)).toBe(true);
     });
 
-    describe('isFileField', () => {
-        it('should return true for file field props', () => {
-            const props: FormFieldProps = {
-                variant: 'file',
-                name: 'testField',
-                value: null,
-                onChange: jest.fn()
-            };
+    it('should return false for non-date field props', () => {
+      const props: FormFieldProps = {
+        variant: 'text',
+        name: 'testField',
+        value: 'test value',
+        type: 'text',
+        onChange: jest.fn()
+      };
 
-            expect(isFileField(props)).toBe(true);
-        });
-
-        it('should return false for non-file field props', () => {
-            const props: FormFieldProps = {
-                variant: 'text',
-                name: 'testField',
-                value: 'test value',
-                type: 'text',
-                onChange: jest.fn()
-            };
-
-            expect(isFileField(props)).toBe(false);
-        });
+      expect(isDateField(props)).toBe(false);
     });
+  });
+
+  describe('isFileField', () => {
+    it('should return true for file field props', () => {
+      const props: FormFieldProps = {
+        variant: 'file',
+        name: 'testField',
+        value: null,
+        onChange: jest.fn()
+      };
+
+      expect(isFileField(props)).toBe(true);
+    });
+
+    it('should return false for non-file field props', () => {
+      const props: FormFieldProps = {
+        variant: 'text',
+        name: 'testField',
+        value: 'test value',
+        type: 'text',
+        onChange: jest.fn()
+      };
+
+      expect(isFileField(props)).toBe(false);
+    });
+  });
 });
 
 // Additional tests for FormField component rendering
 describe('FormField Component Rendering', () => {
-    it('renders TextField for text variant', () => {
-        const props = createTextFieldProps({
-            label: 'Text Field',
-            value: 'Test Value'
-        });
-
-        render(<FormField {...props} />);
-
-        const inputElement = screen.getByLabelText('Text Field');
-        expect(inputElement).toBeInTheDocument();
-        expect(inputElement).toHaveValue('Test Value');
-        expect(inputElement).toHaveClass('form-input', 'form-input--text');
+  it('renders TextField for text variant', () => {
+    const props = createTextFieldProps({
+      label: 'Text Field',
+      value: 'Test Value'
     });
 
-    it('renders TextAreaField for textarea variant', () => {
-        const props = createTextAreaFieldProps({
-            label: 'Text Area',
-            value: 'Test Content'
-        });
+    render(<FormField {...props} />);
 
-        render(<FormField {...props} />);
+    const inputElement = screen.getByLabelText('Text Field');
+    expect(inputElement).toBeInTheDocument();
+    expect(inputElement).toHaveValue('Test Value');
+    expect(inputElement).toHaveClass('form-input', 'form-input--text');
+  });
 
-        const textareaElement = screen.getByLabelText('Text Area');
-        expect(textareaElement).toBeInTheDocument();
-        expect(textareaElement).toHaveValue('Test Content');
-        expect(textareaElement).toHaveClass('form-textarea');
+  it('renders TextAreaField for textarea variant', () => {
+    const props = createTextAreaFieldProps({
+      label: 'Text Area',
+      value: 'Test Content'
     });
 
-    it('renders SelectField for select variant', () => {
-        const props = createSelectFieldProps({
-            label: 'Select Field',
-            value: 'option2',
-            options: [
-                { value: 'option1', label: 'Option 1' },
-                { value: 'option2', label: 'Option 2' }
-            ]
-        });
+    render(<FormField {...props} />);
 
-        render(<FormField {...props} />);
+    const textareaElement = screen.getByLabelText('Text Area');
+    expect(textareaElement).toBeInTheDocument();
+    expect(textareaElement).toHaveValue('Test Content');
+    expect(textareaElement).toHaveClass('form-textarea');
+  });
 
-        const selectElement = screen.getByLabelText('Select Field');
-        expect(selectElement).toBeInTheDocument();
-        expect(selectElement).toHaveValue('option2');
-        expect(selectElement).toHaveClass('form-select');
+  it('renders SelectField for select variant', () => {
+    const props = createSelectFieldProps({
+      label: 'Select Field',
+      value: 'option2',
+      options: [
+        { value: 'option1', label: 'Option 1' },
+        { value: 'option2', label: 'Option 2' }
+      ]
     });
 
-    it('renders CheckboxField for checkbox variant', () => {
-        const props = createCheckboxFieldProps({
-            label: 'Check me',
-            checked: true
-        });
+    render(<FormField {...props} />);
 
-        render(<FormField {...props} />);
+    const selectElement = screen.getByLabelText('Select Field');
+    expect(selectElement).toBeInTheDocument();
+    expect(selectElement).toHaveValue('option2');
+    expect(selectElement).toHaveClass('form-select');
+  });
 
-        const checkboxElement = screen.getByLabelText('Check me');
-        expect(checkboxElement).toBeInTheDocument();
-        expect(checkboxElement).toBeChecked();
-        expect(checkboxElement).toHaveClass('form-checkbox');
+  it('renders CheckboxField for checkbox variant', () => {
+    const props = createCheckboxFieldProps({
+      label: 'Check me',
+      checked: true
     });
 
-    it('renders error message when error prop is provided', () => {
-        const props = createTextFieldProps({
-            label: 'Text Field',
-            value: 'Test Value',
-            error: 'This field has an error'
-        });
+    render(<FormField {...props} />);
 
-        render(<FormField {...props} />);
+    const checkboxElement = screen.getByLabelText('Check me');
+    expect(checkboxElement).toBeInTheDocument();
+    expect(checkboxElement).toBeChecked();
+    expect(checkboxElement).toHaveClass('form-checkbox');
+  });
 
-        const errorMessage = screen.getByText('This field has an error');
-        expect(errorMessage).toBeInTheDocument();
-        expect(errorMessage).toHaveClass('form-field__message--error');
+  it('renders error message when error prop is provided', () => {
+    const props = createTextFieldProps({
+      label: 'Text Field',
+      value: 'Test Value',
+      error: 'This field has an error'
     });
+
+    render(<FormField {...props} />);
+
+    const errorMessage = screen.getByText('This field has an error');
+    expect(errorMessage).toBeInTheDocument();
+    expect(errorMessage).toHaveClass('form-field__message--error');
+  });
 }); 

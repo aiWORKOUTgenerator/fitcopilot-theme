@@ -32,16 +32,16 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
   render() {
     if (this.state.hasError) {
       return (
-          <div className="error-boundary">
-              <h2>Something went wrong.</h2>
-              <p>The application has encountered an error and cannot continue.</p>
-              {debug.isDebugMode() && this.state.error && (
-              <div className="error-details">
-                  <pre>{this.state.error.toString()}</pre>
-              </div>
+        <div className="error-boundary">
+          <h2>Something went wrong.</h2>
+          <p>The application has encountered an error and cannot continue.</p>
+          {debug.isDebugMode() && this.state.error && (
+            <div className="error-details">
+              <pre>{this.state.error.toString()}</pre>
+            </div>
           )}
-              <button onClick={this.handleRefresh}>Refresh Page</button>
-          </div>
+          <button onClick={this.handleRefresh}>Refresh Page</button>
+        </div>
       );
     }
 
@@ -72,14 +72,14 @@ const AppContainer: React.FC = () => {
 
   if (error) {
     return (
-        <div className="app-error">
-            <h2>Initialization Error</h2>
-            <p>The application failed to initialize.</p>
-            {debug.isDebugMode() && (
-            <pre>{error.message}</pre>
+      <div className="app-error">
+        <h2>Initialization Error</h2>
+        <p>The application failed to initialize.</p>
+        {debug.isDebugMode() && (
+          <pre>{error.message}</pre>
         )}
-            <button onClick={() => window.location.reload()}>Refresh Page</button>
-        </div>
+        <button onClick={() => window.location.reload()}>Refresh Page</button>
+      </div>
     );
   }
 
@@ -88,11 +88,11 @@ const AppContainer: React.FC = () => {
   }
 
   return (
-      <ErrorBoundary>
-          <React.StrictMode>
-              <App />
-          </React.StrictMode>
-      </ErrorBoundary>
+    <ErrorBoundary>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </ErrorBoundary>
   );
 };
 

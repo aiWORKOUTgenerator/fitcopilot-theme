@@ -6,10 +6,10 @@ import { ProgramType } from '../types';
  * Map of program types to their respective icons
  */
 export const programIconMap = {
-    strength: Dumbbell,
-    fatLoss: CreditCard,
-    fitness: CircleDashed,
-    athletic: BarChart
+  strength: Dumbbell,
+  fatLoss: CreditCard,
+  fitness: CircleDashed,
+  athletic: BarChart
 };
 
 /**
@@ -19,10 +19,10 @@ export const programIconMap = {
  * @returns Programs with icons
  */
 export const mapProgramsWithIcons = (programs: Omit<ProgramType, 'icon'>[]): ProgramType[] => {
-    return programs.map(program => ({
-        ...program,
-        icon: program.programType && programIconMap[program.programType] ?
-            React.createElement(programIconMap[program.programType], { className: 'program-icon', size: 24 }) :
-            React.createElement(Dumbbell, { className: 'program-icon', size: 24 })
-    }));
+  return programs.map(program => ({
+    ...program,
+    icon: program.programType && programIconMap[program.programType] ?
+      React.createElement(programIconMap[program.programType], { className: 'program-icon', size: 24 }) :
+      React.createElement(Dumbbell, { className: 'program-icon', size: 24 })
+  }));
 }; 

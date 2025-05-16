@@ -84,30 +84,30 @@ export type PaginatedApiResponse<T> = ApiResponse<PaginatedData<T>>;
  * Type guard to check if response is a success response
  */
 export function isApiSuccessResponse<T>(response: ApiResponse<T>): response is ApiSuccessResponse<T> {
-    return response.success === true;
+  return response.success === true;
 }
 
 /**
  * Type guard to check if response is an error response
  */
 export function isApiErrorResponse<T>(response: ApiResponse<T>): response is ApiErrorResponse {
-    return response.success === false;
+  return response.success === false;
 }
 
 /**
  * Type guard to check if a response is a paginated response
  */
 export function isPaginatedResponse<T>(
-    response: ApiSuccessResponse<T | PaginatedData<T>>
+  response: ApiSuccessResponse<T | PaginatedData<T>>
 ): response is ApiSuccessResponse<PaginatedData<T>> {
-    return (
-        'data' in response &&
+  return (
+    'data' in response &&
         typeof response.data === 'object' &&
         response.data !== null &&
         'pagination' in response.data &&
         'items' in response.data &&
         Array.isArray((response.data as PaginatedData<T>).items)
-    );
+  );
 }
 
 // ===== Example Usage =====

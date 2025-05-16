@@ -12,11 +12,11 @@ interface CustomizedMedicalProps {
  * by separating provider and consumer components
  */
 const CustomizedMedical: React.FC<CustomizedMedicalProps> = ({ onValidChange }) => {
-    return (
-        <MedicalCustomizationProvider>
-            <CustomizedMedicalContent onValidChange={onValidChange} />
-        </MedicalCustomizationProvider>
-    );
+  return (
+    <MedicalCustomizationProvider>
+      <CustomizedMedicalContent onValidChange={onValidChange} />
+    </MedicalCustomizationProvider>
+  );
 };
 
 export default CustomizedMedical; 

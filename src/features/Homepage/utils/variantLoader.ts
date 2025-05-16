@@ -13,32 +13,32 @@ export function createVariantComponent<
     VariantKey extends string,
     Props extends { variant?: VariantKey }
 >(
-    variantMap: Record<VariantKey, React.ComponentType<Omit<Props, 'variant'>>>,
-    defaultVariant: VariantKey
+  variantMap: Record<VariantKey, React.ComponentType<Omit<Props, 'variant'>>>,
+  defaultVariant: VariantKey
 ): React.FC<Props> {
-    // Create the variant component with improved type safety
-    const VariantComponent: React.FC<Props> = (props: Props) => {
-        const { variant = defaultVariant, ...restProps } = props;
+  // Create the variant component with improved type safety
+  const VariantComponent: React.FC<Props> = (props: Props) => {
+    const { variant = defaultVariant, ...restProps } = props;
 
-        // Debug: Log when component renders with specified variant
-        logger.debug(`Rendering variant component with variant: ${variant}`);
+    // Debug: Log when component renders with specified variant
+    logger.debug(`Rendering variant component with variant: ${variant}`);
 
-        // If the specified variant doesn't exist in the map, use default
-        if (!variantMap[variant]) {
-            logger.warn(`Variant "${variant}" not found in variant map, using default instead`);
-        }
+    // If the specified variant doesn't exist in the map, use default
+    if (!variantMap[variant]) {
+      logger.warn(`Variant "${variant}" not found in variant map, using default instead`);
+    }
 
-        // Use the specified variant or fall back to default
-        const Component = variantMap[variant] || variantMap[defaultVariant];
+    // Use the specified variant or fall back to default
+    const Component = variantMap[variant] || variantMap[defaultVariant];
 
-        // Cast is needed because we're removing the variant prop
-        return React.createElement(Component, restProps as Omit<Props, 'variant'>);
-    };
+    // Cast is needed because we're removing the variant prop
+    return React.createElement(Component, restProps as Omit<Props, 'variant'>);
+  };
 
-    // Add a display name to fix linting error
-    VariantComponent.displayName = 'VariantComponent';
+  // Add a display name to fix linting error
+  VariantComponent.displayName = 'VariantComponent';
 
-    return VariantComponent;
+  return VariantComponent;
 }
 
 /**
@@ -49,19 +49,19 @@ export function createVariantComponent<
  * @returns The variant name to use
  */
 export function getComponentVariant<T extends string>(
-    componentKey: string,
-    defaultVariant: T
+  componentKey: string,
+  defaultVariant: T
 ): T {
-    // Check if window.athleteDashboardData is available for debugging
-    if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
-        logger.debug('Debug - window.athleteDashboardData.wpData:', window.athleteDashboardData.wpData);
-    }
+  // Check if window.athleteDashboardData is available for debugging
+  if (typeof window !== 'undefined' && window.athleteDashboardData?.wpData) {
+    logger.debug('Debug - window.athleteDashboardData.wpData:', window.athleteDashboardData.wpData);
+  }
 
-    // Get variant from WordPress settings
-    const variant = getHomepageVariant<T>(componentKey, defaultVariant);
+  // Get variant from WordPress settings
+  const variant = getHomepageVariant<T>(componentKey, defaultVariant);
 
-    // Add additional debugging
-    logger.debug(`getComponentVariant: key=${componentKey}, result=${variant}`);
+  // Add additional debugging
+  logger.debug(`getComponentVariant: key=${componentKey}, result=${variant}`);
 
-    return variant;
+  return variant;
 } 

@@ -5,47 +5,47 @@ import { StepTransitionEvent, TransitionEventListener, TransitionType } from './
  * Manages registration step transition events and listeners
  */
 class TransitionEventManager {
-    private listeners: TransitionEventListener[] = [];
+  private listeners: TransitionEventListener[] = [];
 
-    /**
+  /**
      * Register a listener for transition events
      * @returns Function to unsubscribe the listener
      */
-    public subscribe(listener: TransitionEventListener): () => void {
-        this.listeners.push(listener);
+  public subscribe(listener: TransitionEventListener): () => void {
+    this.listeners.push(listener);
 
-        // Return unsubscribe function
-        return () => {
-            this.listeners = this.listeners.filter(l => l !== listener);
-        };
-    }
+    // Return unsubscribe function
+    return () => {
+      this.listeners = this.listeners.filter(l => l !== listener);
+    };
+  }
 
-    /**
+  /**
      * Emit a transition event to all registered listeners
      */
-    public emitTransition(
-        sourceStep: RegistrationStep,
-        destinationStep: RegistrationStep,
-        transitionType: TransitionType,
-        metadata?: Record<string, unknown>
-    ): void {
-        const event: StepTransitionEvent = {
-            sourceStep,
-            destinationStep,
-            transitionType,
-            timestamp: Date.now(),
-            metadata
-        };
+  public emitTransition(
+    sourceStep: RegistrationStep,
+    destinationStep: RegistrationStep,
+    transitionType: TransitionType,
+    metadata?: Record<string, unknown>
+  ): void {
+    const event: StepTransitionEvent = {
+      sourceStep,
+      destinationStep,
+      transitionType,
+      timestamp: Date.now(),
+      metadata
+    };
 
-        // Notify all listeners
-        this.listeners.forEach(listener => listener(event));
+    // Notify all listeners
+    this.listeners.forEach(listener => listener(event));
 
-        // Log for debugging
-        logger.debug(
-            `[Registration Event] ${sourceStep} → ${destinationStep} (${transitionType})`,
-            metadata ? metadata : ''
-        );
-    }
+    // Log for debugging
+    logger.debug(
+      `[Registration Event] ${sourceStep} → ${destinationStep} (${transitionType})`,
+      metadata ? metadata : ''
+    );
+  }
 }
 
 // Singleton instance

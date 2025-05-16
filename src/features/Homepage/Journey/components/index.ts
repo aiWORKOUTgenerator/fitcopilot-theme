@@ -5,9 +5,9 @@ import SectionHeader from './SectionHeader';
 import StepCTA from './StepCTA';
 
 export {
-    JourneyCTA,
-    JourneyFeatureCard,
-    JourneyStep,
-    SectionHeader,
-    StepCTA
+  JourneyCTA,
+  JourneyFeatureCard,
+  JourneyStep,
+  SectionHeader,
+  StepCTA
 };

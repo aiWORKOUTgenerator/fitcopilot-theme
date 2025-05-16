@@ -43,33 +43,33 @@ interface UseTrainingProgramsResult {
  * @returns Hook state and functions
  */
 export const useTrainingPrograms = ({
-    initialPrograms
+  initialPrograms
 }: UseTrainingProgramsProps): UseTrainingProgramsResult => {
-    // State for tracking the currently selected program
-    const [selectedProgram, setSelectedProgram] = useState<number | null>(null);
+  // State for tracking the currently selected program
+  const [selectedProgram, setSelectedProgram] = useState<number | null>(null);
 
-    /**
+  /**
      * Toggle a program's expanded state
      * Memoized with useCallback for better performance
      * @param index Program index to toggle
      */
-    const toggleProgramDetails = useCallback((index: number) => {
-        setSelectedProgram(prevSelected => prevSelected === index ? null : index);
-    }, []);
+  const toggleProgramDetails = useCallback((index: number) => {
+    setSelectedProgram(prevSelected => prevSelected === index ? null : index);
+  }, []);
 
-    /**
+  /**
      * Navigate to a program's detail page
      * Memoized with useCallback for better performance
      * @param programTitle Title of the program to navigate to
      */
-    const navigateToProgram = useCallback((programTitle: string) => {
-        window.location.href = `https://builder.fitcopilot.ai/programs/${programTitle.toLowerCase().replace(/\s+/g, '-')}`;
-    }, []);
+  const navigateToProgram = useCallback((programTitle: string) => {
+    window.location.href = `https://builder.fitcopilot.ai/programs/${programTitle.toLowerCase().replace(/\s+/g, '-')}`;
+  }, []);
 
-    return {
-        programs: initialPrograms,
-        selectedProgram,
-        toggleProgramDetails,
-        navigateToProgram
-    };
+  return {
+    programs: initialPrograms,
+    selectedProgram,
+    toggleProgramDetails,
+    navigateToProgram
+  };
 }; 

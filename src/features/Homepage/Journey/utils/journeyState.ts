@@ -6,6 +6,6 @@ interface JourneyState {
 }
 
 export const useJourneyStore = create<JourneyState>((set) => ({
-    expandedStep: null,
-    setExpandedStep: (step) => set({ expandedStep: step }),
+  expandedStep: null,
+  setExpandedStep: (step) => set({ expandedStep: step }),
 })); 

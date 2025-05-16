@@ -95,10 +95,10 @@ export interface BaseVariantProps {
  * Type guard for narrowing variant types
  */
 export function isVariant<T extends VariantProps['variant']>(
-    variant: VariantKey,
-    specificVariant: T
+  variant: VariantKey,
+  specificVariant: T
 ): variant is T {
-    return variant === specificVariant;
+  return variant === specificVariant;
 }
 
 /**

@@ -22,12 +22,12 @@ const LazyExampleComponent = lazyLoad(() => import('./components/ExampleComponen
 
 // Add a Loading component for better user experience
 const LoadingFallback = () => (
-    <div className="lazy-loading-skeleton registration-skeleton">
-        <div className="registration-skeleton-header"></div>
-        <div className="registration-skeleton-content">
-            <div className="registration-skeleton-form"></div>
-        </div>
+  <div className="lazy-loading-skeleton registration-skeleton">
+    <div className="registration-skeleton-header"></div>
+    <div className="registration-skeleton-content">
+      <div className="registration-skeleton-form"></div>
     </div>
+  </div>
 );
 
 /**
@@ -63,34 +63,34 @@ const Homepage: React.FC = () => {
   // Render appropriate content based on route
   if (showRegistration) {
     return (
-        <Suspense fallback={<LoadingFallback />}>
-            <LazyRegistration
-                initialStep={1}
-                onComplete={() => window.location.href = '/dashboard'}
-                onCancel={() => window.location.href = '/'}
+      <Suspense fallback={<LoadingFallback />}>
+        <LazyRegistration
+          initialStep={1}
+          onComplete={() => window.location.href = '/dashboard'}
+          onCancel={() => window.location.href = '/'}
         />
-        </Suspense>
+      </Suspense>
     );
   }
 
   return (
-      <>
-          {/* Main content with suspense boundary */}
-          <Suspense fallback={<div className="lazy-loading-skeleton hero-skeleton" />}>
-              <LazyHomepage />
-          </Suspense>
+    <>
+      {/* Main content with suspense boundary */}
+      <Suspense fallback={<div className="lazy-loading-skeleton hero-skeleton" />}>
+        <LazyHomepage />
+      </Suspense>
 
-          {/* Only show example component in debug mode */}
-          {isDebug && (
-          <div className="debug-container" style={{ padding: '20px', margin: '20px', border: '1px dashed #a3e635' }}>
-              <h1>Debug Components</h1>
-              <Suspense fallback={<div className="lazy-loading-skeleton" style={{ height: '200px' }} />}>
-                  <LazyExampleComponent title="Debug Example" />
-              </Suspense>
-              <debug.PerformanceMonitor />
-          </div>
+      {/* Only show example component in debug mode */}
+      {isDebug && (
+        <div className="debug-container" style={{ padding: '20px', margin: '20px', border: '1px dashed #a3e635' }}>
+          <h1>Debug Components</h1>
+          <Suspense fallback={<div className="lazy-loading-skeleton" style={{ height: '200px' }} />}>
+            <LazyExampleComponent title="Debug Example" />
+          </Suspense>
+          <debug.PerformanceMonitor />
+        </div>
       )}
-      </>
+    </>
   );
 };
 

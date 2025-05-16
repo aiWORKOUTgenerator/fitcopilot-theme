@@ -31,26 +31,26 @@ export interface HomepageData {
  * @returns Homepage-specific data from WordPress
  */
 export const useHomepageService = (): HomepageData => {
-    // Initialize state with current data
-    const [data, setData] = useState<HomepageData>(() => {
-        const wpData = wordPressService.getData();
-        return formatHomepageData(wpData);
+  // Initialize state with current data
+  const [data, setData] = useState<HomepageData>(() => {
+    const wpData = wordPressService.getData();
+    return formatHomepageData(wpData);
+  });
+
+  // Subscribe to data changes
+  useEffect(() => {
+    // Create subscription to service
+    const unsubscribe = wordPressService.subscribe({
+      onDataChange: (newData) => {
+        setData(formatHomepageData(newData));
+      }
     });
 
-    // Subscribe to data changes
-    useEffect(() => {
-        // Create subscription to service
-        const unsubscribe = wordPressService.subscribe({
-            onDataChange: (newData) => {
-                setData(formatHomepageData(newData));
-            }
-        });
+    // Clean up subscription on unmount
+    return unsubscribe;
+  }, []);
 
-        // Clean up subscription on unmount
-        return unsubscribe;
-    }, []);
-
-    return data;
+  return data;
 };
 
 /**
@@ -60,16 +60,16 @@ export const useHomepageService = (): HomepageData => {
  * @returns Homepage-specific formatted data
  */
 function formatHomepageData(wpData: WordPressServiceData): HomepageData {
-    return {
-        siteLinks: wpData.siteLinks,
-        assets: wpData.assets,
-        features: wpData.features,
-        journey: wpData.journey,
-        testimonials: wpData.testimonials,
-        pricing: wpData.pricing,
-        footerLinks: wpData.footerLinks,
-        demoMode: wpData.demoMode
-    };
+  return {
+    siteLinks: wpData.siteLinks,
+    assets: wpData.assets,
+    features: wpData.features,
+    journey: wpData.journey,
+    testimonials: wpData.testimonials,
+    pricing: wpData.pricing,
+    footerLinks: wpData.footerLinks,
+    demoMode: wpData.demoMode
+  };
 }
 
 /**
@@ -80,15 +80,15 @@ function formatHomepageData(wpData: WordPressServiceData): HomepageData {
  * @returns The variant value
  */
 export function getHomepageVariant<T extends string>(key: string, defaultVariant: T): T {
-    // The PHP Customizer uses keys without prefix (e.g., 'fitcopilot_hero_variant')
-    // Rather than adding a prefix, map directly to the key used in PHP
-    const wpKey = `fitcopilot_${key}_variant`;
+  // The PHP Customizer uses keys without prefix (e.g., 'fitcopilot_hero_variant')
+  // Rather than adding a prefix, map directly to the key used in PHP
+  const wpKey = `fitcopilot_${key}_variant`;
 
-    // Get the variant value from WordPress service
-    const variantValue = wordPressService.getThemeVariant(wpKey, defaultVariant);
+  // Get the variant value from WordPress service
+  const variantValue = wordPressService.getThemeVariant(wpKey, defaultVariant);
 
-    // Log for debugging
-    logger.debug(`Getting variant for ${key}, using WP key: ${wpKey}, value: ${variantValue}`);
+  // Log for debugging
+  logger.debug(`Getting variant for ${key}, using WP key: ${wpKey}, value: ${variantValue}`);
 
-    return variantValue;
+  return variantValue;
 } 

@@ -1,92 +1,88 @@
 /**
  * TextField Component
+ * 
+ * Text input field component using the FieldWrapper for consistent layout.
  */
 
 import React from 'react';
-import { TextFieldProps } from '../../../../types/form';
+import { filterComponentProps } from '../fields/FormField';
+import { TextFieldProps } from '../types';
+import FieldWrapper from './FieldWrapper';
 
 /**
  * TextField component for text input fields
  */
 const TextField: React.FC<TextFieldProps> = ({
-    name,
-    value,
-    label,
-    type = 'text',
-    placeholder,
-    onChange,
-    onBlur,
-    onFocus,
-    onKeyPress,
-    disabled = false,
-    required = false,
-    error,
-    helperText,
-    className = '',
-    id,
-    maxLength,
-    minLength,
-    autoComplete,
-    spellCheck,
-    isLoading = false,
-    'data-testid': dataTestId,
+  name,
+  label,
+  value,
+  type = 'text',
+  placeholder,
+  onChange,
+  onBlur,
+  onFocus,
+  onKeyPress,
+  disabled = false,
+  required = false,
+  error,
+  helperText,
+  className,
+  id,
+  maxLength,
+  minLength,
+  autoComplete,
+  spellCheck,
+  'data-testid': testId,
+  isLoading = false,
+  validators,
+  ...otherProps
 }) => {
-    // Field ID defaults to name if not provided
-    const fieldId = id || name;
-
-    // Generate CSS classes
-    const inputClasses = [
-        'form-input',
-        `form-input--${type}`,
-        disabled ? 'form-input--disabled' : '',
-        error ? 'form-input--error' : '',
-        isLoading ? 'form-input--loading' : '',
-        className
-    ].filter(Boolean).join(' ');
-
-    return (
-        <div className="form-field">
-            {label && (
-                <label
-                    htmlFor={fieldId}
-                    className={`form-field__label ${required ? 'form-field__label--required' : ''}`}
-                >
-                    {label}
-                </label>
-            )}
-
-            <input
-                id={fieldId}
-                name={name}
-                type={type}
-                value={value}
-                onChange={onChange}
-                onBlur={onBlur}
-                onFocus={onFocus}
-                onKeyPress={onKeyPress}
-                placeholder={placeholder}
-                disabled={disabled || isLoading}
-                required={required}
-                className={inputClasses}
-                maxLength={maxLength}
-                minLength={minLength}
-                autoComplete={autoComplete}
-                spellCheck={spellCheck}
-                aria-invalid={!!error}
-                aria-describedby={error || helperText ? `${fieldId}-description` : undefined}
-                data-testid={dataTestId}
-            />
-
-            {(error || helperText) && (
-                <div
-                    id={`${fieldId}-description`}
-                    className={`form-field__message ${error ? 'form-field__message--error' : ''}`}
-                >
-                    {error || helperText}
-                </div>
-            )}
-        </div>
-    );
+  // Generate ID if not provided
+  const fieldId = id || `field-${name}`;
+  
+  // Filter out component-only props
+  const htmlProps = filterComponentProps(otherProps);
+  
+  // Generate CSS classes for the input
+  const inputClasses = [
+    'form-field__input',
+    `form-field__input--${type}`,
+    disabled ? 'form-field__input--disabled' : '',
+  ].filter(Boolean).join(' ');
+  
+  return (
+    <FieldWrapper
+      id={fieldId}
+      name={name}
+      label={label}
+      required={required}
+      error={error}
+      helperText={helperText}
+      className={className}
+      isLoading={isLoading}
+    >
+      <input
+        id={fieldId}
+        name={name}
+        type={type}
+        value={value}
+        placeholder={placeholder}
+        onChange={onChange}
+        onBlur={onBlur}
+        onFocus={onFocus}
+        onKeyPress={onKeyPress}
+        disabled={disabled}
+        required={required}
+        maxLength={maxLength}
+        minLength={minLength}
+        autoComplete={autoComplete}
+        spellCheck={spellCheck}
+        data-testid={testId || `input-${name}`}
+        className={inputClasses}
+        {...htmlProps}
+      />
+    </FieldWrapper>
+  );
 };
 
 export default TextField; 

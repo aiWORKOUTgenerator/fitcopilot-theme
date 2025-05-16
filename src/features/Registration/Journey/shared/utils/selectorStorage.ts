@@ -24,76 +24,76 @@ export interface SelectorStorage {
  * @returns Storage utility object
  */
 export const createSelectorStorage = (
-    storageKey,
-    defaultValue,
-    _registrationDataKey
+  storageKey,
+  defaultValue,
+  _registrationDataKey
 ) => {
-    storageLogger.debug('Creating selector storage', { storageKey });
+  storageLogger.debug('Creating selector storage', { storageKey });
 
-    return {
-        save: (data) => {
-            try {
-                // Store in sessionStorage
-                sessionStorage.setItem(storageKey, JSON.stringify(data));
-                storageLogger.debug('Data saved to storage', { storageKey, dataSize: JSON.stringify(data).length });
-            } catch (error) {
-                storageLogger.error(`Failed to save data for ${storageKey}`, { error });
-            }
-        },
+  return {
+    save: (data) => {
+      try {
+        // Store in sessionStorage
+        sessionStorage.setItem(storageKey, JSON.stringify(data));
+        storageLogger.debug('Data saved to storage', { storageKey, dataSize: JSON.stringify(data).length });
+      } catch (error) {
+        storageLogger.error(`Failed to save data for ${storageKey}`, { error });
+      }
+    },
 
-        load: () => {
-            try {
-                // Try to load from sessionStorage
-                const stored = sessionStorage.getItem(storageKey);
-                if (stored) {
-                    storageLogger.debug('Data loaded from storage', { storageKey });
-                    return JSON.parse(stored);
-                } else {
-                    storageLogger.debug('No stored data found, using default', { storageKey });
-                    return defaultValue;
-                }
-            } catch (error) {
-                storageLogger.error(`Failed to load data for ${storageKey}`, { error });
-                return defaultValue;
-            }
-        },
-
-        clear: () => {
-            try {
-                sessionStorage.removeItem(storageKey);
-                storageLogger.debug('Storage cleared', { storageKey });
-            } catch (error) {
-                storageLogger.error(`Failed to clear data for ${storageKey}`, { error });
-            }
+    load: () => {
+      try {
+        // Try to load from sessionStorage
+        const stored = sessionStorage.getItem(storageKey);
+        if (stored) {
+          storageLogger.debug('Data loaded from storage', { storageKey });
+          return JSON.parse(stored);
+        } else {
+          storageLogger.debug('No stored data found, using default', { storageKey });
+          return defaultValue;
         }
-    };
+      } catch (error) {
+        storageLogger.error(`Failed to load data for ${storageKey}`, { error });
+        return defaultValue;
+      }
+    },
+
+    clear: () => {
+      try {
+        sessionStorage.removeItem(storageKey);
+        storageLogger.debug('Storage cleared', { storageKey });
+      } catch (error) {
+        storageLogger.error(`Failed to clear data for ${storageKey}`, { error });
+      }
+    }
+  };
 };
 
 /**
  * Hook for using selector storage with JourneyContext integration
  */
 export const useSelectorStorage = (
-    storageKey,
-    defaultValue,
-    registrationDataKey
+  storageKey,
+  defaultValue,
+  registrationDataKey
 ) => {
-    const { updateRegistrationData } = useJourney();
-    const storage = createSelectorStorage(storageKey, defaultValue);
+  const { updateRegistrationData } = useJourney();
+  const storage = createSelectorStorage(storageKey, defaultValue);
 
-    return {
-        ...storage,
-        syncWithContext: (data) => {
-            if (registrationDataKey) {
-                storageLogger.debug('Syncing with journey context', {
-                    storageKey,
-                    registrationDataKey: String(registrationDataKey)
-                });
+  return {
+    ...storage,
+    syncWithContext: (data) => {
+      if (registrationDataKey) {
+        storageLogger.debug('Syncing with journey context', {
+          storageKey,
+          registrationDataKey: String(registrationDataKey)
+        });
 
-                updateRegistrationData({
-                    [registrationDataKey]: data
-                });
-            }
-            storage.save(data);
-        }
-    };
+        updateRegistrationData({
+          [registrationDataKey]: data
+        });
+      }
+      storage.save(data);
+    }
+  };
 }; 

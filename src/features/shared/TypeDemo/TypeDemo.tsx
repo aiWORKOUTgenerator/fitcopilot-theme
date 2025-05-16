@@ -50,118 +50,118 @@ export interface TypeDemoProps {
  * used throughout the FitCopilot theme.
  */
 const TypeDemo: React.FC<TypeDemoProps> = ({
-    title,
-    description,
-    items,
-    onItemSelect,
-    variant = 'default',
-    themeVariant = 'default',
-    isLoading = false,
-    displayMode = { mode: 'expanded', showDescriptions: true },
-    className = '',
+  title,
+  description,
+  items,
+  onItemSelect,
+  variant = 'default',
+  themeVariant = 'default',
+  isLoading = false,
+  displayMode = { mode: 'expanded', showDescriptions: true },
+  className = '',
 }) => {
-    // State with proper typing
-    const [selectedId, setSelectedId] = useState<string | null>(null);
-    const [visibleItems, setVisibleItems] = useState<TypeDemoItem[]>(items);
+  // State with proper typing
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [visibleItems, setVisibleItems] = useState<TypeDemoItem[]>(items);
 
-    // Refs with proper typing
-    const containerRef = useRef<HTMLDivElement>(null);
+  // Refs with proper typing
+  const containerRef = useRef<HTMLDivElement>(null);
 
-    // Proper useEffect with dependency array
-    useEffect(() => {
-        setVisibleItems(items);
-    }, [items]);
+  // Proper useEffect with dependency array
+  useEffect(() => {
+    setVisibleItems(items);
+  }, [items]);
 
-    // Proper useCallback with dependency array
-    const handleItemClick = useCallback((event: React.MouseEvent<HTMLLIElement>, id: string): void => {
-        event.preventDefault();
-        setSelectedId(id);
+  // Proper useCallback with dependency array
+  const handleItemClick = useCallback((event: React.MouseEvent<HTMLLIElement>, id: string): void => {
+    event.preventDefault();
+    setSelectedId(id);
 
-        if (onItemSelect) {
-            onItemSelect(id, event);
-        }
-    }, [onItemSelect]);
+    if (onItemSelect) {
+      onItemSelect(id, event);
+    }
+  }, [onItemSelect]);
 
-    // Proper type narrowing with discriminated union
-    const getItemsToRender = (): TypeDemoItem[] => {
-        if (displayMode.mode === 'compact') {
-            return visibleItems.slice(0, displayMode.maxItems);
-        }
+  // Proper type narrowing with discriminated union
+  const getItemsToRender = (): TypeDemoItem[] => {
+    if (displayMode.mode === 'compact') {
+      return visibleItems.slice(0, displayMode.maxItems);
+    }
 
-        return visibleItems;
-    };
+    return visibleItems;
+  };
 
-    // Proper conditional CSS class based on props
-    const containerClasses = [
-        'type-demo',
-        `type-demo--${variant}`,
-        `type-demo--theme-${themeVariant}`,
-        isLoading ? 'type-demo--loading' : '',
-        className
-    ].filter(Boolean).join(' ');
+  // Proper conditional CSS class based on props
+  const containerClasses = [
+    'type-demo',
+    `type-demo--${variant}`,
+    `type-demo--theme-${themeVariant}`,
+    isLoading ? 'type-demo--loading' : '',
+    className
+  ].filter(Boolean).join(' ');
 
-    // Proper type narrowing and conditional rendering
-    const renderItems = (): React.ReactNode => {
-        const itemsToRender = getItemsToRender();
+  // Proper type narrowing and conditional rendering
+  const renderItems = (): React.ReactNode => {
+    const itemsToRender = getItemsToRender();
 
-        if (itemsToRender.length === 0) {
-            return <p className="type-demo__empty">No items to display</p>;
-        }
+    if (itemsToRender.length === 0) {
+      return <p className="type-demo__empty">No items to display</p>;
+    }
 
-        return (
-            <ul
-                className={`type-demo__list type-demo__list--${displayMode.mode}`}
-                style={displayMode.mode === 'grid' ? { gridTemplateColumns: `repeat(${displayMode.columns}, 1fr)` } : undefined}
-            >
-                {itemsToRender.map(item => renderItem(item))}
-            </ul>
-        );
-    };
+    return (
+      <ul
+        className={`type-demo__list type-demo__list--${displayMode.mode}`}
+        style={displayMode.mode === 'grid' ? { gridTemplateColumns: `repeat(${displayMode.columns}, 1fr)` } : undefined}
+      >
+        {itemsToRender.map(item => renderItem(item))}
+      </ul>
+    );
+  };
 
-    // Properly typed item renderer with all type information preserved
-    const renderItem = (item: TypeDemoItem): JSX.Element => {
-        const isSelected = item.id === selectedId;
+  // Properly typed item renderer with all type information preserved
+  const renderItem = (item: TypeDemoItem): JSX.Element => {
+    const isSelected = item.id === selectedId;
 
-        return (
-            <li
-                key={item.id}
-                onClick={(e) => handleItemClick(e, item.id)}
-                className={`
+    return (
+      <li
+        key={item.id}
+        onClick={(e) => handleItemClick(e, item.id)}
+        className={`
           type-demo__item 
           type-demo__item--${variant} 
           ${isSelected ? 'type-demo__item--selected' : ''}
           ${item.isHighlighted ? 'type-demo__item--highlighted' : ''}
         `}
-                data-testid={`type-demo-item-${item.id}`}
-            >
-                <span className="type-demo__label">{item.label}</span>
-                <span className="type-demo__value">{item.value}</span>
+        data-testid={`type-demo-item-${item.id}`}
+      >
+        <span className="type-demo__label">{item.label}</span>
+        <span className="type-demo__value">{item.value}</span>
 
-                {displayMode.mode === 'expanded' && displayMode.showDescriptions && item.description && (
-                    <p className="type-demo__description">{item.description}</p>
-                )}
-            </li>
-        );
-    };
-
-    // Using proper aria attributes for accessibility
-    return (
-        <div
-            className={containerClasses}
-            ref={containerRef}
-            data-testid="type-demo"
-            aria-busy={isLoading}
-        >
-            <h3 className="type-demo__title">{title}</h3>
-            {description && <p className="type-demo__description">{description}</p>}
-
-            {isLoading ? (
-                <div className="type-demo__loading" aria-live="polite">
-                    <span className="sr-only">Loading items</span>
-                </div>
-            ) : renderItems()}
-        </div>
+        {displayMode.mode === 'expanded' && displayMode.showDescriptions && item.description && (
+          <p className="type-demo__description">{item.description}</p>
+        )}
+      </li>
     );
+  };
+
+  // Using proper aria attributes for accessibility
+  return (
+    <div
+      className={containerClasses}
+      ref={containerRef}
+      data-testid="type-demo"
+      aria-busy={isLoading}
+    >
+      <h3 className="type-demo__title">{title}</h3>
+      {description && <p className="type-demo__description">{description}</p>}
+
+      {isLoading ? (
+        <div className="type-demo__loading" aria-live="polite">
+          <span className="sr-only">Loading items</span>
+        </div>
+      ) : renderItems()}
+    </div>
+  );
 };
 
 // Create theme variant versions using our pattern

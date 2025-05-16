@@ -6,202 +6,202 @@ import { createProviderWrapper } from './testing-library';
 
 // Mock session storage
 const mockSessionStorage = (() => {
-    let store: Record<string, string> = {};
-    return {
-        getItem: jest.fn((key: string) => store[key] || null),
-        setItem: jest.fn((key: string, value: string) => {
-            store[key] = value;
-        }),
-        removeItem: jest.fn((key: string) => {
-            delete store[key];
-        }),
-        clear: jest.fn(() => {
-            store = {};
-        }),
-    };
+  let store: Record<string, string> = {};
+  return {
+    getItem: jest.fn((key: string) => store[key] || null),
+    setItem: jest.fn((key: string, value: string) => {
+      store[key] = value;
+    }),
+    removeItem: jest.fn((key: string) => {
+      delete store[key];
+    }),
+    clear: jest.fn(() => {
+      store = {};
+    }),
+  };
 })();
 
 // Replace the real sessionStorage with mock
 Object.defineProperty(window, 'sessionStorage', {
-    value: mockSessionStorage,
+  value: mockSessionStorage,
 });
 
 describe('AppContext', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-        mockSessionStorage.clear();
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockSessionStorage.clear();
+  });
+
+  describe('UserContext', () => {
+    it('provides default unauthenticated user state', () => {
+      const { result } = renderHook(() => useUser(), { wrapper: createProviderWrapper(AppProvider, {}) });
+
+      expect(result.current.user.isAuthenticated).toBe(false);
+      expect(result.current.user.displayName).toBeUndefined();
+      expect(result.current.user.email).toBeUndefined();
     });
 
-    describe('UserContext', () => {
-        it('provides default unauthenticated user state', () => {
-            const { result } = renderHook(() => useUser(), { wrapper: createProviderWrapper(AppProvider, {}) });
+    it('handles user login correctly', async () => {
+      const { result } = renderHook(() => useUser(), { wrapper: createProviderWrapper(AppProvider, {}) });
 
-            expect(result.current.user.isAuthenticated).toBe(false);
-            expect(result.current.user.displayName).toBeUndefined();
-            expect(result.current.user.email).toBeUndefined();
-        });
+      // Perform login
+      let success: boolean = false;
+      await act(async () => {
+        success = await result.current.login('test@example.com', 'password');
+      });
 
-        it('handles user login correctly', async () => {
-            const { result } = renderHook(() => useUser(), { wrapper: createProviderWrapper(AppProvider, {}) });
+      // Verify login was successful
+      expect(success).toBe(true);
+      expect(result.current.user.isAuthenticated).toBe(true);
+      expect(result.current.user.email).toBe('test@example.com');
+      expect(result.current.user.displayName).toBeTruthy();
 
-            // Perform login
-            let success: boolean = false;
-            await act(async () => {
-                success = await result.current.login('test@example.com', 'password');
-            });
-
-            // Verify login was successful
-            expect(success).toBe(true);
-            expect(result.current.user.isAuthenticated).toBe(true);
-            expect(result.current.user.email).toBe('test@example.com');
-            expect(result.current.user.displayName).toBeTruthy();
-
-            // Verify data was stored in session storage
-            expect(mockSessionStorage.setItem).toHaveBeenCalled();
-        });
-
-        it('handles user logout correctly', async () => {
-            const { result } = renderHook(() => useUser(), { wrapper: createProviderWrapper(AppProvider, {}) });
-
-            // First login
-            await act(async () => {
-                await result.current.login('test@example.com', 'password');
-            });
-
-            // Verify authenticated state
-            expect(result.current.user.isAuthenticated).toBe(true);
-
-            // Perform logout
-            act(() => {
-                result.current.logout();
-            });
-
-            // Verify logged out state
-            expect(result.current.user.isAuthenticated).toBe(false);
-            expect(result.current.user.email).toBeUndefined();
-
-            // Verify data was removed from session storage
-            expect(mockSessionStorage.removeItem).toHaveBeenCalled();
-        });
-
-        it('renders authenticated content for logged in users', async () => {
-            // Create a test component that uses user context
-            const TestComponent = () => {
-                const { user, login, logout } = useUser();
-                return (
-                    <div>
-                        {user.isAuthenticated ? (
-                            <>
-                                <div data-testid="auth-content">Welcome, {user.displayName}</div>
-                                <button onClick={logout}>Logout</button>
-                            </>
-                        ) : (
-                            <>
-                                <div data-testid="unauth-content">Please log in</div>
-                                <button onClick={() => login('test@example.com', 'password')}>Login</button>
-                            </>
-                        )}
-                    </div>
-                );
-            };
-
-            const user = userEvent.setup();
-            render(
-                <AppProvider>
-                    <TestComponent />
-                </AppProvider>
-            );
-
-            // Verify unauthenticated state is rendered
-            expect(screen.getByTestId('unauth-content')).toBeInTheDocument();
-
-            // Click login button
-            await user.click(screen.getByText('Login'));
-
-            // Wait for authenticated content to appear
-            await waitFor(() => {
-                expect(screen.getByTestId('auth-content')).toBeInTheDocument();
-            });
-
-            // Click logout button
-            await user.click(screen.getByText('Logout'));
-
-            // Verify we're back to unauthenticated state
-            await waitFor(() => {
-                expect(screen.getByTestId('unauth-content')).toBeInTheDocument();
-            });
-        });
+      // Verify data was stored in session storage
+      expect(mockSessionStorage.setItem).toHaveBeenCalled();
     });
 
-    describe('ThemeContext', () => {
-        it('provides system theme mode by default', () => {
-            const { result } = renderHook(() => useTheme(), { wrapper: createProviderWrapper(AppProvider, {}) });
+    it('handles user logout correctly', async () => {
+      const { result } = renderHook(() => useUser(), { wrapper: createProviderWrapper(AppProvider, {}) });
 
-            expect(result.current.theme.mode).toBe('system');
-        });
+      // First login
+      await act(async () => {
+        await result.current.login('test@example.com', 'password');
+      });
 
-        it('allows changing theme mode', () => {
-            const { result } = renderHook(() => useTheme(), { wrapper: createProviderWrapper(AppProvider, {}) });
+      // Verify authenticated state
+      expect(result.current.user.isAuthenticated).toBe(true);
 
-            // Change to dark mode
-            act(() => {
-                result.current.setThemeMode('dark');
-            });
+      // Perform logout
+      act(() => {
+        result.current.logout();
+      });
 
-            expect(result.current.theme.mode).toBe('dark');
+      // Verify logged out state
+      expect(result.current.user.isAuthenticated).toBe(false);
+      expect(result.current.user.email).toBeUndefined();
 
-            // Change to light mode
-            act(() => {
-                result.current.setThemeMode('light');
-            });
-
-            expect(result.current.theme.mode).toBe('light');
-        });
+      // Verify data was removed from session storage
+      expect(mockSessionStorage.removeItem).toHaveBeenCalled();
     });
 
-    describe('NotificationsContext', () => {
-        it('starts with empty notifications', () => {
-            const { result } = renderHook(() => useNotifications(), { wrapper: createProviderWrapper(AppProvider, {}) });
+    it('renders authenticated content for logged in users', async () => {
+      // Create a test component that uses user context
+      const TestComponent = () => {
+        const { user, login, logout } = useUser();
+        return (
+          <div>
+            {user.isAuthenticated ? (
+              <>
+                <div data-testid="auth-content">Welcome, {user.displayName}</div>
+                <button onClick={logout}>Logout</button>
+              </>
+            ) : (
+              <>
+                <div data-testid="unauth-content">Please log in</div>
+                <button onClick={() => login('test@example.com', 'password')}>Login</button>
+              </>
+            )}
+          </div>
+        );
+      };
 
-            expect(result.current.notifications).toEqual([]);
-        });
+      const user = userEvent.setup();
+      render(
+        <AppProvider>
+          <TestComponent />
+        </AppProvider>
+      );
 
-        it('adds notifications correctly', () => {
-            const { result } = renderHook(() => useNotifications(), { wrapper: createProviderWrapper(AppProvider, {}) });
+      // Verify unauthenticated state is rendered
+      expect(screen.getByTestId('unauth-content')).toBeInTheDocument();
 
-            // Add a notification
-            act(() => {
-                result.current.addNotification('success', 'Operation successful');
-            });
+      // Click login button
+      await user.click(screen.getByText('Login'));
 
-            // Verify notification was added
-            expect(result.current.notifications).toHaveLength(1);
-            expect(result.current.notifications[0].type).toBe('success');
-            expect(result.current.notifications[0].message).toBe('Operation successful');
-            expect(result.current.notifications[0].id).toBeDefined();
-        });
+      // Wait for authenticated content to appear
+      await waitFor(() => {
+        expect(screen.getByTestId('auth-content')).toBeInTheDocument();
+      });
 
-        it('dismisses notifications correctly', () => {
-            const { result } = renderHook(() => useNotifications(), { wrapper: createProviderWrapper(AppProvider, {}) });
+      // Click logout button
+      await user.click(screen.getByText('Logout'));
 
-            // Add notifications
-            act(() => {
-                result.current.addNotification('success', 'Success message');
-                result.current.addNotification('error', 'Error message');
-            });
-
-            // Verify notifications were added
-            expect(result.current.notifications).toHaveLength(2);
-
-            // Dismiss the first notification
-            const firstId = result.current.notifications[0].id;
-            act(() => {
-                result.current.dismissNotification(firstId);
-            });
-
-            // Verify first notification was removed
-            expect(result.current.notifications).toHaveLength(1);
-            expect(result.current.notifications[0].message).toBe('Error message');
-        });
+      // Verify we're back to unauthenticated state
+      await waitFor(() => {
+        expect(screen.getByTestId('unauth-content')).toBeInTheDocument();
+      });
     });
+  });
+
+  describe('ThemeContext', () => {
+    it('provides system theme mode by default', () => {
+      const { result } = renderHook(() => useTheme(), { wrapper: createProviderWrapper(AppProvider, {}) });
+
+      expect(result.current.theme.mode).toBe('system');
+    });
+
+    it('allows changing theme mode', () => {
+      const { result } = renderHook(() => useTheme(), { wrapper: createProviderWrapper(AppProvider, {}) });
+
+      // Change to dark mode
+      act(() => {
+        result.current.setThemeMode('dark');
+      });
+
+      expect(result.current.theme.mode).toBe('dark');
+
+      // Change to light mode
+      act(() => {
+        result.current.setThemeMode('light');
+      });
+
+      expect(result.current.theme.mode).toBe('light');
+    });
+  });
+
+  describe('NotificationsContext', () => {
+    it('starts with empty notifications', () => {
+      const { result } = renderHook(() => useNotifications(), { wrapper: createProviderWrapper(AppProvider, {}) });
+
+      expect(result.current.notifications).toEqual([]);
+    });
+
+    it('adds notifications correctly', () => {
+      const { result } = renderHook(() => useNotifications(), { wrapper: createProviderWrapper(AppProvider, {}) });
+
+      // Add a notification
+      act(() => {
+        result.current.addNotification('success', 'Operation successful');
+      });
+
+      // Verify notification was added
+      expect(result.current.notifications).toHaveLength(1);
+      expect(result.current.notifications[0].type).toBe('success');
+      expect(result.current.notifications[0].message).toBe('Operation successful');
+      expect(result.current.notifications[0].id).toBeDefined();
+    });
+
+    it('dismisses notifications correctly', () => {
+      const { result } = renderHook(() => useNotifications(), { wrapper: createProviderWrapper(AppProvider, {}) });
+
+      // Add notifications
+      act(() => {
+        result.current.addNotification('success', 'Success message');
+        result.current.addNotification('error', 'Error message');
+      });
+
+      // Verify notifications were added
+      expect(result.current.notifications).toHaveLength(2);
+
+      // Dismiss the first notification
+      const firstId = result.current.notifications[0].id;
+      act(() => {
+        result.current.dismissNotification(firstId);
+      });
+
+      // Verify first notification was removed
+      expect(result.current.notifications).toHaveLength(1);
+      expect(result.current.notifications[0].message).toBe('Error message');
+    });
+  });
 }); 

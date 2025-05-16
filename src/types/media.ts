@@ -329,23 +329,23 @@ export interface LegacyVideoPlayerProps {
  * Helper to convert legacy sources to MediaSource format
  */
 export function convertToMediaSources(
-    src: string,
-    fallbackSrc?: string | VideoSource[]
+  src: string,
+  fallbackSrc?: string | VideoSource[]
 ): MediaSource[] {
-    const sources: MediaSource[] = [{ src, isDefault: true }];
+  const sources: MediaSource[] = [{ src, isDefault: true }];
 
-    if (fallbackSrc) {
-        if (typeof fallbackSrc === 'string') {
-            sources.push({ src: fallbackSrc });
-        } else if (Array.isArray(fallbackSrc)) {
-            sources.push(...fallbackSrc.map(source => ({
-                src: source.src,
-                type: source.type
-            })));
-        }
+  if (fallbackSrc) {
+    if (typeof fallbackSrc === 'string') {
+      sources.push({ src: fallbackSrc });
+    } else if (Array.isArray(fallbackSrc)) {
+      sources.push(...fallbackSrc.map(source => ({
+        src: source.src,
+        type: source.type
+      })));
     }
+  }
 
-    return sources;
+  return sources;
 }
 
 /**

@@ -63,50 +63,50 @@ export interface ErrorMessageProps {
  * />
  */
 const ErrorMessage: React.FC<ErrorMessageProps> = ({
-    message,
-    details,
-    severity = 'error',
-    icon,
-    action,
-    className = '',
+  message,
+  details,
+  severity = 'error',
+  icon,
+  action,
+  className = '',
 }) => {
-    // Determine which icon to use based on severity
-    const renderIcon = () => {
-        if (icon) return icon;
+  // Determine which icon to use based on severity
+  const renderIcon = () => {
+    if (icon) return icon;
 
-        switch (severity) {
-            case 'warning':
-                return <AlertTriangle size={24} className="error-icon" />;
-            case 'info':
-                return <AlertCircle size={24} className="error-icon" />;
-            case 'error':
-            default:
-                return <XCircle size={24} className="error-icon" />;
-        }
-    };
+    switch (severity) {
+    case 'warning':
+      return <AlertTriangle size={24} className="error-icon" />;
+    case 'info':
+      return <AlertCircle size={24} className="error-icon" />;
+    case 'error':
+    default:
+      return <XCircle size={24} className="error-icon" />;
+    }
+  };
 
-    return (
-        <div className={`error-message-container ${severity} ${className}`}>
-            <div className="error-icon-wrapper">
-                {renderIcon()}
-            </div>
+  return (
+    <div className={`error-message-container ${severity} ${className}`}>
+      <div className="error-icon-wrapper">
+        {renderIcon()}
+      </div>
 
-            <div className="error-content">
-                <p className="error-title">{message}</p>
-                {details && <p className="error-details">{details}</p>}
+      <div className="error-content">
+        <p className="error-title">{message}</p>
+        {details && <p className="error-details">{details}</p>}
 
-                {action && (
-                    <button
-                        className="error-action-button"
-                        onClick={action.onClick}
-                        type="button"
-                    >
-                        {action.label}
-                    </button>
-                )}
-            </div>
-        </div>
-    );
+        {action && (
+          <button
+            className="error-action-button"
+            onClick={action.onClick}
+            type="button"
+          >
+            {action.label}
+          </button>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default ErrorMessage; 

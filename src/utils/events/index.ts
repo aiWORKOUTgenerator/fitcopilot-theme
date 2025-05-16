@@ -45,38 +45,38 @@ export type EventHandlerWithReturn<E extends React.SyntheticEvent<Element, Event
  * @returns New handler that logs and then calls the original
  */
 export function createLoggedHandler<E extends React.SyntheticEvent<Element, Event>>(
-    handler: EventHandler<E>,
-    eventName: string,
-    context: Record<string, unknown> = {}
+  handler: EventHandler<E>,
+  eventName: string,
+  context: Record<string, unknown> = {}
 ): EventHandler<E> {
-    return (event: E) => {
-        const logContext: Record<string, unknown> = {
-            ...context,
-            eventType: event.type,
-            component: context.component || 'unknown',
-        };
+  return (event: E) => {
+    const logContext: Record<string, unknown> = {
+      ...context,
+      eventType: event.type,
+      component: context.component || 'unknown',
+    };
 
-        // Add target information when available
-        if ('target' in event && event.target) {
-            const target = event.target as unknown;
-            if (target && typeof target === 'object') {
-                if ('id' in target && typeof target.id === 'string') {
-                    logContext.targetId = target.id;
-                }
-
-                if ('name' in target && typeof target.name === 'string') {
-                    logContext.targetName = target.name;
-                }
-
-                if ('value' in target && typeof target.value !== 'function' && typeof target.value !== 'object') {
-                    logContext.targetValue = target.value;
-                }
-            }
+    // Add target information when available
+    if ('target' in event && event.target) {
+      const target = event.target as unknown;
+      if (target && typeof target === 'object') {
+        if ('id' in target && typeof target.id === 'string') {
+          logContext.targetId = target.id;
         }
 
-        logger.info(`Event: ${eventName}`, logContext);
-        handler(event);
-    };
+        if ('name' in target && typeof target.name === 'string') {
+          logContext.targetName = target.name;
+        }
+
+        if ('value' in target && typeof target.value !== 'function' && typeof target.value !== 'object') {
+          logContext.targetValue = target.value;
+        }
+      }
+    }
+
+    logger.info(`Event: ${eventName}`, logContext);
+    handler(event);
+  };
 }
 
 /**
@@ -87,10 +87,10 @@ export function createLoggedHandler<E extends React.SyntheticEvent<Element, Even
  * @returns Properly typed change event handler
  */
 export function createChangeHandler<T extends HTMLElement>(
-    handler: EventHandler<ChangeEvent<T>>,
-    context: Record<string, unknown> = {}
+  handler: EventHandler<ChangeEvent<T>>,
+  context: Record<string, unknown> = {}
 ): EventHandler<ChangeEvent<T>> {
-    return createLoggedHandler(handler, 'onChange', context);
+  return createLoggedHandler(handler, 'onChange', context);
 }
 
 /**
@@ -101,10 +101,10 @@ export function createChangeHandler<T extends HTMLElement>(
  * @returns Properly typed click event handler
  */
 export function createClickHandler<T extends HTMLElement>(
-    handler: EventHandler<MouseEvent<T>>,
-    context: Record<string, unknown> = {}
+  handler: EventHandler<MouseEvent<T>>,
+  context: Record<string, unknown> = {}
 ): EventHandler<MouseEvent<T>> {
-    return createLoggedHandler(handler, 'onClick', context);
+  return createLoggedHandler(handler, 'onClick', context);
 }
 
 /**
@@ -115,10 +115,10 @@ export function createClickHandler<T extends HTMLElement>(
  * @returns Properly typed submit event handler
  */
 export function createSubmitHandler<T extends HTMLElement>(
-    handler: EventHandler<FormEvent<T>>,
-    context: Record<string, unknown> = {}
+  handler: EventHandler<FormEvent<T>>,
+  context: Record<string, unknown> = {}
 ): EventHandler<FormEvent<T>> {
-    return createLoggedHandler(handler, 'onSubmit', context);
+  return createLoggedHandler(handler, 'onSubmit', context);
 }
 
 /**
@@ -129,10 +129,10 @@ export function createSubmitHandler<T extends HTMLElement>(
  * @returns Properly typed focus event handler
  */
 export function createFocusHandler<T extends HTMLElement>(
-    handler: EventHandler<FocusEvent<T>>,
-    context: Record<string, unknown> = {}
+  handler: EventHandler<FocusEvent<T>>,
+  context: Record<string, unknown> = {}
 ): EventHandler<FocusEvent<T>> {
-    return createLoggedHandler(handler, 'onFocus', context);
+  return createLoggedHandler(handler, 'onFocus', context);
 }
 
 /**
@@ -143,10 +143,10 @@ export function createFocusHandler<T extends HTMLElement>(
  * @returns Properly typed blur event handler
  */
 export function createBlurHandler<T extends HTMLElement>(
-    handler: EventHandler<FocusEvent<T>>,
-    context: Record<string, unknown> = {}
+  handler: EventHandler<FocusEvent<T>>,
+  context: Record<string, unknown> = {}
 ): EventHandler<FocusEvent<T>> {
-    return createLoggedHandler(handler, 'onBlur', context);
+  return createLoggedHandler(handler, 'onBlur', context);
 }
 
 /**
@@ -157,10 +157,10 @@ export function createBlurHandler<T extends HTMLElement>(
  * @returns Properly typed keydown event handler
  */
 export function createKeyDownHandler<T extends HTMLElement>(
-    handler: EventHandler<KeyboardEvent<T>>,
-    context: Record<string, unknown> = {}
+  handler: EventHandler<KeyboardEvent<T>>,
+  context: Record<string, unknown> = {}
 ): EventHandler<KeyboardEvent<T>> {
-    return createLoggedHandler(handler, 'onKeyDown', context);
+  return createLoggedHandler(handler, 'onKeyDown', context);
 }
 
 /**
@@ -169,7 +169,7 @@ export function createKeyDownHandler<T extends HTMLElement>(
  * @param event - Event to prevent default on
  */
 export function preventDefault<E extends React.SyntheticEvent>(event: E): void {
-    event.preventDefault();
+  event.preventDefault();
 }
 
 /**
@@ -178,7 +178,7 @@ export function preventDefault<E extends React.SyntheticEvent>(event: E): void {
  * @param event - Event to stop propagation on
  */
 export function stopPropagation<E extends React.SyntheticEvent>(event: E): void {
-    event.stopPropagation();
+  event.stopPropagation();
 }
 
 /**
@@ -187,8 +187,8 @@ export function stopPropagation<E extends React.SyntheticEvent>(event: E): void 
  * @param event - Event to handle
  */
 export function preventAll<E extends React.SyntheticEvent>(event: E): void {
-    preventDefault(event);
-    stopPropagation(event);
+  preventDefault(event);
+  stopPropagation(event);
 }
 
 /**
@@ -198,13 +198,13 @@ export function preventAll<E extends React.SyntheticEvent>(event: E): void {
  * @returns Combined handler that calls all handlers in sequence
  */
 export function composeHandlers<E extends React.SyntheticEvent>(
-    ...handlers: Array<EventHandler<E> | undefined | null>
+  ...handlers: Array<EventHandler<E> | undefined | null>
 ): EventHandler<E> {
-    return (event: E) => {
-        for (const handler of handlers) {
-            if (typeof handler === 'function') {
-                handler(event);
-            }
-        }
-    };
+  return (event: E) => {
+    for (const handler of handlers) {
+      if (typeof handler === 'function') {
+        handler(event);
+      }
+    }
+  };
 } 

@@ -14,17 +14,17 @@ import { PerformanceMemory, PropChange } from '../types/debug';
  * @returns Type assertion for PerformanceMemory
  */
 export function hasMemoryInfo(obj: unknown): obj is PerformanceMemory {
-    if (!obj || typeof obj !== 'object') return false;
+  if (!obj || typeof obj !== 'object') return false;
 
-    // Convert to Record for safer property checking
-    const memory = obj as Record<string, unknown>;
+  // Convert to Record for safer property checking
+  const memory = obj as Record<string, unknown>;
 
-    // Check for presence of at least one memory property
-    return (
-        'jsHeapSizeLimit' in memory ||
+  // Check for presence of at least one memory property
+  return (
+    'jsHeapSizeLimit' in memory ||
         'totalJSHeapSize' in memory ||
         'usedJSHeapSize' in memory
-    );
+  );
 }
 
 /**
@@ -35,17 +35,17 @@ export function hasMemoryInfo(obj: unknown): obj is PerformanceMemory {
  * @returns Type assertion for PropChange<T>
  */
 export function hasPropChanged<T>(obj: unknown): obj is PropChange<T> {
-    if (!obj || typeof obj !== 'object') return false;
+  if (!obj || typeof obj !== 'object') return false;
 
-    const change = obj as Record<string, unknown>;
+  const change = obj as Record<string, unknown>;
 
-    return (
-        'propName' in change &&
+  return (
+    'propName' in change &&
         'prevValue' in change &&
         'newValue' in change &&
         'isSignificant' in change &&
         typeof change.isSignificant === 'boolean'
-    );
+  );
 }
 
 /**
@@ -54,10 +54,10 @@ export function hasPropChanged<T>(obj: unknown): obj is PropChange<T> {
  * @returns Whether performance memory API is available
  */
 export function hasPerformanceMemorySupport(): boolean {
-    return (
-        typeof performance !== 'undefined' &&
+  return (
+    typeof performance !== 'undefined' &&
         'memory' in performance
-    );
+  );
 }
 
 /**
@@ -66,16 +66,16 @@ export function hasPerformanceMemorySupport(): boolean {
  * @returns Performance memory object or null if not supported
  */
 export function getPerformanceMemory(): PerformanceMemory | null {
-    if (!hasPerformanceMemorySupport()) return null;
+  if (!hasPerformanceMemorySupport()) return null;
 
-    // TypeScript doesn't know about the non-standard memory property
-    const memory = (performance as unknown as { memory: PerformanceMemory }).memory;
+  // TypeScript doesn't know about the non-standard memory property
+  const memory = (performance as unknown as { memory: PerformanceMemory }).memory;
 
-    return {
-        jsHeapSizeLimit: memory.jsHeapSizeLimit,
-        totalJSHeapSize: memory.totalJSHeapSize,
-        usedJSHeapSize: memory.usedJSHeapSize
-    };
+  return {
+    jsHeapSizeLimit: memory.jsHeapSizeLimit,
+    totalJSHeapSize: memory.totalJSHeapSize,
+    usedJSHeapSize: memory.usedJSHeapSize
+  };
 }
 
 /**
@@ -84,9 +84,9 @@ export function getPerformanceMemory(): PerformanceMemory | null {
  * @returns Whether debug mode is enabled
  */
 export function isDebugModeEnabled(): boolean {
-    return (
-        typeof window !== 'undefined' &&
+  return (
+    typeof window !== 'undefined' &&
         'DEBUG_MODE' in window &&
         Boolean(window.DEBUG_MODE)
-    );
+  );
 } 

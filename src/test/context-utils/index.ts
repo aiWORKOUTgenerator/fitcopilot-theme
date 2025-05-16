@@ -16,9 +16,9 @@ export { MockAppProvider, adminMockUser, authenticatedMockUser, createMockUser, 
 
 // Export workout context utilities
 export {
-    Exercise, MockWorkoutProvider, Workout, WorkoutContext, createMockExercise,
-    createMockWorkout, mockApiFailures, mockApiResponses, mockWorkouts,
-    renderWithWorkoutContext, useWorkoutContext
+  Exercise, MockWorkoutProvider, Workout, WorkoutContext, createMockExercise,
+  createMockWorkout, mockApiFailures, mockApiResponses, mockWorkouts,
+  renderWithWorkoutContext, useWorkoutContext
 } from './workout-context';
 
 // Export nested providers utilities

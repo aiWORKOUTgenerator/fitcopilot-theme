@@ -9,154 +9,154 @@ import { createTextFieldProps } from '../__fixtures__/formFieldFixtures';
 import TextField from '../fields/TextField';
 
 describe('TextField Component', () => {
-    it('renders with required props', () => {
-        const props = createTextFieldProps({
-            label: 'Name',
-            value: 'John Doe'
-        });
-
-        renderWithProviders(<TextField {...props} />);
-
-        const input = screen.getByRole('textbox', { name: /name/i });
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveValue('John Doe');
-        expect(input).toHaveAttribute('type', 'text');
+  it('renders with required props', () => {
+    const props = createTextFieldProps({
+      label: 'Name',
+      value: 'John Doe'
     });
 
-    it('applies correct CSS classes', () => {
-        const props = createTextFieldProps({
-            label: 'Email',
-            value: 'test@example.com',
-            type: 'email',
-            className: 'custom-class'
-        });
+    renderWithProviders(<TextField {...props} />);
 
-        renderWithProviders(<TextField {...props} />);
+    const input = screen.getByRole('textbox', { name: /name/i });
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveValue('John Doe');
+    expect(input).toHaveAttribute('type', 'text');
+  });
 
-        const input = screen.getByRole('textbox', { name: /email/i });
-        expect(input).toHaveClass('form-input', 'form-input--email', 'custom-class');
+  it('applies correct CSS classes', () => {
+    const props = createTextFieldProps({
+      label: 'Email',
+      value: 'test@example.com',
+      type: 'email',
+      className: 'custom-class'
     });
 
-    it('handles onChange events', async () => {
-        const handleChange = jest.fn();
-        const props = createTextFieldProps({
-            label: 'Username',
-            value: '',
-            onChange: handleChange
-        });
+    renderWithProviders(<TextField {...props} />);
 
-        const { user } = renderWithProviders(<TextField {...props} />);
+    const input = screen.getByRole('textbox', { name: /email/i });
+    expect(input).toHaveClass('form-input', 'form-input--email', 'custom-class');
+  });
 
-        const input = screen.getByRole('textbox', { name: /username/i });
-        await user.type(input, 'newuser');
-
-        expect(handleChange).toHaveBeenCalled();
+  it('handles onChange events', async () => {
+    const handleChange = jest.fn();
+    const props = createTextFieldProps({
+      label: 'Username',
+      value: '',
+      onChange: handleChange
     });
 
-    it('renders error message when provided', () => {
-        const props = createTextFieldProps({
-            label: 'Password',
-            value: 'pass',
-            error: 'Password must be at least 8 characters'
-        });
+    const { user } = renderWithProviders(<TextField {...props} />);
 
-        renderWithProviders(<TextField {...props} />);
+    const input = screen.getByRole('textbox', { name: /username/i });
+    await user.type(input, 'newuser');
 
-        const errorMessage = screen.getByText('Password must be at least 8 characters');
-        expect(errorMessage).toBeInTheDocument();
+    expect(handleChange).toHaveBeenCalled();
+  });
 
-        const input = screen.getByLabelText('Password');
-        expect(input).toHaveAttribute('aria-invalid', 'true');
-        expect(input).toHaveAccessibleDescription(/Password must be at least 8 characters/i);
+  it('renders error message when provided', () => {
+    const props = createTextFieldProps({
+      label: 'Password',
+      value: 'pass',
+      error: 'Password must be at least 8 characters'
     });
 
-    it('renders with helper text when provided', () => {
-        const props = createTextFieldProps({
-            label: 'Username',
-            value: '',
-            helperText: 'Choose a unique username'
-        });
+    renderWithProviders(<TextField {...props} />);
 
-        renderWithProviders(<TextField {...props} />);
+    const errorMessage = screen.getByText('Password must be at least 8 characters');
+    expect(errorMessage).toBeInTheDocument();
 
-        const helperText = screen.getByText('Choose a unique username');
-        expect(helperText).toBeInTheDocument();
+    const input = screen.getByLabelText('Password');
+    expect(input).toHaveAttribute('aria-invalid', 'true');
+    expect(input).toHaveAccessibleDescription(/Password must be at least 8 characters/i);
+  });
 
-        const input = screen.getByRole('textbox', { name: /username/i });
-        expect(input).toHaveAccessibleDescription(/Choose a unique username/i);
+  it('renders with helper text when provided', () => {
+    const props = createTextFieldProps({
+      label: 'Username',
+      value: '',
+      helperText: 'Choose a unique username'
     });
 
-    it('disables the input when disabled prop is true', async () => {
-        const handleChange = jest.fn();
-        const props = createTextFieldProps({
-            label: 'Username',
-            value: 'johndoe',
-            disabled: true,
-            onChange: handleChange
-        });
+    renderWithProviders(<TextField {...props} />);
 
-        const { user } = renderWithProviders(<TextField {...props} />);
+    const helperText = screen.getByText('Choose a unique username');
+    expect(helperText).toBeInTheDocument();
 
-        const input = screen.getByRole('textbox', { name: /username/i });
-        expect(input).toBeDisabled();
-        expect(input).toHaveClass('form-input--disabled');
+    const input = screen.getByRole('textbox', { name: /username/i });
+    expect(input).toHaveAccessibleDescription(/Choose a unique username/i);
+  });
 
-        // Verify that typing in a disabled input doesn't trigger onChange
-        await user.type(input, 'test');
-        expect(handleChange).not.toHaveBeenCalled();
+  it('disables the input when disabled prop is true', async () => {
+    const handleChange = jest.fn();
+    const props = createTextFieldProps({
+      label: 'Username',
+      value: 'johndoe',
+      disabled: true,
+      onChange: handleChange
     });
 
-    it('adds required attribute and styling when required prop is true', () => {
-        const props = createTextFieldProps({
-            label: 'Email',
-            value: '',
-            required: true
-        });
+    const { user } = renderWithProviders(<TextField {...props} />);
 
-        renderWithProviders(<TextField {...props} />);
+    const input = screen.getByRole('textbox', { name: /username/i });
+    expect(input).toBeDisabled();
+    expect(input).toHaveClass('form-input--disabled');
 
-        const input = screen.getByRole('textbox', { name: /email/i });
-        expect(input).toHaveAttribute('required');
+    // Verify that typing in a disabled input doesn't trigger onChange
+    await user.type(input, 'test');
+    expect(handleChange).not.toHaveBeenCalled();
+  });
 
-        const label = screen.getByText('Email');
-        expect(label).toHaveClass('form-field__label--required');
+  it('adds required attribute and styling when required prop is true', () => {
+    const props = createTextFieldProps({
+      label: 'Email',
+      value: '',
+      required: true
     });
 
-    it('handles different input types correctly', () => {
-        const props = createTextFieldProps({
-            label: 'Password',
-            value: 'secret',
-            type: 'password'
-        });
+    renderWithProviders(<TextField {...props} />);
 
-        renderWithProviders(<TextField {...props} />);
+    const input = screen.getByRole('textbox', { name: /email/i });
+    expect(input).toHaveAttribute('required');
 
-        // Password inputs don't have a textbox role
-        const input = screen.getByLabelText('Password');
-        expect(input).toHaveAttribute('type', 'password');
+    const label = screen.getByText('Email');
+    expect(label).toHaveClass('form-field__label--required');
+  });
+
+  it('handles different input types correctly', () => {
+    const props = createTextFieldProps({
+      label: 'Password',
+      value: 'secret',
+      type: 'password'
     });
 
-    it('handles keyboard navigation correctly', async () => {
-        const handleFocus = jest.fn();
-        const handleKeyPress = jest.fn();
-        const props = createTextFieldProps({
-            label: 'Search',
-            value: '',
-            onFocus: handleFocus,
-            onKeyPress: handleKeyPress
-        });
+    renderWithProviders(<TextField {...props} />);
 
-        const { user } = renderWithProviders(<TextField {...props} />);
+    // Password inputs don't have a textbox role
+    const input = screen.getByLabelText('Password');
+    expect(input).toHaveAttribute('type', 'password');
+  });
 
-        // Tab to focus the input
-        await user.tab();
-
-        const input = screen.getByRole('textbox', { name: /search/i });
-        expect(input).toHaveFocus();
-        expect(handleFocus).toHaveBeenCalled();
-
-        // Test keypress event
-        await user.keyboard('{Enter}');
-        expect(handleKeyPress).toHaveBeenCalled();
+  it('handles keyboard navigation correctly', async () => {
+    const handleFocus = jest.fn();
+    const handleKeyPress = jest.fn();
+    const props = createTextFieldProps({
+      label: 'Search',
+      value: '',
+      onFocus: handleFocus,
+      onKeyPress: handleKeyPress
     });
+
+    const { user } = renderWithProviders(<TextField {...props} />);
+
+    // Tab to focus the input
+    await user.tab();
+
+    const input = screen.getByRole('textbox', { name: /search/i });
+    expect(input).toHaveFocus();
+    expect(handleFocus).toHaveBeenCalled();
+
+    // Test keypress event
+    await user.keyboard('{Enter}');
+    expect(handleKeyPress).toHaveBeenCalled();
+  });
 }); 

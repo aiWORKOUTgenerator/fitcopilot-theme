@@ -16,24 +16,24 @@ interface GlobalBackgroundProps {
  * background patterns.
  */
 const GlobalBackground: React.FC<GlobalBackgroundProps> = ({
-    variant = 'default',
-    className = '',
-    pattern = 'grid'
+  variant = 'default',
+  className = '',
+  pattern = 'grid'
 }) => {
-    // Generate pattern classes
-    const patternClass = pattern === 'grid'
-        ? 'global-background-grid'
-        : pattern === 'dots'
-            ? 'global-background-dots'
-            : '';
+  // Generate pattern classes
+  const patternClass = pattern === 'grid'
+    ? 'global-background-grid'
+    : pattern === 'dots'
+      ? 'global-background-dots'
+      : '';
 
-    return (
-        <div
-            className={`global-background ${patternClass} ${className}`}
-            data-theme={variant !== 'default' ? variant : undefined}
-            aria-hidden="true"
-        />
-    );
+  return (
+    <div
+      className={`global-background ${patternClass} ${className}`}
+      data-theme={variant !== 'default' ? variant : undefined}
+      aria-hidden="true"
+    />
+  );
 };
 
 export default GlobalBackground; 

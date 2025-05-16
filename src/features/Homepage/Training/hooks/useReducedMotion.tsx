@@ -9,40 +9,40 @@ import { useEffect, useState } from 'react';
  * @returns Boolean indicating if reduced motion is preferred
  */
 export const useReducedMotion = (): boolean => {
-    // Initialize with current system preference
-    const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(() => {
-        // Default to false if window is not available (SSR)
-        if (typeof window === 'undefined') return false;
-        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    });
+  // Initialize with current system preference
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState<boolean>(() => {
+    // Default to false if window is not available (SSR)
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  });
 
-    useEffect(() => {
-        const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-        const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const handleChange = () => setPrefersReducedMotion(mediaQuery.matches);
 
-        // Set initial value
-        setPrefersReducedMotion(mediaQuery.matches);
+    // Set initial value
+    setPrefersReducedMotion(mediaQuery.matches);
 
-        // Add event listener with compatibility for older browsers
-        if (mediaQuery.addEventListener) {
-            mediaQuery.addEventListener('change', handleChange);
-        } else {
-            // Fallback for older browsers
-            mediaQuery.addListener(handleChange);
-        }
+    // Add event listener with compatibility for older browsers
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handleChange);
+    } else {
+      // Fallback for older browsers
+      mediaQuery.addListener(handleChange);
+    }
 
-        // Cleanup function to remove listener
-        return () => {
-            if (mediaQuery.removeEventListener) {
-                mediaQuery.removeEventListener('change', handleChange);
-            } else {
-                // Fallback for older browsers
-                mediaQuery.removeListener(handleChange);
-            }
-        };
-    }, []);
+    // Cleanup function to remove listener
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', handleChange);
+      } else {
+        // Fallback for older browsers
+        mediaQuery.removeListener(handleChange);
+      }
+    };
+  }, []);
 
-    return prefersReducedMotion;
+  return prefersReducedMotion;
 };
 
 export default useReducedMotion; 

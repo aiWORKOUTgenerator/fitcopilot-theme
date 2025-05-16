@@ -40,72 +40,72 @@ export interface TestProvidersProps {
  * in the correct nesting order
  */
 export const TestProviders: FC<TestProvidersProps> = ({
-    // User context defaults
-    initialUser,
+  // User context defaults
+  initialUser,
 
-    // Workout context defaults
-    initialWorkouts = [],
-    initialSelectedWorkout = null,
-    workoutLoading = false,
-    workoutError = null,
-    shouldFailWorkoutLoad = false,
-    shouldFailWorkoutSave = false,
-    shouldFailWorkoutDelete = false,
+  // Workout context defaults
+  initialWorkouts = [],
+  initialSelectedWorkout = null,
+  workoutLoading = false,
+  workoutError = null,
+  shouldFailWorkoutLoad = false,
+  shouldFailWorkoutSave = false,
+  shouldFailWorkoutDelete = false,
 
-    // Journey context defaults
-    initialJourneyData = {},
+  // Journey context defaults
+  initialJourneyData = {},
 
-    // Children
-    children
+  // Children
+  children
 }) => {
-    // Wrap the providers in the correct order (outer to inner)
-    return (
-        <MockAppProvider initialUser={initialUser}>
-            <MockWorkoutProvider
-                initialWorkouts={initialWorkouts}
-                initialSelected={initialSelectedWorkout}
-                initialLoading={workoutLoading}
-                initialError={workoutError}
-                shouldFailOnLoad={shouldFailWorkoutLoad}
-                shouldFailOnSave={shouldFailWorkoutSave}
-                shouldFailOnDelete={shouldFailWorkoutDelete}
-            >
-                <JourneyProvider initialData={initialJourneyData}>
-                    {children}
-                </JourneyProvider>
-            </MockWorkoutProvider>
-        </MockAppProvider>
-    );
+  // Wrap the providers in the correct order (outer to inner)
+  return (
+    <MockAppProvider initialUser={initialUser}>
+      <MockWorkoutProvider
+        initialWorkouts={initialWorkouts}
+        initialSelected={initialSelectedWorkout}
+        initialLoading={workoutLoading}
+        initialError={workoutError}
+        shouldFailOnLoad={shouldFailWorkoutLoad}
+        shouldFailOnSave={shouldFailWorkoutSave}
+        shouldFailOnDelete={shouldFailWorkoutDelete}
+      >
+        <JourneyProvider initialData={initialJourneyData}>
+          {children}
+        </JourneyProvider>
+      </MockWorkoutProvider>
+    </MockAppProvider>
+  );
 };
 
 /**
  * Custom render function that wraps the component in all necessary providers
  */
 export function renderWithAllProviders(
-    ui: React.ReactElement,
-    providerProps: Omit<TestProvidersProps, 'children'> = {},
-    renderOptions: Omit<RenderOptions, 'wrapper'> = {}
+  ui: React.ReactElement,
+  providerProps: Omit<TestProvidersProps, 'children'> = {},
+  renderOptions: Omit<RenderOptions, 'wrapper'> = {}
 ): RenderResult & { providerProps: Omit<TestProvidersProps, 'children'> } {
-    return {
-        ...render(ui, {
-            wrapper: ({ children }) => (
-                <TestProviders {...providerProps}>{children}</TestProviders>
-            ),
-            ...renderOptions,
-        }),
-        providerProps,
-    };
+  return {
+    ...render(ui, {
+      wrapper: ({ children }) => (
+        <TestProviders {...providerProps}>{children}</TestProviders>
+      ),
+      ...renderOptions,
+    }),
+    providerProps,
+  };
 }
 
 /**
  * Creates a wrapper function for use with renderHook
  */
 export function createTestProvidersWrapper(providerProps: Omit<TestProvidersProps, 'children'> = {}) {
-    const TestProviderWrapper: FC<{ children?: ReactNode }> = ({ children }) => (
-        <TestProviders {...providerProps}>{children}</TestProviders>
-    );
+  const TestProviderWrapper: FC<{ children?: ReactNode }> = ({ children }) => (
+    <TestProviders {...providerProps}>{children}</TestProviders>
+  );
 
-    TestProviderWrapper.displayName = 'TestProviderWrapper';
+  TestProviderWrapper.displayName = 'TestProviderWrapper';
 
-    return TestProviderWrapper;
+  return TestProviderWrapper;
 } 

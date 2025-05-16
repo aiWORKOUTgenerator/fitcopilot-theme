@@ -10,9 +10,9 @@
  * @returns Fixed header height in pixels
  */
 export const getFixedHeaderHeight = (): number => {
-    // This could be calculated dynamically based on actual DOM elements
-    // For now, assuming a fixed height - adjust as needed for your layout
-    return 60;
+  // This could be calculated dynamically based on actual DOM elements
+  // For now, assuming a fixed height - adjust as needed for your layout
+  return 60;
 };
 
 /**
@@ -23,23 +23,23 @@ export const getFixedHeaderHeight = (): number => {
  * @returns Calculated offset in pixels
  */
 export const calculateDynamicOffset = (element: HTMLElement, minOffset = 20): number => {
-    // Get viewport height
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  // Get viewport height
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-    // Get element height
-    const elementHeight = element.offsetHeight;
+  // Get element height
+  const elementHeight = element.offsetHeight;
 
-    // If element is taller than 70% of viewport, use a smaller offset
-    // to maximize visible content
-    if (elementHeight > viewportHeight * 0.7) {
-        // Use minimum offset, plus header height
-        return minOffset + getFixedHeaderHeight();
-    }
+  // If element is taller than 70% of viewport, use a smaller offset
+  // to maximize visible content
+  if (elementHeight > viewportHeight * 0.7) {
+    // Use minimum offset, plus header height
+    return minOffset + getFixedHeaderHeight();
+  }
 
-    // Otherwise, center shorter elements more with a larger offset
-    // But don't exceed 25% of viewport height
-    const calculatedOffset = Math.min(viewportHeight * 0.25, 120);
-    return Math.max(calculatedOffset, minOffset + getFixedHeaderHeight());
+  // Otherwise, center shorter elements more with a larger offset
+  // But don't exceed 25% of viewport height
+  const calculatedOffset = Math.min(viewportHeight * 0.25, 120);
+  return Math.max(calculatedOffset, minOffset + getFixedHeaderHeight());
 };
 
 /**
@@ -51,36 +51,36 @@ export const calculateDynamicOffset = (element: HTMLElement, minOffset = 20): nu
  * @param behavior Scroll behavior (default: auto)
  */
 export const scrollToElement = (
-    elementId: string,
-    offset = 20,
-    behavior: ScrollBehavior = 'auto'
+  elementId: string,
+  offset = 20,
+  behavior: ScrollBehavior = 'auto'
 ): void => {
-    try {
-        const element = document.getElementById(elementId);
-        if (!element) {
-            logger.warn(`Element with ID "${elementId}" not found`);
-            return;
-        }
-
-        // Always respect user's reduced motion preference
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        const effectiveBehavior = prefersReducedMotion ? 'auto' : behavior;
-
-        // Calculate dynamic offset based on element size
-        const dynamicOffset = calculateDynamicOffset(element, offset);
-
-        // Get element position
-        const rect = element.getBoundingClientRect();
-        const targetPosition = rect.top + window.pageYOffset - dynamicOffset;
-
-        // Perform the scroll, but don't force it
-        window.scrollTo({
-            top: targetPosition,
-            behavior: effectiveBehavior
-        });
-    } catch (error) {
-        logger.error('Error scrolling to element:', error);
+  try {
+    const element = document.getElementById(elementId);
+    if (!element) {
+      logger.warn(`Element with ID "${elementId}" not found`);
+      return;
     }
+
+    // Always respect user's reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const effectiveBehavior = prefersReducedMotion ? 'auto' : behavior;
+
+    // Calculate dynamic offset based on element size
+    const dynamicOffset = calculateDynamicOffset(element, offset);
+
+    // Get element position
+    const rect = element.getBoundingClientRect();
+    const targetPosition = rect.top + window.pageYOffset - dynamicOffset;
+
+    // Perform the scroll, but don't force it
+    window.scrollTo({
+      top: targetPosition,
+      behavior: effectiveBehavior
+    });
+  } catch (error) {
+    logger.error('Error scrolling to element:', error);
+  }
 };
 
 /**
@@ -90,7 +90,7 @@ export const scrollToElement = (
  * @param offset Optional offset from the top of the step (in pixels)
  */
 export const scrollToJourneyStep = (stepIndex: number, offset = 20): void => {
-    scrollToElement(`journey-step-${stepIndex}`, offset);
+  scrollToElement(`journey-step-${stepIndex}`, offset);
 };
 
 /**
@@ -100,7 +100,7 @@ export const scrollToJourneyStep = (stepIndex: number, offset = 20): void => {
  * @param offset Optional offset from the top of the content (in pixels)
  */
 export const scrollToExpandedContent = (stepIndex: number, offset = 20): void => {
-    scrollToElement(`step-content-${stepIndex}`, offset);
+  scrollToElement(`step-content-${stepIndex}`, offset);
 };
 
 /**
@@ -110,7 +110,7 @@ export const scrollToExpandedContent = (stepIndex: number, offset = 20): void =>
  * @param offset Optional offset from the top of the section (in pixels)
  */
 export const scrollToAccordionSection = (sectionId: string, offset = 20): void => {
-    scrollToElement(`accordion-section-${sectionId}`, offset);
+  scrollToElement(`accordion-section-${sectionId}`, offset);
 };
 
 /**
@@ -121,41 +121,41 @@ export const scrollToAccordionSection = (sectionId: string, offset = 20): void =
  * @param offset Optional offset from the top (in pixels)
  */
 export const adjustScrollAfterExpand = (
-    elementId: string,
-    expandedContentSelector = '.expanded-content',
-    offset = 20
+  elementId: string,
+  expandedContentSelector = '.expanded-content',
+  offset = 20
 ): void => {
-    try {
-        const container = document.getElementById(elementId);
-        if (!container) return;
+  try {
+    const container = document.getElementById(elementId);
+    if (!container) return;
 
-        // Find the expanded content inside the container
-        const expandedContent = container.querySelector(expandedContentSelector);
-        if (!expandedContent) return;
+    // Find the expanded content inside the container
+    const expandedContent = container.querySelector(expandedContentSelector);
+    if (!expandedContent) return;
 
-        // Check if the bottom of the expanded content is in view
-        const expandedRect = expandedContent.getBoundingClientRect();
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    // Check if the bottom of the expanded content is in view
+    const expandedRect = expandedContent.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-        // If the expanded content extends below the viewport
-        if (expandedRect.bottom > viewportHeight) {
-            // Calculate how much additional scroll is needed
-            const additionalScroll = Math.min(
-                expandedRect.bottom - viewportHeight + offset,
-                expandedRect.height / 2 // Don't scroll more than half the expanded height
-            );
+    // If the expanded content extends below the viewport
+    if (expandedRect.bottom > viewportHeight) {
+      // Calculate how much additional scroll is needed
+      const additionalScroll = Math.min(
+        expandedRect.bottom - viewportHeight + offset,
+        expandedRect.height / 2 // Don't scroll more than half the expanded height
+      );
 
-            // Apply the additional scroll with a short delay to allow any transitions to complete
-            setTimeout(() => {
-                window.scrollBy({
-                    top: additionalScroll,
-                    behavior: 'smooth'
-                });
-            }, 300);
-        }
-    } catch (error) {
-        logger.error('Error adjusting scroll after expand:', error);
+      // Apply the additional scroll with a short delay to allow any transitions to complete
+      setTimeout(() => {
+        window.scrollBy({
+          top: additionalScroll,
+          behavior: 'smooth'
+        });
+      }, 300);
     }
+  } catch (error) {
+    logger.error('Error adjusting scroll after expand:', error);
+  }
 };
 
 /**
@@ -166,16 +166,16 @@ export const adjustScrollAfterExpand = (
  * @returns True if the element is in the viewport
  */
 export const isElementInViewport = (element: HTMLElement, offset = 100): boolean => {
-    const rect = element.getBoundingClientRect();
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+  const rect = element.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
 
-    return (
-        rect.top >= -offset &&
+  return (
+    rect.top >= -offset &&
         rect.left >= 0 &&
         rect.bottom <= (viewportHeight + offset) &&
         rect.right <= viewportWidth
-    );
+  );
 };
 
 /**
@@ -185,13 +185,13 @@ export const isElementInViewport = (element: HTMLElement, offset = 100): boolean
  * @returns True if element is fully visible
  */
 export const isElementFullyVisible = (element: HTMLElement): boolean => {
-    const rect = element.getBoundingClientRect();
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const rect = element.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-    return (
-        rect.top >= 0 &&
+  return (
+    rect.top >= 0 &&
         rect.bottom <= viewportHeight
-    );
+  );
 };
 
 /**
@@ -201,39 +201,39 @@ export const isElementFullyVisible = (element: HTMLElement): boolean => {
  * @param contentSelector CSS selector for the dropdown content
  */
 export const ensureDropdownContentVisible = (
-    dropdownId: string,
-    contentSelector = '.dropdown-content'
+  dropdownId: string,
+  contentSelector = '.dropdown-content'
 ): void => {
-    try {
-        const dropdown = document.getElementById(dropdownId);
-        if (!dropdown) return;
+  try {
+    const dropdown = document.getElementById(dropdownId);
+    if (!dropdown) return;
 
-        const content = dropdown.querySelector(contentSelector);
-        if (!content) return;
+    const content = dropdown.querySelector(contentSelector);
+    if (!content) return;
 
-        // Get content position
-        const rect = content.getBoundingClientRect();
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    // Get content position
+    const rect = content.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-        // If content is larger than viewport, scroll to top of dropdown with offset
-        if (rect.height > viewportHeight * 0.7) {
-            scrollToElement(dropdownId, getFixedHeaderHeight() + 20);
-            return;
-        }
-
-        // If bottom of content is below viewport
-        if (rect.bottom > viewportHeight) {
-            // Calculate how much we need to scroll
-            const scrollAmount = rect.bottom - viewportHeight + 40; // 40px extra padding
-
-            window.scrollBy({
-                top: scrollAmount,
-                behavior: 'smooth'
-            });
-        }
-    } catch (error) {
-        logger.error('Error ensuring dropdown content visibility:', error);
+    // If content is larger than viewport, scroll to top of dropdown with offset
+    if (rect.height > viewportHeight * 0.7) {
+      scrollToElement(dropdownId, getFixedHeaderHeight() + 20);
+      return;
     }
+
+    // If bottom of content is below viewport
+    if (rect.bottom > viewportHeight) {
+      // Calculate how much we need to scroll
+      const scrollAmount = rect.bottom - viewportHeight + 40; // 40px extra padding
+
+      window.scrollBy({
+        top: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  } catch (error) {
+    logger.error('Error ensuring dropdown content visibility:', error);
+  }
 };
 
 /**
@@ -245,26 +245,26 @@ export const ensureDropdownContentVisible = (
  * @returns Throttled function
  */
 export const throttle = <T extends (...args: unknown[]) => any>(
-    func: T,
-    limit: number
+  func: T,
+  limit: number
 ): ((...args: Parameters<T>) => void) => {
-    let lastCall = 0;
-    let inThrottle = false;
+  let lastCall = 0;
+  let inThrottle = false;
 
-    return function (this: any, ...args: Parameters<T>) {
-        const now = Date.now();
+  return function (this: any, ...args: Parameters<T>) {
+    const now = Date.now();
 
-        // Use time-based throttling as primary mechanism (from CustomizeExperience)
-        if (now - lastCall >= limit) {
-            lastCall = now;
-            func.apply(this, args);
-            inThrottle = false;
-        } else if (!inThrottle) {
-            // Fallback to simpler throttling (from Journey) when needed
-            inThrottle = true;
-            setTimeout(() => {
-                inThrottle = false;
-            }, limit - (now - lastCall));
-        }
-    };
+    // Use time-based throttling as primary mechanism (from CustomizeExperience)
+    if (now - lastCall >= limit) {
+      lastCall = now;
+      func.apply(this, args);
+      inThrottle = false;
+    } else if (!inThrottle) {
+      // Fallback to simpler throttling (from Journey) when needed
+      inThrottle = true;
+      setTimeout(() => {
+        inThrottle = false;
+      }, limit - (now - lastCall));
+    }
+  };
 }; 

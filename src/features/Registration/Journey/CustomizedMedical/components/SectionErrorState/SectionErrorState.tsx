@@ -8,28 +8,28 @@ import './SectionErrorState.scss';
  * with retry functionality
  */
 const SectionErrorState: React.FC<SectionErrorStateProps> = ({
-    message,
-    onRetry
+  message,
+  onRetry
 }) => {
-    return (
-        <div className="section-error-state" role="alert">
-            <div className="error-icon">
-                <AlertCircle size={24} />
-            </div>
-            <div className="error-content">
-                <h4 className="error-title">Error Saving Information</h4>
-                <p className="error-message">{message}</p>
-            </div>
-            <button
-                onClick={onRetry}
-                className="retry-button"
-                aria-label="Retry saving"
-            >
-                <RefreshCw size={16} />
-                <span>Retry</span>
-            </button>
-        </div>
-    );
+  return (
+    <div className="section-error-state" role="alert">
+      <div className="error-icon">
+        <AlertCircle size={24} />
+      </div>
+      <div className="error-content">
+        <h4 className="error-title">Error Saving Information</h4>
+        <p className="error-message">{message}</p>
+      </div>
+      <button
+        onClick={onRetry}
+        className="retry-button"
+        aria-label="Retry saving"
+      >
+        <RefreshCw size={16} />
+        <span>Retry</span>
+      </button>
+    </div>
+  );
 };
 
 export default SectionErrorState; 

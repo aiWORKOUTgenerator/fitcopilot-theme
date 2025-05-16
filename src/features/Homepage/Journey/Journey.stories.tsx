@@ -184,28 +184,28 @@ export const TabletView: Story = {
  */
 export const ResponsiveComparison: Story = {
   render: (args) => (
-      <div className="responsive-demo">
-          <div className="viewport-demo">
-              <h3 className="text-white mb-2">Mobile View (320px)</h3>
-              <div className="mobile-frame" style={{ width: '320px', border: '1px solid #666', margin: '0 auto' }}>
-                  <Journey {...args} />
-              </div>
-          </div>
-
-          <div className="viewport-demo mt-8">
-              <h3 className="text-white mb-2">Tablet View (768px)</h3>
-              <div className="tablet-frame" style={{ width: '768px', border: '1px solid #666', margin: '0 auto', maxWidth: '100%' }}>
-                  <Journey {...args} />
-              </div>
-          </div>
-
-          <div className="viewport-demo mt-8">
-              <h3 className="text-white mb-2">Desktop View (1024px+)</h3>
-              <div className="desktop-frame" style={{ width: '100%', border: '1px solid #666', margin: '0 auto' }}>
-                  <Journey {...args} />
-              </div>
-          </div>
+    <div className="responsive-demo">
+      <div className="viewport-demo">
+        <h3 className="text-white mb-2">Mobile View (320px)</h3>
+        <div className="mobile-frame" style={{ width: '320px', border: '1px solid #666', margin: '0 auto' }}>
+          <Journey {...args} />
+        </div>
       </div>
+
+      <div className="viewport-demo mt-8">
+        <h3 className="text-white mb-2">Tablet View (768px)</h3>
+        <div className="tablet-frame" style={{ width: '768px', border: '1px solid #666', margin: '0 auto', maxWidth: '100%' }}>
+          <Journey {...args} />
+        </div>
+      </div>
+
+      <div className="viewport-demo mt-8">
+        <h3 className="text-white mb-2">Desktop View (1024px+)</h3>
+        <div className="desktop-frame" style={{ width: '100%', border: '1px solid #666', margin: '0 auto' }}>
+          <Journey {...args} />
+        </div>
+      </div>
+    </div>
   ),
   parameters: {
     docs: {

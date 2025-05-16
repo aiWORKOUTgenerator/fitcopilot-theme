@@ -24,7 +24,7 @@ export type { ThemeSwitcherProps } from './ThemeSwitcher';
 
 // Export Media types
 export type {
-    AudioPlayerProps,
-    MediaPlayerProps, VideoPlayerProps
+  AudioPlayerProps,
+  MediaPlayerProps, VideoPlayerProps
 } from '../../../types/media';
 

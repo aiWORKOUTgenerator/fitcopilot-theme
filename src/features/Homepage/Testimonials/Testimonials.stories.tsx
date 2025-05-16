@@ -13,10 +13,10 @@ const meta: Meta<typeof Testimonials> = {
   },
   decorators: [
     (Story) => (
-        <div className="relative min-h-screen">
-            <GlobalBackground variant="default" />
-            <Story />
-        </div>
+      <div className="relative min-h-screen">
+        <GlobalBackground variant="default" />
+        <Story />
+      </div>
     ),
   ],
   argTypes: {
@@ -127,10 +127,10 @@ export const GymTheme: Story = {
   },
   decorators: [
     (Story) => (
-        <div className="relative min-h-screen">
-            <GlobalBackground variant="gym" />
-            <Story />
-        </div>
+      <div className="relative min-h-screen">
+        <GlobalBackground variant="gym" />
+        <Story />
+      </div>
     ),
   ],
 };
@@ -142,10 +142,10 @@ export const SportsTheme: Story = {
   },
   decorators: [
     (Story) => (
-        <div className="relative min-h-screen">
-            <GlobalBackground variant="sports" />
-            <Story />
-        </div>
+      <div className="relative min-h-screen">
+        <GlobalBackground variant="sports" />
+        <Story />
+      </div>
     ),
   ],
 };
@@ -157,10 +157,10 @@ export const WellnessTheme: Story = {
   },
   decorators: [
     (Story) => (
-        <div className="relative min-h-screen">
-            <GlobalBackground variant="wellness" />
-            <Story />
-        </div>
+      <div className="relative min-h-screen">
+        <GlobalBackground variant="wellness" />
+        <Story />
+      </div>
     ),
   ],
 };

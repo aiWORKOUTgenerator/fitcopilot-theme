@@ -14,9 +14,9 @@
  * @returns Props object with both discriminators
  */
 export const createMediaProps = (mediaType: string, props = {}) => ({
-    type: mediaType,     // For core type guards
-    variant: mediaType,  // For component props
-    ...props
+  type: mediaType,     // For core type guards
+  variant: mediaType,  // For component props
+  ...props
 });
 
 /**
@@ -27,8 +27,8 @@ export const createMediaProps = (mediaType: string, props = {}) => ({
  * @returns Props object with correct discriminator
  */
 export const createButtonProps = (buttonVariant: string, props = {}) => ({
-    variant: buttonVariant,  // Buttons use variant consistently
-    ...props
+  variant: buttonVariant,  // Buttons use variant consistently
+  ...props
 });
 
 /**
@@ -39,8 +39,8 @@ export const createButtonProps = (buttonVariant: string, props = {}) => ({
  * @returns Props object with correct discriminator
  */
 export const createCardProps = (cardVariant: string, props = {}) => ({
-    variant: cardVariant,  // Cards use variant consistently
-    ...props
+  variant: cardVariant,  // Cards use variant consistently
+  ...props
 });
 
 /**
@@ -51,9 +51,9 @@ export const createCardProps = (cardVariant: string, props = {}) => ({
  * @returns void
  */
 export const expectClassNames = (element: HTMLElement, expectedClasses: string[]) => {
-    expectedClasses.forEach(className => {
-        expect(element.classList.contains(className)).toBe(true);
-    });
+  expectedClasses.forEach(className => {
+    expect(element.classList.contains(className)).toBe(true);
+  });
 };
 
 /**
@@ -63,20 +63,20 @@ export const expectClassNames = (element: HTMLElement, expectedClasses: string[]
  * @returns Converted BEM class name
  */
 export const convertToBEMClass = (className: string): string => {
-    // Media classes
-    if (className === 'media-audio') return 'audio-player__element';
-    if (className === 'media-video') return 'video-player__element';
-    if (className === 'media-image') return 'image-media__element';
-    if (className === 'media-youtube') return 'youtube-player__container';
-    if (className === 'media-gallery') return 'image-gallery__container';
-    if (className === 'media-carousel') return 'media-carousel__container';
+  // Media classes
+  if (className === 'media-audio') return 'audio-player__element';
+  if (className === 'media-video') return 'video-player__element';
+  if (className === 'media-image') return 'image-media__element';
+  if (className === 'media-youtube') return 'youtube-player__container';
+  if (className === 'media-gallery') return 'image-gallery__container';
+  if (className === 'media-carousel') return 'media-carousel__container';
 
-    // Button classes
-    if (className === 'btn-lg') return 'btn-large';
-    if (className === 'btn-sm') return 'btn-small';
-    if (className === 'btn-primary') return 'btn btn-primary';
-    if (className === 'btn-secondary') return 'btn btn-secondary';
+  // Button classes
+  if (className === 'btn-lg') return 'btn-large';
+  if (className === 'btn-sm') return 'btn-small';
+  if (className === 'btn-primary') return 'btn btn-primary';
+  if (className === 'btn-secondary') return 'btn btn-secondary';
 
-    // Default case
-    return className;
+  // Default case
+  return className;
 }; 

@@ -22,56 +22,56 @@ export interface CardProps {
 }
 
 export const Card: React.FC<CardProps> = ({
-    children,
-    elevation = 'default',
-    padding = 'default',
-    bordered = false,
-    interactive = false,
-    onClick,
-    className = ''
+  children,
+  elevation = 'default',
+  padding = 'default',
+  bordered = false,
+  interactive = false,
+  onClick,
+  className = ''
 }) => {
-    // Build class names based on props
-    const classNames = [
-        'card',
-        elevation !== 'default' && `card--${elevation}`,
-        padding !== 'default' && `card--${padding}`,
-        bordered && 'card--bordered',
-        interactive && 'card--interactive',
-        className
-    ].filter(Boolean).join(' ');
+  // Build class names based on props
+  const classNames = [
+    'card',
+    elevation !== 'default' && `card--${elevation}`,
+    padding !== 'default' && `card--${padding}`,
+    bordered && 'card--bordered',
+    interactive && 'card--interactive',
+    className
+  ].filter(Boolean).join(' ');
 
-    return (
-        <div
-            className={classNames}
-            onClick={interactive ? onClick : undefined}
-            role={interactive ? 'button' : undefined}
-            tabIndex={interactive ? 0 : undefined}
-        >
-            {children}
-        </div>
-    );
+  return (
+    <div
+      className={classNames}
+      onClick={interactive ? onClick : undefined}
+      role={interactive ? 'button' : undefined}
+      tabIndex={interactive ? 0 : undefined}
+    >
+      {children}
+    </div>
+  );
 };
 
 // Subcomponents for structured content
 export const CardHeader: React.FC<{ children: React.ReactNode, className?: string }> = ({
-    children,
-    className = ''
+  children,
+  className = ''
 }) => (
-    <div className={`card__header ${className}`}>{children}</div>
+  <div className={`card__header ${className}`}>{children}</div>
 );
 
 export const CardContent: React.FC<{ children: React.ReactNode, className?: string }> = ({
-    children,
-    className = ''
+  children,
+  className = ''
 }) => (
-    <div className={`card__content ${className}`}>{children}</div>
+  <div className={`card__content ${className}`}>{children}</div>
 );
 
 export const CardFooter: React.FC<{ children: React.ReactNode, className?: string }> = ({
-    children,
-    className = ''
+  children,
+  className = ''
 }) => (
-    <div className={`card__footer ${className}`}>{children}</div>
+  <div className={`card__footer ${className}`}>{children}</div>
 );
 
 export default Card; 

@@ -1,119 +1,130 @@
 /**
- * FileUpload Component
+ * FileField Component
+ * 
+ * A file upload field component using the standardized FieldWrapper for consistent layout.
  */
 
 import React, { useRef } from 'react';
+import { debug } from '../../../../utils/logger';
 import { FileFieldProps } from '../types';
+import FieldWrapper from './FieldWrapper';
+import { filterComponentProps } from './FormField';
 
 /**
- * FileUpload component for file input fields
+ * FileField component for file input fields
  */
-const FileUpload: React.FC<FileFieldProps> = ({
-    name,
-    value,
-    label,
-    onChange,
-    accept,
-    multiple,
-    buttonText = 'Choose file',
-    disabled = false,
-    required = false,
-    error,
-    helperText,
-    className = '',
-    id,
-    isLoading = false,
-    'data-testid': dataTestId,
+const FileField: React.FC<Omit<FileFieldProps, 'value'> & { value?: File | null }> = ({
+  id,
+  name,
+  label,
+  onChange,
+  onBlur,
+  onFocus,
+  accept,
+  multiple = false,
+  buttonText = 'Choose File',
+  disabled = false,
+  required = false,
+  error,
+  helperText,
+  className,
+  'data-testid': testId,
+  isLoading = false,
+  validators,
+  value, // We need to extract this but not pass it to the input element
+  ...otherProps
 }) => {
-    // Field ID defaults to name if not provided
-    const fieldId = id || name;
-
-    // Create ref for the hidden file input
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    // Handle custom button click to trigger file selection
-    const handleButtonClick = () => {
-        if (fileInputRef.current && !disabled && !isLoading) {
-            fileInputRef.current.click();
-        }
-    };
-
-    // Get the selected file name for display
-    const getFileName = () => {
-        if (!value) return 'No file selected';
-        return value.name;
-    };
-
-    // Generate CSS classes
-    const uploadClasses = [
-        'form-file-upload',
-        disabled ? 'form-file-upload--disabled' : '',
-        error ? 'form-file-upload--error' : '',
-        isLoading ? 'form-file-upload--loading' : '',
-        className
-    ].filter(Boolean).join(' ');
-
-    const buttonClasses = [
-        'form-file-button',
-        disabled ? 'form-file-button--disabled' : '',
-        isLoading ? 'form-file-button--loading' : '',
-    ].filter(Boolean).join(' ');
-
-    return (
-        <div className="form-field">
-            {label && (
-                <label
-                    htmlFor={fieldId}
-                    className={`form-field__label ${required ? 'form-field__label--required' : ''}`}
-                >
-                    {label}
-                </label>
-            )}
-
-            <div className={uploadClasses}>
-                <input
-                    ref={fileInputRef}
-                    id={fieldId}
-                    name={name}
-                    type="file"
-                    onChange={onChange}
-                    accept={accept}
-                    multiple={multiple}
-                    disabled={disabled || isLoading}
-                    required={required}
-                    className="form-file-input"
-                    aria-invalid={!!error}
-                    aria-describedby={error || helperText ? `${fieldId}-description` : undefined}
-                    data-testid={dataTestId}
-                    style={{ display: 'none' }}
-                />
-
-                <div className="form-file-container">
-                    <button
-                        type="button"
-                        className={buttonClasses}
-                        onClick={handleButtonClick}
-                        disabled={disabled || isLoading}
-                        aria-controls={fieldId}
-                    >
-                        {buttonText}
-                    </button>
-                    <div className="form-file-name" title={value ? value.name : ''}>
-                        {getFileName()}
-                    </div>
-                </div>
-            </div>
-
-            {(error || helperText) && (
-                <div
-                    id={`${fieldId}-description`}
-                    className={`form-field__message ${error ? 'form-field__message--error' : ''}`}
-                >
-                    {error || helperText}
-                </div>
-            )}
-        </div>
-    );
+  // Generate ID if not provided
+  const fieldId = id || `field-${name}`;
+  
+  // Filter out component-only props
+  const htmlProps = filterComponentProps(otherProps);
+  
+  // Create ref for the hidden file input
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Handle custom button click to trigger file selection
+  const handleButtonClick = () => {
+    if (fileInputRef.current && !disabled && !isLoading) {
+      fileInputRef.current.click();
+    }
+  };
+  
+  // Handle file change with logging
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debug('FileField changed', {
+      name,
+      files: e.target.files?.length || 0
+    });
+    onChange(e);
+  };
+  
+  // Get display text for the file
+  const getFileText = () => {
+    // If we have a value prop, use that
+    if (value) {
+      return value.name;
+    }
+    
+    // Otherwise try to get from the ref
+    if (!fileInputRef.current?.files?.length) {
+      return multiple ? 'No files selected' : 'No file selected';
+    }
+    
+    const files = fileInputRef.current.files;
+    if (files.length === 1) {
+      return files[0].name;
+    }
+    
+    return `${files.length} files selected`;
+  };
+  
+  return (
+    <FieldWrapper
+      id={fieldId}
+      name={name}
+      label={label}
+      required={required}
+      error={error}
+      helperText={helperText}
+      className={className}
+      isLoading={isLoading}
+    >
+      <div className="form-field__file-wrapper">
+        <input
+          ref={fileInputRef}
+          id={fieldId}
+          name={name}
+          type="file"
+          onChange={handleChange}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          accept={accept}
+          multiple={multiple}
+          disabled={disabled}
+          required={required}
+          data-testid={testId || `file-${name}`}
+          className="form-field__file-input"
+          style={{ position: 'absolute', clip: 'rect(0,0,0,0)' }}
+          {...htmlProps}
+        />
+        
+        <button
+          type="button"
+          className="form-field__file-button"
+          onClick={handleButtonClick}
+          disabled={disabled || isLoading}
+          aria-controls={fieldId}
+        >
+          {buttonText}
+        </button>
+        
+        <span className="form-field__file-name">
+          {getFileText()}
+        </span>
+      </div>
+    </FieldWrapper>
+  );
 };
 
-export default FileUpload; 
+export default FileField; 

@@ -27,18 +27,18 @@ import VideoPlayer from './VideoPlayer';
  * />
  */
 const MediaPlayer: React.FC<MediaPlayerProps> = (props) => {
-    // Type narrowing based on the discriminated union
-    if (props._variant === 'video') {
-        return <VideoPlayer {...props} />;
-    }
+  // Type narrowing based on the discriminated union
+  if (props._variant === 'video') {
+    return <VideoPlayer {...props} />;
+  }
 
-    if (props._variant === 'audio') {
-        return <AudioPlayer {...props} />;
-    }
+  if (props._variant === 'audio') {
+    return <AudioPlayer {...props} />;
+  }
 
-    // TypeScript should prevent this case, but we handle it for safety
-    // This should never be reached due to our discriminated union types
-    throw new Error(`Unknown media variant: ${props._variant}`);
+  // TypeScript should prevent this case, but we handle it for safety
+  // This should never be reached due to our discriminated union types
+  throw new Error(`Unknown media variant: ${props._variant}`);
 };
 
 export default MediaPlayer; 

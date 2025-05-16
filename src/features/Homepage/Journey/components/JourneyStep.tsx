@@ -128,69 +128,69 @@ const JourneyStep: React.FC<LocalJourneyStepProps> = ({
   };
 
   return (
-      <>
-          {/* Main Step Card */}
-          <div
-              className={`
+    <>
+      {/* Main Step Card */}
+      <div
+        className={`
           relative p-4 md:p-6 rounded-xl journey-bg-card z-10
           border ${isExpanded ? 'journey-border-active' : 'journey-border'}
           transition-medium cursor-pointer group ${glowEffectClass}
         `}
-              onClick={onToggle}
-              role="button"
-              tabIndex={0}
-              aria-expanded={isExpanded}
-              aria-controls={`step-content-${index}`}
-              onKeyDown={handleKeyDown}
-              data-theme={variant !== 'default' ? variant : undefined}
-              data-aos={_prefersReducedMotion ? undefined : 'fade-up'}
-              data-aos-delay={_prefersReducedMotion ? undefined : step.delay?.toString()}
-              style={customStyle}
+        onClick={onToggle}
+        role="button"
+        tabIndex={0}
+        aria-expanded={isExpanded}
+        aria-controls={`step-content-${index}`}
+        onKeyDown={handleKeyDown}
+        data-theme={variant !== 'default' ? variant : undefined}
+        data-aos={_prefersReducedMotion ? undefined : 'fade-up'}
+        data-aos-delay={_prefersReducedMotion ? undefined : step.delay?.toString()}
+        style={customStyle}
       >
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-                  {/* Step Icon & Number */}
-                  <div className="relative">
-                      <div className={`w-16 h-16 rounded-xl ${stepGradientClass} flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}>
-                          {step.icon}
-                          <div className={`absolute inset-0 rounded-xl ${stepGradientClass} opacity-15 blur-[1px] group-hover:opacity-25 transition-opacity`} aria-hidden="true"></div>
-                      </div>
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+          {/* Step Icon & Number */}
+          <div className="relative">
+            <div className={`w-16 h-16 rounded-xl ${stepGradientClass} flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}>
+              {step.icon}
+              <div className={`absolute inset-0 rounded-xl ${stepGradientClass} opacity-15 blur-[1px] group-hover:opacity-25 transition-opacity`} aria-hidden="true"></div>
+            </div>
 
-                      {/* Step number */}
-                      <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold journey-gradient-lime text-gray-900">
-                          {index + 1}
-                      </div>
-                  </div>
-
-                  {/* Step Information */}
-                  <div className="flex-1">
-                      <h3 className="text-xl md:text-2xl font-bold mb-2 journey-text-heading group-hover:journey-text-heading-hover transition-colors flex items-center">
-                          {step.title}
-                      </h3>
-                      <p className="journey-text-description group-hover:journey-text-description-hover transition-colors md:pr-8">
-                          {step.description}
-                      </p>
-                  </div>
-
-                  {/* Expand/Collapse Button */}
-                  <div className={`p-2 rounded-full journey-accent-border-30 journey-accent-bg-10 transition-all duration-300 ${isExpanded ? 'rotate-90' : ''}`} aria-hidden="true">
-                      <ChevronRight size={20} className="journey-text-accent" />
-                  </div>
-              </div>
+            {/* Step number */}
+            <div className="absolute -top-3 -left-3 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold journey-gradient-lime text-gray-900">
+              {index + 1}
+            </div>
           </div>
 
-          {/* Progress connector - Now outside the card to connect with the timeline */}
-          {!isLast && (
-          <div className={`journey-step-connector ${connectorClass}`} aria-hidden="true"></div>
+          {/* Step Information */}
+          <div className="flex-1">
+            <h3 className="text-xl md:text-2xl font-bold mb-2 journey-text-heading group-hover:journey-text-heading-hover transition-colors flex items-center">
+              {step.title}
+            </h3>
+            <p className="journey-text-description group-hover:journey-text-description-hover transition-colors md:pr-8">
+              {step.description}
+            </p>
+          </div>
+
+          {/* Expand/Collapse Button */}
+          <div className={`p-2 rounded-full journey-accent-border-30 journey-accent-bg-10 transition-all duration-300 ${isExpanded ? 'rotate-90' : ''}`} aria-hidden="true">
+            <ChevronRight size={20} className="journey-text-accent" />
+          </div>
+        </div>
+      </div>
+
+      {/* Progress connector - Now outside the card to connect with the timeline */}
+      {!isLast && (
+        <div className={`journey-step-connector ${connectorClass}`} aria-hidden="true"></div>
       )}
 
-          {/* Expanded Content */}
-          <ExpandedContent
-              step={step}
-              index={index}
-              isExpanded={isExpanded}
-              variant={variant}
+      {/* Expanded Content */}
+      <ExpandedContent
+        step={step}
+        index={index}
+        isExpanded={isExpanded}
+        variant={variant}
       />
-      </>
+    </>
   );
 };
 
@@ -216,29 +216,29 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({
   };
 
   return (
-      <div
-          id={`step-content-${index}`}
-          className="mt-2 rounded-xl journey-bg-card journey-border z-10 relative overflow-hidden p-4 md:p-6 animate-fade-in"
-          data-theme={variant !== 'default' ? variant : undefined}
-          style={customStyle}
+    <div
+      id={`step-content-${index}`}
+      className="mt-2 rounded-xl journey-bg-card journey-border z-10 relative overflow-hidden p-4 md:p-6 animate-fade-in"
+      data-theme={variant !== 'default' ? variant : undefined}
+      style={customStyle}
     >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              {step.detailedFeatures?.map((feature: DetailedFeature, featureIndex: number) => (
-                  <JourneyFeatureCard
-                      key={featureIndex}
-                      feature={feature}
-                      variant={variant}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        {step.detailedFeatures?.map((feature: DetailedFeature, featureIndex: number) => (
+          <JourneyFeatureCard
+            key={featureIndex}
+            feature={feature}
+            variant={variant}
           />
         ))}
-          </div>
-
-          {/* CTA Section */}
-          <StepCTA
-              step={step}
-              isExpanded={true}
-              variant={variant}
-      />
       </div>
+
+      {/* CTA Section */}
+      <StepCTA
+        step={step}
+        isExpanded={true}
+        variant={variant}
+      />
+    </div>
   );
 };
 

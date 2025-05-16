@@ -10,13 +10,13 @@
  */
 
 import {
-    AudioMediaProps,
-    ImageGalleryProps,
-    ImageMediaProps,
-    MediaCarouselProps,
-    MediaProps,
-    VideoMediaProps,
-    YouTubeMediaProps
+  AudioMediaProps,
+  ImageGalleryProps,
+  ImageMediaProps,
+  MediaCarouselProps,
+  MediaProps,
+  VideoMediaProps,
+  YouTubeMediaProps
 } from '../../features/shared/Media/types';
 
 /**
@@ -26,7 +26,7 @@ import {
  * @returns Type predicate indicating if props are for an image media component
  */
 export function isImageMedia(props: MediaProps): props is ImageMediaProps {
-    return props.variant === 'image';
+  return props.variant === 'image';
 }
 
 /**
@@ -36,7 +36,7 @@ export function isImageMedia(props: MediaProps): props is ImageMediaProps {
  * @returns Type predicate indicating if props are for a video media component
  */
 export function isVideoMedia(props: MediaProps): props is VideoMediaProps {
-    return props.variant === 'video';
+  return props.variant === 'video';
 }
 
 /**
@@ -46,7 +46,7 @@ export function isVideoMedia(props: MediaProps): props is VideoMediaProps {
  * @returns Type predicate indicating if props are for an audio media component
  */
 export function isAudioMedia(props: MediaProps): props is AudioMediaProps {
-    return props.variant === 'audio';
+  return props.variant === 'audio';
 }
 
 /**
@@ -56,7 +56,7 @@ export function isAudioMedia(props: MediaProps): props is AudioMediaProps {
  * @returns Type predicate indicating if props are for a YouTube media component
  */
 export function isYouTubeMedia(props: MediaProps): props is YouTubeMediaProps {
-    return props.variant === 'youtube';
+  return props.variant === 'youtube';
 }
 
 /**
@@ -66,7 +66,7 @@ export function isYouTubeMedia(props: MediaProps): props is YouTubeMediaProps {
  * @returns Type predicate indicating if props are for an image gallery component
  */
 export function isImageGallery(props: MediaProps): props is ImageGalleryProps {
-    return props.variant === 'imageGallery';
+  return props.variant === 'imageGallery';
 }
 
 /**
@@ -76,14 +76,14 @@ export function isImageGallery(props: MediaProps): props is ImageGalleryProps {
  * @returns Type predicate indicating if props are for a media carousel component
  */
 export function isMediaCarousel(props: MediaProps): props is MediaCarouselProps {
-    return props.variant === 'carousel';
+  return props.variant === 'carousel';
 }
 
 export default {
-    isImageMedia,
-    isVideoMedia,
-    isAudioMedia,
-    isYouTubeMedia,
-    isImageGallery,
-    isMediaCarousel
+  isImageMedia,
+  isVideoMedia,
+  isAudioMedia,
+  isYouTubeMedia,
+  isImageGallery,
+  isMediaCarousel
 }; 

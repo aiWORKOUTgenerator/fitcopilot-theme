@@ -14,22 +14,22 @@ interface ValidationSummaryProps {
  * Displays validation messages in a consistent format across all sections
  */
 const ValidationSummary: React.FC<ValidationSummaryProps> = ({
-    isValid,
-    message = "Please complete all required fields",
-    className = "",
+  isValid,
+  message = "Please complete all required fields",
+  className = "",
 }) => {
-    if (isValid) return null;
+  if (isValid) return null;
 
-    return (
-        <div
-            className={`validation-summary ${className}`}
-            role="alert"
-            aria-live="polite"
-        >
-            <AlertCircle size={16} className="validation-icon" />
-            <span className="validation-message">{message}</span>
-        </div>
-    );
+  return (
+    <div
+      className={`validation-summary ${className}`}
+      role="alert"
+      aria-live="polite"
+    >
+      <AlertCircle size={16} className="validation-icon" />
+      <span className="validation-message">{message}</span>
+    </div>
+  );
 };
 
 export default ValidationSummary; 

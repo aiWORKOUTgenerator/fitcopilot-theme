@@ -10,21 +10,21 @@ import Services from './pages/Services/Services';
 import Workouts from './pages/Workouts/Workouts';
 
 function App() {
-    return (
-        <div className="App">
-            <Header />
-            <main>
-                <Routes>
-                    <Route path="/" element={<Homepage />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/services" element={<Services />} />
-                    <Route path="/workouts" element={<Workouts />} />
-                    <Route path="/contact" element={<Contact />} />
-                </Routes>
-            </main>
-            <Footer />
-        </div>
-    );
+  return (
+    <div className="App">
+      <Header />
+      <main>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/workouts" element={<Workouts />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
 }
 
 export default App; 

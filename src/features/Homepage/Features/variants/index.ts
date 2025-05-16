@@ -19,32 +19,32 @@ export interface FeaturesProps {
 
 // Map variant keys to their React components
 export const FeaturesMap: Record<string, React.ComponentType<FeaturesProps>> = {
-    default: DefaultVariant,
-    boutique: BoutiqueVariant,
-    classic: ClassicVariant,
-    minimalist: MinimalistVariant,
-    modern: ModernVariant,
-    registration: RegistrationVariant,
-    sports: SportsVariant,
-    wellness: WellnessVariant,
+  default: DefaultVariant,
+  boutique: BoutiqueVariant,
+  classic: ClassicVariant,
+  minimalist: MinimalistVariant,
+  modern: ModernVariant,
+  registration: RegistrationVariant,
+  sports: SportsVariant,
+  wellness: WellnessVariant,
 };
 
 // Helper function to get the variant component based on WordPress settings
 export const getFeaturesVariant = () => {
-    const variant = getComponentVariant('features', 'default');
-    return FeaturesMap[variant] || FeaturesMap.default;
+  const variant = getComponentVariant('features', 'default');
+  return FeaturesMap[variant] || FeaturesMap.default;
 };
 
 // Export all variants
 export {
-    BoutiqueVariant,
-    ClassicVariant,
-    DefaultVariant,
-    MinimalistVariant,
-    ModernVariant,
-    RegistrationVariant,
-    SportsVariant,
-    WellnessVariant
+  BoutiqueVariant,
+  ClassicVariant,
+  DefaultVariant,
+  MinimalistVariant,
+  ModernVariant,
+  RegistrationVariant,
+  SportsVariant,
+  WellnessVariant
 };
 
 // Default export for backward compatibility

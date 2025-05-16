@@ -46,120 +46,120 @@ export type TooltipBlurHandler = (event: TooltipBlurEvent) => void;
  * Simple tooltip component - shows content on hover or with controlled visibility
  */
 const Tooltip: React.FC<TooltipProps> = ({
-    content,
-    children,
-    title,
-    titleColor,
-    icon,
-    position = 'bottom',
-    width,
-    showOnHover = true,
-    showOnFocus = true,
-    delay = 0,
-    isVisible: controlledIsVisible,
-    initialVisible = false,
-    planType,
-    id,
+  content,
+  children,
+  title,
+  titleColor,
+  icon,
+  position = 'bottom',
+  width,
+  showOnHover = true,
+  showOnFocus = true,
+  delay = 0,
+  isVisible: controlledIsVisible,
+  initialVisible = false,
+  planType,
+  id,
 }) => {
-    // Internal state for uncontrolled mode
-    const [isVisible, setIsVisible] = useState(initialVisible);
-    const timeoutRef = useRef<number | null>(null);
+  // Internal state for uncontrolled mode
+  const [isVisible, setIsVisible] = useState(initialVisible);
+  const timeoutRef = useRef<number | null>(null);
 
-    // Determine if component is in controlled mode
-    const isControlled = controlledIsVisible !== undefined;
-    const shouldShow = isControlled ? controlledIsVisible : isVisible;
+  // Determine if component is in controlled mode
+  const isControlled = controlledIsVisible !== undefined;
+  const shouldShow = isControlled ? controlledIsVisible : isVisible;
 
-    // Clear timeout on unmount
-    useEffect(() => {
-        return () => {
-            if (timeoutRef.current) {
-                window.clearTimeout(timeoutRef.current);
-            }
-        };
-    }, []);
-
-    // Update based on controlled state
-    useEffect(() => {
-        if (isControlled && controlledIsVisible !== isVisible) {
-            setIsVisible(controlledIsVisible);
-        }
-    }, [controlledIsVisible, isControlled, isVisible]);
-
-    // Event handlers for showing/hiding tooltip
-    const handleShow: TooltipMouseEnterHandler & TooltipFocusHandler = () => {
-        if (isControlled) return;
-
-        if (delay > 0) {
-            timeoutRef.current = window.setTimeout(() => {
-                setIsVisible(true);
-            }, delay);
-        } else {
-            setIsVisible(true);
-        }
+  // Clear timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        window.clearTimeout(timeoutRef.current);
+      }
     };
+  }, []);
 
-    const handleHide: TooltipMouseLeaveHandler & TooltipBlurHandler = () => {
-        if (isControlled) return;
+  // Update based on controlled state
+  useEffect(() => {
+    if (isControlled && controlledIsVisible !== isVisible) {
+      setIsVisible(controlledIsVisible);
+    }
+  }, [controlledIsVisible, isControlled, isVisible]);
 
-        if (timeoutRef.current) {
-            window.clearTimeout(timeoutRef.current);
-            timeoutRef.current = null;
-        }
-        setIsVisible(false);
-    };
+  // Event handlers for showing/hiding tooltip
+  const handleShow: TooltipMouseEnterHandler & TooltipFocusHandler = () => {
+    if (isControlled) return;
 
-    // Mouse and focus event handlers
-    const mouseHandlers = showOnHover ? {
-        onMouseEnter: handleShow,
-        onMouseLeave: handleHide,
-    } : {};
+    if (delay > 0) {
+      timeoutRef.current = window.setTimeout(() => {
+        setIsVisible(true);
+      }, delay);
+    } else {
+      setIsVisible(true);
+    }
+  };
 
-    const focusHandlers = showOnFocus ? {
-        onFocus: handleShow,
-        onBlur: handleHide,
-    } : {};
+  const handleHide: TooltipMouseLeaveHandler & TooltipBlurHandler = () => {
+    if (isControlled) return;
 
-    // Style for custom width
-    const tooltipStyle = width ? { width } : undefined;
+    if (timeoutRef.current) {
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setIsVisible(false);
+  };
 
-    // Plan-specific class
-    const planTypeClass = planType ? `tooltip-plan-${planType}` : '';
+  // Mouse and focus event handlers
+  const mouseHandlers = showOnHover ? {
+    onMouseEnter: handleShow,
+    onMouseLeave: handleHide,
+  } : {};
 
-    return (
-        <div className={`tooltip-wrapper ${planTypeClass}`} id={id}>
-            {/* Trigger element */}
-            <div
-                className="tooltip-trigger"
-                {...mouseHandlers}
-                {...focusHandlers}
-            >
-                {children}
+  const focusHandlers = showOnFocus ? {
+    onFocus: handleShow,
+    onBlur: handleHide,
+  } : {};
+
+  // Style for custom width
+  const tooltipStyle = width ? { width } : undefined;
+
+  // Plan-specific class
+  const planTypeClass = planType ? `tooltip-plan-${planType}` : '';
+
+  return (
+    <div className={`tooltip-wrapper ${planTypeClass}`} id={id}>
+      {/* Trigger element */}
+      <div
+        className="tooltip-trigger"
+        {...mouseHandlers}
+        {...focusHandlers}
+      >
+        {children}
+      </div>
+
+      {/* Actual tooltip */}
+      <div
+        className={`tooltip tooltip-${position} ${shouldShow ? 'visible' : ''}`}
+        style={tooltipStyle}
+        role="tooltip"
+        aria-hidden={!shouldShow}
+      >
+        <div className="tooltip-inner">
+          {/* Title and icon if provided */}
+          {(title || icon) && (
+            <div className="tooltip-header">
+              {icon && <span className={`tooltip-icon ${titleColor || ''}`}>{icon}</span>}
+              {title && <h5 className={`tooltip-title ${titleColor || ''}`}>{title}</h5>}
             </div>
+          )}
 
-            {/* Actual tooltip */}
-            <div
-                className={`tooltip tooltip-${position} ${shouldShow ? 'visible' : ''}`}
-                style={tooltipStyle}
-                role="tooltip"
-                aria-hidden={!shouldShow}
-            >
-                <div className="tooltip-inner">
-                    {/* Title and icon if provided */}
-                    {(title || icon) && (
-                        <div className="tooltip-header">
-                            {icon && <span className={`tooltip-icon ${titleColor || ''}`}>{icon}</span>}
-                            {title && <h5 className={`tooltip-title ${titleColor || ''}`}>{title}</h5>}
-                        </div>
-                    )}
-
-                    {/* Content */}
-                    <div className="tooltip-content">
-                        {content}
-                    </div>
-                </div>
-            </div>
+          {/* Content */}
+          <div className="tooltip-content">
+            {content}
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Tooltip; 

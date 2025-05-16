@@ -10,7 +10,7 @@
  * @param value The value to check
  */
 export function isNonNullable<T>(value: T): value is NonNullable<T> {
-    return value !== null && value !== undefined;
+  return value !== null && value !== undefined;
 }
 
 /**
@@ -18,7 +18,7 @@ export function isNonNullable<T>(value: T): value is NonNullable<T> {
  * @param value The value to check
  */
 export function isObject(value: unknown): value is Record<string, unknown> {
-    return typeof value === 'object' && value !== null && !Array.isArray(value);
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 /**
@@ -26,7 +26,7 @@ export function isObject(value: unknown): value is Record<string, unknown> {
  * @param value The value to check
  */
 export function isArray<T>(value: unknown): value is Array<T> {
-    return Array.isArray(value);
+  return Array.isArray(value);
 }
 
 /**
@@ -34,7 +34,7 @@ export function isArray<T>(value: unknown): value is Array<T> {
  * @param value The value to check
  */
 export function isString(value: unknown): value is string {
-    return typeof value === 'string';
+  return typeof value === 'string';
 }
 
 /**
@@ -42,7 +42,7 @@ export function isString(value: unknown): value is string {
  * @param value The value to check
  */
 export function isNumber(value: unknown): value is number {
-    return typeof value === 'number' && !isNaN(value);
+  return typeof value === 'number' && !isNaN(value);
 }
 
 /**
@@ -50,7 +50,7 @@ export function isNumber(value: unknown): value is number {
  * @param value The value to check
  */
 export function isBoolean(value: unknown): value is boolean {
-    return typeof value === 'boolean';
+  return typeof value === 'boolean';
 }
 
 /**
@@ -58,7 +58,7 @@ export function isBoolean(value: unknown): value is boolean {
  * @param value The value to check
  */
 export function isFunction(value: unknown): value is (...args: unknown[]) => unknown {
-    return typeof value === 'function';
+  return typeof value === 'function';
 }
 
 /**
@@ -66,7 +66,7 @@ export function isFunction(value: unknown): value is (...args: unknown[]) => unk
  * @param value The value to check
  */
 export function isDate(value: unknown): value is Date {
-    return value instanceof Date && !isNaN(value.getTime());
+  return value instanceof Date && !isNaN(value.getTime());
 }
 
 /**
@@ -74,9 +74,9 @@ export function isDate(value: unknown): value is Date {
  * @param value The value to check
  */
 export function isISODateString(value: unknown): value is string {
-    if (!isString(value)) return false;
-    const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
-    return isoDateRegex.test(value) && !isNaN(Date.parse(value));
+  if (!isString(value)) return false;
+  const isoDateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+  return isoDateRegex.test(value) && !isNaN(Date.parse(value));
 }
 
 /**
@@ -85,10 +85,10 @@ export function isISODateString(value: unknown): value is string {
  * @param prop The property name to check for
  */
 export function hasProperty<K extends string>(
-    value: unknown,
-    prop: K
+  value: unknown,
+  prop: K
 ): value is { [P in K]: unknown } {
-    return isObject(value) && prop in value;
+  return isObject(value) && prop in value;
 }
 
 /**
@@ -97,11 +97,11 @@ export function hasProperty<K extends string>(
  * @param valueGuard A type guard function for the record values
  */
 export function isRecord<T>(
-    value: unknown,
-    valueGuard: (v: unknown) => v is T
+  value: unknown,
+  valueGuard: (v: unknown) => v is T
 ): value is Record<string, T> {
-    if (!isObject(value)) return false;
-    return Object.values(value).every(valueGuard);
+  if (!isObject(value)) return false;
+  return Object.values(value).every(valueGuard);
 }
 
 /**
@@ -110,11 +110,11 @@ export function isRecord<T>(
  * @param itemGuard A type guard function for the array items
  */
 export function isArrayOf<T>(
-    value: unknown,
-    itemGuard: (v: unknown) => v is T
+  value: unknown,
+  itemGuard: (v: unknown) => v is T
 ): value is T[] {
-    if (!isArray(value)) return false;
-    return value.every(itemGuard);
+  if (!isArray(value)) return false;
+  return value.every(itemGuard);
 }
 
 /**
@@ -123,10 +123,10 @@ export function isArrayOf<T>(
  * @param guards Array of type guard functions for each possible type
  */
 export function isOneOf<T>(
-    value: unknown,
-    guards: Array<(v: unknown) => v is T>
+  value: unknown,
+  guards: Array<(v: unknown) => v is T>
 ): value is T {
-    return guards.some(guard => guard(value));
+  return guards.some(guard => guard(value));
 }
 
 /**
@@ -135,10 +135,10 @@ export function isOneOf<T>(
  * @param literals Array of possible string literals
  */
 export function isLiteralString<T extends string>(
-    value: unknown,
-    literals: T[]
+  value: unknown,
+  literals: T[]
 ): value is T {
-    return isString(value) && literals.includes(value as T);
+  return isString(value) && literals.includes(value as T);
 }
 
 /**
@@ -147,12 +147,12 @@ export function isLiteralString<T extends string>(
  * @param schema An object with type guard functions for each required property
  */
 export function matchesSchema<T extends Record<string, unknown>>(
-    value: unknown,
-    schema: { [K in keyof T]: (v: unknown) => boolean }
+  value: unknown,
+  schema: { [K in keyof T]: (v: unknown) => boolean }
 ): value is T {
-    if (!isObject(value)) return false;
+  if (!isObject(value)) return false;
 
-    return Object.entries(schema).every(([key, validator]) => {
-        return key in value && validator(value[key]);
-    });
+  return Object.entries(schema).every(([key, validator]) => {
+    return key in value && validator(value[key]);
+  });
 } 

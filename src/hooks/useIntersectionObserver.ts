@@ -35,53 +35,53 @@ interface IntersectionObserverOptions {
  * @returns A boolean indicating whether the element is in view
  */
 function useIntersectionObserver<T extends Element>(
-    elementRef: RefObject<T>,
-    {
-        root = null,
-        rootMargin = '0px',
-        threshold = 0.1,
-        triggerOnce = false
-    }: IntersectionObserverOptions = {}
+  elementRef: RefObject<T>,
+  {
+    root = null,
+    rootMargin = '0px',
+    threshold = 0.1,
+    triggerOnce = false
+  }: IntersectionObserverOptions = {}
 ): boolean {
-    const [isInView, setIsInView] = useState<boolean>(false);
+  const [isInView, setIsInView] = useState<boolean>(false);
 
-    useEffect(() => {
-        const element = elementRef.current;
-        if (!element) return;
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return;
 
-        // Handler function that gets called when intersection changes
-        const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-            const [entry] = entries;
-            const isElementInView = entry.isIntersecting;
+    // Handler function that gets called when intersection changes
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      const [entry] = entries;
+      const isElementInView = entry.isIntersecting;
 
-            setIsInView(isElementInView);
+      setIsInView(isElementInView);
 
-            // If element is in view and we only want to trigger once, disconnect the observer
-            if (isElementInView && triggerOnce) {
-                observer.disconnect();
-            }
-        };
+      // If element is in view and we only want to trigger once, disconnect the observer
+      if (isElementInView && triggerOnce) {
+        observer.disconnect();
+      }
+    };
 
-        // Create the observer instance
-        const observer = new IntersectionObserver(handleIntersection, {
-            root,
-            rootMargin,
-            threshold
-        });
+    // Create the observer instance
+    const observer = new IntersectionObserver(handleIntersection, {
+      root,
+      rootMargin,
+      threshold
+    });
 
-        // Start observing the element
-        observer.observe(element);
+    // Start observing the element
+    observer.observe(element);
 
-        // Cleanup function
-        return () => {
-            if (element) {
-                observer.unobserve(element);
-            }
-            observer.disconnect();
-        };
-    }, [elementRef, root, rootMargin, threshold, triggerOnce]);
+    // Cleanup function
+    return () => {
+      if (element) {
+        observer.unobserve(element);
+      }
+      observer.disconnect();
+    };
+  }, [elementRef, root, rootMargin, threshold, triggerOnce]);
 
-    return isInView;
+  return isInView;
 }
 
 export default useIntersectionObserver; 

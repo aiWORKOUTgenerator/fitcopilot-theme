@@ -43,88 +43,88 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
   // Generate variant-specific accent color
   const getAccentClass = () => {
     switch (variant) {
-      case 'gym':
-        return 'text-lime-300';
-      case 'sports':
-        return 'text-cyan-300';
-      case 'wellness':
-        return 'text-violet-300';
-      case 'modern':
-        return 'text-amber-300';
-      default:
-        return 'text-accent-500';
+    case 'gym':
+      return 'text-lime-300';
+    case 'sports':
+      return 'text-cyan-300';
+    case 'wellness':
+      return 'text-violet-300';
+    case 'modern':
+      return 'text-amber-300';
+    default:
+      return 'text-accent-500';
     }
   };
 
   // Convert our variant to the Section component's accepted VariantKey type
   const getSectionVariant = () => {
     switch (variant) {
-      case 'wellness':
-      case 'classic':
-      case 'minimalist':
-        return 'default';
-      default:
-        return variant;
+    case 'wellness':
+    case 'classic':
+    case 'minimalist':
+      return 'default';
+    default:
+      return variant;
     }
   };
 
   return (
-      <Section
-          id={id}
-          className={`testimonials-section ${className}`}
-          variant={getSectionVariant()}
-          spacing="lg"
-          backgroundVariant="default"
-          backgroundClass="bg-gray-900"
+    <Section
+      id={id}
+      className={`testimonials-section ${className}`}
+      variant={getSectionVariant()}
+      spacing="lg"
+      backgroundVariant="default"
+      backgroundClass="bg-gray-900"
     >
-          <div className="text-center mb-16" data-aos="fade-up">
-              <span
-                  className="text-xs font-bold tracking-widest uppercase mb-2 block"
-                  style={{ color: '#ddff0e' }}
+      <div className="text-center mb-16" data-aos="fade-up">
+        <span
+          className="text-xs font-bold tracking-widest uppercase mb-2 block"
+          style={{ color: '#ddff0e' }}
         >
-                  SUCCESS STORIES
-              </span>
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-                  What Our <span className={getAccentClass()}>Athletes</span> Say
-              </h2>
-              <p
-                  className="text-gray-300 max-w-2xl mx-auto text-center mb-0"
-                  style={{ marginLeft: 'auto', marginRight: 'auto', textAlign: 'center' }}
+          SUCCESS STORIES
+        </span>
+        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+          What Our <span className={getAccentClass()}>Athletes</span> Say
+        </h2>
+        <p
+          className="text-gray-300 max-w-2xl mx-auto text-center mb-0"
+          style={{ marginLeft: 'auto', marginRight: 'auto', textAlign: 'center' }}
         >
-                  Real results from everyday athletes like you
-              </p>
-          </div>
+          Real results from everyday athletes like you
+        </p>
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {defaultTestimonials.map((testimonial, index) => (
-                  <div
-                      key={testimonial.id}
-                      data-aos="fade-up"
-                      data-aos-delay={index * 100}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {defaultTestimonials.map((testimonial, index) => (
+          <div
+            key={testimonial.id}
+            data-aos="fade-up"
+            data-aos-delay={index * 100}
           >
-                      <TestimonialCard
-                          name={testimonial.name}
-                          role={testimonial.role}
-                          quote={testimonial.quote}
-                          avatar={testimonial.avatar}
-                          variant={variant}
-                          index={index}
+            <TestimonialCard
+              name={testimonial.name}
+              role={testimonial.role}
+              quote={testimonial.quote}
+              avatar={testimonial.avatar}
+              variant={variant}
+              index={index}
             />
-                  </div>
+          </div>
         ))}
-          </div>
+      </div>
 
-          <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
-              <Button
-                  variant="link"
-                  href="#"
-                  className="inline-flex items-center font-medium transition-colors text-gray-300 testimonials-readmore-btn"
+      <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
+        <Button
+          variant="link"
+          href="#"
+          className="inline-flex items-center font-medium transition-colors text-gray-300 testimonials-readmore-btn"
         >
-                  Read More Success Stories
-                  <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-          </div>
-      </Section>
+          Read More Success Stories
+          <ArrowRight className="ml-2 w-5 h-5" />
+        </Button>
+      </div>
+    </Section>
   );
 };
 

@@ -54,14 +54,14 @@ export interface SectionHeaderProps {
  * SectionHeader theme configuration
  */
 const sectionHeaderTheme: ThemeableComponent = {
-    baseClass: 'section-header',
-    tokenMappings: {
-        base: { category: 'background', subcategory: 'primary' },
-        title: { category: 'text', subcategory: 'primary' },
-        titleHighlight: { category: 'highlight', subcategory: 'primary' },
-        description: { category: 'text', subcategory: 'secondary' },
-        tag: { category: 'text', subcategory: 'accent' }
-    }
+  baseClass: 'section-header',
+  tokenMappings: {
+    base: { category: 'background', subcategory: 'primary' },
+    title: { category: 'text', subcategory: 'primary' },
+    titleHighlight: { category: 'highlight', subcategory: 'primary' },
+    description: { category: 'text', subcategory: 'secondary' },
+    tag: { category: 'text', subcategory: 'accent' }
+  }
 };
 
 /**
@@ -71,61 +71,61 @@ const sectionHeaderTheme: ThemeableComponent = {
  * @returns React component
  */
 const SectionHeader: React.FC<SectionHeaderProps> = ({
-    title,
-    description,
-    tagText,
-    variant = 'default',
-    highlightLastWord = true,
-    programType = 'athletic',
-    className = '',
-    id = 'section-header',
+  title,
+  description,
+  tagText,
+  variant = 'default',
+  highlightLastWord = true,
+  programType = 'athletic',
+  className = '',
+  id = 'section-header',
 }) => {
-    // Split title for highlighting if enabled
-    const titleParts = highlightLastWord
-        ? {
-            main: title.split(' ').slice(0, -1).join(' '),
-            highlight: title.split(' ').slice(-1)[0],
-        }
-        : { main: title, highlight: '' };
+  // Split title for highlighting if enabled
+  const titleParts = highlightLastWord
+    ? {
+      main: title.split(' ').slice(0, -1).join(' '),
+      highlight: title.split(' ').slice(-1)[0],
+    }
+    : { main: title, highlight: '' };
 
-    // Apply theme tokens to the component
-    const headerClasses = applyTheme(sectionHeaderTheme, variant, className);
+  // Apply theme tokens to the component
+  const headerClasses = applyTheme(sectionHeaderTheme, variant, className);
 
-    // Construct gradient class for highlighted text
-    const gradientClass = programType ? getProgramToken(programType, 'gradient') : 'program-gradient-athletic';
+  // Construct gradient class for highlighted text
+  const gradientClass = programType ? getProgramToken(programType, 'gradient') : 'program-gradient-athletic';
 
-    // Create ARIA props
-    const ariaProps = createAriaProps({
-        role: 'heading',
-        labelledById: id
-    });
+  // Create ARIA props
+  const ariaProps = createAriaProps({
+    role: 'heading',
+    labelledById: id
+  });
 
-    return (
-        <div className={headerClasses}>
-            {tagText && (
-                <span className="section-header__tag">{tagText}</span>
-            )}
+  return (
+    <div className={headerClasses}>
+      {tagText && (
+        <span className="section-header__tag">{tagText}</span>
+      )}
 
-            <h2 className="section-header__title" id={id} {...ariaProps}>
-                {titleParts.main}{' '}
-                {highlightLastWord && (
-                    <span className={`section-header__title-highlight ${gradientClass}`}>
-                        {titleParts.highlight}
-                    </span>
-                )}
-            </h2>
+      <h2 className="section-header__title" id={id} {...ariaProps}>
+        {titleParts.main}{' '}
+        {highlightLastWord && (
+          <span className={`section-header__title-highlight ${gradientClass}`}>
+            {titleParts.highlight}
+          </span>
+        )}
+      </h2>
 
-            {description && (
-                <p
-                    className="section-header__description"
-                    id={`${id}-description`}
-                    aria-labelledby={id}
-                >
-                    {description}
-                </p>
-            )}
-        </div>
-    );
+      {description && (
+        <p
+          className="section-header__description"
+          id={`${id}-description`}
+          aria-labelledby={id}
+        >
+          {description}
+        </p>
+      )}
+    </div>
+  );
 };
 
 export default SectionHeader; 

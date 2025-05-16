@@ -14,9 +14,9 @@ import React from 'react';
  * @returns A unique ID string
  */
 export const createAriaId = (prefix: string, uniqueKey: string | number): string => {
-    // Convert to string and remove spaces/special characters
-    const sanitizedKey = String(uniqueKey).toLowerCase().replace(/[^a-z0-9]/g, '-');
-    return `${prefix}-${sanitizedKey}`;
+  // Convert to string and remove spaces/special characters
+  const sanitizedKey = String(uniqueKey).toLowerCase().replace(/[^a-z0-9]/g, '-');
+  return `${prefix}-${sanitizedKey}`;
 };
 
 /**
@@ -34,16 +34,16 @@ export const generateProgramAriaIds = (programIndex: number, programType: string
     descriptionId: string;
     controlsId: string;
 } => {
-    const baseId = `program-${programIndex}-${programType}`;
+  const baseId = `program-${programIndex}-${programType}`;
 
-    return {
-        cardId: `${baseId}-card`,
-        titleId: `${baseId}-title`,
-        contentId: `${baseId}-content`,
-        benefitsId: `${baseId}-benefits`,
-        descriptionId: `${baseId}-description`,
-        controlsId: `${baseId}-controls`
-    };
+  return {
+    cardId: `${baseId}-card`,
+    titleId: `${baseId}-title`,
+    contentId: `${baseId}-content`,
+    benefitsId: `${baseId}-benefits`,
+    descriptionId: `${baseId}-description`,
+    controlsId: `${baseId}-controls`
+  };
 };
 
 /**
@@ -53,15 +53,15 @@ export const generateProgramAriaIds = (programIndex: number, programType: string
  * @returns A keyboard event handler function
  */
 export const createKeyboardHandler = (
-    callback: () => void
+  callback: () => void
 ): React.KeyboardEventHandler => {
-    return (event: React.KeyboardEvent) => {
-        // Trigger on Enter or Space key
-        if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            callback();
-        }
-    };
+  return (event: React.KeyboardEvent) => {
+    // Trigger on Enter or Space key
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      callback();
+    }
+  };
 };
 
 /**
@@ -74,13 +74,13 @@ export const createKeyboardHandler = (
  * @returns ARIA properties object
  */
 export const createAriaProps = ({
-    isInteractive = false,
-    isExpanded = false,
-    controlsId = '',
-    labelledById = '',
-    describedById = '',
-    label = '',
-    role = ''
+  isInteractive = false,
+  isExpanded = false,
+  controlsId = '',
+  labelledById = '',
+  describedById = '',
+  label = '',
+  role = ''
 }: {
     isInteractive?: boolean;
     isExpanded?: boolean;
@@ -90,39 +90,39 @@ export const createAriaProps = ({
     label?: string;
     role?: string;
 }): Record<string, string | boolean | number> => {
-    const props: Record<string, string | boolean | number> = {};
+  const props: Record<string, string | boolean | number> = {};
 
-    if (isInteractive) {
-        props.tabIndex = 0;
+  if (isInteractive) {
+    props.tabIndex = 0;
 
-        if (role) {
-            props.role = role;
-        } else {
-            props.role = 'button';
-        }
+    if (role) {
+      props.role = role;
+    } else {
+      props.role = 'button';
     }
+  }
 
-    if (isExpanded !== undefined) {
-        props['aria-expanded'] = isExpanded;
-    }
+  if (isExpanded !== undefined) {
+    props['aria-expanded'] = isExpanded;
+  }
 
-    if (controlsId) {
-        props['aria-controls'] = controlsId;
-    }
+  if (controlsId) {
+    props['aria-controls'] = controlsId;
+  }
 
-    if (labelledById) {
-        props['aria-labelledby'] = labelledById;
-    }
+  if (labelledById) {
+    props['aria-labelledby'] = labelledById;
+  }
 
-    if (describedById) {
-        props['aria-describedby'] = describedById;
-    }
+  if (describedById) {
+    props['aria-describedby'] = describedById;
+  }
 
-    if (label) {
-        props['aria-label'] = label;
-    }
+  if (label) {
+    props['aria-label'] = label;
+  }
 
-    return props;
+  return props;
 };
 
 /**
@@ -132,13 +132,13 @@ export const createAriaProps = ({
  * @returns Props for focus trapping
  */
 export const createFocusTrapProps = (isActive: boolean): Record<string, boolean | string | number> => {
-    if (!isActive) return {};
+  if (!isActive) return {};
 
-    return {
-        'data-focus-trap': 'true',
-        'tabIndex': -1,
-        'aria-modal': true
-    };
+  return {
+    'data-focus-trap': 'true',
+    'tabIndex': -1,
+    'aria-modal': true
+  };
 };
 
 /**
@@ -148,12 +148,12 @@ export const createFocusTrapProps = (isActive: boolean): Record<string, boolean 
  * @param elementRef React ref to the element to focus
  */
 export const manageFocus = (isExpanded: boolean, elementRef: React.RefObject<HTMLElement>): void => {
-    if (isExpanded && elementRef.current) {
-        // Focus after a brief delay to allow for DOM updates/animations
-        setTimeout(() => {
-            elementRef.current?.focus();
-        }, 50);
-    }
+  if (isExpanded && elementRef.current) {
+    // Focus after a brief delay to allow for DOM updates/animations
+    setTimeout(() => {
+      elementRef.current?.focus();
+    }, 50);
+  }
 };
 
 /**
@@ -165,17 +165,17 @@ export const manageFocus = (isExpanded: boolean, elementRef: React.RefObject<HTM
  * @returns ARIA live region props
  */
 export const createLiveRegionProps = (
-    isLive: boolean = true,
-    politeness: 'assertive' | 'polite' = 'polite',
-    atomic: boolean = false
+  isLive: boolean = true,
+  politeness: 'assertive' | 'polite' = 'polite',
+  atomic: boolean = false
 ): Record<string, string | boolean> => {
-    if (!isLive) return {};
+  if (!isLive) return {};
 
-    return {
-        'aria-live': politeness,
-        'aria-atomic': atomic,
-        'role': politeness === 'assertive' ? 'alert' : 'status'
-    };
+  return {
+    'aria-live': politeness,
+    'aria-atomic': atomic,
+    'role': politeness === 'assertive' ? 'alert' : 'status'
+  };
 };
 
 /**
@@ -186,14 +186,14 @@ export const createLiveRegionProps = (
  * @returns ARIA props for list element
  */
 export const createListProps = (
-    itemCount: number,
-    listLabel: string
+  itemCount: number,
+  listLabel: string
 ): Record<string, string | number> => {
-    return {
-        'role': 'list',
-        'aria-label': listLabel,
-        'aria-count': itemCount
-    };
+  return {
+    'role': 'list',
+    'aria-label': listLabel,
+    'aria-count': itemCount
+  };
 };
 
 /**
@@ -205,21 +205,21 @@ export const createListProps = (
  * @returns ARIA props for list item
  */
 export const createListItemProps = (
-    index: number,
-    totalItems: number,
-    itemLabel?: string
+  index: number,
+  totalItems: number,
+  itemLabel?: string
 ): Record<string, string | number> => {
-    const props: Record<string, string | number> = {
-        'role': 'listitem',
-        'aria-posinset': index + 1,
-        'aria-setsize': totalItems
-    };
+  const props: Record<string, string | number> = {
+    'role': 'listitem',
+    'aria-posinset': index + 1,
+    'aria-setsize': totalItems
+  };
 
-    if (itemLabel) {
-        props['aria-label'] = itemLabel;
-    }
+  if (itemLabel) {
+    props['aria-label'] = itemLabel;
+  }
 
-    return props;
+  return props;
 };
 
 /**
@@ -230,16 +230,16 @@ export const createListItemProps = (
  * @returns JSX element for screen reader announcement
  */
 export const screenReaderAnnouncement = (
-    message: string,
-    politeness: 'assertive' | 'polite' = 'polite'
+  message: string,
+  politeness: 'assertive' | 'polite' = 'polite'
 ): JSX.Element => {
-    return (
-        <div
-            className="sr-only"
-            aria-live={politeness}
-            aria-atomic="true"
-        >
-            {message}
-        </div>
-    );
+  return (
+    <div
+      className="sr-only"
+      aria-live={politeness}
+      aria-atomic="true"
+    >
+      {message}
+    </div>
+  );
 }; 

@@ -65,10 +65,10 @@ const createPlanFeatures = (plan: 'basic' | 'pro' | 'elite'): PlanFeature[] => {
   ];
 
   switch (plan) {
-    case 'basic': return basicFeatures;
-    case 'pro': return proFeatures;
-    case 'elite': return eliteFeatures;
-    default: return basicFeatures;
+  case 'basic': return basicFeatures;
+  case 'pro': return proFeatures;
+  case 'elite': return eliteFeatures;
+  default: return basicFeatures;
   }
 };
 

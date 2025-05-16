@@ -13,31 +13,31 @@ export interface SelectionSummaryProps {
  * A component that displays a summary of selected items
  */
 const SelectionSummary: React.FC<SelectionSummaryProps> = ({
-    selectedCount,
-    singularLabel,
-    pluralLabel,
-    accentColor = 'lime',
-    maxAllowed
+  selectedCount,
+  singularLabel,
+  pluralLabel,
+  accentColor = 'lime',
+  maxAllowed
 }) => {
-    if (selectedCount === 0) {
-        return null;
-    }
+  if (selectedCount === 0) {
+    return null;
+  }
 
-    const label = selectedCount === 1 ? singularLabel : pluralLabel;
+  const label = selectedCount === 1 ? singularLabel : pluralLabel;
 
-    return (
-        <div className="selection-summary">
-            <div className={`summary-badge ${accentColor}-accent`}>
-                <span className="count">{selectedCount}</span>
-                <span className="label">{label}</span>
-                {maxAllowed && (
-                    <span className="max-indicator">
-                        of {maxAllowed} max
-                    </span>
-                )}
-            </div>
-        </div>
-    );
+  return (
+    <div className="selection-summary">
+      <div className={`summary-badge ${accentColor}-accent`}>
+        <span className="count">{selectedCount}</span>
+        <span className="label">{label}</span>
+        {maxAllowed && (
+          <span className="max-indicator">
+            of {maxAllowed} max
+          </span>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default SelectionSummary; 

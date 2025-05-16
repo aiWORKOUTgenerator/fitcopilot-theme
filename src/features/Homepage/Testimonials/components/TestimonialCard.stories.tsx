@@ -128,9 +128,9 @@ export const GymVariant: Story = {
   },
   decorators: [
     (Story) => (
-        <div style={{ padding: '2rem', background: 'var(--color-gray-900)' }}>
-            <Story />
-        </div>
+      <div style={{ padding: '2rem', background: 'var(--color-gray-900)' }}>
+        <Story />
+      </div>
     ),
   ],
   parameters: {
@@ -156,9 +156,9 @@ export const SportsVariant: Story = {
   },
   decorators: [
     (Story) => (
-        <div style={{ padding: '2rem', background: 'var(--color-gray-900)' }}>
-            <Story />
-        </div>
+      <div style={{ padding: '2rem', background: 'var(--color-gray-900)' }}>
+        <Story />
+      </div>
     ),
   ],
   parameters: {

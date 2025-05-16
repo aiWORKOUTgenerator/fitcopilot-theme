@@ -5,30 +5,30 @@
  */
 
 import {
-    adjustScrollAfterExpand,
-    calculateDynamicOffset,
-    ensureDropdownContentVisible,
-    getFixedHeaderHeight,
-    isElementFullyVisible,
-    isElementInViewport,
-    scrollToElement,
-    throttle
+  adjustScrollAfterExpand,
+  calculateDynamicOffset,
+  ensureDropdownContentVisible,
+  getFixedHeaderHeight,
+  isElementFullyVisible,
+  isElementInViewport,
+  scrollToElement,
+  throttle
 } from '../../utils/scrollUtils';
 
 // Re-export all utilities
 export {
-    adjustScrollAfterExpand, calculateDynamicOffset, ensureDropdownContentVisible, getFixedHeaderHeight, isElementFullyVisible, isElementInViewport, scrollToElement, throttle
+  adjustScrollAfterExpand, calculateDynamicOffset, ensureDropdownContentVisible, getFixedHeaderHeight, isElementFullyVisible, isElementInViewport, scrollToElement, throttle
 };
 
 // Export Journey-specific helpers
 export const scrollToJourneyStep = (stepIndex: number, offset = 20): void => {
-    scrollToElement(`journey-step-${stepIndex}`, offset);
+  scrollToElement(`journey-step-${stepIndex}`, offset);
 };
 
 export const scrollToExpandedContent = (stepIndex: number, offset = 20): void => {
-    scrollToElement(`step-content-${stepIndex}`, offset);
+  scrollToElement(`step-content-${stepIndex}`, offset);
 };
 
 export const scrollToAccordionSection = (sectionId: string, offset = 20): void => {
-    scrollToElement(`accordion-section-${sectionId}`, offset);
+  scrollToElement(`accordion-section-${sectionId}`, offset);
 }; 

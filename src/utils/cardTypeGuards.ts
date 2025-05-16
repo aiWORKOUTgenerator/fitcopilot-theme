@@ -7,12 +7,12 @@
  */
 
 import {
-    CardProps,
-    ContentCardProps,
-    PricingCardProps,
-    ProfileCardProps,
-    ProgramCardProps,
-    WorkoutCardProps
+  CardProps,
+  ContentCardProps,
+  PricingCardProps,
+  ProfileCardProps,
+  ProgramCardProps,
+  WorkoutCardProps
 } from '../types/card';
 
 /**
@@ -22,7 +22,7 @@ import {
  * @returns Type predicate indicating if props are for a content card
  */
 export function isContentCard(props: CardProps): props is ContentCardProps {
-    return props.variant === 'content';
+  return props.variant === 'content';
 }
 
 /**
@@ -32,7 +32,7 @@ export function isContentCard(props: CardProps): props is ContentCardProps {
  * @returns Type predicate indicating if props are for a profile card
  */
 export function isProfileCard(props: CardProps): props is ProfileCardProps {
-    return props.variant === 'profile';
+  return props.variant === 'profile';
 }
 
 /**
@@ -42,7 +42,7 @@ export function isProfileCard(props: CardProps): props is ProfileCardProps {
  * @returns Type predicate indicating if props are for a workout card
  */
 export function isWorkoutCard(props: CardProps): props is WorkoutCardProps {
-    return props.variant === 'workout';
+  return props.variant === 'workout';
 }
 
 /**
@@ -52,7 +52,7 @@ export function isWorkoutCard(props: CardProps): props is WorkoutCardProps {
  * @returns Type predicate indicating if props are for a program card
  */
 export function isProgramCard(props: CardProps): props is ProgramCardProps {
-    return props.variant === 'program';
+  return props.variant === 'program';
 }
 
 /**
@@ -62,7 +62,7 @@ export function isProgramCard(props: CardProps): props is ProgramCardProps {
  * @returns Type predicate indicating if props are for a pricing card
  */
 export function isPricingCard(props: CardProps): props is PricingCardProps {
-    return props.variant === 'pricing';
+  return props.variant === 'pricing';
 }
 
 /**
@@ -72,7 +72,7 @@ export function isPricingCard(props: CardProps): props is PricingCardProps {
  * @returns Whether the card has a media element
  */
 export function hasMedia(props: CardProps): boolean {
-    return 'media' in props && !!props.media;
+  return 'media' in props && !!props.media;
 }
 
 /**
@@ -82,7 +82,7 @@ export function hasMedia(props: CardProps): boolean {
  * @returns Whether the card has an error
  */
 export function hasError(props: CardProps): boolean {
-    return 'error' in props && !!props.error;
+  return 'error' in props && !!props.error;
 }
 
 /**
@@ -92,7 +92,7 @@ export function hasError(props: CardProps): boolean {
  * @returns Whether the card is in loading state
  */
 export function isLoading(props: CardProps): boolean {
-    return 'isLoading' in props && !!props.isLoading;
+  return 'isLoading' in props && !!props.isLoading;
 }
 
 /**
@@ -102,17 +102,17 @@ export function isLoading(props: CardProps): boolean {
  * @returns Whether the card is interactive
  */
 export function isInteractive(props: CardProps): boolean {
-    return 'onClick' in props && typeof props.onClick === 'function';
+  return 'onClick' in props && typeof props.onClick === 'function';
 }
 
 export default {
-    isContentCard,
-    isProfileCard,
-    isWorkoutCard,
-    isProgramCard,
-    isPricingCard,
-    hasMedia,
-    hasError,
-    isLoading,
-    isInteractive
+  isContentCard,
+  isProfileCard,
+  isWorkoutCard,
+  isProgramCard,
+  isPricingCard,
+  hasMedia,
+  hasError,
+  isLoading,
+  isInteractive
 }; 

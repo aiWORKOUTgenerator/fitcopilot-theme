@@ -4,6 +4,6 @@ import MediaPlayer from './MediaPlayer';
 import VideoPlayer from './VideoPlayer';
 
 export {
-    AudioPlayer, MediaExample, MediaPlayer, VideoPlayer
+  AudioPlayer, MediaExample, MediaPlayer, VideoPlayer
 };
 

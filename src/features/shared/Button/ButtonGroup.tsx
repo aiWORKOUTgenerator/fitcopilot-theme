@@ -28,35 +28,35 @@ export interface ButtonGroupProps {
  * ButtonGroup component for grouping buttons with proper spacing and alignment
  */
 export const ButtonGroup: React.FC<ButtonGroupProps> = ({
-    children,
-    direction = 'horizontal',
-    spacing = 'medium',
-    alignment = 'start',
-    className = '',
-    equalWidth = false,
-    'aria-label': ariaLabel,
-    'data-testid': dataTestId,
+  children,
+  direction = 'horizontal',
+  spacing = 'medium',
+  alignment = 'start',
+  className = '',
+  equalWidth = false,
+  'aria-label': ariaLabel,
+  'data-testid': dataTestId,
 }) => {
-    // Generate CSS classes
-    const groupClasses = [
-        'button-group',
-        `button-group--${direction}`,
-        `button-group--spacing-${spacing}`,
-        `button-group--align-${alignment}`,
-        equalWidth ? 'button-group--equal-width' : '',
-        className
-    ].filter(Boolean).join(' ');
+  // Generate CSS classes
+  const groupClasses = [
+    'button-group',
+    `button-group--${direction}`,
+    `button-group--spacing-${spacing}`,
+    `button-group--align-${alignment}`,
+    equalWidth ? 'button-group--equal-width' : '',
+    className
+  ].filter(Boolean).join(' ');
 
-    return (
-        <div
-            className={groupClasses}
-            role="group"
-            aria-label={ariaLabel}
-            data-testid={dataTestId}
-        >
-            {children}
-        </div>
-    );
+  return (
+    <div
+      className={groupClasses}
+      role="group"
+      aria-label={ariaLabel}
+      data-testid={dataTestId}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default ButtonGroup; 

@@ -19,27 +19,27 @@ export interface FloatingIconProps {
  * @returns {JSX.Element}
  */
 const FloatingIcon: React.FC<FloatingIconProps> = ({
-    children,
-    delay,
-    speed,
-    left,
-    top,
-    color
+  children,
+  delay,
+  speed,
+  left,
+  top,
+  color
 }) => {
-    return (
-        <div
-            className="floating-icon"
-            style={{
-                left: `${left}%`,
-                top: `${top}%`,
-                animation: `float ${speed}s ease-in-out infinite ${delay}s`,
-                color: color
-            }}
-            aria-hidden="true"
-        >
-            {children}
-        </div>
-    );
+  return (
+    <div
+      className="floating-icon"
+      style={{
+        left: `${left}%`,
+        top: `${top}%`,
+        animation: `float ${speed}s ease-in-out infinite ${delay}s`,
+        color: color
+      }}
+      aria-hidden="true"
+    >
+      {children}
+    </div>
+  );
 };
 
 export default FloatingIcon; 

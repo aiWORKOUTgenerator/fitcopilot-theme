@@ -9,26 +9,26 @@ interface ProgressBarProps {
  * Visual progress indicator for the registration flow
  */
 const ProgressBar: React.FC<ProgressBarProps> = ({
-    progress,
-    className = '',
+  progress,
+  className = '',
 }) => {
-    return (
-        <div className={`progress-bar ${className}`}>
-            <div className="progress-bar__container">
-                <div
-                    className="progress-bar__fill"
-                    style={{ width: `${progress}%` }}
-                    role="progressbar"
-                    aria-valuenow={progress}
-                    aria-valuemin={0}
-                    aria-valuemax={100}
-                />
-            </div>
-            <div className="progress-bar__label">
-                {Math.round(progress)}% complete
-            </div>
-        </div>
-    );
+  return (
+    <div className={`progress-bar ${className}`}>
+      <div className="progress-bar__container">
+        <div
+          className="progress-bar__fill"
+          style={{ width: `${progress}%` }}
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        />
+      </div>
+      <div className="progress-bar__label">
+        {Math.round(progress)}% complete
+      </div>
+    </div>
+  );
 };
 
 export default ProgressBar; 

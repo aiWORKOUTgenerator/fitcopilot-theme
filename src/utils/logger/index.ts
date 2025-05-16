@@ -37,158 +37,158 @@ interface LoggerConfig {
  * Get the current environment
  */
 const getEnvironment = (): 'development' | 'production' | 'test' => {
-    if (process.env.NODE_ENV === 'production') {
-        return 'production';
-    }
+  if (process.env.NODE_ENV === 'production') {
+    return 'production';
+  }
 
-    if (process.env.NODE_ENV === 'test') {
-        return 'test';
-    }
+  if (process.env.NODE_ENV === 'test') {
+    return 'test';
+  }
 
-    return 'development';
+  return 'development';
 };
 
 /**
  * Get logger configuration based on environment
  */
 const getLoggerConfig = (): LoggerConfig => {
-    const environment = getEnvironment();
+  const environment = getEnvironment();
 
-    switch (environment) {
-        case 'production':
-            return {
-                minLevel: 'warn',
-                includeTimestamps: true,
-                includeLevelInOutput: true
-            };
-        case 'test':
-            return {
-                minLevel: 'error',
-                includeTimestamps: false,
-                includeLevelInOutput: true
-            };
-        default:
-            return {
-                minLevel: 'debug',
-                includeTimestamps: true,
-                includeLevelInOutput: true
-            };
-    }
+  switch (environment) {
+  case 'production':
+    return {
+      minLevel: 'warn',
+      includeTimestamps: true,
+      includeLevelInOutput: true
+    };
+  case 'test':
+    return {
+      minLevel: 'error',
+      includeTimestamps: false,
+      includeLevelInOutput: true
+    };
+  default:
+    return {
+      minLevel: 'debug',
+      includeTimestamps: true,
+      includeLevelInOutput: true
+    };
+  }
 };
 
 /**
  * Log level severity ranking
  */
 const LOG_LEVEL_SEVERITY: Record<LogLevel, number> = {
-    debug: 0,
-    info: 1,
-    warn: 2,
-    error: 3
+  debug: 0,
+  info: 1,
+  warn: 2,
+  error: 3
 };
 
 /**
  * Default Logger implementation
  */
 class Logger implements LoggerInterface {
-    private config: LoggerConfig;
+  private config: LoggerConfig;
 
-    constructor() {
-        this.config = getLoggerConfig();
-    }
+  constructor() {
+    this.config = getLoggerConfig();
+  }
 
-    /**
+  /**
      * Check if the given level should be logged
      */
-    private shouldLog(level: LogLevel): boolean {
-        return LOG_LEVEL_SEVERITY[level] >= LOG_LEVEL_SEVERITY[this.config.minLevel];
-    }
+  private shouldLog(level: LogLevel): boolean {
+    return LOG_LEVEL_SEVERITY[level] >= LOG_LEVEL_SEVERITY[this.config.minLevel];
+  }
 
-    /**
+  /**
      * Format the log message
      */
-    private formatMessage(level: LogLevel, message: string): string {
-        const parts: string[] = [];
+  private formatMessage(level: LogLevel, message: string): string {
+    const parts: string[] = [];
 
-        if (this.config.includeTimestamps) {
-            parts.push(`[${new Date().toISOString()}]`);
-        }
-
-        if (this.config.includeLevelInOutput) {
-            parts.push(`[${level.toUpperCase()}]`);
-        }
-
-        parts.push(message);
-
-        return parts.join(' ');
+    if (this.config.includeTimestamps) {
+      parts.push(`[${new Date().toISOString()}]`);
     }
 
-    /**
+    if (this.config.includeLevelInOutput) {
+      parts.push(`[${level.toUpperCase()}]`);
+    }
+
+    parts.push(message);
+
+    return parts.join(' ');
+  }
+
+  /**
      * Log a debug message
      */
-    public debug(message: string, context?: Record<string, unknown>): void {
-        if (!this.shouldLog('debug')) return;
+  public debug(message: string, context?: Record<string, unknown>): void {
+    if (!this.shouldLog('debug')) return;
 
-        const formattedMessage = this.formatMessage('debug', message);
+    const formattedMessage = this.formatMessage('debug', message);
 
-        if (context) {
-            // eslint-disable-next-line no-console, fitcopilot/use-logger
-            console.debug(formattedMessage, context);
-        } else {
-            // eslint-disable-next-line no-console, fitcopilot/use-logger
-            console.debug(formattedMessage);
-        }
+    if (context) {
+      // eslint-disable-next-line no-console, fitcopilot/use-logger
+      console.debug(formattedMessage, context);
+    } else {
+      // eslint-disable-next-line no-console, fitcopilot/use-logger
+      console.debug(formattedMessage);
     }
+  }
 
-    /**
+  /**
      * Log an info message
      */
-    public info(message: string, context?: Record<string, unknown>): void {
-        if (!this.shouldLog('info')) return;
+  public info(message: string, context?: Record<string, unknown>): void {
+    if (!this.shouldLog('info')) return;
 
-        const formattedMessage = this.formatMessage('info', message);
+    const formattedMessage = this.formatMessage('info', message);
 
-        if (context) {
-            // eslint-disable-next-line no-console, fitcopilot/use-logger
-            console.info(formattedMessage, context);
-        } else {
-            // eslint-disable-next-line no-console, fitcopilot/use-logger
-            console.info(formattedMessage);
-        }
+    if (context) {
+      // eslint-disable-next-line no-console, fitcopilot/use-logger
+      console.info(formattedMessage, context);
+    } else {
+      // eslint-disable-next-line no-console, fitcopilot/use-logger
+      console.info(formattedMessage);
     }
+  }
 
-    /**
+  /**
      * Log a warning message
      */
-    public warn(message: string, context?: Record<string, unknown>): void {
-        if (!this.shouldLog('warn')) return;
+  public warn(message: string, context?: Record<string, unknown>): void {
+    if (!this.shouldLog('warn')) return;
 
-        const formattedMessage = this.formatMessage('warn', message);
+    const formattedMessage = this.formatMessage('warn', message);
 
-        if (context) {
-            // eslint-disable-next-line no-console, fitcopilot/use-logger
-            console.warn(formattedMessage, context);
-        } else {
-            // eslint-disable-next-line no-console, fitcopilot/use-logger
-            console.warn(formattedMessage);
-        }
+    if (context) {
+      // eslint-disable-next-line no-console, fitcopilot/use-logger
+      console.warn(formattedMessage, context);
+    } else {
+      // eslint-disable-next-line no-console, fitcopilot/use-logger
+      console.warn(formattedMessage);
     }
+  }
 
-    /**
+  /**
      * Log an error message
      */
-    public error(message: string, context?: Record<string, unknown>): void {
-        if (!this.shouldLog('error')) return;
+  public error(message: string, context?: Record<string, unknown>): void {
+    if (!this.shouldLog('error')) return;
 
-        const formattedMessage = this.formatMessage('error', message);
+    const formattedMessage = this.formatMessage('error', message);
 
-        if (context) {
-            // eslint-disable-next-line no-console, fitcopilot/use-logger
-            console.error(formattedMessage, context);
-        } else {
-            // eslint-disable-next-line no-console, fitcopilot/use-logger
-            console.error(formattedMessage);
-        }
+    if (context) {
+      // eslint-disable-next-line no-console, fitcopilot/use-logger
+      console.error(formattedMessage, context);
+    } else {
+      // eslint-disable-next-line no-console, fitcopilot/use-logger
+      console.error(formattedMessage);
     }
+  }
 }
 
 /**

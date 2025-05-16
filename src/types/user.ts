@@ -161,11 +161,11 @@ export interface PasswordChangeData {
  * Type guard to check if an object is a User
  */
 export function isUser(obj: unknown): obj is User {
-    return (
-        typeof obj === 'object' &&
+  return (
+    typeof obj === 'object' &&
         obj !== null &&
         'id' in obj &&
         'email' in obj &&
         'displayName' in obj
-    );
+  );
 } 

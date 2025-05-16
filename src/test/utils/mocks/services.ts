@@ -1,14 +1,14 @@
 import {
-    MediaMatchObject,
-    MockAnalyticsService,
-    MockApiService,
-    MockAuthService,
-    MockFetchOptions,
-    MockFetchResponse,
-    MockStorageService,
-    MockWorkoutService,
-    UserData,
-    WorkoutData
+  MediaMatchObject,
+  MockAnalyticsService,
+  MockApiService,
+  MockAuthService,
+  MockFetchOptions,
+  MockFetchResponse,
+  MockStorageService,
+  MockWorkoutService,
+  UserData,
+  WorkoutData
 } from '../../../types/test';
 
 /**
@@ -17,14 +17,14 @@ import {
  * @returns Mock API service with Jest spy functions
  */
 export function mockApiService(overrides = {}): MockApiService {
-    return {
-        get: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
-        post: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
-        put: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
-        delete: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
-        patch: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
-        ...overrides
-    };
+  return {
+    get: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
+    post: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
+    put: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
+    delete: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
+    patch: jest.fn().mockImplementation(() => Promise.resolve({ data: {}, status: 200, success: true })),
+    ...overrides
+  };
 }
 
 /**
@@ -33,17 +33,17 @@ export function mockApiService(overrides = {}): MockApiService {
  * @returns Mock storage service with Jest spy functions
  */
 export function mockStorageService(initialData: Record<string, string> = {}): MockStorageService {
-    const store = { ...initialData };
+  const store = { ...initialData };
 
-    return {
-        getItem: jest.fn((key: string) => store[key] || null),
-        setItem: jest.fn((key: string, value: string) => { store[key] = value; }),
-        removeItem: jest.fn((key: string) => { delete store[key]; }),
-        clear: jest.fn(() => { Object.keys(store).forEach(key => delete store[key]); }),
-        key: jest.fn((index: number) => Object.keys(store)[index] || null),
-        length: jest.spyOn(Object.keys(store), 'length', 'get'),
-        _getStore: () => ({ ...store }) // Helper for tests to verify state
-    };
+  return {
+    getItem: jest.fn((key: string) => store[key] || null),
+    setItem: jest.fn((key: string, value: string) => { store[key] = value; }),
+    removeItem: jest.fn((key: string) => { delete store[key]; }),
+    clear: jest.fn(() => { Object.keys(store).forEach(key => delete store[key]); }),
+    key: jest.fn((index: number) => Object.keys(store)[index] || null),
+    length: jest.spyOn(Object.keys(store), 'length', 'get'),
+    _getStore: () => ({ ...store }) // Helper for tests to verify state
+  };
 }
 
 /**
@@ -52,13 +52,13 @@ export function mockStorageService(initialData: Record<string, string> = {}): Mo
  * @returns Mock analytics service with Jest spy functions
  */
 export function mockAnalyticsService(overrides = {}): MockAnalyticsService {
-    return {
-        trackEvent: jest.fn(),
-        trackPageView: jest.fn(),
-        identifyUser: jest.fn(),
-        setUserProperties: jest.fn(),
-        ...overrides
-    };
+  return {
+    trackEvent: jest.fn(),
+    trackPageView: jest.fn(),
+    identifyUser: jest.fn(),
+    setUserProperties: jest.fn(),
+    ...overrides
+  };
 }
 
 /**
@@ -67,22 +67,22 @@ export function mockAnalyticsService(overrides = {}): MockAnalyticsService {
  * @returns Mock auth service with Jest spy functions
  */
 export function mockAuthService(overrides = {}): MockAuthService {
-    const defaultUser: UserData = {
-        id: 'test-user-id',
-        name: 'Test User',
-        email: 'test@example.com',
-        role: 'user',
-    };
+  const defaultUser: UserData = {
+    id: 'test-user-id',
+    name: 'Test User',
+    email: 'test@example.com',
+    role: 'user',
+  };
 
-    return {
-        login: jest.fn().mockImplementation(() => Promise.resolve({ user: defaultUser, token: 'fake-token' })),
-        logout: jest.fn().mockImplementation(() => Promise.resolve()),
-        register: jest.fn().mockImplementation(() => Promise.resolve({ user: defaultUser, token: 'fake-token' })),
-        getCurrentUser: jest.fn().mockImplementation(() => Promise.resolve(defaultUser)),
-        isAuthenticated: jest.fn().mockImplementation(() => true),
-        getToken: jest.fn().mockImplementation(() => 'fake-token'),
-        ...overrides
-    };
+  return {
+    login: jest.fn().mockImplementation(() => Promise.resolve({ user: defaultUser, token: 'fake-token' })),
+    logout: jest.fn().mockImplementation(() => Promise.resolve()),
+    register: jest.fn().mockImplementation(() => Promise.resolve({ user: defaultUser, token: 'fake-token' })),
+    getCurrentUser: jest.fn().mockImplementation(() => Promise.resolve(defaultUser)),
+    isAuthenticated: jest.fn().mockImplementation(() => true),
+    getToken: jest.fn().mockImplementation(() => 'fake-token'),
+    ...overrides
+  };
 }
 
 /**
@@ -91,25 +91,25 @@ export function mockAuthService(overrides = {}): MockAuthService {
  * @returns Mock workout service with Jest spy functions
  */
 export function mockWorkoutService(overrides = {}): MockWorkoutService {
-    const defaultWorkouts: WorkoutData[] = [
-        { id: 'workout-1', name: 'Test Workout 1', exercises: [] },
-        { id: 'workout-2', name: 'Test Workout 2', exercises: [] },
-    ];
+  const defaultWorkouts: WorkoutData[] = [
+    { id: 'workout-1', name: 'Test Workout 1', exercises: [] },
+    { id: 'workout-2', name: 'Test Workout 2', exercises: [] },
+  ];
 
-    return {
-        getWorkouts: jest.fn().mockImplementation(() => Promise.resolve(defaultWorkouts)),
-        getWorkout: jest.fn().mockImplementation((id) =>
-            Promise.resolve(defaultWorkouts.find(w => w.id === id) || null)
-        ),
-        createWorkout: jest.fn().mockImplementation((workout) =>
-            Promise.resolve({ ...workout, id: 'new-workout-id' })
-        ),
-        updateWorkout: jest.fn().mockImplementation((id, workout) =>
-            Promise.resolve({ ...workout, id })
-        ),
-        deleteWorkout: jest.fn().mockImplementation(() => Promise.resolve(true)),
-        ...overrides
-    };
+  return {
+    getWorkouts: jest.fn().mockImplementation(() => Promise.resolve(defaultWorkouts)),
+    getWorkout: jest.fn().mockImplementation((id) =>
+      Promise.resolve(defaultWorkouts.find(w => w.id === id) || null)
+    ),
+    createWorkout: jest.fn().mockImplementation((workout) =>
+      Promise.resolve({ ...workout, id: 'new-workout-id' })
+    ),
+    updateWorkout: jest.fn().mockImplementation((id, workout) =>
+      Promise.resolve({ ...workout, id })
+    ),
+    deleteWorkout: jest.fn().mockImplementation(() => Promise.resolve(true)),
+    ...overrides
+  };
 }
 
 /**
@@ -119,23 +119,23 @@ export function mockWorkoutService(overrides = {}): MockWorkoutService {
  * @returns A function to use with jest.spyOn(global, 'fetch')
  */
 export function createMockFetch<T>(
-    responseData: T,
-    options: MockFetchOptions = {}
+  responseData: T,
+  options: MockFetchOptions = {}
 ): jest.Mock<Promise<MockFetchResponse<T>>, [RequestInfo | URL, RequestInit?]> {
-    const {
-        status = 200,
-        headers = { 'Content-Type': 'application/json' }
-    } = options;
+  const {
+    status = 200,
+    headers = { 'Content-Type': 'application/json' }
+  } = options;
 
-    return jest.fn().mockImplementation(() =>
-        Promise.resolve({
-            ok: status >= 200 && status < 300,
-            status,
-            headers: new Headers(headers),
-            json: () => Promise.resolve(responseData),
-            text: () => Promise.resolve(JSON.stringify(responseData)),
-        })
-    );
+  return jest.fn().mockImplementation(() =>
+    Promise.resolve({
+      ok: status >= 200 && status < 300,
+      status,
+      headers: new Headers(headers),
+      json: () => Promise.resolve(responseData),
+      text: () => Promise.resolve(JSON.stringify(responseData)),
+    })
+  );
 }
 
 /**
@@ -144,41 +144,41 @@ export function createMockFetch<T>(
  * @returns An object to use with jest.spyOn
  */
 export function mockMatchMedia(matches = false): () => MediaMatchObject {
-    return () => ({
-        matches,
-        addListener: jest.fn(),
-        removeListener: jest.fn(),
-        addEventListener: jest.fn(),
-        removeEventListener: jest.fn(),
-        dispatchEvent: jest.fn(),
-        media: '',
-    });
+  return () => ({
+    matches,
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+    media: '',
+  });
 }
 
 /**
  * Setup common global mocks for tests
  */
 export function setupGlobalMocks(): void {
-    // Mock window.matchMedia
-    Object.defineProperty(window, 'matchMedia', {
-        writable: true,
-        value: mockMatchMedia(true),
-    });
+  // Mock window.matchMedia
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: mockMatchMedia(true),
+  });
 
-    // Mock intersection observer
-    global.IntersectionObserver = class IntersectionObserver {
-        constructor(_callback: IntersectionObserverCallback) { }
-        observe = jest.fn();
-        unobserve = jest.fn();
-        disconnect = jest.fn();
-        takeRecords = jest.fn().mockReturnValue([]);
-        root = null;
-        rootMargin = '';
-        thresholds = [];
-    };
+  // Mock intersection observer
+  global.IntersectionObserver = class IntersectionObserver {
+    constructor(_callback: IntersectionObserverCallback) { }
+    observe = jest.fn();
+    unobserve = jest.fn();
+    disconnect = jest.fn();
+    takeRecords = jest.fn().mockReturnValue([]);
+    root = null;
+    rootMargin = '';
+    thresholds = [];
+  };
 
-    // Reset all mocks after each test
-    afterEach(() => {
-        jest.resetAllMocks();
-    });
+  // Reset all mocks after each test
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
 } 

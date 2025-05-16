@@ -113,216 +113,216 @@ export interface VideoPlayerProps {
  * />
  */
 const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
-    ({
-        src,
-        fallbackSrc,
-        poster,
-        controls = true,
-        loop = true,
-        muted = true,
-        autoPlay = false,
-        className = '',
-        ariaLabel = 'Video content'
-    }, ref) => {
-        const [isPlaying, setIsPlaying] = useState(false);
-        const [currentTime, setCurrentTime] = useState(0);
-        const [duration, setDuration] = useState(0);
-        const [isLoading, setIsLoading] = useState(true);
-        const [hasError, setHasError] = useState(false);
-        const [sources, setSources] = useState<VideoSource[]>([]);
-        const progressRef = useRef<HTMLDivElement>(null);
-        const internalVideoRef = useRef<HTMLVideoElement>(null);
+  ({
+    src,
+    fallbackSrc,
+    poster,
+    controls = true,
+    loop = true,
+    muted = true,
+    autoPlay = false,
+    className = '',
+    ariaLabel = 'Video content'
+  }, ref) => {
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [duration, setDuration] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
+    const [sources, setSources] = useState<VideoSource[]>([]);
+    const progressRef = useRef<HTMLDivElement>(null);
+    const internalVideoRef = useRef<HTMLVideoElement>(null);
 
-        // Use passed ref or internal ref
-        const videoRef = (ref as React.RefObject<HTMLVideoElement>) || internalVideoRef;
+    // Use passed ref or internal ref
+    const videoRef = (ref as React.RefObject<HTMLVideoElement>) || internalVideoRef;
 
-        // Process sources on mount
-        useEffect(() => {
-            const videoSources: VideoSource[] = [];
+    // Process sources on mount
+    useEffect(() => {
+      const videoSources: VideoSource[] = [];
 
-            // Add primary source
-            videoSources.push({
-                src: src,
-                type: getVideoTypeFromUrl(src)
-            });
+      // Add primary source
+      videoSources.push({
+        src: src,
+        type: getVideoTypeFromUrl(src)
+      });
 
-            // Add fallback sources
-            if (fallbackSrc) {
-                if (typeof fallbackSrc === 'string') {
-                    videoSources.push({
-                        src: fallbackSrc,
-                        type: getVideoTypeFromUrl(fallbackSrc)
-                    });
-                } else if (Array.isArray(fallbackSrc)) {
-                    videoSources.push(...fallbackSrc);
-                }
-            }
+      // Add fallback sources
+      if (fallbackSrc) {
+        if (typeof fallbackSrc === 'string') {
+          videoSources.push({
+            src: fallbackSrc,
+            type: getVideoTypeFromUrl(fallbackSrc)
+          });
+        } else if (Array.isArray(fallbackSrc)) {
+          videoSources.push(...fallbackSrc);
+        }
+      }
 
-            setSources(videoSources);
-        }, [src, fallbackSrc]);
+      setSources(videoSources);
+    }, [src, fallbackSrc]);
 
-        // Helper to determine video type from URL
-        const getVideoTypeFromUrl = (url: string): string => {
-            const extension = url.split('.').pop()?.toLowerCase();
-            switch (extension) {
-                case 'mp4':
-                    return 'video/mp4';
-                case 'webm':
-                    return 'video/webm';
-                case 'ogv':
-                    return 'video/ogg';
-                default:
-                    return 'video/mp4';
-            }
-        };
+    // Helper to determine video type from URL
+    const getVideoTypeFromUrl = (url: string): string => {
+      const extension = url.split('.').pop()?.toLowerCase();
+      switch (extension) {
+      case 'mp4':
+        return 'video/mp4';
+      case 'webm':
+        return 'video/webm';
+      case 'ogv':
+        return 'video/ogg';
+      default:
+        return 'video/mp4';
+      }
+    };
 
-        // Format time as MM:SS
-        const formatTime = (timeInSeconds: number) => {
-            const minutes = Math.floor(timeInSeconds / 60);
-            const seconds = Math.floor(timeInSeconds % 60);
-            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        };
+    // Format time as MM:SS
+    const formatTime = (timeInSeconds: number) => {
+      const minutes = Math.floor(timeInSeconds / 60);
+      const seconds = Math.floor(timeInSeconds % 60);
+      return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    };
 
-        // Handle play/pause toggle
-        const handlePlayPause = () => {
-            if (!videoRef.current || hasError) return;
+    // Handle play/pause toggle
+    const handlePlayPause = () => {
+      if (!videoRef.current || hasError) return;
 
-            if (isPlaying) {
-                videoRef.current.pause();
-            } else {
-                videoRef.current.play().catch(error => {
-                    logger.error("Video playback failed:", error);
-                    setHasError(true);
-                });
-            }
-        };
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play().catch(error => {
+          logger.error("Video playback failed:", error);
+          setHasError(true);
+        });
+      }
+    };
 
-        // Update play state when video state changes
-        useEffect(() => {
-            const video = videoRef.current;
-            if (!video) return;
+    // Update play state when video state changes
+    useEffect(() => {
+      const video = videoRef.current;
+      if (!video) return;
 
-            const handlePlay = () => setIsPlaying(true);
-            const handlePause = () => setIsPlaying(false);
-            const handleTimeUpdate = () => setCurrentTime(video.currentTime);
-            const handleDurationChange = () => setDuration(video.duration);
-            const handleLoadedData = () => {
-                setIsLoading(false);
-                setHasError(false);
-            };
-            const handleError = (e: Event) => {
-                logger.error("Video error:", e);
-                setHasError(true);
-                setIsLoading(false);
-            };
+      const handlePlay = () => setIsPlaying(true);
+      const handlePause = () => setIsPlaying(false);
+      const handleTimeUpdate = () => setCurrentTime(video.currentTime);
+      const handleDurationChange = () => setDuration(video.duration);
+      const handleLoadedData = () => {
+        setIsLoading(false);
+        setHasError(false);
+      };
+      const handleError = (e: Event) => {
+        logger.error("Video error:", e);
+        setHasError(true);
+        setIsLoading(false);
+      };
 
-            video.addEventListener('play', handlePlay);
-            video.addEventListener('pause', handlePause);
-            video.addEventListener('timeupdate', handleTimeUpdate);
-            video.addEventListener('durationchange', handleDurationChange);
-            video.addEventListener('loadeddata', handleLoadedData);
-            video.addEventListener('error', handleError);
+      video.addEventListener('play', handlePlay);
+      video.addEventListener('pause', handlePause);
+      video.addEventListener('timeupdate', handleTimeUpdate);
+      video.addEventListener('durationchange', handleDurationChange);
+      video.addEventListener('loadeddata', handleLoadedData);
+      video.addEventListener('error', handleError);
 
-            // Auto play if specified
-            if (autoPlay && !hasError) {
-                video.play().catch(e => {
-                    logger.error("Video autoplay failed:", e);
-                    setHasError(true);
-                });
-            }
+      // Auto play if specified
+      if (autoPlay && !hasError) {
+        video.play().catch(e => {
+          logger.error("Video autoplay failed:", e);
+          setHasError(true);
+        });
+      }
 
-            return () => {
-                video.removeEventListener('play', handlePlay);
-                video.removeEventListener('pause', handlePause);
-                video.removeEventListener('timeupdate', handleTimeUpdate);
-                video.removeEventListener('durationchange', handleDurationChange);
-                video.removeEventListener('loadeddata', handleLoadedData);
-                video.removeEventListener('error', handleError);
-            };
-        }, [videoRef, autoPlay, hasError]);
+      return () => {
+        video.removeEventListener('play', handlePlay);
+        video.removeEventListener('pause', handlePause);
+        video.removeEventListener('timeupdate', handleTimeUpdate);
+        video.removeEventListener('durationchange', handleDurationChange);
+        video.removeEventListener('loadeddata', handleLoadedData);
+        video.removeEventListener('error', handleError);
+      };
+    }, [videoRef, autoPlay, hasError]);
 
-        // Update progress bar width
-        useEffect(() => {
-            if (progressRef.current && duration > 0) {
-                const progress = (currentTime / duration) * 100;
-                progressRef.current.style.width = `${progress}%`;
-            }
-        }, [currentTime, duration]);
+    // Update progress bar width
+    useEffect(() => {
+      if (progressRef.current && duration > 0) {
+        const progress = (currentTime / duration) * 100;
+        progressRef.current.style.width = `${progress}%`;
+      }
+    }, [currentTime, duration]);
 
-        return (
-            <div className={`video-container ${className}`}>
-                <div className="video-wrapper relative flex-1">
-                    {/* Video element with multiple sources */}
-                    <video
-                        ref={videoRef}
-                        poster={poster}
-                        className="object-cover"
-                        muted={muted}
-                        loop={loop}
-                        playsInline
-                        aria-label={ariaLabel}
-                    >
-                        {sources.map((source, index) => (
-                            <source key={index} src={source.src} type={source.type} />
-                        ))}
-                        Your browser does not support the video tag.
-                    </video>
+    return (
+      <div className={`video-container ${className}`}>
+        <div className="video-wrapper relative flex-1">
+          {/* Video element with multiple sources */}
+          <video
+            ref={videoRef}
+            poster={poster}
+            className="object-cover"
+            muted={muted}
+            loop={loop}
+            playsInline
+            aria-label={ariaLabel}
+          >
+            {sources.map((source, index) => (
+              <source key={index} src={source.src} type={source.type} />
+            ))}
+            Your browser does not support the video tag.
+          </video>
 
-                    {/* Loading indicator */}
-                    {isLoading && !hasError && (
-                        <div className="video-overlay">
-                            <div className="loading-indicator w-12 h-12 border-4 border-transparent border-t-accent-400 rounded-full"></div>
-                        </div>
-                    )}
-
-                    {/* Error state */}
-                    {hasError && (
-                        <div className="video-overlay error-container">
-                            <AlertCircle size={32} className="error-icon" />
-                            <p className="error-message px-4">
-                                Video could not be loaded. Please try again later.
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Overlay with play/pause button */}
-                    {controls && !hasError && (
-                        <div
-                            className={`video-overlay transition-opacity duration-300
-                ${isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-100'}`}
-                        >
-                            <button
-                                className="control-button"
-                                onClick={handlePlayPause}
-                                aria-label={isPlaying ? "Pause video" : "Play video"}
-                            >
-                                {isPlaying ? (
-                                    <Pause size={24} />
-                                ) : (
-                                    <Play size={24} className="ml-1" />
-                                )}
-                            </button>
-                        </div>
-                    )}
-                </div>
-
-                {/* Video progress bar */}
-                {!hasError && (
-                    <div className="mt-3">
-                        <div className="video-progress">
-                            <div ref={progressRef} className="video-progress-bar"></div>
-                        </div>
-
-                        {/* Time display */}
-                        <div className="time-display">
-                            <span>{formatTime(currentTime)}</span>
-                            <span>{formatTime(duration)}</span>
-                        </div>
-                    </div>
-                )}
+          {/* Loading indicator */}
+          {isLoading && !hasError && (
+            <div className="video-overlay">
+              <div className="loading-indicator w-12 h-12 border-4 border-transparent border-t-accent-400 rounded-full"></div>
             </div>
-        );
-    }
+          )}
+
+          {/* Error state */}
+          {hasError && (
+            <div className="video-overlay error-container">
+              <AlertCircle size={32} className="error-icon" />
+              <p className="error-message px-4">
+                Video could not be loaded. Please try again later.
+              </p>
+            </div>
+          )}
+
+          {/* Overlay with play/pause button */}
+          {controls && !hasError && (
+            <div
+              className={`video-overlay transition-opacity duration-300
+                ${isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-100'}`}
+            >
+              <button
+                className="control-button"
+                onClick={handlePlayPause}
+                aria-label={isPlaying ? "Pause video" : "Play video"}
+              >
+                {isPlaying ? (
+                  <Pause size={24} />
+                ) : (
+                  <Play size={24} className="ml-1" />
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Video progress bar */}
+        {!hasError && (
+          <div className="mt-3">
+            <div className="video-progress">
+              <div ref={progressRef} className="video-progress-bar"></div>
+            </div>
+
+            {/* Time display */}
+            <div className="time-display">
+              <span>{formatTime(currentTime)}</span>
+              <span>{formatTime(duration)}</span>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
 );
 
 VideoPlayer.displayName = 'VideoPlayer';

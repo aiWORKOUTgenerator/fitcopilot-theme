@@ -8,85 +8,85 @@ import { RegistrationStep } from '../types';
  * Provides methods to track different types of step transitions
  */
 export const useRegistrationEvents = () => {
-    // Subscribe to transition events
-    const subscribeToTransitions = useCallback(
-        (listener: TransitionEventListener) => {
-            return transitionEventManager.subscribe(listener);
-        },
-        []
-    );
+  // Subscribe to transition events
+  const subscribeToTransitions = useCallback(
+    (listener: TransitionEventListener) => {
+      return transitionEventManager.subscribe(listener);
+    },
+    []
+  );
 
-    // Track standard transition (next in sequence)
-    const trackStandardTransition = useCallback(
-        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
-            transitionEventManager.emitTransition(
-                sourceStep,
-                destinationStep,
-                TransitionType.STANDARD,
-                metadata
-            );
-        },
-        []
-    );
+  // Track standard transition (next in sequence)
+  const trackStandardTransition = useCallback(
+    (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
+      transitionEventManager.emitTransition(
+        sourceStep,
+        destinationStep,
+        TransitionType.STANDARD,
+        metadata
+      );
+    },
+    []
+  );
 
-    // Track map-based transition (using transition map)
-    const trackMapTransition = useCallback(
-        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
-            transitionEventManager.emitTransition(
-                sourceStep,
-                destinationStep,
-                TransitionType.MAP_BASED,
-                metadata
-            );
-        },
-        []
-    );
+  // Track map-based transition (using transition map)
+  const trackMapTransition = useCallback(
+    (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
+      transitionEventManager.emitTransition(
+        sourceStep,
+        destinationStep,
+        TransitionType.MAP_BASED,
+        metadata
+      );
+    },
+    []
+  );
 
-    // Track direct navigation (goToStep)
-    const trackDirectNavigation = useCallback(
-        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
-            transitionEventManager.emitTransition(
-                sourceStep,
-                destinationStep,
-                TransitionType.DIRECT,
-                metadata
-            );
-        },
-        []
-    );
+  // Track direct navigation (goToStep)
+  const trackDirectNavigation = useCallback(
+    (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
+      transitionEventManager.emitTransition(
+        sourceStep,
+        destinationStep,
+        TransitionType.DIRECT,
+        metadata
+      );
+    },
+    []
+  );
 
-    // Track back navigation
-    const trackBackNavigation = useCallback(
-        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
-            transitionEventManager.emitTransition(
-                sourceStep,
-                destinationStep,
-                TransitionType.BACK,
-                metadata
-            );
-        },
-        []
-    );
+  // Track back navigation
+  const trackBackNavigation = useCallback(
+    (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
+      transitionEventManager.emitTransition(
+        sourceStep,
+        destinationStep,
+        TransitionType.BACK,
+        metadata
+      );
+    },
+    []
+  );
 
-    // Track override navigation
-    const trackOverrideNavigation = useCallback(
-        (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
-            transitionEventManager.emitTransition(
-                sourceStep,
-                destinationStep,
-                TransitionType.OVERRIDE,
-                metadata
-            );
-        },
-        []
-    );
+  // Track override navigation
+  const trackOverrideNavigation = useCallback(
+    (sourceStep: RegistrationStep, destinationStep: RegistrationStep, metadata?: Record<string, unknown>) => {
+      transitionEventManager.emitTransition(
+        sourceStep,
+        destinationStep,
+        TransitionType.OVERRIDE,
+        metadata
+      );
+    },
+    []
+  );
 
-    return {
-        subscribeToTransitions,
-        trackStandardTransition,
-        trackMapTransition,
-        trackDirectNavigation,
-        trackBackNavigation,
-        trackOverrideNavigation
-    };
+  return {
+    subscribeToTransitions,
+    trackStandardTransition,
+    trackMapTransition,
+    trackDirectNavigation,
+    trackBackNavigation,
+    trackOverrideNavigation
+  };
 }; 

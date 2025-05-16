@@ -7,11 +7,11 @@
 
 import { ButtonClickHandler } from '../../events';
 import {
-    BaseComponentProps,
-    DisableableProps,
-    LoadableProps,
-    SizeVariantProps,
-    WithChildrenProps
+  BaseComponentProps,
+  DisableableProps,
+  LoadableProps,
+  SizeVariantProps,
+  WithChildrenProps
 } from '../commonProps';
 
 // ===== Base Button Props =====
@@ -123,33 +123,33 @@ export type ButtonProps =
  * Type guard for Primary button variant
  */
 export function isPrimaryButton(props: ButtonProps): props is PrimaryButtonProps {
-    return props.variant === 'primary';
+  return props.variant === 'primary';
 }
 
 /**
  * Type guard for Secondary button variant
  */
 export function isSecondaryButton(props: ButtonProps): props is SecondaryButtonProps {
-    return props.variant === 'secondary';
+  return props.variant === 'secondary';
 }
 
 /**
  * Type guard for Tertiary button variant
  */
 export function isTertiaryButton(props: ButtonProps): props is TertiaryButtonProps {
-    return props.variant === 'tertiary';
+  return props.variant === 'tertiary';
 }
 
 /**
  * Type guard for Text button variant
  */
 export function isTextButton(props: ButtonProps): props is TextButtonProps {
-    return props.variant === 'text';
+  return props.variant === 'text';
 }
 
 /**
  * Type guard for Icon button variant
  */
 export function isIconButton(props: ButtonProps): props is IconButtonProps {
-    return props.variant === 'icon';
+  return props.variant === 'icon';
 } 

@@ -7,11 +7,11 @@
  */
 
 import {
-    AvatarMediaProps,
-    IconMediaProps,
-    ImageMediaProps,
-    MediaProps,
-    VideoMediaProps
+  AvatarMediaProps,
+  IconMediaProps,
+  ImageMediaProps,
+  MediaProps,
+  VideoMediaProps
 } from '../../types/media';
 
 /**
@@ -21,7 +21,7 @@ import {
  * @returns Type predicate indicating if props are for an image media component
  */
 export function isImageMedia(props: MediaProps): props is ImageMediaProps {
-    return props.type === 'image';
+  return props.type === 'image';
 }
 
 /**
@@ -31,7 +31,7 @@ export function isImageMedia(props: MediaProps): props is ImageMediaProps {
  * @returns Type predicate indicating if props are for a video media component
  */
 export function isVideoMedia(props: MediaProps): props is VideoMediaProps {
-    return props.type === 'video';
+  return props.type === 'video';
 }
 
 /**
@@ -41,7 +41,7 @@ export function isVideoMedia(props: MediaProps): props is VideoMediaProps {
  * @returns Type predicate indicating if props are for an icon media component
  */
 export function isIconMedia(props: MediaProps): props is IconMediaProps {
-    return props.type === 'icon';
+  return props.type === 'icon';
 }
 
 /**
@@ -51,7 +51,7 @@ export function isIconMedia(props: MediaProps): props is IconMediaProps {
  * @returns Type predicate indicating if props are for an avatar media component
  */
 export function isAvatarMedia(props: MediaProps): props is AvatarMediaProps {
-    return props.type === 'avatar';
+  return props.type === 'avatar';
 }
 
 /**
@@ -61,13 +61,13 @@ export function isAvatarMedia(props: MediaProps): props is AvatarMediaProps {
  * @returns Whether the media has a source
  */
 export function hasSource(props: MediaProps): boolean {
-    return 'src' in props && !!props.src;
+  return 'src' in props && !!props.src;
 }
 
 export default {
-    isImageMedia,
-    isVideoMedia,
-    isIconMedia,
-    isAvatarMedia,
-    hasSource
+  isImageMedia,
+  isVideoMedia,
+  isIconMedia,
+  isAvatarMedia,
+  hasSource
 }; 

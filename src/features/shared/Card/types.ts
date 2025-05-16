@@ -52,10 +52,10 @@ export type CardProps =
     | ProgramCardProps;
 
 export const isContentCard = (props: CardProps): props is ContentCardProps =>
-    props.variant === 'content';
+  props.variant === 'content';
 export const isProfileCard = (props: CardProps): props is ProfileCardProps =>
-    props.variant === 'profile';
+  props.variant === 'profile';
 export const isWorkoutCard = (props: CardProps): props is WorkoutCardProps =>
-    props.variant === 'workout';
+  props.variant === 'workout';
 export const isProgramCard = (props: CardProps): props is ProgramCardProps =>
-    props.variant === 'program'; 
+  props.variant === 'program'; 

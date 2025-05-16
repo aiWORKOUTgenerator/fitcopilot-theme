@@ -21,138 +21,138 @@ interface CustomizationState {
  * Custom hook for managing customization state with persistence
  */
 export const useCustomizationState = (): CustomizationState => {
-    const { registrationData, updateRegistrationData } = useJourney();
+  const { registrationData, updateRegistrationData } = useJourney();
 
-    // Initialize state with fallbacks to cached data
-    const [validSections, setValidSections] = useState<Record<string, boolean>>(() => {
-        try {
-            const cachedState = sessionStorage.getItem(STORAGE_KEY);
-            if (cachedState) {
-                const parsed = JSON.parse(cachedState);
-                return parsed.validSections || initializeValidSections();
-            }
-        } catch (error) {
-            logger.error('Failed to parse cached customization state:', error);
-        }
-        return initializeValidSections();
-    });
+  // Initialize state with fallbacks to cached data
+  const [validSections, setValidSections] = useState<Record<string, boolean>>(() => {
+    try {
+      const cachedState = sessionStorage.getItem(STORAGE_KEY);
+      if (cachedState) {
+        const parsed = JSON.parse(cachedState);
+        return parsed.validSections || initializeValidSections();
+      }
+    } catch (error) {
+      logger.error('Failed to parse cached customization state:', error);
+    }
+    return initializeValidSections();
+  });
 
-    const [completedSections, setCompletedSections] = useState<string[]>(() => {
-        // First try to get from registration data (from JourneyContext)
-        if (registrationData.completedCustomizationSections?.length) {
-            return registrationData.completedCustomizationSections;
-        }
-
-        // Fall back to session storage
-        try {
-            const cachedState = sessionStorage.getItem(STORAGE_KEY);
-            if (cachedState) {
-                const parsed = JSON.parse(cachedState);
-                return parsed.completedSections || [];
-            }
-        } catch (error) {
-            logger.error('Failed to parse cached customization state:', error);
-        }
-        return [];
-    });
-
-    // Calculate if overall customization is valid (at least one section completed)
-    const isCustomizationValid = completedSections.length > 0;
-
-    // Initialize valid sections object
-    function initializeValidSections(): Record<string, boolean> {
-        return Object.values(SECTION_IDS).reduce((acc, sectionId) => {
-            acc[sectionId] = false;
-            return acc;
-        }, {} as Record<string, boolean>);
+  const [completedSections, setCompletedSections] = useState<string[]>(() => {
+    // First try to get from registration data (from JourneyContext)
+    if (registrationData.completedCustomizationSections?.length) {
+      return registrationData.completedCustomizationSections;
     }
 
-    // Update section validity
-    const updateSectionValidity = useCallback((sectionId: string, isValid: boolean) => {
-        setValidSections(prev => {
-            // Only update if the value actually changes
-            if (prev[sectionId] === isValid) return prev;
+    // Fall back to session storage
+    try {
+      const cachedState = sessionStorage.getItem(STORAGE_KEY);
+      if (cachedState) {
+        const parsed = JSON.parse(cachedState);
+        return parsed.completedSections || [];
+      }
+    } catch (error) {
+      logger.error('Failed to parse cached customization state:', error);
+    }
+    return [];
+  });
 
-            const updated = { ...prev, [sectionId]: isValid };
-            persistState(updated, completedSections);
-            return updated;
-        });
-    }, [completedSections, persistState]);
+  // Calculate if overall customization is valid (at least one section completed)
+  const isCustomizationValid = completedSections.length > 0;
 
-    // Mark a section as complete
-    const markSectionComplete = useCallback((sectionId: string) => {
-        setCompletedSections(prev => {
-            if (prev.includes(sectionId)) return prev;
+  // Initialize valid sections object
+  function initializeValidSections(): Record<string, boolean> {
+    return Object.values(SECTION_IDS).reduce((acc, sectionId) => {
+      acc[sectionId] = false;
+      return acc;
+    }, {} as Record<string, boolean>);
+  }
 
-            const updated = [...prev, sectionId];
-            persistState(validSections, updated);
+  // Update section validity
+  const updateSectionValidity = useCallback((sectionId: string, isValid: boolean) => {
+    setValidSections(prev => {
+      // Only update if the value actually changes
+      if (prev[sectionId] === isValid) return prev;
 
-            // Also update the journey context data
-            updateRegistrationData({
-                completedCustomizationSections: updated
-            });
+      const updated = { ...prev, [sectionId]: isValid };
+      persistState(updated, completedSections);
+      return updated;
+    });
+  }, [completedSections, persistState]);
 
-            return updated;
-        });
-    }, [validSections, updateRegistrationData, persistState]);
+  // Mark a section as complete
+  const markSectionComplete = useCallback((sectionId: string) => {
+    setCompletedSections(prev => {
+      if (prev.includes(sectionId)) return prev;
 
-    // Reset state
-    const resetCustomizationState = useCallback(() => {
-        const initialSections = initializeValidSections();
-        setValidSections(initialSections);
-        setCompletedSections([]);
-        sessionStorage.removeItem(STORAGE_KEY);
+      const updated = [...prev, sectionId];
+      persistState(validSections, updated);
 
-        // Also clear from journey context
-        updateRegistrationData({
-            completedCustomizationSections: []
-        });
-    }, [updateRegistrationData]);
+      // Also update the journey context data
+      updateRegistrationData({
+        completedCustomizationSections: updated
+      });
 
-    // Persist state to session storage with debouncing
-    const persistState = useCallback((
-        validSectionsData: Record<string, boolean>,
-        completedSectionsData: string[]
-    ) => {
-        try {
-            const stateToCache = {
-                validSections: validSectionsData,
-                completedSections: completedSectionsData,
-                timestamp: new Date().toISOString()
-            };
+      return updated;
+    });
+  }, [validSections, updateRegistrationData, persistState]);
 
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(stateToCache));
-        } catch (error) {
-            logger.error('Failed to cache customization state:', error);
-        }
-    }, []);
+  // Reset state
+  const resetCustomizationState = useCallback(() => {
+    const initialSections = initializeValidSections();
+    setValidSections(initialSections);
+    setCompletedSections([]);
+    sessionStorage.removeItem(STORAGE_KEY);
 
-    // Sync with journey context data when it changes
-    useEffect(() => {
-        if (registrationData.completedCustomizationSections?.length) {
-            setCompletedSections(registrationData.completedCustomizationSections);
-        }
-    }, [registrationData.completedCustomizationSections]);
+    // Also clear from journey context
+    updateRegistrationData({
+      completedCustomizationSections: []
+    });
+  }, [updateRegistrationData]);
 
-    // Sync with stored completed sections (useful for initialization)
-    const syncWithStoredCompletedSections = useCallback((sections: string[]) => {
-        if (sections.length > 0) {
-            setCompletedSections(sections);
+  // Persist state to session storage with debouncing
+  const persistState = useCallback((
+    validSectionsData: Record<string, boolean>,
+    completedSectionsData: string[]
+  ) => {
+    try {
+      const stateToCache = {
+        validSections: validSectionsData,
+        completedSections: completedSectionsData,
+        timestamp: new Date().toISOString()
+      };
 
-            // Also update registration data for consistency
-            updateRegistrationData({
-                completedCustomizationSections: sections
-            });
-        }
-    }, [updateRegistrationData]);
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(stateToCache));
+    } catch (error) {
+      logger.error('Failed to cache customization state:', error);
+    }
+  }, []);
 
-    return {
-        validSections,
-        completedSections,
-        updateSectionValidity,
-        markSectionComplete,
-        resetCustomizationState,
-        isCustomizationValid,
-        syncWithStoredCompletedSections
-    };
+  // Sync with journey context data when it changes
+  useEffect(() => {
+    if (registrationData.completedCustomizationSections?.length) {
+      setCompletedSections(registrationData.completedCustomizationSections);
+    }
+  }, [registrationData.completedCustomizationSections]);
+
+  // Sync with stored completed sections (useful for initialization)
+  const syncWithStoredCompletedSections = useCallback((sections: string[]) => {
+    if (sections.length > 0) {
+      setCompletedSections(sections);
+
+      // Also update registration data for consistency
+      updateRegistrationData({
+        completedCustomizationSections: sections
+      });
+    }
+  }, [updateRegistrationData]);
+
+  return {
+    validSections,
+    completedSections,
+    updateSectionValidity,
+    markSectionComplete,
+    resetCustomizationState,
+    isCustomizationValid,
+    syncWithStoredCompletedSections
+  };
 }; 

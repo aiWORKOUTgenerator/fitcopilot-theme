@@ -121,7 +121,7 @@ export type ButtonProps = ActionButtonProps | LinkButtonProps;
  * @returns True if the props are for a link button
  */
 export const isLinkButton = (props: ButtonProps): props is LinkButtonProps => {
-    return 'href' in props && typeof props.href === 'string';
+  return 'href' in props && typeof props.href === 'string';
 };
 
 /**
@@ -131,7 +131,7 @@ export const isLinkButton = (props: ButtonProps): props is LinkButtonProps => {
  * @returns True if the props are for an action button
  */
 export const isActionButton = (props: ButtonProps): props is ActionButtonProps => {
-    return 'onClick' in props && typeof props.onClick === 'function';
+  return 'onClick' in props && typeof props.onClick === 'function';
 };
 
 /**
@@ -142,11 +142,11 @@ export const isActionButton = (props: ButtonProps): props is ActionButtonProps =
  * @returns New handler that logs and then calls the original
  */
 export const createLoggedClickHandler = (
-    handler: ButtonClickHandler,
-    context: Record<string, unknown>
+  handler: ButtonClickHandler,
+  context: Record<string, unknown>
 ): ButtonClickHandler => {
-    return (event: React.MouseEvent<HTMLButtonElement>) => {
-        logger.info('Button clicked', context);
-        handler(event);
-    };
+  return (event: React.MouseEvent<HTMLButtonElement>) => {
+    logger.info('Button clicked', context);
+    handler(event);
+  };
 }; 

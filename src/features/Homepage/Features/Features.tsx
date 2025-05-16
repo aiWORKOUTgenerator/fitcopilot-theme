@@ -26,17 +26,17 @@ interface FloatingIconProps {
  */
 const FloatingIcon: React.FC<FloatingIconProps> = ({ children, delay, speed, left, top }) => {
   return (
-      <div
-          className="floating-icon"
-          style={{
+    <div
+      className="floating-icon"
+      style={{
         left: `${left}%`,
         top: `${top}%`,
         animation: `float ${speed}s ease-in-out infinite ${delay}s`
       }}
-          aria-hidden="true"
+      aria-hidden="true"
     >
-          {children}
-      </div>
+      {children}
+    </div>
   );
 };
 
@@ -45,48 +45,48 @@ const FloatingIcon: React.FC<FloatingIconProps> = ({ children, delay, speed, lef
  */
 const SampleWorkout: React.FC = () => {
   return (
-      <div className="text-white h-full w-full flex flex-col overflow-hidden">
-          <ul className="space-y-2 text-xs flex-1 overflow-y-auto pr-2">
-              <li className="flex items-start">
-                  <CheckCircle size={12} className="text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
-                  <div>
-                      <span className="font-medium">Goblet Squats</span>
-                      <p className="text-gray-300 text-[10px]">3 × 12 reps</p>
-                  </div>
-              </li>
-              <li className="flex items-start">
-                  <CheckCircle size={12} className="text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
-                  <div>
-                      <span className="font-medium">Push-ups</span>
-                      <p className="text-gray-300 text-[10px]">3 × 15 reps</p>
-                  </div>
-              </li>
-              <li className="flex items-start">
-                  <CheckCircle size={12} className="text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
-                  <div>
-                      <span className="font-medium">Walking Lunges</span>
-                      <p className="text-gray-300 text-[10px]">3 × 10 reps each</p>
-                  </div>
-              </li>
-              <li className="flex items-start">
-                  <CheckCircle size={12} className="text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
-                  <div>
-                      <span className="font-medium">Kettlebell Swings</span>
-                      <p className="text-gray-300 text-[10px]">3 × 15 reps</p>
-                  </div>
-              </li>
-              <li className="flex items-start">
-                  <CheckCircle size={12} className="text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
-                  <div>
-                      <span className="font-medium">Plank</span>
-                      <p className="text-gray-300 text-[10px]">3 × 45 seconds</p>
-                  </div>
-              </li>
-          </ul>
-          <div className="mt-2 pt-1 border-t border-white/10 text-[8px] text-gray-400/70">
-              <p className="italic text-[7px]">* AI-optimized for your full fitness profile</p>
+    <div className="text-white h-full w-full flex flex-col overflow-hidden">
+      <ul className="space-y-2 text-xs flex-1 overflow-y-auto pr-2">
+        <li className="flex items-start">
+          <CheckCircle size={12} className="text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
+          <div>
+            <span className="font-medium">Goblet Squats</span>
+            <p className="text-gray-300 text-[10px]">3 × 12 reps</p>
           </div>
+        </li>
+        <li className="flex items-start">
+          <CheckCircle size={12} className="text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
+          <div>
+            <span className="font-medium">Push-ups</span>
+            <p className="text-gray-300 text-[10px]">3 × 15 reps</p>
+          </div>
+        </li>
+        <li className="flex items-start">
+          <CheckCircle size={12} className="text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
+          <div>
+            <span className="font-medium">Walking Lunges</span>
+            <p className="text-gray-300 text-[10px]">3 × 10 reps each</p>
+          </div>
+        </li>
+        <li className="flex items-start">
+          <CheckCircle size={12} className="text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
+          <div>
+            <span className="font-medium">Kettlebell Swings</span>
+            <p className="text-gray-300 text-[10px]">3 × 15 reps</p>
+          </div>
+        </li>
+        <li className="flex items-start">
+          <CheckCircle size={12} className="text-lime-300 mr-2 mt-0.5 flex-shrink-0" />
+          <div>
+            <span className="font-medium">Plank</span>
+            <p className="text-gray-300 text-[10px]">3 × 45 seconds</p>
+          </div>
+        </li>
+      </ul>
+      <div className="mt-2 pt-1 border-t border-white/10 text-[8px] text-gray-400/70">
+        <p className="italic text-[7px]">* AI-optimized for your full fitness profile</p>
       </div>
+    </div>
   );
 };
 
@@ -95,61 +95,61 @@ const SampleWorkout: React.FC = () => {
  */
 const ProgressChart: React.FC = () => {
   return (
-      <div className="text-white h-full w-full flex flex-col">
-          <h4 className="text-cyan-300 text-sm font-bold mb-3">Weekly Progress</h4>
+    <div className="text-white h-full w-full flex flex-col">
+      <h4 className="text-cyan-300 text-sm font-bold mb-3">Weekly Progress</h4>
 
-          <div className="flex-1 relative">
-              {/* Chart grid */}
-              <div className="absolute inset-0">
-                  {[...Array(5)].map((_, i) => (
-                      <div
-                          key={i}
-                          className="absolute w-full h-px bg-gray-700/30"
-                          style={{ top: `${20 * i}%` }}
+      <div className="flex-1 relative">
+        {/* Chart grid */}
+        <div className="absolute inset-0">
+          {[...Array(5)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-full h-px bg-gray-700/30"
+              style={{ top: `${20 * i}%` }}
             ></div>
           ))}
-                  {[...Array(7)].map((_, i) => (
-                      <div
-                          key={i}
-                          className="absolute h-full w-px bg-gray-700/30"
-                          style={{ left: `${100 / 6 * i}%` }}
+          {[...Array(7)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute h-full w-px bg-gray-700/30"
+              style={{ left: `${100 / 6 * i}%` }}
             ></div>
           ))}
-              </div>
+        </div>
 
-              {/* Progress line */}
-              <svg className="absolute inset-0 w-full h-full overflow-visible">
-                  <defs>
-                      <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#84cc16" />
-                          <stop offset="100%" stopColor="#22d3ee" />
-                      </linearGradient>
-                  </defs>
+        {/* Progress line */}
+        <svg className="absolute inset-0 w-full h-full overflow-visible">
+          <defs>
+            <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#84cc16" />
+              <stop offset="100%" stopColor="#22d3ee" />
+            </linearGradient>
+          </defs>
 
-                  {/* Animated progress path */}
-                  <path
-                      d="M0,80 C40,70 60,40 80,30 S120,50 140,40 S180,10 200,20"
-                      fill="none"
-                      stroke="url(#line-gradient)"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      className="chart-line animate-draw-line drop-shadow-[0_0_3px_rgba(132,204,22,0.5)]"
+          {/* Animated progress path */}
+          <path
+            d="M0,80 C40,70 60,40 80,30 S120,50 140,40 S180,10 200,20"
+            fill="none"
+            stroke="url(#line-gradient)"
+            strokeWidth="3"
+            strokeLinecap="round"
+            className="chart-line animate-draw-line drop-shadow-[0_0_3px_rgba(132,204,22,0.5)]"
           />
 
-                  {/* Heart at end of line */}
-                  <Heart
-                      size={16}
-                      className="text-rose-500 fill-rose-500 drop-shadow-[0_0_4px_rgba(244,63,94,0.5)] opacity-0 animate-heartbeat animate-heart-pulse animate-fade-in"
-                      style={{
+          {/* Heart at end of line */}
+          <Heart
+            size={16}
+            className="text-rose-500 fill-rose-500 drop-shadow-[0_0_4px_rgba(244,63,94,0.5)] opacity-0 animate-heartbeat animate-heart-pulse animate-fade-in"
+            style={{
               transform: 'translate(196px, 16px)',
               transformOrigin: 'center',
               animationDelay: '2.4s, 2.4s, 2.4s'
             }}
           />
-              </svg>
+        </svg>
 
-              {/* Data points */}
-              {[
+        {/* Data points */}
+        {[
           { x: 0, y: 80 },
           { x: 40, y: 70 },
           { x: 80, y: 30 },
@@ -157,35 +157,35 @@ const ProgressChart: React.FC = () => {
           { x: 160, y: 60 },
           { x: 200, y: 20 }
         ].map((point, i) => (
-            <div
-                key={i}
-                className="absolute h-2 w-2 bg-gradient-to-br from-lime-400 to-cyan-400 rounded-full opacity-0 scale-0 animate-point-fade"
-                style={{
+          <div
+            key={i}
+            className="absolute h-2 w-2 bg-gradient-to-br from-lime-400 to-cyan-400 rounded-full opacity-0 scale-0 animate-point-fade"
+            style={{
               left: `${point.x}px`,
               top: `${point.y}px`,
               animationDelay: `${i * 0.4 + 0.5}s`
             }}
           ></div>
         ))}
-          </div>
-
-          {/* X-axis labels */}
-          <div className="flex justify-between mt-2 text-[10px] text-gray-400">
-              <span>Mon</span>
-              <span>Tue</span>
-              <span>Wed</span>
-              <span>Thu</span>
-              <span>Fri</span>
-              <span>Sat</span>
-              <span>Sun</span>
-          </div>
-
-          <div className="mt-4 flex items-center justify-center">
-              <div className="px-3 py-1 bg-lime-500/20 rounded-full text-lime-400 text-xs font-semibold">
-                  +12% this week
-              </div>
-          </div>
       </div>
+
+      {/* X-axis labels */}
+      <div className="flex justify-between mt-2 text-[10px] text-gray-400">
+        <span>Mon</span>
+        <span>Tue</span>
+        <span>Wed</span>
+        <span>Thu</span>
+        <span>Fri</span>
+        <span>Sat</span>
+        <span>Sun</span>
+      </div>
+
+      <div className="mt-4 flex items-center justify-center">
+        <div className="px-3 py-1 bg-lime-500/20 rounded-full text-lime-400 text-xs font-semibold">
+          +12% this week
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -213,22 +213,22 @@ const VideoPlayer: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> = (
   }, [videoRef]);
 
   return (
-      <div className="relative h-full w-full flex flex-col">
-          <div className="flex-1 relative">
-              <video
-                  ref={videoRef}
-                  src="/wp-content/themes/athlete-dashboard-gym-engine/assets/videos/Mission-Bay-Footage.mp4"
-                  className="h-full w-full object-cover rounded-md"
-                  muted
-                  loop
-                  playsInline
+    <div className="relative h-full w-full flex flex-col">
+      <div className="flex-1 relative">
+        <video
+          ref={videoRef}
+          src="/wp-content/themes/athlete-dashboard-gym-engine/assets/videos/Mission-Bay-Footage.mp4"
+          className="h-full w-full object-cover rounded-md"
+          muted
+          loop
+          playsInline
         />
 
-              {/* Overlay with play/pause button */}
-              <div className={`absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity ${isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-100'}`}>
-                  <button
-                      className="h-12 w-12 rounded-full bg-violet-500/80 flex items-center justify-center hover:bg-violet-600/80 transition-colors"
-                      onClick={() => {
+        {/* Overlay with play/pause button */}
+        <div className={`absolute inset-0 flex items-center justify-center bg-black/30 transition-opacity ${isPlaying ? 'opacity-0 hover:opacity-100' : 'opacity-100'}`}>
+          <button
+            className="h-12 w-12 rounded-full bg-violet-500/80 flex items-center justify-center hover:bg-violet-600/80 transition-colors"
+            onClick={() => {
               if (videoRef.current) {
                 if (isPlaying) {
                   videoRef.current.pause();
@@ -240,30 +240,30 @@ const VideoPlayer: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> = (
               }
             }}
           >
-                      {isPlaying ? (
-                          <Pause size={24} className="text-white" />
+            {isPlaying ? (
+              <Pause size={24} className="text-white" />
             ) : (
-                <Play size={24} className="text-white ml-1" />
+              <Play size={24} className="text-white ml-1" />
             )}
-                  </button>
-              </div>
-          </div>
+          </button>
+        </div>
+      </div>
 
-          <div className="mt-3">
-              <div className="video-progress">
-                  <div
-                      className={`video-progress-bar ${isPlaying ? 'animate-progress' : ''}`}
-                      style={{
+      <div className="mt-3">
+        <div className="video-progress">
+          <div
+            className={`video-progress-bar ${isPlaying ? 'animate-progress' : ''}`}
+            style={{
               width: isPlaying ? 'auto' : '0%'
             }}
           ></div>
-              </div>
-              <div className="flex justify-between mt-2 text-xs text-gray-400">
-                  <span>{isPlaying ? "2:34" : "0:00"}</span>
-                  <span>5:00</span>
-              </div>
-          </div>
+        </div>
+        <div className="flex justify-between mt-2 text-xs text-gray-400">
+          <span>{isPlaying ? "2:34" : "0:00"}</span>
+          <span>5:00</span>
+        </div>
       </div>
+    </div>
   );
 };
 
@@ -284,34 +284,34 @@ const BackgroundVideoPlayer: React.FC<{ onScrollToSplash: (e: React.MouseEvent<H
   }, [videoRef]);
 
   return (
-      <div className="video-background relative w-full h-80 md:h-[500px] mt-20 mb-20 overflow-hidden rounded-xl">
-          <video
-              ref={videoRef}
-              src="/wp-content/themes/fitcopilot/src/features/Homepage/Features/media/videos/Mission-Bay-Footage.mp4"
-              className="absolute inset-0 w-full h-full object-cover"
-              muted
-              loop
-              playsInline
+    <div className="video-background relative w-full h-80 md:h-[500px] mt-20 mb-20 overflow-hidden rounded-xl">
+      <video
+        ref={videoRef}
+        src="/wp-content/themes/fitcopilot/src/features/Homepage/Features/media/videos/Mission-Bay-Footage.mp4"
+        className="absolute inset-0 w-full h-full object-cover"
+        muted
+        loop
+        playsInline
       />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/30 flex items-center justify-center">
-              <div className="text-center max-w-xl px-4">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Experience Fitness Evolution</h3>
-                  <p className="text-gray-300 mb-6">Our technology adapts to your unique fitness journey, helping you achieve optimal results safely and efficiently.</p>
+      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-gray-900/30 flex items-center justify-center">
+        <div className="text-center max-w-xl px-4">
+          <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Experience Fitness Evolution</h3>
+          <p className="text-gray-300 mb-6">Our technology adapts to your unique fitness journey, helping you achieve optimal results safely and efficiently.</p>
 
-                  <div className="features-cta">
-                      <RegistrationButton
-                          variant="primary"
-                          size="lg"
-                          className="inline-flex items-center rounded-full font-medium features-button-primary features-divider-gradient-btn"
-                          onClick={onScrollToSplash}
+          <div className="features-cta">
+            <RegistrationButton
+              variant="primary"
+              size="lg"
+              className="inline-flex items-center rounded-full font-medium features-button-primary features-divider-gradient-btn"
+              onClick={onScrollToSplash}
             >
-                          <Zap className="features-icon" />
-                          Get Started
-                      </RegistrationButton>
-                  </div>
-              </div>
+              <Zap className="features-icon" />
+              Get Started
+            </RegistrationButton>
           </div>
+        </div>
       </div>
+    </div>
   );
 };
 
@@ -406,74 +406,74 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
   };
 
   return (
-      <section
-          className="features-section w-full py-16 md:pt-8 md:pb-24 px-4 bg-gray-900 overflow-hidden relative"
-          aria-labelledby="features-heading"
-          data-theme={variant}
+    <section
+      className="features-section w-full py-16 md:pt-8 md:pb-24 px-4 bg-gray-900 overflow-hidden relative"
+      aria-labelledby="features-heading"
+      data-theme={variant}
     >
-          {/* Create a visual connector from Hero to Features */}
-          <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-gray-900 to-transparent z-0"></div>
+      {/* Create a visual connector from Hero to Features */}
+      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-gray-900 to-transparent z-0"></div>
 
-          {/* Floating fitness icons - decorative */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-              {floatingIcons.map((icon, index) => (
-                  <FloatingIcon
-                      key={index}
-                      left={icon.left}
-                      top={icon.top}
-                      delay={icon.delay}
-                      speed={icon.speed}
+      {/* Floating fitness icons - decorative */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+        {floatingIcons.map((icon, index) => (
+          <FloatingIcon
+            key={index}
+            left={icon.left}
+            top={icon.top}
+            delay={icon.delay}
+            speed={icon.speed}
           >
-                      <icon.Icon size={icon.size} />
-                  </FloatingIcon>
+            <icon.Icon size={icon.size} />
+          </FloatingIcon>
         ))}
-          </div>
+      </div>
 
-          {/* Main content */}
-          <div className="max-w-6xl mx-auto relative z-10">
-              <div className="text-center mb-16">
-                  <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">Fitness Evolution</span>
-                  <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white">
-                      Innovative Features <br />
-                      <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text" data-text="Tailored for You">Tailored for You</span>
-                  </h2>
-              </div>
+      {/* Main content */}
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">Fitness Evolution</span>
+          <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white">
+            Innovative Features <br />
+            <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text" data-text="Tailored for You">Tailored for You</span>
+          </h2>
+        </div>
 
-              {/* Feature cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {features.map((feature, index) => (
-                      <FeatureCard
-                          key={index}
-                          icon={feature.icon}
-                          title={feature.title}
-                          description={feature.description}
-                          _gradient={feature.gradient}
-                          demoComponent={feature.demoComponent}
-                          _isActive={activeFeatureIndex === index}
-                          onMouseEnter={() => handleFeatureHover(index)}
-                          onMouseLeave={handleMouseLeave}
-                          variant={variant}
+        {/* Feature cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard
+              key={index}
+              icon={feature.icon}
+              title={feature.title}
+              description={feature.description}
+              _gradient={feature.gradient}
+              demoComponent={feature.demoComponent}
+              _isActive={activeFeatureIndex === index}
+              onMouseEnter={() => handleFeatureHover(index)}
+              onMouseLeave={handleMouseLeave}
+              variant={variant}
             />
           ))}
-              </div>
+        </div>
 
-              {/* Background video player */}
-              <BackgroundVideoPlayer onScrollToSplash={handleScrollToSplash} />
+        {/* Background video player */}
+        <BackgroundVideoPlayer onScrollToSplash={handleScrollToSplash} />
 
-              {/* CTA Button */}
-              <div className="mt-16 text-center">
-                  <div className="inline-block w-3/4 md:w-1/2 mx-auto">
-                      <RegistrationButton
-                          variant="primary"
-                          size="lg"
-                          className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 shadow-lg hover:shadow-xl hover:-translate-y-1 w-full border-[4px] border-orange-500"
+        {/* CTA Button */}
+        <div className="mt-16 text-center">
+          <div className="inline-block w-3/4 md:w-1/2 mx-auto">
+            <RegistrationButton
+              variant="primary"
+              size="lg"
+              className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 shadow-lg hover:shadow-xl hover:-translate-y-1 w-full border-[4px] border-orange-500"
             >
-                          Start Your Fitness Journey
-                      </RegistrationButton>
-                  </div>
-              </div>
+              Start Your Fitness Journey
+            </RegistrationButton>
           </div>
-      </section>
+        </div>
+      </div>
+    </section>
   );
 };
 

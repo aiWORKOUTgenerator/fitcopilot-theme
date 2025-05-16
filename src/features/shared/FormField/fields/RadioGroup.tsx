@@ -1,94 +1,119 @@
 /**
  * RadioGroup Component
+ * 
+ * A radio button group component using the standardized type system.
  */
 
 import React from 'react';
+import { debug } from '../../../../utils/logger';
 import { RadioGroupFieldProps } from '../types';
+import { filterComponentProps } from './FormField';
 
 /**
  * RadioGroup component for groups of radio inputs
  */
 const RadioGroup: React.FC<RadioGroupFieldProps> = ({
-    name,
-    value,
-    options,
-    label,
-    onChange,
-    disabled = false,
-    required = false,
-    error,
-    helperText,
-    className = '',
-    id,
-    isLoading = false,
-    'data-testid': dataTestId,
-    direction = 'vertical',
+  id,
+  name,
+  label,
+  value,
+  onChange,
+  options,
+  disabled = false,
+  required = false,
+  error,
+  helperText,
+  className,
+  'data-testid': testId,
+  direction = 'vertical',
+  isLoading = false,
+  validators,
+  ...otherProps
 }) => {
-    // Field ID defaults to name if not provided
-    const fieldId = id || name;
-
-    // Generate CSS classes
-    const groupClasses = [
-        'form-radio-group',
-        `form-radio-group--${direction}`,
-        disabled ? 'form-radio-group--disabled' : '',
-        error ? 'form-radio-group--error' : '',
-        isLoading ? 'form-radio-group--loading' : '',
-        className
-    ].filter(Boolean).join(' ');
-
-    return (
-        <div className="form-field form-field--radio-group">
-            {label && (
-                <div
-                    className={`form-field__label ${required ? 'form-field__label--required' : ''}`}
-                    id={`${fieldId}-group-label`}
-                >
-                    {label}
-                </div>
-            )}
-
-            <div
-                className={groupClasses}
-                role="radiogroup"
-                aria-labelledby={label ? `${fieldId}-group-label` : undefined}
-                data-testid={dataTestId}
-            >
-                {options.map((option) => {
-                    const optionId = `${fieldId}-${option.value}`;
-
-                    return (
-                        <div className="form-radio-option" key={option.value}>
-                            <input
-                                id={optionId}
-                                name={name}
-                                type="radio"
-                                value={option.value}
-                                checked={option.value === value}
-                                onChange={onChange}
-                                disabled={disabled || isLoading || option.disabled}
-                                required={required}
-                                className="form-radio"
-                                aria-invalid={!!error}
-                            />
-                            <label htmlFor={optionId} className="form-radio-label">
-                                {option.label}
-                            </label>
-                        </div>
-                    );
-                })}
+  // Generate ID if not provided
+  const fieldId = id || `field-${name}`;
+  
+  // Filter out component-only props
+  const htmlProps = filterComponentProps(otherProps);
+  
+  // Event handlers with logging
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    debug('RadioGroup changed', {
+      name,
+      value: e.target.value
+    });
+    onChange(e);
+  };
+  
+  // Generate CSS classes
+  const fieldClasses = [
+    'form-field',
+    'form-field--radio-group',
+    `form-field--${direction}`,
+    error ? 'form-field--error' : '',
+    isLoading ? 'form-field--loading' : '',
+    className
+  ].filter(Boolean).join(' ');
+  
+  return (
+    <fieldset 
+      className={fieldClasses}
+      data-testid={testId || `radio-group-${name}`}
+      disabled={disabled || isLoading}
+    >
+      {label && (
+        <legend className="form-field__legend">
+          {label}
+          {required && <span className="form-field__required">*</span>}
+        </legend>
+      )}
+      
+      <div className={`form-field__radio-options form-field__radio-options--${direction}`}>
+        {options.map((option) => {
+          const optionId = `${fieldId}-${option.value}`;
+          return (
+            <div key={optionId} className="form-field__radio-option">
+              <input
+                id={optionId}
+                name={name}
+                type="radio"
+                value={option.value}
+                checked={value === option.value}
+                onChange={handleChange}
+                disabled={disabled || option.disabled}
+                required={required}
+                className="form-field__radio"
+                aria-invalid={!!error}
+                data-testid={`radio-${name}-${option.value}`}
+                {...htmlProps}
+              />
+              <label htmlFor={optionId} className="form-field__radio-label">
+                {option.label}
+              </label>
             </div>
-
-            {(error || helperText) && (
-                <div
-                    id={`${fieldId}-description`}
-                    className={`form-field__message ${error ? 'form-field__message--error' : ''}`}
-                >
-                    {error || helperText}
-                </div>
-            )}
+          );
+        })}
+      </div>
+      
+      {error && (
+        <div id={`${fieldId}-error`} className="form-field__error" role="alert">
+          {error}
         </div>
-    );
+      )}
+      
+      {!error && helperText && (
+        <div id={`${fieldId}-help`} className="form-field__helper-text">
+          {helperText}
+        </div>
+      )}
+      
+      {isLoading && (
+        <div className="form-field__loading" aria-hidden="true">
+          <span className="form-field__loading-spinner" />
+        </div>
+      )}
+    </fieldset>
+  );
 };
 
 export default RadioGroup; 

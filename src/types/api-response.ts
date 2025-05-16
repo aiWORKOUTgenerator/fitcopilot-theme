@@ -88,81 +88,81 @@ export type PaginatedApiResponse<T> = PaginatedSuccessResponse<T> | ErrorRespons
  * Type guard to check if a response is a success response
  */
 export function isSuccessResponse<T>(response: ApiResponse<T>): response is SuccessResponse<T> {
-    return response.success === true;
+  return response.success === true;
 }
 
 /**
  * Type guard to check if a response is an error response
  */
 export function isErrorResponse<T>(response: ApiResponse<T>): response is ErrorResponse {
-    return response.success === false;
+  return response.success === false;
 }
 
 /**
  * Type guard to check if a response is a paginated success response
  */
 export function isPaginatedResponse<T>(
-    response: ApiResponse<T[]> | PaginatedApiResponse<T>
+  response: ApiResponse<T[]> | PaginatedApiResponse<T>
 ): response is PaginatedSuccessResponse<T> {
-    return isSuccessResponse(response) && 'pagination' in response;
+  return isSuccessResponse(response) && 'pagination' in response;
 }
 
 /**
  * Helper to create a success response
  */
 export function createSuccessResponse<T>(
-    data: T,
-    status = 200,
-    message?: string,
-    requestId?: string
+  data: T,
+  status = 200,
+  message?: string,
+  requestId?: string
 ): SuccessResponse<T> {
-    return {
-        success: true,
-        status,
-        data,
-        message,
-        requestId
-    };
+  return {
+    success: true,
+    status,
+    data,
+    message,
+    requestId
+  };
 }
 
 /**
  * Helper to create an error response
  */
 export function createErrorResponse(
-    code: string,
-    message: string,
-    status = 400,
-    details?: Record<string, unknown>,
-    requestId?: string
+  code: string,
+  message: string,
+  status = 400,
+  details?: Record<string, unknown>,
+  requestId?: string
 ): ErrorResponse {
-    return {
-        success: false,
-        status,
-        error: {
-            code,
-            message,
-            details
-        },
-        requestId
-    };
+  return {
+    success: false,
+    status,
+    error: {
+      code,
+      message,
+      details
+    },
+    requestId
+  };
 }
 
 /**
  * Helper to create a paginated success response
  */
 export function createPaginatedResponse<T>(
-    data: T[],
-    pagination: PaginationMeta,
-    status = 200,
-    message?: string,
-    requestId?: string
+  data: T[],
+  pagination: PaginationMeta,
+  status = 200,
+  message?: string,
+  requestId?: string
 ): PaginatedSuccessResponse<T> {
-    return {
-        success: true,
-        status,
-        data,
-        pagination,
-        message,
-        requestId
-    };
+  return {
+    success: true,
+    status,
+    data,
+    pagination,
+    message,
+    requestId
+  };
 } 
