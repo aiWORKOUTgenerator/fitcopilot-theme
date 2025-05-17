@@ -3,7 +3,11 @@
  */
 
 import React from 'react';
-import { ButtonClickHandler } from '../../../types/events';
+
+/**
+ * Button click event handler type
+ */
+export type ButtonClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => void;
 
 /**
  * Icon type definition for button icons

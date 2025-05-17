@@ -16,7 +16,7 @@ import {
     TextButtonProps,
     ToggleButtonProps,
     WorkoutButtonProps
-} from '../types';
+} from '../types/buttonTypes';
 
 /**
  * Creates props for a primary button with default values
@@ -109,9 +109,9 @@ export const createWorkoutButtonProps = (overrides: Partial<WorkoutButtonProps> 
 /**
  * Creates general button props with a specified variant
  */
-export const createButtonProps = <T extends ButtonProps['variant']>(
-    variant: T = 'primary' as T, 
-    overrides: Partial<Extract<ButtonProps, { variant: T }>> = {}
+export const createButtonProps = (
+    variant: ButtonProps['variant'] = 'primary', 
+    overrides: Partial<ButtonProps> = {}
 ): ButtonProps => {
     switch (variant) {
         case 'primary':
