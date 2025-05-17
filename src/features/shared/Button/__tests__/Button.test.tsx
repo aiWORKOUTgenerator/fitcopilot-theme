@@ -3,11 +3,16 @@
  */
 
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import logger from '../../../../utils/logger';
 import Button from '../Button';
 import {
   ButtonProps,
+  FloatingActionButtonProps,
+  IconButtonProps,
+  IconType,
+  isActionButton,
   isFloatingActionButton,
   isIconButton,
   isLinkButton,
@@ -15,7 +20,13 @@ import {
   isSecondaryButton,
   isTextButton,
   isToggleButton,
-  isWorkoutButton
+  isWorkoutButton,
+  LinkButtonProps,
+  PrimaryButtonProps,
+  SecondaryButtonProps,
+  TextButtonProps,
+  ToggleButtonProps,
+  WorkoutButtonProps
 } from '../types';
 
 // Mock the logger
@@ -27,14 +38,14 @@ jest.mock('../../../../utils/logger', () => ({
 }));
 
 describe('Button Component', () => {
-  // Helper function to generate test props
-  const createButtonProps = (props: Partial<ButtonProps> = {}): ButtonProps => ({
+  // Helper function to generate test props with proper type
+  const createButtonProps = <T extends ButtonProps>(props: Partial<T> & { variant: T['variant'] }): T => ({
     children: 'Button Text',
     ...props
-  });
+  } as T);
 
   it('renders as a button by default', () => {
-    render(<Button>Click Me</Button>);
+    render(<Button variant="primary">Click Me</Button>);
 
     const button = screen.getByText('Click Me');
     expect(button.tagName).toBe('BUTTON');
@@ -42,7 +53,7 @@ describe('Button Component', () => {
   });
 
   it('renders with default primary variant', () => {
-    render(<Button>Primary Button</Button>);
+    render(<Button variant="primary">Primary Button</Button>);
 
     const button = screen.getByText('Primary Button');
     expect(button).toHaveClass('btn-primary');
@@ -52,7 +63,11 @@ describe('Button Component', () => {
     const handleClick = jest.fn();
 
     render(
-      <Button onClick={handleClick} data-testid="test-button">
+      <Button 
+        variant="primary"
+        onClick={handleClick} 
+        data-testid="test-button"
+      >
         Click Me
       </Button>
     );
@@ -128,9 +143,25 @@ describe('Button Component', () => {
     expect(button).toHaveClass('btn-secondary');
   });
 
+  it('applies the correct size class', () => {
+    render(
+      <Button
+        variant="primary"
+        size="lg"
+        data-testid="test-button"
+      >
+        Large Button
+      </Button>
+    );
+
+    const button = screen.getByTestId('test-button');
+    expect(button).toHaveClass('btn-lg');
+  });
+
   it('applies custom className', () => {
     render(
       <Button
+        variant="primary"
         className="custom-class"
         data-testid="test-button"
       >
@@ -147,6 +178,7 @@ describe('Button Component', () => {
   it('disables the button when disabled prop is true', () => {
     render(
       <Button
+        variant="primary"
         disabled={true}
         data-testid="test-button"
       >
@@ -156,6 +188,8 @@ describe('Button Component', () => {
 
     const button = screen.getByTestId('test-button');
     expect(button).toBeDisabled();
+    // Additional accessibility check
+    expect(button).toHaveAttribute('aria-disabled', 'true');
   });
 
   it('handles undefined props', () => {
@@ -170,13 +204,41 @@ describe('Button Component', () => {
 
     warnSpy.mockRestore();
   });
+
+  // Test keyboard interaction for accessibility (from root file)
+  it('responds to keyboard interaction', async () => {
+    const handleClick = jest.fn();
+    render(
+      <Button
+        variant="primary"
+        onClick={handleClick}
+        data-testid="keyboard-button"
+      >
+        Keyboard Button
+      </Button>
+    );
+
+    const button = screen.getByTestId('keyboard-button');
+
+    // Focus the button
+    button.focus();
+    expect(button).toHaveFocus();
+
+    // Press Enter key
+    await userEvent.keyboard('{Enter}');
+    expect(handleClick).toHaveBeenCalledTimes(1);
+
+    // Press Space key
+    await userEvent.keyboard(' ');
+    expect(handleClick).toHaveBeenCalledTimes(2);
+  });
 });
 
 // Type Guard Tests
 describe('Button Type Guards', () => {
   describe('isPrimaryButton', () => {
     it('returns true for primary button props', () => {
-      const props: ButtonProps = {
+      const props: PrimaryButtonProps = {
         variant: 'primary',
         children: 'Button Text'
       };
@@ -185,7 +247,7 @@ describe('Button Type Guards', () => {
     });
 
     it('returns false for non-primary button props', () => {
-      const props: ButtonProps = {
+      const props: SecondaryButtonProps = {
         variant: 'secondary',
         children: 'Button Text'
       };
@@ -196,7 +258,7 @@ describe('Button Type Guards', () => {
 
   describe('isSecondaryButton', () => {
     it('returns true for secondary button props', () => {
-      const props: ButtonProps = {
+      const props: SecondaryButtonProps = {
         variant: 'secondary',
         children: 'Button Text'
       };
@@ -205,7 +267,7 @@ describe('Button Type Guards', () => {
     });
 
     it('returns false for non-secondary button props', () => {
-      const props: ButtonProps = {
+      const props: PrimaryButtonProps = {
         variant: 'primary',
         children: 'Button Text'
       };
@@ -216,7 +278,7 @@ describe('Button Type Guards', () => {
 
   describe('isTextButton', () => {
     it('returns true for text button props', () => {
-      const props: ButtonProps = {
+      const props: TextButtonProps = {
         variant: 'text',
         children: 'Button Text'
       };
@@ -225,7 +287,7 @@ describe('Button Type Guards', () => {
     });
 
     it('returns false for non-text button props', () => {
-      const props: ButtonProps = {
+      const props: PrimaryButtonProps = {
         variant: 'primary',
         children: 'Button Text'
       };
@@ -236,7 +298,7 @@ describe('Button Type Guards', () => {
 
   describe('isLinkButton', () => {
     it('returns true for link button props', () => {
-      const props: ButtonProps = {
+      const props: LinkButtonProps = {
         variant: 'link',
         children: 'Link Text',
         href: 'https://example.com'
@@ -246,7 +308,7 @@ describe('Button Type Guards', () => {
     });
 
     it('returns false for non-link button props', () => {
-      const props: ButtonProps = {
+      const props: PrimaryButtonProps = {
         variant: 'primary',
         children: 'Button Text'
       };
@@ -256,12 +318,12 @@ describe('Button Type Guards', () => {
   });
 
   describe('isIconButton', () => {
-    const mockIcon = () => <svg data-testid="mock-icon" />;
+    const MockIcon: IconType = () => <svg data-testid="mock-icon" />;
 
     it('returns true for icon button props', () => {
-      const props: ButtonProps = {
+      const props: IconButtonProps = {
         variant: 'icon',
-        icon: mockIcon,
+        icon: MockIcon,
         children: 'Icon Button'
       };
 
@@ -269,7 +331,7 @@ describe('Button Type Guards', () => {
     });
 
     it('returns false for non-icon button props', () => {
-      const props: ButtonProps = {
+      const props: PrimaryButtonProps = {
         variant: 'primary',
         children: 'Button Text'
       };
@@ -280,7 +342,7 @@ describe('Button Type Guards', () => {
 
   describe('isToggleButton', () => {
     it('returns true for toggle button props', () => {
-      const props: ButtonProps = {
+      const props: ToggleButtonProps = {
         variant: 'toggle',
         isActive: true,
         children: 'Toggle Button'
@@ -290,7 +352,7 @@ describe('Button Type Guards', () => {
     });
 
     it('returns false for non-toggle button props', () => {
-      const props: ButtonProps = {
+      const props: PrimaryButtonProps = {
         variant: 'primary',
         children: 'Button Text'
       };
@@ -300,12 +362,12 @@ describe('Button Type Guards', () => {
   });
 
   describe('isFloatingActionButton', () => {
-    const mockIcon = () => <svg data-testid="mock-icon" />;
+    const MockIcon: IconType = () => <svg data-testid="mock-icon" />;
 
     it('returns true for floating action button props', () => {
-      const props: ButtonProps = {
+      const props: FloatingActionButtonProps = {
         variant: 'floating',
-        icon: mockIcon,
+        icon: MockIcon,
         children: 'FAB'
       };
 
@@ -313,7 +375,7 @@ describe('Button Type Guards', () => {
     });
 
     it('returns false for non-floating button props', () => {
-      const props: ButtonProps = {
+      const props: PrimaryButtonProps = {
         variant: 'primary',
         children: 'Button Text'
       };
@@ -324,9 +386,9 @@ describe('Button Type Guards', () => {
 
   describe('isWorkoutButton', () => {
     it('returns true for workout button props', () => {
-      const props: ButtonProps = {
+      const props: WorkoutButtonProps = {
         variant: 'workout',
-        level: 'beginner',
+        exerciseId: '123',
         children: 'Workout Button'
       };
 
@@ -334,12 +396,32 @@ describe('Button Type Guards', () => {
     });
 
     it('returns false for non-workout button props', () => {
-      const props: ButtonProps = {
+      const props: PrimaryButtonProps = {
         variant: 'primary',
         children: 'Button Text'
       };
 
       expect(isWorkoutButton(props)).toBe(false);
+    });
+  });
+
+  // Additional test from root file
+  describe('isActionButton', () => {
+    it('correctly identifies action buttons', () => {
+      const linkProps: LinkButtonProps = {
+        variant: 'link',
+        href: 'https://example.com',
+        children: 'Link'
+      };
+
+      const actionProps: PrimaryButtonProps = {
+        variant: 'primary',
+        onClick: jest.fn(),
+        children: 'Button'
+      };
+
+      expect(isActionButton(actionProps)).toBe(true);
+      expect(isActionButton(linkProps)).toBe(false);
     });
   });
 }); 

@@ -52,7 +52,7 @@ export interface MultiSelectFieldProps {
   /** Size of the select (number of visible options) */
   size?: number;
   /** Validators */
-  validators?: Array<(value: string[]) => string | null>;
+  _validators?: Array<(value: string[]) => string | null>;
 }
 
 /**
@@ -76,7 +76,7 @@ const MultiSelectField: React.FC<MultiSelectFieldProps> = React.memo(({
   'data-testid': testId,
   isLoading = false,
   size = 5,
-  validators,
+  _validators,
   ...otherProps
 }) => {
   // Generate ID if not provided

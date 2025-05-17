@@ -4,8 +4,9 @@
  */
 
 import React from 'react';
-import logger from '../../../utils/logger';
-import { ButtonProps } from './types';
+import logger from '../../../../utils/logger';
+import '../styles/Button.scss';
+import { ButtonProps } from '../types/buttonTypes';
 
 /**
  * Button component that can render as either a button element or a link

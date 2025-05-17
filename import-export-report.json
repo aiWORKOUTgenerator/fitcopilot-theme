@@ -1578,10 +1578,64 @@
     "importedBy": "features/Registration/utils/registrationApi.ts"
   },
   {
+    "file": "features/shared/Button/types/index.ts",
+    "exportName": "FloatingActionButtonProps",
+    "type": "missing",
+    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
+  },
+  {
+    "file": "features/shared/Button/types/index.ts",
+    "exportName": "IconButtonProps",
+    "type": "missing",
+    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
+  },
+  {
+    "file": "features/shared/Button/types/index.ts",
+    "exportName": "IconType",
+    "type": "missing",
+    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
+  },
+  {
+    "file": "features/shared/Button/types/index.ts",
+    "exportName": "PrimaryButtonProps",
+    "type": "missing",
+    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
+  },
+  {
+    "file": "features/shared/Button/types/index.ts",
+    "exportName": "SecondaryButtonProps",
+    "type": "missing",
+    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
+  },
+  {
+    "file": "features/shared/Button/types/index.ts",
+    "exportName": "TextButtonProps",
+    "type": "missing",
+    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
+  },
+  {
+    "file": "features/shared/Button/types/index.ts",
+    "exportName": "ToggleButtonProps",
+    "type": "missing",
+    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
+  },
+  {
+    "file": "features/shared/Button/types/index.ts",
+    "exportName": "WorkoutButtonProps",
+    "type": "missing",
+    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
+  },
+  {
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",
-    "importedBy": "features/shared/Button/Button.tsx"
+    "importedBy": "features/shared/Button/components/Button.tsx"
+  },
+  {
+    "file": "features/shared/Button/components/Button.tsx",
+    "exportName": "ButtonComponent",
+    "type": "missing",
+    "importedBy": "features/shared/Button/index.ts"
   },
   {
     "file": "utils/logger.ts",

@@ -11,9 +11,9 @@ describe('ButtonGroup Component', () => {
   it('renders children correctly', () => {
     render(
       <ButtonGroup data-testid="btn-group">
-        <Button data-testid="btn-1">Button 1</Button>
-        <Button data-testid="btn-2">Button 2</Button>
-        <Button data-testid="btn-3">Button 3</Button>
+        <Button variant="primary" data-testid="btn-1">Button 1</Button>
+        <Button variant="primary" data-testid="btn-2">Button 2</Button>
+        <Button variant="primary" data-testid="btn-3">Button 3</Button>
       </ButtonGroup>
     );
 
@@ -33,8 +33,8 @@ describe('ButtonGroup Component', () => {
   it('applies default classes', () => {
     render(
       <ButtonGroup data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -50,8 +50,8 @@ describe('ButtonGroup Component', () => {
   it('applies horizontal direction class', () => {
     render(
       <ButtonGroup direction="horizontal" data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -62,8 +62,8 @@ describe('ButtonGroup Component', () => {
   it('applies vertical direction class', () => {
     render(
       <ButtonGroup direction="vertical" data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -74,8 +74,8 @@ describe('ButtonGroup Component', () => {
   it('applies different spacing classes', () => {
     const { rerender } = render(
       <ButtonGroup spacing="small" data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -84,8 +84,8 @@ describe('ButtonGroup Component', () => {
 
     rerender(
       <ButtonGroup spacing="large" data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -94,8 +94,8 @@ describe('ButtonGroup Component', () => {
 
     rerender(
       <ButtonGroup spacing="none" data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -106,8 +106,8 @@ describe('ButtonGroup Component', () => {
   it('applies different alignment classes', () => {
     const { rerender } = render(
       <ButtonGroup alignment="center" data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -116,8 +116,8 @@ describe('ButtonGroup Component', () => {
 
     rerender(
       <ButtonGroup alignment="end" data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -126,8 +126,8 @@ describe('ButtonGroup Component', () => {
 
     rerender(
       <ButtonGroup alignment="stretch" data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -138,8 +138,8 @@ describe('ButtonGroup Component', () => {
   it('applies equal width class when equalWidth is true', () => {
     render(
       <ButtonGroup equalWidth={true} data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -150,8 +150,8 @@ describe('ButtonGroup Component', () => {
   it('applies custom className', () => {
     render(
       <ButtonGroup className="custom-group" data-testid="btn-group">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
+        <Button variant="primary">Button 1</Button>
+        <Button variant="primary">Button 2</Button>
       </ButtonGroup>
     );
 
@@ -162,8 +162,8 @@ describe('ButtonGroup Component', () => {
   it('sets ARIA attributes correctly', () => {
     render(
       <ButtonGroup aria-label="Navigation buttons" data-testid="btn-group">
-        <Button>Previous</Button>
-        <Button>Next</Button>
+        <Button variant="primary">Previous</Button>
+        <Button variant="primary">Next</Button>
       </ButtonGroup>
     );
 
@@ -183,9 +183,9 @@ describe('ButtonGroup Component', () => {
         aria-label="Action buttons"
         data-testid="btn-group"
       >
-        <Button>Save</Button>
-        <Button>Cancel</Button>
-        <Button>Delete</Button>
+        <Button variant="primary">Save</Button>
+        <Button variant="primary">Cancel</Button>
+        <Button variant="primary">Delete</Button>
       </ButtonGroup>
     );
 

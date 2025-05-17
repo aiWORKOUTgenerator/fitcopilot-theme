@@ -18,7 +18,11 @@ jest.mock('../../../../utils/logger', () => ({
 describe('ToggleButton Component', () => {
   it('renders in inactive state by default', () => {
     render(
-      <ToggleButton data-testid="toggle-button">
+      <ToggleButton 
+        variant="toggle"
+        isActive={false}
+        data-testid="toggle-button"
+      >
         Toggle Me
       </ToggleButton>
     );
@@ -31,7 +35,11 @@ describe('ToggleButton Component', () => {
 
   it('renders in active state when isActive is true', () => {
     render(
-      <ToggleButton isActive={true} data-testid="toggle-button">
+      <ToggleButton 
+        variant="toggle"
+        isActive={true} 
+        data-testid="toggle-button"
+      >
         Active Toggle
       </ToggleButton>
     );
@@ -46,6 +54,7 @@ describe('ToggleButton Component', () => {
 
     render(
       <ToggleButton
+        variant="toggle"
         isActive={false}
         onToggle={handleToggle}
         data-testid="toggle-button"
@@ -66,6 +75,7 @@ describe('ToggleButton Component', () => {
 
     render(
       <ToggleButton
+        variant="toggle"
         isActive={true}
         onToggle={handleToggle}
         data-testid="toggle-button"
@@ -83,6 +93,7 @@ describe('ToggleButton Component', () => {
   it('displays activeLabel when active', () => {
     render(
       <ToggleButton
+        variant="toggle"
         isActive={true}
         activeLabel="ON"
         inactiveLabel="OFF"
@@ -100,6 +111,7 @@ describe('ToggleButton Component', () => {
   it('displays inactiveLabel when inactive', () => {
     render(
       <ToggleButton
+        variant="toggle"
         isActive={false}
         activeLabel="ON"
         inactiveLabel="OFF"
@@ -116,7 +128,11 @@ describe('ToggleButton Component', () => {
 
   it('displays children when no labels are provided', () => {
     render(
-      <ToggleButton data-testid="toggle-button">
+      <ToggleButton 
+        variant="toggle"
+        isActive={false}
+        data-testid="toggle-button"
+      >
         Default Text
       </ToggleButton>
     );
@@ -128,6 +144,8 @@ describe('ToggleButton Component', () => {
   it('applies custom className', () => {
     render(
       <ToggleButton
+        variant="toggle"
+        isActive={false}
         className="custom-toggle"
         data-testid="toggle-button"
       >
@@ -142,6 +160,8 @@ describe('ToggleButton Component', () => {
   it('disables the button when disabled is true', () => {
     render(
       <ToggleButton
+        variant="toggle"
+        isActive={false}
         disabled={true}
         data-testid="toggle-button"
       >
@@ -158,6 +178,8 @@ describe('ToggleButton Component', () => {
 
     render(
       <ToggleButton
+        variant="toggle"
+        isActive={false}
         onClick={handleClick}
         data-testid="toggle-button"
       >
@@ -177,6 +199,7 @@ describe('ToggleButton Component', () => {
 
     render(
       <ToggleButton
+        variant="toggle"
         onClick={handleClick}
         onToggle={handleToggle}
         isActive={false}

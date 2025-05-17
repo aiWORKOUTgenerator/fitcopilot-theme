@@ -1,16 +1,24 @@
 /**
- * Button component exports
+ * Button Component System Export
  */
 
-// Main Button component
-export { Button, default } from './Button';
+// Special button variants
+import { HeroButton, HeroButtonProps } from '../../Homepage/Hero/components/HeroButton';
+import ButtonComponent from './components/Button';
+
+// Export component implementations
+export { default as Button } from './components/Button';
+export { default as ButtonGroup } from './components/ButtonGroup';
+export { default as LinkButton } from './components/LinkButton';
+export { default as ToggleButton } from './components/ToggleButton';
+
+// Default export for backward compatibility
+export default ButtonComponent;
+
+// Export types
 export * from './types';
 
-// Button variants
-export * from './ButtonGroup';
-export { default as ButtonGroup } from './ButtonGroup';
-export * from './LinkButton';
-export { default as LinkButton } from './LinkButton';
-export * from './ToggleButton';
-export { default as ToggleButton } from './ToggleButton';
+// Export HeroButton
+export { HeroButton };
+export type { HeroButtonProps };
 

@@ -1,0 +1,155 @@
+// Canonical design system import - MUST BE FIRST
+@use '../../../../styles/design-system' as ds;
+
+.button-group {
+    // Base properties
+    --button-group-spacing: var(--spacing-sm, 0.5rem);
+    --button-group-transition: var(--transition-standard, 0.2s ease);
+    
+    display: flex;
+    width: 100%;
+
+    &--horizontal {
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        // Primary selector - the standardized .btn class
+        .btn {
+            &:not(:last-child) {
+                margin-right: var(--button-group-spacing);
+            }
+            
+            transition: margin var(--button-group-transition);
+        }
+        
+        // Legacy selectors - maintained for backward compatibility
+        // @deprecated - Use .btn class instead - this support will be removed in v2.0
+        .button,
+        button:not(.btn) {
+            &:not(:last-child) {
+                margin-right: var(--button-group-spacing);
+            }
+        }
+    }
+
+    &--vertical {
+        flex-direction: column;
+
+        // Primary selector - the standardized .btn class
+        .btn {
+            &:not(:last-child) {
+                margin-bottom: var(--button-group-spacing);
+            }
+            
+            transition: margin var(--button-group-transition);
+        }
+        
+        // Legacy selectors - maintained for backward compatibility
+        // @deprecated - Use .btn class instead - this support will be removed in v2.0
+        .button,
+        button:not(.btn) {
+            &:not(:last-child) {
+                margin-bottom: var(--button-group-spacing);
+            }
+        }
+    }
+
+    // Spacing variants
+    &--spacing-none {
+        --button-group-spacing: 0;
+    }
+
+    &--spacing-small {
+        --button-group-spacing: var(--spacing-xs, 0.25rem);
+    }
+
+    &--spacing-medium {
+        --button-group-spacing: var(--spacing-sm, 0.5rem);
+    }
+
+    &--spacing-large {
+        --button-group-spacing: var(--spacing-md, 1rem);
+    }
+
+    // Alignment variants
+    &--align-start {
+        justify-content: flex-start;
+    }
+
+    &--align-center {
+        justify-content: center;
+    }
+
+    &--align-end {
+        justify-content: flex-end;
+    }
+
+    &--align-stretch {
+        &.button-group--horizontal {
+            // Primary selector
+            .btn {
+                flex: 1;
+            }
+            
+            // Legacy selectors - maintained for backward compatibility
+            // @deprecated - Use .btn class instead - this support will be removed in v2.0
+            .button,
+            button:not(.btn) {
+                flex: 1;
+            }
+        }
+    }
+
+    // Equal width buttons
+    &--equal-width {
+        &.button-group--horizontal {
+            // Primary selector
+            .btn {
+                flex: 1;
+            }
+            
+            // Legacy selectors - maintained for backward compatibility
+            // @deprecated - Use .btn class instead - this support will be removed in v2.0
+            .button,
+            button:not(.btn) {
+                flex: 1;
+            }
+        }
+
+        &.button-group--vertical {
+            width: 100%;
+            
+            // Primary selector
+            .btn {
+                width: 100%;
+            }
+            
+            // Legacy selectors - maintained for backward compatibility
+            // @deprecated - Use .btn class instead - this support will be removed in v2.0
+            .button,
+            button:not(.btn) {
+                width: 100%;
+            }
+        }
+    }
+
+    // Theme variants
+    [data-theme="default"] & {
+        --button-group-spacing: var(--spacing-sm, 0.5rem);
+    }
+
+    [data-theme="gym"] & {
+        --button-group-spacing: var(--spacing-md, 0.75rem);
+    }
+
+    [data-theme="sports"] & {
+        --button-group-spacing: var(--spacing-sm, 0.5rem);
+    }
+
+    [data-theme="wellness"] & {
+        --button-group-spacing: var(--spacing-xs, 0.25rem);
+    }
+    
+    // Add transitions for theme changes
+    transition: var(--button-group-transition);
+}

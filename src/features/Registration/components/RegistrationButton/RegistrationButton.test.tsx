@@ -6,17 +6,18 @@ import RegistrationButton from './RegistrationButton';
 
 describe('RegistrationButton', () => {
     it('renders correctly with default props', () => {
-        render(<RegistrationButton>Click me</RegistrationButton>);
+        render(<RegistrationButton variant="primary">Click me</RegistrationButton>);
 
         const button = screen.getByRole('button', { name: /click me/i });
         expect(button).toBeInTheDocument();
-        expect(button).toHaveClass('registration-button--primary');
-        expect(button).toHaveClass('registration-button--medium');
+        expect(button).toHaveClass('btn');
+        expect(button).toHaveClass('btn-primary');
+        expect(button).toHaveClass('registration-button');
         expect(button).not.toBeDisabled();
     });
 
     it('shows loading state when isLoading is true', () => {
-        render(<RegistrationButton isLoading>Click me</RegistrationButton>);
+        render(<RegistrationButton variant="primary" isLoading>Click me</RegistrationButton>);
 
         expect(screen.getByText(/processing/i)).toBeInTheDocument();
         expect(screen.queryByText(/click me/i)).not.toBeInTheDocument();
@@ -24,19 +25,22 @@ describe('RegistrationButton', () => {
 
     it('applies variant and size classes correctly', () => {
         render(
-            <RegistrationButton variant="secondary" size="small">
+            <RegistrationButton variant="secondary" size="sm">
                 Button Text
             </RegistrationButton>
         );
 
         const button = screen.getByRole('button', { name: /button text/i });
-        expect(button).toHaveClass('registration-button--secondary');
-        expect(button).toHaveClass('registration-button--small');
+        expect(button).toHaveClass('btn');
+        expect(button).toHaveClass('btn-secondary');
+        expect(button).toHaveClass('btn-sm');
+        expect(button).toHaveClass('registration-button');
     });
 
     it('renders with icons correctly', () => {
         render(
             <RegistrationButton
+                variant="primary"
                 rightIcon={<ArrowRight data-testid="right-icon" />}
                 leftIcon={<ArrowRight data-testid="left-icon" />}
             >
@@ -50,15 +54,33 @@ describe('RegistrationButton', () => {
 
     it('handles click events', () => {
         const handleClick = jest.fn();
-        render(<RegistrationButton onClick={handleClick}>Click me</RegistrationButton>);
+        render(<RegistrationButton variant="primary" onClick={handleClick}>Click me</RegistrationButton>);
 
         fireEvent.click(screen.getByRole('button', { name: /click me/i }));
         expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     it('is disabled when disabled prop is true', () => {
-        render(<RegistrationButton disabled>Disabled Button</RegistrationButton>);
+        render(<RegistrationButton variant="primary" disabled>Disabled Button</RegistrationButton>);
 
         expect(screen.getByRole('button', { name: /disabled button/i })).toBeDisabled();
+    });
+    
+    it('renders link variant correctly', () => {
+        render(
+            <RegistrationButton
+                variant="link"
+                href="/register"
+                openInNewTab={true}
+            >
+                Register Now
+            </RegistrationButton>
+        );
+        
+        const link = screen.getByRole('link', { name: /register now/i });
+        expect(link).toHaveClass('registration-button');
+        expect(link).toHaveAttribute('href', '/register');
+        expect(link).toHaveAttribute('target', '_blank');
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
     });
 }); 

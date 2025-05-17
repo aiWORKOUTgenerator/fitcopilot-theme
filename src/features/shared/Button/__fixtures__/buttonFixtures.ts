@@ -101,6 +101,7 @@ export const createFloatingActionButtonProps = (overrides: Partial<FloatingActio
 export const createWorkoutButtonProps = (overrides: Partial<WorkoutButtonProps> = {}): WorkoutButtonProps => ({
     variant: 'workout',
     level: 'beginner',
+    exerciseId: 'exercise-1',
     children: 'Workout Button',
     ...overrides
 });
@@ -108,25 +109,28 @@ export const createWorkoutButtonProps = (overrides: Partial<WorkoutButtonProps> 
 /**
  * Creates general button props with a specified variant
  */
-export const createButtonProps = (variant = 'primary', overrides: Partial<ButtonProps> = {}): ButtonProps => {
+export const createButtonProps = <T extends ButtonProps['variant']>(
+    variant: T = 'primary' as T, 
+    overrides: Partial<Extract<ButtonProps, { variant: T }>> = {}
+): ButtonProps => {
     switch (variant) {
         case 'primary':
-            return createPrimaryButtonProps(overrides);
+            return createPrimaryButtonProps(overrides as Partial<PrimaryButtonProps>);
         case 'secondary':
-            return createSecondaryButtonProps(overrides);
+            return createSecondaryButtonProps(overrides as Partial<SecondaryButtonProps>);
         case 'text':
-            return createTextButtonProps(overrides);
+            return createTextButtonProps(overrides as Partial<TextButtonProps>);
         case 'icon':
-            return createIconButtonProps(overrides);
+            return createIconButtonProps(overrides as Partial<IconButtonProps>);
         case 'toggle':
-            return createToggleButtonProps(overrides);
+            return createToggleButtonProps(overrides as Partial<ToggleButtonProps>);
         case 'link':
-            return createLinkButtonProps(overrides);
+            return createLinkButtonProps(overrides as Partial<LinkButtonProps>);
         case 'floating':
-            return createFloatingActionButtonProps(overrides);
+            return createFloatingActionButtonProps(overrides as Partial<FloatingActionButtonProps>);
         case 'workout':
-            return createWorkoutButtonProps(overrides);
+            return createWorkoutButtonProps(overrides as Partial<WorkoutButtonProps>);
         default:
-            return createPrimaryButtonProps(overrides);
+            return createPrimaryButtonProps(overrides as Partial<PrimaryButtonProps>);
     }
 }; 

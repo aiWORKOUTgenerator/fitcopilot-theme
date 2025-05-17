@@ -4,9 +4,9 @@
  */
 
 import React, { forwardRef } from 'react';
-import { ButtonClickHandler } from '../../../types/events';
-import { createLoggedEventHandler, warn } from '../../../utils/logger';
-import { ToggleButtonProps, isToggleButton } from './types';
+import { ButtonClickHandler } from '../../../../types/events';
+import { createLoggedEventHandler, warn } from '../../../../utils/logger';
+import { ToggleButtonProps, isToggleButton } from '../types/buttonTypes';
 
 /**
  * ToggleButton Component

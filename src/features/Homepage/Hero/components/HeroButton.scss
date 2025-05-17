@@ -1,0 +1,141 @@
+// Import design system tokens
+@use '../../../../styles/design-system' as ds;
+
+.hero-button {
+  // Component tokens
+  --hero-button-padding-x: var(--button-padding-x, var(--spacing-md));
+  --hero-button-padding-y: var(--button-padding-y, var(--spacing-sm));
+  --hero-button-radius: var(--button-border-radius, var(--radius-md));
+  --hero-button-icon-spacing: var(--spacing-2, 0.5rem);
+  --hero-button-transition: var(--button-transition, var(--transition-standard));
+
+  // Base styles
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--hero-button-radius);
+  transition: var(--hero-button-transition);
+  
+  // Ensure .btn class compatibility for ButtonGroup
+  &.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--hero-button-radius);
+    transition: var(--hero-button-transition);
+  }
+  
+  // Icon positioning
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &--left {
+      margin-right: var(--hero-button-icon-spacing);
+    }
+    
+    &--right {
+      margin-left: var(--hero-button-icon-spacing);
+    }
+  }
+  
+  // Ensure proper text alignment with icons
+  &__text {
+    display: inline-block;
+    line-height: 1;
+  }
+  
+  // Full width variant
+  &--full-width {
+    width: 100%;
+  }
+  
+  // Size variants
+  &--small {
+    font-size: var(--type-small, 0.875rem);
+  }
+  
+  &--medium {
+    font-size: var(--type-base, 1rem);
+  }
+  
+  &--large {
+    font-size: var(--type-lg, 1.125rem);
+  }
+  
+  // Primary variant with token-based gradient
+  &--primary {
+    background: linear-gradient(
+      var(--angle-hero-gradient, 90deg),
+      var(--color-hero-gradient-from, var(--color-primary)),
+      var(--color-hero-gradient-to, var(--color-primary-dark))
+    );
+    color: var(--color-hero-button-primary-text, var(--color-text-inverse));
+    box-shadow: var(--shadow-sm);
+    
+    &:hover:not(:disabled) {
+      box-shadow: var(--shadow-hero-button-hover, var(--shadow-md));
+      transform: translateY(var(--scale-hero-button-hover-y, -2px));
+    }
+    
+    // Theme variants
+    [data-theme="gym"] & {
+      --color-hero-gradient-from: var(--color-gym-primary, var(--color-violet-500));
+      --color-hero-gradient-to: var(--color-gym-primary-dark, var(--color-purple-500));
+    }
+    
+    [data-theme="sports"] & {
+      --color-hero-gradient-from: var(--color-sports-primary, var(--color-cyan-500));
+      --color-hero-gradient-to: var(--color-sports-primary-dark, var(--color-blue-500));
+    }
+    
+    [data-theme="wellness"] & {
+      --color-hero-gradient-from: var(--color-wellness-primary, var(--color-teal-500));
+      --color-hero-gradient-to: var(--color-wellness-primary-dark, var(--color-emerald-500));
+    }
+  }
+  
+  // Secondary variant
+  &--secondary {
+    background-color: var(--color-hero-button-secondary-bg, rgba(255, 255, 255, 0.1));
+    border: 1px solid var(--color-hero-button-secondary-border, rgba(255, 255, 255, 0.3));
+    color: var(--color-hero-signin-text, var(--color-text-inverse));
+    
+    &:hover:not(:disabled) {
+      background-color: var(--color-hero-button-secondary-hover-bg, rgba(255, 255, 255, 0.2));
+      box-shadow: var(--shadow-hero-secondary-button-hover, var(--shadow-sm));
+    }
+    
+    // Theme variants
+    [data-theme="gym"] & {
+      --color-hero-button-secondary-border: var(--color-gym-secondary-border, rgba(var(--color-violet-500-rgb), 0.3));
+      --color-hero-button-secondary-hover-bg: var(--color-gym-secondary-hover, rgba(var(--color-violet-500-rgb), 0.1));
+    }
+    
+    [data-theme="sports"] & {
+      --color-hero-button-secondary-border: var(--color-sports-secondary-border, rgba(var(--color-cyan-500-rgb), 0.3));
+      --color-hero-button-secondary-hover-bg: var(--color-sports-secondary-hover, rgba(var(--color-cyan-500-rgb), 0.1));
+    }
+    
+    [data-theme="wellness"] & {
+      --color-hero-button-secondary-border: var(--color-wellness-secondary-border, rgba(var(--color-teal-500-rgb), 0.3));
+      --color-hero-button-secondary-hover-bg: var(--color-wellness-secondary-hover, rgba(var(--color-teal-500-rgb), 0.1));
+    }
+  }
+  
+  // Focus state for all hero buttons
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-focus-ring, var(--color-primary-light));
+  }
+} 
+
+// Transitions for theme changes
+.button-group .hero-button {
+  transition: 
+    background-color var(--hero-button-transition),
+    border-color var(--hero-button-transition),
+    box-shadow var(--hero-button-transition),
+    transform var(--hero-button-transition);
+} 

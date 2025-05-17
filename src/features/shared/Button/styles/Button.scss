@@ -1,0 +1,104 @@
+// Canonical design system import - MUST BE FIRST
+@use '../../../../styles/design-system' as ds;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--button-padding-y, var(--spacing-2)) var(--button-padding-x, var(--spacing-4));
+  border-radius: var(--button-border-radius, var(--radius-md));
+  font-weight: var(--button-font-weight, var(--font-weight-semibold));
+  transition: var(--button-transition, var(--transition-standard));
+  border: none;
+  cursor: pointer;
+  
+  &:disabled {
+    opacity: var(--opacity-disabled, 0.65);
+    cursor: not-allowed;
+  }
+
+  // Primary button
+  &-primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-primary-dark);
+    }
+
+    &:active:not(:disabled) {
+      background-color: var(--color-primary-dark);
+      box-shadow: var(--shadow-inner);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-primary-light);
+    }
+    
+    // Theme variants
+    [data-theme="gym"] & {
+      background-color: var(--color-gym-primary, var(--color-primary));
+    }
+    
+    [data-theme="sports"] & {
+      background-color: var(--color-sports-primary, var(--color-primary));
+    }
+    
+    [data-theme="wellness"] & {
+      background-color: var(--color-wellness-primary, var(--color-primary));
+    }
+  }
+
+  // Secondary button
+  &-secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-text-inverse);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-secondary-dark);
+    }
+
+    &:active:not(:disabled) {
+      background-color: var(--color-secondary-dark);
+      box-shadow: var(--shadow-inner);
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-secondary-light);
+    }
+    
+    // Theme variants
+    [data-theme="gym"] & {
+      background-color: var(--color-gym-secondary, var(--color-secondary));
+    }
+    
+    [data-theme="sports"] & {
+      background-color: var(--color-sports-secondary, var(--color-secondary));
+    }
+    
+    [data-theme="wellness"] & {
+      background-color: var(--color-wellness-secondary, var(--color-secondary));
+    }
+  }
+
+  // Size variants
+  &-sm {
+    height: var(--size-btn-sm, 36px);
+    padding: 0 var(--spacing-3);
+    font-size: var(--type-small);
+  }
+  
+  &-md {
+    height: var(--size-btn-md, 44px);
+    padding: 0 var(--spacing-4);
+    font-size: var(--type-base);
+  }
+  
+  &-lg {
+    height: var(--size-btn-lg, 52px);
+    padding: 0 var(--spacing-6);
+    font-size: var(--type-lg);
+  }
+} 

@@ -7,3 +7,7 @@ export * from './FloatingIcons';
 export * from './VideoPlayer';
 export { default as VideoPlayer } from './VideoPlayer';
 
+// Export HeroButton component
+export * from './HeroButton';
+export { default as HeroButton } from './HeroButton';
+

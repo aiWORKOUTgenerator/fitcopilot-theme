@@ -24,7 +24,7 @@ const TestForm = ({ onSubmit, initialValues }: any) => {
 
 // Inner form component to access form context
 const TestFormInner = () => {
-  const { handleSubmit, isSubmitting, errors, values } = useFormContext();
+  const { handleSubmit, isSubmitting, errors, values, reset } = useFormContext();
   
   const nameField = useFormField('name', {
     validators: [required('Name is required')],
@@ -50,6 +50,11 @@ const TestFormInner = () => {
     ],
     defaultValue: ''
   });
+  
+  // Add a reset handler function
+  const handleReset = () => {
+    reset();
+  };
   
   return (
     <form onSubmit={handleSubmit} data-testid="test-form">
@@ -107,6 +112,10 @@ const TestFormInner = () => {
       
       <button type="submit" disabled={isSubmitting} data-testid="submit-button">
         {isSubmitting ? 'Submitting...' : 'Submit'}
+      </button>
+      
+      <button type="button" onClick={handleReset} data-testid="reset-button">
+        Reset Form
       </button>
       
       {Object.keys(errors).length > 0 && (
@@ -217,27 +226,7 @@ describe('FormContext', () => {
     fireEvent.change(screen.getByTestId('name-input'), { target: { value: 'John Doe' } });
     expect(screen.getByTestId('name-input')).toHaveValue('John Doe');
     
-    // Reset the form using the context
-    const resetButton = document.createElement('button');
-    resetButton.textContent = 'Reset';
-    resetButton.setAttribute('data-testid', 'reset-button');
-    resetButton.onclick = () => {
-      // This is a hack to access the reset function
-      // In a real component, you would use useFormContext directly
-      (window as any).formReset();
-    };
-    
-    // Add reset functionality to the window for testing
-    (window as any).formReset = () => {
-      const { reset } = useFormContext();
-      reset();
-    };
-    
-    // Add the button to the form
-    const form = screen.getByTestId('test-form');
-    form.appendChild(resetButton);
-    
-    // Click the reset button
+    // Click the reset button that's part of the form
     fireEvent.click(screen.getByTestId('reset-button'));
     
     // Verify the form was reset
