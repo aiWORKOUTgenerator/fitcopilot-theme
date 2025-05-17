@@ -4,7 +4,6 @@
 
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import Button from '../Button';
 import {
   createButtonProps,
   createLinkButtonProps,
@@ -13,6 +12,7 @@ import {
   createTextButtonProps,
   createToggleButtonProps
 } from '../__fixtures__/buttonFixtures';
+import Button from '../components/Button';
 
 // Mock the logger
 jest.mock('../../../../utils/logger', () => ({

@@ -8,8 +8,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { HeroButton } from '../../../Homepage/Hero/components/HeroButton';
-import Button from '../Button';
-import ButtonGroup from '../ButtonGroup';
+import Button from '../components/Button';
+import ButtonGroup from '../components/ButtonGroup';
 import { ThemeProvider } from './ThemeTestUtils';
 
 describe('Button Accessibility', () => {

@@ -6,7 +6,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import logger from '../../../../utils/logger';
-import Button from '../Button';
+import Button from '../components/Button';
 import {
   ButtonProps,
   FloatingActionButtonProps,
@@ -27,7 +27,7 @@ import {
   TextButtonProps,
   ToggleButtonProps,
   WorkoutButtonProps
-} from '../types';
+} from '../types/buttonTypes';
 
 // Mock the logger
 jest.mock('../../../../utils/logger', () => ({

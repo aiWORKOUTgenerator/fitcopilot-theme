@@ -4,7 +4,7 @@
 
 import { render, screen } from '@testing-library/react';
 import React from 'react';
-import LinkButton from '../LinkButton';
+import LinkButton from '../components/LinkButton';
 
 describe('LinkButton Component', () => {
   it('renders a link with href attribute', () => {

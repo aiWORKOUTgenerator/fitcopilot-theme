@@ -77,6 +77,23 @@ export function createComputedStyleMock(overrides: Record<string, string> = {}) 
  * @param overrides Any additional CSS variable overrides
  */
 export function mockThemeStyles(theme: ThemeVariant, overrides: Record<string, string> = {}) {
+  // Default theme token values
+  const defaultTokens: Record<string, string> = {
+    '--color-primary': '#4CAF50',
+    '--color-primary-dark': '#388E3C',
+    '--color-primary-light': '#81C784',
+    '--color-secondary': '#FF9800',
+    '--color-secondary-dark': '#F57C00',
+    '--color-secondary-light': '#FFB74D',
+    '--color-text-inverse': '#ffffff',
+    '--color-gym-primary': '#6200EA',
+    '--color-gym-primary-dark': '#4A148C',
+    '--color-sports-primary': '#2196F3',
+    '--color-sports-primary-dark': '#1565C0',
+    '--color-wellness-primary': '#26A69A',
+    '--color-wellness-primary-dark': '#00796B',
+  };
+
   // Theme-specific variable sets
   const themeTokens: Record<ThemeVariant, Record<string, string>> = {
     default: {},
@@ -99,8 +116,9 @@ export function mockThemeStyles(theme: ThemeVariant, overrides: Record<string, s
 
   // Create mock getComputedStyle function
   window.getComputedStyle = (_el: Element) => {
-    // Combine theme tokens with overrides
+    // Combine default tokens with theme tokens and overrides
     const combinedTokens = {
+      ...defaultTokens,
       ...themeTokens[theme],
       ...overrides
     };

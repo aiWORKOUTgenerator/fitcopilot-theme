@@ -4,7 +4,7 @@
 
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
-import ToggleButton from '../ToggleButton';
+import ToggleButton from '../components/ToggleButton';
 
 // Mock logger
 jest.mock('../../../../utils/logger', () => ({

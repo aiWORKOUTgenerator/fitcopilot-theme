@@ -7,8 +7,8 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { HeroButton } from '../../../Homepage/Hero/components/HeroButton';
-import Button from '../Button';
-import ButtonGroup from '../ButtonGroup';
+import Button from '../components/Button';
+import ButtonGroup from '../components/ButtonGroup';
 import { ThemeProvider, mockThemeStyles } from './ThemeTestUtils';
 
 describe('ButtonGroup Integration', () => {
