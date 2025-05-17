@@ -462,12 +462,6 @@
     "importedBy": "features/Homepage/Journey/components/JourneyStep.tsx"
   },
   {
-    "file": "features/Homepage/Journey/types.ts",
-    "exportName": "LocalStepCTAProps",
-    "type": "missing",
-    "importedBy": "features/Homepage/Journey/components/StepCTA.tsx"
-  },
-  {
     "file": "features/Homepage/Journey/components/JourneyCTA.tsx",
     "exportName": "JourneyCTA",
     "type": "missing",
@@ -774,6 +768,12 @@
     "importedBy": "features/Homepage/Pricing/Hero/variants/registration/index.ts"
   },
   {
+    "file": "features/Homepage/Pricing/components/PricingCTA.tsx",
+    "exportName": "PricingCTA",
+    "type": "missing",
+    "importedBy": "features/Homepage/Pricing/Pricing.tsx"
+  },
+  {
     "file": "features/Homepage/Pricing/variants/boutique/index.ts",
     "exportName": "BoutiqueVariant",
     "type": "missing",
@@ -828,6 +828,12 @@
     "importedBy": "features/Homepage/Testimonials/Testimonials.tsx"
   },
   {
+    "file": "features/Homepage/Testimonials/components/TestimonialsCTA.tsx",
+    "exportName": "TestimonialsCTA",
+    "type": "missing",
+    "importedBy": "features/Homepage/Testimonials/Testimonials.tsx"
+  },
+  {
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",
@@ -838,12 +844,6 @@
     "exportName": "BenefitsList",
     "type": "missing",
     "importedBy": "features/Homepage/Training/components/BenefitsList/index.ts"
-  },
-  {
-    "file": "features/Homepage/Training/components/MainCTA/MainCTA.tsx",
-    "exportName": "MainCTA",
-    "type": "missing",
-    "importedBy": "features/Homepage/Training/components/MainCTA/index.ts"
   },
   {
     "file": "features/Homepage/Training/components/ProgramCard/ProgramCard.tsx",
@@ -862,6 +862,12 @@
     "exportName": "SectionHeader",
     "type": "missing",
     "importedBy": "features/Homepage/Training/components/SectionHeader/index.ts"
+  },
+  {
+    "file": "features/Homepage/Training/components/TrainingCTA/TrainingCTA.tsx",
+    "exportName": "TrainingCTA",
+    "type": "missing",
+    "importedBy": "features/Homepage/Training/components/TrainingCTA/index.ts"
   },
   {
     "file": "features/Homepage/Training/Training.tsx",
@@ -1578,58 +1584,16 @@
     "importedBy": "features/Registration/utils/registrationApi.ts"
   },
   {
-    "file": "features/shared/Button/types/index.ts",
-    "exportName": "FloatingActionButtonProps",
+    "file": "utils/logger.ts",
+    "exportName": "logger",
     "type": "missing",
-    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
-  },
-  {
-    "file": "features/shared/Button/types/index.ts",
-    "exportName": "IconButtonProps",
-    "type": "missing",
-    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
-  },
-  {
-    "file": "features/shared/Button/types/index.ts",
-    "exportName": "IconType",
-    "type": "missing",
-    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
-  },
-  {
-    "file": "features/shared/Button/types/index.ts",
-    "exportName": "PrimaryButtonProps",
-    "type": "missing",
-    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
-  },
-  {
-    "file": "features/shared/Button/types/index.ts",
-    "exportName": "SecondaryButtonProps",
-    "type": "missing",
-    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
-  },
-  {
-    "file": "features/shared/Button/types/index.ts",
-    "exportName": "TextButtonProps",
-    "type": "missing",
-    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
-  },
-  {
-    "file": "features/shared/Button/types/index.ts",
-    "exportName": "ToggleButtonProps",
-    "type": "missing",
-    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
-  },
-  {
-    "file": "features/shared/Button/types/index.ts",
-    "exportName": "WorkoutButtonProps",
-    "type": "missing",
-    "importedBy": "features/shared/Button/__fixtures__/buttonFixtures.ts"
+    "importedBy": "features/shared/Button/components/Button.tsx"
   },
   {
     "file": "utils/logger.ts",
     "exportName": "logger",
     "type": "missing",
-    "importedBy": "features/shared/Button/components/Button.tsx"
+    "importedBy": "features/shared/Button/components/ButtonGroup.tsx"
   },
   {
     "file": "features/shared/Button/components/Button.tsx",

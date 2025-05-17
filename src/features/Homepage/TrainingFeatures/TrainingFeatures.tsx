@@ -17,10 +17,12 @@ import {
   Video
 } from 'lucide-react';
 import React from 'react';
-import Button from '../../../features/shared/Button';
+import { ThemeProvider } from '../../../context/ThemeContext';
 import FeatureCard from './components/FeatureCard';
+import TrainingFeaturesButton from './components/TrainingFeaturesButton';
 import './TrainingFeatures.scss';
 import { DefaultVariantProps, TrainingFeature } from './types';
+import { mapFeatureTypeToTheme } from './utils/themeUtils';
 
 /**
  * FloatingIcon component for decorative background
@@ -268,13 +270,17 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
 
         {/* Footer CTA */}
         <div className="text-center mt-16">
-          <Button
-            variant="primary"
-            className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 text-gray-900 shadow-md hover:shadow-lg transition-all duration-300"
-          >
-            Explore All Features
-            <ChevronRight size={18} />
-          </Button>
+          <ThemeProvider initialTheme={mapFeatureTypeToTheme('virtual')}>
+            <TrainingFeaturesButton
+              variant="primary"
+              size="large"
+              featureType="virtual"
+              gradientClass="bg-gradient-to-r from-lime-300 to-emerald-400"
+              rightIcon={<ChevronRight size={18} />}
+            >
+              Explore All Features
+            </TrainingFeaturesButton>
+          </ThemeProvider>
         </div>
       </div>
     </section>

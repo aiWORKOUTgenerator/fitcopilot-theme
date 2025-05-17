@@ -23,7 +23,7 @@ The Training feature has been decomposed into the following components:
    - Contains: 
      - ExpandedContent (internal): Renders the expanded view of a selected program
 
-3. **MainCTA**
+3. **TrainingCTA**
    - Purpose: Renders the main call-to-action button
    - Props: onNavigate, variant
 
@@ -57,10 +57,9 @@ src/features/Homepage/Training/
 │   ├── index.ts                   # Component exports
 │   ├── BenefitsList/              # Existing component
 │   ├── ProgramCard/               # Existing component
-│   ├── MainCTA/                   # New component for CTA button
-│   │   ├── index.ts
-│   │   ├── MainCTA.tsx
-│   │   ├── MainCTA.scss
+│   ├── TrainingCTA/               # Component for CTA button
+│   │   ├── TrainingCTA.tsx
+│   │   ├── TrainingCTA.scss
 │   │   └── types.ts
 │   ├── ProgramsList/              # New component for programs list
 │   │   ├── index.ts
@@ -99,7 +98,7 @@ Training
 │       │
 │       └── BenefitsList (shows program benefits)
 │
-└── MainCTA (call-to-action button)
+└── TrainingCTA (call-to-action button)
 ```
 
 This decomposition aligns with FitCopilot's architecture principles and improves the maintainability of the code while keeping the component count under the recommended 250-line limit. 

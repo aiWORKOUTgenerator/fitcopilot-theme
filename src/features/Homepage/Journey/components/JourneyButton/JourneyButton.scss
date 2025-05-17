@@ -1,0 +1,182 @@
+// Import design system tokens
+@use '../../../../../styles/design-system' as ds;
+
+.journey-button {
+  // Base styles - use direct component tokens from design system
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--journey-button-radius, var(--radius-full, 9999px));
+  transition: var(--journey-button-transition, all 0.2s ease-in-out);
+  min-width: var(--journey-button-min-width, 160px);
+  padding: var(--journey-button-padding-y, 0.75rem) var(--journey-button-padding-x, 1.5rem);
+  font-weight: var(--journey-button-font-weight, 600);
+  
+  // Icon positioning
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &--left {
+      margin-right: var(--journey-button-icon-spacing, 0.5rem);
+    }
+    
+    &--right {
+      margin-left: var(--journey-button-icon-spacing, 0.5rem);
+    }
+  }
+  
+  // Ensure proper text alignment with icons
+  &__text {
+    display: inline-block;
+    line-height: 1;
+  }
+  
+  // Full width variant
+  &--full-width {
+    width: 100%;
+  }
+  
+  // Size variants
+  &--small {
+    font-size: var(--journey-button-size-sm-font-size, 0.875rem);
+    min-width: var(--journey-button-size-sm-min-width, 120px);
+    padding: var(--journey-button-size-sm-padding-y, 0.5rem) var(--journey-button-size-sm-padding-x, 1rem);
+  }
+  
+  &--medium {
+    font-size: var(--journey-button-size-md-font-size, 1rem);
+    min-width: var(--journey-button-size-md-min-width, 160px);
+    padding: var(--journey-button-size-md-padding-y, 0.75rem) var(--journey-button-size-md-padding-x, 1.5rem);
+  }
+  
+  &--large {
+    font-size: var(--journey-button-size-lg-font-size, 1.125rem);
+    min-width: var(--journey-button-size-lg-min-width, 240px);
+    padding: var(--journey-button-size-lg-padding-y, 1rem) var(--journey-button-size-lg-padding-x, 2rem);
+  }
+}
+
+// Gradient variants
+.journey-gradient-lime {
+  background: linear-gradient(
+    to right,
+    var(--color-lime-300, #a3e635),
+    var(--color-green-400, #4ade80)
+  );
+  box-shadow: 0 4px 14px rgba(163, 230, 53, 0.3);
+  
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(163, 230, 53, 0.5);
+  }
+}
+
+.journey-gradient-cyan {
+  background: linear-gradient(
+    to right,
+    var(--color-cyan-300, #67e8f9),
+    var(--color-blue-400, #60a5fa)
+  );
+  box-shadow: 0 4px 14px rgba(103, 232, 249, 0.3);
+  
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(103, 232, 249, 0.5);
+  }
+}
+
+.journey-gradient-violet {
+  background: linear-gradient(
+    to right,
+    var(--color-violet-300, #c4b5fd),
+    var(--color-purple-400, #a78bfa)
+  );
+  box-shadow: 0 4px 14px rgba(196, 181, 253, 0.3);
+  
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(196, 181, 253, 0.5);
+  }
+}
+
+.journey-gradient-amber {
+  background: linear-gradient(
+    to right,
+    var(--color-amber-300, #fcd34d),
+    var(--color-orange-400, #fb923c)
+  );
+  box-shadow: 0 4px 14px rgba(252, 211, 77, 0.3);
+  
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(252, 211, 77, 0.5);
+  }
+}
+
+// Primary variant with gradient background
+.journey-button-primary {
+  color: var(--journey-button-primary-text, var(--color-gray-900, #111827));
+  
+  &:hover:not(:disabled) {
+    transform: translateY(var(--journey-button-transform-up, -2px));
+  }
+}
+
+// Secondary variant
+.journey-button-secondary {
+  background-color: var(--journey-button-secondary-bg, transparent);
+  border: var(--journey-button-border-width-secondary, 2px) solid var(--journey-button-secondary-border, rgba(163, 230, 53, 0.5));
+  color: var(--journey-button-secondary-text, var(--color-lime-300, #a3e635));
+  
+  &:hover:not(:disabled) {
+    background-color: var(--journey-button-secondary-bg-hover, rgba(163, 230, 53, 0.1));
+    box-shadow: var(--journey-button-shadow-hover, 0 5px 15px rgba(163, 230, 53, 0.2));
+    transform: translateY(var(--journey-button-transform-up, -2px));
+    border-color: var(--journey-button-secondary-border-hover, rgba(163, 230, 53, 0.8));
+  }
+}
+
+// Theme overrides using direct selectors
+// Gym Theme
+[data-theme="gym"] {
+  .journey-button-secondary {
+    border-color: var(--journey-button-secondary-border, rgba(167, 139, 250, 0.5));
+    color: var(--journey-button-secondary-text, var(--color-violet-400, #a78bfa));
+    
+    &:hover:not(:disabled) {
+      background-color: var(--journey-button-secondary-bg-hover, rgba(167, 139, 250, 0.1));
+      border-color: var(--journey-button-secondary-border-hover, rgba(167, 139, 250, 0.8));
+    }
+  }
+}
+
+// Sports Theme 
+[data-theme="sports"] {
+  .journey-button-secondary {
+    border-color: var(--journey-button-secondary-border, rgba(34, 211, 238, 0.5));
+    color: var(--journey-button-secondary-text, var(--color-cyan-400, #22d3ee));
+    
+    &:hover:not(:disabled) {
+      background-color: var(--journey-button-secondary-bg-hover, rgba(34, 211, 238, 0.1));
+      border-color: var(--journey-button-secondary-border-hover, rgba(34, 211, 238, 0.8));
+    }
+  }
+}
+
+// Focus state for all journey buttons
+.journey-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--journey-button-focus-ring-width, 3px) var(--journey-button-focus-ring-color, rgba(163, 230, 53, 0.5));
+}
+
+// Media query for responsive sizing
+@media (min-width: 768px) {
+  .journey-button--medium {
+    min-width: var(--journey-button-size-md-min-width, 180px);
+    font-size: var(--journey-button-size-md-font-size, 1.125rem);
+  }
+  
+  .journey-button--large {
+    min-width: var(--journey-button-size-lg-min-width, 260px);
+    padding: var(--journey-button-size-lg-padding-y, 1.125rem) var(--journey-button-size-lg-padding-x, 2.5rem);
+    font-size: var(--journey-button-size-lg-font-size, 1.25rem);
+  }
+} 

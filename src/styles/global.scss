@@ -8,45 +8,83 @@
 // Import consolidated theme tokens
 @use './design-system/tokens/theme-tokens' as tokens;
 
-// Base styles
-html,
+// Import theme system first
+@use './theme.scss' as theme;
+
+// Other global styles
 body {
-    font-family: var(--font-family-body);
-    font-weight: var(--font-weight-regular);
-    color: var(--color-gray-900);
-    background-color: var(--color-gray-50);
+    font-family: var(--font-family-sans);
+    color: var(--color-text);
+    background-color: var(--color-background);
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 16px;
-    line-height: 1.5;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+// Reset and base styles
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+// Basic typography
+h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-heading);
     font-weight: var(--font-weight-bold);
     line-height: 1.2;
+    margin-bottom: 0.5em;
+}
+
+p {
+    margin-bottom: 1em;
 }
 
 a {
     color: var(--color-primary);
     text-decoration: none;
-    transition: color var(--transition-fast);
-
+    
     &:hover {
-        color: var(--color-primary-dark);
+        text-decoration: underline;
     }
 }
 
-// Focus styles for accessibility
-:focus-visible {
-    outline: 2px solid var(--color-primary);
+// Accessibility
+:focus {
+    outline: 2px solid var(--color-focus-ring, var(--color-primary));
     outline-offset: 2px;
 }
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+// Container
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-4);
+}
+
+// Responsive media
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+
+// Import other global style files
+@use './reset.scss' as reset;
+@use './animations.scss' as animations;
+@use './mixins.scss' as mixins;
 
 // Reduced motion preferences
 @media (prefers-reduced-motion: reduce) {

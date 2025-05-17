@@ -1,9 +1,10 @@
-import { ArrowRight, Check, ChevronDown, ChevronUp, Clock, Crown, Shield, Star, Users } from 'lucide-react';
+import { Check, ChevronDown, ChevronUp, Clock, Crown, Star } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
-import { Button } from '../../../features/shared/Button';
 import Tooltip from '../../../features/shared/Tooltip';
+import PricingCTA from './components/PricingCTA';
 import './Pricing.scss';
 import { PricingProps } from './types';
+import { mapPlanToGradient } from './utils/themeUtils';
 
 /**
  * Pricing component - Displays the subscription options with animation and interactive elements
@@ -239,118 +240,60 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
   };
 
   return (
-    <section className="pricing-section py-24" id="pricing">
-      <div className="container mx-auto px-4 relative">
-        {/* Floating particles in background */}
-        <div className="price-particles pointer-events-none">
-          {renderBackgroundParticles()}
-        </div>
-
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold mb-4 text-white">
-            Simple <span className="text-accent">Pricing</span>
-          </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Choose the plan that fits your fitness journey
+    <section className="pricing py-24 relative overflow-hidden">
+      <div className="absolute inset-0 pricing-background" aria-hidden="true">
+        {renderBackgroundParticles()}
+      </div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-16" data-aos="fade-up">
+          <span className="text-xs font-bold tracking-widest uppercase mb-2 block text-purple-300">Subscription Plans</span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">Choose Your <span className="text-gradient bg-gradient-to-r from-lime-300 to-green-400">Plan</span></h2>
+          <p className="text-gray-300 max-w-2xl mx-auto">
+            Flexible options to match your fitness journey
           </p>
-
-          {/* Billing toggle */}
-          <div className="mt-8 flex items-center justify-center">
-            <span className={`mr-4 ${!isYearly ? 'text-white font-semibold' : 'text-gray-400'}`}>
-              Monthly
-            </span>
-
+          
+          <div className="mt-8 inline-flex items-center p-1 bg-gray-800 rounded-full border border-gray-700">
             <button
-              onClick={() => setIsYearly(!isYearly)}
-              className="relative inline-flex h-7 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-surface transition-colors duration-200 ease-in-out focus:outline-none"
-              role="switch"
-              aria-checked={isYearly}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition ${!isYearly ? 'bg-gray-700 text-white' : 'text-gray-400'}`}
+              onClick={() => setIsYearly(false)}
+              aria-pressed={!isYearly}
             >
-              <span
-                className={`pointer-events-none block h-6 w-6 transform rounded-full bg-accent shadow-lg ring-0 transition duration-200 ease-in-out ${isYearly ? 'translate-x-7' : 'translate-x-0'}`}
-              />
+              Monthly
             </button>
-
-            <span className={`ml-4 flex items-center ${isYearly ? 'text-white font-semibold' : 'text-gray-400'}`}>
-              Yearly
-              <span className="ml-2 text-xs bg-accent text-inverse px-2 py-0.5 rounded-full font-medium">
-                Save 20%
-              </span>
-            </span>
+            <button
+              className={`px-6 py-2 rounded-full text-sm font-medium transition flex items-center ${isYearly ? 'bg-gray-700 text-white' : 'text-gray-400'}`}
+              onClick={() => setIsYearly(true)}
+              aria-pressed={isYearly}
+            >
+              Yearly <span className="ml-1 text-xs px-2 py-0.5 bg-lime-900/50 text-lime-300 rounded-full">Save 20%</span>
+            </button>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {defaultPlans.map((plan, index) => (
             <div
               key={plan.id}
-              className={`pricing-card relative rounded-2xl bg-surface border ${plan.name === 'Basic'
-                ? 'border-blue-300/40 shadow-optimized-blue'
-                : plan.name === 'Pro'
-                  ? 'border-lime-300/40 shadow-optimized-lime cursor-pointer'
-                  : plan.name === 'Elite'
-                    ? 'border-purple-300/40 shadow-optimized-purple'
-                    : 'border-gray-700'
-              }`}
-              data-aos="fade-up"
+              className={`pricing-card relative rounded-2xl border overflow-hidden flex flex-col ${plan.popular ? 'popular-plan border-lime-500/30 bg-gradient-to-b from-gray-800 to-gray-900' : 'border-gray-700 bg-gray-800/50'}`}
+              data-aos="fade-up" 
               data-aos-delay={index * 100}
               onMouseEnter={() => handleCardMouseEnter(plan.name)}
               onMouseLeave={() => handleCardMouseLeave(plan.name)}
             >
+              {/* Popular badge */}
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-lime-300 to-emerald-400 rounded-t-xl px-4 py-1 flex items-center justify-center shadow-md">
-                  <Star className="w-4 h-4 text-gray-900 mr-1" />
-                  <span className="text-xs font-bold text-gray-900">Most Popular</span>
+                <div className="absolute top-0 right-0 bg-lime-500/10 px-4 py-1 border-b border-l border-lime-500/30 rounded-bl-xl">
+                  <Star className="w-4 h-4 text-lime-300" />
                 </div>
               )}
-
-              {/* Pro Plan Tooltip */}
-              {plan.name === 'Pro' && (
-                <Tooltip
-                  isVisible={showBetaTooltip}
-                  content="Provide feedback directly to our development team and help shape the future of FitCopilot."
-                  position="top"
-                  title="Beta Release Offer"
-                  titleColor="text-lime-300"
-                  icon={<Shield className="w-5 h-5 text-lime-300" aria-hidden="true" />}
-                  planType="pro"
-                  id="pro-tooltip"
-                  showOnHover={false}
-                >
-                  <div></div> {/* Empty div as child since we're controlling visibility externally */}
-                </Tooltip>
-              )}
-
-              {/* Elite Plan Tooltip */}
-              {plan.name === 'Elite' && (
-                <Tooltip
-                  isVisible={showEliteTooltip}
-                  content="Work with real certified trainers who will optimize your plan using both their fitness expertise and AI tools."
-                  position="top"
-                  title="Certified Trainers"
-                  titleColor="text-purple-300"
-                  icon={<Users className="w-5 h-5 text-purple-300" aria-hidden="true" />}
-                  planType="elite"
-                  id="elite-tooltip"
-                  showOnHover={false}
-                >
-                  <div></div> {/* Empty div as child since we're controlling visibility externally */}
-                </Tooltip>
-              )}
-
+              
+              {/* Card header with plan details */}
               <div className="p-6 border-b border-gray-700">
-                {/* Plan badge */}
+                {/* Badge */}
                 {plan.badge && (
-                  <div
-                    className={`plan-badge px-3 py-1 rounded-full text-xs mb-4 ${plan.popular
-                      ? 'bg-gray-700/50 text-lime-300 border border-lime-300/30 popular-badge'
-                      : plan.name === 'Elite'
-                        ? 'bg-gray-700/50 text-purple-300 border border-purple-300/30 elite-badge'
-                        : 'bg-gray-700/50 text-gray-300 border border-gray-600/30'
-                    }`}
-                    aria-label={`${plan.badge} plan`}
-                  >
-                    {plan.popular && <Star className="w-3 h-3 mr-1 text-lime-300" aria-hidden="true" />}
+                  <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-700/70 text-white mb-4">
+                    {plan.name === 'Pro' && <Star className="w-3 h-3 mr-1 text-lime-300" aria-hidden="true" />}
                     {plan.name === 'Elite' && <Crown className="w-3 h-3 mr-1 text-purple-300" aria-hidden="true" />}
                     {plan.badge}
                   </div>
@@ -516,17 +459,18 @@ export const Pricing: React.FC<PricingProps> = ({ pricing = [] }) => {
                   )}
                 </ul>
 
-                {/* CTA button */}
+                {/* CTA button - updated to use PricingCTA */}
                 <div className="pt-4 mt-auto">
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    className={`pricing-cta-button ${plan.name.toLowerCase()}-cta`}
+                  <PricingCTA
+                    text={plan.ctaText}
+                    href={plan.ctaLink}
+                    buttonSize="large"
+                    buttonVariant="primary"
+                    showIcon={true}
+                    planType={plan.name}
+                    gradientClass={mapPlanToGradient(plan.name)}
                     onClick={() => window.location.href = plan.ctaLink}
-                  >
-                    {plan.ctaText}
-                    <ArrowRight size={18} className="ml-2" />
-                  </Button>
+                  />
                 </div>
               </div>
             </div>

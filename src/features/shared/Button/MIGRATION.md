@@ -145,7 +145,7 @@ Always use consistent import paths:
 // Preferred
 import { Button } from '@features/shared/Button';
 import { ButtonProps } from '@features/shared/Button/types';
-import { HeroButton } from '@features/shared/Button';
+import { HeroButton } from '@features/Homepage/Hero/components/HeroButton';
 
 // Avoid
 import { Button } from '../../../../features/shared/Button';

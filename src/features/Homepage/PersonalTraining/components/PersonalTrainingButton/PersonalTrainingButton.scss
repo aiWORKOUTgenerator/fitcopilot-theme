@@ -1,0 +1,171 @@
+// Import design system tokens
+@use '../../../../../styles/design-system' as ds;
+
+.personal-training-button {
+  // Base styles - use direct component tokens from design system
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--personal-training-button-radius, var(--radius-md, 0.375rem));
+  transition: var(--personal-training-button-transition, all 0.2s ease-in-out);
+  min-width: var(--personal-training-button-min-width, 160px);
+  padding: var(--personal-training-button-padding-y, 0.75rem) var(--personal-training-button-padding-x, 1.5rem);
+  font-weight: var(--personal-training-button-font-weight, 600);
+  
+  // Icon positioning
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &--left {
+      margin-right: var(--personal-training-button-icon-spacing, 0.5rem);
+    }
+    
+    &--right {
+      margin-left: var(--personal-training-button-icon-spacing, 0.5rem);
+    }
+  }
+  
+  // Ensure proper text alignment with icons
+  &__text {
+    display: inline-block;
+    line-height: 1;
+  }
+  
+  // Full width variant
+  &--full-width {
+    width: 100%;
+  }
+  
+  // Size variants
+  &--small {
+    font-size: var(--personal-training-button-size-sm-font-size, 0.875rem);
+    min-width: var(--personal-training-button-size-sm-min-width, 120px);
+    padding: var(--personal-training-button-size-sm-padding-y, 0.5rem) var(--personal-training-button-size-sm-padding-x, 1rem);
+  }
+  
+  &--medium {
+    font-size: var(--personal-training-button-size-md-font-size, 1rem);
+    min-width: var(--personal-training-button-size-md-min-width, 160px);
+    padding: var(--personal-training-button-size-md-padding-y, 0.75rem) var(--personal-training-button-size-md-padding-x, 1.5rem);
+  }
+  
+  &--large {
+    font-size: var(--personal-training-button-size-lg-font-size, 1.125rem);
+    min-width: var(--personal-training-button-size-lg-min-width, 200px);
+    padding: var(--personal-training-button-size-lg-padding-y, 1rem) var(--personal-training-button-size-lg-padding-x, 2rem);
+  }
+  
+  // Coach type variants
+  &--strength {
+    --personal-training-button-gradient-from: var(--color-violet-400, #a78bfa);
+    --personal-training-button-gradient-to: var(--color-indigo-500, #6366f1);
+  }
+  
+  &--nutrition {
+    --personal-training-button-gradient-from: var(--color-emerald-400, #34d399);
+    --personal-training-button-gradient-to: var(--color-green-500, #10b981);
+  }
+  
+  &--performance {
+    --personal-training-button-gradient-from: var(--color-orange-400, #fb923c);
+    --personal-training-button-gradient-to: var(--color-amber-500, #f59e0b);
+  }
+  
+  &--recovery {
+    --personal-training-button-gradient-from: var(--color-blue-400, #60a5fa);
+    --personal-training-button-gradient-to: var(--color-cyan-500, #06b6d4);
+  }
+}
+
+// Primary variant with gradient background
+.personal-training-button-primary {
+  background: linear-gradient(
+    var(--personal-training-button-gradient-angle, 90deg),
+    var(--personal-training-button-gradient-from, var(--color-violet-400, #a78bfa)), 
+    var(--personal-training-button-gradient-to, var(--color-indigo-500, #6366f1))
+  );
+  border: var(--personal-training-button-border-width-primary, 0) solid var(--personal-training-button-primary-border, transparent);
+  color: var(--personal-training-button-primary-text, var(--color-white, #ffffff));
+  box-shadow: var(--personal-training-button-shadow, 0 4px 10px rgba(167, 139, 250, 0.3));
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(
+      var(--personal-training-button-gradient-angle, 90deg),
+      var(--personal-training-button-gradient-from-hover, var(--color-violet-500, #8b5cf6)), 
+      var(--personal-training-button-gradient-to-hover, var(--color-indigo-600, #4f46e5))
+    );
+    box-shadow: var(--personal-training-button-shadow-hover, 0 10px 20px rgba(167, 139, 250, 0.5));
+    transform: translateY(var(--personal-training-button-transform-up, -2px));
+  }
+}
+
+// Secondary variant
+.personal-training-button-secondary {
+  background-color: var(--personal-training-button-secondary-bg, transparent);
+  border: var(--personal-training-button-border-width-secondary, 2px) solid var(--personal-training-button-secondary-border, rgba(167, 139, 250, 0.5));
+  color: var(--personal-training-button-secondary-text, var(--color-violet-400, #a78bfa));
+  
+  &:hover:not(:disabled) {
+    background-color: var(--personal-training-button-secondary-bg-hover, rgba(167, 139, 250, 0.1));
+    box-shadow: var(--personal-training-button-shadow-hover, 0 5px 15px rgba(167, 139, 250, 0.2));
+    transform: translateY(var(--personal-training-button-transform-up, -2px));
+    border-color: var(--personal-training-button-secondary-border-hover, rgba(167, 139, 250, 0.8));
+  }
+}
+
+// Theme overrides using direct selectors
+// Gym Theme
+[data-theme="gym"] {
+  .personal-training-button-primary {
+    background: linear-gradient(
+      var(--personal-training-button-gradient-angle, 90deg),
+      var(--personal-training-button-gradient-from, var(--color-violet-400, #a78bfa)), 
+      var(--personal-training-button-gradient-to, var(--color-purple-500, #8b5cf6))
+    );
+    box-shadow: var(--personal-training-button-shadow, 0 4px 10px rgba(167, 139, 250, 0.3));
+  }
+  
+  .personal-training-button-secondary {
+    border-color: var(--personal-training-button-secondary-border, rgba(167, 139, 250, 0.5));
+    color: var(--personal-training-button-secondary-text, var(--color-violet-400, #a78bfa));
+  }
+}
+
+// Sports Theme 
+[data-theme="sports"] {
+  .personal-training-button-primary {
+    background: linear-gradient(
+      var(--personal-training-button-gradient-angle, 90deg),
+      var(--personal-training-button-gradient-from, var(--color-cyan-400, #22d3ee)), 
+      var(--personal-training-button-gradient-to, var(--color-blue-500, #3b82f6))
+    );
+    box-shadow: var(--personal-training-button-shadow, 0 4px 10px rgba(34, 211, 238, 0.3));
+  }
+  
+  .personal-training-button-secondary {
+    border-color: var(--personal-training-button-secondary-border, rgba(34, 211, 238, 0.5));
+    color: var(--personal-training-button-secondary-text, var(--color-cyan-400, #22d3ee));
+  }
+}
+
+// Focus state for all personal training buttons
+.personal-training-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--personal-training-button-focus-ring-width, 3px) var(--personal-training-button-focus-ring-color, rgba(167, 139, 250, 0.5));
+}
+
+// Media query for responsive sizing
+@media (min-width: 768px) {
+  .personal-training-button--medium {
+    min-width: var(--personal-training-button-size-md-min-width, 180px);
+    font-size: var(--personal-training-button-size-md-font-size, 1.125rem);
+  }
+  
+  .personal-training-button--large {
+    min-width: var(--personal-training-button-size-lg-min-width, 240px);
+    padding: var(--personal-training-button-size-lg-padding-y, 1.125rem) var(--personal-training-button-size-lg-padding-x, 2.5rem);
+    font-size: var(--personal-training-button-size-lg-font-size, 1.25rem);
+  }
+} 

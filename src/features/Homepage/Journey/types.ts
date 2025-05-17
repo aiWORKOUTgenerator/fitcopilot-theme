@@ -138,6 +138,8 @@ export interface ExpandedContentProps {
 // Step CTA props
 export interface StepCTAProps {
   step: JourneyStep;
-  isExpanded: boolean;
-  variant: VariantKey;
+  isExpanded?: boolean;
+  variant?: VariantKey;
+  className?: string;
+  [key: string]: any; // For additional props passed through rest
 } 

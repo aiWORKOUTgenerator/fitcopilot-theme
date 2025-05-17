@@ -2,8 +2,7 @@
  * Button Component System Export
  */
 
-// Special button variants
-import { HeroButton, HeroButtonProps } from '../../Homepage/Hero/components/HeroButton';
+// Import base button component
 import ButtonComponent from './components/Button';
 
 // Export component implementations
@@ -17,8 +16,4 @@ export default ButtonComponent;
 
 // Export types
 export * from './types';
-
-// Export HeroButton
-export { HeroButton };
-export type { HeroButtonProps };
 

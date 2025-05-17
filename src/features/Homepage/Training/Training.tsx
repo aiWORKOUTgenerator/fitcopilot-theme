@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import logger from '../../../utils/logger';
-import { MainCTA, ProgramsList, SectionHeader } from './components';
+import { ProgramsList, SectionHeader, TrainingCTA } from './components';
 import { DEFAULT_PROGRAMS, DEFAULT_SECTION_DESCRIPTION, DEFAULT_SECTION_TITLE } from './data/defaultProgramsData';
 import { useTrainingPrograms } from './hooks';
 import useReducedMotion from './hooks/useReducedMotion';
@@ -69,7 +69,7 @@ function Training({
         />
 
         {/* Main CTA */}
-        <MainCTA
+        <TrainingCTA
           onNavigate={handleNavigate}
           variant={variant}
           className="animate-fade-in"

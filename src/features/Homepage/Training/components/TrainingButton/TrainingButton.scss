@@ -1,0 +1,196 @@
+// Import design system tokens
+@use '../../../../../styles/design-system' as ds;
+
+.training-button {
+  // Base styles - use direct component tokens from design system
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--training-button-radius, var(--radius-full, 9999px));
+  transition: var(--training-button-transition, all 0.2s ease-in-out);
+  min-width: var(--training-button-min-width, 160px);
+  padding: var(--training-button-padding-y, 0.75rem) var(--training-button-padding-x, 1.5rem);
+  font-weight: var(--training-button-font-weight, 600);
+  
+  // Icon positioning
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &--left {
+      margin-right: var(--training-button-icon-spacing, 0.5rem);
+    }
+    
+    &--right {
+      margin-left: var(--training-button-icon-spacing, 0.5rem);
+    }
+  }
+  
+  // Ensure proper text alignment with icons
+  &__text {
+    display: inline-block;
+    line-height: 1;
+  }
+  
+  // Full width variant
+  &--full-width {
+    width: 100%;
+  }
+  
+  // Size variants
+  &--small {
+    font-size: var(--training-button-size-sm-font-size, 0.875rem);
+    min-width: var(--training-button-size-sm-min-width, 120px);
+    padding: var(--training-button-size-sm-padding-y, 0.5rem) var(--training-button-size-sm-padding-x, 1rem);
+  }
+  
+  &--medium {
+    font-size: var(--training-button-size-md-font-size, 1rem);
+    min-width: var(--training-button-size-md-min-width, 160px);
+    padding: var(--training-button-size-md-padding-y, 0.75rem) var(--training-button-size-md-padding-x, 1.5rem);
+  }
+  
+  &--large {
+    font-size: var(--training-button-size-lg-font-size, 1.125rem);
+    min-width: var(--training-button-size-lg-min-width, 220px);
+    padding: var(--training-button-size-lg-padding-y, 1rem) var(--training-button-size-lg-padding-x, 2rem);
+  }
+  
+  // Style variants
+  &--standard {
+    // Standard style uses default theme parameters
+  }
+  
+  &--accent {
+    // More vibrant styling for accent buttons
+    --training-button-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
+    --training-button-shadow-hover: 0 8px 25px rgba(251, 191, 36, 0.6);
+    --training-button-transform-up: -4px;
+  }
+  
+  &--athletic {
+    // Athletic styling for sports-related buttons
+    --training-button-font-weight: 700;
+    --training-button-transform-up: -3px;
+  }
+}
+
+// Primary variant with gradient background
+.training-button-primary {
+  background: linear-gradient(
+    var(--training-button-gradient-angle, 90deg),
+    var(--training-button-gradient-from, var(--color-amber-300, #FCD34D)), 
+    var(--training-button-gradient-to, var(--color-orange-400, #FB923C))
+  );
+  border: var(--training-button-border-width-primary, 0) solid var(--training-button-primary-border, transparent);
+  color: var(--training-button-primary-text, var(--color-gray-900, #111827));
+  box-shadow: var(--training-button-shadow, 0 4px 10px rgba(251, 191, 36, 0.3));
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(
+      var(--training-button-gradient-angle, 90deg),
+      var(--training-button-gradient-from-hover, var(--color-amber-400, #FBBF24)), 
+      var(--training-button-gradient-to-hover, var(--color-orange-500, #F97316))
+    );
+    box-shadow: var(--training-button-shadow-hover, 0 10px 20px rgba(251, 191, 36, 0.5));
+    transform: translateY(var(--training-button-transform-up, -2px));
+  }
+}
+
+// Secondary variant
+.training-button-secondary {
+  background-color: var(--training-button-secondary-bg, transparent);
+  border: var(--training-button-border-width-secondary, 2px) solid var(--training-button-secondary-border, rgba(251, 191, 36, 0.5));
+  color: var(--training-button-secondary-text, var(--color-amber-400, #FBBF24));
+  
+  &:hover:not(:disabled) {
+    background-color: var(--training-button-secondary-bg-hover, rgba(251, 191, 36, 0.1));
+    box-shadow: var(--training-button-shadow-hover, 0 5px 15px rgba(251, 191, 36, 0.2));
+    transform: translateY(var(--training-button-transform-up, -2px));
+    border-color: var(--training-button-secondary-border-hover, rgba(251, 191, 36, 0.8));
+  }
+}
+
+// Theme overrides using direct selectors
+// Gym Theme
+[data-theme="gym"] {
+  .training-button-primary {
+    background: linear-gradient(
+      var(--training-button-gradient-angle, 90deg),
+      var(--training-button-gradient-from, var(--color-violet-400, #a78bfa)), 
+      var(--training-button-gradient-to, var(--color-purple-500, #8b5cf6))
+    );
+    box-shadow: var(--training-button-shadow, 0 4px 10px rgba(167, 139, 250, 0.3));
+    
+    &:hover:not(:disabled) {
+      background: linear-gradient(
+        var(--training-button-gradient-angle, 90deg),
+        var(--training-button-gradient-from-hover, var(--color-violet-500, #8b5cf6)), 
+        var(--training-button-gradient-to-hover, var(--color-purple-600, #7c3aed))
+      );
+      box-shadow: var(--training-button-shadow-hover, 0 10px 20px rgba(167, 139, 250, 0.5));
+    }
+  }
+  
+  .training-button-secondary {
+    border-color: var(--training-button-secondary-border, rgba(167, 139, 250, 0.5));
+    color: var(--training-button-secondary-text, var(--color-violet-400, #a78bfa));
+    
+    &:hover:not(:disabled) {
+      background-color: var(--training-button-secondary-bg-hover, rgba(167, 139, 250, 0.1));
+      border-color: var(--training-button-secondary-border-hover, rgba(167, 139, 250, 0.8));
+    }
+  }
+}
+
+// Sports Theme 
+[data-theme="sports"] {
+  .training-button-primary {
+    background: linear-gradient(
+      var(--training-button-gradient-angle, 90deg),
+      var(--training-button-gradient-from, var(--color-cyan-400, #22d3ee)), 
+      var(--training-button-gradient-to, var(--color-blue-500, #3b82f6))
+    );
+    box-shadow: var(--training-button-shadow, 0 4px 10px rgba(34, 211, 238, 0.3));
+    
+    &:hover:not(:disabled) {
+      background: linear-gradient(
+        var(--training-button-gradient-angle, 90deg),
+        var(--training-button-gradient-from-hover, var(--color-cyan-500, #06b6d4)), 
+        var(--training-button-gradient-to-hover, var(--color-blue-600, #2563eb))
+      );
+      box-shadow: var(--training-button-shadow-hover, 0 10px 20px rgba(34, 211, 238, 0.5));
+    }
+  }
+  
+  .training-button-secondary {
+    border-color: var(--training-button-secondary-border, rgba(34, 211, 238, 0.5));
+    color: var(--training-button-secondary-text, var(--color-cyan-400, #22d3ee));
+    
+    &:hover:not(:disabled) {
+      background-color: var(--training-button-secondary-bg-hover, rgba(34, 211, 238, 0.1));
+      border-color: var(--training-button-secondary-border-hover, rgba(34, 211, 238, 0.8));
+    }
+  }
+}
+
+// Focus state for all training buttons
+.training-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--training-button-focus-ring-width, 3px) var(--training-button-focus-ring-color, rgba(251, 191, 36, 0.5));
+}
+
+// Media query for responsive sizing
+@media (min-width: 768px) {
+  .training-button--medium {
+    min-width: var(--training-button-size-md-min-width, 200px);
+    font-size: var(--training-button-size-md-font-size, 1.125rem);
+  }
+  
+  .training-button--large {
+    min-width: var(--training-button-size-lg-min-width, 280px);
+    padding: var(--training-button-size-lg-padding-y, 1.125rem) var(--training-button-size-lg-padding-x, 2.5rem);
+    font-size: var(--training-button-size-lg-font-size, 1.25rem);
+  }
+} 

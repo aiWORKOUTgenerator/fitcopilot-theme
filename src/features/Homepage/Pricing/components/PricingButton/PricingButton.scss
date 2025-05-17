@@ -1,0 +1,146 @@
+// Import design system tokens
+@use '../../../../../styles/design-system' as ds;
+
+.pricing-button {
+  // Base styles - use direct component tokens from design system
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--pricing-button-radius, var(--radius-lg, 8px));
+  transition: var(--pricing-button-transition, all 0.2s ease-in-out);
+  min-width: var(--pricing-button-min-width, 180px);
+  padding: var(--pricing-button-padding-y, 0.75rem) var(--pricing-button-padding-x, 1.5rem);
+  font-weight: var(--pricing-button-font-weight, 600);
+  letter-spacing: var(--pricing-button-letter-spacing, 0.02em);
+  
+  // Icon positioning
+  &__icon {
+    &--left {
+      margin-right: var(--pricing-button-icon-spacing, 0.5rem);
+    }
+    
+    &--right {
+      margin-left: var(--pricing-button-icon-spacing, 0.5rem);
+    }
+  }
+  
+  // Full width variant
+  &--full-width {
+    width: 100%;
+  }
+  
+  // Size variants
+  &--small {
+    font-size: var(--pricing-button-size-sm-font-size, 0.875rem);
+    min-width: var(--pricing-button-size-sm-min-width, 140px);
+    padding: var(--pricing-button-size-sm-padding-y, 0.5rem) var(--pricing-button-size-sm-padding-x, 1rem);
+  }
+  
+  &--medium {
+    font-size: var(--pricing-button-size-md-font-size, 1rem);
+    min-width: var(--pricing-button-size-md-min-width, 180px);
+    padding: var(--pricing-button-size-md-padding-y, 0.75rem) var(--pricing-button-size-md-padding-x, 1.5rem);
+  }
+  
+  &--large {
+    font-size: var(--pricing-button-size-lg-font-size, 1.125rem);
+    min-width: var(--pricing-button-size-lg-min-width, 220px);
+    padding: var(--pricing-button-size-lg-padding-y, 1rem) var(--pricing-button-size-lg-padding-x, 2rem);
+  }
+  
+  // Plan type variants
+  &--basic {
+    // Basic plan styling
+    --pricing-button-primary-bg: var(--color-blue-500);
+    --pricing-button-primary-bg-hover: var(--color-blue-400);
+    --pricing-button-secondary-border: rgba(59, 130, 246, 0.5);
+    --pricing-button-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+  }
+  
+  &--pro {
+    // Pro plan styling - premium look
+    --pricing-button-primary-bg: var(--color-lime-300);
+    --pricing-button-primary-bg-hover: var(--color-lime-200);
+    --pricing-button-secondary-border: rgba(163, 230, 53, 0.5);
+    --pricing-button-shadow: 0 4px 14px rgba(163, 230, 53, 0.3);
+    --pricing-button-transform-up: -3px;
+  }
+  
+  &--elite {
+    // Elite plan styling - premium+ look
+    --pricing-button-primary-bg: var(--color-purple-500);
+    --pricing-button-primary-bg-hover: var(--color-purple-400);
+    --pricing-button-secondary-border: rgba(168, 85, 247, 0.5);
+    --pricing-button-shadow: 0 4px 14px rgba(168, 85, 247, 0.3);
+    --pricing-button-transform-up: -3px;
+  }
+  
+  &--custom {
+    // Custom plan styling
+    --pricing-button-primary-bg: var(--color-gray-800);
+    --pricing-button-primary-bg-hover: var(--color-gray-700);
+    --pricing-button-secondary-border: rgba(75, 85, 99, 0.5);
+    --pricing-button-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Primary variant
+.pricing-button-primary {
+  background: var(--pricing-button-primary-bg, var(--color-accent-500, #a3e635));
+  color: var(--pricing-button-primary-text, var(--color-gray-900, #111827));
+  box-shadow: var(--pricing-button-shadow, 0 4px 10px rgba(163, 230, 53, 0.3));
+  
+  &:hover:not(:disabled) {
+    background: var(--pricing-button-primary-bg-hover, var(--color-accent-400, #bef264));
+    box-shadow: var(--pricing-button-shadow-hover, 0 6px 15px rgba(163, 230, 53, 0.5));
+    transform: translateY(var(--pricing-button-transform-up, -2px));
+  }
+}
+
+// Secondary variant
+.pricing-button-secondary {
+  background-color: var(--pricing-button-secondary-bg, transparent);
+  border: var(--pricing-button-border-width-secondary, 2px) solid var(--pricing-button-secondary-border, rgba(163, 230, 53, 0.5));
+  color: var(--pricing-button-secondary-text, var(--color-white, #ffffff));
+  
+  &:hover:not(:disabled) {
+    background-color: var(--pricing-button-secondary-bg-hover, rgba(163, 230, 53, 0.1));
+    border-color: var(--pricing-button-secondary-border-hover, rgba(163, 230, 53, 0.8));
+    box-shadow: var(--pricing-button-shadow-hover, 0 5px 15px rgba(163, 230, 53, 0.2));
+    transform: translateY(var(--pricing-button-transform-up, -2px));
+  }
+}
+
+// Focus state for all pricing buttons
+.pricing-button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--pricing-button-focus-ring-width, 3px) var(--pricing-button-focus-ring-color, rgba(163, 230, 53, 0.5));
+}
+
+// Media query for responsive sizing
+@media (min-width: 768px) {
+  .pricing-button--medium {
+    min-width: var(--pricing-button-size-md-min-width, 200px);
+    font-size: var(--pricing-button-size-md-font-size, 1.125rem);
+  }
+  
+  .pricing-button--large {
+    min-width: var(--pricing-button-size-lg-min-width, 240px);
+    padding: var(--pricing-button-size-lg-padding-y, 1.125rem) var(--pricing-button-size-lg-padding-x, 2.5rem);
+    font-size: var(--pricing-button-size-lg-font-size, 1.25rem);
+  }
+}
+
+// Add reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .pricing-button {
+    transition: none;
+  }
+  
+  .pricing-button-primary, 
+  .pricing-button-secondary {
+    &:hover:not(:disabled) {
+      transform: none;
+    }
+  }
+} 

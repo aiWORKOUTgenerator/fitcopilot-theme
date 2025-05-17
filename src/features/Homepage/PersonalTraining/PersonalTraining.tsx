@@ -8,16 +8,18 @@ import {
   Users
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Button } from '../../../features/shared/Button';
+import { ThemeProvider } from '../../../context/ThemeContext';
 import logger from '../../../utils/logger';
 import MediaContainer from './components/MediaContainer';
+import PersonalTrainingButton from './components/PersonalTrainingButton';
 import './PersonalTraining.scss';
 import { PersonalTrainingProps, Trainer, WordPressVideoData } from './types';
+import { getCoachSpecialtyClass, mapCoachTypeToTheme } from './utils/themeUtils';
 
 /**
  * Default Personal Training component for the homepage
  */
-const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers }) => {
+const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers, variant = 'default' }) => {
   // State to store WordPress video data
   const [wordpressVideoData, setWordpressVideoData] = useState<WordPressVideoData | null>(null);
 
@@ -112,6 +114,20 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
   const featuredTrainer = trainers.find(trainer => trainer.featured);
   const regularTrainers = trainers.filter(trainer => !trainer.featured);
 
+  // Get coach type from specialty for button styling
+  const getCoachType = (specialty: string): 'strength' | 'nutrition' | 'performance' | 'recovery' => {
+    if (specialty.toLowerCase().includes('strength') || specialty.toLowerCase().includes('conditioning')) {
+      return 'strength';
+    }
+    if (specialty.toLowerCase().includes('nutrition') || specialty.toLowerCase().includes('weight')) {
+      return 'nutrition';
+    }
+    if (specialty.toLowerCase().includes('performance') || specialty.toLowerCase().includes('athletic')) {
+      return 'performance';
+    }
+    return 'strength'; // Default
+  };
+
   return (
     <section className="personal-training-section w-full py-20 px-4 bg-gray-900">
       <div className="container mx-auto px-4">
@@ -148,7 +164,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
               </div>
 
               {/* Trainer Specialty Tag */}
-              <div className="trainer-specialty">
+              <div className={`trainer-specialty ${getCoachSpecialtyClass(featuredTrainer.specialty)}`}>
                 {featuredTrainer.specialtyIcon}
                 <span className="ml-1">{featuredTrainer.specialty}</span>
               </div>
@@ -169,15 +185,17 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                 </div>
               </div>
 
-              {/* Action Button */}
-              <Button
-                variant="primary"
-                size="lg"
-                className="mt-auto debug-button-default"
-              >
-                Schedule Session
-                <ArrowRight size={18} className="ml-2" />
-              </Button>
+              {/* Action Button with ThemeProvider */}
+              <ThemeProvider initialTheme={mapCoachTypeToTheme(getCoachType(featuredTrainer.specialty))}>
+                <PersonalTrainingButton
+                  variant="primary"
+                  size="large"
+                  coachType={getCoachType(featuredTrainer.specialty)}
+                  rightIcon={<ArrowRight size={18} className="ml-2" />}
+                >
+                  Schedule Session
+                </PersonalTrainingButton>
+              </ThemeProvider>
 
               {/* Video display - direct instead of flip card */}
               {featuredTrainer.videoCard && (
@@ -203,10 +221,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
 
           {/* Regular Trainers */}
           {regularTrainers.map((trainer) => (
-            <div
-              key={trainer.id}
-              className="trainer-card hover:-translate-y-1 hover:shadow-lg hover:shadow-violet-500/10 hover:border-violet-300/30 transition-all duration-300"
-            >
+            <div key={trainer.id} className="trainer-card col-span-1">
               {/* Trainer Image */}
               <div className="trainer-image">
                 {trainer.image && !trainer.image.includes('assets/trainers') ? (
@@ -216,12 +231,12 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <User size={48} className="text-white opacity-70" />
+                  <User size={40} className="text-white opacity-70" />
                 )}
               </div>
 
               {/* Trainer Specialty Tag */}
-              <div className="trainer-specialty">
+              <div className={`trainer-specialty ${getCoachSpecialtyClass(trainer.specialty)}`}>
                 {trainer.specialtyIcon}
                 <span className="ml-1">{trainer.specialty}</span>
               </div>
@@ -242,57 +257,43 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                 </div>
               </div>
 
-              {/* Action Button */}
-              <Button
-                variant="primary"
-                size="lg"
-                className="mt-auto debug-button-default"
-              >
-                Schedule Session
-                <ArrowRight size={18} className="ml-2" />
-              </Button>
+              {/* Action Button with ThemeProvider */}
+              <ThemeProvider initialTheme={mapCoachTypeToTheme(getCoachType(trainer.specialty))}>
+                <PersonalTrainingButton
+                  variant="primary"
+                  size="medium"
+                  coachType={getCoachType(trainer.specialty)}
+                  rightIcon={<ArrowRight size={16} className="ml-2" />}
+                >
+                  Schedule Session
+                </PersonalTrainingButton>
+              </ThemeProvider>
             </div>
           ))}
         </div>
 
-        {/* Consultation CTA */}
-        <div className="booking-box">
-          <div className="max-w-xl relative z-10">
-            <h3 className="text-3xl font-bold mb-4 text-white">Ready for Personalized Training?</h3>
-            <p className="text-white/80 mb-8">
-              Schedule a free consultation with one of our expert trainers. We'll discuss your goals, fitness level, and create a plan tailored just for you.
-            </p>
-            <Button
-              variant="primary"
-              className="debug-button-cta bg-gradient-to-r from-violet-500 to-indigo-500 w-full text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center"
-            >
-              Book Consultation
-              <ArrowRight size={20} className="ml-2" />
-            </Button>
+        {/* Team CTA */}
+        <div className="text-center max-w-3xl mx-auto">
+          <div className="flex justify-center mb-8">
+            <Users size={48} className="text-violet-400" />
           </div>
-
-          {/* Decorative Element */}
-          <div className="absolute right-0 bottom-0 opacity-20 hidden md:block" aria-hidden="true">
-            <Users size={180} />
-          </div>
-        </div>
-
-        {/* Personal Training CTA */}
-        <div className="personal-training-cta max-w-4xl mx-auto text-center mt-20">
-          <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
-            Ready to Transform Your Fitness Journey?
+          <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">
+            Our Complete <span className="bg-gradient-to-r from-violet-300 to-indigo-400 text-transparent bg-clip-text">Trainer Team</span>
           </h3>
-          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
-            Join our community of dedicated trainers and start your path to a healthier, stronger you today.
+          <p className="text-gray-400 mb-8">
+            Browse our full roster of certified fitness professionals. Each trainer has their own specialty, from strength training and nutrition coaching to mobility work and sport-specific performance.
           </p>
-          <Button
-            variant="primary"
-            size="lg"
-            className="personal-training-cta-button"
-          >
-            Start Your Journey
-            <ArrowRight size={20} className="ml-2" />
-          </Button>
+          
+          {/* Team CTA Button with ThemeProvider */}
+          <ThemeProvider initialTheme="gym">
+            <PersonalTrainingButton
+              variant="secondary"
+              size="large"
+              rightIcon={<ArrowRight size={18} className="ml-2" />}
+            >
+              Meet Our Team
+            </PersonalTrainingButton>
+          </ThemeProvider>
         </div>
       </div>
     </section>

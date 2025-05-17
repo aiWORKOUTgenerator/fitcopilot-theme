@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { PersonalTrainingVariant } from './utils/themeUtils';
 
 /**
  * Global WordPress data structure for video content
@@ -46,6 +47,12 @@ export interface PersonalTrainingProps {
      * List of trainers to display in the section
      */
     trainers?: Trainer[];
+
+    /**
+     * Visual variant for the section
+     * @default 'default'
+     */
+    variant?: PersonalTrainingVariant;
 }
 
 /**

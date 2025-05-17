@@ -4,6 +4,7 @@
  * Provides helper functions for applying theme tokens to components
  */
 
+import { ThemeOption } from '../../../../utils/theming';
 import { VariantKey } from '../types';
 import { ThemeTokens, getThemeTokens, getToken } from './themeTokens';
 
@@ -26,6 +27,33 @@ export interface ThemeableComponent {
         };
     };
 }
+
+/**
+ * Training component variant types
+ */
+export type TrainingVariant = 'default' | 'gym' | 'sports' | 'wellness' | 'modern' | 'classic' | 'minimalist' | 'athletic';
+
+/**
+ * Maps Training component variants to theme options
+ * 
+ * @param variant - The Training component variant
+ * @returns The appropriate ThemeOption
+ */
+export const mapVariantToTheme = (variant: TrainingVariant | undefined): ThemeOption => {
+  // Direct mappings for variants that match themes
+  if (variant === 'default' || variant === 'gym' || variant === 'sports' || variant === 'wellness') {
+    return variant;
+  }
+  
+  // Map other variants to appropriate themes
+  switch (variant) {
+    case 'modern': return 'sports';
+    case 'classic': return 'default';
+    case 'minimalist': return 'default';
+    case 'athletic': return 'sports';
+    default: return 'default';
+  }
+};
 
 /**
  * Generate CSS class string with applied theme tokens

@@ -396,7 +396,7 @@ body[data-theme="wellness"] {
         font-weight: 600;
 
         &.button--large {
-            // Feature CTA enhancements applied by MainCTA.scss
+            // Feature CTA enhancements applied by TrainingCTA.scss
         }
 
         &:hover {
@@ -874,7 +874,7 @@ body[data-theme="wellness"] {
         font-weight: 600;
 
         &.button--large {
-            // Feature CTA enhancements applied by MainCTA.scss
+            // Feature CTA enhancements applied by TrainingCTA.scss
         }
 
         &:hover {
@@ -909,8 +909,8 @@ body[data-theme="wellness"] {
     }
 
     // Main CTA styling reference
-    .main-cta .button--primary {
-        // MainCTA component handles styling
+    .training-cta .button--primary {
+        // TrainingCTA component handles styling
     }
 }
 

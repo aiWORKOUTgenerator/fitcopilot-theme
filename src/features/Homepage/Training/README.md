@@ -515,7 +515,7 @@ The Training component has been decomposed into smaller, focused components for 
 2. **Subcomponents**:
    - `SectionHeader`: Renders the section title, description, and tag
    - `ProgramsList`: Manages and renders the list of training programs
-   - `MainCTA`: Renders the main call-to-action button
+   - `TrainingCTA`: Renders the main call-to-action button
    - `ProgramCard`: Renders individual program cards (existing)
    - `BenefitsList`: Renders the list of benefits for a program (existing)
 
@@ -792,7 +792,7 @@ These classes are applied to key components:
 ```jsx
 <SectionHeader className="animate-fade-in" />
 <ProgramsList className="animate-fade-slide-up" />
-<MainCTA className="animate-fade-in" />
+<TrainingCTA className="animate-fade-in" />
 ```
 
 ## Improved Accessibility

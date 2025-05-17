@@ -1,7 +1,9 @@
+import { TrainingVariant } from '../../utils/themeUtils';
+
 /**
- * Props for the MainCTA component
+ * Props for the TrainingCTA component
  */
-export interface MainCTAProps {
+export interface TrainingCTAProps {
     /**
      * Function called when the CTA button is clicked
      */
@@ -11,7 +13,7 @@ export interface MainCTAProps {
      * Visual variant
      * @default 'default'
      */
-    variant?: string;
+    variant?: TrainingVariant;
 
     /**
      * Additional CSS class names

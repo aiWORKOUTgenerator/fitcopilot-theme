@@ -1,8 +1,7 @@
-import { ArrowRight } from 'lucide-react';
 import React from 'react';
 import Section from '../../../components/UI/Section';
-import { Button } from '../../../features/shared/Button';
 import { TestimonialCard } from './components/TestimonialCard';
+import TestimonialsCTA from './components/TestimonialsCTA';
 import './Testimonials.scss';
 import { TestimonialsProps } from './types';
 
@@ -115,14 +114,15 @@ export const Testimonials: React.FC<TestimonialsProps> = ({
       </div>
 
       <div className="text-center mt-12" data-aos="fade-up" data-aos-delay="400">
-        <Button
-          variant="link"
+        <TestimonialsCTA
+          text="Read More Success Stories"
           href="#"
-          className="inline-flex items-center font-medium transition-colors text-gray-300 testimonials-readmore-btn"
-        >
-          Read More Success Stories
-          <ArrowRight className="ml-2 w-5 h-5" />
-        </Button>
+          buttonVariant="link"
+          buttonSize="medium"
+          showIcon={true}
+          testimonialType="success"
+          variant={variant as 'default' | 'gym' | 'sports' | 'wellness' | 'nutrition'}
+        />
       </div>
     </Section>
   );

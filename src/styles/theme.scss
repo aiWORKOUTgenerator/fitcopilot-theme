@@ -1,5 +1,29 @@
+/**
+ * FitCopilot Theme System
+ *
+ * This is the main entry point for the theme system.
+ * It imports all theme-related files and provides overarching theme variables.
+ */
+
+// Design tokens - raw values
+@use './design-system/colors-next.scss' as colors;
+
+// Semantic tokens - meaningful names mapped to design tokens
+@use './design-system/semantic-tokens.scss' as semantic;
+
+// Component-specific tokens
+@use './design-system/button-tokens.scss' as button;
+
+// Theme selectors and patterns
+@use './design-system/theme-selectors.scss' as selectors;
+
+/**
+ * Base Theme Variables
+ * 
+ * These variables are inherited and potentially overridden by specific themes.
+ */
 :root {
-  // Colors
+  // Core colors (in addition to those defined in colors-next.scss)
   --color-primary: #8b5cf6; // violet-500
   --color-primary-light: #c4b5fd; // violet-300
   --color-primary-dark: #6d28d9; // violet-700
@@ -57,8 +81,57 @@
   --spacing-20: 5rem;
   --spacing-24: 6rem;
 
+  // Border Radius
+  --radius-sm: 0.125rem;
+  --radius-md: 0.25rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  // Shadows
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --shadow-none: 0 0 #0000;
+
   // Transitions
   --transition-fast: 150ms;
   --transition-normal: 250ms;
   --transition-slow: 350ms;
+  --transition-all: all var(--transition-normal) ease;
+}
+
+/**
+ * Theme-Aware Body Class Selectors
+ * 
+ * These provide an alternative way to apply themes using classes
+ * rather than data-attributes, which can be useful for certain
+ * integration scenarios.
+ */
+body.theme-gym {
+  & > * {
+    --data-theme: gym;
+  }
+}
+
+body.theme-sports {
+  & > * {
+    --data-theme: sports;
+  }
+}
+
+body.theme-wellness {
+  & > * {
+    --data-theme: wellness;
+  }
+}
+
+body.theme-nutrition {
+  & > * {
+    --data-theme: nutrition;
+  }
 }

@@ -1,14 +1,34 @@
 // src/features/Homepage/Features/Features.tsx
 
-import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, LucideIcon, Medal, Pause, Play, Timer, Zap } from 'lucide-react';
+import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, LucideIcon, Medal, Pause, Play, Timer, UserPlus, Zap } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
-import RegistrationButton from '../../../features/Registration/components/RegistrationButton';
+import { ThemeProvider } from '../../../context/ThemeContext';
 import logger from '../../../utils/logger';
+import { ThemeOption } from '../../../utils/theming';
+import FeatureButton from './components/FeatureButton';
 import FeatureCard from './components/FeatureCard';
 import './Features.scss';
 
 // Define the variant type to match what's in FeatureCard
 type VariantKey = 'default' | 'gym' | 'boutique' | 'modern' | 'wellness' | 'classic' | 'sports' | 'minimalist' | 'registration';
+
+// Map VariantKey to ThemeOption for ThemeProvider
+const mapVariantToTheme = (variant: VariantKey): ThemeOption => {
+  // Direct mappings
+  if (variant === 'default' || variant === 'gym' || variant === 'sports' || variant === 'wellness') {
+    return variant;
+  }
+  
+  // Custom mappings
+  switch (variant) {
+    case 'boutique': return 'wellness';
+    case 'modern': return 'sports';
+    case 'classic': return 'default';
+    case 'minimalist': return 'default';
+    case 'registration': return 'default';
+    default: return 'default';
+  }
+};
 
 /**
  * Interface for floating icon props
@@ -268,19 +288,17 @@ const VideoPlayer: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> = (
 };
 
 /**
- * Background video player component
+ * Background video player component for the features section
  */
 const BackgroundVideoPlayer: React.FC<{ onScrollToSplash: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void }> = ({ onScrollToSplash }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Auto-play video when component mounts
-    if (!videoRef.current) return;
-
-    const videoElement = videoRef.current;
-    videoElement.play().catch(e => {
-      logger.error("Background video autoplay failed:", e);
-    });
+    if (videoRef.current) {
+      videoRef.current.play().catch(e => {
+        logger.error("Background video autoplay failed:", e);
+      });
+    }
   }, [videoRef]);
 
   return (
@@ -299,15 +317,15 @@ const BackgroundVideoPlayer: React.FC<{ onScrollToSplash: (e: React.MouseEvent<H
           <p className="text-gray-300 mb-6">Our technology adapts to your unique fitness journey, helping you achieve optimal results safely and efficiently.</p>
 
           <div className="features-cta">
-            <RegistrationButton
+            <FeatureButton
               variant="primary"
-              size="lg"
-              className="inline-flex items-center rounded-full font-medium features-button-primary features-divider-gradient-btn"
+              size="large"
+              className="inline-flex items-center rounded-full font-medium"
+              leftIcon={<Zap className="features-icon" />}
               onClick={onScrollToSplash}
             >
-              <Zap className="features-icon" />
               Get Started
-            </RegistrationButton>
+            </FeatureButton>
           </div>
         </div>
       </div>
@@ -406,74 +424,78 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
   };
 
   return (
-    <section
-      className="features-section w-full py-16 md:pt-8 md:pb-24 px-4 bg-gray-900 overflow-hidden relative"
-      aria-labelledby="features-heading"
-      data-theme={variant}
-    >
-      {/* Create a visual connector from Hero to Features */}
-      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-gray-900 to-transparent z-0"></div>
+    <ThemeProvider initialTheme={mapVariantToTheme(variant)}>
+      <section
+        className="features-section w-full py-16 md:pt-8 md:pb-24 px-4 bg-gray-900 overflow-hidden relative"
+        aria-labelledby="features-heading"
+      >
+        {/* Create a visual connector from Hero to Features */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-gray-900 to-transparent z-0"></div>
 
-      {/* Floating fitness icons - decorative */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        {floatingIcons.map((icon, index) => (
-          <FloatingIcon
-            key={index}
-            left={icon.left}
-            top={icon.top}
-            delay={icon.delay}
-            speed={icon.speed}
-          >
-            <icon.Icon size={icon.size} />
-          </FloatingIcon>
-        ))}
-      </div>
-
-      {/* Main content */}
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">Fitness Evolution</span>
-          <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white">
-            Innovative Features <br />
-            <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text" data-text="Tailored for You">Tailored for You</span>
-          </h2>
-        </div>
-
-        {/* Feature cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <FeatureCard
+        {/* Floating fitness icons - decorative */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          {floatingIcons.map((icon, index) => (
+            <FloatingIcon
               key={index}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-              _gradient={feature.gradient}
-              demoComponent={feature.demoComponent}
-              _isActive={activeFeatureIndex === index}
-              onMouseEnter={() => handleFeatureHover(index)}
-              onMouseLeave={handleMouseLeave}
-              variant={variant}
-            />
+              left={icon.left}
+              top={icon.top}
+              delay={icon.delay}
+              speed={icon.speed}
+            >
+              <icon.Icon size={icon.size} />
+            </FloatingIcon>
           ))}
         </div>
 
-        {/* Background video player */}
-        <BackgroundVideoPlayer onScrollToSplash={handleScrollToSplash} />
+        {/* Main content */}
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">Fitness Evolution</span>
+            <h2 id="features-heading" className="text-4xl md:text-5xl font-bold text-white">
+              Innovative Features <br />
+              <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text" data-text="Tailored for You">Tailored for You</span>
+            </h2>
+          </div>
 
-        {/* CTA Button */}
-        <div className="mt-16 text-center">
-          <div className="inline-block w-3/4 md:w-1/2 mx-auto">
-            <RegistrationButton
-              variant="primary"
-              size="lg"
-              className="bg-gradient-to-r from-lime-300 to-emerald-400 hover:from-lime-400 hover:to-emerald-500 shadow-lg hover:shadow-xl hover:-translate-y-1 w-full border-[4px] border-orange-500"
-            >
-              Start Your Fitness Journey
-            </RegistrationButton>
+          {/* Feature cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <FeatureCard
+                key={index}
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+                _gradient={feature.gradient}
+                demoComponent={feature.demoComponent}
+                _isActive={activeFeatureIndex === index}
+                onMouseEnter={() => handleFeatureHover(index)}
+                onMouseLeave={handleMouseLeave}
+                variant={variant}
+              />
+            ))}
+          </div>
+
+          {/* Background video player */}
+          <BackgroundVideoPlayer onScrollToSplash={handleScrollToSplash} />
+
+          {/* CTA Button */}
+          <div className="mt-16 text-center">
+            <div className="inline-block w-3/4 md:w-1/2 mx-auto">
+              <FeatureButton
+                variant="primary"
+                size="large"
+                className="w-full"
+                fullWidth
+                leftIcon={<UserPlus className="features-icon" />}
+                onClick={handleScrollToSplash}
+              >
+                Start Your Fitness Journey
+              </FeatureButton>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </ThemeProvider>
   );
 };
 

@@ -1,8 +1,21 @@
 import { ArrowRight } from 'lucide-react';
 import React from 'react';
-import { Button } from '../../../../features/shared/Button';
+import { ThemeProvider } from '../../../../context/ThemeContext';
+import { ThemeOption } from '../../../../utils/theming';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { JourneyCTAProps } from '../types';
+import JourneyButton from './JourneyButton';
+
+/**
+ * Maps Journey variant to theme options for ThemeProvider
+ */
+const mapVariantToTheme = (variant: string | undefined): ThemeOption => {
+  if (!variant || variant === 'default') return 'default';
+  if (variant === 'gym' || variant === 'sports' || variant === 'wellness') {
+    return variant as ThemeOption;
+  }
+  return 'default';
+};
 
 /**
  * JourneyCTA - Call to action button with gradient styling
@@ -19,52 +32,33 @@ const JourneyCTA: React.FC<JourneyCTAProps> = ({
 }) => {
   const prefersReducedMotion = useReducedMotion();
 
-  // Get gradient classes
-  const gradientClasses = {
-    lime: 'journey-gradient-lime',
-    cyan: 'journey-gradient-cyan',
-    violet: 'journey-gradient-violet',
-    amber: 'journey-gradient-amber'
+  // Map traditional gradient colors to JourneyButton props
+  const gradientColorMap = {
+    lime: 'lime',
+    cyan: 'cyan',
+    violet: 'violet',
+    amber: 'amber'
   };
 
-  // Get size classes
-  const sizeClasses = {
-    small: 'px-4 py-2 text-sm',
-    medium: 'px-6 py-3 text-base',
-    large: 'px-8 py-4 text-base'
+  // Map button size from traditional naming to standardized naming
+  const sizeMap = {
+    small: 'small',
+    medium: 'medium',
+    large: 'large'
   };
 
-  // Compose all original utility classes
-  const buttonClasses = [
-    'inline-flex',
-    'items-center',
-    'rounded-full',
-    'font-medium',
-    'journey-button',
-    sizeClasses[buttonSize],
-    buttonVariant === 'gradient' ? gradientClasses[gradientColor] : '',
-    prefersReducedMotion ? '' : 'hover:-translate-y-1',
-  ].filter(Boolean).join(' ');
-
-  // Since we're using href, we need to use the link variant
   return (
-    <Button
-      variant="link"
-      className={buttonClasses}
-      href={href}
-      data-theme={variant !== 'default' ? variant : undefined}
-    >
-      {text}
-      {showIcon && (
-        icon ? (
-        // Render custom icon if provided
-          <span className="ml-2" aria-hidden="true">{icon}</span>
-        ) : (
-        // Default to ArrowRight
-          <ArrowRight size={buttonSize === 'small' ? 16 : 20} className="ml-2" aria-hidden="true" />
-        )
-      )}
-    </Button>
+    <ThemeProvider initialTheme={mapVariantToTheme(variant)}>
+      <JourneyButton
+        variant="primary"
+        size={sizeMap[buttonSize] as any}
+        gradientColor={gradientColorMap[gradientColor] as any}
+        href={href}
+        rightIcon={showIcon && (icon || <ArrowRight size={buttonSize === 'small' ? 16 : 20} className="ml-2" aria-hidden="true" />)}
+      >
+        {text}
+      </JourneyButton>
+    </ThemeProvider>
   );
 };
 

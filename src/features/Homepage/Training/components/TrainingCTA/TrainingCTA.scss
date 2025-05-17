@@ -4,7 +4,7 @@
 
 // Canonical design system import - MUST BE FIRST
 
-// MainCTA styles are inherited from the parent component
+// TrainingCTA styles are inherited from the parent component
 // This file is for component-specific styles if needed
 
 .training-section__cta {
@@ -15,10 +15,10 @@
 }
 
 /**
- * MainCTA component styles
+ * TrainingCTA component styles
  * Styled to match the Journey feature's main CTA
  */
-.main-cta {
+.training-cta {
     display: flex;
     justify-content: center;
     margin-top: 3rem;
