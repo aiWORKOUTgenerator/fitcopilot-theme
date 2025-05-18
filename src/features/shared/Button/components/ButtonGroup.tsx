@@ -20,6 +20,8 @@ export interface ButtonGroupProps {
     className?: string;
     /** Whether all buttons should be the same size */
     equalWidth?: boolean;
+    /** Enable responsive stacking on mobile */
+    responsiveStacking?: boolean;
     /** ARIA attributes */
     'aria-label'?: string;
     /** Data attributes for testing/tracking */
@@ -38,6 +40,7 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
   alignment = 'start',
   className = '',
   equalWidth = false,
+  responsiveStacking = false,
   suppressWarnings = false,
   'aria-label': ariaLabel,
   'data-testid': dataTestId,
@@ -116,6 +119,7 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = ({
     `button-group--spacing-${spacing}`,
     `button-group--align-${alignment}`,
     equalWidth ? 'button-group--equal-width' : '',
+    responsiveStacking && direction === 'horizontal' ? 'button-group--responsive' : '',
     className
   ].filter(Boolean).join(' ');
 

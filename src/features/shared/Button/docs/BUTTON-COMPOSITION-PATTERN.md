@@ -1,0 +1,298 @@
+# Button Composition Pattern
+
+## Overview
+
+This document describes the standard patterns for button composition in the FitCopilot theme. The button system is designed to support multiple specialized button types across different sections of the application while maintaining consistent behavior, accessibility, and theming.
+
+## Button Hierarchy
+
+The button system follows a clear inheritance hierarchy:
+
+```
+ButtonBaseProps (interface)
+       ↓
+    Button (base component)
+       ↓
+Specialized Button Components
+   - HeroButton
+   - FeatureButton
+   - JourneyButton
+   - etc.
+```
+
+## Extending the Base Button
+
+### Standard Extension Pattern
+
+When creating a specialized button, follow this pattern:
+
+1. **Import and extend the base types**
+
+```typescript
+import { Button } from '../features/shared/Button';
+import { ButtonBaseProps } from '../features/shared/Button/types/standardButtonTypes';
+
+export interface SpecializedButtonProps extends ButtonBaseProps {
+  // Add specialized properties here
+  customProp?: string;
+}
+```
+
+2. **Create the component that wraps Button**
+
+```typescript
+export const SpecializedButton: React.FC<SpecializedButtonProps> = ({
+  variant = 'primary',
+  size = 'medium',
+  className = '',
+  customProp,
+  ...restProps
+}) => {
+  // Process specialized props
+  
+  // Construct CSS classes
+  const buttonClasses = `
+    specialized-button 
+    specialized-button--${variant}
+    ${className}
+  `.trim();
+
+  // Return wrapped Button
+  return (
+    <Button
+      variant={variant}
+      size={size}
+      className={buttonClasses}
+      {...restProps}
+    >
+      {children}
+    </Button>
+  );
+};
+```
+
+3. **Use component composition over inheritance**
+
+Always compose components by wrapping the base Button rather than extending it through inheritance. This maintains proper encapsulation and ensures consistent behavior.
+
+## Mixed Button Types in ButtonGroup
+
+### Using Different Button Types Together
+
+ButtonGroup supports mixed button types with proper spacing and alignment:
+
+```tsx
+<ButtonGroup spacing="medium" alignment="center">
+  <Button variant="primary">Standard Button</Button>
+  <HeroButton variant="primary">Hero Button</HeroButton>
+</ButtonGroup>
+```
+
+### Responsive Behavior
+
+For responsive stacking on mobile devices:
+
+```tsx
+<ButtonGroup 
+  direction="horizontal" 
+  responsiveStacking={true} 
+  spacing="medium"
+>
+  <Button variant="primary">Standard Button</Button>
+  <HeroButton variant="primary">Hero Button</HeroButton>
+</ButtonGroup>
+```
+
+This will stack buttons vertically on screens smaller than 768px.
+
+### Handling Different Sized Buttons
+
+When mixing different sized buttons, alignment is handled automatically:
+
+```tsx
+<ButtonGroup alignment="center">
+  <Button variant="primary" size="small">Small Button</Button>
+  <HeroButton variant="primary" size="large">Large Hero Button</HeroButton>
+</ButtonGroup>
+```
+
+## Form Integration
+
+### Button States in Forms
+
+Buttons can display various states when used within forms:
+
+1. **Loading State**
+
+```tsx
+<Button 
+  type="submit" 
+  variant="primary" 
+  disabled={isSubmitting}
+>
+  {isSubmitting ? 'Submitting...' : 'Submit'}
+</Button>
+```
+
+2. **Error State**
+
+```tsx
+<Button 
+  type="submit" 
+  variant={hasError ? 'error' : 'primary'}
+>
+  Submit
+</Button>
+```
+
+### Using with FormContext
+
+Integration with the FormContext:
+
+```tsx
+import { useFormContext } from '../../shared/FormField/FormContext';
+
+const MyForm = () => {
+  const { isSubmitting, isValid } = useFormContext();
+  
+  return (
+    <form>
+      {/* Form fields */}
+      <ButtonGroup>
+        <Button 
+          type="submit" 
+          variant="primary" 
+          disabled={isSubmitting || !isValid}
+        >
+          {isSubmitting ? 'Submitting...' : 'Submit'}
+        </Button>
+        <Button 
+          type="button" 
+          variant="secondary" 
+          onClick={handleCancel}
+        >
+          Cancel
+        </Button>
+      </ButtonGroup>
+    </form>
+  );
+};
+```
+
+## Theme Propagation
+
+Buttons inherit themes from their parent containers through the `data-theme` attribute:
+
+```tsx
+<div data-theme="gym">
+  <ButtonGroup>
+    <Button variant="primary">Standard Button</Button>
+    <HeroButton variant="primary">Hero Button</HeroButton>
+  </ButtonGroup>
+</div>
+```
+
+Alternatively, use the ThemeContext:
+
+```tsx
+import { useTheme } from '../context/ThemeContext';
+
+const MyComponent = () => {
+  const { theme } = useTheme();
+  
+  return (
+    <ButtonGroup>
+      <Button variant="primary">Standard Button</Button>
+      <HeroButton variant="primary">Hero Button</HeroButton>
+    </ButtonGroup>
+  );
+};
+```
+
+## Best Practices
+
+1. **Always use the base Button as the foundation**
+   - Wrap rather than duplicate functionality
+   - Pass through all standard props to maintain consistent API
+
+2. **Maintain consistent prop naming**
+   - Follow the same prop interface patterns
+   - Use standard variants (`primary`, `secondary`, etc.)
+   - Use standard sizes (`small`, `medium`, `large`)
+
+3. **Preserve accessibility features**
+   - Forward all ARIA attributes
+   - Maintain keyboard navigation support
+   - Ensure proper focus states
+
+4. **Support theme context**
+   - Allow theme inheritance from parent containers
+   - Access theme via useTheme hook when needed
+
+## Examples
+
+### Standard Button
+
+```tsx
+<Button 
+  variant="primary" 
+  size="medium" 
+  onClick={handleClick}
+>
+  Click Me
+</Button>
+```
+
+### Hero Button
+
+```tsx
+<HeroButton 
+  variant="primary" 
+  size="large" 
+  fullWidth
+>
+  Get Started
+</HeroButton>
+```
+
+### Mixed ButtonGroup
+
+```tsx
+<ButtonGroup 
+  direction="horizontal" 
+  responsiveStacking
+  alignment="center"
+>
+  <Button variant="secondary">Learn More</Button>
+  <HeroButton variant="primary">Sign Up</HeroButton>
+</ButtonGroup>
+```
+
+### Form Integration
+
+```tsx
+<FormProvider onSubmit={handleSubmit}>
+  <form>
+    {/* Form fields */}
+    <ButtonGroup 
+      direction="horizontal" 
+      responsiveStacking
+      spacing="medium"
+    >
+      <Button 
+        type="button" 
+        variant="secondary" 
+        onClick={goBack}
+      >
+        Back
+      </Button>
+      <HeroButton 
+        type="submit" 
+        variant="primary"
+      >
+        Continue
+      </HeroButton>
+    </ButtonGroup>
+  </form>
+</FormProvider>
+``` 

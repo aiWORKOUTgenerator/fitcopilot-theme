@@ -22,12 +22,55 @@
             transition: margin var(--button-group-transition);
         }
         
+        // Hero Button specific spacing
+        .hero-button {
+            &:not(:last-child) {
+                margin-right: var(--button-group-spacing);
+            }
+            
+            &:not(.btn) {
+                // For older hero button implementations
+                margin-right: var(--button-group-spacing);
+            }
+        }
+        
+        // Mixed button type alignment
+        .btn + .hero-button, 
+        .hero-button + .btn {
+            // Ensure proper spacing between different button types
+            margin-left: calc(var(--button-group-spacing) * 0.5);
+        }
+        
         // Legacy selectors - maintained for backward compatibility
         // @deprecated - Use .btn class instead - this support will be removed in v2.0
         .button,
         button:not(.btn) {
             &:not(:last-child) {
                 margin-right: var(--button-group-spacing);
+            }
+        }
+        
+        // Responsive behavior
+        @media (max-width: 768px) {
+            // Enable stacking on small screens when needed
+            &.button-group--responsive {
+                flex-direction: column;
+                
+                .btn,
+                .hero-button,
+                .button,
+                button:not(.btn) {
+                    &:not(:last-child) {
+                        margin-right: 0;
+                        margin-bottom: var(--button-group-spacing);
+                    }
+                }
+                
+                .btn + .hero-button, 
+                .hero-button + .btn {
+                    margin-left: 0;
+                    margin-top: calc(var(--button-group-spacing) * 0.5);
+                }
             }
         }
     }
@@ -42,6 +85,25 @@
             }
             
             transition: margin var(--button-group-transition);
+        }
+        
+        // Hero Button specific spacing
+        .hero-button {
+            &:not(:last-child) {
+                margin-bottom: var(--button-group-spacing);
+            }
+            
+            &:not(.btn) {
+                // For older hero button implementations
+                margin-bottom: var(--button-group-spacing);
+            }
+        }
+        
+        // Mixed button type spacing
+        .btn + .hero-button, 
+        .hero-button + .btn {
+            // Ensure proper spacing between different button types
+            margin-top: calc(var(--button-group-spacing) * 0.5);
         }
         
         // Legacy selectors - maintained for backward compatibility
@@ -91,6 +153,11 @@
                 flex: 1;
             }
             
+            // Hero Button specific
+            .hero-button {
+                flex: 1;
+            }
+            
             // Legacy selectors - maintained for backward compatibility
             // @deprecated - Use .btn class instead - this support will be removed in v2.0
             .button,
@@ -108,6 +175,11 @@
                 flex: 1;
             }
             
+            // Hero Button specific
+            .hero-button {
+                flex: 1;
+            }
+            
             // Legacy selectors - maintained for backward compatibility
             // @deprecated - Use .btn class instead - this support will be removed in v2.0
             .button,
@@ -121,6 +193,11 @@
             
             // Primary selector
             .btn {
+                width: 100%;
+            }
+            
+            // Hero Button specific
+            .hero-button {
                 width: 100%;
             }
             

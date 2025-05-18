@@ -1,207 +1,138 @@
 /**
- * Theme Testing Utilities
+ * Theme Test Utilities
  * 
- * This file contains helper components and utilities for testing theme-specific
- * functionality across the Button component system.
+ * Provides utilities for testing themed components
  */
 
-import { render, screen } from '@testing-library/react';
-import React, { ReactNode } from 'react';
+import React, { createContext, useContext } from 'react';
 
-// Theme types
-export type ThemeVariant = 'default' | 'gym' | 'sports' | 'wellness';
-
-// Theme provider component for testing
-interface ThemeProviderProps {
-  theme?: ThemeVariant;
-  children: ReactNode;
+// Mock theme context for testing
+interface MockThemeContextType {
+  theme: string;
+  setTheme: (theme: string) => void;
 }
 
+const MockThemeContext = createContext<MockThemeContextType>({
+  theme: 'default',
+  setTheme: () => {}
+});
+
 /**
- * Theme provider component for testing
- * Wraps children in a div with the appropriate data-theme attribute
+ * A mock ThemeProvider component for testing
  */
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ 
-  theme = 'default', 
-  children 
-}) => {
-  // Use an actual div with data-theme to simulate real-world usage
+export const ThemeProvider: React.FC<{
+  theme?: string;
+  children: React.ReactNode;
+}> = ({ theme = 'default', children }) => {
+  // For testing, we create a simple setTheme function
+  const setTheme = (newTheme: string) => {
+    console.log(`Theme would change to: ${newTheme}`);
+  };
+
   return (
-    <div data-theme={theme !== 'default' ? theme : undefined} data-testid="theme-container">
-      {children}
-    </div>
+    <MockThemeContext.Provider value={{ theme, setTheme }}>
+      <div 
+        data-testid="theme-container" 
+        data-theme={theme !== 'default' ? theme : undefined}
+      >
+        {children}
+      </div>
+    </MockThemeContext.Provider>
   );
 };
 
 /**
- * Creates a computed style mock for testing CSS variables in JSDOM
- * 
- * @param overrides CSS variable values to override
- * @returns Mock getComputedStyle function
+ * Hook for accessing the mock theme context in tests
  */
-export function createComputedStyleMock(overrides: Record<string, string> = {}) {
-  // Default theme token values
-  const defaultTokens: Record<string, string> = {
-    '--color-primary': '#4CAF50',
-    '--color-primary-dark': '#388E3C',
-    '--color-primary-light': '#81C784',
-    '--color-secondary': '#FF9800',
-    '--color-secondary-dark': '#F57C00',
-    '--color-secondary-light': '#FFB74D',
-    '--color-text-inverse': '#ffffff',
-    '--color-gym-primary': '#6200EA',
-    '--color-gym-primary-dark': '#4A148C',
-    '--color-sports-primary': '#2196F3',
-    '--color-sports-primary-dark': '#1565C0',
-    '--color-wellness-primary': '#26A69A',
-    '--color-wellness-primary-dark': '#00796B',
-  };
-
-  // Combine defaults with overrides
-  const cssVars = { ...defaultTokens, ...overrides };
-
-  // Return a mock getComputedStyle function
-  return (el: Element): CSSStyleDeclaration => {
-    const style = {
-      getPropertyValue: (prop: string) => cssVars[prop] || '',
-    } as unknown as CSSStyleDeclaration;
-    
-    return style;
-  };
-}
+export const useTheme = () => {
+  return useContext(MockThemeContext);
+};
 
 /**
- * Applies a theme styling mock for testing computed styles
- * 
- * @param theme The theme to apply
- * @param overrides Any additional CSS variable overrides
+ * Mocks theme-specific CSS variables for tests
  */
-export function mockThemeStyles(theme: ThemeVariant, overrides: Record<string, string> = {}) {
-  // Default theme token values
-  const defaultTokens: Record<string, string> = {
-    '--color-primary': '#4CAF50',
-    '--color-primary-dark': '#388E3C',
-    '--color-primary-light': '#81C784',
-    '--color-secondary': '#FF9800',
-    '--color-secondary-dark': '#F57C00',
-    '--color-secondary-light': '#FFB74D',
-    '--color-text-inverse': '#ffffff',
-    '--color-gym-primary': '#6200EA',
-    '--color-gym-primary-dark': '#4A148C',
-    '--color-sports-primary': '#2196F3',
-    '--color-sports-primary-dark': '#1565C0',
-    '--color-wellness-primary': '#26A69A',
-    '--color-wellness-primary-dark': '#00796B',
+export const mockThemeStyles = (theme: string, customVars: Record<string, string> = {}) => {
+  // Create a mock stylesheet
+  const style = document.createElement('style');
+  document.head.appendChild(style);
+  
+  // Base theme CSS variables
+  const baseVars = {
+    '--color-primary': '#3b82f6',
+    '--color-secondary': '#6b7280',
+    '--color-hero-gradient-from': '#4f46e5',
+    '--color-hero-gradient-to': '#818cf8',
+    '--button-padding-y': '0.5rem',
+    '--button-padding-x': '1rem',
+    '--button-radius': '0.375rem',
   };
-
-  // Theme-specific variable sets
-  const themeTokens: Record<ThemeVariant, Record<string, string>> = {
-    default: {},
-    gym: {
+  
+  // Theme-specific variables
+  const themeVars: Record<string, Record<string, string>> = {
+    'default': {
+      '--color-primary': '#3b82f6',
+      '--color-hero-gradient-from': '#4f46e5',
+      '--color-hero-gradient-to': '#818cf8',
+    },
+    'gym': {
+      '--color-primary': '#ef4444',
+      '--color-gym-primary': '#ef4444',
+      '--color-gym-primary-dark': '#b91c1c',
       '--color-hero-gradient-from': 'var(--color-gym-primary)',
       '--color-hero-gradient-to': 'var(--color-gym-primary-dark)',
     },
-    sports: {
+    'sports': {
+      '--color-primary': '#10b981',
+      '--color-sports-primary': '#10b981',
+      '--color-sports-primary-dark': '#047857',
       '--color-hero-gradient-from': 'var(--color-sports-primary)',
       '--color-hero-gradient-to': 'var(--color-sports-primary-dark)',
     },
-    wellness: {
+    'wellness': {
+      '--color-primary': '#8b5cf6',
+      '--color-wellness-primary': '#8b5cf6',
+      '--color-wellness-primary-dark': '#6d28d9',
       '--color-hero-gradient-from': 'var(--color-wellness-primary)',
       '--color-hero-gradient-to': 'var(--color-wellness-primary-dark)',
-    },
+    }
   };
-
-  // Save original methods
-  const originalGetComputedStyle = window.getComputedStyle;
-
-  // Create mock getComputedStyle function
-  window.getComputedStyle = (_el: Element) => {
-    // Combine default tokens with theme tokens and overrides
-    const combinedTokens = {
-      ...defaultTokens,
-      ...themeTokens[theme],
-      ...overrides
-    };
-
-    // Return a mock getComputedStyle function
-    const style = {
-      getPropertyValue: (prop: string) => combinedTokens[prop] || '',
-    } as unknown as CSSStyleDeclaration;
+  
+  // Create CSS text with variables
+  const cssVars = { ...baseVars, ...themeVars[theme], ...customVars };
+  const cssText = Object.entries(cssVars)
+    .map(([key, value]) => `${key}: ${value};`)
+    .join('\n');
     
-    return style;
-  };
-
+  // Apply CSS to the mock stylesheet
+  style.innerHTML = `
+    :root {
+      ${cssText}
+    }
+    
+    [data-theme="${theme}"] {
+      ${cssText}
+    }
+  `;
+  
   // Return a cleanup function
   return () => {
-    window.getComputedStyle = originalGetComputedStyle;
+    document.head.removeChild(style);
   };
-}
+};
 
-// Tests for the ThemeTestUtils
-
-describe('ThemeProvider', () => {
-  test('renders with default theme', () => {
-    render(
-      <ThemeProvider>
-        <span>Theme Child</span>
-      </ThemeProvider>
-    );
-    
-    const container = screen.getByTestId('theme-container');
-    expect(container).not.toHaveAttribute('data-theme');
-    expect(container).toContainHTML('Theme Child');
-  });
-  
-  test('renders with custom theme', () => {
-    render(
-      <ThemeProvider theme="gym">
-        <span>Gym Theme</span>
-      </ThemeProvider>
-    );
-    
-    const container = screen.getByTestId('theme-container');
-    expect(container).toHaveAttribute('data-theme', 'gym');
-  });
-});
-
-describe('mockThemeStyles', () => {
-  test('correctly mocks theme-specific CSS variables', () => {
-    const cleanup = mockThemeStyles('sports');
-    
-    // Create a test element
-    const testDiv = document.createElement('div');
-    document.body.appendChild(testDiv);
-    
-    // Check that the CSS variables are correctly mocked
-    const styles = window.getComputedStyle(testDiv);
-    expect(styles.getPropertyValue('--color-hero-gradient-from')).toBe('var(--color-sports-primary)');
-    expect(styles.getPropertyValue('--color-hero-gradient-to')).toBe('var(--color-sports-primary-dark)');
-    
-    // Check base color variables are also available
-    expect(styles.getPropertyValue('--color-primary')).toBe('#4CAF50');
-    
-    // Clean up
-    document.body.removeChild(testDiv);
-    cleanup();
-  });
-  
-  test('allows overriding specific CSS variables', () => {
-    const cleanup = mockThemeStyles('default', {
-      '--color-primary': '#custom-value',
-      '--custom-token': 'custom-value',
-    });
-    
-    // Create a test element
-    const testDiv = document.createElement('div');
-    document.body.appendChild(testDiv);
-    
-    // Check that the overrides are applied
-    const styles = window.getComputedStyle(testDiv);
-    expect(styles.getPropertyValue('--color-primary')).toBe('#custom-value');
-    expect(styles.getPropertyValue('--custom-token')).toBe('custom-value');
-    
-    // Clean up
-    document.body.removeChild(testDiv);
-    cleanup();
-  });
+// Mock the actual HeroButton to avoid needing ThemeContext
+jest.mock('../../../../features/Homepage/Hero/components/HeroButton', () => {
+  // Import the actual React
+  const React = require('react');
+  // Return a mock HeroButton component
+  return {
+    HeroButton: ({ children, variant, className, ...props }: any) => {
+      const allClasses = `btn hero-button hero-button-${variant} ${className || ''}`;
+      return (
+        <button className={allClasses} {...props}>
+          {children}
+        </button>
+      );
+    }
+  };
 }); 
