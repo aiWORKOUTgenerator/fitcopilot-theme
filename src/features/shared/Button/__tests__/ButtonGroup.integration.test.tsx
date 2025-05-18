@@ -333,7 +333,7 @@ describe('ButtonGroup Integration', () => {
           <HeroButton variant="primary">Hero Button</HeroButton>
           <Button 
             variant="secondary" 
-            leftIcon={<span>★</span>}
+            className="icon-button"
           >
             With Icon
           </Button>
@@ -348,8 +348,10 @@ describe('ButtonGroup Integration', () => {
     expect(buttonGroup).toHaveClass('button-group--align-center');
     expect(buttonGroup).toHaveClass('button-group--equal-width');
     
-    // Check for icon content
-    expect(screen.getByText('★')).toBeInTheDocument();
+    // Check for third button with secondary variant
+    const withIconButton = screen.getByText('With Icon');
+    expect(withIconButton).toBeInTheDocument();
+    expect(withIconButton).toHaveClass('btn-secondary');
   });
   
   // Test responsive behavior

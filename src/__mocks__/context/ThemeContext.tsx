@@ -1,5 +1,4 @@
-// Mock ThemeContext for tests
-import React, { ReactNode, createContext, useContext, useState } from 'react';
+import React, { ReactNode, createContext, useState } from 'react';
 
 /**
  * Mock of ThemeContext that matches the original implementation
@@ -58,18 +57,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
 
 // Mock useTheme hook that matches the original
 export const useTheme = (): ThemeContextType => {
-  const context = useContext(ThemeContext);
-  
-  // Instead of throwing an error when used outside provider,
-  // return a default value for testing purposes
-  if (context === undefined) {
-    return {
-      theme: 'default',
-      setTheme: () => console.log('Mock setTheme called')
-    };
-  }
-  
-  return context;
+  // For testing, always return a valid context rather than throwing
+  return {
+    theme: 'default',
+    setTheme: () => console.log('Mock setTheme called')
+  };
 };
 
 // Mock withTheme HOC

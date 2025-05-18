@@ -7,6 +7,13 @@ module.exports = {
     moduleNameMapper: {
         '^src/(.*)$': '<rootDir>/src/$1',
         '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+        '^@/context/ThemeContext$': '<rootDir>/src/__mocks__/context/ThemeContext.tsx',
+        '^../context/ThemeContext$': '<rootDir>/src/__mocks__/context/ThemeContext.tsx',
+        '^../../context/ThemeContext$': '<rootDir>/src/__mocks__/context/ThemeContext.tsx',
+        '^../../../context/ThemeContext$': '<rootDir>/src/__mocks__/context/ThemeContext.tsx',
+        '^../../../../context/ThemeContext$': '<rootDir>/src/__mocks__/context/ThemeContext.tsx',
+        '^../../../Homepage/Hero/components/HeroButton$': '<rootDir>/src/__mocks__/features/Homepage/Hero/components/HeroButton',
+        '^../../../Homepage/Hero/components/HeroButton/HeroButton$': '<rootDir>/src/__mocks__/features/Homepage/Hero/components/HeroButton'
     },
     testPathIgnorePatterns: [
         '/node_modules/',

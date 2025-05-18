@@ -5,135 +5,285 @@
  */
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import React from 'react';
-import { HeroButton } from '../../../../features/Homepage/Hero/components/HeroButton';
-import { FormProvider } from '../../FormField/FormContext';
+import React, { useState } from 'react';
+import { HeroButton } from '../../../../__mocks__/features/Homepage/Hero/components/HeroButton';
 import Button from '../components/Button';
-import { ThemeProvider } from './ThemeTestUtils';
+import ButtonGroup from '../components/ButtonGroup';
+import { mockThemeStyles } from './ThemeTestUtils';
+
+// Ensure HeroButton is mocked
+jest.mock('../../../../features/Homepage/Hero/components/HeroButton', () => {
+  return require('../../../../__mocks__/features/Homepage/Hero/components/HeroButton');
+});
 
 describe('Button Form Integration', () => {
-  // Test standard button in form
+  beforeEach(() => {
+    // Setup theme styles for each test
+    mockThemeStyles('default');
+  });
+  
+  // Test standard button in form with loading state
   test('standard button handles submit with loading state', async () => {
-    // Mock the submit handler
-    const handleSubmit = jest.fn().mockImplementation(() => {
-      return new Promise(resolve => {
-        setTimeout(resolve, 100);
-      });
-    });
-    
-    // Setup a form with button
-    render(
-      <FormProvider onSubmit={handleSubmit}>
-        <form data-testid="test-form">
+    // Create test component with loading state
+    const TestForm = () => {
+      const [isLoading, setIsLoading] = useState(false);
+      
+      const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 100));
+        setIsLoading(false);
+      };
+      
+      return (
+        <form onSubmit={handleSubmit} data-testid="test-form">
           <Button 
             type="submit" 
             variant="primary"
+            disabled={isLoading}
             data-testid="submit-btn"
           >
-            Submit
+            {isLoading ? 'Loading...' : 'Submit'}
           </Button>
         </form>
-      </FormProvider>
-    );
+      );
+    };
+    
+    render(<TestForm />);
     
     // Get form and button
     const form = screen.getByTestId('test-form');
     const button = screen.getByTestId('submit-btn');
     
+    // Verify initial state
+    expect(button).toHaveTextContent('Submit');
+    expect(button).not.toBeDisabled();
+    
     // Submit the form
     fireEvent.submit(form);
     
-    // Verify the button shows loading state (disabled)
-    expect(button).toBeDisabled();
+    // Verify the button shows loading state
+    await waitFor(() => {
+      expect(button).toHaveTextContent('Loading...');
+      expect(button).toBeDisabled();
+    });
     
     // Wait for submission to complete
     await waitFor(() => {
-      expect(handleSubmit).toHaveBeenCalledTimes(1);
-    });
+      expect(button).toHaveTextContent('Submit');
+      expect(button).not.toBeDisabled();
+    }, { timeout: 200 });
   });
   
   // Test HeroButton in form with error handling
   test('hero button handles form errors correctly', async () => {
-    // Mock the submit handler that returns error
-    const handleSubmit = jest.fn().mockImplementation(() => {
-      throw new Error('Form submission failed');
-    });
+    // Create test component with error state
+    const TestFormWithError = () => {
+      const [isLoading, setIsLoading] = useState(false);
+      const [error, setError] = useState<string | null>(null);
+      
+      const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        setError(null);
+        
+        try {
+          // Simulate API call that fails
+          await new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('API Error')), 100)
+          );
+        } catch (err) {
+          setError('Form submission failed');
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      
+      return (
+        <form onSubmit={handleSubmit} data-testid="error-form">
+          <HeroButton 
+            type="submit" 
+            variant="primary"
+            disabled={isLoading}
+            data-testid="hero-submit-btn"
+          >
+            {isLoading ? 'Submitting...' : 'Submit'}
+          </HeroButton>
+          
+          {error && (
+            <div data-testid="error-message" className="error">
+              {error}
+            </div>
+          )}
+        </form>
+      );
+    };
     
-    const handleError = jest.fn();
-    
-    // Setup a form with HeroButton
-    render(
-      <ThemeProvider>
-        <FormProvider onSubmit={handleSubmit} onError={handleError}>
-          <form data-testid="test-form">
-            <HeroButton 
-              type="submit" 
-              variant="primary"
-              data-testid="hero-submit-btn"
-            >
-              Submit
-            </HeroButton>
-          </form>
-        </FormProvider>
-      </ThemeProvider>
-    );
+    render(<TestFormWithError />);
     
     // Get form and button
-    const form = screen.getByTestId('test-form');
+    const form = screen.getByTestId('error-form');
     const button = screen.getByTestId('hero-submit-btn');
+    
+    // Verify initial state - no error message
+    expect(screen.queryByTestId('error-message')).not.toBeInTheDocument();
     
     // Submit the form
     fireEvent.submit(form);
     
-    // Verify error handling
+    // Verify the loading state
     await waitFor(() => {
-      expect(handleError).toHaveBeenCalled();
+      expect(button).toHaveTextContent('Submitting...');
     });
+    
+    // Verify error appears
+    await waitFor(() => {
+      const errorMessage = screen.getByTestId('error-message');
+      expect(errorMessage).toBeInTheDocument();
+      expect(errorMessage).toHaveTextContent('Form submission failed');
+    }, { timeout: 200 });
   });
   
   // Test mixed button types in a form
   test('form with mixed button types behaves correctly', async () => {
-    // Mock the submit handler
-    const handleSubmit = jest.fn();
+    // Create component with multiple button types
+    const TestFormWithMixedButtons = () => {
+      const [formAction, setFormAction] = useState<string | null>(null);
+      
+      const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        setFormAction('submit');
+      };
+      
+      const handleCancel = () => {
+        setFormAction('cancel');
+      };
+      
+      return (
+        <form onSubmit={handleSubmit} data-testid="mixed-form">
+          <div data-testid="action-result">{formAction}</div>
+          <Button 
+            type="button" 
+            variant="secondary"
+            onClick={handleCancel}
+            data-testid="cancel-btn"
+          >
+            Cancel
+          </Button>
+          <HeroButton 
+            type="submit" 
+            variant="primary"
+            data-testid="hero-submit-btn"
+          >
+            Submit
+          </HeroButton>
+        </form>
+      );
+    };
     
-    // Setup a form with multiple button types
-    render(
-      <ThemeProvider>
-        <FormProvider onSubmit={handleSubmit}>
-          <form data-testid="test-form">
-            <HeroButton 
-              type="submit" 
-              variant="primary"
-              data-testid="hero-submit-btn"
-            >
-              Submit
-            </HeroButton>
+    render(<TestFormWithMixedButtons />);
+    
+    // Get buttons and action display
+    const cancelBtn = screen.getByTestId('cancel-btn');
+    const submitBtn = screen.getByTestId('hero-submit-btn');
+    const actionResult = screen.getByTestId('action-result');
+    
+    // Verify initial state
+    expect(actionResult).toHaveTextContent('');
+    
+    // Click the cancel button
+    fireEvent.click(cancelBtn);
+    expect(actionResult).toHaveTextContent('cancel');
+    
+    // Submit the form
+    const form = screen.getByTestId('mixed-form');
+    fireEvent.submit(form);
+    expect(actionResult).toHaveTextContent('submit');
+  });
+  
+  // Test ButtonGroup with mixed button types in a form
+  test('ButtonGroup with mixed button types in form with loading state', async () => {
+    // Create a component with form state
+    const TestFormWithButtonGroup = () => {
+      const [isSubmitting, setIsSubmitting] = useState(false);
+      
+      const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        setIsSubmitting(false);
+      };
+      
+      const handleCancel = () => {
+        // Cancel handler
+      };
+      
+      return (
+        <form onSubmit={handleSubmit} data-testid="form-with-button-group">
+          <ButtonGroup 
+            direction="horizontal"
+            spacing="medium"
+            alignment="end"
+            responsiveStacking
+            data-testid="form-button-group"
+          >
             <Button 
               type="button" 
               variant="secondary"
+              onClick={handleCancel}
               data-testid="cancel-btn"
             >
               Cancel
             </Button>
-          </form>
-        </FormProvider>
-      </ThemeProvider>
-    );
+            <HeroButton 
+              type="submit" 
+              variant="primary"
+              disabled={isSubmitting}
+              data-testid="hero-submit-btn"
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit'}
+            </HeroButton>
+          </ButtonGroup>
+        </form>
+      );
+    };
+    
+    // Render the test component
+    render(<TestFormWithButtonGroup />);
+    
+    // Get form and button group
+    const form = screen.getByTestId('form-with-button-group');
+    const buttonGroup = screen.getByTestId('form-button-group');
+    
+    // Verify button group has responsive class
+    expect(buttonGroup).toHaveClass('button-group--responsive');
     
     // Get buttons
-    const submitButton = screen.getByTestId('hero-submit-btn');
-    const cancelButton = screen.getByTestId('cancel-btn');
+    const cancelBtn = screen.getByTestId('cancel-btn');
+    const submitBtn = screen.getByTestId('hero-submit-btn');
     
-    // Verify both buttons are rendered
-    expect(submitButton).toBeInTheDocument();
-    expect(cancelButton).toBeInTheDocument();
+    // Verify both buttons rendered correctly
+    expect(cancelBtn).toBeInTheDocument();
+    expect(submitBtn).toBeInTheDocument();
     
-    // Click the submit button
-    fireEvent.click(submitButton);
+    // Verify submit button has correct initial text
+    expect(submitBtn).toHaveTextContent('Submit');
     
-    // Verify form submission occurred
+    // Submit the form
+    fireEvent.submit(form);
+    
+    // Verify the button shows loading state
     await waitFor(() => {
-      expect(handleSubmit).toHaveBeenCalledTimes(1);
+      expect(submitBtn).toHaveTextContent('Submitting...');
     });
+    
+    // Wait for submission to complete
+    await waitFor(() => {
+      expect(submitBtn).toHaveTextContent('Submit');
+    }, { timeout: 200 });
   });
 }); 

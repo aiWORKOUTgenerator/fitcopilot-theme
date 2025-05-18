@@ -249,23 +249,105 @@ const FormControls = () => {
 };
 ```
 
-## Mobile Responsiveness
+## Responsive ButtonGroup in Forms
 
-Forms with buttons should be responsive on mobile devices:
+When designing forms for both desktop and mobile experiences, use the `responsiveStacking` prop with ButtonGroup:
 
 ```tsx
 <ButtonGroup 
   direction="horizontal" 
   responsiveStacking 
   spacing="medium"
-  alignment="center"
+  alignment="end"
 >
   <Button variant="secondary">Cancel</Button>
   <HeroButton variant="primary">Submit</HeroButton>
 </ButtonGroup>
 ```
 
-On mobile devices (< 768px), this will stack the buttons vertically.
+This ensures:
+- On desktop: Buttons appear side-by-side in a horizontal layout
+- On mobile (≤768px): Buttons stack vertically for better touch targets
+
+### Implementation Details
+
+The responsive behavior works by adding a CSS class (`button-group--responsive`) when `responsiveStacking` is true:
+
+```tsx
+// Inside ButtonGroup component
+const groupClasses = [
+  'button-group',
+  `button-group--${direction}`,
+  responsiveStacking && direction === 'horizontal' ? 'button-group--responsive' : '',
+  // Other classes...
+].filter(Boolean).join(' ');
+```
+
+The relevant CSS in ButtonGroup.scss uses a media query to change layout on mobile:
+
+```scss
+@media (max-width: 768px) {
+  // Enable stacking on small screens when needed
+  &.button-group--responsive {
+    flex-direction: column;
+    
+    .btn,
+    .hero-button,
+    .button,
+    button:not(.btn) {
+      &:not(:last-child) {
+        margin-right: 0;
+        margin-bottom: var(--button-group-spacing);
+      }
+    }
+    
+    .btn + .hero-button, 
+    .hero-button + .btn {
+      margin-left: 0;
+      margin-top: calc(var(--button-group-spacing) * 0.5);
+    }
+  }
+}
+```
+
+### Best Practices for Responsive Forms
+
+1. **Form Alignment**
+   - On mobile, use `alignment="stretch"` to make buttons use full width
+   - On desktop, use `alignment="end"` or `alignment="center"` for traditional placement
+
+2. **Button Order**
+   - Primary action should always be the last button in the group
+   - Place Cancel/Back buttons first in the sequence
+
+3. **Spacing Considerations**
+   - Use `spacing="medium"` or larger on mobile for better touch target separation
+   - Consider increasing text size for better readability on small screens
+
+## Mixed Button Types in Forms
+
+Forms often combine different button types (standard Button, HeroButton, etc.) with consistent spacing:
+
+```tsx
+<ButtonGroup 
+  direction="horizontal" 
+  responsiveStacking
+  spacing="medium"
+>
+  <Button variant="text" onClick={handleSkip}>
+    Skip this step
+  </Button>
+  <div className="spacer" style={{ flex: 1 }}></div>
+  <Button variant="secondary" onClick={handleBack}>
+    Back
+  </Button>
+  <HeroButton variant="primary" type="submit">
+    Continue
+  </HeroButton>
+</ButtonGroup>
+```
+
+The ButtonGroup component handles spacing between different button types automatically, ensuring proper margin and alignment even with differently sized buttons.
 
 ## Accessibility Considerations
 

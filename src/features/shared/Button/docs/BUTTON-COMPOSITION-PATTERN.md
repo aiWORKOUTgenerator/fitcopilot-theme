@@ -88,6 +88,41 @@ ButtonGroup supports mixed button types with proper spacing and alignment:
 </ButtonGroup>
 ```
 
+### How Mixed ButtonGroup Works
+
+The ButtonGroup component uses CSS selectors that target both standard Button and specialized button components like HeroButton:
+
+```scss
+// In ButtonGroup.scss
+.button-group--horizontal {
+  // Target standard buttons
+  .btn {
+    &:not(:last-child) {
+      margin-right: var(--button-group-spacing);
+    }
+  }
+  
+  // Target HeroButton components 
+  .hero-button {
+    &:not(:last-child) {
+      margin-right: var(--button-group-spacing);
+    }
+  }
+  
+  // Handle mixed button types
+  .btn + .hero-button, 
+  .hero-button + .btn {
+    // Special spacing adjustment for mixed types
+    margin-left: calc(var(--button-group-spacing) * 0.5);
+  }
+}
+```
+
+This approach ensures:
+1. Consistent spacing regardless of button type
+2. Special handling for adjacent different button types
+3. Responsive behavior that works for all button variants
+
 ### Responsive Behavior
 
 For responsive stacking on mobile devices:
@@ -114,6 +149,19 @@ When mixing different sized buttons, alignment is handled automatically:
   <Button variant="primary" size="small">Small Button</Button>
   <HeroButton variant="primary" size="large">Large Hero Button</HeroButton>
 </ButtonGroup>
+```
+
+The vertical alignment for differently sized buttons is handled through:
+
+```scss
+// Vertical alignment for mixed size buttons
+.button-group {
+  align-items: center;
+  
+  &--align-stretch {
+    align-items: stretch;
+  }
+}
 ```
 
 ## Form Integration
@@ -192,6 +240,54 @@ Buttons inherit themes from their parent containers through the `data-theme` att
 </div>
 ```
 
+### Theme Implementation Details
+
+The theme system uses CSS variables with theme-specific values:
+
+```scss
+// Base theme variables
+:root {
+  --button-primary-bg: #3b82f6;
+  --button-primary-text: #ffffff;
+  --button-secondary-bg: #f3f4f6;
+  --button-secondary-text: #1f2937;
+}
+
+// Theme-specific overrides
+[data-theme="gym"] {
+  --button-primary-bg: #ef4444;
+  --button-primary-text: #ffffff;
+  --button-secondary-bg: #fef2f2;
+  --button-secondary-text: #991b1b;
+}
+
+[data-theme="sports"] {
+  --button-primary-bg: #10b981;
+  --button-primary-text: #ffffff;
+  --button-secondary-bg: #ecfdf5;
+  --button-secondary-text: #065f46;
+}
+```
+
+Button components then use these variables in their styles:
+
+```scss
+.btn-primary {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+.btn-secondary {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+}
+```
+
+This approach ensures:
+1. Consistent theming across all button types
+2. Component-specific styling that respects the theme
+3. Smooth transitions between themes
+
 Alternatively, use the ThemeContext:
 
 ```tsx
@@ -208,6 +304,11 @@ const MyComponent = () => {
   );
 };
 ```
+
+### ThemeContext vs. data-theme Attribute
+
+- **ThemeContext**: Useful for accessing theme programmatically for dynamic styling or logic
+- **data-theme Attribute**: Better for static styling and CSS-based theme application
 
 ## Best Practices
 
@@ -248,51 +349,37 @@ const MyComponent = () => {
 ```tsx
 <HeroButton 
   variant="primary" 
-  size="large" 
-  fullWidth
+  size="large"
+  onClick={handleClick}
 >
   Get Started
 </HeroButton>
 ```
 
-### Mixed ButtonGroup
+### Mixed Button Types in ButtonGroup
 
 ```tsx
 <ButtonGroup 
   direction="horizontal" 
-  responsiveStacking
-  alignment="center"
+  alignment="center" 
+  spacing="medium"
 >
-  <Button variant="secondary">Learn More</Button>
-  <HeroButton variant="primary">Sign Up</HeroButton>
+  <Button variant="secondary" size="medium">
+    Cancel
+  </Button>
+  <HeroButton variant="primary" size="medium">
+    Continue
+  </HeroButton>
 </ButtonGroup>
 ```
 
-### Form Integration
+### Themed Buttons
 
 ```tsx
-<FormProvider onSubmit={handleSubmit}>
-  <form>
-    {/* Form fields */}
-    <ButtonGroup 
-      direction="horizontal" 
-      responsiveStacking
-      spacing="medium"
-    >
-      <Button 
-        type="button" 
-        variant="secondary" 
-        onClick={goBack}
-      >
-        Back
-      </Button>
-      <HeroButton 
-        type="submit" 
-        variant="primary"
-      >
-        Continue
-      </HeroButton>
-    </ButtonGroup>
-  </form>
-</FormProvider>
+<div data-theme="sports">
+  <ButtonGroup spacing="medium">
+    <Button variant="secondary">Back</Button>
+    <HeroButton variant="primary">Next Step</HeroButton>
+  </ButtonGroup>
+</div>
 ``` 
