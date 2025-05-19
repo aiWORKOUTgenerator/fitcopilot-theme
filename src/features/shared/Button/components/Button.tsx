@@ -6,7 +6,7 @@
 import React from 'react';
 import logger from '../../../../utils/logger';
 import '../styles/Button.scss';
-import { ButtonProps } from '../types/buttonTypes';
+import { ButtonBaseProps } from '../types/standardButtonTypes';
 
 /**
  * Button component that can render as either a button element or a link
@@ -15,7 +15,7 @@ import { ButtonProps } from '../types/buttonTypes';
  * @param props - Button properties
  * @returns React component
  */
-export const Button: React.FC<ButtonProps> = (props) => {
+export const Button: React.FC<ButtonBaseProps> = (props) => {
   // Handle null/undefined props with default empty object
   if (!props) {
     logger.warn('Button component received undefined props');
@@ -27,64 +27,60 @@ export const Button: React.FC<ButtonProps> = (props) => {
     className = '',
     size,
     children,
-    'aria-label': ariaLabel,
-    'data-testid': testId,
+    leftIcon,
+    rightIcon,
     disabled = false,
+    onClick,
+    type = 'button',
+    fullWidth = false,
+    href,
+    target,
+    rel,
+    style,
+    ...rest
   } = props;
 
-  // Compose class names
-  const baseClasses = 'btn';
-  const variantClasses = `btn-${variant}`;
-  const sizeClasses = size ? `btn-${size}` : '';
-  const classes = [baseClasses, variantClasses, sizeClasses, className].filter(Boolean).join(' ');
+  // Combine all class names
+  const buttonClassName = `btn btn-${variant} ${size ? `btn-${size}` : ''} ${
+    fullWidth ? 'btn-full-width' : ''
+  } ${className}`.trim();
 
-  // If we have an href prop, render as a link
-  if ('href' in props && props.href) {
-    const { href, target, rel } = props as { href: string; target?: string; rel?: string };
+  // Create button content
+  const content = (
+    <>
+      {leftIcon && <span className="btn__icon btn__icon--left">{leftIcon}</span>}
+      <span className="btn__text">{children}</span>
+      {rightIcon && <span className="btn__icon btn__icon--right">{rightIcon}</span>}
+    </>
+  );
 
+  // Render as link if href is provided
+  if (href) {
     return (
       <a
         href={href}
+        className={buttonClassName}
         target={target}
-        rel={target === '_blank' ? (rel || 'noopener noreferrer') : rel}
-        className={classes}
-        aria-label={ariaLabel}
-        data-testid={testId}
-        role="link"
+        rel={rel}
+        style={style}
+        {...rest}
       >
-        {children}
+        {content}
       </a>
     );
   }
 
-  // Otherwise, render as a button
-  const { onClick, type = 'button' } = props;
-
-  // Create a simple logged click handler with null check
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    logger.info('Button clicked', {
-      component: 'Button',
-      variant,
-      type
-    });
-
-    // Safely call onClick if it exists
-    if (onClick) {
-      onClick(event);
-    }
-  };
-
+  // Render as button if no href is provided
   return (
     <button
       type={type}
-      onClick={handleClick}
+      className={buttonClassName}
       disabled={disabled}
-      aria-disabled={disabled ? 'true' : 'false'}
-      className={classes}
-      aria-label={ariaLabel}
-      data-testid={testId}
+      onClick={onClick}
+      style={style}
+      {...rest}
     >
-      {children}
+      {content}
     </button>
   );
 };

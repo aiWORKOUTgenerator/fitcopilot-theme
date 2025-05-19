@@ -2,14 +2,13 @@
 // Contains minimal styling essential for application structure
 // Component-specific styles should be in component-level files
 
-// Canonical design system import - MUST BE FIRST
+// Import all required modules first
 @use './design-system' as ds;
-
-// Import consolidated theme tokens
 @use './design-system/tokens/theme-tokens' as tokens;
-
-// Import theme system first
 @use './theme.scss' as theme;
+@use './reset.scss' as reset;
+@use './animations.scss' as animations;
+@use './mixins.scss' as mixins;
 
 // Other global styles
 body {
@@ -80,11 +79,6 @@ img, video {
     max-width: 100%;
     height: auto;
 }
-
-// Import other global style files
-@use './reset.scss' as reset;
-@use './animations.scss' as animations;
-@use './mixins.scss' as mixins;
 
 // Reduced motion preferences
 @media (prefers-reduced-motion: reduce) {

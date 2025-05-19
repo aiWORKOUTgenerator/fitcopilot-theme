@@ -7,10 +7,10 @@
 
 import React from 'react';
 import {
-  InputChangeHandler,
-  InputKeyPressHandler,
-  SelectChangeHandler,
-  TextAreaChangeHandler
+    InputChangeHandler,
+    InputKeyPressHandler,
+    SelectChangeHandler,
+    TextAreaChangeHandler
 } from './events';
 
 /**
@@ -44,7 +44,7 @@ export interface BaseFormFieldProps {
  */
 export interface TextFieldProps extends BaseFormFieldProps {
     /** Field type discriminator */
-    variant: 'text';
+    fieldType: 'text';
     /** HTML input type */
     type: 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number';
     /** Field value */
@@ -76,7 +76,7 @@ export interface TextFieldProps extends BaseFormFieldProps {
  */
 export interface TextAreaFieldProps extends BaseFormFieldProps {
     /** Field type discriminator */
-    variant: 'textarea';
+    fieldType: 'textarea';
     /** Field value */
     value: string;
     /** Placeholder text */
@@ -114,7 +114,7 @@ export interface SelectOption {
  */
 export interface SelectFieldProps extends BaseFormFieldProps {
     /** Field type discriminator */
-    variant: 'select';
+    fieldType: 'select';
     /** Field value */
     value: string;
     /** Options array */
@@ -136,7 +136,7 @@ export interface SelectFieldProps extends BaseFormFieldProps {
  */
 export interface CheckboxFieldProps extends BaseFormFieldProps {
     /** Field type discriminator */
-    variant: 'checkbox';
+    fieldType: 'checkbox';
     /** Checked state */
     checked: boolean;
     /** Change event handler */
@@ -152,7 +152,7 @@ export interface CheckboxFieldProps extends BaseFormFieldProps {
  */
 export interface RadioFieldProps extends BaseFormFieldProps {
     /** Field type discriminator */
-    variant: 'radio';
+    fieldType: 'radio';
     /** Radio value */
     value: string;
     /** Selected value (from radio group) */
@@ -170,7 +170,7 @@ export interface RadioFieldProps extends BaseFormFieldProps {
  */
 export interface RadioGroupFieldProps extends BaseFormFieldProps {
     /** Field type discriminator */
-    variant: 'radiogroup';
+    fieldType: 'radiogroup';
     /** Group value */
     value: string;
     /** Options array */
@@ -188,7 +188,7 @@ export interface RadioGroupFieldProps extends BaseFormFieldProps {
  */
 export interface SwitchFieldProps extends BaseFormFieldProps {
     /** Field type discriminator */
-    variant: 'switch';
+    fieldType: 'switch';
     /** Checked state */
     checked: boolean;
     /** Change event handler */
@@ -206,7 +206,7 @@ export interface SwitchFieldProps extends BaseFormFieldProps {
  */
 export interface DateFieldProps extends BaseFormFieldProps {
     /** Field type discriminator */
-    variant: 'date';
+    fieldType: 'date';
     /** Field value (ISO date string) */
     value: string;
     /** Min date (ISO string) */
@@ -228,7 +228,7 @@ export interface DateFieldProps extends BaseFormFieldProps {
  */
 export interface FileFieldProps extends BaseFormFieldProps {
     /** Field type discriminator */
-    variant: 'file';
+    fieldType: 'file';
     /** Selected file */
     value?: File | null;
     /** Change event handler */
@@ -258,34 +258,33 @@ export type FormFieldProps =
     | FileFieldProps;
 
 /**
- * Validation function type
- * Returns error message or null if valid
+ * Form field validator function type
  */
 export type ValidatorFn<T = unknown> = (value: T) => string | null;
 
 /**
- * Form values object type
+ * Form values type
  */
 export interface FormValues {
     [key: string]: string | boolean | string[] | File | null | undefined;
 }
 
 /**
- * Form errors object type
+ * Form errors type
  */
 export interface FormErrors {
     [key: string]: string | null | undefined;
 }
 
 /**
- * Form touched fields object type
+ * Form touched fields type
  */
 export interface FormTouched {
     [key: string]: boolean;
 }
 
 /**
- * Form context props for passing down to form components
+ * Form context props
  */
 export interface FormContextProps {
     values: FormValues;
@@ -323,7 +322,7 @@ export interface FormProps {
 }
 
 /**
- * Validation props for form validation configuration
+ * Form validation props
  */
 export interface ValidationProps {
     /** Function to validate values */

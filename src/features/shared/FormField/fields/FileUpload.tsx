@@ -5,7 +5,7 @@
  */
 
 import React, { useRef } from 'react';
-import { debug } from '../../../../utils/logger';
+import logger from '../../../../utils/logger';
 import { FileFieldProps } from '../types';
 import FieldWrapper from './FieldWrapper';
 import { filterComponentProps } from './FormField';
@@ -52,7 +52,7 @@ const FileField: React.FC<Omit<FileFieldProps, 'value'> & { value?: File | null 
   
   // Handle file change with logging
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debug('FileField changed', {
+    logger.debug('FileField changed', {
       name,
       files: e.target.files?.length || 0
     });

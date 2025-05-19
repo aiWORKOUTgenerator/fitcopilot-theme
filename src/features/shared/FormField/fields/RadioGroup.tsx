@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { debug } from '../../../../utils/logger';
+import logger from '../../../../utils/logger';
 import { RadioGroupFieldProps } from '../types';
 import { filterComponentProps } from './FormField';
 
@@ -38,7 +38,7 @@ const RadioGroup: React.FC<RadioGroupFieldProps> = ({
   
   // Event handlers with logging
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debug('RadioGroup changed', {
+    logger.debug('RadioGroup changed', {
       name,
       value: e.target.value
     });

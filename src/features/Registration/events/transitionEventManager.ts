@@ -1,5 +1,6 @@
 import { RegistrationStep } from '../types';
 import { StepTransitionEvent, TransitionEventListener, TransitionType } from './transitionEvents';
+import logger from '../../../utils/logger';
 
 /**
  * Manages registration step transition events and listeners

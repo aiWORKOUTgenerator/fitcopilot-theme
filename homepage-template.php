@@ -26,6 +26,24 @@ add_action('wp_head', 'wp_site_icon', 99);
 // Add our critical CSS output function
 add_action('wp_head', 'fitcopilot_output_critical_css', 5);
 
+// Add direct CSS override for hero buttons
+add_action('wp_head', function() {
+    echo '
+    <style>
+    /* Force green border on hero buttons */
+    .hero-button.hero-button-primary,
+    .hero-button.hero-button-secondary {
+        border: 1px solid rgba(34, 197, 94, 0.45) !important;
+    }
+    
+    .hero-button.hero-button-primary:hover,
+    .hero-button.hero-button-secondary:hover {
+        border-color: rgba(34, 197, 94, 0.6) !important;
+    }
+    </style>
+    ';
+}, 6);
+
 // Get the manifest file
 $manifest_path = get_template_directory() . '/dist/manifest.json';
 $manifest = file_exists($manifest_path) ? json_decode(file_get_contents($manifest_path), true) : [];

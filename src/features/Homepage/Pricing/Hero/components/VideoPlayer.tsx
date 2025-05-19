@@ -1,6 +1,6 @@
-import logger from '@utils/logger';
 import { AlertCircle, Pause, Play } from 'lucide-react';
 import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import logger from '../../../../../utils/logger';
 import './VideoPlayer.scss';
 
 /**

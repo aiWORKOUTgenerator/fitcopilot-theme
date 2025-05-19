@@ -1,13 +1,13 @@
 /**
- * Type guards for media elements and events
+ * Type guards for media API capabilities
  * These utilities help properly validate types at runtime
  */
 import {
-  FullscreenSupport,
-  MediaAPIMethod,
-  PictureInPictureSupport
-} from '../types/mediaTypes';
-import { VendorExtendedVideoElement, VendorExtendedWindow } from '../types/vendor';
+    FullscreenSupport,
+    MediaAPIMethod,
+    PictureInPictureSupport
+} from '../../types/mediaTypes';
+import { VendorExtendedVideoElement, VendorExtendedWindow } from '../../types/vendor';
 
 /**
  * Type guards for vendor-specific APIs that haven't been standardized
@@ -235,35 +235,35 @@ export function getPictureInPictureSupport(): PictureInPictureSupport {
  */
 export function supportsMediaMethod(method: MediaAPIMethod): boolean {
   if (method === 'requestFullscreen' ||
-        method === 'webkitRequestFullscreen' ||
-        method === 'msRequestFullscreen' ||
-        method === 'mozRequestFullscreen') {
+      method === 'webkitRequestFullscreen' ||
+      method === 'msRequestFullscreen' ||
+      method === 'mozRequestFullscreen') {
     return document.documentElement !== null &&
-            method in document.documentElement;
+           method in document.documentElement;
   }
 
   if (method === 'exitFullscreen' ||
-        method === 'webkitExitFullscreen' ||
-        method === 'msExitFullscreen' ||
-        method === 'mozCancelFullScreen') {
+      method === 'webkitExitFullscreen' ||
+      method === 'msExitFullscreen' ||
+      method === 'mozCancelFullScreen') {
     return method in document;
   }
 
   if (method === 'requestPictureInPicture' ||
-        method === 'exitPictureInPicture') {
+      method === 'webkitRequestPictureInPicture') {
+    return document.documentElement !== null &&
+           method in document.documentElement;
+  }
+
+  if (method === 'exitPictureInPicture' ||
+      method === 'webkitExitPictureInPicture') {
     return method in document;
   }
 
-  if (method === 'webkitEnterFullscreen' ||
-        method === 'webkitExitFullscreen') {
-    const testVideo = document.createElement('video');
-    return method in testVideo;
-  }
-
   if (method === 'play' ||
-        method === 'pause' ||
-        method === 'load' ||
-        method === 'canPlayType') {
+      method === 'pause' ||
+      method === 'load' ||
+      method === 'canPlayType') {
     const testVideo = document.createElement('video');
     return method in testVideo;
   }

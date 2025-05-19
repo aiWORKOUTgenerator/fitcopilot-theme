@@ -7,7 +7,6 @@
  */
 
 import {
-  ActionButtonProps,
   ButtonProps,
   IconButtonProps,
   LinkButtonProps
@@ -19,7 +18,7 @@ import {
  * @param props The button props to check
  * @returns Type predicate indicating if props are for an action button
  */
-export function isActionButton(props: ButtonProps): props is ActionButtonProps {
+export function isActionButton(props: ButtonProps): props is ButtonProps & { onClick: () => void } {
   return 'onClick' in props && typeof props.onClick === 'function';
 }
 
@@ -39,8 +38,8 @@ export function isLinkButton(props: ButtonProps): props is LinkButtonProps {
  * @param props The button props to check
  * @returns Type predicate indicating if props are for an icon button
  */
-export function isIconButton(props: ButtonProps): props is IconButtonProps {
-  return 'icon' in props && !!props.icon;
+export function isIconButton(props: ButtonProps | IconButtonProps): props is IconButtonProps {
+  return 'icon' in props && !!props.icon && 'ariaLabel' in props;
 }
 
 /**

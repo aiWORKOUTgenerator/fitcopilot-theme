@@ -2,6 +2,9 @@
  * Utility functions for testing gallery and carousel components
  */
 
+type EventListener = (event: Event) => void;
+type EventListeners = Record<string, EventListener[]>;
+
 /**
  * Creates a test image collection for use in gallery components
  * @param count Number of test images to generate
@@ -49,7 +52,7 @@ export const createTestMediaCollection = (imageCount = 2, videoCount = 1) => {
  * This helps with testing keyboard navigation and focus management
  */
 export const createMockCarouselRef = () => {
-  const eventListeners = {};
+  const eventListeners: EventListeners = {};
 
   const mockCarousel = {
     // DOM methods
@@ -58,20 +61,20 @@ export const createMockCarouselRef = () => {
     click: jest.fn(),
 
     // Event handling
-    addEventListener: jest.fn((event, callback) => {
+    addEventListener: jest.fn((event: string, callback: EventListener) => {
       if (!eventListeners[event]) {
         eventListeners[event] = [];
       }
       eventListeners[event].push(callback);
     }),
 
-    removeEventListener: jest.fn((event, callback) => {
+    removeEventListener: jest.fn((event: string, callback: EventListener) => {
       if (eventListeners[event]) {
         eventListeners[event] = eventListeners[event].filter(cb => cb !== callback);
       }
     }),
 
-    dispatchEvent: jest.fn(event => {
+    dispatchEvent: jest.fn((event: Event) => {
       const listeners = eventListeners[event.type] || [];
       listeners.forEach(callback => callback(event));
       return true;

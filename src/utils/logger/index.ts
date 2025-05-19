@@ -1,202 +1,363 @@
 /**
- * Logger levels
+ * Logger utility for consistent logging across the application
+ * Provides environment-aware logging and support for different log levels
  */
-export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
-/**
- * Interface for logger implementation
- */
-export interface LoggerInterface {
-    debug(message: string, context?: Record<string, unknown>): void;
-    info(message: string, context?: Record<string, unknown>): void;
-    warn(message: string, context?: Record<string, unknown>): void;
-    error(message: string, context?: Record<string, unknown>): void;
-}
+import { CommonEventHandler } from '../../types/events';
+import { LOG_LEVEL_VALUES, LogLevel } from '../logLevels';
 
-/**
- * Environment configuration for the logger
- */
+type Logger = {
+  debug: (message: string, ...data: unknown[]) => void;
+  info: (message: string, ...data: unknown[]) => void;
+  warn: (message: string, ...data: unknown[]) => void;
+  error: (message: string, ...data: unknown[]) => void;
+  captureError: (err: unknown, context?: Record<string, unknown>) => void;
+  group: (label: string, callback: () => void) => void;
+  time: (label: string) => string;
+  timeEnd: (timerId: string) => void;
+  addContext: (component: string) => Logger;
+  setLogLevel: (level: number) => void;
+  logComponentEvent: <T extends Element, E extends React.SyntheticEvent<T>>(
+    componentName: string,
+    eventName: string,
+    event: E
+  ) => void;
+  createLoggedEventHandler: <T extends Element, E extends React.SyntheticEvent<T>>(
+    componentName: string,
+    eventName: string,
+    handler?: CommonEventHandler<T, E>
+  ) => CommonEventHandler<T, E>;
+  configure: (config: Partial<LoggerConfig>) => void;
+};
+
+// Determine environment
+const isProduction = process.env.NODE_ENV === 'production';
+const isTest = process.env.NODE_ENV === 'test';
+
+// Advanced configuration with environment-specific settings
 interface LoggerConfig {
-    /**
-     * Minimum log level to display
-     */
-    minLevel: LogLevel;
-
-    /**
-     * Whether to include timestamps in logs
-     */
-    includeTimestamps: boolean;
-
-    /**
-     * Whether to include log level in output
-     */
-    includeLevelInOutput: boolean;
+    minLevel: number;
+    enableConsole: boolean;
+    enableRemoteLogging?: boolean;
+    enableGrouping: boolean;
+    enableTimers: boolean;
 }
 
-/**
- * Get the current environment
- */
-const getEnvironment = (): 'development' | 'production' | 'test' => {
-  if (process.env.NODE_ENV === 'production') {
-    return 'production';
-  }
-
-  if (process.env.NODE_ENV === 'test') {
-    return 'test';
-  }
-
-  return 'development';
-};
-
-/**
- * Get logger configuration based on environment
- */
-const getLoggerConfig = (): LoggerConfig => {
-  const environment = getEnvironment();
-
-  switch (environment) {
-  case 'production':
-    return {
-      minLevel: 'warn',
-      includeTimestamps: true,
-      includeLevelInOutput: true
-    };
-  case 'test':
-    return {
-      minLevel: 'error',
-      includeTimestamps: false,
-      includeLevelInOutput: true
-    };
-  default:
-    return {
-      minLevel: 'debug',
-      includeTimestamps: true,
-      includeLevelInOutput: true
-    };
+// Safely access log level values
+const safeLogLevel = (level: keyof typeof LogLevel): number => {
+  try {
+    return LogLevel[level];
+  } catch (_e) {
+    return LOG_LEVEL_VALUES[level];
   }
 };
 
-/**
- * Log level severity ranking
- */
-const LOG_LEVEL_SEVERITY: Record<LogLevel, number> = {
-  debug: 0,
-  info: 1,
-  warn: 2,
-  error: 3
+// Default configurations based on environment
+const DEFAULT_CONFIGS: Record<string, LoggerConfig> = {
+  production: {
+    minLevel: safeLogLevel('WARN'),
+    enableConsole: true,
+    enableRemoteLogging: true,
+    enableGrouping: false,
+    enableTimers: false
+  },
+  development: {
+    minLevel: safeLogLevel('DEBUG'),
+    enableConsole: true,
+    enableRemoteLogging: false,
+    enableGrouping: true,
+    enableTimers: true
+  },
+  test: {
+    minLevel: safeLogLevel('ERROR'),
+    enableConsole: false,
+    enableRemoteLogging: false,
+    enableGrouping: false,
+    enableTimers: false
+  }
+};
+
+// Get environment-specific default config
+const getDefaultConfig = (): LoggerConfig => {
+  if (isProduction) return DEFAULT_CONFIGS.production;
+  if (isTest) return DEFAULT_CONFIGS.test;
+  return DEFAULT_CONFIGS.development;
+};
+
+// Active configuration
+let activeConfig = getDefaultConfig();
+
+// Timer IDs for performance measurement
+const timers: Record<string, number> = {};
+let timerCounter = 0;
+
+// Safe console methods with fallbacks
+const safeConsole = {
+  log: (...args: unknown[]) => {
+    try {
+      console.log(...args);
+    } catch (_e) {
+      // Silent fallback if console is not available
+    }
+  },
+  info: (...args: unknown[]) => {
+    try {
+      console.info(...args);
+    } catch (_e) {
+      // Silent fallback if console is not available
+    }
+  },
+  warn: (...args: unknown[]) => {
+    try {
+      console.warn(...args);
+    } catch (_e) {
+      // Silent fallback if console is not available
+    }
+  },
+  error: (...args: unknown[]) => {
+    try {
+      console.error(...args);
+    } catch (_e) {
+      // Silent fallback if console is not available
+    }
+  },
+  group: (label: string) => {
+    try {
+      console.group(label);
+    } catch (_e) {
+      // Silent fallback if console is not available
+    }
+  },
+  groupEnd: () => {
+    try {
+      console.groupEnd();
+    } catch (_e) {
+      // Silent fallback if console is not available
+    }
+  },
+  time: (label: string) => {
+    try {
+      console.time(label);
+    } catch (_e) {
+      // Silent fallback if console is not available
+    }
+  },
+  timeEnd: (label: string) => {
+    try {
+      console.timeEnd(label);
+    } catch (_e) {
+      // Silent fallback if console is not available
+    }
+  }
 };
 
 /**
- * Default Logger implementation
+ * Base logging function
  */
-class Logger implements LoggerInterface {
-  private config: LoggerConfig;
+const logMessage = (level: number, message: string, ...data: unknown[]): void => {
+  if (level < activeConfig.minLevel) return;
 
-  constructor() {
-    this.config = getLoggerConfig();
+  const timestamp = new Date().toISOString();
+  const formattedMessage = `[${timestamp}] ${message}`;
+
+  if (!activeConfig.enableConsole) return;
+
+  try {
+    switch (level) {
+    case safeLogLevel('DEBUG'):
+      safeConsole.log(formattedMessage, ...data);
+      break;
+    case safeLogLevel('INFO'):
+      safeConsole.info(formattedMessage, ...data);
+      break;
+    case safeLogLevel('WARN'):
+      safeConsole.warn(formattedMessage, ...data);
+      break;
+    case safeLogLevel('ERROR'):
+      safeConsole.error(formattedMessage, ...data);
+      break;
+    }
+  } catch (_e) {
+    // Silent fallback if console access fails
   }
 
-  /**
-     * Check if the given level should be logged
-     */
-  private shouldLog(level: LogLevel): boolean {
-    return LOG_LEVEL_SEVERITY[level] >= LOG_LEVEL_SEVERITY[this.config.minLevel];
+  if (isProduction && activeConfig.enableRemoteLogging) {
+    // TODO: Implement remote logging service integration
   }
+};
 
-  /**
-     * Format the log message
-     */
-  private formatMessage(level: LogLevel, message: string): string {
-    const parts: string[] = [];
+// Create the logger object
+const logger: Logger = {
+  debug: (message: string, ...data: unknown[]): void => {
+    logMessage(safeLogLevel('DEBUG'), message, ...data);
+  },
 
-    if (this.config.includeTimestamps) {
-      parts.push(`[${new Date().toISOString()}]`);
+  info: (message: string, ...data: unknown[]): void => {
+    logMessage(safeLogLevel('INFO'), message, ...data);
+  },
+
+  warn: (message: string, ...data: unknown[]): void => {
+    logMessage(safeLogLevel('WARN'), message, ...data);
+  },
+
+  error: (message: string, ...data: unknown[]): void => {
+    logMessage(safeLogLevel('ERROR'), message, ...data);
+  },
+
+  captureError: (err: unknown, context: Record<string, unknown> = {}): void => {
+    const errorMessage = err instanceof Error
+      ? err.message
+      : (typeof err === 'string' ? err : 'Unknown error');
+
+    const component = context.component ? `[${String(context.component)}] ` : '';
+    const contextMessage = `${component}${errorMessage}`;
+
+    logger.error(contextMessage, { ...context, error: err });
+
+    if (isProduction) {
+      // TODO: Implement error tracking service integration
+    }
+  },
+
+  group: (label: string, callback: () => void): void => {
+    if (!activeConfig.enableGrouping) {
+      callback();
+      return;
     }
 
-    if (this.config.includeLevelInOutput) {
-      parts.push(`[${level.toUpperCase()}]`);
+    safeConsole.group(label);
+    try {
+      callback();
+    } finally {
+      safeConsole.groupEnd();
     }
+  },
 
-    parts.push(message);
+  time: (label: string): string => {
+    if (!activeConfig.enableTimers) return '';
 
-    return parts.join(' ');
-  }
+    const timerId = `timer_${timerCounter++}`;
+    timers[timerId] = Date.now();
+    safeConsole.time(label);
+    return timerId;
+  },
 
-  /**
-     * Log a debug message
-     */
-  public debug(message: string, context?: Record<string, unknown>): void {
-    if (!this.shouldLog('debug')) return;
+  timeEnd: (timerId: string): void => {
+    if (!activeConfig.enableTimers) return;
 
-    const formattedMessage = this.formatMessage('debug', message);
-
-    if (context) {
-      // eslint-disable-next-line no-console, fitcopilot/use-logger
-      console.debug(formattedMessage, context);
-    } else {
-      // eslint-disable-next-line no-console, fitcopilot/use-logger
-      console.debug(formattedMessage);
+    const startTime = timers[timerId];
+    if (startTime) {
+      const duration = Date.now() - startTime;
+      logger.debug(`Timer ${timerId} completed in ${duration}ms`);
+      delete timers[timerId];
     }
+  },
+
+  addContext: (component: string): Logger => {
+    // Create a new logger instance with the component context
+    const contextLogger: Logger = {
+      debug: (message: string, ...data: unknown[]): void => {
+        logMessage(safeLogLevel('DEBUG'), `[${component}] ${message}`, ...data);
+      },
+
+      info: (message: string, ...data: unknown[]): void => {
+        logMessage(safeLogLevel('INFO'), `[${component}] ${message}`, ...data);
+      },
+
+      warn: (message: string, ...data: unknown[]): void => {
+        logMessage(safeLogLevel('WARN'), `[${component}] ${message}`, ...data);
+      },
+
+      error: (message: string, ...data: unknown[]): void => {
+        logMessage(safeLogLevel('ERROR'), `[${component}] ${message}`, ...data);
+      },
+
+      captureError: (err: unknown, context: Record<string, unknown> = {}): void => {
+        logger.captureError(err, { ...context, component });
+      },
+
+      group: (label: string, callback: () => void): void => {
+        logger.group(`[${component}] ${label}`, callback);
+      },
+
+      time: (label: string): string => {
+        return logger.time(`[${component}] ${label}`);
+      },
+
+      timeEnd: (timerId: string): void => {
+        logger.timeEnd(timerId);
+      },
+
+      addContext: (newContext: string): Logger => {
+        return contextLogger.addContext(`${component}.${newContext}`);
+      },
+
+      setLogLevel: (level: number): void => {
+        logger.setLogLevel(level);
+      },
+
+      logComponentEvent: <T extends Element, E extends React.SyntheticEvent<T>>(
+        componentName: string,
+        eventName: string,
+        event: E
+      ): void => {
+        logger.logComponentEvent(`${component}.${componentName}`, eventName, event);
+      },
+
+      createLoggedEventHandler: <T extends Element, E extends React.SyntheticEvent<T>>(
+        componentName: string,
+        eventName: string,
+        handler?: CommonEventHandler<T, E>
+      ): CommonEventHandler<T, E> => {
+        return logger.createLoggedEventHandler(`${component}.${componentName}`, eventName, handler);
+      },
+
+      configure: (config: Partial<LoggerConfig>): void => {
+        logger.configure(config);
+      }
+    };
+
+    return contextLogger;
+  },
+
+  setLogLevel: (level: number): void => {
+    activeConfig.minLevel = level;
+  },
+
+  logComponentEvent: <T extends Element, E extends React.SyntheticEvent<T>>(
+    componentName: string,
+    eventName: string,
+    event: E
+  ): void => {
+    logger.debug(`[${componentName}] ${eventName}`, {
+      type: event.type,
+      target: event.target,
+      currentTarget: event.currentTarget
+    });
+  },
+
+  createLoggedEventHandler: <T extends Element, E extends React.SyntheticEvent<T>>(
+    componentName: string,
+    eventName: string,
+    handler?: CommonEventHandler<T, E>
+  ): CommonEventHandler<T, E> => {
+    return (event: E) => {
+      logger.logComponentEvent(componentName, eventName, event);
+      if (handler) {
+        handler(event);
+      }
+    };
+  },
+
+  configure: (config: Partial<LoggerConfig>): void => {
+    activeConfig = { ...activeConfig, ...config };
   }
+};
 
-  /**
-     * Log an info message
-     */
-  public info(message: string, context?: Record<string, unknown>): void {
-    if (!this.shouldLog('info')) return;
+// Initialize the logger with default configuration
+logger.configure(getDefaultConfig());
 
-    const formattedMessage = this.formatMessage('info', message);
-
-    if (context) {
-      // eslint-disable-next-line no-console, fitcopilot/use-logger
-      console.info(formattedMessage, context);
-    } else {
-      // eslint-disable-next-line no-console, fitcopilot/use-logger
-      console.info(formattedMessage);
-    }
-  }
-
-  /**
-     * Log a warning message
-     */
-  public warn(message: string, context?: Record<string, unknown>): void {
-    if (!this.shouldLog('warn')) return;
-
-    const formattedMessage = this.formatMessage('warn', message);
-
-    if (context) {
-      // eslint-disable-next-line no-console, fitcopilot/use-logger
-      console.warn(formattedMessage, context);
-    } else {
-      // eslint-disable-next-line no-console, fitcopilot/use-logger
-      console.warn(formattedMessage);
-    }
-  }
-
-  /**
-     * Log an error message
-     */
-  public error(message: string, context?: Record<string, unknown>): void {
-    if (!this.shouldLog('error')) return;
-
-    const formattedMessage = this.formatMessage('error', message);
-
-    if (context) {
-      // eslint-disable-next-line no-console, fitcopilot/use-logger
-      console.error(formattedMessage, context);
-    } else {
-      // eslint-disable-next-line no-console, fitcopilot/use-logger
-      console.error(formattedMessage);
-    }
-  }
-}
-
-/**
- * Singleton logger instance
- */
-export const logger: LoggerInterface = new Logger();
-
-/**
- * Default export of the logger
- */
+// Export the logger object and its type
+export { LogLevel };
+export type { LoggerConfig };
 export default logger; 

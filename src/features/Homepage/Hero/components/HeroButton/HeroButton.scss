@@ -9,8 +9,9 @@
   border-radius: var(--hero-button-radius);
   transition: var(--hero-button-transition);
   min-width: var(--hero-button-min-width);
-  padding: var(--hero-button-padding-y) var(--hero-button-padding-x);
+  padding: 1rem 2rem !important; // Force padding override
   font-weight: var(--hero-button-font-weight);
+  white-space: nowrap; // Prevent text wrapping
   
   // Ensure .btn class compatibility for ButtonGroup
   &.btn {
@@ -19,10 +20,23 @@
     justify-content: center;
     border-radius: var(--hero-button-radius);
     transition: var(--hero-button-transition);
-    padding: var(--hero-button-padding-y) var(--hero-button-padding-x);
+    padding: 1rem 2rem !important; // Force padding override
+    white-space: nowrap; // Prevent text wrapping
   }
   
-  // Icon positioning
+  // Icon styling from extracted button styles
+  .hero-icon, .hero-icon-userplus {
+    margin-right: 0.5rem; // mr-2
+    height: 1.25rem; // h-5
+    width: 1.25rem; // w-5
+  }
+  
+  // Secondary button icon style
+  .hero-icon-userplus {
+    color: #a3e635; // text-lime-300
+  }
+  
+  // Icon positioning - keeping for backwards compatibility
   &__icon {
     display: flex;
     align-items: center;
@@ -41,6 +55,7 @@
   &__text {
     display: inline-block;
     line-height: 1;
+    white-space: nowrap; // Add nowrap to text as well
   }
   
   // Full width variant
@@ -52,131 +67,112 @@
   &--small {
     font-size: var(--hero-button-size-sm-font-size);
     min-width: var(--hero-button-size-sm-min-width);
-    padding: var(--hero-button-size-sm-padding-y) var(--hero-button-size-sm-padding-x);
+    padding: var(--hero-button-size-sm-padding-y) var(--hero-button-size-sm-padding-x) !important;
   }
   
   &--medium {
     font-size: var(--hero-button-size-md-font-size);
     min-width: var(--hero-button-size-md-min-width);
-    padding: var(--hero-button-size-md-padding-y) var(--hero-button-size-md-padding-x);
+    padding: var(--hero-button-size-md-padding-y) var(--hero-button-size-md-padding-x) !important;
   }
   
   &--large {
     font-size: var(--hero-button-size-lg-font-size);
     min-width: var(--hero-button-size-lg-min-width);
-    padding: var(--hero-button-size-lg-padding-y) var(--hero-button-size-lg-padding-x);
+    padding: 1rem 2rem !important; // Force extracted style padding
   }
 }
 
-// Primary variant with gradient text  
-.hero-button-primary {
-  background-color: var(--hero-button-primary-bg);
-  border: var(--hero-button-border-width-primary) solid var(--hero-button-primary-border);
+// Primary variant with gradient - with !important to ensure it applies
+html body .hero-button-primary {
+  background: linear-gradient(to right, #a3e635, #34d399) !important; // lime-300 to emerald-400
+  border: none !important;
   box-shadow: var(--hero-button-shadow);
-  
-  // Gradient text effect - using direct token references
-  &, & .hero-button__text, & .hero-button__icon {
-    background: linear-gradient(
-      var(--hero-button-gradient-angle),
-      var(--hero-button-gradient-from), 
-      var(--hero-button-gradient-to)
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
+  color: var(--color-gray-900, #111827) !important; // Text color from extracted styles
+  font-weight: 700; // Bold text
   
   &:hover:not(:disabled) {
-    background-color: var(--hero-button-primary-bg-hover, rgba(15, 23, 42, 0.9));
+    // Updated hover gradient: lime-400 to emerald-500
+    background: linear-gradient(to right, #84cc16, #10b981) !important; // lime-400 to emerald-500
     box-shadow: var(--hero-button-shadow-hover);
     transform: translateY(var(--hero-button-transform-up));
-    border-color: var(--hero-button-primary-border-hover);
-    
-    // Hover gradient using direct token references
-    &, & .hero-button__text, & .hero-button__icon {
-      background: linear-gradient(
-        var(--hero-button-gradient-angle),
-        var(--hero-button-gradient-from-hover),
-        var(--hero-button-gradient-to-hover)
-      );
-      -webkit-background-clip: text;
-      background-clip: text;
-    }
   }
 }
 
-// Secondary variant
+// Secondary variant - updated to match extracted styles
 .hero-button-secondary {
-  background-color: var(--hero-button-secondary-bg);
-  border: var(--hero-button-border-width-secondary) solid var(--hero-button-secondary-border);
-  color: var(--hero-button-secondary-text);
+  background-color: var(--color-gray-800, #1f2937);
+  border: 2px solid rgba(163, 230, 53, 0.3) !important; // Updated to lime-300/30
+  color: var(--color-white, #ffffff);
   
   &:hover:not(:disabled) {
-    background-color: var(--hero-button-secondary-bg-hover);
+    background-color: rgba(163, 230, 53, 0.1); // Updated to lime-300/10
     box-shadow: var(--hero-button-shadow-hover);
     transform: translateY(var(--hero-button-transform-up));
-    border-color: var(--hero-button-secondary-border-hover);
+    border-color: rgba(163, 230, 53, 0.4) !important; // Slightly darker on hover
+  }
+  
+  // Make icon lime colored - keeping this for backwards compatibility
+  .hero-button__icon {
+    color: rgba(163, 230, 53, 1); // Lime-300 color
   }
 }
 
-// Theme overrides using direct selectors
+/* Override all theme overrides to ensure consistent styling */
+[data-theme] .hero-button-primary,
+[data-theme="gym"] .hero-button-primary,
+[data-theme="sports"] .hero-button-primary,
+[data-theme="wellness"] .hero-button-primary {
+  border: none !important;
+  background: linear-gradient(to right, #a3e635, #34d399) !important; // Ensure consistent gradient across themes
+}
+
+[data-theme] .hero-button-primary:hover:not(:disabled),
+[data-theme="gym"] .hero-button-primary:hover:not(:disabled),
+[data-theme="sports"] .hero-button-primary:hover:not(:disabled),
+[data-theme="wellness"] .hero-button-primary:hover:not(:disabled) {
+  background: linear-gradient(to right, #84cc16, #10b981) !important; // Ensure consistent hover gradient
+}
+
+[data-theme] .hero-button-secondary {
+  border-color: rgba(163, 230, 53, 0.3) !important;
+}
+
+[data-theme] .hero-button-secondary:hover:not(:disabled) {
+  border-color: rgba(163, 230, 53, 0.4) !important;
+}
+
+// Theme overrides using direct selectors - commented out gradient overrides to keep consistent primary style
 // Gym Theme
 [data-theme="gym"] {
-  // Primary button theme override
-  .hero-button-primary {
-    --hero-button-primary-border: rgba(168, 85, 247, 0.45);
-    --hero-button-primary-border-hover: rgba(168, 85, 247, 0.6);
-    --hero-button-gradient-from: var(--color-violet-500, #8b5cf6);
-    --hero-button-gradient-to: var(--color-purple-500, #8b5cf6);
-    --hero-button-gradient-from-hover: var(--color-violet-400, #a78bfa);
-    --hero-button-gradient-to-hover: var(--color-purple-400, #a78bfa);
-  }
-  
   // Secondary button theme override
   .hero-button-secondary {
-    --hero-button-secondary-border: rgba(168, 85, 247, 0.45);
-    --hero-button-secondary-border-hover: rgba(168, 85, 247, 0.6);
-    --hero-button-secondary-bg-hover: rgba(168, 85, 247, 0.1);
+    // Keep lime border but override hover
+    &:hover:not(:disabled) {
+      background-color: rgba(168, 85, 247, 0.1);
+    }
   }
 }
 
 // Sports Theme
 [data-theme="sports"] {
-  // Primary button theme override
-  .hero-button-primary {
-    --hero-button-primary-border: rgba(6, 182, 212, 0.45);
-    --hero-button-primary-border-hover: rgba(6, 182, 212, 0.6);
-    --hero-button-gradient-from: var(--color-cyan-500, #06b6d4);
-    --hero-button-gradient-to: var(--color-blue-500, #3b82f6);
-    --hero-button-gradient-from-hover: var(--color-cyan-400, #22d3ee);
-    --hero-button-gradient-to-hover: var(--color-blue-400, #60a5fa);
-  }
-  
   // Secondary button theme override
   .hero-button-secondary {
-    --hero-button-secondary-border: rgba(6, 182, 212, 0.45);
-    --hero-button-secondary-border-hover: rgba(6, 182, 212, 0.6);
-    --hero-button-secondary-bg-hover: rgba(6, 182, 212, 0.1);
+    // Keep lime border but override hover
+    &:hover:not(:disabled) {
+      background-color: rgba(6, 182, 212, 0.1);
+    }
   }
 }
 
 // Wellness Theme
 [data-theme="wellness"] {
-  // Primary button theme override
-  .hero-button-primary {
-    --hero-button-primary-border: rgba(20, 184, 166, 0.45);
-    --hero-button-primary-border-hover: rgba(20, 184, 166, 0.6);
-    --hero-button-gradient-from: var(--color-teal-500, #14b8a6);
-    --hero-button-gradient-to: var(--color-emerald-500, #10b981);
-    --hero-button-gradient-from-hover: var(--color-teal-400, #2dd4bf);
-    --hero-button-gradient-to-hover: var(--color-emerald-400, #34d399);
-  }
-  
   // Secondary button theme override
   .hero-button-secondary {
-    --hero-button-secondary-border: rgba(20, 184, 166, 0.45);
-    --hero-button-secondary-border-hover: rgba(20, 184, 166, 0.6);
-    --hero-button-secondary-bg-hover: rgba(20, 184, 166, 0.1);
+    // Keep lime border but override hover
+    &:hover:not(:disabled) {
+      background-color: rgba(20, 184, 166, 0.1);
+    }
   }
 }
 
@@ -220,4 +216,11 @@
       transform: none;
     }
   }
+}
+
+// Force specific padding for large hero buttons regardless of theme
+// This ensures our extracted styles are applied with maximum specificity
+html body .hero-button.hero-button--large,
+html body .hero-button.hero-button--large.btn {
+  padding: 1rem 2rem !important; // py-4 px-8 in Tailwind
 } 

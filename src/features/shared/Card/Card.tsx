@@ -1,12 +1,12 @@
 import React from 'react';
 import { CardButtonClickHandler, CardProps } from '../../../types/card';
-import { logger } from '../../../utils/logger';
+import logger from '../../../utils/logger';
 import {
-  isContentCard,
-  isPricingCard,
-  isProfileCard,
-  isProgramCard,
-  isWorkoutCard
+    isContentCard,
+    isPricingCard,
+    isProfileCard,
+    isProgramCard,
+    isWorkoutCard
 } from '../../../utils/typeGuards/cardTypeGuards';
 import './card.scss';
 import { CardClickHandler } from './types';

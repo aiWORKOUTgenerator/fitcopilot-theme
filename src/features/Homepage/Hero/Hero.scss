@@ -197,10 +197,12 @@
 
 /* Gradient text for the heading */
 .hero-heading-gradient {
-  background: linear-gradient(to right, var(--color-hero-gradient-from), var(--color-hero-gradient-to));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: var(--color-hero-transparent);
+  background-image: linear-gradient(to right, #a3e635, #34d399) !important; /* Hardcode lime-300 to emerald-400 */
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  display: inline-block; /* Ensure the gradient applies to the text block */
+  font-weight: bold;
 }
 
 /* Gradient text with the same gradient as the divider */

@@ -65,6 +65,9 @@ export interface ButtonBaseProps {
   /** Rel attribute for href */
   rel?: string;
   
+  /** Inline styles */
+  style?: React.CSSProperties;
+  
   /** ARIA attributes */
   'aria-label'?: string;
   'aria-controls'?: string;

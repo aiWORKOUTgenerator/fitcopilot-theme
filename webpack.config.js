@@ -6,7 +6,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
-  mode: 'production',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
     'critical': './src/styles/critical.scss',
     'homepage': ['./src/index.tsx', './src/styles/homepage.scss'],
@@ -16,7 +16,8 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
     chunkFilename: 'chunks/[name].[contenthash].js',
-    publicPath: '/wp-content/themes/fitcopilot/dist/'
+    publicPath: '/wp-content/themes/fitcopilot/dist/',
+    clean: true // Ensure clean output directory
   },
   externals: {
     'react': 'React',
@@ -34,7 +35,7 @@ module.exports = {
     }
   },
   optimization: {
-    minimize: true,
+    minimize: process.env.NODE_ENV === 'production',
     minimizer: [
       new TerserPlugin({
         terserOptions: {
@@ -43,7 +44,8 @@ module.exports = {
           },
           compress: {
             drop_console: process.env.NODE_ENV === 'production',
-            drop_debugger: true
+            drop_debugger: true,
+            pure_funcs: process.env.NODE_ENV === 'production' ? ['console.log'] : []
           }
         },
         extractComments: false,
@@ -52,6 +54,7 @@ module.exports = {
     ],
     concatenateModules: true,
     usedExports: true,
+    sideEffects: true, // Enable side effects optimization
     splitChunks: {
       chunks: 'all',
       maxInitialRequests: Infinity,
@@ -61,41 +64,52 @@ module.exports = {
           test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
           name: 'framework',
           chunks: 'all',
-          priority: 40
+          priority: 40,
+          enforce: true
         },
         lucide: {
           test: /[\\/]node_modules[\\/]lucide-react[\\/]/,
           name: 'lucide-icons',
           chunks: 'all',
-          priority: 30
+          priority: 30,
+          enforce: true
         },
         vendors: {
           test: /[\\/]node_modules[\\/]/,
           name: 'vendors',
           chunks: 'all',
-          priority: 20
+          priority: 20,
+          enforce: true
         },
         features: {
           test: /[\\/]src[\\/]features[\\/]/,
           name(module) {
-            // Get the feature name (e.g., Homepage, Registration)
             const match = module.context.match(/[\\/]features[\\/]([\w-]+)/);
             return match ? `feature-${match[1].toLowerCase()}` : 'feature-common';
           },
           chunks: 'all',
           priority: 10,
-          minSize: 10000
+          minSize: 10000,
+          enforce: true
         },
         variants: {
           test: /[\\/]variants[\\/]/,
           name(module) {
-            // Get the variant name (e.g., default, sports, wellness)
             const match = module.context.match(/[\\/]variants[\\/]([\w-]+)/);
             return match ? `variant-${match[1].toLowerCase()}` : 'variants-common';
           },
           chunks: 'all',
           priority: 5,
-          minSize: 5000
+          minSize: 5000,
+          enforce: true
+        },
+        utils: {
+          test: /[\\/]src[\\/]utils[\\/]/,
+          name: 'utils',
+          chunks: 'all',
+          priority: 15,
+          minSize: 5000,
+          enforce: true
         }
       }
     }
@@ -235,23 +249,66 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css'
+      filename: '[name].[contenthash].css',
+      chunkFilename: 'chunks/[name].[contenthash].css'
     }),
     new WebpackManifestPlugin({
       publicPath: '',
       generate: (seed, files) => {
-        const manifestFiles = files.reduce((manifest, file) => {
-          const name = file.name.replace(/\.[a-f0-9]+\.(js|css)$/, '.$2');
-          manifest[name] = file.path;
-          return manifest;
-        }, seed);
-        return manifestFiles;
+        const manifest = {};
+        const expectedEntries = [
+          'critical',
+          'homepage',
+          'debug',
+          'framework',
+          'vendors',
+          'utils',
+          'feature-registration',
+          'feature-homepage',
+          'lucide-icons',
+          'feature-common'
+        ];
+
+        // Process all files
+        files.forEach(file => {
+          if (file.name.endsWith('.map')) return;
+          
+          // Handle both root and chunks directory files
+          const isChunk = file.name.includes('/chunks/');
+          const baseName = file.name.split('/').pop();
+          
+          // Extract the logical name without hash and extension
+          const match = baseName.match(/(.*?)(\.[a-f0-9]{8,})?\.(js|css)$/);
+          if (!match) return;
+          
+          const [, name, , ext] = match;
+          const key = `${name}.${ext}`;
+          
+          // Store the full path
+          manifest[key] = file.path;
+        });
+
+        // Verify all expected entries are present
+        const missingEntries = expectedEntries.filter(entry => {
+          const jsEntry = `${entry}.js`;
+          const cssEntry = `${entry}.css`;
+          return !manifest[jsEntry] && !manifest[cssEntry];
+        });
+
+        if (missingEntries.length > 0) {
+          console.warn('Missing entries in manifest:', missingEntries);
+        }
+
+        return manifest;
       }
     }),
-    process.env.ANALYZE === 'true' && new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      reportFilename: '../bundle-report.html',
-      openAnalyzer: false
-    })
-  ].filter(Boolean)
+    // Add BundleAnalyzerPlugin in development mode
+    ...(process.env.NODE_ENV === 'development' ? [
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        openAnalyzer: false,
+        reportFilename: 'bundle-analysis.html'
+      })
+    ] : [])
+  ]
 }; 

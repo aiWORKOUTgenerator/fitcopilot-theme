@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { debug } from '../../../../utils/logger';
+import logger from '../../../../utils/logger';
 import { SwitchFieldProps } from '../types';
 import { filterComponentProps } from './FormField';
 
@@ -40,7 +40,7 @@ const Switch: React.FC<SwitchFieldProps> = ({
   
   // Event handlers with logging
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debug('Switch changed', {
+    logger.debug('Switch changed', {
       name,
       checked: e.target.checked
     });

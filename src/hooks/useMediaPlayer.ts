@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  MediaErrorInfo,
-  MediaPlayerControls,
-  MediaPlayerState,
-  UseMediaPlayerOptions
+    MediaErrorInfo,
+    MediaPlayerControls,
+    MediaPlayerState,
+    UseMediaPlayerOptions
 } from '../types/media';
 import { VendorExtendedDocument } from '../types/vendor';
 import logger from '../utils/logger';
 import {
-  documentHasMsFullscreen,
-  documentHasWebkitFullscreen,
-  hasMsFullscreenMethods,
-  hasWebkitFullscreenMethods,
-  supportsPictureInPicture
-} from '../utils/mediaTypeGuards';
+    documentHasMsFullscreen,
+    documentHasWebkitFullscreen,
+    hasMsFullscreenMethods,
+    hasWebkitFullscreenMethods,
+    supportsPictureInPicture
+} from '../utils/typeGuards/mediaApiGuards';
 
 /**
  * Custom hook for controlling media elements (audio and video)

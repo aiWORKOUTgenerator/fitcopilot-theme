@@ -5,7 +5,7 @@
  */
 
 import React, { useCallback, useEffect, useRef } from 'react';
-import { debug } from '../../../../utils/logger';
+import logger from '../../../../utils/logger';
 import { TextAreaFieldProps } from '../types';
 import FieldWrapper from './FieldWrapper';
 import { filterComponentProps } from './FormField';
@@ -55,7 +55,7 @@ const TextareaField: React.FC<TextAreaFieldProps> = ({
   
   // Event handlers with logging
   const handleChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    debug('TextareaField changed', {
+    logger.debug('TextareaField changed', {
       name,
       value: e.target.value
     });
@@ -123,7 +123,7 @@ export const withTextareaField = <P extends TextAreaFieldProps>(
 ): React.FC<P> => {
   const WithTextareaField: React.FC<P> = (props: P) => {
     if (!isTextareaField(props)) {
-      debug('Component expected TextareaField props but received incompatible props');
+      logger.debug('Component expected TextareaField props but received incompatible props');
       return null;
     }
     

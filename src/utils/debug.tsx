@@ -1,10 +1,88 @@
 import React, { useEffect, useRef } from 'react';
-import { PropChanges } from '../types/debug';
-import { hasMemoryInfo, hasPropChanged } from './debugTypeGuards';
+import { PerformanceWithMemory, PropChange, PropChanges } from '../types/debug';
 import logger from './logger';
+import { hasPropChanged, isDebugModeEnabled } from './typeGuards/debugTypeGuards';
 
 declare global {
     interface Window {
+        DEBUG_MODE?: boolean;
+        DEBUG_PROPS?: boolean;
+        DEBUG_PERFORMANCE?: boolean;
+        DEBUG_MEMORY?: boolean;
+        DEBUG_RENDER?: boolean;
+        DEBUG_EVENTS?: boolean;
+        DEBUG_STATE?: boolean;
+        DEBUG_EFFECTS?: boolean;
+        DEBUG_CONTEXT?: boolean;
+        DEBUG_ROUTING?: boolean;
+        DEBUG_API?: boolean;
+        DEBUG_STORAGE?: boolean;
+        DEBUG_CACHE?: boolean;
+        DEBUG_NETWORK?: boolean;
+        DEBUG_SECURITY?: boolean;
+        DEBUG_AUTH?: boolean;
+        DEBUG_ERRORS?: boolean;
+        DEBUG_WARNINGS?: boolean;
+        DEBUG_INFO?: boolean;
+        DEBUG_VERBOSE?: boolean;
+        DEBUG_TRACE?: boolean;
+        DEBUG_PROFILE?: boolean;
+        DEBUG_TIMING?: boolean;
+        DEBUG_METRICS?: boolean;
+        DEBUG_ANALYTICS?: boolean;
+        DEBUG_LOGGING?: boolean;
+        DEBUG_CONSOLE?: boolean;
+        DEBUG_DEVTOOLS?: boolean;
+        DEBUG_REACT?: boolean;
+        DEBUG_REDUX?: boolean;
+        DEBUG_MOBX?: boolean;
+        DEBUG_GRAPHQL?: boolean;
+        DEBUG_REST?: boolean;
+        DEBUG_WEBSOCKET?: boolean;
+        DEBUG_SOCKET?: boolean;
+        DEBUG_POLLING?: boolean;
+        DEBUG_REALTIME?: boolean;
+        DEBUG_SYNC?: boolean;
+        DEBUG_ASYNC?: boolean;
+        DEBUG_PROMISE?: boolean;
+        DEBUG_OBSERVABLE?: boolean;
+        DEBUG_STREAM?: boolean;
+        DEBUG_PIPE?: boolean;
+        DEBUG_TRANSFORM?: boolean;
+        DEBUG_FILTER?: boolean;
+        DEBUG_MAP?: boolean;
+        DEBUG_REDUCE?: boolean;
+        DEBUG_SCAN?: boolean;
+        DEBUG_MERGE?: boolean;
+        DEBUG_CONCAT?: boolean;
+        DEBUG_COMBINE?: boolean;
+        DEBUG_ZIP?: boolean;
+        DEBUG_FORK?: boolean;
+        DEBUG_JOIN?: boolean;
+        DEBUG_SPLIT?: boolean;
+        DEBUG_PARTITION?: boolean;
+        DEBUG_GROUP?: boolean;
+        DEBUG_WINDOW?: boolean;
+        DEBUG_BUFFER?: boolean;
+        DEBUG_THROTTLE?: boolean;
+        DEBUG_DEBOUNCE?: boolean;
+        DEBUG_DISTINCT?: boolean;
+        DEBUG_DISTINCT_UNTIL_CHANGED?: boolean;
+        DEBUG_DISTINCT_UNTIL_KEY_CHANGED?: boolean;
+        DEBUG_ELEMENT_AT?: boolean;
+        DEBUG_FIRST?: boolean;
+        DEBUG_LAST?: boolean;
+        DEBUG_TAKE?: boolean;
+        DEBUG_TAKE_UNTIL?: boolean;
+        DEBUG_TAKE_WHILE?: boolean;
+        DEBUG_SKIP?: boolean;
+        DEBUG_SKIP_UNTIL?: boolean;
+        DEBUG_SKIP_WHILE?: boolean;
+        DEBUG_COUNT?: boolean;
+        DEBUG_MAX?: boolean;
+        DEBUG_MIN?: boolean;
+        DEBUG_SUM?: boolean;
+        DEBUG_AVERAGE?: boolean;
         fitcopilotDebugTools?: {
             logRender: (componentName: string, renderTime: number) => void;
             getComponentStats: () => {
@@ -20,8 +98,7 @@ declare global {
  * Function to check if debug mode is active
  */
 export const isDebugMode = (): boolean => {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get('show_react_debug') === 'true';
+  return isDebugModeEnabled();
 };
 
 /**
@@ -126,11 +203,14 @@ export const useDebugProps = <P extends object>(props: P, componentName: string)
 
       Object.keys(props).forEach((key) => {
         const propKey = key as keyof P;
-        if (hasPropChanged(prevProps.current![propKey], props[propKey])) {
-          changes[key] = {
-            from: prevProps.current![propKey],
-            to: props[propKey]
+        if (hasPropChanged(prevProps.current![propKey])) {
+          const propChange: PropChange<P> = {
+            propName: propKey,
+            prevValue: prevProps.current![propKey],
+            newValue: props[propKey],
+            isSignificant: true
           };
+          changes[key] = propChange as PropChange<unknown>;
           hasChanges = true;
         }
       });
@@ -193,21 +273,12 @@ export const PerformanceMonitor: React.FC = () => {
       }
 
       // Update memory usage if available using our type guard
-      if (memoryRef.current && hasMemoryInfo(performance)) {
-        const memory = performance.memory;
-        const usedMemory = Math.round(memory.usedJSHeapSize / (1024 * 1024));
-        const totalMemory = Math.round(memory.jsHeapSizeLimit / (1024 * 1024));
-
+      const performanceWithMemory = performance as PerformanceWithMemory;
+      if (memoryRef.current && performanceWithMemory.memory) {
+        const memory = performanceWithMemory.memory;
+        const usedMemory = memory.usedJSHeapSize ? Math.round(memory.usedJSHeapSize / (1024 * 1024)) : 0;
+        const totalMemory = memory.jsHeapSizeLimit ? Math.round(memory.jsHeapSizeLimit / (1024 * 1024)) : 0;
         memoryRef.current.textContent = `Memory: ${usedMemory}MB / ${totalMemory}MB`;
-
-        const memoryUsage = usedMemory / totalMemory;
-        if (memoryUsage > 0.8) {
-          memoryRef.current.style.color = '#ef4444';
-        } else if (memoryUsage > 0.5) {
-          memoryRef.current.style.color = '#fbbf24';
-        } else {
-          memoryRef.current.style.color = '#a3e635';
-        }
       }
 
       frameRef.current = requestAnimationFrame(loop);

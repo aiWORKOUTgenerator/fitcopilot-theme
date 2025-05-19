@@ -1,10 +1,10 @@
 import logger from "../../../../../utils/logger";
 import {
-  AnthropometricsData,
-  InjuriesData,
-  LiabilityWaiverData,
-  MedicalClearanceData,
-  MedicalCustomizationData
+    AnthropometricsData,
+    InjuriesData,
+    LiabilityWaiverData,
+    MedicalClearanceData,
+    MedicalCustomizationData
 } from "../types";
 
 // Storage key for medical customization data

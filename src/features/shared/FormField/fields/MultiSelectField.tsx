@@ -5,7 +5,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { debug } from '../../../../utils/logger';
+import logger from '../../../../utils/logger';
 import FieldWrapper from './FieldWrapper';
 import { filterComponentProps } from './FormField';
 
@@ -89,7 +89,7 @@ const MultiSelectField: React.FC<MultiSelectFieldProps> = React.memo(({
   const handleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
     
-    debug('MultiSelectField changed', {
+    logger.debug('MultiSelectField changed', {
       name,
       value: selectedOptions
     });

@@ -1,130 +1,143 @@
 import { withThemeByClassName } from '@storybook/addon-themes';
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import type { Preview } from '@storybook/react';
-import { themes } from '@storybook/theming';
-import React from 'react';
-import '../src/styles/homepage.scss';
+import * as React from 'react';
+
+// Import global styles
+import '../src/styles/global.scss';
+
+// Import context providers
+import { MockWorkoutProvider, mockWorkouts } from '../src/test/context-utils/workout-context';
+
+// Create a wrapper component for all stories
+const withContextProviders = (Story: React.ComponentType) => (
+  <MockWorkoutProvider initialWorkouts={mockWorkouts}>
+    <Story />
+  </MockWorkoutProvider>
+);
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
+    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
       expanded: true,
-      sort: 'requiredFirst',
+      sort: 'requiredFirst'
     },
-    docs: {
-      theme: themes.dark,
-      toc: true,
-      source: {
-        state: 'open',
+    a11y: {
+      config: {
+        rules: [
+          {
+            id: 'color-contrast',
+            enabled: true
+          },
+          {
+            id: 'landmark-one-main',
+            enabled: true
+          },
+          {
+            id: 'page-has-heading-one',
+            enabled: true
+          }
+        ]
+      },
+      options: {
+        runOnly: {
+          type: 'tag',
+          values: ['wcag2a', 'wcag2aa']
+        }
       }
     },
     backgrounds: {
-      default: 'dark',
+      default: 'light',
       values: [
         {
-          name: 'dark',
-          value: '#0F172A',
+          name: 'light',
+          value: '#ffffff'
         },
         {
-          name: 'light',
-          value: '#FFFFFF',
+          name: 'dark',
+          value: '#333333'
         },
-      ],
+        {
+          name: 'gray',
+          value: '#f5f5f5'
+        }
+      ]
     },
     viewport: {
       viewports: {
-        mobile: {
-          name: 'Mobile',
+        ...INITIAL_VIEWPORTS,
+        mobile1: {
+          name: 'Small Mobile',
           styles: {
-            width: '375px',
-            height: '667px',
-          },
+            width: '320px',
+            height: '568px'
+          }
+        },
+        mobile2: {
+          name: 'Large Mobile',
+          styles: {
+            width: '414px',
+            height: '896px'
+          }
         },
         tablet: {
           name: 'Tablet',
           styles: {
             width: '768px',
-            height: '1024px',
-          },
-        },
-        desktop: {
-          name: 'Desktop',
-          styles: {
-            width: '1440px',
-            height: '900px',
-          },
-        },
-      },
-    },
-    a11y: {
-      // Enable a11y checks for all stories by default
-      config: {
-        rules: [
-          {
-            // Color contrast
-            id: 'color-contrast',
-            enabled: true,
-          },
-          {
-            // Alternative text for images
-            id: 'image-alt',
-            enabled: true,
-          },
-          {
-            // Link names
-            id: 'link-name',
-            enabled: true,
-          },
-          {
-            // Button names
-            id: 'button-name',
-            enabled: true,
-          },
-          {
-            // ARIA attributes
-            id: 'aria-valid-attr',
-            enabled: true,
+            height: '1024px'
           }
-        ],
-      },
-      // Show A11y tab in addons panel
-      options: {
-        checks: { 'color-contrast': { options: { noScroll: true } } },
-        restoreScroll: true,
-      },
+        }
+      }
     },
     layout: 'centered',
-    options: {
-      storySort: {
-        order: [
-          'Introduction',
-          'Foundations',
-          'UI',
-          'Layout',
-          'Features',
-        ],
+    docs: {
+      story: {
+        inline: true,
+        iframeHeight: '500px'
       },
+      canvas: {
+        sourceState: 'shown'
+      }
     },
+    measure: {
+      enabled: true
+    },
+    outline: {
+      enabled: true
+    },
+    // Add type checking parameters
+    typescript: {
+      check: true,
+      reactDocgen: 'react-docgen-typescript',
+      reactDocgenTypescriptOptions: {
+        shouldExtractLiteralValuesFromEnum: true,
+        shouldRemoveUndefinedFromOptional: true,
+        propFilter: (prop) => !prop.parent?.fileName.includes('node_modules')
+      }
+    }
   },
   decorators: [
+    withContextProviders,
+    (Story) => (
+      <div style={{ padding: '2rem' }}>
+        <Story />
+      </div>
+    ),
     withThemeByClassName({
       themes: {
         light: '',
         dark: 'dark',
+        'personal-training': 'personal-training',
+        'group-fitness': 'group-fitness'
       },
-      defaultTheme: 'dark',
-    }),
-    // Add story wrapper for consistent padding
-    (Story) => (
-      <div style={{ padding: '1rem', maxWidth: '100%' }} >
-        <Story />
-      </div>
-    ),
-  ],
+      defaultTheme: 'light'
+    })
+  ]
 };
 
-export default preview;
+export default preview; 

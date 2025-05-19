@@ -6,10 +6,14 @@ import Tooltip from '../../../features/shared/Tooltip';
 import { HeroButton } from './components/HeroButton';
 // Temporarily comment out the module style import until we fix the SCSS issues
 // import styles from './Hero.module.scss';
-import { ThemeCSSProperties } from '../../../types/theme';
 import './Hero.scss';
 import FloatingIcons from './components/FloatingIcons';
 import { HeroProps } from './types';
+
+// Button style overrides to ensure correct padding
+const buttonStyles = {
+  padding: '1rem 2rem', // py-4 px-8 in Tailwind
+};
 
 export const Hero: React.FC<HeroProps> = ({
   registrationLink = "#splash-section",
@@ -54,12 +58,6 @@ export const Hero: React.FC<HeroProps> = ({
     window.location.href = registrationLink;
   };
 
-  // Calculate gradient styles
-  const gradientStyles: ThemeCSSProperties = {
-    '--hero-gradient-start': 'var(--color-primary, #4CAF50)',
-    '--hero-gradient-end': 'var(--color-accent, #8BC34A)'
-  };
-
   return (
     <ThemeProvider initialTheme="default">
       <section
@@ -93,7 +91,7 @@ export const Hero: React.FC<HeroProps> = ({
               id="hero-heading"
               className="hero-heading"
             >
-              <span className="hero-divider-gradient" data-text="AI-Powered Workouts" style={gradientStyles}>
+              <span className="hero-heading-gradient" data-text="AI-Powered Workouts">
                 AI-Powered Workouts
               </span> Tailored Just for You
             </h1>
@@ -122,6 +120,7 @@ export const Hero: React.FC<HeroProps> = ({
                     leftIcon={<Zap className="hero-icon" />}
                     onClick={handleScrollToSplash}
                     aria-label="Generate a personalized workout plan in seconds with our AI technology - no registration required"
+                    style={buttonStyles}
                   >
                     Get a Free Workout
                   </HeroButton>
@@ -144,6 +143,7 @@ export const Hero: React.FC<HeroProps> = ({
                     leftIcon={<UserPlus className="hero-icon-userplus" />}
                     onClick={handleScrollToSplash}
                     aria-label="Save workouts, track progress, and access premium features with your free account"
+                    style={buttonStyles}
                   >
                     Create Your Account
                   </HeroButton>

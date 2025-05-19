@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { debug } from '../../../../utils/logger';
+import logger from '../../../../utils/logger';
 import { CheckboxFieldProps } from '../types';
 import { filterComponentProps } from './FormField';
 
@@ -39,7 +39,7 @@ const Checkbox: React.FC<CheckboxFieldProps> = ({
   
   // Event handlers with logging
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debug('Checkbox changed', {
+    logger.debug('Checkbox changed', {
       name,
       checked: e.target.checked
     });

@@ -5,7 +5,7 @@
  */
 
 import React, { useCallback } from 'react';
-import { debug } from '../../../../utils/logger';
+import logger from '../../../../utils/logger';
 import { SelectFieldProps } from '../types';
 import FieldWrapper from './FieldWrapper';
 import { filterComponentProps } from './FormField';
@@ -41,7 +41,7 @@ const SelectField: React.FC<SelectFieldProps> = React.memo(({
   
   // Event handlers with logging
   const handleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    debug('SelectField changed', {
+    logger.debug('SelectField changed', {
       name,
       value: e.target.value
     });

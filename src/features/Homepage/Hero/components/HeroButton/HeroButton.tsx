@@ -49,10 +49,12 @@ export const HeroButton: React.FC<HeroButtonProps> = ({
     className
   );
   
+  // Removed inline styles to allow CSS to take precedence
+  
   return (
     <Button
       variant={variant}
-      size={size as ButtonSize}
+      size={size}
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       fullWidth={fullWidth}

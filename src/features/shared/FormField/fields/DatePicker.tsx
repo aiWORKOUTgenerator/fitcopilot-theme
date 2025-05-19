@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { debug } from '../../../../utils/logger';
+import logger from '../../../../utils/logger';
 import { DateFieldProps } from '../types';
 import FieldWrapper from './FieldWrapper';
 import { filterComponentProps } from './FormField';
@@ -41,7 +41,7 @@ const DateField: React.FC<DateFieldProps> = ({
   
   // Event handlers with logging
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    debug('DateField changed', {
+    logger.debug('DateField changed', {
       name,
       value: e.target.value
     });

@@ -2,119 +2,127 @@
  * Utility functions for simulating image events and testing image components
  */
 
+import { Event, HTMLImageElement, TEventListener } from 'happy-dom';
+
+type EventListeners = Record<string, TEventListener[]>;
+
 /**
  * Creates a mock Image element with properties needed for testing
  */
-export const createMockImageElement = () => {
-  const eventListeners = {};
+export const createMockImageElement = (): HTMLImageElement => {
+  const eventListeners: EventListeners = {};
+  
+  const element = document.createElement('img');
 
-  const mockImage = {
-    // DOM properties
-    src: '',
-    alt: '',
-    width: 0,
-    height: 0,
-    naturalWidth: 0,
-    naturalHeight: 0,
-    complete: false,
-    loading: 'eager',
-    decoding: 'auto',
-    srcset: '',
-    sizes: '',
-    currentSrc: '',
+  // Add event handling methods
+  element.addEventListener = jest.fn((event: string, callback: TEventListener) => {
+    if (!eventListeners[event]) {
+      eventListeners[event] = [];
+    }
+    eventListeners[event].push(callback);
+  });
 
-    // Event handling
-    addEventListener: jest.fn((event, callback) => {
-      if (!eventListeners[event]) {
-        eventListeners[event] = [];
+  element.removeEventListener = jest.fn((event: string, callback: TEventListener) => {
+    if (eventListeners[event]) {
+      eventListeners[event] = eventListeners[event].filter(cb => cb !== callback);
+    }
+  });
+
+  element.dispatchEvent = jest.fn((event: Event) => {
+    const listeners = eventListeners[event.type] || [];
+    listeners.forEach(callback => callback(event));
+    return true;
+  });
+
+  // Define read-only properties
+  Object.defineProperties(element, {
+    naturalWidth: {
+      get: () => element.naturalWidth,
+      set: (value: number) => {
+        Object.defineProperty(element, 'naturalWidth', {
+          value,
+          writable: true
+        });
       }
-      eventListeners[event].push(callback);
-    }),
-
-    removeEventListener: jest.fn((event, callback) => {
-      if (eventListeners[event]) {
-        eventListeners[event] = eventListeners[event].filter(cb => cb !== callback);
-      }
-    }),
-
-    dispatchEvent: jest.fn(event => {
-      const listeners = eventListeners[event.type] || [];
-      listeners.forEach(callback => callback(event));
-      return true;
-    }),
-
-    // DOM methods
-    setAttribute: jest.fn(),
-    getAttribute: jest.fn(),
-    removeAttribute: jest.fn(),
-
-    // DOM node properties
-    style: {},
-    className: '',
-    classList: {
-      add: jest.fn(),
-      remove: jest.fn(),
-      contains: jest.fn().mockReturnValue(false),
-      toggle: jest.fn()
     },
+    naturalHeight: {
+      get: () => element.naturalHeight,
+      set: (value: number) => {
+        Object.defineProperty(element, 'naturalHeight', {
+          value,
+          writable: true
+        });
+      }
+    },
+    complete: {
+      get: () => element.complete,
+      set: (value: boolean) => {
+        Object.defineProperty(element, 'complete', {
+          value,
+          writable: true
+        });
+      }
+    },
+    currentSrc: {
+      get: () => element.currentSrc,
+      set: (value: string) => {
+        Object.defineProperty(element, 'currentSrc', {
+          value,
+          writable: true
+        });
+      }
+    }
+  });
 
-    // Required for React operations
-    nodeName: 'IMG',
-    nodeType: 1,
-    ownerDocument: document,
-  };
-
-  return mockImage;
+  return element;
 };
 
 /**
- * Simulates an image event on a given element
- * @param element - The HTML image element to dispatch the event on
- * @param eventType - The type of event to simulate (e.g. 'load', 'error')
- * @param eventData - Additional data to include with the event
+ * Simulates an image event on an HTMLImageElement
  */
-export const simulateImageEvent = (
-  element: HTMLImageElement,
-  eventType: string,
-  eventData = {}
-) => {
+export const simulateImageEvent = (element: HTMLImageElement, eventType: string) => {
   const event = new Event(eventType);
-  Object.assign(event, eventData);
   element.dispatchEvent(event);
-  return event;
 };
 
 /**
- * Simulates an image loading successfully
- * @param element - The HTML image element to update
- * @param width - Natural width to set for the loaded image
- * @param height - Natural height to set for the loaded image
+ * Simulates a successful image load
  */
 export const simulateImageLoaded = (
   element: HTMLImageElement,
-  width = 800,
-  height = 600
+  width = 100,
+  height = 100
 ) => {
   // Set properties that would be set after successful load
-  element.naturalWidth = width;
-  element.naturalHeight = height;
-  element.complete = true;
+  Object.defineProperty(element, 'naturalWidth', { value: width });
+  Object.defineProperty(element, 'naturalHeight', { value: height });
+  Object.defineProperty(element, 'complete', { value: true });
 
   // Dispatch load event
   simulateImageEvent(element, 'load');
 };
 
 /**
- * Simulates an image loading error
- * @param element - The HTML image element to update
+ * Simulates an image load error
  */
 export const simulateImageError = (element: HTMLImageElement) => {
-  element.complete = true;
-  element.naturalWidth = 0;
-  element.naturalHeight = 0;
+  Object.defineProperty(element, 'complete', { value: true });
+  Object.defineProperty(element, 'naturalWidth', { value: 0 });
+  Object.defineProperty(element, 'naturalHeight', { value: 0 });
 
   // Dispatch error event
   simulateImageEvent(element, 'error');
+};
+
+/**
+ * Simulates changing the image source
+ */
+export const simulateImageSrcChange = (
+  element: HTMLImageElement,
+  selectedSrc: string
+) => {
+  Object.defineProperty(element, 'currentSrc', { value: selectedSrc });
+  simulateImageLoaded(element);
 };
 
 /**
@@ -126,7 +134,7 @@ export const simulateResponsiveImageSelection = (
   element: HTMLImageElement,
   selectedSrc: string
 ) => {
-  element.currentSrc = selectedSrc;
+  Object.defineProperty(element, 'currentSrc', { value: selectedSrc });
   simulateImageLoaded(element);
 };
 
