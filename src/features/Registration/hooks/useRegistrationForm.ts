@@ -33,6 +33,16 @@ interface FormValidationState {
 }
 
 /**
+ * Extended RegistrationStep enum with additional steps
+ */
+enum ExtendedRegistrationStep {
+    GOALS = RegistrationStep.GOALS,
+    EXPERIENCE_LEVEL = RegistrationStep.EXPERIENCE_LEVEL,
+    CUSTOMIZE_EXPERIENCE = 'customize_experience',
+    ACCOUNT_CREATION = 'account_creation'
+}
+
+/**
  * Hook for registration form management with proper type safety
  * 
  * @param initialData Initial registration data (if any)
@@ -49,11 +59,11 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
   });
 
   // Step state
-  const [currentStep, setCurrentStep] = useState<RegistrationStep>(RegistrationStep.GOALS);
+  const [currentStep, setCurrentStep] = useState<ExtendedRegistrationStep>(ExtendedRegistrationStep.GOALS);
 
   // Use our API hooks with proper typing
   const registrationApi = useApi<RegistrationResponse>();
-  const _emailValidationApi = useApi<EmailValidationResponse>();
+  const emailValidationApi = useApi<EmailValidationResponse>();
 
   /**
      * Update form data with new values
@@ -92,18 +102,18 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
   }, [currentStep, validation.errors]);
 
   /**
-     * Validate an _email address
+     * Validate an email address
      */
-  const validateEmail = useCallback(async (_email: string): Promise<boolean> => {
+  const validateEmail = useCallback(async (email: string): Promise<boolean> => {
     try {
-      const response = await _emailValidationApi.fetchApi('/fitcopilot/v1/validate-_email', {
+      const response = await emailValidationApi.fetchApi('/fitcopilot/v1/validate-email', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
         }
       });
 
-      return response.data.isValid;
+      return (response as ApiResponse<EmailValidationResponse>).data.isValid;
     } catch (error) {
       formLogger.error('Email validation failed', { error });
       setValidation(prev => ({
@@ -111,12 +121,12 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
         isValid: false,
         errors: {
           ...prev.errors,
-          _email: 'Failed to validate _email. Please try again.'
+          email: 'Failed to validate email. Please try again.'
         }
       }));
       return false;
     }
-  }, [_emailValidationApi]);
+  }, [emailValidationApi]);
 
   /**
      * Validate form data for the current step
@@ -126,21 +136,21 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
     const errors: Record<string, string> = {};
 
     switch (currentStep) {
-    case RegistrationStep.GOALS:
+    case ExtendedRegistrationStep.GOALS:
       if (!formData.goals || formData.goals.length === 0) {
         errors.goals = 'Please select at least one goal';
         isValid = false;
       }
       break;
 
-    case RegistrationStep.EXPERIENCE_LEVEL:
+    case ExtendedRegistrationStep.EXPERIENCE_LEVEL:
       if (!formData.experienceLevel) {
         errors.experienceLevel = 'Please select your experience level';
         isValid = false;
       }
       break;
 
-    case RegistrationStep.CUSTOMIZE_EXPERIENCE:
+    case ExtendedRegistrationStep.CUSTOMIZE_EXPERIENCE:
       if (!formData.equipment || formData.equipment.length === 0) {
         errors.equipment = 'Please select available equipment';
         isValid = false;
@@ -151,12 +161,12 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
       }
       break;
 
-    case RegistrationStep.ACCOUNT_CREATION:
-      if (!formData._email) {
-        errors._email = 'Email is required';
+    case ExtendedRegistrationStep.ACCOUNT_CREATION:
+      if (!formData.email) {
+        errors.email = 'Email is required';
         isValid = false;
-      } else if (!/\S+@\S+\.\S+/.test(formData._email)) {
-        errors._email = 'Please enter a valid _email address';
+      } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+        errors.email = 'Please enter a valid email address';
         isValid = false;
       }
       if (!formData.password) {
@@ -185,7 +195,23 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
         currentStep,
         nextStep: currentStep + 1
       });
-      setCurrentStep(prevStep => prevStep + 1 as RegistrationStep);
+      
+      // Get next step value based on current step - safe conversion needed
+      // This is simplified logic - you may need a more robust step transition map
+      let nextStep: ExtendedRegistrationStep;
+      
+      if (currentStep === ExtendedRegistrationStep.GOALS) {
+        nextStep = ExtendedRegistrationStep.EXPERIENCE_LEVEL;
+      } else if (currentStep === ExtendedRegistrationStep.EXPERIENCE_LEVEL) {
+        nextStep = ExtendedRegistrationStep.CUSTOMIZE_EXPERIENCE;
+      } else if (currentStep === ExtendedRegistrationStep.CUSTOMIZE_EXPERIENCE) {
+        nextStep = ExtendedRegistrationStep.ACCOUNT_CREATION;
+      } else {
+        // Default fallback or final step
+        nextStep = currentStep;
+      }
+      
+      setCurrentStep(nextStep);
     }
   }, [currentStep, validateCurrentStep]);
 
@@ -195,9 +221,24 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
   const goToPreviousStep = useCallback(() => {
     formLogger.debug('Moving to previous step', {
       currentStep,
-      prevStep: currentStep - 1
+      prevStep: 'previous step'
     });
-    setCurrentStep(prevStep => prevStep - 1 as RegistrationStep);
+    
+    // Similar logic to goToNextStep but in reverse
+    let prevStep: ExtendedRegistrationStep;
+    
+    if (currentStep === ExtendedRegistrationStep.ACCOUNT_CREATION) {
+      prevStep = ExtendedRegistrationStep.CUSTOMIZE_EXPERIENCE;
+    } else if (currentStep === ExtendedRegistrationStep.CUSTOMIZE_EXPERIENCE) {
+      prevStep = ExtendedRegistrationStep.EXPERIENCE_LEVEL;
+    } else if (currentStep === ExtendedRegistrationStep.EXPERIENCE_LEVEL) {
+      prevStep = ExtendedRegistrationStep.GOALS;
+    } else {
+      // Default fallback
+      prevStep = currentStep;
+    }
+    
+    setCurrentStep(prevStep);
   }, [currentStep]);
 
   /**
@@ -218,12 +259,14 @@ const useRegistrationForm = (initialData?: Partial<RegistrationData>) => {
         body: JSON.stringify(formData as RegistrationData)
       });
 
+      const typedResponse = response as ApiResponse<RegistrationResponse>;
+      
       formLogger.info('Registration submitted successfully', {
-        userId: response.data.user_id,
-        status: response.data.status
+        userId: typedResponse.data.user_id,
+        status: typedResponse.data.status
       });
 
-      return response;
+      return typedResponse;
     } catch (error) {
       formLogger.error('Registration submission failed', { error });
       setValidation(prev => ({

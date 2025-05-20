@@ -2,10 +2,10 @@ const path = require('path');
 
 /** @type {import('@storybook/react-webpack5').StorybookConfig} */
 const config = {
+  // Updated stories pattern to only include the standardized component-adjacent pattern
   stories: [
     '../src/**/*.mdx',
-    '../src/**/*.stories.@(js|jsx|ts|tsx)',
-    '../src/**/stories.@(js|jsx|ts|tsx)'
+    '../src/**/stories/*.stories.@(js|jsx|ts|tsx)'
   ],
   addons: [
     '@storybook/addon-links',

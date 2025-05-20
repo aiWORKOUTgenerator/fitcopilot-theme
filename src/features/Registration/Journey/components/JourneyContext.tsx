@@ -2,8 +2,31 @@ import React, { createContext, useCallback, useContext, useEffect, useState } fr
 import logger from "../../../../utils/logger";
 import { RegistrationData } from '../../types';
 
-// Create a context-specific logger
-const journeyLogger = logger.addContext('JourneyContext');
+// Create a context-specific logger with defensive approach
+const journeyLogger = (() => {
+  try {
+    // Ensure logger is defined and has addContext method before using it
+    if (logger && typeof logger.addContext === 'function') {
+      return logger.addContext('JourneyContext');
+    }
+    // Fallback to a minimal logger if the main logger is not ready
+    return {
+      debug: (message: string, ...data: unknown[]) => console.log(`[JourneyContext] ${message}`, ...data),
+      info: (message: string, ...data: unknown[]) => console.info(`[JourneyContext] ${message}`, ...data),
+      warn: (message: string, ...data: unknown[]) => console.warn(`[JourneyContext] ${message}`, ...data),
+      error: (message: string, ...data: unknown[]) => console.error(`[JourneyContext] ${message}`, ...data)
+    };
+  } catch (err) {
+    // In case of any error, provide a minimal fallback logger
+    console.warn('Failed to initialize journeyLogger, using fallback', err);
+    return {
+      debug: (message: string, ...data: unknown[]) => console.log(`[JourneyContext] ${message}`, ...data),
+      info: (message: string, ...data: unknown[]) => console.info(`[JourneyContext] ${message}`, ...data),
+      warn: (message: string, ...data: unknown[]) => console.warn(`[JourneyContext] ${message}`, ...data),
+      error: (message: string, ...data: unknown[]) => console.error(`[JourneyContext] ${message}`, ...data)
+    };
+  }
+})();
 
 // Define the context state interface
 interface JourneyContextState {

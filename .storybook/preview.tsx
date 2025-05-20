@@ -7,6 +7,7 @@ import * as React from 'react';
 import '../src/styles/global.scss';
 
 // Import context providers
+import { ThemeProvider } from '../src/context/ThemeContext';
 import { MockWorkoutProvider, mockWorkouts } from '../src/test/context-utils/workout-context';
 
 // Create a wrapper component for all stories
@@ -15,6 +16,18 @@ const withContextProviders = (Story: React.ComponentType) => (
     <Story />
   </MockWorkoutProvider>
 );
+
+// Create a wrapper that provides theme context
+const withThemeContext = (Story: React.ComponentType, context: any) => {
+  // Get the theme from the theme selector or use default
+  const selectedTheme = context.globals.theme || 'default';
+  
+  return (
+    <ThemeProvider initialTheme={selectedTheme}>
+      <Story />
+    </ThemeProvider>
+  );
+};
 
 const preview: Preview = {
   parameters: {
@@ -122,6 +135,7 @@ const preview: Preview = {
     }
   },
   decorators: [
+    withThemeContext, // Add ThemeProvider decorator first
     withContextProviders,
     (Story) => (
       <div style={{ padding: '2rem' }}>
@@ -137,7 +151,27 @@ const preview: Preview = {
       },
       defaultTheme: 'light'
     })
-  ]
+  ],
+  // Define global types for theme selector
+  globalTypes: {
+    theme: {
+      name: 'Theme',
+      description: 'Global theme for components',
+      defaultValue: 'default',
+      toolbar: {
+        icon: 'paintbrush',
+        items: [
+          { value: 'default', title: 'Default Theme' },
+          { value: 'modern', title: 'Modern' },
+          { value: 'classic', title: 'Classic' },
+          { value: 'sports', title: 'Sports' },
+          { value: 'wellness', title: 'Wellness' },
+          { value: 'boutique', title: 'Boutique' },
+          { value: 'minimalist', title: 'Minimalist' },
+        ],
+      },
+    },
+  }
 };
 
 export default preview; 

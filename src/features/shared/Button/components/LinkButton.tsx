@@ -5,7 +5,6 @@
 
 import React, { forwardRef } from 'react';
 import { LinkClickHandler } from '../../../../types/events';
-import { createLoggedEventHandler, warn } from '../../../../utils/logger';
 import { LinkButtonProps, isLinkButton } from '../types/buttonTypes';
 
 /**

@@ -2,7 +2,7 @@ import { cleanup, screen } from '@testing-library/react';
 import React from 'react';
 import { renderWithProviders } from '../../../../test/test-utils';
 import { MediaProps } from '../../Media/types';
-import Card from '../Card';
+import Card from '../components/Card';
 
 // Mock the Media component
 jest.mock('../../Media/Media', () => ({

@@ -1,7 +1,6 @@
 import { screen } from '@testing-library/react';
-import React from 'react';
 import { renderWithProviders } from '../../../../test/test-utils';
-import Card from '../Card';
+import Card from '../components/Card';
 
 // Test utility for verifying BEM class names
 const assertCardClasses = (element: HTMLElement, variant: string, expectedClasses: string[] = []) => {

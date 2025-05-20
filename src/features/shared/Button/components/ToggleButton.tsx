@@ -5,7 +5,7 @@
 
 import React, { forwardRef } from 'react';
 import { ButtonClickHandler } from '../../../../types/events';
-import { createLoggedEventHandler, warn } from '../../../../utils/logger';
+import logger from '../../../../utils/logger';
 import { ToggleButtonProps, isToggleButton } from '../types/buttonTypes';
 
 /**
@@ -45,10 +45,10 @@ const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>((props, re
   };
 
   // Create logged event handler
-  const loggedHandleToggle = createLoggedEventHandler<HTMLButtonElement, React.MouseEvent<HTMLButtonElement>>(
+  const handleClick = logger.createLoggedEventHandler(
     'ToggleButton',
-    'toggle',
-    handleToggle
+    'click',
+    onClick
   );
 
   // Determine the button text to display
@@ -67,7 +67,7 @@ const ToggleButton = forwardRef<HTMLButtonElement, ToggleButtonProps>((props, re
     <button
       ref={ref}
       className={buttonClasses}
-      onClick={loggedHandleToggle}
+      onClick={handleClick}
       aria-pressed={isActive}
       {...restProps}
     >
@@ -88,7 +88,7 @@ export const withToggleButton = <P extends ToggleButtonProps>(
 ): React.FC<P> => {
   const WithToggleButton: React.FC<P> = (props: P) => {
     if (!isToggleButton(props)) {
-      warn('Component expected ToggleButtonProps but received incompatible props');
+      logger.warn('Component expected ToggleButtonProps but received incompatible props');
       return null;
     }
 

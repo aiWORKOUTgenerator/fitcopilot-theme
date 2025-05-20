@@ -111,6 +111,37 @@ src/components/UI/Button/
 └── index.ts
 ```
 
+## Storybook Stories Organization
+
+All components should have Storybook stories that document their usage and variants. Stories should follow the component-adjacent pattern:
+
+```
+src/features/<FeatureName>/<ComponentName>/
+├── stories/                 # Stories directory
+│   ├── <Component>.stories.tsx  # Main stories file
+│   └── examples/            # Optional complex examples
+├── <Component>.tsx          # Main component implementation
+├── <Component>.scss         # Component styles
+└── index.ts                 # Component exports
+```
+
+### Story Examples
+
+Here are examples of proper story organization:
+
+```
+src/features/shared/Button/stories/Button.stories.tsx
+src/features/Homepage/Hero/components/HeroButton/stories/HeroButton.stories.tsx
+```
+
+When creating stories for a component:
+
+1. Create a `stories` directory within the component's directory
+2. Create a `<ComponentName>.stories.tsx` file following the standard format
+3. Include examples of all variant states and theme variants
+
+See the [Storybook Standards](../../storybook/story-standards.md) documentation for more details on writing stories.
+
 ## Custom Hook Structure
 
 Custom hooks follow a similar structure:
@@ -135,4 +166,5 @@ src/hooks/<hookName>/
 - [Feature-First Approach](./feature-first-approach.md)
 - [Component Model](./component-model.md)
 - [Theme Variants System](./variant-system.md)
+- [Storybook Standards](../../storybook/story-standards.md)
 ::: 
