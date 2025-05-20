@@ -23,12 +23,14 @@ Follow these steps to add a new component story:
 Place story files alongside their components following our feature-first architecture:
 
 ```
-src/features/FeatureName/ComponentName/ComponentName.stories.tsx
+src/features/FeatureName/ComponentName/stories/ComponentName.stories.tsx
 ```
 
 ### 2. Basic Story Structure
 
-Use this template for new stories:
+We recommend using our standard template from `docs/templates/ComponentStory.template.tsx` which includes theme support.
+
+However, for a basic pattern, you can use:
 
 ```tsx
 import { Meta, StoryObj } from '@storybook/react';
@@ -174,7 +176,7 @@ When reviewing story contributions, check that:
 Stories are automatically integrated with our documentation site. To link directly to a specific component in Storybook, use:
 
 ```md
-[Button Component](https://storybook.fitcopilot.com/?path=/docs/ui-button--docs)
+[Button Component](https://storybook.fitcopilot.com/?path=/docs-ui-button--docs)
 ```
 
 ## Getting Help

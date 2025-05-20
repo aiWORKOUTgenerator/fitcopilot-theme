@@ -21,6 +21,27 @@ This approach:
 - Aligns with our feature-first architecture
 - Makes it easier to find and update stories when working on components
 
+## Standard Template
+
+We provide a standard template for creating component stories:
+
+```
+docs/templates/ComponentStory.template.tsx
+```
+
+This template includes:
+- Proper imports for theme support
+- Standardized structure for story organization
+- Theme showcase helpers for displaying components across all themes
+- Code examples and documentation placeholders
+
+To use this template:
+1. Copy the template to your component's stories directory
+2. Rename it to match your component (e.g., `Button.stories.tsx`)
+3. Update imports and component references
+4. Add specific stories for your component variants
+5. Include the ThemeShowcase story if your component has theme-specific styling
+
 ## Import Standards
 
 We use consistent import patterns based on component directory structure:
@@ -59,36 +80,25 @@ import ComponentName from '../path';
 
 ### Theme Variant Pattern
 
-Always use JSX for theme variants instead of `React.createElement`:
+Always use the ThemeProvider and our standard ThemeShowcase pattern for theme variants:
 
 ```tsx
-// ✅ Preferred: JSX pattern
-export const ThemeVariants: Story = {
-  render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-      <div>
-        <h3>Default Theme</h3>
-        <ComponentName />
-      </div>
-      
-      <div data-theme="theme-variant-1">
-        <h3>Theme Variant Name</h3>
-        <ComponentName />
-      </div>
-    </div>
-  )
+// ✅ Preferred: Use the ThemeShowcase helper from the template
+export const ThemeShowcase: Story = {
+  render: (args) => ComponentWithThemes(ComponentName, args),
+  args: {
+    // Component props
+  }
 };
 ```
 
 #### Theme Variant Standards
 
-1. **Always use `ThemeVariants` as the story name** (not ThemedVariants or other variations)
-2. **Always use JSX syntax** (not React.createElement)
-3. **Always include `data-theme` attributes** on theme containers
-4. **Always organize as a column** with theme sections stacked vertically
-5. **Always include headings** for each theme section
-6. **Always include the default theme** as the first option
-7. **Include all relevant theme variants** that apply to the component
+1. **Always use `ThemeShowcase` as the story name** for displaying theme variants
+2. **Use the ComponentWithThemes helper** from the template for consistent display
+3. **Include all relevant theme variants** that apply to the component
+4. **Follow the theme order** defined in the template (default, gym, sports, wellness, nutrition)
+5. **Make sure your component uses theme variables** properly to benefit from theme switching
 
 ## Story File Structure
 
@@ -97,6 +107,8 @@ Each story file should follow this structure:
 ```tsx
 import type { Meta, StoryObj } from '@storybook/react';
 import { ComponentName } from '../ComponentName'; // Path relative to stories folder
+import { ThemeProvider } from '../../../../context/ThemeContext';
+import { ThemeOption } from '../../../../utils/theming';
 
 const meta: Meta<typeof ComponentName> = {
   title: 'Features/Category/ComponentName', // Category should match feature hierarchy
@@ -111,7 +123,12 @@ const meta: Meta<typeof ComponentName> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    // Define prop controls
+    // Define prop controls with descriptions
+    propName: {
+      control: 'type',
+      options: ['option1', 'option2'],
+      description: 'Description of this prop'
+    }
   }
 };
 
@@ -132,18 +149,12 @@ export const AlternateVariant: Story = {
   }
 };
 
-// Theme variants (if applicable)
-export const ThemedVariants: Story = {
-  render: () => (
-    <div className="story-theme-grid">
-      <div data-theme="theme-variant-1">
-        <ComponentName />
-      </div>
-      <div data-theme="theme-variant-2">
-        <ComponentName />
-      </div>
-    </div>
-  )
+// Theme showcase (if applicable)
+export const ThemeShowcase: Story = {
+  render: (args) => ComponentWithThemes(ComponentName, args),
+  args: {
+    // Component props
+  }
 };
 ```
 
@@ -154,7 +165,7 @@ Stories should include:
 1. **Component Description**: A clear description of the component's purpose and usage
 2. **Prop Documentation**: All props should be documented using argTypes
 3. **Variants**: Show all important component variants
-4. **Theme Examples**: For theme-aware components, show all theme variants
+4. **Theme Examples**: For theme-aware components, show all theme variants using ThemeShowcase
 5. **Usage Examples**: If complex, include usage examples
 
 ## Creating New Stories
@@ -162,9 +173,10 @@ Stories should include:
 When creating new stories:
 
 1. Create a `stories` directory within the component's directory
-2. Create a `ComponentName.stories.tsx` file
-3. Follow the standard story structure
-4. Run Storybook to verify the stories appear correctly
+2. Copy the template from `docs/templates/ComponentStory.template.tsx`
+3. Rename the file to `ComponentName.stories.tsx`
+4. Follow the standard story structure
+5. Run Storybook to verify the stories appear correctly
 
 ## Migration from Legacy Patterns
 

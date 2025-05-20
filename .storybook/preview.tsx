@@ -1,4 +1,3 @@
-import { withThemeByClassName } from '@storybook/addon-themes';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import type { Preview } from '@storybook/react';
 import * as React from 'react';
@@ -9,6 +8,7 @@ import '../src/styles/global.scss';
 // Import context providers
 import { ThemeProvider } from '../src/context/ThemeContext';
 import { MockWorkoutProvider, mockWorkouts } from '../src/test/context-utils/workout-context';
+import { themeTestKit } from '../src/test/storybook/theme-test-data';
 
 // Create a wrapper component for all stories
 const withContextProviders = (Story: React.ComponentType) => (
@@ -17,14 +17,26 @@ const withContextProviders = (Story: React.ComponentType) => (
   </MockWorkoutProvider>
 );
 
-// Create a wrapper that provides theme context
+/**
+ * ThemeProvider wrapper for all stories
+ * 
+ * This decorator:
+ * 1. Gets the theme from Storybook globals or parameters
+ * 2. Wraps the story in a ThemeProvider with the selected theme
+ * 3. Makes test data available through the storyContext
+ */
 const withThemeContext = (Story: React.ComponentType, context: any) => {
   // Get the theme from the theme selector or use default
-  const selectedTheme = context.globals.theme || 'default';
+  const selectedTheme = context.globals.theme || context.parameters.theme || 'default';
+  
+  // Make test data available in the story context
+  context.themeTestKit = themeTestKit;
   
   return (
-    <ThemeProvider initialTheme={selectedTheme}>
-      <Story />
+    <ThemeProvider initialTheme={selectedTheme} testId="theme-container">
+      <div className="storybook-content" data-testid="storybook-component">
+        <Story />
+      </div>
     </ThemeProvider>
   );
 };
@@ -132,25 +144,21 @@ const preview: Preview = {
         shouldRemoveUndefinedFromOptional: true,
         propFilter: (prop) => !prop.parent?.fileName.includes('node_modules')
       }
-    }
+    },
+    // Testing utilities
+    themeTestData: themeTestKit
   },
   decorators: [
-    withThemeContext, // Add ThemeProvider decorator first
+    // Add ThemeProvider decorator first
+    withThemeContext,
+    // Then other context providers
     withContextProviders,
+    // Add padding to all stories for better visibility
     (Story) => (
       <div style={{ padding: '2rem' }}>
         <Story />
       </div>
-    ),
-    withThemeByClassName({
-      themes: {
-        light: '',
-        dark: 'dark',
-        'personal-training': 'personal-training',
-        'group-fitness': 'group-fitness'
-      },
-      defaultTheme: 'light'
-    })
+    )
   ],
   // Define global types for theme selector
   globalTypes: {
@@ -162,12 +170,10 @@ const preview: Preview = {
         icon: 'paintbrush',
         items: [
           { value: 'default', title: 'Default Theme' },
-          { value: 'modern', title: 'Modern' },
-          { value: 'classic', title: 'Classic' },
-          { value: 'sports', title: 'Sports' },
-          { value: 'wellness', title: 'Wellness' },
-          { value: 'boutique', title: 'Boutique' },
-          { value: 'minimalist', title: 'Minimalist' },
+          { value: 'gym', title: 'Gym Theme' },
+          { value: 'sports', title: 'Sports Theme' },
+          { value: 'wellness', title: 'Wellness Theme' },
+          { value: 'nutrition', title: 'Nutrition Theme' },
         ],
       },
     },

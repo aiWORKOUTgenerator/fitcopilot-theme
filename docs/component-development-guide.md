@@ -102,7 +102,13 @@ Create a `stories` directory within your component directory:
 src/features/<FeatureName>/<ComponentName>/stories/<ComponentName>.stories.tsx
 ```
 
-Follow this pattern for your stories:
+For the fastest implementation, copy our standard template:
+
+```
+cp docs/templates/ComponentStory.template.tsx src/features/<FeatureName>/<ComponentName>/stories/<ComponentName>.stories.tsx
+```
+
+Or follow this pattern for your stories:
 
 ```tsx
 import type { Meta, StoryObj } from '@storybook/react';

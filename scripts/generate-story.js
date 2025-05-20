@@ -30,7 +30,16 @@ if (!fs.existsSync(componentPath)) {
 // Get component details
 const componentName = path.basename(componentPath, path.extname(componentPath));
 const componentDir = path.dirname(componentPath);
-const storyPath = path.join(componentDir, `${componentName}.stories.tsx`);
+
+// Create a stories directory if it doesn't exist
+const storiesDir = path.join(componentDir, 'stories');
+if (!fs.existsSync(storiesDir)) {
+    fs.mkdirSync(storiesDir);
+    console.log(`Created stories directory at: ${storiesDir}`);
+}
+
+// Set the story file path in the stories directory
+const storyPath = path.join(storiesDir, `${componentName}.stories.tsx`);
 
 // Check if story already exists
 if (fs.existsSync(storyPath)) {
@@ -38,10 +47,8 @@ if (fs.existsSync(storyPath)) {
     process.exit(1);
 }
 
-// Determine the component's import path relative to the src directory
-const srcDir = path.resolve(__dirname, '../src');
-const relativePath = path.relative(srcDir, componentPath);
-const importPath = `./${componentName}`;
+// Determine the component's import path relative to the stories directory
+const importPath = `../${componentName}`;
 
 // Get the default export name for the component
 const componentCode = fs.readFileSync(componentPath, 'utf8');
@@ -61,6 +68,7 @@ if (defaultMatch) {
 }
 
 // Determine story title based on file path
+const srcDir = path.resolve(__dirname, '../src');
 const getStoryTitle = (filePath) => {
     const relPath = path.relative(srcDir, filePath);
     const parts = relPath.split(path.sep);
@@ -77,8 +85,69 @@ const getStoryTitle = (filePath) => {
     return parts.join('/');
 };
 
-// Generate story content
-const storyContent = `import type { Meta, StoryObj } from '@storybook/react';
+// Get the template
+const templatePath = path.resolve(__dirname, '../docs/templates/ComponentStory.template.tsx');
+let templateContent = '';
+try {
+    templateContent = fs.readFileSync(templatePath, 'utf8');
+} catch (err) {
+    console.error(`Failed to read template: ${err.message}`);
+    // Fall back to generating the story without template
+    templateContent = '';
+}
+
+// Replace placeholders in the template, or generate story content if template is not available
+let storyContent;
+if (templateContent) {
+    storyContent = templateContent
+        .replace(/import\s+\{\s*ThemeProvider\s*\}\s*from\s*['"]\.\.\/\.\.\/src\/context\/ThemeContext['"]/, 
+                 `import { ThemeProvider } from '../../../context/ThemeContext'`)
+        .replace(/import\s+\{\s*ThemeOption\s*\}\s*from\s*['"]\.\.\/\.\.\/src\/utils\/theming['"]/, 
+                 `import { ThemeOption } from '../../../utils/theming'`)
+        .replace(/\/\/ import.*Component.*from.*components.*;/, `import { ${exportName} } from '${importPath}';`)
+        .replace(/\/\/ interface ComponentProps \{\}/, `// interface ${exportName}Props {}`)
+        .replace(/\/\*\s*const meta[\s\S]*?Component[\s\S]*?\*\//, 
+                `const meta: Meta<typeof ${exportName}> = {
+  title: '${getStoryTitle(componentPath)}',
+  component: ${exportName},
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: '${componentName} component for the FitCopilot application. Add a detailed description here.'
+      }
+    }
+  },
+  tags: ['autodocs'],
+  argTypes: {
+    // Define control types for your component props
+    // Example:
+    // variant: {
+    //   control: 'select',
+    //   options: ['primary', 'secondary'],
+    //   description: 'Component variant'
+    // }
+  }
+};
+
+export default meta;
+type Story = StoryObj<typeof ${exportName}>;`)
+        .replace(/\/\*\s*export const Default[\s\S]*?\*\//, 
+                `export const Default: Story = {
+  args: {
+    // Default props
+  }
+};
+
+export const ThemeShowcase: Story = {
+  render: (args) => ComponentWithThemes(${exportName}, args),
+  args: {
+    // Component props
+  }
+};`);
+} else {
+    // Original story generation as fallback
+    storyContent = `import type { Meta, StoryObj } from '@storybook/react';
 import { ${exportName} } from '${importPath}';
 
 /**
@@ -143,21 +212,24 @@ export const Variant: Story = {
 };
 
 /**
- * Edge case example (e.g., empty state, error state)
+ * ThemeShowcase for the ${componentName} component
+ * Demonstrates the component in all theme variants
  */
-export const EdgeCase: Story = {
-  args: {
-    // Add edge case props here
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: 'An edge case for the ${componentName} component (e.g., empty state, error state).',
-      },
-    },
-  },
-};
-`;
+export const ThemeShowcase: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      {['default', 'gym', 'sports', 'wellness', 'nutrition'].map((theme) => (
+        <div key={theme} style={{ marginBottom: '20px' }}>
+          <h3 style={{ marginBottom: '10px' }}>{theme.charAt(0).toUpperCase() + theme.slice(1)} Theme</h3>
+          <div data-theme={theme !== 'default' ? theme : undefined}>
+            <${exportName} />
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+};`;
+}
 
 // Write the story file
 fs.writeFileSync(storyPath, storyContent);
@@ -166,5 +238,6 @@ console.log(`✅ Story file created at: ${storyPath}`);
 console.log('Next steps:');
 console.log('1. Update the component description');
 console.log('2. Define argTypes based on component props');
-console.log('3. Add meaningful examples with real props');
-console.log('4. Run Storybook to see your new story'); 
+console.log('3. Add stories for different component variants');
+console.log('4. Ensure the ThemeShowcase story displays correctly with all themes');
+console.log('5. Run Storybook to see your new story'); 

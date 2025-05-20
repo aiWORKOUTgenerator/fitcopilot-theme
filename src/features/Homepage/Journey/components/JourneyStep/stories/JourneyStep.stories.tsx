@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BookOpen, Dumbbell, Medal, Target } from 'lucide-react';
 import React, { useState } from 'react';
-import { JourneyStep } from '../../';
 import { DetailedFeature, JourneyStepProps, JourneyStep as JourneyStepType } from '../../../types';
+import { JourneyStep } from '../../../components';
+import { JourneyFeatureCard } from '../../../components';
 
 const meta: Meta<typeof JourneyStep> = {
-  title: 'Features/Homepage/Journey/JourneyStep',
+  title: 'Features/Homepage/Journey/components/JourneyStep',
   component: JourneyStep,
   parameters: {
     layout: 'padded',
@@ -257,13 +258,8 @@ export const ThemeVariants: Story = {
       <div data-theme="sports">
         <h3>Sports Theme</h3>
         <JourneyStepWrapper
-          step={{
-            ...mockStep,
-            title: 'Sports Performance',
-            description: 'Enhance your athletic performance with specialized training',
-            number: 2
-          }}
-          index={1}
+          step={mockStep}
+          index={0}
           isLast={false}
           variant="sports"
         />
@@ -272,17 +268,31 @@ export const ThemeVariants: Story = {
       <div data-theme="wellness">
         <h3>Wellness Theme</h3>
         <JourneyStepWrapper
-          step={{
-            ...mockStep,
-            title: 'Wellness Assessment',
-            description: 'Evaluate your overall wellness and create a holistic plan',
-            number: 3
-          }}
-          index={2}
+          step={mockStep}
+          index={0}
           isLast={false}
           variant="wellness"
         />
       </div>
+    </div>
+  )
+};
+
+export const ExactJourneyMatch: Story = {
+  render: () => (
+    <div className="space-y-8">
+      <JourneyStepWrapper
+        step={{
+          ...mockStep,
+          title: 'Initial Assessment',
+          description: 'Start with a comprehensive assessment',
+          number: 1
+        }}
+        index={0}
+        isExpanded={true}
+        isLast={false}
+        variant="default"
+      />
     </div>
   )
 }; 

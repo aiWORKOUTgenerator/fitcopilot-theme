@@ -1,0 +1,116 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
+import { themeColorMap } from '../utils/theming';
+
+<Meta title="Design System/Theme" />
+
+# FitCopilot Theme System
+
+FitCopilot uses a comprehensive theme system powered by CSS variables and React context. This approach allows for consistent styling across components while supporting multiple theme variants.
+
+## Theme Variants
+
+FitCopilot supports the following theme variants:
+
+- **Default**: The base theme for the application
+- **Gym**: Theme optimized for gym and fitness center applications
+- **Sports**: Theme for sports and athletic activities
+- **Wellness**: Theme for wellness and health content
+- **Nutrition**: Theme for nutrition and diet-related features
+
+## How Theming Works
+
+The theme system operates on multiple levels:
+
+1. **CSS Variables**: Root CSS variables define colors, spacing, typography, etc.
+2. **Theme Variants**: Each theme overrides specific variables via `data-theme` attributes
+3. **React Context**: The `ThemeProvider` component manages theme state and applies attributes
+4. **Component Integration**: Components consume theme variables for consistent styling
+
+## Using Themes in Components
+
+Components can access theme values in two ways:
+
+1. **CSS Variables**: Component styles use `var(--color-primary)` to access theme colors
+2. **Context API**: The `useTheme()` hook provides direct access to theme state in components
+
+Example:
+
+```tsx
+import { useTheme } from '../../context/ThemeContext';
+
+const MyComponent = () => {
+  const { theme, setTheme } = useTheme();
+  
+  return (
+    <div className="my-component">
+      <p>Current theme: {theme}</p>
+      <button onClick={() => setTheme('sports')}>Switch to Sports</button>
+    </div>
+  );
+};
+```
+
+## Theme Color Palette
+
+<ColorPalette>
+  <ColorItem 
+    title="Default Theme" 
+    subtitle="Base colors" 
+    colors={{ 
+      primary: themeColorMap.default.primary,
+      secondary: themeColorMap.default.secondary,
+      accent: themeColorMap.default.accent
+    }} 
+  />
+  <ColorItem 
+    title="Gym Theme" 
+    subtitle="Fitness center focused" 
+    colors={{ 
+      primary: themeColorMap.gym.primary,
+      secondary: themeColorMap.gym.secondary,
+      accent: themeColorMap.gym.accent
+    }} 
+  />
+  <ColorItem 
+    title="Sports Theme" 
+    subtitle="Athletic activities" 
+    colors={{ 
+      primary: themeColorMap.sports.primary,
+      secondary: themeColorMap.sports.secondary,
+      accent: themeColorMap.sports.accent
+    }} 
+  />
+  <ColorItem 
+    title="Wellness Theme" 
+    subtitle="Health and wellness" 
+    colors={{ 
+      primary: themeColorMap.wellness.primary,
+      secondary: themeColorMap.wellness.secondary,
+      accent: themeColorMap.wellness.accent
+    }} 
+  />
+  <ColorItem 
+    title="Nutrition Theme" 
+    subtitle="Diet and nutrition" 
+    colors={{ 
+      primary: themeColorMap.nutrition.primary,
+      secondary: themeColorMap.nutrition.secondary,
+      accent: themeColorMap.nutrition.accent
+    }} 
+  />
+</ColorPalette>
+
+## Testing Components with Different Themes
+
+When testing components in Storybook:
+
+1. Use the theme selector in the toolbar to preview components in different themes
+2. Create a "ThemeShowcase" story that displays a component in all available themes
+3. Test theme-specific features by using the `ThemeProvider` in your story
+
+## Best Practices
+
+- Always use CSS variables for themeable properties
+- Test components in all theme variants
+- Use semantic color names in your components (e.g., `--color-primary` not `--purple-500`)
+- Keep theme-specific overrides in the theme files, not in component styles 

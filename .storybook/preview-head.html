@@ -7,7 +7,7 @@
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -28,4 +28,75 @@
     --primary-color: #ff6b6b;
     --secondary-color: #ff5252;
   }
-</style> 
+
+  /* Ensure the Storybook UI properly respects theme variables */
+  .storybook-content {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Apply theme-specific styling to the storybook canvas */
+  #storybook-root[data-theme],
+  .sb-show-main[data-theme] {
+    background-color: var(--color-background, #fff);
+    color: var(--color-text, #333);
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Ensure theme variables are properly applied */
+  .sb-show-main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Theme debugging helper */
+  .theme-debug-info {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    font-size: 12px;
+    z-index: 9999;
+    display: none;
+  }
+</style>
+
+<!-- Theme testing utilities -->
+<script>
+  // Helper function to apply theme from Storybook globals to the preview iframe
+  window.onload = function() {
+    try {
+      // This script helps synchronize the theme application between Storybook UI and the preview iframe
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.attributeName === 'data-theme') {
+            const theme = document.documentElement.getAttribute('data-theme');
+            if (theme) {
+              document.body.setAttribute('data-theme', theme);
+              console.log('Theme applied:', theme);
+            } else {
+              document.body.removeAttribute('data-theme');
+              console.log('Default theme applied');
+            }
+          }
+        });
+      });
+      
+      // Observe the html element for theme attribute changes
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme']
+      });
+
+      // Load testing controls (will be injected into the Storybook manager)
+      const script = document.createElement('script');
+      script.src = './src/test/storybook/storybook-test-controls.js';
+      document.head.appendChild(script);
+    } catch (e) {
+      console.error('Error setting up theme observer:', e);
+    }
+  };
+</script> 
