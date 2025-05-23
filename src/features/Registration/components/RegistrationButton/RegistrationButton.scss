@@ -10,85 +10,75 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    border-radius: 9999px; // rounded-full
-    transition: all 0.2s ease;
+    font-weight: var(--registration-button-font-weight);
+    border-radius: var(--registration-button-border-radius);
+    transition: var(--registration-button-transition);
     cursor: pointer;
     outline: none;
 
     // Default focus styles
     &:focus-visible {
-        outline: 2px solid var(--color-primary);
-        outline-offset: 2px;
+        outline: var(--registration-button-focus-outline-width) solid var(--registration-button-focus-outline-color);
+        outline-offset: var(--registration-button-focus-outline-offset);
     }
 
-    // Variants
-    &--primary {
-        background: linear-gradient(to right, var(--color-green-400, #4ade80), var(--color-emerald-600, #059669));
-        color: white;
+    // Override base Button primary variant with our design tokens
+    &.btn-primary {
+        background: linear-gradient(
+            var(--registration-button-primary-gradient-direction),
+            var(--registration-button-primary-gradient-from),
+            var(--registration-button-primary-gradient-to)
+        );
+        color: var(--registration-button-primary-text-color);
 
         &:hover:not(:disabled) {
-            box-shadow:
-                0 10px 15px -3px rgba(0, 0, 0, 0.1),
-                0 4px 6px -2px rgba(0, 0, 0, 0.05),
-                0 0 0 1px rgba(74, 222, 128, 0.3), // Thin border effect
-                0 0 8px 2px rgba(74, 222, 128, 0.2); // Outer glow
-            transform: scale(1.02);
+            box-shadow: var(--registration-button-primary-shadow-hover);
+            transform: scale(var(--registration-button-hover-scale));
         }
     }
 
-    &--secondary {
-        background-color: transparent;
-        border: 1px solid var(--color-green-400, #4ade80);
-        color: var(--color-green-400, #4ade80);
+    // Override base Button secondary variant with our design tokens
+    &.btn-secondary {
+        background-color: var(--registration-button-secondary-bg);
+        border: var(--registration-button-secondary-border-width) solid var(--registration-button-secondary-border-color);
+        color: var(--registration-button-secondary-text-color);
 
         &:hover:not(:disabled) {
-            background-color: rgba(74, 222, 128, 0.1);
-            box-shadow:
-                0 0 0 1px rgba(74, 222, 128, 0.5), // Enhanced border
-                0 0 6px 1px rgba(74, 222, 128, 0.15); // Subtle glow
+            background-color: var(--registration-button-secondary-bg-hover);
+            box-shadow: var(--registration-button-secondary-shadow-hover);
         }
     }
 
-    &--tertiary {
-        background-color: transparent;
-        color: var(--color-green-400, #4ade80);
+    // For tertiary variant (which uses btn-secondary from base Button)
+    // We need to check if it's tertiary and apply different styling
+    // This will be handled by checking the variant in the component
 
-        &:hover:not(:disabled) {
-            background-color: rgba(74, 222, 128, 0.05);
-            box-shadow: 0 0 6px 1px rgba(74, 222, 128, 0.1); // Very subtle glow
-        }
+    // Override base Button sizing with our design tokens
+    &.btn-small {
+        padding: var(--registration-button-small-padding-y) var(--registration-button-small-padding-x);
+        font-size: var(--registration-button-small-font-size);
     }
 
-    // Sizes
-    &--small {
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
+    &.btn-medium {
+        padding: var(--registration-button-medium-padding-y) var(--registration-button-medium-padding-x);
+        font-size: var(--registration-button-medium-font-size);
     }
 
-    &--medium {
-        padding: 0.75rem 1.5rem;
-        font-size: 1rem;
+    &.btn-large {
+        padding: var(--registration-button-large-padding-y) var(--registration-button-large-padding-x);
+        font-size: var(--registration-button-large-font-size);
     }
 
-    &--large {
-        padding: 1rem 2rem;
-        font-size: 1.125rem;
-    }
-
-    // States
+    // States - PROTECTED values
     &:disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-        transform: none !important;
+        opacity: var(--registration-button-disabled-opacity);
+        cursor: var(--registration-button-disabled-cursor);
+        transform: var(--registration-button-disabled-transform) !important;
     }
 
-    &--loading {
-        cursor: wait;
-    }
-
-    &--full-width {
-        width: 100%;
+    // Full-width variant
+    &.registration-button--full-width {
+        width: var(--registration-button-full-width);
     }
 
     // Elements
@@ -102,11 +92,11 @@
         justify-content: center;
 
         &--left {
-            margin-right: 0.5rem;
+            margin-right: var(--registration-button-icon-spacing-left);
         }
 
         &--right {
-            margin-left: 0.5rem;
+            margin-left: var(--registration-button-icon-spacing-right);
         }
     }
 
@@ -114,34 +104,46 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: var(--registration-button-loading-cursor);
 
         &-text {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-            margin-right: 0.5rem;
+            animation: pulse var(--registration-button-loading-pulse-duration) var(--registration-button-loading-pulse-timing) infinite;
+            margin-right: var(--registration-button-loading-text-spacing);
         }
 
         &-dots::after {
             content: '.';
-            animation: dots 1.5s steps(5, end) infinite;
+            animation: dots var(--registration-button-loading-dots-duration) var(--registration-button-loading-dots-timing) infinite;
         }
     }
 }
 
-// Animations
-@keyframes pulse {
+// Special handling for tertiary variant styling
+// Since tertiary uses btn-secondary from base Button, we need a way to distinguish it
+.registration-button[data-variant="tertiary"].btn-secondary {
+    background-color: var(--registration-button-tertiary-bg);
+    border: none;
+    color: var(--registration-button-tertiary-text-color);
 
+    &:hover:not(:disabled) {
+        background-color: var(--registration-button-tertiary-bg-hover);
+        box-shadow: var(--registration-button-tertiary-glow-hover);
+    }
+}
+
+// Animations - PROTECTED timing values from Task 2.2
+@keyframes pulse {
     0%,
     100% {
-        opacity: 1;
+        opacity: var(--registration-button-loading-pulse-opacity-max);
     }
 
     50% {
-        opacity: 0.7;
+        opacity: var(--registration-button-loading-pulse-opacity-min);
     }
 }
 
 @keyframes dots {
-
     0%,
     20% {
         content: '.';
@@ -160,3 +162,4 @@
         content: '';
     }
 }
+

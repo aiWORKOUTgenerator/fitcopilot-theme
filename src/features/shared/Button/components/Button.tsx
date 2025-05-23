@@ -37,13 +37,52 @@ export const Button: React.FC<ButtonBaseProps> = (props) => {
     target,
     rel,
     style,
+    gradient = false,
+    shadow = false,
+    shadowSize = 'default',
+    hoverEffect = 'none',
+    glowColor,
     ...rest
   } = props;
 
   // Combine all class names
-  const buttonClassName = `btn btn-${variant} ${size ? `btn-${size}` : ''} ${
+  let buttonClassName = `btn btn-${variant} ${size ? `btn-${size}` : ''} ${
     fullWidth ? 'btn-full-width' : ''
-  } ${className}`.trim();
+  }`;
+  
+  // Add gradient class if needed
+  if (gradient) {
+    buttonClassName += ' btn-gradient';
+  }
+  
+  // Add shadow classes if needed
+  if (shadow) {
+    buttonClassName += ' btn-shadow';
+    
+    // Add shadow size class if it's not the default
+    if (shadowSize !== 'default') {
+      buttonClassName += ` btn-shadow-${shadowSize}`;
+    }
+  }
+  
+  // Add hover effect class if specified
+  if (hoverEffect !== 'none') {
+    buttonClassName += ` hover-effect-${hoverEffect}`;
+  }
+  
+  // Add user's custom class
+  buttonClassName += ` ${className}`.trim();
+  
+  // Generate custom styles with type-safe CSS variables
+  const customStyles: React.CSSProperties = {
+    ...(style || {}),
+  };
+  
+  // Add custom glow color if specified and using glow effect
+  if (glowColor && hoverEffect === 'glow') {
+    // Use a type assertion to assign the CSS custom property
+    (customStyles as React.CSSProperties & { '--button-hover-glow-color': string })['--button-hover-glow-color'] = glowColor;
+  }
 
   // Create button content
   const content = (
@@ -62,7 +101,7 @@ export const Button: React.FC<ButtonBaseProps> = (props) => {
         className={buttonClassName}
         target={target}
         rel={rel}
-        style={style}
+        style={customStyles}
         {...rest}
       >
         {content}
@@ -77,7 +116,7 @@ export const Button: React.FC<ButtonBaseProps> = (props) => {
       className={buttonClassName}
       disabled={disabled}
       onClick={onClick}
-      style={style}
+      style={customStyles}
       {...rest}
     >
       {content}

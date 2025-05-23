@@ -23,6 +23,16 @@ export type ButtonSize = 'small' | 'medium' | 'large';
 export type ButtonVariant = 'primary' | 'secondary' | 'text' | 'icon' | 'link';
 
 /**
+ * Button shadow size options
+ */
+export type ButtonShadowSize = 'sm' | 'md' | 'lg' | 'default';
+
+/**
+ * Button hover effect options
+ */
+export type ButtonHoverEffect = 'none' | 'lift' | 'scale' | 'glow' | 'float';
+
+/**
  * Base button properties shared by all button components
  */
 export interface ButtonBaseProps {
@@ -67,6 +77,21 @@ export interface ButtonBaseProps {
   
   /** Inline styles */
   style?: React.CSSProperties;
+  
+  /** Whether to use gradient background (for primary variant) */
+  gradient?: boolean;
+  
+  /** Whether to apply shadow to the button */
+  shadow?: boolean;
+  
+  /** Size of the shadow if shadow is enabled */
+  shadowSize?: ButtonShadowSize;
+  
+  /** Hover effect to apply */
+  hoverEffect?: ButtonHoverEffect;
+  
+  /** Custom color for glow effect (CSS color value) */
+  glowColor?: string;
   
   /** ARIA attributes */
   'aria-label'?: string;

@@ -8,7 +8,7 @@
   padding: var(--button-padding-y, var(--spacing-2)) var(--button-padding-x, var(--spacing-4));
   border-radius: var(--button-border-radius, var(--radius-md));
   font-weight: var(--button-font-weight, var(--font-weight-semibold));
-  transition: var(--button-transition, var(--transition-standard));
+  transition: var(--button-transition, 0.3s ease-in-out all);
   border: none;
   cursor: pointer;
   
@@ -81,6 +81,52 @@
     [data-theme="wellness"] & {
       background-color: var(--color-wellness-secondary, var(--color-secondary));
     }
+    
+    // Hero-style secondary button styling
+    &.hero-style-secondary {
+      border-radius: 9999px; // Rounded like hero button
+      background-color: var(--color-gray-800, #1f2937);
+      border: 2px solid rgba(163, 230, 53, 0.3); // Lime border with opacity
+      font-weight: var(--font-weight-bold, 700);
+      padding: 0.875rem 1.75rem; // Match hero button padding
+      
+      &:hover:not(:disabled) {
+        background-color: rgba(163, 230, 53, 0.1); // Lime with low opacity on hover
+        border-color: rgba(163, 230, 53, 0.4); // Slightly more opaque border on hover
+      }
+      
+      // Backdrop blur effect
+      &.backdrop-blur {
+        background-color: rgba(31, 41, 55, 0.7); // Semi-transparent dark background
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+      }
+      
+      // Theme overrides using direct selectors
+      [data-theme="gym"] & {
+        border-color: rgba(163, 230, 53, 0.3); // Keep lime border
+        
+        &:hover:not(:disabled) {
+          background-color: rgba(168, 85, 247, 0.1); // Theme-specific hover color
+        }
+      }
+      
+      [data-theme="sports"] & {
+        border-color: rgba(163, 230, 53, 0.3); // Keep lime border
+        
+        &:hover:not(:disabled) {
+          background-color: rgba(6, 182, 212, 0.1); // Theme-specific hover color
+        }
+      }
+      
+      [data-theme="wellness"] & {
+        border-color: rgba(163, 230, 53, 0.3); // Keep lime border
+        
+        &:hover:not(:disabled) {
+          background-color: rgba(20, 184, 166, 0.1); // Theme-specific hover color
+        }
+      }
+    }
   }
 
   // Size variants
@@ -101,4 +147,309 @@
     padding: 0 var(--spacing-6);
     font-size: var(--type-lg);
   }
-} 
+  
+  // Enhanced hover effect variants with smooth transitions
+  &.hover-effect-lift {
+    transition: var(--button-hover-transition);
+    will-change: transform, box-shadow;
+    
+    &:hover:not(:disabled) {
+      transform: translateY(var(--button-hover-lift-amount, -2px));
+      
+      // Add shadow if no explicit shadow is set
+      &:not(.btn-shadow) {
+        box-shadow: var(--button-shadow-hover);
+      }
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(var(--button-transform-down, 1px));
+    }
+  }
+  
+  &.hover-effect-scale {
+    transition: var(--button-hover-transition);
+    will-change: transform;
+    
+    &:hover:not(:disabled) {
+      transform: scale(var(--button-hover-scale-amount, 1.03));
+    }
+    
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+  }
+  
+  &.hover-effect-glow {
+    transition: var(--button-hover-transition);
+    
+    &:hover:not(:disabled) {
+      box-shadow: 0 0 var(--button-hover-glow-radius, 8px) var(--button-hover-glow-color, rgba(163, 230, 53, 0.4));
+    }
+    
+    // Special handling for gradient buttons with glow
+    &.btn-gradient:hover:not(:disabled) {
+      box-shadow: 0 0 var(--button-hover-glow-radius, 12px) var(--button-hover-glow-color, rgba(163, 230, 53, 0.5));
+    }
+  }
+  
+  // Combined hover effects
+  &.hover-effect-float {
+    transition: var(--button-hover-transition);
+    will-change: transform, box-shadow;
+    
+    &:hover:not(:disabled) {
+      transform: translateY(var(--button-hover-lift-amount, -2px));
+      box-shadow: 0 var(--button-hover-glow-radius, 8px) var(--button-hover-glow-radius, 8px) rgba(0, 0, 0, 0.1);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(var(--button-transform-down, 1px));
+    }
+  }
+  
+  // Enhanced Shadow variants with theme support
+  &.btn-shadow {
+    box-shadow: var(--button-shadow);
+    
+    &:hover:not(:disabled) {
+      box-shadow: var(--button-shadow-hover);
+    }
+    
+    &:active:not(:disabled) {
+      box-shadow: var(--button-shadow-active);
+    }
+    
+    // Shadow size variants
+    &.btn-shadow-sm {
+      box-shadow: var(--button-shadow-sm);
+      
+      &:hover:not(:disabled) {
+        box-shadow: var(--button-shadow); // Upgrade to default on hover
+      }
+    }
+    
+    &.btn-shadow-md {
+      box-shadow: var(--button-shadow-md);
+      
+      &:hover:not(:disabled) {
+        box-shadow: var(--button-shadow-hover);
+      }
+    }
+    
+    &.btn-shadow-lg {
+      box-shadow: var(--button-shadow-lg);
+      
+      &:hover:not(:disabled) {
+        box-shadow: var(--button-shadow-hover);
+      }
+    }
+    
+    // Special styling for primary buttons with shadow - now with theme support
+    &.btn-primary {
+      // Default primary shadow
+      box-shadow: var(--button-shadow-primary);
+      
+      &:hover:not(:disabled) {
+        box-shadow: var(--button-shadow-primary-hover);
+      }
+      
+      // Theme-specific primary shadows
+      [data-theme="gym"] & {
+        box-shadow: var(--button-shadow-gym-primary, var(--button-shadow-primary));
+        
+        &:hover:not(:disabled) {
+          box-shadow: var(--button-shadow-gym-primary-hover, var(--button-shadow-primary-hover));
+        }
+      }
+      
+      [data-theme="sports"] & {
+        box-shadow: var(--button-shadow-sports-primary, var(--button-shadow-primary));
+        
+        &:hover:not(:disabled) {
+          box-shadow: var(--button-shadow-sports-primary-hover, var(--button-shadow-primary-hover));
+        }
+      }
+      
+      [data-theme="wellness"] & {
+        box-shadow: var(--button-shadow-wellness-primary, var(--button-shadow-primary));
+        
+        &:hover:not(:disabled) {
+          box-shadow: var(--button-shadow-wellness-primary-hover, var(--button-shadow-primary-hover));
+        }
+      }
+    }
+  }
+  
+  // Enhanced Gradient button styles to better match HeroButton
+  &.btn-gradient {
+    // Match HeroButton gradient exactly
+    background-image: var(--button-gradient-primary, linear-gradient(to right, #a3e635, #34d399));
+    color: var(--color-gray-900, #111827); // Dark text for gradient buttons
+    font-weight: var(--font-weight-bold, 700); // Bolder text like hero button
+    transition: var(--button-hover-transition); // Use enhanced transitions
+    will-change: transform, background-image, box-shadow; // Performance optimization
+    border-radius: var(--button-gradient-radius, 9999px); // Rounded like hero button
+    
+    &:hover:not(:disabled) {
+      background-image: var(--button-gradient-primary-hover, linear-gradient(to right, #84cc16, #10b981));
+      transform: translateY(var(--button-transform-up, -2px)); // Add lift on hover
+    }
+    
+    &:active:not(:disabled) {
+      background-image: var(--button-gradient-primary-hover, linear-gradient(to right, #84cc16, #10b981));
+      transform: translateY(var(--button-transform-down, 1px)); // Slight press effect
+    }
+    
+    // Combined gradient and shadow styling - Hero-like button with enhanced shadows
+    &.btn-shadow {
+      box-shadow: var(--button-shadow-primary, 0 10px 15px -3px rgba(49, 196, 141, 0.25), 0 4px 6px -2px rgba(49, 196, 141, 0.1));
+      
+      &:hover:not(:disabled) {
+        box-shadow: var(--button-shadow-primary-hover, 0 20px 25px -5px rgba(49, 196, 141, 0.25), 0 10px 10px -5px rgba(49, 196, 141, 0.1));
+      }
+      
+      &:active:not(:disabled) {
+        box-shadow: var(--button-shadow-active);
+        transform: translateY(var(--button-transform-down, 1px)); // Press effect on active
+      }
+      
+      // Theme-specific shadows for gradient buttons
+      [data-theme="gym"] & {
+        box-shadow: var(--button-shadow-gym-primary, var(--button-shadow-primary));
+        
+        &:hover:not(:disabled) {
+          box-shadow: var(--button-shadow-gym-primary-hover, var(--button-shadow-primary-hover));
+        }
+      }
+      
+      [data-theme="sports"] & {
+        box-shadow: var(--button-shadow-sports-primary, var(--button-shadow-primary));
+        
+        &:hover:not(:disabled) {
+          box-shadow: var(--button-shadow-sports-primary-hover, var(--button-shadow-primary-hover));
+        }
+      }
+      
+      [data-theme="wellness"] & {
+        box-shadow: var(--button-shadow-wellness-primary, var(--button-shadow-primary));
+        
+        &:hover:not(:disabled) {
+          box-shadow: var(--button-shadow-wellness-primary-hover, var(--button-shadow-primary-hover));
+        }
+      }
+      
+      // Shadow size variants for gradient buttons
+      &.btn-shadow-sm {
+        box-shadow: var(--button-shadow-sm);
+      }
+      
+      &.btn-shadow-md {
+        // Use colored shadow but slightly smaller
+        box-shadow: var(--button-shadow-primary);
+      }
+      
+      &.btn-shadow-lg {
+        // Use larger colored shadow for impressive effect
+        box-shadow: var(--button-shadow-primary-hover);
+      }
+    }
+    
+    // Theme variants for gradients with improved consistency
+    [data-theme="gym"] & {
+      background-image: var(--button-gradient-gym-primary, 
+        linear-gradient(to right, 
+          var(--color-gym-primary-light, var(--color-lime-300)), 
+          var(--color-gym-primary, var(--color-emerald-400))
+        )
+      );
+      
+      &:hover:not(:disabled) {
+        background-image: var(--button-gradient-gym-primary-hover,
+          linear-gradient(to right, 
+            var(--color-gym-primary, var(--color-lime-400)), 
+            var(--color-gym-primary-dark, var(--color-emerald-500))
+          )
+        );
+      }
+    }
+    
+    [data-theme="sports"] & {
+      background-image: var(--button-gradient-sports-primary,
+        linear-gradient(to right, 
+          var(--color-sports-primary-light, var(--color-blue-300)), 
+          var(--color-sports-primary, var(--color-blue-500))
+        )
+      );
+      
+      &:hover:not(:disabled) {
+        background-image: var(--button-gradient-sports-primary-hover,
+          linear-gradient(to right, 
+            var(--color-sports-primary, var(--color-blue-400)), 
+            var(--color-sports-primary-dark, var(--color-blue-600))
+          )
+        );
+      }
+    }
+    
+    [data-theme="wellness"] & {
+      background-image: var(--button-gradient-wellness-primary,
+        linear-gradient(to right, 
+          var(--color-wellness-primary-light, var(--color-purple-300)), 
+          var(--color-wellness-primary, var(--color-purple-500))
+        )
+      );
+      
+      &:hover:not(:disabled) {
+        background-image: var(--button-gradient-wellness-primary-hover,
+          linear-gradient(to right, 
+            var(--color-wellness-primary, var(--color-purple-400)), 
+            var(--color-wellness-primary-dark, var(--color-purple-600))
+          )
+        );
+      }
+    }
+    
+    // Special styling for large gradient buttons
+    &.btn-lg {
+      padding: var(--spacing-4) var(--spacing-8); // Matches hero button padding (1rem 2rem)
+      min-width: var(--button-lg-min-width, 180px); // Ensure button has good width
+    }
+    
+    // Improved focus state for accessibility
+    &:focus-visible {
+      outline: none;
+      box-shadow: var(--button-shadow-focus, 0 0 0 3px rgba(163, 230, 53, 0.4)); // Lime glow focus ring
+    }
+  }
+  
+  // Button icon styles
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    &--left {
+      margin-right: var(--spacing-2);
+    }
+    
+    &--right {
+      margin-left: var(--spacing-2);
+    }
+  }
+  
+  // Full width button
+  &-full-width {
+    width: 100%;
+  }
+  
+  // Add reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    transition: none !important;
+    
+    &:hover:not(:disabled),
+    &:active:not(:disabled) {
+      transform: none !important;
+    }
+  }
+}
