@@ -9,6 +9,7 @@
 # Production
 /build
 /dist
+storybook-static/
 
 # Misc
 .DS_Store
@@ -49,6 +50,7 @@ wp-content/plugins/hello.php
 .htaccess
 sitemap.xml
 sitemap.xml.gz
+tmp/
 
 # Cursor editor
 .cursor/ 
