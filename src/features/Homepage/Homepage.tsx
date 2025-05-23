@@ -1,29 +1,55 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import logger from '../../utils/logger';
 import './styles/homepage.scss';
 
 // Import custom hooks
 import { useHomepageAnimation, useHomepageData } from './hooks';
 
-// Import feature components
+// Import registration which needs to be loaded immediately
 import Registration from '../Registration/Registration';
 import { RegistrationData } from '../Registration/types';
-import { Features } from './Features';
-import { Footer } from './Footer';
-import Hero from './Hero';
-import { Journey } from './Journey';
-import { getPersonalTrainingVariant, PersonalTraining } from './PersonalTraining';
-import { Pricing } from './Pricing';
-import { Testimonials } from './Testimonials';
-import Training, { getTrainingVariant } from './Training';
-import TrainingFeatures, { getTrainingFeaturesVariant } from './TrainingFeatures';
+
+// Import utility functions for variants
+import { getPersonalTrainingVariant } from './PersonalTraining';
+import { PersonalTrainingVariant } from './PersonalTraining/utils/themeUtils';
+import { getTrainingVariant } from './Training';
+import { getTrainingFeaturesVariant } from './TrainingFeatures';
+
+// Import type definitions for variants
+import { VariantKey as FeaturesVariantKey } from './Features/types';
+import { HeroVariantKey } from './Hero/types';
+import { JourneyStep as JourneyStepType } from './Journey/types';
+
+// Lazy load feature components
+const Features = lazy(() => import(/* webpackChunkName: "feature-homepage-features" */ './Features').then(module => ({ default: module.Features })));
+const Footer = lazy(() => import(/* webpackChunkName: "feature-homepage-footer" */ './Footer').then(module => ({ default: module.Footer })));
+const Hero = lazy(() => import(/* webpackChunkName: "feature-homepage-hero" */ './Hero'));
+const Journey = lazy(() => import(/* webpackChunkName: "feature-homepage-journey" */ './Journey').then(module => ({ default: module.Journey })));
+const PersonalTraining = lazy(() => import(/* webpackChunkName: "feature-homepage-personal-training" */ './PersonalTraining').then(module => ({ default: module.PersonalTraining })));
+const Pricing = lazy(() => import(/* webpackChunkName: "feature-homepage-pricing" */ './Pricing').then(module => ({ default: module.Pricing })));
+const Testimonials = lazy(() => import(/* webpackChunkName: "feature-homepage-testimonials" */ './Testimonials').then(module => ({ default: module.Testimonials })));
+const Training = lazy(() => import(/* webpackChunkName: "feature-homepage-training" */ './Training'));
+const TrainingFeatures = lazy(() => import(/* webpackChunkName: "feature-homepage-training-features" */ './TrainingFeatures'));
 
 // Import feature-specific components
 import { DemoNav } from './components';
-import { VariantKey } from './Hero/types';
 
 // Import shared components
 import { GlobalBackground } from '../../components/shared';
+
+// Type for the theme variant from GlobalBackground
+type ThemeVariant = 'default' | 'gym' | 'sports' | 'wellness' | 'modern' | 'classic' | 'minimalist';
+
+// Generic loading skeleton component
+const LoadingSkeleton = ({ height = '300px', type = 'default' }) => (
+  <div 
+    className={`lazy-loading-skeleton ${type}-skeleton`} 
+    style={{ height }}
+    aria-label="Loading content..."
+  >
+    <div className="loading-animation"></div>
+  </div>
+);
 
 export interface HomepageProps {
   demoMode?: boolean;
@@ -41,10 +67,10 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
 
   const data = useHomepageData();
 
-  // Track variants for demo mode
-  const [variants, setVariants] = useState<Record<string, VariantKey>>({
-    hero: 'default',
-    features: 'default',
+  // Track variants for demo mode 
+  const [variants, setVariants] = useState({
+    hero: 'default' as HeroVariantKey,
+    features: 'default' as FeaturesVariantKey,
     journey: 'default',
     training: getTrainingVariant(),
     personalTraining: getPersonalTrainingVariant(),
@@ -123,7 +149,7 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
   };
 
   // Handle variant change in demo mode
-  const handleVariantChange = (sectionKey: string, variant: VariantKey) => {
+  const handleVariantChange = (sectionKey: string, variant: string) => {
     logger.debug(`Changing ${sectionKey} variant to ${variant}`);
     setVariants(prev => ({
       ...prev,
@@ -137,37 +163,37 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
       id: 'hero',
       label: 'Hero',
       variantKey: 'hero',
-      variants: ['default', 'gym', 'sports', 'wellness'] as VariantKey[]
+      variants: ['default', 'gym', 'sports', 'wellness']
     },
     {
       id: 'features',
       label: 'Features',
       variantKey: 'features',
-      variants: ['default', 'gym', 'sports', 'wellness'] as VariantKey[]
+      variants: ['default', 'gym', 'sports', 'wellness']
     },
     {
       id: 'journey',
       label: 'Journey',
       variantKey: 'journey',
-      variants: ['default', 'gym', 'sports', 'wellness'] as VariantKey[]
+      variants: ['default', 'gym', 'sports', 'wellness']
     },
     {
       id: 'training',
       label: 'Training Programs',
       variantKey: 'training',
-      variants: ['default', 'boutique', 'classic', 'minimalist', 'modern', 'sports', 'wellness'] as VariantKey[]
+      variants: ['default', 'boutique', 'classic', 'minimalist', 'modern', 'sports', 'wellness']
     },
     {
       id: 'trainingFeatures',
       label: 'Training Features',
       variantKey: 'trainingFeatures',
-      variants: ['default', 'boutique', 'classic', 'minimalist', 'modern', 'sports', 'wellness'] as VariantKey[]
+      variants: ['default', 'boutique', 'classic', 'minimalist', 'modern', 'sports', 'wellness']
     },
     {
       id: 'personalTraining',
       label: 'Personal Training',
       variantKey: 'personalTraining',
-      variants: ['default'] as VariantKey[]
+      variants: ['default']
     },
     {
       id: 'testimonials',
@@ -185,7 +211,14 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
 
   // Determine the active theme for the entire page
   // In a real app, this might come from user preferences or context
-  const activeTheme = variants.hero;
+  const activeTheme = variants.hero as ThemeVariant;
+
+  // Transform WordPress Journey data to match the expected Journey component data
+  const transformedJourneyData = data.journey?.map((step, index) => ({
+    ...step,
+    id: parseInt(step.id) || index + 1,
+    number: step.stepNumber || index + 1
+  })) as JourneyStepType[];
 
   return (
     <main
@@ -211,13 +244,15 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
 
       {/* Hero Section - Using dynamic variant */}
       <section id="hero" ref={heroRef} className={showRegistration ? 'dimmed' : ''}>
-        <Hero
-          registrationLink={data.siteLinks.registration}
-          loginLink={data.siteLinks.login}
-          logoUrl={data.assets.logo}
-          onRegistrationStart={handleRegistrationStart}
-          variant={variants.hero}
-        />
+        <Suspense fallback={<LoadingSkeleton height="100vh" type="hero" />}>
+          <Hero
+            registrationLink={data.siteLinks.registration}
+            loginLink={data.siteLinks.login}
+            logoUrl={data.assets.logo}
+            onRegistrationStart={handleRegistrationStart}
+            variant={variants.hero}
+          />
+        </Suspense>
       </section>
 
       {/* Registration Section - inserted after Hero */}
@@ -238,49 +273,66 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
 
       {/* Features Section */}
       <div id="features" className={showRegistration ? 'dimmed' : ''}>
-        <Features
-          variant={variants.features}
-        />
+        <Suspense fallback={<LoadingSkeleton height="600px" type="features" />}>
+          <Features
+            variant={variants.features}
+          />
+        </Suspense>
       </div>
 
       {/* Journey Section */}
       <div id="journey" className={showRegistration ? 'dimmed' : ''}>
-        <Journey journey={data.journey} />
+        <Suspense fallback={<LoadingSkeleton height="500px" type="journey" />}>
+          <Journey journey={transformedJourneyData} />
+        </Suspense>
       </div>
 
-      {/* Training Programs Section */}
-      <div id="training" className={showRegistration ? 'dimmed' : ''}>
-        <Training variant={variants.training} />
+      {/* Training Section */}
+      <div id="training-programs" className={showRegistration ? 'dimmed' : ''}>
+        <Suspense fallback={<LoadingSkeleton height="700px" type="training" />}>
+          <Training
+            variant={variants.training}
+          />
+        </Suspense>
       </div>
 
       {/* Training Features Section */}
-      <div id="trainingFeatures" className={showRegistration ? 'dimmed' : ''}>
-        <TrainingFeatures variant={variants.trainingFeatures} />
+      <div id="training-features" className={showRegistration ? 'dimmed' : ''}>
+        <Suspense fallback={<LoadingSkeleton height="600px" type="training-features" />}>
+          <TrainingFeatures
+            variant={variants.trainingFeatures as any}
+          />
+        </Suspense>
       </div>
 
       {/* Personal Training Section */}
-      <div id="personalTraining" className={showRegistration ? 'dimmed' : ''}>
-        <PersonalTraining variant={variants.personalTraining} />
+      <div id="personal-training" className={showRegistration ? 'dimmed' : ''}>
+        <Suspense fallback={<LoadingSkeleton height="500px" type="personal-training" />}>
+          <PersonalTraining
+            variant={variants.personalTraining as PersonalTrainingVariant}
+          />
+        </Suspense>
       </div>
 
       {/* Testimonials Section */}
       <div id="testimonials" className={showRegistration ? 'dimmed' : ''}>
-        <Testimonials />
+        <Suspense fallback={<LoadingSkeleton height="400px" type="testimonials" />}>
+          <Testimonials />
+        </Suspense>
       </div>
 
       {/* Pricing Section */}
       <div id="pricing" className={showRegistration ? 'dimmed' : ''}>
-        <Pricing />
+        <Suspense fallback={<LoadingSkeleton height="700px" type="pricing" />}>
+          <Pricing />
+        </Suspense>
       </div>
 
-      {/* Footer */}
-      <div id="footer" className={showRegistration ? 'dimmed' : ''}>
-        <Footer
-          logoUrl={data.assets.logo}
-          socialLinks={data.socialLinks}
-          legalLinks={data.legalLinks}
-          mainLinks={data.mainLinks}
-        />
+      {/* Footer Section */}
+      <div id="footer">
+        <Suspense fallback={<LoadingSkeleton height="300px" type="footer" />}>
+          <Footer />
+        </Suspense>
       </div>
     </main>
   );

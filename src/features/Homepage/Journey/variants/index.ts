@@ -1,5 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import { getComponentVariant } from '../../../../utils/variantLoader';
+import { JourneyProps, VariantKey } from '../types';
 
 import BoutiqueVariant from './boutique';
 import ClassicVariant from './classic';
@@ -8,13 +9,6 @@ import MinimalistVariant from './minimalist';
 import ModernVariant from './modern';
 import SportsVariant from './sports';
 import WellnessVariant from './wellness';
-
-// Define proper props type
-type VariantKey = 'default' | 'gym' | 'boutique' | 'modern' | 'wellness' | 'classic' | 'sports' | 'minimalist' | 'registration';
-
-export interface JourneyProps {
-    variant?: VariantKey;
-}
 
 // Map variant keys to their React components
 export const JourneyMap: Record<string, React.ComponentType<JourneyProps>> = {
@@ -25,22 +19,27 @@ export const JourneyMap: Record<string, React.ComponentType<JourneyProps>> = {
   modern: ModernVariant,
   sports: SportsVariant,
   wellness: WellnessVariant,
+  gym: DefaultVariant, // Fallback to default
 };
 
 // Helper function to get the variant component based on WordPress settings
 export const getJourneyVariant = () => {
-  const variant = getComponentVariant('journey', 'default');
-  return JourneyMap[variant] || JourneyMap.default;
+  return getComponentVariant(JourneyMap, DefaultVariant);
 };
 
 // Export all variants
 export {
   BoutiqueVariant,
-  ClassicVariant, DefaultVariant, MinimalistVariant,
+  ClassicVariant,
+  DefaultVariant,
+  MinimalistVariant,
   ModernVariant,
   SportsVariant,
   WellnessVariant
 };
 
+// Re-export JourneyProps
+  export type { JourneyProps, VariantKey };
+
 // Default export for backward compatibility
-export default DefaultVariant; 
+export default DefaultVariant;

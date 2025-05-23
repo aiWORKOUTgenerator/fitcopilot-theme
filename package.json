@@ -45,6 +45,7 @@
     "@storybook/react-webpack5": "^7.6.16",
     "@storybook/test": "^7.6.16",
     "@tailwindcss/postcss": "^4.1.4",
+    "@testing-library/dom": "^10.4.0",
     "@types/aos": "^3.0.7",
     "@types/axe-core": "^2.0.2",
     "@types/jest": "^29.5.14",
@@ -113,7 +114,7 @@
     "verify:sass-colors": "node scripts/sass-color-audit.js",
     "verify:bundle-size": "ANALYZE=true webpack --mode production && node scripts/verify-bundle-size.js",
     "prebuild": "npm run verify:all && npm run verify:imports || echo '⚠️ Verification warnings - check consistency!'",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "node scripts/fix-react-imports.js && storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook",
     "chromatic": "chromatic --exit-zero-on-changes",
@@ -168,7 +169,8 @@
     "type:coverage": "node scripts/type-coverage.js",
     "type:check-any": "node scripts/check-new-any-types.js",
     "ci:lint": "npm run eslint:metrics && npm run type:coverage",
-    "verify:build": "node scripts/verify-build.js"
+    "verify:build": "node scripts/verify-build.js",
+    "fix:react-imports": "node scripts/fix-react-imports.js"
   },
   "resolutions": {
     "ajv": "^6.12.6",

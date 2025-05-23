@@ -1,10 +1,15 @@
 #!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
 
 # Allow bypassing with SKIP_LINT=1 git commit
 if [ -n "$SKIP_LINT" ]; then
   echo "⚠️ Skipping lint checks due to SKIP_LINT environment variable"
   exit 0
 fi
+
+# Run React import fix script
+echo "👀 Running react-imports fix..."
+node scripts/fix-react-imports.js
 
 # Run linting
 echo "🔍 Running ESLint checks..."

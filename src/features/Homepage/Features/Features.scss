@@ -178,6 +178,30 @@
     will-change: background-position;
   }
 
+  // Violet gradient text for buttons
+  .violet-gradient-text {
+    background-image: linear-gradient(to right, #c4b5fd, #a78bfa, #8b5cf6);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 700;
+    animation: violetGradientShift 3s ease infinite;
+    will-change: background-position;
+  }
+
+  @keyframes violetGradientShift {
+    0% {
+      background-position: 0% center;
+    }
+    50% {
+      background-position: 100% center;
+    }
+    100% {
+      background-position: 0% center;
+    }
+  }
+
   // Video player progress bar
   .video-progress {
     height: 4px;
@@ -378,6 +402,7 @@
     .animate-heartbeat,
     .animate-heart-pulse,
     .text-gradient,
+    .violet-gradient-text,
     .animate-pulse-border {
       animation: none !important;
     }

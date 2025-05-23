@@ -7,7 +7,7 @@ import React, { useRef } from 'react';
 // import styles from './Hero.module.scss';
 import { ThemeCSSProperties } from '../../../types/theme';
 import './Hero.scss';
-import FloatingIcons from './components/FloatingIcons';
+import { FloatingIcons } from './components/FloatingIcons';
 import { HeroProps } from './types';
 
 export const Hero: React.FC<HeroProps> = ({

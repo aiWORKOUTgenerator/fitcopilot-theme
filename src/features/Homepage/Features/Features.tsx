@@ -21,12 +21,12 @@ const mapVariantToTheme = (variant: VariantKey): ThemeOption => {
   
   // Custom mappings
   switch (variant) {
-    case 'boutique': return 'wellness';
-    case 'modern': return 'sports';
-    case 'classic': return 'default';
-    case 'minimalist': return 'default';
-    case 'registration': return 'default';
-    default: return 'default';
+  case 'boutique': return 'wellness';
+  case 'modern': return 'sports';
+  case 'classic': return 'default';
+  case 'minimalist': return 'default';
+  case 'registration': return 'default';
+  default: return 'default';
   }
 };
 
@@ -320,11 +320,11 @@ const BackgroundVideoPlayer: React.FC<{ onScrollToSplash: (e: React.MouseEvent<H
             <FeatureButton
               variant="primary"
               size="large"
-              className="inline-flex items-center rounded-full font-medium"
+              className="inline-flex items-center rounded-full font-medium px-8 min-w-[220px]"
               leftIcon={<Zap className="features-icon" />}
               onClick={onScrollToSplash}
             >
-              Get Started
+              <span className="violet-gradient-text">Get Started</span>
             </FeatureButton>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getComponentVariant } from '../../../../utils/variantLoader';
+import { HeroProps, HeroVariantKey } from '../types';
 
 import BoutiqueVariant from './boutique';
 import ClassicVariant from './classic';
@@ -9,13 +9,6 @@ import ModernVariant from './modern';
 import RegistrationVariant from './registration';
 import SportsVariant from './sports';
 import WellnessVariant from './wellness';
-
-// Define proper props type
-type VariantKey = 'default' | 'gym' | 'boutique' | 'modern' | 'wellness' | 'classic' | 'sports' | 'minimalist' | 'registration';
-
-export interface HeroProps {
-    variant?: VariantKey;
-}
 
 // Map variant keys to their React components
 export const HeroMap: Record<string, React.ComponentType<HeroProps>> = {
@@ -27,12 +20,21 @@ export const HeroMap: Record<string, React.ComponentType<HeroProps>> = {
   registration: RegistrationVariant,
   sports: SportsVariant,
   wellness: WellnessVariant,
+  gym: DefaultVariant // Fallback for gym variant to default
 };
 
 // Helper function to get the variant component based on WordPress settings
-export const getHeroVariant = () => {
-  const variant = getComponentVariant('hero', 'default');
-  return HeroMap[variant] || HeroMap.default;
+export const getHeroVariant = (): React.ComponentType<HeroProps> => {
+  // Get the current theme from body data-theme attribute
+  const bodyTheme = document.body.getAttribute('data-theme');
+  const validTheme = bodyTheme as HeroVariantKey | undefined;
+  
+  // Return the appropriate variant or default
+  if (validTheme && HeroMap[validTheme]) {
+    return HeroMap[validTheme];
+  }
+  
+  return HeroMap.default;
 };
 
 // Export all variants
@@ -46,6 +48,9 @@ export {
   SportsVariant,
   WellnessVariant
 };
+
+// Re-export HeroProps type for variant components
+  export type { HeroProps };
 
 // Default export for backward compatibility
 export default DefaultVariant; 

@@ -4,11 +4,17 @@ import FloatingIcon from './FloatingIcon';
 import './FloatingIcons.scss';
 
 /**
+ * Interface for Lucide icon props that includes size
+ */
+interface LucideIconProps extends React.SVGProps<SVGSVGElement> {
+  size?: number | string;
+}
+
+/**
  * Interface for floating icon data
  */
 interface FloatingIconData {
-    // Use a specific type for Lucide icons instead of any
-    Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+    Icon: React.ComponentType<LucideIconProps>;
     size: number;
     left: number;
     top: number;

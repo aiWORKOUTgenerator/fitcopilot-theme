@@ -1,0 +1,18 @@
+ESLint Report Summary (20250522-081929)
+==================================
+
+Total issues: 3206
+Errors: 3108
+Warnings: 98
+
+Top rule violations:
+3446  - indent
+ 696  - no-mixed-spaces-and-tabs
+ 696  - no-extra-semi
+ 137  - react/jsx-indent
+ 128  - react/jsx-indent-props
+  61  - @typescript-eslint/no-explicit-any
+  42  - @typescript-eslint/no-unused-vars
+  30  - no-console
+  30  - fitcopilot/use-logger
+  13  - @typescript-eslint/ban-ts-comment

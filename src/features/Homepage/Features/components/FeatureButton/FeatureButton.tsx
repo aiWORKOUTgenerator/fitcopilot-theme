@@ -39,8 +39,8 @@ export const FeatureButton: React.FC<FeatureButtonProps> = ({
   gradientClass,
   ...restProps
 }) => {
-  // Access theme context
-  const { theme } = useTheme();
+  // Access theme context (currently not used but kept for future theme-aware enhancements)
+  const { theme: _theme } = useTheme();
   
   // Construct CSS classes
   const buttonClasses = classNames(

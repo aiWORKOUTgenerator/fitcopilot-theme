@@ -84,8 +84,21 @@ module.exports = {
         features: {
           test: /[\\/]src[\\/]features[\\/]/,
           name(module) {
-            const match = module.context.match(/[\\/]features[\\/]([\w-]+)/);
-            return match ? `feature-${match[1].toLowerCase()}` : 'feature-common';
+            // Enhanced regex matching for feature module paths
+            const featureMatch = module.context.match(/[\\/]features[\\/]([\w-]+)(?:[\\/]|$)/);
+            
+            // Skip Homepage components, they'll be part of the main bundle
+            if (module.context.includes('/features/Homepage')) {
+              return false; // Return false to skip this cacheGroup
+            }
+            
+            // Registration feature
+            if (module.context.includes('/features/Registration')) {
+              return 'feature-registration';
+            }
+            
+            // Default feature naming based on directory
+            return featureMatch ? `feature-${featureMatch[1].toLowerCase()}` : 'feature-common';
           },
           chunks: 'all',
           priority: 10,
@@ -264,7 +277,6 @@ module.exports = {
           'vendors',
           'utils',
           'feature-registration',
-          'feature-homepage',
           'lucide-icons',
           'feature-common'
         ];
@@ -288,7 +300,7 @@ module.exports = {
           manifest[key] = file.path;
         });
 
-        // Verify all expected entries are present
+        // Verify all expected entries are present, except feature-homepage which is conditionally included
         const missingEntries = expectedEntries.filter(entry => {
           const jsEntry = `${entry}.js`;
           const cssEntry = `${entry}.css`;

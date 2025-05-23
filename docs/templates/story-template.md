@@ -2,12 +2,14 @@
 
 This document provides a template for creating new Storybook stories in the FitCopilot theme.
 
+> **IMPORTANT**: Always include the `import React from 'react';` statement in any story that uses JSX, even if React is not explicitly referenced in your code. This is necessary because the JSX gets transformed into `React.createElement()` calls when compiled, and without the import, Storybook will throw a "React is not defined" error.
+
 ## Basic Story Template
 
 ```tsx
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { ComponentName } from '../ComponentName';
-import React from 'react';
 
 const meta: Meta<typeof ComponentName> = {
   title: 'Features/Category/ComponentName', // Use proper hierarchy
@@ -91,9 +93,9 @@ export const ThemeVariants: Story = {
 For components that have state or need interaction in the story:
 
 ```tsx
+import React, { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { ComponentName } from '../ComponentName';
-import React, { useState } from 'react';
 
 const meta: Meta<typeof ComponentName> = {
   // ... same as basic template
@@ -127,9 +129,9 @@ export const Interactive: Story = {
 For form components:
 
 ```tsx
+import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { FormComponent } from '../FormComponent';
-import React from 'react';
 
 const meta: Meta<typeof FormComponent> = {
   // ... meta configuration
@@ -212,5 +214,7 @@ src/features/FeatureName/ComponentName/
 ## Related Documentation
 
 For more detailed guidance on writing stories, refer to:
+- [Storybook Standards](./story-standards.md)
+- [Directory Patterns](../architecture/directory-patterns.md) 
 - [Storybook Standards](./story-standards.md)
 - [Directory Patterns](../architecture/directory-patterns.md) 

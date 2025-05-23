@@ -4,6 +4,27 @@
 // Card Component Styles
 // Uses design system tokens for consistent theming and responsiveness
 
+// Base card placeholder
+%card-base {
+    background-color: var(--card-bg-color, var(--color-surface-primary, #ffffff));
+    border-radius: var(--card-border-radius, var(--radius-lg, 0.5rem));
+    border: 1px solid var(--card-border-color, var(--color-border-light, #e5e7eb));
+    box-shadow: var(--card-shadow, var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)));
+}
+
+// Button placeholder
+%button-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-semibold);
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
 // Base card styles
 .card {
     @extend %card-base;

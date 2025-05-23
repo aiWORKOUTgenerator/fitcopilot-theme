@@ -340,21 +340,21 @@ type Story = StoryObj<typeof ${componentName}>;`);
   
   // Check if we need theme support and if there's a ThemeShowcase story
   if (needsThemeSupport) {
-    const hasThemeShowcase = storiesSection.some(s => s.includes('export const ThemeShowcase'));
-    
-    if (!hasThemeShowcase) {
-      // Add a ThemeShowcase story
-      newContent = newContent.replace(/\/\*\s*export const ThemeShowcase[\s\S]*?\*\//, 
-                `export const ThemeShowcase: Story = {
+  const hasThemeShowcase = storiesSection.some(s => s.includes('export const ThemeShowcase'));
+  
+  if (!hasThemeShowcase) {
+    // Add a ThemeShowcase story
+    newContent = newContent.replace(/\/\*\s*export const ThemeShowcase[\s\S]*?\*\//, 
+              `export const ThemeShowcase: Story = {
   render: (args) => ComponentWithThemes(${componentName}, args),
   args: {
     // Component props
   }
 };`);
-    } else {
-      // Find and include the ThemeShowcase story from the original file
-      const themeShowcase = storiesSection.find(s => s.includes('export const ThemeShowcase'));
-      newContent = newContent.replace(/\/\*\s*export const ThemeShowcase[\s\S]*?\*\//, themeShowcase);
+  } else {
+    // Find and include the ThemeShowcase story from the original file
+    const themeShowcase = storiesSection.find(s => s.includes('export const ThemeShowcase'));
+    newContent = newContent.replace(/\/\*\s*export const ThemeShowcase[\s\S]*?\*\//, themeShowcase);
     }
   }
   

@@ -314,6 +314,19 @@
 }
 
 /* Features section */
+.hero-feature-pills-container {
+  display: var(--display-hero-flex);
+  justify-content: var(--justify-hero-center);
+  margin-top: 2rem; /* Reduced margin since it's now outside the card */
+  position: relative;
+  z-index: 1;
+
+  @media (min-width: 768px) {
+    margin-top: 2.5rem;
+  }
+}
+
+/* Legacy feature pills - Kept for backward compatibility */
 .hero-features {
   display: var(--display-hero-flex);
   flex-wrap: wrap;

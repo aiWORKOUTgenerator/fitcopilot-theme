@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { BookOpen, Dumbbell, Medal, Target } from 'lucide-react';
 import React, { useState } from 'react';
-import { DetailedFeature, JourneyStepProps, JourneyStep as JourneyStepType } from '../../../types';
 import { JourneyStep } from '../../../components';
-import { JourneyFeatureCard } from '../../../components';
+import { DetailedFeature, JourneyStepProps, JourneyStep as JourneyStepType } from '../../../types';
 
 const meta: Meta<typeof JourneyStep> = {
   title: 'Features/Homepage/Journey/components/JourneyStep',

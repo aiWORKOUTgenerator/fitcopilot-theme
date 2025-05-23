@@ -135,11 +135,22 @@ export interface ExpandedContentProps {
   variant: VariantKey;
 }
 
+/**
+ * Additional props that can be passed to StepCTA
+ */
+export interface StepCTAAdditionalProps {
+  onClick?: (event: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
+  target?: '_blank' | '_self';
+  rel?: string;
+  style?: React.CSSProperties;
+  'data-testid'?: string;
+}
+
 // Step CTA props
 export interface StepCTAProps {
   step: JourneyStep;
   isExpanded?: boolean;
   variant?: VariantKey;
   className?: string;
-  [key: string]: any; // For additional props passed through rest
+  [key: string]: StepCTAAdditionalProps[keyof StepCTAAdditionalProps] | JourneyStep | boolean | string | undefined;
 } 

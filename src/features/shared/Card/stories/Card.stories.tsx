@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
 import { Card } from '../components';
 import { CardProps } from '../types';
 
@@ -75,22 +76,31 @@ export const WorkoutCard: Story = {
 };
 
 export const ThemeVariants: Story = {
-  render: () => (
-    <div className="story-theme-grid" style={{ display: 'flex', gap: '20px' }}>
-      <div data-theme="personal-training">
-        <Card
-          variant="content"
-          title="Personal Training"
-          description="One-on-one coaching tailored to your needs"
-        />
-      </div>
-      <div data-theme="group-fitness">
-        <Card
-          variant="content"
-          title="Group Fitness"
-          description="Join our community workout sessions"
-        />
-      </div>
-    </div>
+  render: () => React.createElement(
+    'div',
+    { 
+      className: "story-theme-grid", 
+      style: { display: 'flex', gap: '20px' } 
+    },
+    [
+      React.createElement(
+        'div',
+        { 'data-theme': "personal-training", key: "personal-training" },
+        React.createElement(Card, {
+          variant: "content",
+          title: "Personal Training",
+          description: "One-on-one coaching tailored to your needs"
+        })
+      ),
+      React.createElement(
+        'div',
+        { 'data-theme': "group-fitness", key: "group-fitness" },
+        React.createElement(Card, {
+          variant: "content",
+          title: "Group Fitness",
+          description: "Join our community workout sessions"
+        })
+      )
+    ]
   )
 }; 

@@ -1,0 +1,89 @@
+// Design system variables and mixins
+
+// Breakpoint mixins
+@mixin sm {
+  @media (min-width: 640px) { @content; }
+}
+
+@mixin md {
+  @media (min-width: 768px) { @content; }
+}
+
+@mixin lg {
+  @media (min-width: 1024px) { @content; }
+}
+
+@mixin xl {
+  @media (min-width: 1280px) { @content; }
+}
+
+@mixin xxl {
+  @media (min-width: 1536px) { @content; }
+}
+
+// Typography scales
+$font-size-xs: 0.75rem;   // 12px
+$font-size-sm: 0.875rem;  // 14px
+$font-size-base: 1rem;    // 16px
+$font-size-lg: 1.125rem;  // 18px
+$font-size-xl: 1.25rem;   // 20px
+$font-size-2xl: 1.5rem;   // 24px
+$font-size-3xl: 1.875rem; // 30px
+$font-size-4xl: 2.25rem;  // 36px
+$font-size-5xl: 3rem;     // 48px 
+
+// Button gradients
+$button-gradient-primary: linear-gradient(to right, var(--color-lime-300, #a3e635), var(--color-emerald-400, #34d399));
+$button-gradient-primary-hover: linear-gradient(to right, var(--color-lime-400, #84cc16), var(--color-emerald-500, #10b981));
+$button-gradient-secondary: linear-gradient(to right, var(--color-gray-700, #374151), var(--color-gray-800, #1f2937));
+
+:root {
+  // Button gradients
+  --button-gradient-primary: #{$button-gradient-primary};
+  --button-gradient-primary-hover: #{$button-gradient-primary-hover};
+  --button-gradient-secondary: #{$button-gradient-secondary};
+} 
+
+// Breakpoint mixins
+@mixin sm {
+  @media (min-width: 640px) { @content; }
+}
+
+@mixin md {
+  @media (min-width: 768px) { @content; }
+}
+
+@mixin lg {
+  @media (min-width: 1024px) { @content; }
+}
+
+@mixin xl {
+  @media (min-width: 1280px) { @content; }
+}
+
+@mixin xxl {
+  @media (min-width: 1536px) { @content; }
+}
+
+// Typography scales
+$font-size-xs: 0.75rem;   // 12px
+$font-size-sm: 0.875rem;  // 14px
+$font-size-base: 1rem;    // 16px
+$font-size-lg: 1.125rem;  // 18px
+$font-size-xl: 1.25rem;   // 20px
+$font-size-2xl: 1.5rem;   // 24px
+$font-size-3xl: 1.875rem; // 30px
+$font-size-4xl: 2.25rem;  // 36px
+$font-size-5xl: 3rem;     // 48px 
+
+// Button gradients
+$button-gradient-primary: linear-gradient(to right, var(--color-lime-300, #a3e635), var(--color-emerald-400, #34d399));
+$button-gradient-primary-hover: linear-gradient(to right, var(--color-lime-400, #84cc16), var(--color-emerald-500, #10b981));
+$button-gradient-secondary: linear-gradient(to right, var(--color-gray-700, #374151), var(--color-gray-800, #1f2937));
+
+:root {
+  // Button gradients
+  --button-gradient-primary: #{$button-gradient-primary};
+  --button-gradient-primary-hover: #{$button-gradient-primary-hover};
+  --button-gradient-secondary: #{$button-gradient-secondary};
+} 

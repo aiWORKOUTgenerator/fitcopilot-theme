@@ -18,6 +18,16 @@ const mapVariantToTheme = (variant: string | undefined): ThemeOption => {
 };
 
 /**
+ * Type for gradient color options
+ */
+type GradientColorOption = 'lime' | 'cyan' | 'violet' | 'amber';
+
+/**
+ * Type for button size options
+ */
+type ButtonSizeOption = 'small' | 'medium' | 'large';
+
+/**
  * JourneyCTA - Call to action button with gradient styling
  */
 const JourneyCTA: React.FC<JourneyCTAProps> = ({
@@ -30,10 +40,12 @@ const JourneyCTA: React.FC<JourneyCTAProps> = ({
   gradientColor = 'lime',
   variant
 }) => {
-  const prefersReducedMotion = useReducedMotion();
+  const _prefersReducedMotion = useReducedMotion();
+  // Unused buttonVariant, mark with underscore to indicate intentional non-usage
+  const _buttonVariant = buttonVariant;
 
   // Map traditional gradient colors to JourneyButton props
-  const gradientColorMap = {
+  const gradientColorMap: Record<string, GradientColorOption> = {
     lime: 'lime',
     cyan: 'cyan',
     violet: 'violet',
@@ -41,7 +53,7 @@ const JourneyCTA: React.FC<JourneyCTAProps> = ({
   };
 
   // Map button size from traditional naming to standardized naming
-  const sizeMap = {
+  const sizeMap: Record<string, ButtonSizeOption> = {
     small: 'small',
     medium: 'medium',
     large: 'large'
@@ -51,8 +63,8 @@ const JourneyCTA: React.FC<JourneyCTAProps> = ({
     <ThemeProvider initialTheme={mapVariantToTheme(variant)}>
       <JourneyButton
         variant="primary"
-        size={sizeMap[buttonSize] as any}
-        gradientColor={gradientColorMap[gradientColor] as any}
+        size={sizeMap[buttonSize]}
+        gradientColor={gradientColorMap[gradientColor]}
         href={href}
         rightIcon={showIcon && (icon || <ArrowRight size={buttonSize === 'small' ? 16 : 20} className="ml-2" aria-hidden="true" />)}
       >

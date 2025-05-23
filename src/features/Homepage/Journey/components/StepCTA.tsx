@@ -25,7 +25,7 @@ const mapVariantToTheme = (variant: string | undefined): ThemeOption => {
  */
 const StepCTA: React.FC<StepCTAProps> = ({
   step,
-  isExpanded,
+  _isExpanded,
   variant = 'default',
   className,
   ...rest
@@ -35,11 +35,11 @@ const StepCTA: React.FC<StepCTAProps> = ({
   // Determine gradient color based on step number
   const getGradientColor = (stepNumber: number): 'lime' | 'cyan' | 'violet' | 'amber' => {
     switch (stepNumber) {
-      case 1: return 'lime';
-      case 2: return 'cyan';
-      case 3: return 'violet';
-      case 4: return 'amber';
-      default: return 'lime';
+    case 1: return 'lime';
+    case 2: return 'cyan';
+    case 3: return 'violet';
+    case 4: return 'amber';
+    default: return 'lime';
     }
   };
 

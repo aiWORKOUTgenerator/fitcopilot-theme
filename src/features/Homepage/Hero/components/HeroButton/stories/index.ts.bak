@@ -1,0 +1,15 @@
+/**
+ * HeroButton stories index
+ * 
+ * This file is for use by Storybook only.
+ * 
+ * In the production build, Webpack will not load story files,
+ * so we export nothing from this file.
+ * 
+ * The stories are loaded directly by Storybook via the 
+ * stories configuration in .storybook/main.js
+ */
+
+// Empty export to satisfy TypeScript without causing webpack issues
+export { };
+

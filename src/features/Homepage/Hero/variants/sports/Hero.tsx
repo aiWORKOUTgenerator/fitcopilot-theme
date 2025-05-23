@@ -1,6 +1,6 @@
 import { Activity, ArrowRight, Award, BarChart, Check, Sun, Timer, Zap } from 'lucide-react';
 import React from 'react';
-import { HeroProps } from '../../types';
+import { HeroProps, HeroVariantKey } from '../../types';
 import './sports-hero.scss';
 
 /**
@@ -15,6 +15,17 @@ interface FloatingIconProps {
     size?: number;
     opacity?: number;
     rotation?: number;
+}
+
+/**
+ * Sports-specific Hero props that extend the base HeroProps
+ */
+interface SportsHeroProps extends HeroProps {
+  headline?: string;
+  subheadline?: string;
+  ctaText?: string;
+  secondaryCtaText?: string;
+  variant?: HeroVariantKey;
 }
 
 /**
@@ -56,10 +67,9 @@ const floatingIcons = [
 
 /**
  * Interface for floating icon data
- * @deprecated - This will be used in future animations - do not remove
+ * For future animation implementation
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface FloatingIconData {
+interface _FloatingIconData {
     Icon: React.ElementType;
     size: number;
     left: number;
@@ -68,7 +78,7 @@ interface FloatingIconData {
     speed: number;
 }
 
-export const Hero: React.FC<HeroProps> = ({
+export const Hero: React.FC<SportsHeroProps> = ({
   headline = 'Level Up Your Sports Training with AI-Powered Workouts',
   subheadline = 'Generate sport-specific training routines tailored to your performance goals',
   ctaText = 'Create My Training Plan',
@@ -146,7 +156,7 @@ export const Hero: React.FC<HeroProps> = ({
               className="w-full h-full object-cover"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
-                                e.currentTarget.parentElement!.classList.add('image-fallback');
+                e.currentTarget.parentElement!.classList.add('image-fallback');
               }}
             />
             <div className="absolute inset-0 flex items-center justify-center image-fallback-content">

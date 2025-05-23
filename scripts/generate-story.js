@@ -104,7 +104,7 @@ if (templateContent) {
                  `import { ThemeProvider } from '../../../context/ThemeContext'`)
         .replace(/import\s+\{\s*ThemeOption\s*\}\s*from\s*['"]\.\.\/\.\.\/src\/utils\/theming['"]/, 
                  `import { ThemeOption } from '../../../utils/theming'`)
-        .replace(/\/\/ import.*Component.*from.*components.*;/, `import { ${exportName} } from '${importPath}';`)
+        .replace(/\/\/ import.*Component.*from.*components.*;/, `import React from 'react';\nimport { ${exportName} } from '${importPath}';`)
         .replace(/\/\/ interface ComponentProps \{\}/, `// interface ${exportName}Props {}`)
         .replace(/\/\*\s*const meta[\s\S]*?Component[\s\S]*?\*\//, 
                 `const meta: Meta<typeof ${exportName}> = {
@@ -147,7 +147,8 @@ export const ThemeShowcase: Story = {
 };`);
 } else {
     // Original story generation as fallback
-    storyContent = `import type { Meta, StoryObj } from '@storybook/react';
+    storyContent = `import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { ${exportName} } from '${importPath}';
 
 /**
@@ -240,4 +241,5 @@ console.log('1. Update the component description');
 console.log('2. Define argTypes based on component props');
 console.log('3. Add stories for different component variants');
 console.log('4. Ensure the ThemeShowcase story displays correctly with all themes');
+console.log('5. Run Storybook to see your new story'); 
 console.log('5. Run Storybook to see your new story'); 

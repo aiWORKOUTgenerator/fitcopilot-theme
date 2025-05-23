@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './Homepage'; // Always point at real root
 import './styles/homepage.scss'; // Global styles
 import debug from './utils/debug';
 import logger from './utils/logger';
+// Use dynamic import instead of direct import
+const App = lazy(() => import('./Homepage')); // Lazily load the main Homepage component
 
 /**
  * Error Boundary component for catching React rendering errors
@@ -87,10 +88,19 @@ const AppContainer: React.FC = () => {
     return <div className="app-loading">Initializing application...</div>;
   }
 
+  // Add loading fallback for the lazy-loaded App component
+  const loadingFallback = (
+    <div className="lazy-loading-skeleton hero-skeleton" aria-label="Loading application...">
+      <div className="loading-animation"></div>
+    </div>
+  );
+
   return (
     <ErrorBoundary>
       <React.StrictMode>
-        <App />
+        <Suspense fallback={loadingFallback}>
+          <App />
+        </Suspense>
       </React.StrictMode>
     </ErrorBoundary>
   );

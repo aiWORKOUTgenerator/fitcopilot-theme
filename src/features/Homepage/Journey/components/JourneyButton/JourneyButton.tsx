@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useTheme } from '../../../../../context/ThemeContext';
 import { Button } from '../../../../../features/shared/Button';
-import { ButtonSize, HeroButtonProps } from '../../../../../features/shared/Button/types/standardButtonTypes';
+import { HeroButtonProps } from '../../../../../features/shared/Button/types/standardButtonTypes';
 import './JourneyButton.scss';
 
 /**
@@ -40,7 +40,7 @@ export const JourneyButton: React.FC<JourneyButtonProps> = ({
   ...restProps
 }) => {
   // Access theme context
-  const { theme } = useTheme();
+  const { theme: _theme } = useTheme();
   
   // Construct CSS classes
   const buttonClasses = classNames(
@@ -57,7 +57,7 @@ export const JourneyButton: React.FC<JourneyButtonProps> = ({
   return (
     <Button
       variant={variant}
-      size={size as ButtonSize}
+      size={size}
       leftIcon={leftIcon}
       rightIcon={rightIcon}
       fullWidth={fullWidth}

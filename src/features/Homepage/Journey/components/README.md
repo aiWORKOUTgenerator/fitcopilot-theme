@@ -84,4 +84,6 @@ The component relies on the following CSS classes:
 - `.journey-cta-button`: Base styles for the button container
 - `.journey-gradient-[color]`: Gradient variations (lime, violet, cyan, teal, amber, green)
 
-These classes use the design system's `gradient-button` mixin which applies the appropriate gradient based on the component and variant. 
+These classes use the design system's `gradient-button` mixin which applies the appropriate gradient based on the component and variant.
+
+For examples of the Journey components in use, refer to Storybook documentation. 

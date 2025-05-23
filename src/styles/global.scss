@@ -10,6 +10,9 @@
 @use './animations.scss' as animations;
 @use './mixins.scss' as mixins;
 
+// Import component token files
+@use './tokens/buttons.scss' as button-tokens;
+
 // Other global styles
 body {
     font-family: var(--font-family-sans);

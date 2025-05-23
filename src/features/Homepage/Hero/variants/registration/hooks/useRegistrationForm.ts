@@ -106,10 +106,19 @@ export const useRegistrationForm = () => {
       // Simulate API response
       await new Promise(resolve => setTimeout(resolve, 1000));
 
+      // Generate a unique user ID
+      const userId = 'user_' + Date.now();
+      
       setSubmitResult({
         success: true,
         message: 'Registration successful!',
-        data: { userId: 'user_' + Date.now() }
+        data: {
+          id: userId,
+          email: formData.email,
+          displayName: formData.name,
+          profileCompletion: 25,
+          verified: false
+        }
       });
 
       return true;

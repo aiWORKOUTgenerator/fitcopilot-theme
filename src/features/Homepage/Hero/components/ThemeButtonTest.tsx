@@ -56,9 +56,9 @@ export const ThemeButtonTest: React.FC = () => {
       <div className="section">
         <h2>Button Sizes</h2>
         <ButtonGroup direction="horizontal" spacing="medium" alignment="center">
-          <Button variant="primary" size="sm">Small</Button>
-          <Button variant="primary" size="md">Medium</Button>
-          <Button variant="primary" size="lg">Large</Button>
+          <Button variant="primary" size="small">Small</Button>
+          <Button variant="primary" size="medium">Medium</Button>
+          <Button variant="primary" size="large">Large</Button>
         </ButtonGroup>
       </div>
       

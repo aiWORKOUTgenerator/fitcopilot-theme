@@ -1,4 +1,4 @@
-import { Dumbbell, Flame, Heart, LogIn, UserPlus, Zap } from 'lucide-react';
+import { LogIn, UserPlus, Zap } from 'lucide-react';
 import React, { useRef } from 'react';
 // Import HeroButton directly from its component folder
 import { ThemeProvider } from '../../../context/ThemeContext';
@@ -6,14 +6,22 @@ import Tooltip from '../../../features/shared/Tooltip';
 import { HeroButton } from './components/HeroButton';
 // Temporarily comment out the module style import until we fix the SCSS issues
 // import styles from './Hero.module.scss';
+import { HeroFeaturePills } from '../HeroFeaturePills';
 import './Hero.scss';
-import FloatingIcons from './components/FloatingIcons';
+import { FloatingIcons } from './components/FloatingIcons';
 import { HeroProps } from './types';
 
 // Button style overrides to ensure correct padding
 const buttonStyles = {
   padding: '1rem 2rem', // py-4 px-8 in Tailwind
 };
+
+// Define feature pills for the HeroFeaturePills component
+const heroFeatures = [
+  { id: '1', label: 'Beginner Friendly', icon: 'heart' },
+  { id: '2', label: 'Strength & Cardio', icon: 'dumbbell' },
+  { id: '3', label: 'HIIT Workouts', icon: 'flame' }
+];
 
 export const Hero: React.FC<HeroProps> = ({
   registrationLink = "#splash-section",
@@ -158,22 +166,16 @@ export const Hero: React.FC<HeroProps> = ({
                 <span>Already have an account? Log in</span>
               </a>
             </div>
-
-            {/* Feature Icons */}
-            <div className="hero-features">
-              <div className="hero-feature-pill" title="Beginner Friendly">
-                <Heart className="feature-icon" />
-                <span>Beginner Friendly</span>
-              </div>
-              <div className="hero-feature-pill" title="Strength & Cardio">
-                <Dumbbell className="feature-icon" />
-                <span>Strength & Cardio</span>
-              </div>
-              <div className="hero-feature-pill" title="HIIT Workouts">
-                <Flame className="feature-icon" />
-                <span>HIIT Workouts</span>
-              </div>
-            </div>
+          </div>
+          
+          {/* Feature Pills outside the main container */}
+          <div className="hero-feature-pills-container">
+            <HeroFeaturePills
+              features={heroFeatures}
+              variant="primary"
+              size="medium"
+              backgroundStyle="blur"
+            />
           </div>
         </div>
       </section>

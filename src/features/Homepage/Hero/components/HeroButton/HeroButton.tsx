@@ -7,13 +7,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { useTheme } from '../../../../../context/ThemeContext';
 import { Button } from '../../../../../features/shared/Button';
-import { ButtonSize, HeroButtonProps } from '../../../../../features/shared/Button/types/standardButtonTypes';
+import { HeroButtonProps } from '../../../../../features/shared/Button/types/standardButtonTypes';
 import './HeroButton.scss';
-
-/**
- * HeroButton size mapping
- */
-type HeroButtonSize = 'small' | 'medium' | 'large';
 
 /**
  * HeroButton component for the homepage hero section
@@ -36,7 +31,7 @@ export const HeroButton: React.FC<HeroButtonProps> = ({
   ...restProps
 }) => {
   // Access theme context
-  const { theme } = useTheme();
+  const { theme: _theme } = useTheme();
   
   // Construct CSS classes
   const buttonClasses = classNames(

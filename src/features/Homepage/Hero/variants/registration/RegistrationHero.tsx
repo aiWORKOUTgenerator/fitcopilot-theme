@@ -10,55 +10,55 @@ import './RegistrationHero.scss';
  * Splash page Hero component for the AI Workout Generator registration flow
  */
 const RegistrationHero: React.FC<HeroProps> = ({
-  _loginLink = "https://aigymengine.com/react-login",
-  _logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
+  loginLink: _loginLink = "https://aigymengine.com/react-login",
+  logoUrl: _logoUrl = '/wp-content/themes/fitcopilot/assets/media/images/logo.png',
 }) => {
   // Form state - prefixed with underscore as they're not yet used in this simplified view
-  const [_firstName, _setFirstName] = useState('');
-  const [_email, _setEmail] = useState('');
-  const [_errors, _setErrors] = useState<{ firstName?: string; email?: string }>({});
-  const [_isSubmitting, _setIsSubmitting] = useState(false);
+  const [_firstName, setFirstName] = useState('');
+  const [_email, setEmail] = useState('');
+  const [_errors, setErrors] = useState<{ firstName?: string; email?: string }>({});
+  const [_isSubmitting, setIsSubmitting] = useState(false);
 
   // Note: These handlers are defined but unused in this simplified mock component
   // In a real implementation, they would be connected to form inputs
-  const _handleFirstNameChange = (_e: InputChangeEvent) => {
-    _setFirstName(_e.target.value);
+  const handleFirstNameChange = (e: InputChangeEvent) => {
+    setFirstName(e.target.value);
     if (_errors.firstName) {
-      _setErrors(_prev => ({ ..._prev, firstName: undefined }));
+      setErrors(_prev => ({ ..._prev, firstName: undefined }));
     }
   };
 
-  const _handleEmailChange = (_e: InputChangeEvent) => {
-    _setEmail(_e.target.value);
+  const handleEmailChange = (e: InputChangeEvent) => {
+    setEmail(e.target.value);
     if (_errors.email) {
-      _setErrors(_prev => ({ ..._prev, email: undefined }));
+      setErrors(_prev => ({ ..._prev, email: undefined }));
     }
   };
 
-  const _handleSubmit = (_e: React.FormEvent) => {
-    _e.preventDefault();
-    const _newErrors: { firstName?: string; email?: string } = {};
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors: { firstName?: string; email?: string } = {};
 
     // Validate first name
     if (!_firstName.trim()) {
-      _newErrors.firstName = 'First name is required';
+      newErrors.firstName = 'First name is required';
     }
 
     // Validate email
     if (!_email) {
-      _newErrors.email = 'Email is required';
+      newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(_email)) {
-      _newErrors.email = 'Please enter a valid email address';
+      newErrors.email = 'Please enter a valid email address';
     }
 
     // If there are errors, update state and don't proceed
-    if (Object.keys(_newErrors).length > 0) {
-      _setErrors(_newErrors);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       return;
     }
 
     // Show loading state
-    _setIsSubmitting(true);
+    setIsSubmitting(true);
 
     // Simulate saving form data
     setTimeout(() => {
@@ -67,14 +67,20 @@ const RegistrationHero: React.FC<HeroProps> = ({
       localStorage.setItem('registration_email', _email);
 
       // Scroll to Features section
-      const _featuresSection = document.getElementById('features-section');
-      if (_featuresSection) {
-        _featuresSection.scrollIntoView({ behavior: 'smooth' });
+      const featuresSection = document.getElementById('features-section');
+      if (featuresSection) {
+        featuresSection.scrollIntoView({ behavior: 'smooth' });
       }
 
-      _setIsSubmitting(false);
+      setIsSubmitting(false);
     }, 600);
   };
+
+  // These handlers are not connected to UI elements in this simplified mock
+  // Include them with underscore prefix to indicate they are defined but not used
+  const _handleFirstNameChange = handleFirstNameChange;
+  const _handleEmailChange = handleEmailChange;
+  const _handleSubmit = handleSubmit;
 
   return (
     <section
