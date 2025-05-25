@@ -1,5 +1,5 @@
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
-import type { Preview } from '@storybook/react';
+import { Preview } from '@storybook/react';
 import * as React from 'react';
 
 // Import global styles
@@ -11,11 +11,13 @@ import { MockWorkoutProvider, mockWorkouts } from '../src/test/context-utils/wor
 import { themeTestKit } from '../src/test/storybook/theme-test-data';
 
 // Create a wrapper component for all stories
-const withContextProviders = (Story: React.ComponentType) => (
-  <MockWorkoutProvider initialWorkouts={mockWorkouts}>
-    <Story />
-  </MockWorkoutProvider>
-);
+const withContextProviders = (Story) => {
+  return (
+    <MockWorkoutProvider initialWorkouts={mockWorkouts}>
+      <Story />
+    </MockWorkoutProvider>
+  );
+};
 
 /**
  * ThemeProvider wrapper for all stories
@@ -25,7 +27,7 @@ const withContextProviders = (Story: React.ComponentType) => (
  * 2. Wraps the story in a ThemeProvider with the selected theme
  * 3. Makes test data available through the storyContext
  */
-const withThemeContext = (Story: React.ComponentType, context: any) => {
+const withThemeContext = (Story, context) => {
   // Get the theme from the theme selector or use default
   const selectedTheme = context.globals.theme || context.parameters.theme || 'default';
   
@@ -43,7 +45,10 @@ const withThemeContext = (Story: React.ComponentType, context: any) => {
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
+    actions: { 
+      // Storybook 8: Use explicit action args instead of argTypesRegex
+      // Actions will be automatically detected for props starting with 'on'
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

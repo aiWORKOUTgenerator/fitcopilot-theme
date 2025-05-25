@@ -16,23 +16,13 @@ const config = {
     '@storybook/addon-interactions',
     '@storybook/addon-measure',
     '@storybook/addon-outline',
-    {
-      name: '@storybook/addon-styling',
-      options: {
-        sass: {
-          implementation: require('sass'),
-          sassOptions: {
-            includePaths: [path.resolve(__dirname, '../src/styles')],
-          }
-        },
-      },
-    }
+    '@storybook/addon-webpack5-compiler-swc',
+    '@storybook/addon-mdx-gfm'
   ],
   framework: {
     name: '@storybook/react-webpack5',
     options: {
       builder: {
-        useSWC: true,
         lazyCompilation: true,
         fsCache: true
       }
