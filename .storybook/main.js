@@ -16,8 +16,7 @@ const config = {
     '@storybook/addon-interactions',
     '@storybook/addon-measure',
     '@storybook/addon-outline',
-    '@storybook/addon-webpack5-compiler-swc',
-    '@storybook/addon-mdx-gfm'
+    '@storybook/addon-webpack5-compiler-swc'
   ],
   framework: {
     name: '@storybook/react-webpack5',

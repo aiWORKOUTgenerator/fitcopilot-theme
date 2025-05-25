@@ -1,7 +1,7 @@
 import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
 import { themeColorMap } from '../utils/theming';
 
-<Meta title="Design System/Theme" />
+<Meta title="Design System/Theme" parameters={{ layout: 'fullscreen' }} />
 
 # FitCopilot Theme System
 
