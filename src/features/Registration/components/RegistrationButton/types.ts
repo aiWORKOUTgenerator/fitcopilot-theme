@@ -21,46 +21,46 @@ type BaseRegistrationButtonProps = Omit<
   ButtonBaseProps, 
   'variant' | 'leftIcon' | 'rightIcon' | 'fullWidth'
 > & {
-  /**
+    /**
    * Button size variant
-   * @default 'medium'
+     * @default 'medium'
    * @example
    * <RegistrationButton size="large">Large Button</RegistrationButton>
-   */
+     */
   size?: RegistrationButtonSize;
 
-  /**
-   * Whether the button is in loading state
+    /**
+     * Whether the button is in loading state
    * Shows loading animation and disables interaction
-   * @default false
+     * @default false
    * @example
    * <RegistrationButton isLoading={true}>Processing...</RegistrationButton>
-   */
-  isLoading?: boolean;
+     */
+    isLoading?: boolean;
 
-  /**
-   * Optional icon to display after text
+    /**
+     * Optional icon to display after text
    * Can be any React node (SVG, component, etc.)
    * @example
    * <RegistrationButton rightIcon={<ArrowRight />}>Continue</RegistrationButton>
-   */
-  rightIcon?: React.ReactNode;
+     */
+    rightIcon?: React.ReactNode;
 
-  /**
-   * Optional icon to display before text
+    /**
+     * Optional icon to display before text
    * Can be any React node (SVG, component, etc.)
    * @example
    * <RegistrationButton leftIcon={<ArrowLeft />}>Back</RegistrationButton>
-   */
-  leftIcon?: React.ReactNode;
+     */
+    leftIcon?: React.ReactNode;
 
-  /**
-   * Make button take full width of container
-   * @default false
+    /**
+     * Make button take full width of container
+     * @default false
    * @example
    * <RegistrationButton fullWidth>Full Width Button</RegistrationButton>
-   */
-  fullWidth?: boolean;
+     */
+    fullWidth?: boolean;
 };
 
 /**
@@ -71,7 +71,7 @@ export type PrimaryRegistrationButtonProps = BaseRegistrationButtonProps & {
   /**
    * Primary variant for main call-to-action buttons
    */
-  variant: 'primary';
+    variant: 'primary';
 };
 
 /**
@@ -82,7 +82,7 @@ export type SecondaryRegistrationButtonProps = BaseRegistrationButtonProps & {
   /**
    * Secondary variant for secondary actions
    */
-  variant: 'secondary';
+    variant: 'secondary';
 };
 
 /**
@@ -93,13 +93,13 @@ export type LinkRegistrationButtonProps = BaseRegistrationButtonProps & {
   /**
    * Link variant renders as an anchor element
    */
-  variant: 'link';
+    variant: 'link';
   
   /**
    * URL the button should navigate to
    * @example "https://example.com" or "/relative-path"
    */
-  href: string;
+    href: string;
   
   /**
    * Whether to open link in new tab
@@ -109,7 +109,7 @@ export type LinkRegistrationButtonProps = BaseRegistrationButtonProps & {
    *   External Link
    * </RegistrationButton>
    */
-  openInNewTab?: boolean;
+    openInNewTab?: boolean;
 };
 
 /**
@@ -120,7 +120,7 @@ export type TertiaryRegistrationButtonProps = BaseRegistrationButtonProps & {
   /**
    * Tertiary variant for subtle actions
    */
-  variant: 'tertiary';
+    variant: 'tertiary';
 };
 
 /**
@@ -138,10 +138,10 @@ export type TertiaryRegistrationButtonProps = BaseRegistrationButtonProps & {
  * <RegistrationButton variant="primary" isLoading>Processing...</RegistrationButton>
  */
 export type RegistrationButtonProps =
-  | PrimaryRegistrationButtonProps
-  | SecondaryRegistrationButtonProps
-  | LinkRegistrationButtonProps
-  | TertiaryRegistrationButtonProps;
+    | PrimaryRegistrationButtonProps
+    | SecondaryRegistrationButtonProps
+    | LinkRegistrationButtonProps
+    | TertiaryRegistrationButtonProps; 
 
 /**
  * Type guard to check if RegistrationButton is in link variant

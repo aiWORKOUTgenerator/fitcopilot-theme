@@ -7,7 +7,7 @@ import { ThemeOption } from '../../../../utils/theming';
 import { Button } from '../components';
 
 const meta: Meta<typeof Button> = {
-  title: 'Features/Shared/Button/Shadow Showcase',
+  title: 'Shared/Button/Shadow Showcase',
   component: Button,
   parameters: {
     layout: 'centered',

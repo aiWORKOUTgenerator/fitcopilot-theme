@@ -9,7 +9,7 @@ import { HeroFeaturePills } from '../HeroFeaturePills';
  */
 
 const meta: Meta<typeof HeroFeaturePills> = {
-  title: 'Features/Homepage/HeroFeaturePills',
+  title: 'Homepage/HeroFeaturePills',
   component: HeroFeaturePills,
   parameters: {
     layout: 'centered',

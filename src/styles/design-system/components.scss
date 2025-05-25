@@ -4,6 +4,10 @@
 // Import necessary dependencies
 @use "./color-utils" as colors;
 
+// Import component-specific styles
+@use "./components/registration-entry-form";
+@use "./components/splash-feature-card";
+
 // Button base styles
 %button-base {
     display: inline-flex;

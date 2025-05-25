@@ -311,4 +311,72 @@
   /* === FULL WIDTH VARIANT === */
   
   --registration-button-full-width: 100%;
+  
+  /* === SPLASH CONTEXT TOKENS === */
+  /* Tokens for buttons within .registration-entry-form context */
+  
+  /* Form Container */
+  --registration-entry-form-filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+  
+  /* Button Base Styling in Splash Context */
+  --registration-entry-form-button-transition: all 0.3s ease;
+  --registration-entry-form-button-position: relative;
+  --registration-entry-form-button-overflow: hidden;
+  
+  /* Hover Effects */
+  --registration-entry-form-button-hover-scale: 1.02;
+  --registration-entry-form-button-hover-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  --registration-entry-form-button-active-scale: 0.98;
+  
+  /* Shimmer Effect Tokens */
+  --registration-entry-form-shimmer-gradient: linear-gradient(to bottom right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%);
+  --registration-entry-form-shimmer-transform-default: rotate(30deg);
+  --registration-entry-form-shimmer-transform-hover: rotate(30deg) translate(10%, 10%);
+  --registration-entry-form-shimmer-transition: transform 0.7s ease-in-out;
+  --registration-entry-form-shimmer-opacity-default: 0;
+  --registration-entry-form-shimmer-opacity-hover: 1;
+  
+  /* Tertiary Variant in Splash Context */
+  --registration-entry-form-tertiary-bg: transparent;
+  --registration-entry-form-tertiary-border: none;
+  --registration-entry-form-tertiary-color: #ffffff;
+  --registration-entry-form-tertiary-shadow: none;
+  --registration-entry-form-tertiary-padding-y: 0.25rem;
+  
+  /* Tertiary Hover Effects in Splash Context */
+  --registration-entry-form-tertiary-hover-color: #ffffff;
+  --registration-entry-form-tertiary-hover-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 
+    0 0 0 1px rgba(74, 222, 128, 0.5),
+    0 0 6px 1px rgba(74, 222, 128, 0.3);
+
+  /* === SPLASH FEATURE CARD TOKENS === */
+  /* Tokens for feature cards on the Splash page */
+  
+  /* Base Feature Card Styling */
+  --splash-feature-card-bg: rgba(30, 41, 59, 0.5);
+  --splash-feature-card-border: 1px solid rgba(255, 255, 255, 0.1);
+  --splash-feature-card-border-radius: 16px;
+  --splash-feature-card-padding: 24px;
+  --splash-feature-card-backdrop-filter: blur(8px);
+  --splash-feature-card-transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  /* Feature Card Hover Effects */
+  --splash-feature-card-hover-transform: translateY(-5px);
+  --splash-feature-card-hover-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --splash-feature-card-hover-border: 0 0 0 1px rgba(74, 222, 128, 0.5);
+  --splash-feature-card-hover-glow: 0 0 6px 1px rgba(74, 222, 128, 0.3);
+  
+  /* Feature Icon Styling */
+  --splash-feature-icon-size: 48px;
+  --splash-feature-icon-border-radius: 12px;
+  --splash-feature-icon-bg: rgba(132, 225, 188, 0.1);
+  --splash-feature-icon-margin-bottom: 16px;
+  
+  /* Responsive Feature Card Tokens */
+  --splash-feature-card-padding-mobile: 20px;
+  --splash-feature-card-padding-small: 16px;
 } 

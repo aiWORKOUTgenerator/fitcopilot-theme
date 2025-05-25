@@ -6,7 +6,7 @@ import { HeroButton } from '../../../../features/Homepage/Hero/components/HeroBu
 import { Button } from '../components';
 
 const meta: Meta<typeof Button> = {
-  title: 'Features/Shared/Button/Hover Effects',
+  title: 'Shared/Button/Hover Effects',
   component: Button,
   parameters: {
     layout: 'centered',

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { JourneyButton } from '../';
 
 const meta: Meta<typeof JourneyButton> = {
-  title: 'Features/Homepage/Journey/JourneyButton',
+  title: 'Homepage/Journey/JourneyButton',
   component: JourneyButton,
   parameters: {
     layout: 'centered',

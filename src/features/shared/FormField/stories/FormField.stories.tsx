@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { FormField } from '../';
 
 const meta: Meta<typeof FormField> = {
-  title: 'Features/Shared/FormField',
+  title: 'Shared/FormField',
   component: FormField,
   parameters: {
     layout: 'centered',

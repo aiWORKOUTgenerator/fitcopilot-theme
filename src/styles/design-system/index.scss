@@ -22,6 +22,7 @@
 
 // Component-specific tokens
 @forward './component-tokens';
+@forward './button-tokens'; // Registration button and other button tokens
 
 // Component Base Styles
 @forward './components';

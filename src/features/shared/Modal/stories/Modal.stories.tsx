@@ -4,7 +4,7 @@ import { Modal } from '../';
 import { ModalSize } from '../types';
 
 const meta: Meta<typeof Modal> = {
-  title: 'Features/Shared/Modal',
+  title: 'Shared/Modal',
   component: Modal,
   parameters: {
     layout: 'centered',

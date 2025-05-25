@@ -5,7 +5,7 @@ import { JourneyStep } from '../../../components';
 import { DetailedFeature, JourneyStepProps, JourneyStep as JourneyStepType } from '../../../types';
 
 const meta: Meta<typeof JourneyStep> = {
-  title: 'Features/Homepage/Journey/components/JourneyStep',
+  title: 'Homepage/Journey/JourneyStep',
   component: JourneyStep,
   parameters: {
     layout: 'padded',

@@ -7,7 +7,7 @@ import { HeroButton } from '../../../Homepage/Hero/components/HeroButton';
 import { Button } from '../components';
 
 const meta: Meta<typeof Button> = {
-  title: 'Features/Shared/Button/Gradient Showcase',
+  title: 'Shared/Button/Gradient Showcase',
   component: Button,
   parameters: {
     layout: 'centered',

@@ -1,0 +1,143 @@
+/**
+ * Context wrapper styles for RegistrationButton stories
+ * This file contains self-contained styling that doesn't depend on external SCSS files
+ * to avoid webpack alias conflicts in Storybook
+ */
+
+// Canonical design system import - MUST BE FIRST
+@use '../../../../../styles/design-system/index' as ds;
+
+/**
+ * Context Comparison Grid Layout
+ * For side-by-side context comparisons
+ */
+.context-comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.context-comparison-item {
+  padding: 1.5rem;
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 12px;
+  background: var(--color-card-bg, #ffffff);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  .context-name {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-secondary, #64748b);
+    text-align: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border, #e2e8f0);
+  }
+}
+
+/**
+ * Pure Context - Completely isolated
+ * No additional styling applied, shows component in pure form
+ */
+.pure-context-wrapper {
+  /* Intentionally minimal - shows component without context enhancements */
+  padding: 1rem;
+  
+  /* Reset any inherited styles that might affect the component */
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/**
+ * Splash Context - Replicates the Splash page styling
+ * Contains the exact styling from Splash.scss for shimmer effects
+ */
+.splash-context-wrapper {
+  
+  .splash-step {
+    /* Apply dark background like the actual Splash page */
+    background: linear-gradient(135deg, #1f2937 0%, #111827 50%, #1f2937 100%);
+    padding: 2rem;
+    border-radius: 16px;
+    position: relative;
+    
+    /* Add some atmospheric elements for context */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 30% 30%, rgba(74, 222, 128, 0.1) 0%, transparent 50%);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+    
+    .registration-entry-form {
+      position: relative;
+      z-index: 1;
+      /* Design system handles all styling via registration-entry-form component */
+      /* No additional overrides needed - tokens control all appearance */
+    }
+  }
+}
+
+/**
+ * Registration Context - General registration flow styling
+ */
+.registration-context-wrapper {
+  .registration {
+    padding: 1.5rem;
+    background: var(--color-bg, #ffffff);
+    
+    .registration-step {
+      .registration-button {
+        margin: 1rem 0;
+      }
+    }
+  }
+}
+
+/**
+ * Journey Context - Journey step styling
+ */
+.journey-context-wrapper {
+  .registration-journey {
+    padding: 1.5rem;
+    background: var(--color-bg, #ffffff);
+    
+    .journey-step {
+      .registration-button {
+        /* Journey context may have specific spacing or alignment */
+        margin: 1rem 0;
+      }
+    }
+  }
+}
+
+/**
+ * Form Context - Generic form styling
+ * Standard form button context without specific enhancements
+ */
+.form-context-wrapper {
+  .form {
+    padding: 1rem;
+    background: var(--color-card-bg, #f8fafc);
+    border-radius: 8px;
+    
+    .form-section {
+      /* Standard form button spacing */
+      .registration-button {
+        margin: 0.5rem 0;
+      }
+    }
+  }
+} 

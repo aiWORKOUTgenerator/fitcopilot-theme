@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { HeroButton } from '../';
 
 const meta: Meta<typeof HeroButton> = {
-  title: 'Features/Homepage/Hero/HeroButton',
+  title: 'Homepage/Hero/HeroButton',
   component: HeroButton,
   parameters: {
     layout: 'centered',

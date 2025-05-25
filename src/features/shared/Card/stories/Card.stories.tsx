@@ -4,7 +4,7 @@ import { Card } from '../components';
 import { CardProps } from '../types';
 
 const meta: Meta<typeof Card> = {
-  title: 'Features/Shared/Card',
+  title: 'Shared/Card',
   component: Card,
   parameters: {
     layout: 'centered',
