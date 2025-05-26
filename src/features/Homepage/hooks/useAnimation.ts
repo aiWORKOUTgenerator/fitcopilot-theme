@@ -1,4 +1,5 @@
 import * as React from 'react';
+import animationSystem from '../../../utils/animationSystem';
 import logger from '../../../utils/logger';
 
 /**
@@ -41,51 +42,116 @@ interface HomepageAnimationOptions {
 /**
  * Homepage-specific animation hook
  * Initializes and manages scroll animations for the Homepage components
+ * Uses the centralized animation system for consistency
  *
  * @param options Animation configuration options
  */
 export function useHomepageAnimation(options: HomepageAnimationOptions = {}) {
+  const [isReady, setIsReady] = React.useState(false);
+  const [stats, setStats] = React.useState<any>(null);
+
   React.useEffect(() => {
     const initializeAnimations = async () => {
       try {
-        // Check if AOS is already defined globally
-        if (typeof window.AOS !== 'undefined') {
-          window.AOS.init({
-            duration: options.duration || 800,
-            easing: options.easing || 'ease-in-out',
-            once: options.once !== undefined ? options.once : true,
-            offset: options.offset || 100,
-            delay: options.delay || 0,
-            disable: options.disableForReducedMotion !== false &&
-                            window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          });
+        logger.debug('🎬 Homepage Animation Hook: Starting initialization...');
+
+        // Initialize the centralized animation system
+        await animationSystem.initialize({
+          duration: options.duration || 800,
+          easing: options.easing || 'ease-in-out',
+          once: options.once !== undefined ? options.once : true,
+          offset: options.offset || 100,
+          delay: options.delay || 0,
+          disable: options.disableForReducedMotion ? 'mobile' : false
+        });
+
+        // Wait for system to be ready
+        if (animationSystem.isReady()) {
+          setIsReady(true);
+          
+          // Get initial stats
+          const initialStats = animationSystem.getAnimationStats();
+          setStats(initialStats);
+          
+          logger.debug('✅ Homepage animations initialized successfully');
+          logger.debug('📊 Initial animation stats:', initialStats);
+
+          // Set up periodic stats updates for debugging
+          const statsInterval = setInterval(() => {
+            const currentStats = animationSystem.getAnimationStats();
+            setStats(currentStats);
+            
+            if (currentStats.totalElements > 0) {
+              logger.debug('📊 Animation stats update:', currentStats);
+            }
+          }, 2000);
+
+          // Cleanup interval after 30 seconds
+          setTimeout(() => clearInterval(statsInterval), 30000);
+
         } else {
-          // Dynamically import AOS (CommonJS module)
-          const aosModule = await import('aos');
-          // Handle both ESM and CommonJS module types
-          const AOS = 'default' in aosModule ? aosModule.default : aosModule;
-          AOS.init({
-            duration: options.duration || 800,
-            easing: options.easing || 'ease-in-out',
-            once: options.once !== undefined ? options.once : true,
-            offset: options.offset || 100,
-            delay: options.delay || 0,
-            disable: options.disableForReducedMotion !== false &&
-                            window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          logger.warn('⚠️ Animation system not ready after initialization');
+        }
+
+      } catch (error) {
+        logger.error('❌ Failed to initialize homepage animations:', error);
+        if (error instanceof Error) {
+          logger.error('Error details:', {
+            message: error.message,
+            stack: error.stack,
+            name: error.name
           });
         }
-      } catch (error) {
-        logger.error('Failed to load animation library for Homepage:', error);
       }
     };
 
-    initializeAnimations();
+    // Check if already initialized
+    if (animationSystem.isReady()) {
+      logger.debug('🎬 Animation system already ready');
+      setIsReady(true);
+      setStats(animationSystem.getAnimationStats());
+    } else {
+      // Initialize if not ready
+      initializeAnimations();
+    }
+
+    // Listen for animation system ready event
+    const handleAnimationSystemReady = (event: CustomEvent) => {
+      logger.debug('🎬 Animation system ready event received:', event.detail);
+      setIsReady(true);
+      setStats(animationSystem.getAnimationStats());
+    };
+
+    window.addEventListener('animationSystemReady', handleAnimationSystemReady as EventListener);
 
     // Cleanup function
     return () => {
-      document.querySelectorAll('[data-aos]').forEach(el => {
-        el.removeAttribute('data-aos');
-      });
+      window.removeEventListener('animationSystemReady', handleAnimationSystemReady as EventListener);
     };
   }, [options]);
+
+  // Provide utility functions for components
+  const refresh = React.useCallback(() => {
+    if (animationSystem.isReady()) {
+      animationSystem.refresh();
+      setStats(animationSystem.getAnimationStats());
+    }
+  }, []);
+
+  const triggerAnimation = React.useCallback((element: Element) => {
+    animationSystem.triggerAnimation(element);
+  }, []);
+
+  const resetAnimation = React.useCallback((element: Element) => {
+    animationSystem.resetAnimation(element);
+  }, []);
+
+  return {
+    isReady,
+    stats,
+    refresh,
+    triggerAnimation,
+    resetAnimation,
+    getConfig: () => animationSystem.getConfig()
+  };
 } 

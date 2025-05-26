@@ -1,15 +1,15 @@
 import { ChevronRight } from 'lucide-react';
 import React, { KeyboardEvent } from 'react';
 import {
-  ExtendedCSSProperties
+    ExtendedCSSProperties
 } from '../../../../types/components';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import {
-  DetailedFeature,
-  ExpandedContentProps,
-  JourneyStepProps as LocalJourneyStepProps,
-  VariantKey,
-  isVariant
+    DetailedFeature,
+    ExpandedContentProps,
+    JourneyStepProps as LocalJourneyStepProps,
+    VariantKey,
+    isVariant
 } from '../types';
 // Import from utils/tokenUtils instead of redefining functions
 import { getConnectorColorClass, getGlowEffectClass, getStepGradientClass } from '../utils/tokenUtils';
@@ -132,7 +132,7 @@ const JourneyStep: React.FC<LocalJourneyStepProps> = ({
       {/* Main Step Card */}
       <div
         className={`
-          relative p-4 md:p-6 rounded-xl journey-bg-card z-10
+          relative p-6 md:p-8 rounded-2xl journey-bg-card z-10
           border ${isExpanded ? 'journey-border-active' : 'journey-border'}
           transition-medium cursor-pointer group ${glowEffectClass}
         `}
@@ -147,7 +147,7 @@ const JourneyStep: React.FC<LocalJourneyStepProps> = ({
         data-aos-delay={_prefersReducedMotion ? undefined : step.delay?.toString()}
         style={customStyle}
       >
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
           {/* Step Icon & Number */}
           <div className="relative">
             <div className={`w-16 h-16 rounded-xl ${stepGradientClass} flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}>
@@ -166,7 +166,7 @@ const JourneyStep: React.FC<LocalJourneyStepProps> = ({
             <h3 className="text-xl md:text-2xl font-bold mb-2 journey-text-heading group-hover:journey-text-heading-hover transition-colors flex items-center">
               {step.title}
             </h3>
-            <p className="journey-text-description group-hover:journey-text-description-hover transition-colors md:pr-8">
+            <p className="journey-text-description group-hover:journey-text-description-hover transition-colors md:pr-12">
               {step.description}
             </p>
           </div>
@@ -218,11 +218,11 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({
   return (
     <div
       id={`step-content-${index}`}
-      className="mt-2 rounded-xl journey-bg-card journey-border z-10 relative overflow-hidden p-4 md:p-6 animate-fade-in"
+      className="mt-2 rounded-2xl journey-bg-card journey-border z-10 relative overflow-hidden p-6 animate-fade-in"
       data-theme={variant !== 'default' ? variant : undefined}
       style={customStyle}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         {step.detailedFeatures?.map((feature: DetailedFeature, featureIndex: number) => (
           <JourneyFeatureCard
             key={featureIndex}

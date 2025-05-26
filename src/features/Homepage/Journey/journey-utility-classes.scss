@@ -197,7 +197,8 @@
         position: absolute;
         left: calc(33px - (var(--journey-timeline-width) / 2));
         top: 40px;
-        bottom: 40px;
+        /* Calculate height to stop before the last step */
+        height: calc(100% - 80px - var(--journey-step-spacing));
         width: var(--journey-timeline-width);
         background: var(--journey-accent-primary);
         box-shadow: 0 0 var(--journey-timeline-glow) rgba(var(--journey-accent-primary-rgb), 0.3);

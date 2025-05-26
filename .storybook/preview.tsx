@@ -5,6 +5,11 @@ import * as React from 'react';
 // Import global styles
 import '../src/styles/global.scss';
 
+// Import Storybook-specific styles for missing dependencies
+import './styles/storybook-animations.scss';
+import './styles/storybook-effects.scss';
+import './styles/storybook-journey.scss';
+
 // Import context providers
 import { ThemeProvider } from '../src/context/ThemeContext';
 import { MockWorkoutProvider, mockWorkouts } from '../src/test/context-utils/workout-context';

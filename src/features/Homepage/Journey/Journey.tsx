@@ -1,31 +1,26 @@
 import {
-  Activity,
-  Apple,
-  BarChart2,
-  Bike,
-  Calendar,
-  Clock,
-  Coffee,
-  Cpu,
-  Dumbbell,
-  FileText,
-  Flame,
-  Footprints,
-  Heart,
-  Layers,
-  Lightbulb,
-  Medal,
-  Microscope,
-  Package,
-  PieChart,
-  Settings,
-  Target,
-  Timer,
-  TrendingUp,
-  Trophy,
-  Zap
+    Activity,
+    BarChart2,
+    Calendar,
+    Clock,
+    Cpu,
+    Dumbbell,
+    FileText,
+    Flame,
+    Layers,
+    Lightbulb,
+    Microscope,
+    Package,
+    PieChart,
+    Settings,
+    Target,
+    TrendingUp,
+    Trophy,
+    Zap
 } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
+import logger from '../../../utils/logger';
+import { useHomepageAnimation } from '../hooks';
 import './_tokens.scss';
 import { JourneyCTA, JourneyStep, SectionHeader } from './components';
 import { useReducedMotion } from './hooks/useReducedMotion';
@@ -33,85 +28,13 @@ import './journey-animations.scss';
 import './journey-utility-classes.scss';
 import './Journey.scss';
 import {
-  JourneyProps,
-  JourneyStep as JourneyStepType
+    JourneyProps,
+    JourneyStep as JourneyStepType
 } from './types';
 import { useJourneyStore } from './utils/journeyState';
 import { getIconColorClass, getStepGradientClass } from './utils/tokenUtils';
 
-/**
- * FloatingIcon component for Journey background
- */
-interface FloatingIconProps {
-  children: React.ReactNode;
-  delay: number;
-  speed: number;
-  left: number;
-  top: number;
-}
 
-const _FloatingIcon: React.FC<FloatingIconProps> = ({
-  children,
-  delay,
-  speed,
-  left,
-  top
-}) => {
-  return (
-    <div
-      className="journey-floating-icon"
-      style={{
-        left: `${left}%`,
-        top: `${top}%`,
-        animation: `float ${speed}s ease-in-out infinite ${delay}s`
-      }}
-      aria-hidden="true"
-    >
-      {children}
-    </div>
-  );
-};
-
-/**
- * FloatingIcons component for Journey background decoration
- */
-const FloatingIcons: React.FC<{ variant?: string }> = ({ variant: _variant = 'default' }) => {
-  // Floating icons data - adjusted positioning for container context
-  const floatingIcons = [
-    { Icon: Dumbbell, size: 24, left: 5, top: 12, delay: 0, speed: 8 },
-    { Icon: Timer, size: 28, left: 18, top: 65, delay: 1.5, speed: 10 },
-    { Icon: Medal, size: 22, left: 28, top: 32, delay: 0.8, speed: 12 },
-    { Icon: Flame, size: 30, left: 85, top: 18, delay: 2, speed: 9 },
-    { Icon: Heart, size: 20, left: 88, top: 70, delay: 1, speed: 11 },
-    { Icon: Apple, size: 20, left: 8, top: 85, delay: 2.5, speed: 10 },
-    { Icon: Coffee, size: 18, left: 75, top: 8, delay: 0.5, speed: 7 },
-    { Icon: Footprints, size: 26, left: 65, top: 88, delay: 1.8, speed: 9 },
-    { Icon: Trophy, size: 22, left: 55, top: 15, delay: 2.2, speed: 11 },
-    { Icon: Bike, size: 32, left: 10, top: 45, delay: 1.2, speed: 8 },
-    { Icon: TrendingUp, size: 28, left: 35, top: 75, delay: 0.3, speed: 10 },
-    { Icon: Calendar, size: 24, left: 45, top: 45, delay: 2.8, speed: 7 },
-    { Icon: PieChart, size: 26, left: 90, top: 40, delay: 0.7, speed: 12 }
-  ];
-
-  return (
-    <div className="journey-floating-icons">
-      {floatingIcons.map(({ Icon, size, left, top, delay, speed }, index) => (
-        <div
-          key={index}
-          className="journey-floating-icon"
-          style={{
-            left: `${left}%`,
-            top: `${top}%`,
-            animationDelay: `${delay}s`,
-            animationDuration: `${speed}s`
-          }}
-        >
-          <Icon size={size} />
-        </div>
-      ))}
-    </div>
-  );
-};
 
 /**
  * Journey component - Shows the user journey/process flow with expandable steps
@@ -122,6 +45,26 @@ const Journey: React.FC<JourneyProps> = ({
 }) => {
   const prefersReducedMotion = useReducedMotion();
   const { expandedStep, setExpandedStep } = useJourneyStore();
+  
+  // Use the centralized animation system
+  const { isReady, refresh, stats } = useHomepageAnimation({
+    duration: 800,
+    easing: 'ease-in-out',
+    once: true,
+    offset: 100
+  });
+
+  // Refresh animations when component mounts and when animation system is ready
+  useEffect(() => {
+    if (isReady) {
+      logger.debug('🎬 Journey: Animation system ready, refreshing...');
+      refresh();
+      
+      if (stats) {
+        logger.debug('📊 Journey animation stats:', stats);
+      }
+    }
+  }, [isReady, refresh, stats]);
 
   // Define detailed journey steps if not provided
   const journeySteps = journey.length > 0 ? journey : [
@@ -321,34 +264,29 @@ const Journey: React.FC<JourneyProps> = ({
           variant={_variant}
         />
 
-        {/* Journey Steps - Wrapped in a cohesive container */}
+        {/* Journey Steps */}
         <div
-          className="journey-steps mt-16"
+          className="journey-steps mt-16 px-4 md:px-8"
           data-aos={prefersReducedMotion ? undefined : 'fade-up'}
           data-aos-delay={prefersReducedMotion ? undefined : '100'}
         >
-          <div className="journey-container rounded-3xl bg-journey-bg-alt p-6 md:p-10 relative overflow-hidden border journey-border">
-            {/* Add floating icons as the background */}
-            <FloatingIcons variant={_variant} />
-
-            <div className={`journey-timeline ${timelineColorClass}`}>
-              {journeySteps.map((step: JourneyStepType, index: number) => (
-                <div
-                  key={step.id}
-                  className="journey-step-container"
-                  id={`journey-step-${index}`}
-                >
-                  <JourneyStep
-                    step={step}
-                    index={index}
-                    isExpanded={expandedStep === index}
-                    onToggle={() => handleStepClick(index)}
-                    isLast={index === journeySteps.length - 1}
-                    variant={_variant}
-                  />
-                </div>
-              ))}
-            </div>
+          <div className={`journey-timeline ${timelineColorClass} space-y-16`}>
+            {journeySteps.map((step: JourneyStepType, index: number) => (
+              <div
+                key={step.id}
+                className="journey-step-container"
+                id={`journey-step-${index}`}
+              >
+                <JourneyStep
+                  step={step}
+                  index={index}
+                  isExpanded={expandedStep === index}
+                  onToggle={() => handleStepClick(index)}
+                  isLast={index === journeySteps.length - 1}
+                  variant={_variant}
+                />
+              </div>
+            ))}
           </div>
         </div>
 

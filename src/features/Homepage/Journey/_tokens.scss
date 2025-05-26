@@ -79,12 +79,12 @@ $journey-mobile-breakpoint: 768px;
     --journey-connector-gap: 16px;
 
     /* Step spacing - centralized for consistency */
-    --journey-step-spacing: 1rem;
-    /* 16px base */
-    --journey-step-spacing-md: 1.25rem;
-    /* 20px tablet */
-    --journey-step-spacing-lg: 1.5rem;
-    /* 24px desktop */
+    --journey-step-spacing: 4rem;
+    /* 64px base - doubled from original 32px */
+    --journey-step-spacing-md: 4rem;
+    /* 64px tablet */
+    --journey-step-spacing-lg: 4rem;
+    /* 64px desktop */
     --journey-connector-height: var(--journey-step-spacing);
     /* Match connector height to spacing */
 

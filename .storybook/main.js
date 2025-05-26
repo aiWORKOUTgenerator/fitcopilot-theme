@@ -66,6 +66,7 @@ const config = {
     // Define aliases based on FitCopilot's architecture
     config.resolve.alias = {
       ...config.resolve.alias,
+      '@': path.resolve(__dirname, '../src'),
       '@features': path.resolve(__dirname, '../src/features'),
       '@components': path.resolve(__dirname, '../src/components'),
       '@hooks': path.resolve(__dirname, '../src/hooks'),
@@ -115,7 +116,10 @@ const config = {
             loader: 'sass-loader',
             options: {
               sassOptions: {
-                includePaths: [path.resolve(__dirname, '../src/styles')]
+                includePaths: [
+                  path.resolve(__dirname, '../src/styles'),
+                  path.resolve(__dirname, '../src')
+                ]
               }
             }
           }
@@ -133,7 +137,10 @@ const config = {
             loader: 'sass-loader',
             options: {
               sassOptions: {
-                includePaths: [path.resolve(__dirname, '../src/styles')]
+                includePaths: [
+                  path.resolve(__dirname, '../src/styles'),
+                  path.resolve(__dirname, '../src')
+                ]
               }
             }
           }

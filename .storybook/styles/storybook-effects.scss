@@ -1,0 +1,281 @@
+// Storybook Visual Effects
+// Glow effects and sophisticated visual enhancements for components
+
+// Base glow effect mixin for reusability
+@mixin glow-effect($r, $g, $b, $intensity: 0.15, $size: 25px) {
+  box-shadow: 0 0 #{$size} rgba($r, $g, $b, $intensity);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+@mixin glow-effect-expanded($r, $g, $b, $intensity: 0.2, $size: 30px) {
+  box-shadow: 0 0 #{$size} rgba($r, $g, $b, $intensity);
+}
+
+// Color definitions matching production CSS (RGB values)
+$lime-r: 132;
+$lime-g: 204;
+$lime-b: 22;
+
+$cyan-r: 6;
+$cyan-g: 182;
+$cyan-b: 212;
+
+$violet-r: 139;
+$violet-g: 92;
+$violet-b: 246;
+
+$amber-r: 251;
+$amber-g: 146;
+$amber-b: 60;
+
+$emerald-r: 16;
+$emerald-g: 185;
+$emerald-b: 129;
+
+$rose-r: 244;
+$rose-g: 63;
+$rose-b: 94;
+
+// Primary glow effects for journey steps
+.lime-glow {
+  &:hover {
+    @include glow-effect($lime-r, $lime-g, $lime-b);
+  }
+  
+  &.expanded {
+    @include glow-effect-expanded($lime-r, $lime-g, $lime-b);
+  }
+}
+
+.cyan-glow {
+  &:hover {
+    @include glow-effect($cyan-r, $cyan-g, $cyan-b);
+  }
+  
+  &.expanded {
+    @include glow-effect-expanded($cyan-r, $cyan-g, $cyan-b);
+  }
+}
+
+.violet-glow {
+  &:hover {
+    @include glow-effect($violet-r, $violet-g, $violet-b);
+  }
+  
+  &.expanded {
+    @include glow-effect-expanded($violet-r, $violet-g, $violet-b);
+  }
+}
+
+.amber-glow {
+  &:hover {
+    @include glow-effect($amber-r, $amber-g, $amber-b);
+  }
+  
+  &.expanded {
+    @include glow-effect-expanded($amber-r, $amber-g, $amber-b);
+  }
+}
+
+// Additional glow colors for extended theme support
+.emerald-glow {
+  &:hover {
+    @include glow-effect($emerald-r, $emerald-g, $emerald-b);
+  }
+  
+  &.expanded {
+    @include glow-effect-expanded($emerald-r, $emerald-g, $emerald-b);
+  }
+}
+
+.rose-glow {
+  &:hover {
+    @include glow-effect($rose-r, $rose-g, $rose-b);
+  }
+  
+  &.expanded {
+    @include glow-effect-expanded($rose-r, $rose-g, $rose-b);
+  }
+}
+
+// Enhanced glow effects for special states
+.glow-intense {
+  &.lime-glow:hover {
+    @include glow-effect($lime-r, $lime-g, $lime-b, 0.25, 35px);
+  }
+  
+  &.cyan-glow:hover {
+    @include glow-effect($cyan-r, $cyan-g, $cyan-b, 0.25, 35px);
+  }
+  
+  &.violet-glow:hover {
+    @include glow-effect($violet-r, $violet-g, $violet-b, 0.25, 35px);
+  }
+  
+  &.amber-glow:hover {
+    @include glow-effect($amber-r, $amber-g, $amber-b, 0.25, 35px);
+  }
+}
+
+// Subtle glow for secondary elements
+.glow-subtle {
+  &.lime-glow:hover {
+    @include glow-effect($lime-r, $lime-g, $lime-b, 0.08, 15px);
+  }
+  
+  &.cyan-glow:hover {
+    @include glow-effect($cyan-r, $cyan-g, $cyan-b, 0.08, 15px);
+  }
+  
+  &.violet-glow:hover {
+    @include glow-effect($violet-r, $violet-g, $violet-b, 0.08, 15px);
+  }
+  
+  &.amber-glow:hover {
+    @include glow-effect($amber-r, $amber-g, $amber-b, 0.08, 15px);
+  }
+}
+
+// Text gradient effects
+.text-gradient {
+  background-size: 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -moz-text-fill-color: transparent;
+  
+  &.lime-gradient {
+    background-image: linear-gradient(135deg, rgb(132, 204, 22), rgb(16, 185, 129));
+  }
+  
+  &.cyan-gradient {
+    background-image: linear-gradient(135deg, rgb(6, 182, 212), rgb(59, 130, 246));
+  }
+  
+  &.violet-gradient {
+    background-image: linear-gradient(135deg, rgb(139, 92, 246), rgb(168, 85, 247));
+  }
+  
+  &.amber-gradient {
+    background-image: linear-gradient(135deg, rgb(251, 146, 60), rgb(245, 101, 101));
+  }
+}
+
+// Glass morphism effects
+.glass-morphism {
+  background: rgba(31, 41, 55, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-morphism-light {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+// Shimmer effect for buttons and interactive elements
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+// Pulsing ring decorations for icons
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+.pulse-ring {
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  &.lime-ring::before {
+    border: 2px solid rgba(132, 204, 22, 0.6);
+  }
+  
+  &.cyan-ring::before {
+    border: 2px solid rgba(6, 182, 212, 0.6);
+  }
+  
+  &.violet-ring::before {
+    border: 2px solid rgba(139, 92, 246, 0.6);
+  }
+  
+  &.amber-ring::before {
+    border: 2px solid rgba(251, 146, 60, 0.6);
+  }
+}
+
+// Floating particle background effect
+@keyframes float-particle {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+    opacity: 0.6;
+  }
+}
+
+.floating-particles {
+  position: relative;
+  overflow: hidden;
+  
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(132, 204, 22, 0.4);
+    border-radius: 50%;
+    animation: float-particle 8s ease-in-out infinite;
+  }
+  
+  &::before {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+  
+  &::after {
+    top: 60%;
+    right: 15%;
+    animation-delay: 4s;
+  }
+} 

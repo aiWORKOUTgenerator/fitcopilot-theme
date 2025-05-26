@@ -6,8 +6,7 @@
 @use './variants/theme-variables' as themeVars;
 @use "tailwindcss" as *;
 
-// External CSS files still need @import
-@import 'aos/dist/aos.css';
+// AOS CSS is now imported through the design system
 
 // Base styles
 html {

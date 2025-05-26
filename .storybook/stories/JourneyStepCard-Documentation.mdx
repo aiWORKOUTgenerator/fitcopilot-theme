@@ -1,0 +1,404 @@
+import { Meta, Story, Canvas, ArgsTable, Description } from '@storybook/blocks';
+import * as JourneyStepCardStories from '../src/features/Registration/Journey/components/JourneyStepCard/JourneyStepCard.stories';
+
+<Meta of={JourneyStepCardStories} />
+
+# JourneyStepCard Component Documentation
+
+<Description of={JourneyStepCardStories} />
+
+## Overview
+
+The `JourneyStepCard` is a sophisticated, interactive component designed for the FitCopilot registration journey. It provides a rich user experience with glass morphism effects, dynamic glow animations, and comprehensive form integration.
+
+## Key Features
+
+### 🎨 **Visual Design**
+- **Glass Morphism**: Semi-transparent backgrounds with backdrop blur effects
+- **Dynamic Glow Effects**: Color-coded hover glows (lime, cyan, violet, amber)
+- **Smooth Animations**: Entrance animations, expand/collapse transitions, hover effects
+- **Responsive Design**: Mobile-first approach with adaptive layouts
+
+### 🔧 **Functionality**
+- **State Management**: Integrated with JourneyContext for step progression
+- **Form Integration**: Dynamic content rendering based on step type
+- **Validation**: Real-time form validation with visual feedback
+- **Accessibility**: Full ARIA support and keyboard navigation
+
+### 🎯 **Use Cases**
+- Multi-step registration flows
+- Onboarding processes
+- Progressive disclosure interfaces
+- Form wizards with validation
+
+## Basic Usage
+
+<Canvas of={JourneyStepCardStories.Default} />
+
+## Interactive Playground
+
+Use the controls below to experiment with different configurations:
+
+<Canvas of={JourneyStepCardStories.Playground} />
+
+<ArgsTable of={JourneyStepCardStories.Playground} />
+
+## Step Types
+
+The component renders different content based on the step index:
+
+### Goals Step (Index 0)
+<Canvas of={JourneyStepCardStories.GoalsStep} />
+
+Features interactive goal selection with:
+- Multiple selection capability
+- Visual feedback for selected goals
+- Validation state management
+
+### Customization Step (Index 1)
+<Canvas of={JourneyStepCardStories.CustomizationStep} />
+
+Includes form fields for:
+- Experience level selection
+- Equipment availability
+- Time commitment preferences
+
+### Medical Step (Index 2)
+<Canvas of={JourneyStepCardStories.MedicalStep} />
+
+Health assessment forms with:
+- Health status evaluation
+- Injury history documentation
+- Medical clearance confirmation
+
+### Analytics Step (Index 3)
+<Canvas of={JourneyStepCardStories.AnalyticsStep} />
+
+Progress tracking preferences:
+- Analytics feature selection
+- Tracking method configuration
+- Goal achievement settings
+
+## Complete Journey Flow
+
+<Canvas of={JourneyStepCardStories.CompleteJourneySequence} />
+
+## Interactive Demo
+
+Experience the full component functionality:
+
+<Canvas of={JourneyStepCardStories.InteractiveDemo} />
+
+## Responsive Design
+
+<Canvas of={JourneyStepCardStories.ResponsiveShowcase} />
+
+The component adapts to different screen sizes:
+
+| Breakpoint | Behavior |
+|------------|----------|
+| **Mobile** (< 768px) | Vertical layout, stacked elements, touch-optimized |
+| **Tablet** (768px - 1024px) | Hybrid layout, larger touch targets |
+| **Desktop** (> 1024px) | Horizontal layout, hover effects, step connectors |
+
+## Accessibility Features
+
+<Canvas of={JourneyStepCardStories.AccessibilityDemo} />
+
+### Keyboard Navigation
+- **Tab/Shift+Tab**: Navigate between steps
+- **Enter/Space**: Expand/collapse steps
+- **Arrow Keys**: Navigate within expanded content
+
+### Screen Reader Support
+- Proper ARIA labels and descriptions
+- State announcements for expansions
+- Form validation feedback
+- Progress indicators
+
+### WCAG 2.1 AA Compliance
+- Sufficient color contrast ratios
+- Focus indicators for all interactive elements
+- Alternative text for icons
+- Semantic HTML structure
+
+## Styling System
+
+### CSS Classes
+
+The component uses a sophisticated styling system with custom CSS classes:
+
+```scss
+// Glow effects for different accent colors
+.lime-glow:hover { box-shadow: 0 0 25px rgba(132, 204, 22, 0.15); }
+.cyan-glow:hover { box-shadow: 0 0 25px rgba(6, 182, 212, 0.15); }
+.violet-glow:hover { box-shadow: 0 0 25px rgba(139, 92, 246, 0.15); }
+.amber-glow:hover { box-shadow: 0 0 25px rgba(251, 146, 60, 0.15); }
+
+// Animation classes
+.animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+.animate-fade-slide-up { animation: fadeSlideUp 0.4s ease-out forwards; }
+
+// Layout classes
+.step-connector { /* Visual connection between steps */ }
+.journey-step-card { /* Main card container */ }
+```
+
+### Tailwind CSS Integration
+
+The component leverages Tailwind CSS for:
+- **Responsive Design**: `md:`, `lg:` prefixes for breakpoint-specific styles
+- **Glass Morphism**: `bg-gray-800/70 backdrop-blur-lg`
+- **Gradients**: `bg-gradient-to-br from-lime-300 to-emerald-400`
+- **Transitions**: `transition-all duration-300 ease-in-out`
+
+## State Management
+
+### JourneyContext Integration
+
+```typescript
+interface JourneyContextValue {
+  expandedStep: number | null;
+  completedSteps: number[];
+  registrationData: RegistrationData;
+  toggleStep: (index: number) => void;
+  markStepComplete: (stepIndex: number) => void;
+  updateRegistrationData: (data: Partial<RegistrationData>) => void;
+}
+```
+
+### Component State
+
+```typescript
+interface ComponentState {
+  isExpanded: boolean;    // Controlled by JourneyContext
+  isCompleted: boolean;   // Based on completedSteps array
+  isStepValid: boolean;   // Form validation state
+}
+```
+
+## Performance Considerations
+
+### Optimization Techniques
+- **React.memo**: Prevents unnecessary re-renders
+- **useCallback**: Memoizes event handlers
+- **Lazy Loading**: Dynamic content rendering
+- **CSS Transitions**: Hardware-accelerated animations
+
+### Bundle Size Impact
+- **Component Size**: ~15KB (minified + gzipped)
+- **Dependencies**: JourneyContext, mock components
+- **CSS**: Custom animations and effects
+
+## Best Practices
+
+### Implementation Guidelines
+
+1. **Always wrap in JourneyProvider**:
+```tsx
+<JourneyProvider initialData={{}}>
+  <JourneyStepCard step={stepData} index={0} onStepAction={handleAction} />
+</JourneyProvider>
+```
+
+2. **Provide proper step data**:
+```typescript
+const stepData: JourneyStepData = {
+  title: "Step Title",
+  description: "Step description",
+  icon: <IconComponent />,
+  accentColor: "from-lime-300 to-emerald-400",
+  ctaText: "Continue",
+  detailedFeatures: [/* feature array */]
+};
+```
+
+3. **Handle step actions appropriately**:
+```typescript
+const handleStepAction = (stepIndex: number) => {
+  // Validate step data
+  // Update application state
+  // Navigate to next step
+};
+```
+
+### Common Pitfalls
+
+❌ **Don't**: Use without JourneyProvider context
+❌ **Don't**: Modify step data after initial render
+❌ **Don't**: Skip accessibility attributes
+
+✅ **Do**: Provide complete step data objects
+✅ **Do**: Handle validation states properly
+✅ **Do**: Test across different screen sizes
+
+## API Reference
+
+### Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `step` | `JourneyStepData` | ✅ | Complete step configuration object |
+| `index` | `number` | ✅ | Step position in journey sequence |
+| `onStepAction` | `(index: number) => void` | ✅ | Callback for step completion |
+
+### JourneyStepData Interface
+
+```typescript
+interface JourneyStepData {
+  title: string;                    // Step title
+  description: string;              // Step description
+  icon: React.ReactNode;           // Step icon component
+  delay: number;                   // Animation delay (ms)
+  accentColor: string;             // Tailwind gradient classes
+  ctaText: string;                 // Action button text
+  nextStep: string;                // Next step identifier
+  detailedFeatures: JourneyStepFeature[]; // Feature list
+}
+```
+
+### JourneyStepFeature Interface
+
+```typescript
+interface JourneyStepFeature {
+  title: string;                   // Feature title
+  description: string;             // Feature description
+  icon: React.ReactNode;          // Feature icon
+}
+```
+
+## Testing
+
+### Unit Testing
+
+```typescript
+import { render, screen, fireEvent } from '@testing-library/react';
+import { JourneyProvider } from './JourneyContext';
+import JourneyStepCard from './JourneyStepCard';
+
+test('renders step card with proper content', () => {
+  const mockStep = {
+    title: 'Test Step',
+    description: 'Test description',
+    // ... other properties
+  };
+
+  render(
+    <JourneyProvider>
+      <JourneyStepCard step={mockStep} index={0} onStepAction={jest.fn()} />
+    </JourneyProvider>
+  );
+
+  expect(screen.getByText('Test Step')).toBeInTheDocument();
+});
+```
+
+### Integration Testing
+
+```typescript
+test('step expansion and form interaction', async () => {
+  // Test step expansion
+  fireEvent.click(screen.getByRole('button', { name: /test step/i }));
+  
+  // Test form interaction
+  const goalOption = screen.getByText('Strength Building');
+  fireEvent.click(goalOption);
+  
+  // Test validation
+  expect(screen.getByText('Set Your Goals')).not.toBeDisabled();
+});
+```
+
+## Migration Guide
+
+### From Legacy Components
+
+If migrating from older step components:
+
+1. **Update imports**:
+```typescript
+// Old
+import StepCard from './StepCard';
+
+// New
+import JourneyStepCard from './JourneyStepCard';
+```
+
+2. **Restructure data**:
+```typescript
+// Old format
+const stepData = { title, content, actions };
+
+// New format
+const stepData: JourneyStepData = {
+  title,
+  description,
+  icon,
+  accentColor,
+  ctaText,
+  detailedFeatures
+};
+```
+
+3. **Add context provider**:
+```tsx
+// Wrap your component tree
+<JourneyProvider>
+  {/* Your step cards */}
+</JourneyProvider>
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Issue**: Glow effects not working
+**Solution**: Ensure custom CSS is loaded and glow classes are available
+
+**Issue**: Step not expanding
+**Solution**: Check JourneyContext provider and step index
+
+**Issue**: Form validation not working
+**Solution**: Verify mock components are properly imported
+
+**Issue**: Animations not smooth
+**Solution**: Check for CSS conflicts and ensure proper transition classes
+
+### Debug Mode
+
+Enable debug logging:
+
+```typescript
+const JourneyStepCard = ({ step, index, onStepAction }) => {
+  const DEBUG = process.env.NODE_ENV === 'development';
+  
+  if (DEBUG) {
+    console.log('Step render:', { step, index, isExpanded });
+  }
+  
+  // Component logic...
+};
+```
+
+## Contributing
+
+### Development Setup
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Start Storybook: `npm run storybook`
+4. Make changes and test in Storybook
+5. Run tests: `npm test`
+6. Submit pull request
+
+### Code Standards
+
+- Follow TypeScript strict mode
+- Use Tailwind CSS for styling
+- Include comprehensive tests
+- Document all props and interfaces
+- Follow accessibility guidelines
+
+---
+
+*This documentation is generated from the actual component implementation and is kept up-to-date with each release.* 
