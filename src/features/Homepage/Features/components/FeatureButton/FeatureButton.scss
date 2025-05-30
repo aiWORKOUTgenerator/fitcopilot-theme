@@ -2,14 +2,14 @@
 @use '../../../../../styles/design-system' as ds;
 
 .feature-button {
-  // Base styles - use direct component tokens from design system
+  // Base styles - match JourneyButton exactly
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--feature-button-radius, var(--radius-md, 0.5rem));
+  border-radius: var(--feature-button-radius, var(--radius-full, 9999px)); // Match Journey's full rounded
   transition: var(--feature-button-transition, all 0.2s ease-in-out);
-  min-width: var(--feature-button-min-width, 160px);
-  padding: var(--feature-button-padding-y, 0.75rem) var(--feature-button-padding-x, 1.5rem);
+  min-width: var(--feature-button-min-width, 160px); // Match Journey default
+  padding: var(--feature-button-padding-y, 0.5rem) var(--feature-button-padding-x, 1.5rem); // Reduced from 0.75rem to 0.5rem
   font-weight: var(--feature-button-font-weight, 600);
   
   // Icon positioning
@@ -38,7 +38,7 @@
     width: 100%;
   }
   
-  // Size variants
+  // Size variants - match JourneyButton exactly
   &--small {
     font-size: var(--feature-button-size-sm-font-size, 0.875rem);
     min-width: var(--feature-button-size-sm-min-width, 120px);
@@ -46,19 +46,19 @@
   }
   
   &--medium {
-    font-size: var(--feature-button-size-md-font-size, 1rem);
+    font-size: var(--feature-button-size-md-font-size, 0.875rem); // Reduced from 1rem to 0.875rem
     min-width: var(--feature-button-size-md-min-width, 160px);
-    padding: var(--feature-button-size-md-padding-y, 0.75rem) var(--feature-button-size-md-padding-x, 1.5rem);
+    padding: var(--feature-button-size-md-padding-y, 0.5rem) var(--feature-button-size-md-padding-x, 1.5rem); // Reduced from 0.75rem to 0.5rem
   }
   
   &--large {
-    font-size: var(--feature-button-size-lg-font-size, 1.125rem);
-    min-width: var(--feature-button-size-lg-min-width, 200px);
-    padding: var(--feature-button-size-lg-padding-y, 1rem) var(--feature-button-size-lg-padding-x, 2rem);
+    font-size: var(--feature-button-size-lg-font-size, 1rem); // Reduced from 1.125rem to 1rem
+    min-width: var(--feature-button-size-lg-min-width, 240px); // Match Journey: 240px instead of 200px
+    padding: var(--feature-button-size-lg-padding-y, 0.75rem) var(--feature-button-size-lg-padding-x, 2rem); // Reduced from 1rem to 0.75rem
   }
 }
 
-// Primary variant with gradient background
+// Primary variant with gradient background - now with hover effects
 .feature-button-primary {
   background: linear-gradient(
     var(--feature-button-gradient-angle, 90deg),
@@ -70,31 +70,82 @@
   box-shadow: var(--feature-button-shadow, 0 4px 6px rgba(0, 0, 0, 0.1));
   
   &:hover:not(:disabled) {
-    background: linear-gradient(
-      var(--feature-button-gradient-angle, 90deg),
-      var(--feature-button-gradient-from-hover, var(--color-lime-400, #84cc16)), 
-      var(--feature-button-gradient-to-hover, var(--color-emerald-500, #10b981))
-    );
-    box-shadow: var(--feature-button-shadow-hover, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
     transform: translateY(var(--feature-button-transform-up, -2px));
   }
 }
 
-// Secondary variant
+// Secondary variant - now with hover effects to match Journey
 .feature-button-secondary {
-  background-color: var(--feature-button-secondary-bg, rgba(255, 255, 255, 0.1));
-  border: var(--feature-button-border-width-secondary, 2px) solid var(--feature-button-secondary-border, rgba(163, 230, 53, 0.4));
+  background-color: var(--feature-button-secondary-bg, transparent);
+  border: var(--feature-button-border-width-secondary, 2px) solid var(--feature-button-secondary-border, rgba(163, 230, 53, 0.5));
   color: var(--feature-button-secondary-text, var(--color-lime-300, #a3e635));
   
   &:hover:not(:disabled) {
     background-color: var(--feature-button-secondary-bg-hover, rgba(163, 230, 53, 0.1));
-    box-shadow: var(--feature-button-shadow-hover, 0 10px 15px -3px rgba(0, 0, 0, 0.1));
+    box-shadow: var(--feature-button-shadow-hover, 0 5px 15px rgba(163, 230, 53, 0.2));
     transform: translateY(var(--feature-button-transform-up, -2px));
-    border-color: var(--feature-button-secondary-border-hover, rgba(163, 230, 53, 0.6));
+    border-color: var(--feature-button-secondary-border-hover, rgba(163, 230, 53, 0.8));
   }
 }
 
-// Theme overrides using direct selectors
+// Specific gradient color variants - match JourneyButton gradients exactly
+.feature-gradient-lime {
+  background: linear-gradient(
+    to right,
+    var(--color-lime-300, #a3e635),
+    var(--color-green-400, #4ade80) // Match Journey: green-400 instead of emerald-400
+  );
+  box-shadow: 0 4px 14px rgba(163, 230, 53, 0.3); // Match Journey shadow
+  
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(163, 230, 53, 0.5);
+    transform: translateY(var(--feature-button-transform-up, -2px));
+  }
+}
+
+.feature-gradient-cyan {
+  background: linear-gradient(
+    to right,
+    var(--color-cyan-300, #67e8f9),
+    var(--color-blue-400, #60a5fa)
+  );
+  box-shadow: 0 4px 14px rgba(103, 232, 249, 0.3);
+  
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(103, 232, 249, 0.5);
+    transform: translateY(var(--feature-button-transform-up, -2px));
+  }
+}
+
+.feature-gradient-violet {
+  background: linear-gradient(
+    to right,
+    var(--color-violet-300, #c4b5fd),
+    var(--color-purple-400, #a78bfa)
+  );
+  box-shadow: 0 4px 14px rgba(196, 181, 253, 0.3);
+  
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(196, 181, 253, 0.5);
+    transform: translateY(var(--feature-button-transform-up, -2px));
+  }
+}
+
+.feature-gradient-amber {
+  background: linear-gradient(
+    to right,
+    var(--color-amber-300, #fcd34d),
+    var(--color-orange-400, #fb923c)
+  );
+  box-shadow: 0 4px 14px rgba(252, 211, 77, 0.3);
+  
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(252, 211, 77, 0.5);
+    transform: translateY(var(--feature-button-transform-up, -2px));
+  }
+}
+
+// Theme overrides using direct selectors - now with hover effects
 // Gym Theme
 [data-theme="gym"] {
   .feature-button-primary {
@@ -104,24 +155,15 @@
       var(--feature-button-gradient-to, var(--color-purple-500, #8b5cf6))
     );
     border-color: var(--feature-button-primary-border, rgba(168, 85, 247, 0.3));
-    
-    &:hover:not(:disabled) {
-      background: linear-gradient(
-        var(--feature-button-gradient-angle, 90deg),
-        var(--feature-button-gradient-from-hover, var(--color-violet-500, #8b5cf6)), 
-        var(--feature-button-gradient-to-hover, var(--color-purple-600, #7c3aed))
-      );
-      border-color: var(--feature-button-primary-border-hover, rgba(168, 85, 247, 0.5));
-    }
   }
   
   .feature-button-secondary {
-    border-color: var(--feature-button-secondary-border, rgba(168, 85, 247, 0.4));
+    border-color: var(--feature-button-secondary-border, rgba(167, 139, 250, 0.5));
     color: var(--feature-button-secondary-text, var(--color-violet-400, #a78bfa));
     
     &:hover:not(:disabled) {
-      background-color: var(--feature-button-secondary-bg-hover, rgba(168, 85, 247, 0.1));
-      border-color: var(--feature-button-secondary-border-hover, rgba(168, 85, 247, 0.6));
+      background-color: var(--feature-button-secondary-bg-hover, rgba(167, 139, 250, 0.1));
+      border-color: var(--feature-button-secondary-border-hover, rgba(167, 139, 250, 0.8));
     }
   }
 }
@@ -135,24 +177,15 @@
       var(--feature-button-gradient-to, var(--color-blue-500, #3b82f6))
     );
     border-color: var(--feature-button-primary-border, rgba(6, 182, 212, 0.3));
-    
-    &:hover:not(:disabled) {
-      background: linear-gradient(
-        var(--feature-button-gradient-angle, 90deg),
-        var(--feature-button-gradient-from-hover, var(--color-cyan-500, #06b6d4)), 
-        var(--feature-button-gradient-to-hover, var(--color-blue-600, #2563eb))
-      );
-      border-color: var(--feature-button-primary-border-hover, rgba(6, 182, 212, 0.5));
-    }
   }
   
   .feature-button-secondary {
-    border-color: var(--feature-button-secondary-border, rgba(6, 182, 212, 0.4));
+    border-color: var(--feature-button-secondary-border, rgba(34, 211, 238, 0.5));
     color: var(--feature-button-secondary-text, var(--color-cyan-400, #22d3ee));
     
     &:hover:not(:disabled) {
-      background-color: var(--feature-button-secondary-bg-hover, rgba(6, 182, 212, 0.1));
-      border-color: var(--feature-button-secondary-border-hover, rgba(6, 182, 212, 0.6));
+      background-color: var(--feature-button-secondary-bg-hover, rgba(34, 211, 238, 0.1));
+      border-color: var(--feature-button-secondary-border-hover, rgba(34, 211, 238, 0.8));
     }
   }
 }
@@ -163,16 +196,16 @@
   box-shadow: 0 0 0 var(--feature-button-focus-ring-width, 3px) var(--feature-button-focus-ring-color, rgba(163, 230, 53, 0.5));
 }
 
-// Media query for responsive sizing
+// Media query for responsive sizing - match JourneyButton exactly
 @media (min-width: 768px) {
   .feature-button--medium {
-    min-width: var(--feature-button-size-md-min-width, 180px);
-    font-size: var(--feature-button-size-md-font-size, 1.125rem);
+    min-width: var(--feature-button-size-md-min-width, 180px); // Match Journey responsive
+    font-size: var(--feature-button-size-md-font-size, 0.9rem); // Slightly larger on desktop but still reduced from original 1.125rem
   }
   
   .feature-button--large {
-    min-width: var(--feature-button-size-lg-min-width, 220px);
-    padding: var(--feature-button-size-lg-padding-y, 1.125rem) var(--feature-button-size-lg-padding-x, 2.5rem);
-    font-size: var(--feature-button-size-lg-font-size, 1.25rem);
+    min-width: var(--feature-button-size-lg-min-width, 260px); // Match Journey: 260px instead of 220px
+    padding: var(--feature-button-size-lg-padding-y, 0.875rem) var(--feature-button-size-lg-padding-x, 2.5rem); // Reduced from 1.125rem to 0.875rem
+    font-size: var(--feature-button-size-lg-font-size, 1.125rem); // Slightly larger on desktop but still reduced from original 1.25rem
   }
 } 

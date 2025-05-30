@@ -1,3 +1,5 @@
+import { GlobalVariantKey } from '../types/shared';
+
 export interface FooterLink {
   id: number;
   title: string;
@@ -12,4 +14,8 @@ export interface FooterLinkGroup {
 
 export interface FooterProps {
   links?: FooterLinkGroup[];
+  /**
+   * Theme variant to use for styling
+   */
+  variant?: GlobalVariantKey;
 } 

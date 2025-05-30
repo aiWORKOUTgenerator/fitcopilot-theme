@@ -1,3 +1,6 @@
+
+import { GlobalVariantKey } from '../types/shared';
+
 export interface Testimonial {
   id: number;
   name: string;
@@ -19,7 +22,7 @@ export interface TestimonialsProps {
   /**
    * Theme variant to use for styling
    */
-  variant?: 'default' | 'gym' | 'sports' | 'wellness' | 'modern' | 'classic' | 'minimalist';
+  variant?: GlobalVariantKey;
 
   /**
    * Optional custom ID for the section

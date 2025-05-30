@@ -1,11 +1,13 @@
 import { ReactNode } from 'react';
+import { GlobalVariantKey } from '../types/shared';
 
 /**
  * Journey component types using discriminated unions for variant support
  */
 
 // Available theme variants
-export type VariantKey = 'default' | 'gym' | 'sports' | 'wellness' | 'modern' | 'classic' | 'minimalist';
+// @deprecated Use GlobalVariantKey from '../types/shared' instead
+export type VariantKey = GlobalVariantKey;
 
 // Step feature interface
 export interface DetailedFeature {

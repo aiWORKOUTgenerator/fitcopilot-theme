@@ -1,0 +1,447 @@
+@use '../../../../styles/design-system' as *;
+
+/**
+ * Demo Components styles
+ * Provides styling for SampleWorkout, ProgressChart, VideoPlayer, and BackgroundVideoPlayer
+ */
+
+// ============================================================================
+// SAMPLE WORKOUT COMPONENT
+// ============================================================================
+
+.sample-workout {
+  // Smooth scrolling for exercise list
+  ul {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+  
+  // Exercise list items
+  li {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      padding: 4px;
+      margin: -4px;
+    }
+  }
+  
+  // Completion status styling
+  .text-lime-300 {
+    filter: drop-shadow(0 0 2px rgba(132, 204, 22, 0.3));
+  }
+  
+  // Progress indicator
+  .border-t {
+    border-image: linear-gradient(90deg, rgba(255, 255, 255, 0.1), transparent) 1;
+  }
+}
+
+// ============================================================================
+// PROGRESS CHART COMPONENT
+// ============================================================================
+
+.progress-chart {
+  // Chart animations
+  .chart-line {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+  
+  .animate-draw-line {
+    animation: drawLine 2.5s ease-out forwards;
+  }
+  
+  .animate-point-fade {
+    animation: pointFade 0.6s ease-out forwards;
+  }
+  
+  .animate-heartbeat {
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+  
+  .animate-heart-pulse {
+    animation: heartPulse 2s ease-in-out infinite;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+  
+  // Grid lines
+  .bg-gray-700\/30 {
+    background: rgba(55, 65, 81, 0.3);
+  }
+  
+  // Progress percentage badge
+  .bg-lime-500\/20 {
+    background: rgba(132, 204, 22, 0.2);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(132, 204, 22, 0.3);
+  }
+}
+
+// Chart animation keyframes
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pointFade {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes heartPulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(244, 63, 94, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(244, 63, 94, 0.8));
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+// ============================================================================
+// VIDEO PLAYER COMPONENT
+// ============================================================================
+
+.video-player {
+  // Video container
+  video {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+  
+  // Control overlay
+  .absolute.inset-0 {
+    backdrop-filter: blur(2px);
+    transition: all 0.3s ease;
+  }
+  
+  // Play/pause button
+  button {
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+  
+  // Progress bar container
+  .video-progress {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    height: 4px;
+    overflow: hidden;
+    
+    .video-progress-bar {
+      height: 100%;
+      transition: width 0.1s linear;
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+    }
+  }
+  
+  // Time display
+  .text-xs.text-gray-400 {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// ============================================================================
+// BACKGROUND VIDEO PLAYER COMPONENT
+// ============================================================================
+
+.background-video-player {
+  // Video background
+  video {
+    object-fit: cover;
+    filter: brightness(0.8) contrast(1.1);
+  }
+  
+  // Overlay gradient
+  .bg-gradient-to-t {
+    backdrop-filter: blur(1px);
+  }
+  
+  // Content container
+  .max-w-xl {
+    z-index: 10;
+    position: relative;
+  }
+  
+  // CTA button styling
+  .features-cta {
+    .violet-gradient-text {
+      background: linear-gradient(135deg, #8b5cf6, #a855f7, #c084fc);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      
+      // Fallback for browsers that don't support background-clip
+      @supports not (background-clip: text) {
+        color: #8b5cf6;
+      }
+    }
+  }
+  
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    .mt-20 {
+      margin-top: 3rem;
+    }
+    
+    .mb-20 {
+      margin-bottom: 3rem;
+    }
+    
+    h3 {
+      font-size: 1.5rem;
+    }
+    
+    p {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// ============================================================================
+// VARIANT-SPECIFIC STYLING
+// ============================================================================
+
+// Gym variant
+[data-variant="gym"] {
+  .sample-workout {
+    .text-lime-300 {
+      color: #f59e0b; // amber-500
+    }
+    
+    .bg-lime-500\/20 {
+      background: rgba(245, 158, 11, 0.2);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+  }
+  
+  .progress-chart {
+    .text-cyan-300 {
+      color: #f59e0b; // amber-500
+    }
+    
+    #line-gradient stop:first-child {
+      stop-color: #f59e0b; // amber-500
+    }
+    
+    #line-gradient stop:last-child {
+      stop-color: #ef4444; // red-500
+    }
+  }
+}
+
+// Wellness variant
+[data-variant="wellness"] {
+  .sample-workout {
+    .text-lime-300 {
+      color: #8b5cf6; // violet-500
+    }
+    
+    .bg-lime-500\/20 {
+      background: rgba(139, 92, 246, 0.2);
+      border-color: rgba(139, 92, 246, 0.3);
+    }
+  }
+  
+  .progress-chart {
+    .text-cyan-300 {
+      color: #8b5cf6; // violet-500
+    }
+    
+    #line-gradient stop:first-child {
+      stop-color: #8b5cf6; // violet-500
+    }
+    
+    #line-gradient stop:last-child {
+      stop-color: #ec4899; // pink-500
+    }
+  }
+}
+
+// Sports variant
+[data-variant="sports"] {
+  .sample-workout {
+    .text-lime-300 {
+      color: #3b82f6; // blue-500
+    }
+    
+    .bg-lime-500\/20 {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+  }
+  
+  .progress-chart {
+    .text-cyan-300 {
+      color: #3b82f6; // blue-500
+    }
+    
+    #line-gradient stop:first-child {
+      stop-color: #3b82f6; // blue-500
+    }
+    
+    #line-gradient stop:last-child {
+      stop-color: #06b6d4; // cyan-500
+    }
+  }
+}
+
+// Minimalist variant
+[data-variant="minimalist"] {
+  .sample-workout,
+  .progress-chart,
+  .video-player,
+  .background-video-player {
+    // Reduced animations
+    * {
+      animation-duration: 0.2s !important;
+    }
+    
+    // Simplified styling
+    .drop-shadow-\[0_0_3px_rgba\(132\,204\,22\,0\.5\)\] {
+      filter: none;
+    }
+    
+    .backdrop-filter {
+      backdrop-filter: none;
+    }
+  }
+}
+
+// ============================================================================
+// ACCESSIBILITY SUPPORT
+// ============================================================================
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .sample-workout,
+  .progress-chart,
+  .video-player,
+  .background-video-player {
+    // Increase contrast
+    .text-gray-300 {
+      color: #ffffff;
+    }
+    
+    .text-gray-400 {
+      color: #e5e7eb;
+    }
+    
+    .bg-gray-700\/30 {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    
+    // Remove subtle effects
+    .drop-shadow-\[0_0_3px_rgba\(132\,204\,22\,0\.5\)\] {
+      filter: none;
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .sample-workout,
+  .progress-chart,
+  .video-player,
+  .background-video-player {
+    // Disable animations
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+    
+    // Immediate state changes
+    .chart-line {
+      stroke-dasharray: none;
+      stroke-dashoffset: 0;
+    }
+    
+    .animate-draw-line,
+    .animate-point-fade,
+    .animate-heartbeat,
+    .animate-heart-pulse,
+    .animate-fade-in {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+  .sample-workout,
+  .progress-chart,
+  .video-player,
+  .background-video-player {
+    // Enhanced contrast for dark mode
+    .text-gray-300 {
+      color: #f3f4f6;
+    }
+    
+    .text-gray-400 {
+      color: #d1d5db;
+    }
+  }
+} 

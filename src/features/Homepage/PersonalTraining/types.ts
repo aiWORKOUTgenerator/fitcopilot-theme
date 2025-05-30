@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { GlobalVariantKey } from '../types/shared';
 import { PersonalTrainingVariant } from './utils/themeUtils';
 
 /**
@@ -128,5 +129,6 @@ export interface Trainer {
 /**
  * Available theme variants for the PersonalTraining component
  * Must match the WordPress theme variant options
+ * @deprecated Use GlobalVariantKey from '../types/shared' instead
  */
-export type VariantKey = 'default' | 'modern' | 'classic' | 'minimalist' | 'sports' | 'wellness'; 
+export type VariantKey = GlobalVariantKey; 

@@ -1,11 +1,11 @@
 // src/features/Homepage/Features/Features.tsx
 
-import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, LucideIcon, Medal, Pause, Play, Timer, UserPlus, Zap } from 'lucide-react';
+import { Activity, Apple, BarChart3, Bike, CheckCircle, Coffee, Dumbbell, Flame, Footprints, Heart, HeartHandshake, LucideIcon, Medal, Pause, Play, Timer, UserPlus } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { ThemeProvider } from '../../../context/ThemeContext';
 import logger from '../../../utils/logger';
 import { ThemeOption } from '../../../utils/theming';
-import FeatureButton from './components/FeatureButton';
+import { FeatureCTA } from './components';
 import FeatureCard from './components/FeatureCard';
 import './Features.scss';
 
@@ -290,7 +290,9 @@ const VideoPlayer: React.FC<{ videoRef: React.RefObject<HTMLVideoElement> }> = (
 /**
  * Background video player component for the features section
  */
-const BackgroundVideoPlayer: React.FC<{ onScrollToSplash: (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void }> = ({ onScrollToSplash }) => {
+const BackgroundVideoPlayer: React.FC<{ 
+  variant?: VariantKey;
+}> = ({ variant = 'default' }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -315,18 +317,6 @@ const BackgroundVideoPlayer: React.FC<{ onScrollToSplash: (e: React.MouseEvent<H
         <div className="text-center max-w-xl px-4">
           <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">Experience Fitness Evolution</h3>
           <p className="text-gray-300 mb-6">Our technology adapts to your unique fitness journey, helping you achieve optimal results safely and efficiently.</p>
-
-          <div className="features-cta">
-            <FeatureButton
-              variant="primary"
-              size="large"
-              className="inline-flex items-center rounded-full font-medium px-8 min-w-[220px]"
-              leftIcon={<Zap className="features-icon" />}
-              onClick={onScrollToSplash}
-            >
-              <span className="violet-gradient-text">Get Started</span>
-            </FeatureButton>
-          </div>
         </div>
       </div>
     </div>
@@ -476,21 +466,37 @@ const Features: React.FC<FeaturesProps> = ({ variant = 'default' }) => {
           </div>
 
           {/* Background video player */}
-          <BackgroundVideoPlayer onScrollToSplash={handleScrollToSplash} />
+          <BackgroundVideoPlayer variant={variant} />
 
-          {/* CTA Button */}
+          {/* CTA Button - Now using FeatureCTA with Journey Primary Cyan gradient */}
           <div className="mt-16 text-center">
             <div className="inline-block w-3/4 md:w-1/2 mx-auto">
-              <FeatureButton
-                variant="primary"
-                size="large"
-                className="w-full"
-                fullWidth
-                leftIcon={<UserPlus className="features-icon" />}
-                onClick={handleScrollToSplash}
+              <div
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleScrollToSplash(e as unknown as React.MouseEvent<HTMLButtonElement>);
+                }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleScrollToSplash(e as unknown as React.MouseEvent<HTMLButtonElement>);
+                  }
+                }}
+                className="cursor-pointer"
               >
-                Start Your Fitness Journey
-              </FeatureButton>
+                <FeatureCTA
+                  text="Start Your Fitness Journey"
+                  buttonSize="medium"
+                  gradientColor="cyan"
+                  variant={variant}
+                  icon={<UserPlus className="features-icon" />}
+                  href="#" // Placeholder href, actual navigation handled by wrapper onClick
+                  showIcon={true}
+                />
+              </div>
             </div>
           </div>
         </div>

@@ -3,18 +3,13 @@
  */
 
 import React, { ReactNode } from 'react';
+import { GlobalVariantKey } from '../types/shared';
 
 /**
  * Supported theme variants for the TrainingFeatures component
+ * @deprecated Use GlobalVariantKey from '../types/shared' instead
  */
-export type VariantKey =
-    | 'default'
-    | 'boutique'
-    | 'classic'
-    | 'minimalist'
-    | 'modern'
-    | 'sports'
-    | 'wellness';
+export type VariantKey = GlobalVariantKey;
 
 /**
  * Media type definitions for feature cards

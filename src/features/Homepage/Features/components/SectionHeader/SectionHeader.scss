@@ -1,0 +1,282 @@
+@use '../../../../styles/design-system' as *;
+
+/**
+ * SectionHeader component styles
+ * Provides styling for section headers with labels, titles, and highlights
+ */
+
+.section-header {
+  position: relative;
+  z-index: 10;
+
+  // Smooth transitions for all elements
+  * {
+    transition: all 0.3s ease;
+  }
+
+  // Label styling
+  &-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #84cc16; // lime-300
+    margin-bottom: 0.5rem;
+    display: block;
+    
+    // Animation support
+    opacity: 1;
+    transform: translateY(0);
+    
+    // Reduced motion support
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+      animation: none;
+    }
+    
+    // Responsive adjustments
+    @media (max-width: 768px) {
+      font-size: 0.625rem;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  // Title styling
+  &-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: white;
+    line-height: 1.1;
+    margin: 0;
+    
+    // Animation support
+    opacity: 1;
+    transform: translateY(0);
+    
+    // Responsive font sizing
+    @media (min-width: 768px) {
+      font-size: clamp(2.5rem, 5vw, 3rem);
+    }
+    
+    // Reduced motion support
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+      animation: none;
+    }
+  }
+
+  // Highlighted text styling
+  &-highlight {
+    background: linear-gradient(to right, #84cc16, #10b981); // lime-300 to emerald-400
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    
+    // Fallback for browsers that don't support background-clip
+    @supports not (background-clip: text) {
+      color: #84cc16;
+    }
+    
+    // Enhanced gradient effect
+    background-size: 200% 100%;
+    animation: gradient-shift 3s ease-in-out infinite;
+    
+    // Data attribute for accessibility
+    &[data-text] {
+      position: relative;
+      
+      // Screen reader fallback
+      &::before {
+        content: attr(data-text);
+        position: absolute;
+        left: -9999px;
+        color: #84cc16;
+      }
+    }
+    
+    // Reduced motion support
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+      background-size: 100% 100%;
+    }
+  }
+
+  // Subtitle styling
+  &-subtitle {
+    font-size: 1.125rem;
+    color: #d1d5db; // gray-300
+    margin-top: 1rem;
+    max-width: 48rem;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+    
+    // Animation support
+    opacity: 1;
+    transform: translateY(0);
+    
+    // Responsive adjustments
+    @media (max-width: 768px) {
+      font-size: 1rem;
+      margin-top: 0.75rem;
+    }
+    
+    // Reduced motion support
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+      animation: none;
+    }
+  }
+
+  // Variant-specific styling
+  &[data-variant="gym"] {
+    .section-header-label {
+      color: #f59e0b; // amber-500
+    }
+    
+    .section-header-highlight {
+      background: linear-gradient(to right, #f59e0b, #ef4444); // amber-500 to red-500
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  &[data-variant="wellness"] {
+    .section-header-label {
+      color: #8b5cf6; // violet-500
+    }
+    
+    .section-header-highlight {
+      background: linear-gradient(to right, #8b5cf6, #ec4899); // violet-500 to pink-500
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  &[data-variant="sports"] {
+    .section-header-label {
+      color: #3b82f6; // blue-500
+    }
+    
+    .section-header-highlight {
+      background: linear-gradient(to right, #3b82f6, #06b6d4); // blue-500 to cyan-500
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  &[data-variant="minimalist"] {
+    .section-header-label {
+      color: #6b7280; // gray-500
+      font-weight: 500;
+    }
+    
+    .section-header-title {
+      font-weight: 600;
+    }
+    
+    .section-header-highlight {
+      background: linear-gradient(to right, #374151, #6b7280); // gray-700 to gray-500
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  // Text alignment variants
+  &.text-left {
+    text-align: left;
+    
+    .section-header-subtitle {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  &.text-right {
+    text-align: right;
+    
+    .section-header-subtitle {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}
+
+// Gradient animation keyframes
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+// Fade in animation for elements
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Animation classes for JavaScript integration
+.section-header {
+  &.animate-in {
+    .section-header-label {
+      animation: fadeInUp 0.6s ease-out 0.1s both;
+    }
+    
+    .section-header-title {
+      animation: fadeInUp 0.6s ease-out 0.2s both;
+    }
+    
+    .section-header-subtitle {
+      animation: fadeInUp 0.6s ease-out 0.3s both;
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .section-header {
+    &-label {
+      color: #ffffff;
+      font-weight: 800;
+    }
+    
+    &-title {
+      color: #ffffff;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+    
+    &-highlight {
+      color: #ffffff !important;
+      background: none !important;
+      -webkit-text-fill-color: #ffffff !important;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+    
+    &-subtitle {
+      color: #ffffff;
+    }
+  }
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+  .section-header {
+    &-subtitle {
+      color: #e5e7eb; // gray-200
+    }
+  }
+} 

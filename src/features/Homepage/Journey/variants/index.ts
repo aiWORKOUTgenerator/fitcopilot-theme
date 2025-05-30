@@ -29,13 +29,13 @@ export const getJourneyVariant = () => {
 
 // Export all variants
 export {
-  BoutiqueVariant,
-  ClassicVariant,
-  DefaultVariant,
-  MinimalistVariant,
-  ModernVariant,
-  SportsVariant,
-  WellnessVariant
+    BoutiqueVariant,
+    ClassicVariant,
+    DefaultVariant,
+    MinimalistVariant,
+    ModernVariant,
+    SportsVariant,
+    WellnessVariant
 };
 
 // Re-export JourneyProps

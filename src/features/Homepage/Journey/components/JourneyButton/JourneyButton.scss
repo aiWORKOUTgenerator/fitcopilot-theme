@@ -58,7 +58,7 @@
   }
 }
 
-// Gradient variants
+// Gradient variants - hover effects removed
 .journey-gradient-lime {
   background: linear-gradient(
     to right,
@@ -66,10 +66,6 @@
     var(--color-green-400, #4ade80)
   );
   box-shadow: 0 4px 14px rgba(163, 230, 53, 0.3);
-  
-  &:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(163, 230, 53, 0.5);
-  }
 }
 
 .journey-gradient-cyan {
@@ -79,10 +75,6 @@
     var(--color-blue-400, #60a5fa)
   );
   box-shadow: 0 4px 14px rgba(103, 232, 249, 0.3);
-  
-  &:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(103, 232, 249, 0.5);
-  }
 }
 
 .journey-gradient-violet {
@@ -92,10 +84,6 @@
     var(--color-purple-400, #a78bfa)
   );
   box-shadow: 0 4px 14px rgba(196, 181, 253, 0.3);
-  
-  &:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(196, 181, 253, 0.5);
-  }
 }
 
 .journey-gradient-amber {
@@ -105,19 +93,11 @@
     var(--color-orange-400, #fb923c)
   );
   box-shadow: 0 4px 14px rgba(252, 211, 77, 0.3);
-  
-  &:hover:not(:disabled) {
-    box-shadow: 0 6px 20px rgba(252, 211, 77, 0.5);
-  }
 }
 
-// Primary variant with gradient background
+// Primary variant with gradient background - hover effects removed
 .journey-button-primary {
   color: var(--journey-button-primary-text, var(--color-gray-900, #111827));
-  
-  &:hover:not(:disabled) {
-    transform: translateY(var(--journey-button-transform-up, -2px));
-  }
 }
 
 // Secondary variant

@@ -1,5 +1,6 @@
 import React from 'react';
 import { getComponentVariant } from '../../../../utils/variantLoader';
+import { GlobalVariantKey } from '../../types/shared';
 
 import BoutiqueVariant from './boutique';
 import ClassicVariant from './classic';
@@ -9,11 +10,8 @@ import ModernVariant from './modern';
 import SportsVariant from './sports';
 import WellnessVariant from './wellness';
 
-// Define proper props type
-type VariantKey = 'default' | 'gym' | 'boutique' | 'modern' | 'wellness' | 'classic' | 'sports' | 'minimalist' | 'registration';
-
 export interface PricingProps {
-    variant?: VariantKey;
+    variant?: GlobalVariantKey;
 }
 
 // Map variant keys to their React components
@@ -35,11 +33,11 @@ export const getPricingVariant = () => {
 
 // Export all variants
 export {
-  BoutiqueVariant,
-  ClassicVariant, DefaultVariant, MinimalistVariant,
-  ModernVariant,
-  SportsVariant,
-  WellnessVariant
+    BoutiqueVariant,
+    ClassicVariant, DefaultVariant, MinimalistVariant,
+    ModernVariant,
+    SportsVariant,
+    WellnessVariant
 };
 
 // Default export for backward compatibility

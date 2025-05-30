@@ -2,7 +2,8 @@ import { ArrowRight } from 'lucide-react';
 import React from 'react';
 import { ThemeProvider } from '../../../../context/ThemeContext';
 import { ThemeOption } from '../../../../utils/theming';
-import { TestimonialsButton } from './TestimonialsButton';
+import { UniversalButton } from '../../components/UniversalButton';
+import { GlobalVariantKey } from '../../types/shared';
 
 /**
  * Props for TestimonialsCTA component
@@ -27,6 +28,26 @@ export interface TestimonialsCTAProps {
 }
 
 /**
+ * Map variant to GlobalVariantKey
+ */
+const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
+  const validVariants: GlobalVariantKey[] = [
+    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
+    'minimalist', 'boutique', 'registration', 'mobile'
+  ];
+  
+  if (validVariants.includes(variant as GlobalVariantKey)) {
+    return variant as GlobalVariantKey;
+  }
+  
+  // Map testimonials-specific variants to GlobalVariantKey
+  switch (variant) {
+    case 'nutrition': return 'wellness'; // Map nutrition to wellness
+    default: return 'default';
+  }
+};
+
+/**
  * TestimonialsCTA - Call to action button for the testimonials section
  */
 const TestimonialsCTA: React.FC<TestimonialsCTAProps> = ({
@@ -39,22 +60,27 @@ const TestimonialsCTA: React.FC<TestimonialsCTAProps> = ({
   testimonialType = 'athlete',
   variant = 'default'
 }) => {
-  // Cast button variant to 'primary' if 'link' isn't supported directly
-  // TestimonialsButton has special CSS to handle link styling
-  const mappedVariant = buttonVariant === 'link' ? 'primary' : buttonVariant;
+  const globalVariant = mapVariantToGlobal(variant);
+  
+  // Map button variant - UniversalButton supports link variant directly
+  const mappedVariant = buttonVariant === 'link' ? 'link' : buttonVariant;
   
   return (
     <ThemeProvider initialTheme={variant as ThemeOption}>
-      <TestimonialsButton
-        variant={mappedVariant}
+      <UniversalButton
+        sectionContext="testimonials"
+        buttonVariant={mappedVariant}
+        variant={globalVariant}
         size={buttonSize}
-        testimonialType={testimonialType}
+        contextType={testimonialType}
         href={href}
         className={buttonVariant === 'link' ? 'testimonials-button-link' : ''}
         rightIcon={showIcon && (icon || <ArrowRight size={buttonSize === 'small' ? 16 : 20} className="ml-2" aria-hidden="true" />)}
+        data-section="testimonials"
+        data-context="cta"
       >
         {text}
-      </TestimonialsButton>
+      </UniversalButton>
     </ThemeProvider>
   );
 };

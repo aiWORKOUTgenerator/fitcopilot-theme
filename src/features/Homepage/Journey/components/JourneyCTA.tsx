@@ -2,9 +2,10 @@ import { ArrowRight } from 'lucide-react';
 import React from 'react';
 import { ThemeProvider } from '../../../../context/ThemeContext';
 import { ThemeOption } from '../../../../utils/theming';
-import { useReducedMotion } from '../hooks/useReducedMotion';
+import { GlobalVariantKey } from '../../types/shared';
+import useReducedMotion from '../hooks/useReducedMotion';
 import { JourneyCTAProps } from '../types';
-import JourneyButton from './JourneyButton';
+import { JourneyButton } from './JourneyButton';
 
 /**
  * Maps Journey variant to theme options for ThemeProvider
@@ -18,21 +19,43 @@ const mapVariantToTheme = (variant: string | undefined): ThemeOption => {
 };
 
 /**
- * Type for gradient color options
+ * Map variant to GlobalVariantKey
  */
-type GradientColorOption = 'lime' | 'cyan' | 'violet' | 'amber';
+const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
+  const validVariants: GlobalVariantKey[] = [
+    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
+    'minimalist', 'boutique', 'registration', 'mobile'
+  ];
+  
+  if (validVariants.includes(variant as GlobalVariantKey)) {
+    return variant as GlobalVariantKey;
+  }
+  
+  // Map Journey-specific variants to GlobalVariantKey
+  switch (variant) {
+    default: return 'default';
+  }
+};
 
 /**
- * Type for button size options
+ * Map buttonVariant to JourneyButton variant
  */
-type ButtonSizeOption = 'small' | 'medium' | 'large';
+const mapButtonVariant = (buttonVariant?: string): 'primary' | 'secondary' => {
+  // Map 'gradient' to 'primary' since JourneyButton handles gradient via gradientColor prop
+  if (buttonVariant === 'gradient' || buttonVariant === 'primary') {
+    return 'primary';
+  }
+  return 'secondary';
+};
 
 /**
  * JourneyCTA - Call to action button with gradient styling
+ * Now uses JourneyButton for consistent styling and enhanced cyan gradient effects
  */
 const JourneyCTA: React.FC<JourneyCTAProps> = ({
   text = 'Start Your Journey Now',
   href = 'https://aigymengine.com/workout-generator-registration',
+  className = '',
   buttonSize = 'large',
   buttonVariant = 'gradient',
   showIcon = true,
@@ -41,32 +64,28 @@ const JourneyCTA: React.FC<JourneyCTAProps> = ({
   variant
 }) => {
   const _prefersReducedMotion = useReducedMotion();
-  // Unused buttonVariant, mark with underscore to indicate intentional non-usage
-  const _buttonVariant = buttonVariant;
+  const _globalVariant = mapVariantToGlobal(variant);
+  
+  // Map button variant to JourneyButton variant
+  const journeyButtonVariant = mapButtonVariant(buttonVariant);
 
-  // Map traditional gradient colors to JourneyButton props
-  const gradientColorMap: Record<string, GradientColorOption> = {
-    lime: 'lime',
-    cyan: 'cyan',
-    violet: 'violet',
-    amber: 'amber'
-  };
-
-  // Map button size from traditional naming to standardized naming
-  const sizeMap: Record<string, ButtonSizeOption> = {
-    small: 'small',
-    medium: 'medium',
-    large: 'large'
-  };
+  // Determine the icon to display
+  const iconElement = showIcon ? (
+    icon || <ArrowRight size={buttonSize === 'small' ? 16 : 20} className="ml-2" aria-hidden="true" />
+  ) : undefined;
 
   return (
     <ThemeProvider initialTheme={mapVariantToTheme(variant)}>
       <JourneyButton
-        variant="primary"
-        size={sizeMap[buttonSize]}
-        gradientColor={gradientColorMap[gradientColor]}
+        variant={journeyButtonVariant}
+        size={buttonSize}
+        gradientColor={gradientColor}
         href={href}
-        rightIcon={showIcon && (icon || <ArrowRight size={buttonSize === 'small' ? 16 : 20} className="ml-2" aria-hidden="true" />)}
+        rightIcon={iconElement}
+        className={className}
+        data-section="journey"
+        data-context="cta"
+        aria-label={`${text} - Journey call to action`}
       >
         {text}
       </JourneyButton>

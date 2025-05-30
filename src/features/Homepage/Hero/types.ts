@@ -1,9 +1,11 @@
 import { SectionProps } from '../../../components/shared/Section';
+import { GlobalVariantKey } from '../types/shared';
 
 /**
  * Available theme variants for the Hero component
+ * @deprecated Use GlobalVariantKey from '../types/shared' instead
  */
-export type HeroVariantKey = 'default' | 'gym' | 'mobile' | 'sports' | 'wellness' | 'registration' | 'boutique' | 'classic' | 'minimalist' | 'modern';
+export type HeroVariantKey = GlobalVariantKey;
 
 /**
  * Interface for floating icon props

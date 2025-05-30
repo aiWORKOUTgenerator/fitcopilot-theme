@@ -1,11 +1,32 @@
 import { ArrowRight } from 'lucide-react';
 import React, { memo } from 'react';
 import { BenefitsList, ProgramCard } from '..';
-import { Button } from '../../../../../features/shared/Button';
-import { ProgramType } from '../../types';
+import { UniversalButton } from '../../../components/UniversalButton';
+import { GlobalVariantKey } from '../../../types/shared';
+import { ProgramType, VariantKey } from '../../types';
 import { generateProgramAriaIds } from '../../utils/accessibilityHelpers';
 import './ProgramsList.scss';
 import { ProgramsListProps } from './types';
+
+/**
+ * Map variant to GlobalVariantKey
+ */
+const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
+  const validVariants: GlobalVariantKey[] = [
+    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
+    'minimalist', 'boutique', 'registration', 'mobile'
+  ];
+  
+  if (validVariants.includes(variant as GlobalVariantKey)) {
+    return variant as GlobalVariantKey;
+  }
+  
+  // Map Training-specific variants to GlobalVariantKey
+  switch (variant) {
+    case 'athletic': return 'sports'; // Map athletic to sports
+    default: return 'default';
+  }
+};
 
 /**
  * Memoized expanded content component for better performance
@@ -20,40 +41,48 @@ const ExpandedContent = memo(({
     variant: string;
     onNavigate: (title: string) => void;
     ariaIds: ReturnType<typeof generateProgramAriaIds>;
-}) => (
-  <div
-    className="training-expanded"
-    id={ariaIds.contentId}
-    aria-labelledby={ariaIds.titleId}
-  >
-    <h4
-      className="training-expanded__title"
-      id={`${ariaIds.benefitsId}-heading`}
+}) => {
+  const globalVariant = mapVariantToGlobal(variant);
+  
+  return (
+    <div
+      className="training-expanded"
+      id={ariaIds.contentId}
+      aria-labelledby={ariaIds.titleId}
     >
-      Key Benefits
-    </h4>
-
-    <BenefitsList
-      benefits={program.benefits}
-      variant={variant}
-      className="training-expanded__benefits"
-      ariaLabelledBy={`${ariaIds.benefitsId}-heading`}
-      id={ariaIds.benefitsId}
-    />
-
-    <div className="training-expanded__cta">
-      <Button
-        variant="secondary"
-        size="medium"
-        rightIcon={<ArrowRight size={16} />}
-        onClick={() => onNavigate(program.title)}
-        aria-label={`Explore ${program.title} program details`}
+      <h4
+        className="training-expanded__title"
+        id={`${ariaIds.benefitsId}-heading`}
       >
-        Explore {program.title}
-      </Button>
+        Key Benefits
+      </h4>
+
+      <BenefitsList
+        benefits={program.benefits}
+        variant={variant as VariantKey}
+        className="training-expanded__benefits"
+        ariaLabelledBy={`${ariaIds.benefitsId}-heading`}
+        id={ariaIds.benefitsId}
+      />
+
+      <div className="training-expanded__cta">
+        <UniversalButton
+          sectionContext="training"
+          buttonVariant="secondary"
+          variant={globalVariant}
+          size="medium"
+          rightIcon={<ArrowRight size={16} />}
+          onClick={() => onNavigate(program.title)}
+          aria-label={`Explore ${program.title} program details`}
+          data-section="training"
+          data-context="explore"
+        >
+          Explore {program.title}
+        </UniversalButton>
+      </div>
     </div>
-  </div>
-));
+  );
+});
 
 // Add display name to fix the linting error
 ExpandedContent.displayName = 'ExpandedContent';
@@ -74,7 +103,7 @@ const ProgramsList: React.FC<ProgramsListProps> = ({
     <div className={`training-section__programs ${className}`} role="list" aria-label="Training Programs">
       {programs.map((program, index) => {
         const isActive = selectedProgram === index;
-        const ariaIds = generateProgramAriaIds(program.title);
+        const ariaIds = generateProgramAriaIds(index, program.programType || program.title);
 
         return (
           <div key={program.title} className="relative" role="listitem">
@@ -82,8 +111,7 @@ const ProgramsList: React.FC<ProgramsListProps> = ({
               program={program}
               isActive={isActive}
               onToggle={() => onProgramClick(index)}
-              variant={variant}
-              prefersReducedMotion={prefersReducedMotion}
+              variant={variant as VariantKey}
               ariaIds={ariaIds}
             />
 

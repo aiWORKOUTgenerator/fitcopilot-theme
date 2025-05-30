@@ -2,9 +2,10 @@ import { ChevronRight } from 'lucide-react';
 import React from 'react';
 import { ThemeProvider } from '../../../../context/ThemeContext';
 import { ThemeOption } from '../../../../utils/theming';
+import { UniversalButton } from '../../components/UniversalButton';
+import { GlobalVariantKey } from '../../types/shared';
 import { StepCTAProps } from '../types';
 import { getStepCTAUrl } from '../utils/tokenUtils';
-import JourneyButton from './JourneyButton';
 
 /**
  * Maps Journey variant to theme options for ThemeProvider
@@ -15,6 +16,25 @@ const mapVariantToTheme = (variant: string | undefined): ThemeOption => {
     return variant as ThemeOption;
   }
   return 'default';
+};
+
+/**
+ * Map variant to GlobalVariantKey
+ */
+const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
+  const validVariants: GlobalVariantKey[] = [
+    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
+    'minimalist', 'boutique', 'registration', 'mobile'
+  ];
+  
+  if (validVariants.includes(variant as GlobalVariantKey)) {
+    return variant as GlobalVariantKey;
+  }
+  
+  // Map Journey-specific variants to GlobalVariantKey
+  switch (variant) {
+    default: return 'default';
+  }
 };
 
 /**
@@ -31,6 +51,7 @@ const StepCTA: React.FC<StepCTAProps> = ({
   ...rest
 }) => {
   const ctaUrl = getStepCTAUrl(step.title || '');
+  const globalVariant = mapVariantToGlobal(variant);
   
   // Determine gradient color based on step number
   const getGradientColor = (stepNumber: number): 'lime' | 'cyan' | 'violet' | 'amber' => {
@@ -46,18 +67,22 @@ const StepCTA: React.FC<StepCTAProps> = ({
   return (
     <div className="text-center">
       <ThemeProvider initialTheme={mapVariantToTheme(variant)}>
-        <JourneyButton
-          variant="primary"
+        <UniversalButton
+          sectionContext="journey"
+          buttonVariant="primary"
+          variant={globalVariant}
           size="small"
           href={ctaUrl}
           className={className}
           gradientColor={getGradientColor(step.number || 1)}
           rightIcon={<ChevronRight size={16} className="ml-2" aria-hidden="true" />}
           aria-label={`${step.ctaText} for ${step.title}`}
+          data-section="journey"
+          data-context="step"
           {...rest}
         >
           {step.ctaText}
-        </JourneyButton>
+        </UniversalButton>
       </ThemeProvider>
     </div>
   );

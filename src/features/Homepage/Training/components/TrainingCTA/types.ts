@@ -1,4 +1,4 @@
-import { TrainingVariant } from '../../utils/themeUtils';
+import { GlobalVariantKey } from '../../../types/shared';
 
 /**
  * Props for the TrainingCTA component
@@ -13,7 +13,7 @@ export interface TrainingCTAProps {
      * Visual variant
      * @default 'default'
      */
-    variant?: TrainingVariant;
+    variant?: GlobalVariantKey;
 
     /**
      * Additional CSS class names

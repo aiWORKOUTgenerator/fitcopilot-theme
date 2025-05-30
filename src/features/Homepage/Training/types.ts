@@ -2,12 +2,14 @@
  * Type definitions for the Training component
  */
 import { ReactNode } from 'react';
+import { GlobalVariantKey } from '../types/shared';
 import { ProgramTypeKey } from './utils/gradientTokens';
 
 /**
  * Supported theme variant keys for the Training component
+ * @deprecated Use GlobalVariantKey from '../types/shared' instead
  */
-export type VariantKey = 'default' | 'boutique' | 'classic' | 'minimalist' | 'modern' | 'sports' | 'wellness';
+export type VariantKey = GlobalVariantKey;
 
 /**
  * Icon type that can be either a string emoji or a React node

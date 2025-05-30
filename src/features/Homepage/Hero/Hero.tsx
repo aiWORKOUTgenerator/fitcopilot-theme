@@ -1,9 +1,9 @@
 import { LogIn, UserPlus, Zap } from 'lucide-react';
 import React, { useRef } from 'react';
-// Import HeroButton directly from its component folder
+// Import UniversalButton instead of HeroButton
 import { ThemeProvider } from '../../../context/ThemeContext';
 import Tooltip from '../../../features/shared/Tooltip';
-import { HeroButton } from './components/HeroButton';
+import { UniversalButton } from '../components/UniversalButton';
 // Temporarily comment out the module style import until we fix the SCSS issues
 // import styles from './Hero.module.scss';
 import { HeroFeaturePills } from '../HeroFeaturePills';
@@ -27,7 +27,8 @@ export const Hero: React.FC<HeroProps> = ({
   registrationLink = "#splash-section",
   loginLink = "#login",
   logoUrl = '/wp-content/themes/fitcopilot/assets/images/logo.png',
-  onRegistrationStart
+  onRegistrationStart,
+  variant = 'default'
 }) => {
   // Cleanup reference
   const timeoutsRef = useRef<number[]>([]);
@@ -122,16 +123,20 @@ export const Hero: React.FC<HeroProps> = ({
                   icon={<Zap className="w-4 h-4 text-lime-300" />}
                   width="264px"
                 >
-                  <HeroButton
-                    variant="primary"
+                  <UniversalButton
+                    sectionContext="hero"
+                    variant={variant}
+                    buttonVariant="primary"
                     size="large"
                     leftIcon={<Zap className="hero-icon" />}
                     onClick={handleScrollToSplash}
                     aria-label="Generate a personalized workout plan in seconds with our AI technology - no registration required"
                     style={buttonStyles}
+                    data-section="hero"
+                    data-context="primary-cta"
                   >
                     Get a Free Workout
-                  </HeroButton>
+                  </UniversalButton>
                 </Tooltip>
               </div>
 
@@ -145,16 +150,20 @@ export const Hero: React.FC<HeroProps> = ({
                   icon={<UserPlus className="w-4 h-4 text-lime-300" />}
                   width="264px"
                 >
-                  <HeroButton
-                    variant="secondary"
+                  <UniversalButton
+                    sectionContext="hero"
+                    variant={variant}
+                    buttonVariant="secondary"
                     size="large"
                     leftIcon={<UserPlus className="hero-icon-userplus" />}
                     onClick={handleScrollToSplash}
                     aria-label="Save workouts, track progress, and access premium features with your free account"
                     style={buttonStyles}
+                    data-section="hero"
+                    data-context="secondary-cta"
                   >
                     Create Your Account
-                  </HeroButton>
+                  </UniversalButton>
                 </Tooltip>
               </div>
             </div>

@@ -1,0 +1,226 @@
+@use '../../../../styles/design-system' as *;
+
+/**
+ * FloatingIcons component styles
+ * Provides floating animation and positioning for decorative icons
+ */
+
+.floating-icons-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+
+  // Ensure proper stacking context
+  isolation: isolate;
+
+  // Smooth transitions for container changes
+  transition: opacity 0.3s ease;
+
+  // Reduced motion support
+  @media (prefers-reduced-motion: reduce) {
+    .floating-icon {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
+}
+
+.floating-icon {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  
+  // Default opacity for subtle appearance
+  opacity: 0.6;
+  
+  // Smooth color transitions
+  transition: opacity 0.3s ease, color 0.3s ease;
+  
+  // Ensure icons don't interfere with content
+  user-select: none;
+  
+  // Default floating animation
+  animation: float 10s ease-in-out infinite;
+  
+  // Slight blur for depth effect
+  filter: blur(0.5px);
+  
+  // Icon styling
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    
+    // Ensure proper rendering
+    shape-rendering: geometricPrecision;
+    
+    // Smooth transitions
+    transition: all 0.3s ease;
+  }
+  
+  // Hover effects (for debugging or interactive modes)
+  &:hover {
+    opacity: 0.8;
+    filter: blur(0px);
+  }
+  
+  // Variant-specific styling
+  &[data-variant="gym"] {
+    opacity: 0.7;
+    filter: blur(0.3px);
+  }
+  
+  &[data-variant="minimalist"] {
+    opacity: 0.4;
+    filter: blur(0.8px);
+  }
+  
+  &[data-variant="sports"] {
+    opacity: 0.8;
+    filter: blur(0.2px);
+  }
+}
+
+// Floating animation keyframes
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(0.5deg);
+  }
+}
+
+// Alternative floating animations for variety
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.5deg);
+  }
+}
+
+@keyframes float-fast {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-12px) rotate(-0.5deg);
+  }
+  66% {
+    transform: translateY(-6px) rotate(1deg);
+  }
+}
+
+// Pulse animation for special icons
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+// Fade in animation for initial load
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 0.6;
+    transform: translateY(0);
+  }
+}
+
+// Specific icon animations
+.floating-icon-0 { animation-delay: 0s; }
+.floating-icon-1 { animation-delay: 0.5s; }
+.floating-icon-2 { animation-delay: 1s; }
+.floating-icon-3 { animation-delay: 1.5s; }
+.floating-icon-4 { animation-delay: 2s; }
+.floating-icon-5 { animation-delay: 2.5s; }
+.floating-icon-6 { animation-delay: 3s; }
+.floating-icon-7 { animation-delay: 3.5s; }
+.floating-icon-8 { animation-delay: 4s; }
+
+// Debug overlay styling
+.floating-icons-container [style*="monospace"] {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+  
+  div {
+    margin: 2px 0;
+    
+    &:first-child {
+      font-weight: bold;
+      color: #22d3ee;
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .floating-icons-container {
+    // Reduce icon count on mobile for performance
+    .floating-icon:nth-child(n+6) {
+      display: none;
+    }
+  }
+  
+  .floating-icon {
+    // Smaller icons on mobile
+    transform: scale(0.8);
+    
+    // Reduced animation intensity
+    &[style*="animation"] {
+      animation-duration: 15s !important;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-icons-container {
+    // Even fewer icons on small mobile
+    .floating-icon:nth-child(n+4) {
+      display: none;
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .floating-icon {
+    opacity: 0.9;
+    filter: none;
+    
+    svg {
+      stroke-width: 2;
+    }
+  }
+}
+
+// Dark mode adjustments
+@media (prefers-color-scheme: dark) {
+  .floating-icon {
+    opacity: 0.5;
+    filter: blur(0.7px);
+  }
+} 

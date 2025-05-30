@@ -23,6 +23,11 @@ export interface ProgramAriaIds {
      * ID for the benefits list section
      */
     benefitsId?: string;
+    
+    /**
+     * ID for the program description element
+     */
+    descriptionId?: string;
 }
 
 /**

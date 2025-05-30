@@ -6,7 +6,6 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useTheme } from '../../../../../context/ThemeContext';
-import { Button } from '../../../../../features/shared/Button';
 import { HeroButtonProps } from '../../../../../features/shared/Button/types/standardButtonTypes';
 import './JourneyButton.scss';
 
@@ -20,7 +19,7 @@ export interface JourneyButtonProps extends HeroButtonProps {
 
 /**
  * JourneyButton component for the homepage journey section
- * Extends the base Button component with Journey-specific styling
+ * Renders directly without shared Button component to avoid CSS conflicts
  * 
  * @param props - JourneyButton properties
  * @returns React component
@@ -37,6 +36,10 @@ export const JourneyButton: React.FC<JourneyButtonProps> = ({
   onClick,
   disabled = false,
   gradientColor = 'lime',
+  type = 'button',
+  target,
+  rel,
+  style,
   ...restProps
 }) => {
   // Access theme context
@@ -53,26 +56,52 @@ export const JourneyButton: React.FC<JourneyButtonProps> = ({
     },
     className
   );
-  
+
+  // Create button content
+  const content = (
+    <>
+      {leftIcon && <span className="journey-button__icon journey-button__icon--left">{leftIcon}</span>}
+      <span className="journey-button__text">{children}</span>
+      {rightIcon && <span className="journey-button__icon journey-button__icon--right">{rightIcon}</span>}
+    </>
+  );
+
+  // Render as link if href is provided
+  if (href) {
+    return (
+      <a
+        href={href}
+        className={buttonClasses}
+        target={target}
+        rel={rel}
+        style={style}
+        aria-label={restProps['aria-label']}
+        aria-controls={restProps['aria-controls']}
+        aria-expanded={restProps['aria-expanded']}
+        aria-pressed={restProps['aria-pressed']}
+        {...restProps}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  // Render as button if no href is provided
   return (
-    <Button
-      variant={variant}
-      size={size}
-      leftIcon={leftIcon}
-      rightIcon={rightIcon}
-      fullWidth={fullWidth}
-      href={href}
-      onClick={onClick}
-      disabled={disabled}
+    <button
+      type={type}
       className={buttonClasses}
+      disabled={disabled}
+      onClick={onClick}
+      style={style}
       aria-label={restProps['aria-label']}
       aria-controls={restProps['aria-controls']}
       aria-expanded={restProps['aria-expanded']}
       aria-pressed={restProps['aria-pressed']}
       {...restProps}
     >
-      {children}
-    </Button>
+      {content}
+    </button>
   );
 };
 

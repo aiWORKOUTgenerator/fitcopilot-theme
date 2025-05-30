@@ -5,6 +5,9 @@ import './styles/homepage.scss';
 // Import custom hooks
 import { useHomepageAnimation, useHomepageData } from './hooks';
 
+// Import the GlobalVariantProvider to fix context error
+import { GlobalVariantProvider } from './context/GlobalVariantContext';
+
 // Import registration which needs to be loaded immediately
 import Registration from '../Registration/Registration';
 import { RegistrationData } from '../Registration/types';
@@ -221,120 +224,122 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
   })) as JourneyStepType[];
 
   return (
-    <main
-      className={`homepage-container text-white transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${showRegistration ? 'with-registration' : ''}`}
-    >
-      {/* Global theme-aware background */}
-      <GlobalBackground variant={activeTheme} pattern="grid" />
+    <GlobalVariantProvider initialVariant="default" enableWpIntegration={true}>
+      <main
+        className={`homepage-container text-white transition-opacity duration-500 ${isLoaded ? 'opacity-100' : 'opacity-0'} ${showRegistration ? 'with-registration' : ''}`}
+      >
+        {/* Global theme-aware background */}
+        <GlobalBackground variant={activeTheme} pattern="grid" />
 
-      {/* Demo Mode Navigation - only shown in demo mode */}
-      {demoMode && (
-        <>
-          <DemoNav
-            sections={demoSections}
-            currentVariants={variants}
-            onVariantChange={handleVariantChange}
-          />
-          {/* Debug indicator */}
-          <div className="demo-mode-indicator">
-            Demo Mode Active: {String(demoMode)}
+        {/* Demo Mode Navigation - only shown in demo mode */}
+        {demoMode && (
+          <>
+            <DemoNav
+              sections={demoSections}
+              currentVariants={variants}
+              onVariantChange={handleVariantChange}
+            />
+            {/* Debug indicator */}
+            <div className="demo-mode-indicator">
+              Demo Mode Active: {String(demoMode)}
+            </div>
+          </>
+        )}
+
+        {/* Hero Section - Using dynamic variant */}
+        <section id="hero" ref={heroRef} className={showRegistration ? 'dimmed' : ''}>
+          <Suspense fallback={<LoadingSkeleton height="100vh" type="hero" />}>
+            <Hero
+              registrationLink={data.siteLinks.registration}
+              loginLink={data.siteLinks.login}
+              logoUrl={data.assets.logo}
+              onRegistrationStart={handleRegistrationStart}
+              variant={variants.hero}
+            />
+          </Suspense>
+        </section>
+
+        {/* Registration Section - inserted after Hero */}
+        {showRegistration && (
+          <div
+            ref={registrationRef}
+            id="registration"
+            className="registration-section"
+            tabIndex={-1}
+          >
+            <Registration
+              className="registration-component"
+              onComplete={handleRegistrationComplete}
+              onCancel={handleRegistrationCancel}
+            />
           </div>
-        </>
-      )}
+        )}
 
-      {/* Hero Section - Using dynamic variant */}
-      <section id="hero" ref={heroRef} className={showRegistration ? 'dimmed' : ''}>
-        <Suspense fallback={<LoadingSkeleton height="100vh" type="hero" />}>
-          <Hero
-            registrationLink={data.siteLinks.registration}
-            loginLink={data.siteLinks.login}
-            logoUrl={data.assets.logo}
-            onRegistrationStart={handleRegistrationStart}
-            variant={variants.hero}
-          />
-        </Suspense>
-      </section>
-
-      {/* Registration Section - inserted after Hero */}
-      {showRegistration && (
-        <div
-          ref={registrationRef}
-          id="registration"
-          className="registration-section"
-          tabIndex={-1}
-        >
-          <Registration
-            className="registration-component"
-            onComplete={handleRegistrationComplete}
-            onCancel={handleRegistrationCancel}
-          />
+        {/* Features Section */}
+        <div id="features" className={showRegistration ? 'dimmed' : ''}>
+          <Suspense fallback={<LoadingSkeleton height="600px" type="features" />}>
+            <Features
+              variant={variants.features}
+            />
+          </Suspense>
         </div>
-      )}
 
-      {/* Features Section */}
-      <div id="features" className={showRegistration ? 'dimmed' : ''}>
-        <Suspense fallback={<LoadingSkeleton height="600px" type="features" />}>
-          <Features
-            variant={variants.features}
-          />
-        </Suspense>
-      </div>
+        {/* Journey Section */}
+        <div id="journey" className={showRegistration ? 'dimmed' : ''}>
+          <Suspense fallback={<LoadingSkeleton height="500px" type="journey" />}>
+            <Journey journey={transformedJourneyData} />
+          </Suspense>
+        </div>
 
-      {/* Journey Section */}
-      <div id="journey" className={showRegistration ? 'dimmed' : ''}>
-        <Suspense fallback={<LoadingSkeleton height="500px" type="journey" />}>
-          <Journey journey={transformedJourneyData} />
-        </Suspense>
-      </div>
+        {/* Training Section */}
+        <div id="training-programs" className={showRegistration ? 'dimmed' : ''}>
+          <Suspense fallback={<LoadingSkeleton height="700px" type="training" />}>
+            <Training
+              variant={variants.training}
+            />
+          </Suspense>
+        </div>
 
-      {/* Training Section */}
-      <div id="training-programs" className={showRegistration ? 'dimmed' : ''}>
-        <Suspense fallback={<LoadingSkeleton height="700px" type="training" />}>
-          <Training
-            variant={variants.training}
-          />
-        </Suspense>
-      </div>
+        {/* Training Features Section */}
+        <div id="training-features" className={showRegistration ? 'dimmed' : ''}>
+          <Suspense fallback={<LoadingSkeleton height="600px" type="training-features" />}>
+            <TrainingFeatures
+              variant={variants.trainingFeatures as any}
+            />
+          </Suspense>
+        </div>
 
-      {/* Training Features Section */}
-      <div id="training-features" className={showRegistration ? 'dimmed' : ''}>
-        <Suspense fallback={<LoadingSkeleton height="600px" type="training-features" />}>
-          <TrainingFeatures
-            variant={variants.trainingFeatures as any}
-          />
-        </Suspense>
-      </div>
+        {/* Personal Training Section */}
+        <div id="personal-training" className={showRegistration ? 'dimmed' : ''}>
+          <Suspense fallback={<LoadingSkeleton height="500px" type="personal-training" />}>
+            <PersonalTraining
+              variant={variants.personalTraining as PersonalTrainingVariant}
+            />
+          </Suspense>
+        </div>
 
-      {/* Personal Training Section */}
-      <div id="personal-training" className={showRegistration ? 'dimmed' : ''}>
-        <Suspense fallback={<LoadingSkeleton height="500px" type="personal-training" />}>
-          <PersonalTraining
-            variant={variants.personalTraining as PersonalTrainingVariant}
-          />
-        </Suspense>
-      </div>
+        {/* Testimonials Section */}
+        <div id="testimonials" className={showRegistration ? 'dimmed' : ''}>
+          <Suspense fallback={<LoadingSkeleton height="400px" type="testimonials" />}>
+            <Testimonials />
+          </Suspense>
+        </div>
 
-      {/* Testimonials Section */}
-      <div id="testimonials" className={showRegistration ? 'dimmed' : ''}>
-        <Suspense fallback={<LoadingSkeleton height="400px" type="testimonials" />}>
-          <Testimonials />
-        </Suspense>
-      </div>
+        {/* Pricing Section */}
+        <div id="pricing" className={showRegistration ? 'dimmed' : ''}>
+          <Suspense fallback={<LoadingSkeleton height="700px" type="pricing" />}>
+            <Pricing />
+          </Suspense>
+        </div>
 
-      {/* Pricing Section */}
-      <div id="pricing" className={showRegistration ? 'dimmed' : ''}>
-        <Suspense fallback={<LoadingSkeleton height="700px" type="pricing" />}>
-          <Pricing />
-        </Suspense>
-      </div>
-
-      {/* Footer Section */}
-      <div id="footer">
-        <Suspense fallback={<LoadingSkeleton height="300px" type="footer" />}>
-          <Footer />
-        </Suspense>
-      </div>
-    </main>
+        {/* Footer Section */}
+        <div id="footer">
+          <Suspense fallback={<LoadingSkeleton height="300px" type="footer" />}>
+            <Footer />
+          </Suspense>
+        </div>
+      </main>
+    </GlobalVariantProvider>
   );
 };
 

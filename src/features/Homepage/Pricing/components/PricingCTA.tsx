@@ -2,8 +2,9 @@ import { ArrowRight } from 'lucide-react';
 import React from 'react';
 import { ThemeProvider } from '../../../../context/ThemeContext';
 import { ThemeOption } from '../../../../utils/theming';
+import { UniversalButton } from '../../components/UniversalButton';
+import { GlobalVariantKey } from '../../types/shared';
 import { mapPlanTypeToButtonVariant } from '../utils/themeUtils';
-import { PricingButton } from './PricingButton';
 
 /**
  * Props for PricingCTA component
@@ -32,6 +33,38 @@ export interface PricingCTAProps {
 }
 
 /**
+ * Map variant to GlobalVariantKey
+ */
+const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
+  const validVariants: GlobalVariantKey[] = [
+    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
+    'minimalist', 'boutique', 'registration', 'mobile'
+  ];
+  
+  if (validVariants.includes(variant as GlobalVariantKey)) {
+    return variant as GlobalVariantKey;
+  }
+  
+  // Map Pricing-specific variants to GlobalVariantKey
+  switch (variant) {
+    default: return 'default';
+  }
+};
+
+/**
+ * Map plan type to context type
+ */
+const mapPlanTypeToContextType = (planType?: string): 'basic' | 'pro' | 'elite' | 'custom' => {
+  switch (planType?.toLowerCase()) {
+    case 'basic': return 'basic';
+    case 'pro': return 'pro';
+    case 'elite': return 'elite';
+    case 'custom': return 'custom';
+    default: return 'basic';
+  }
+};
+
+/**
  * PricingCTA - Call to action button for the pricing section
  */
 const PricingCTA: React.FC<PricingCTAProps> = ({
@@ -48,20 +81,26 @@ const PricingCTA: React.FC<PricingCTAProps> = ({
 }) => {
   // Map the plan type to the appropriate button variant
   const mappedPlanType = mapPlanTypeToButtonVariant(planType);
+  const globalVariant = mapVariantToGlobal(theme);
+  const contextType = mapPlanTypeToContextType(planType);
   
   return (
     <ThemeProvider initialTheme={theme}>
-      <PricingButton
-        variant={buttonVariant}
+      <UniversalButton
+        sectionContext="pricing"
+        buttonVariant={buttonVariant}
+        variant={globalVariant}
         size={buttonSize}
-        planType={mappedPlanType}
+        contextType={contextType}
         href={href}
         onClick={onClick}
-        gradientColors={gradientClass}
+        gradientClass={gradientClass}
         rightIcon={showIcon && (icon || <ArrowRight size={buttonSize === 'small' ? 16 : 20} className="ml-2" aria-hidden="true" />)}
+        data-section="pricing"
+        data-context={`plan-${planType?.toLowerCase()}`}
       >
         {text}
-      </PricingButton>
+      </UniversalButton>
     </ThemeProvider>
   );
 };

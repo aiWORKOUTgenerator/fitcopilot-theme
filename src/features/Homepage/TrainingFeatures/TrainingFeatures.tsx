@@ -1,25 +1,26 @@
 import {
-  Apple,
-  BarChart,
-  Bike,
-  Calendar,
-  ChevronRight,
-  Coffee,
-  Download,
-  Dumbbell,
-  Flame,
-  Footprints,
-  Heart,
-  Medal,
-  MessageSquare,
-  Smartphone,
-  Timer,
-  Video
+    Apple,
+    BarChart,
+    Bike,
+    Calendar,
+    ChevronRight,
+    Coffee,
+    Download,
+    Dumbbell,
+    Flame,
+    Footprints,
+    Heart,
+    Medal,
+    MessageSquare,
+    Smartphone,
+    Timer,
+    Video
 } from 'lucide-react';
 import React from 'react';
 import { ThemeProvider } from '../../../context/ThemeContext';
+import { UniversalButton } from '../components/UniversalButton';
+import { GlobalVariantKey } from '../types/shared';
 import FeatureCard from './components/FeatureCard';
-import TrainingFeaturesButton from './components/TrainingFeaturesButton';
 import './TrainingFeatures.scss';
 import { DefaultVariantProps, TrainingFeature } from './types';
 import { mapFeatureTypeToTheme } from './utils/themeUtils';
@@ -55,6 +56,25 @@ const FloatingIcon: React.FC<FloatingIconProps> = ({
       {children}
     </div>
   );
+};
+
+/**
+ * Map variant to GlobalVariantKey
+ */
+const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
+  const validVariants: GlobalVariantKey[] = [
+    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
+    'minimalist', 'boutique', 'registration', 'mobile'
+  ];
+  
+  if (validVariants.includes(variant as GlobalVariantKey)) {
+    return variant as GlobalVariantKey;
+  }
+  
+  // Map TrainingFeatures-specific variants to GlobalVariantKey
+  switch (variant) {
+    default: return 'default';
+  }
 };
 
 /**
@@ -271,15 +291,19 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
         {/* Footer CTA */}
         <div className="text-center mt-16">
           <ThemeProvider initialTheme={mapFeatureTypeToTheme('virtual')}>
-            <TrainingFeaturesButton
-              variant="primary"
+            <UniversalButton
+              sectionContext="training-features"
+              buttonVariant="primary"
+              variant={mapVariantToGlobal(variant)}
               size="large"
-              featureType="virtual"
+              contextType="virtual"
               gradientClass="bg-gradient-to-r from-lime-300 to-emerald-400"
               rightIcon={<ChevronRight size={18} />}
+              data-section="trainingFeatures"
+              data-context="cta"
             >
               Explore All Features
-            </TrainingFeaturesButton>
+            </UniversalButton>
           </ThemeProvider>
         </div>
       </div>

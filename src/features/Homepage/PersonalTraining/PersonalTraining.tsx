@@ -1,20 +1,41 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  ArrowRight,
-  Award,
-  Dumbbell,
-  Heart,
-  User,
-  Users
+    ArrowRight,
+    Award,
+    Dumbbell,
+    Heart,
+    User,
+    Users
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { ThemeProvider } from '../../../context/ThemeContext';
 import logger from '../../../utils/logger';
+import { UniversalButton } from '../components/UniversalButton';
+import { GlobalVariantKey } from '../types/shared';
 import MediaContainer from './components/MediaContainer';
-import PersonalTrainingButton from './components/PersonalTrainingButton';
 import './PersonalTraining.scss';
 import { PersonalTrainingProps, Trainer, WordPressVideoData } from './types';
 import { getCoachSpecialtyClass, mapCoachTypeToTheme } from './utils/themeUtils';
+
+/**
+ * Map variant to GlobalVariantKey
+ */
+const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
+  const validVariants: GlobalVariantKey[] = [
+    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
+    'minimalist', 'boutique', 'registration', 'mobile'
+  ];
+  
+  if (validVariants.includes(variant as GlobalVariantKey)) {
+    return variant as GlobalVariantKey;
+  }
+  
+  // Map PersonalTraining-specific variants to GlobalVariantKey
+  switch (variant) {
+    case 'nutrition': return 'wellness'; // Map nutrition to wellness
+    default: return 'default';
+  }
+};
 
 /**
  * Default Personal Training component for the homepage
@@ -187,14 +208,18 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
 
               {/* Action Button with ThemeProvider */}
               <ThemeProvider initialTheme={mapCoachTypeToTheme(getCoachType(featuredTrainer.specialty))}>
-                <PersonalTrainingButton
-                  variant="primary"
+                <UniversalButton
+                  sectionContext="personal-training"
+                  buttonVariant="primary"
+                  variant={mapVariantToGlobal(variant)}
                   size="large"
-                  coachType={getCoachType(featuredTrainer.specialty)}
+                  contextType={getCoachType(featuredTrainer.specialty)}
                   rightIcon={<ArrowRight size={18} className="ml-2" />}
+                  data-section="personalTraining"
+                  data-context="featured-trainer"
                 >
                   Schedule Session
-                </PersonalTrainingButton>
+                </UniversalButton>
               </ThemeProvider>
 
               {/* Video display - direct instead of flip card */}
@@ -259,14 +284,18 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
 
               {/* Action Button with ThemeProvider */}
               <ThemeProvider initialTheme={mapCoachTypeToTheme(getCoachType(trainer.specialty))}>
-                <PersonalTrainingButton
-                  variant="primary"
+                <UniversalButton
+                  sectionContext="personal-training"
+                  buttonVariant="primary"
+                  variant={mapVariantToGlobal(variant)}
                   size="medium"
-                  coachType={getCoachType(trainer.specialty)}
+                  contextType={getCoachType(trainer.specialty)}
                   rightIcon={<ArrowRight size={16} className="ml-2" />}
+                  data-section="personalTraining"
+                  data-context="trainer"
                 >
                   Schedule Session
-                </PersonalTrainingButton>
+                </UniversalButton>
               </ThemeProvider>
             </div>
           ))}
@@ -286,13 +315,17 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
           
           {/* Team CTA Button with ThemeProvider */}
           <ThemeProvider initialTheme="gym">
-            <PersonalTrainingButton
-              variant="secondary"
+            <UniversalButton
+              sectionContext="personal-training"
+              buttonVariant="secondary"
+              variant="gym"
               size="large"
               rightIcon={<ArrowRight size={18} className="ml-2" />}
+              data-section="personalTraining"
+              data-context="team-cta"
             >
               Meet Our Team
-            </PersonalTrainingButton>
+            </UniversalButton>
           </ThemeProvider>
         </div>
       </div>
