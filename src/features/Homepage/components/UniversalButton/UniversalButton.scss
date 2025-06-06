@@ -432,9 +432,98 @@ html body .universal-button--hero.universal-button-primary {
   }
 }
 
-// Training section styling
+// Training section styling - Enhanced with inline icon alignment like Journey
 .universal-button--training {
+  // Base styles - Enhanced with inline icon alignment
   border-radius: var(--radius-lg, 0.75rem);
+  transition: var(--training-button-transition, all 0.2s ease-in-out);
+  min-width: var(--training-button-min-width, 180px);
+  padding: var(--training-button-padding-y, 1.5rem) var(--training-button-padding-x, 1.5rem);
+  font-weight: var(--training-button-font-weight, 600);
+  
+  // Enhanced icon positioning - match Journey section inline approach
+  .universal-button__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    
+    // Icons should match the button's font size and be inline with text
+    width: 1em;
+    height: 1em;
+    font-size: inherit; // Inherit the button's font size for inline alignment
+    
+    &--left {
+      margin-right: var(--training-button-icon-spacing, 0.5rem);
+      order: 1;
+    }
+    
+    &--right {
+      margin-left: var(--training-button-icon-spacing, 0.5rem);
+      order: 3;
+    }
+    
+    // SVG icons styling for proper inline display
+    svg {
+      width: 1em;
+      height: 1em;
+      display: block;
+    }
+  }
+  
+  // Ensure proper inline text alignment with icons
+  .universal-button__text {
+    display: inline-block;
+    line-height: inherit;
+    white-space: nowrap;
+    order: 2;
+  }
+  
+  // Ensure content is properly aligned inline like Journey section
+  &:not(.universal-button--full-width) {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0; // Remove any gap, use margins instead
+  }
+  
+  // Full width variant with inline icon alignment
+  &.universal-button--full-width {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  // Size variants using responsive font-based icons like Journey section
+  &.universal-button--small {
+    font-size: var(--training-button-size-sm-font-size, 0.875rem) !important;
+    min-width: var(--training-button-size-sm-min-width, 140px);
+    padding: var(--training-button-size-sm-padding-y, 0.75rem) var(--training-button-size-sm-padding-x, 1rem) !important;
+    line-height: 1;
+    
+    // Icons automatically match font size (0.875rem) for perfect inline alignment
+  }
+  
+  &.universal-button--medium {
+    font-size: var(--training-button-size-md-font-size, 1rem) !important;
+    min-width: var(--training-button-size-md-min-width, 180px);
+    padding: var(--training-button-size-md-padding-y, 1rem) var(--training-button-size-md-padding-x, 1.5rem) !important;
+    line-height: 1;
+    
+    // Icons automatically match font size (1rem) for perfect inline alignment
+  }
+  
+  &.universal-button--large {
+    font-size: var(--training-button-size-lg-font-size, 1.125rem) !important;
+    min-width: var(--training-button-size-lg-min-width, 220px);
+    padding: var(--training-button-size-lg-padding-y, 1.25rem) var(--training-button-size-lg-padding-x, 2rem) !important;
+    line-height: 1;
+    
+    // Icons automatically match font size (1.125rem) for perfect inline alignment
+  }
   
   &--accent {
     background: linear-gradient(135deg, var(--color-amber-500, #f59e0b) 0%, var(--color-amber-600, #d97706) 100%);
@@ -447,42 +536,421 @@ html body .universal-button--hero.universal-button-primary {
   }
 }
 
-// Journey section styling
-.universal-button--journey {
-  border-radius: var(--radius-md, 0.5rem);
+// Primary variant with amber gradient background - matches Training color palette
+.universal-button--training.universal-button-primary {
+  color: var(--training-button-primary-text, var(--color-gray-900, #111827));
+  
+  // Apply gradient based on gradientColor prop - amber gradient for Training
+  &.universal-gradient-amber {
+    background: linear-gradient(
+      to right,
+      var(--color-amber-300, #fcd34d),
+      var(--color-orange-400, #fb923c)
+    );
+    box-shadow: 0 4px 14px rgba(252, 211, 77, 0.3);
+    
+    // Default state: Apply gradient text effect to typography and icons
+    .universal-button__text,
+    .universal-button__icon {
+      background: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+  }
+  
+  // Transparent hover effect with gradient text - matches Journey behavior
+  &:hover:not(:disabled):not(.universal-button--loading) {
+    background: transparent !important;
+    box-shadow: none;
+    transform: var(--training-button-transform-up, translateY(-2px));
+    
+    // Add subtle border to maintain button structure on hover
+    border: 2px solid;
+    
+    // Apply gradient text effects for amber palette
+    &.universal-gradient-amber {
+      border-color: var(--color-amber-300, #fcd34d);
+      
+      // Gradient text effect for typography and icons
+      .universal-button__text,
+      .universal-button__icon {
+        background: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+    }
+  }
 }
 
-// Gradient color support for Journey using design system colors
+// ============================================================================
+// JOURNEY SECTION STYLING - EXACT MATCH TO ORIGINAL JOURNEYBUTTON
+// ============================================================================
+
+.universal-button--journey {
+  // Base styles - EXACT match to original journey-button with enhanced inline icon alignment
+  border-radius: var(--journey-button-radius, var(--radius-full, 9999px));
+  transition: var(--journey-button-transition, all 0.2s ease-in-out);
+  min-width: var(--journey-button-min-width, 160px);
+  padding: var(--journey-button-padding-y, 0.75rem) var(--journey-button-padding-x, 1.5rem);
+  font-weight: var(--journey-button-font-weight, 600);
+  
+  // Enhanced icon positioning - match Hero section inline approach
+  .universal-button__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    
+    // Icons should match the button's font size and be inline with text
+    width: 1em;
+    height: 1em;
+    font-size: inherit; // Inherit the button's font size for inline alignment
+    
+    &--left {
+      margin-right: var(--journey-button-icon-spacing, 0.5rem);
+      order: 1;
+    }
+    
+    &--right {
+      margin-left: var(--journey-button-icon-spacing, 0.5rem);
+      order: 3;
+    }
+    
+    // SVG icons styling for proper inline display
+    svg {
+      width: 1em;
+      height: 1em;
+      display: block;
+    }
+  }
+  
+  // Ensure proper inline text alignment with icons
+  .universal-button__text {
+    display: inline-block;
+    line-height: inherit;
+    white-space: nowrap;
+    order: 2;
+    flex: 1; // Allow text to take available space for better centering
+    text-align: center; // Center text within its container
+  }
+  
+  // Ensure content is properly aligned inline like Hero section
+  &:not(.universal-button--full-width) {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0; // Remove any gap, use margins instead
+  }
+  
+  // Full width variant with inline icon alignment
+  &.universal-button--full-width {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  // Size variants using responsive font-based icons like Hero section
+  &.universal-button--small {
+    font-size: var(--journey-button-size-sm-font-size, 0.875rem);
+    min-width: var(--journey-button-size-sm-min-width, 120px);
+    padding: var(--journey-button-size-sm-padding-y, 0.5rem) var(--journey-button-size-sm-padding-x, 1rem);
+    line-height: 1;
+    
+    // Icons automatically match font size (0.875rem) for perfect inline alignment
+  }
+  
+  &.universal-button--medium {
+    font-size: var(--journey-button-size-md-font-size, 1rem);
+    min-width: var(--journey-button-size-md-min-width, 160px);
+    padding: var(--journey-button-size-md-padding-y, 0.75rem) var(--journey-button-size-md-padding-x, 1.5rem);
+    line-height: 1;
+    
+    // Icons automatically match font size (1rem) for perfect inline alignment
+  }
+  
+  &.universal-button--large {
+    font-size: var(--journey-button-size-lg-font-size, 1.125rem);
+    min-width: var(--journey-button-size-lg-min-width, 240px);
+    padding: var(--journey-button-size-lg-padding-y, 1rem) var(--journey-button-size-lg-padding-x, 2rem);
+    line-height: 1;
+    
+    // Icons automatically match font size (1.125rem) for perfect inline alignment
+  }
+}
+
+// Primary variant with gradient background - EXACT match to original journey-button-primary
+.universal-button--journey.universal-button-primary {
+  color: var(--journey-button-primary-text, var(--color-gray-900, #111827));
+  
+  // Apply gradient based on gradientColor prop
+  &.universal-gradient-lime {
+    background: linear-gradient(
+      to right,
+      var(--color-lime-300, #a3e635),
+      var(--color-green-400, #4ade80)
+    );
+    box-shadow: 0 4px 14px rgba(163, 230, 53, 0.3);
+  }
+  
+  &.universal-gradient-cyan {
+    background: linear-gradient(
+      to right,
+      var(--color-cyan-300, #67e8f9),
+      var(--color-blue-400, #60a5fa)
+    );
+    box-shadow: 0 4px 14px rgba(103, 232, 249, 0.3);
+  }
+  
+  &.universal-gradient-violet {
+    background: linear-gradient(
+      to right,
+      var(--color-violet-300, #c4b5fd),
+      var(--color-purple-400, #a78bfa)
+    );
+    box-shadow: 0 4px 14px rgba(196, 181, 253, 0.3);
+  }
+  
+  &.universal-gradient-amber {
+    background: linear-gradient(
+      to right,
+      var(--color-amber-300, #fcd34d),
+      var(--color-orange-400, #fb923c)
+    );
+    box-shadow: 0 4px 14px rgba(252, 211, 77, 0.3);
+  }
+  
+  // Transparent hover effect with gradient text - overrides base primary button hover
+  &:hover:not(:disabled):not(.universal-button--loading) {
+    background: transparent !important;
+    box-shadow: none;
+    transform: var(--journey-button-transform-up, translateY(-2px));
+    
+    // Add subtle border to maintain button structure on hover
+    border: 2px solid;
+    
+    // Apply gradient text effects based on variant
+    &.universal-gradient-lime {
+      border-color: var(--color-lime-300, #a3e635);
+      
+      // Gradient text effect for typography and icons
+      .universal-button__text,
+      .universal-button__icon {
+        background: linear-gradient(to right, var(--color-lime-300, #a3e635), var(--color-green-400, #4ade80));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+    }
+    
+    &.universal-gradient-cyan {
+      border-color: var(--color-cyan-300, #67e8f9);
+      
+      // Gradient text effect for typography and icons
+      .universal-button__text,
+      .universal-button__icon {
+        background: linear-gradient(to right, var(--color-cyan-300, #67e8f9), var(--color-blue-400, #60a5fa));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+    }
+    
+    &.universal-gradient-violet {
+      border-color: var(--color-violet-300, #c4b5fd);
+      
+      // Gradient text effect for typography and icons
+      .universal-button__text,
+      .universal-button__icon {
+        background: linear-gradient(to right, var(--color-violet-300, #c4b5fd), var(--color-purple-400, #a78bfa));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+    }
+    
+    &.universal-gradient-amber {
+      border-color: var(--color-amber-300, #fcd34d);
+      
+      // Gradient text effect for typography and icons
+      .universal-button__text,
+      .universal-button__icon {
+        background: linear-gradient(to right, var(--color-amber-300, #fcd34d), var(--color-orange-400, #fb923c));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+    }
+  }
+}
+
+// Secondary variant - EXACT match to original journey-button-secondary
+.universal-button--journey.universal-button-secondary {
+  background-color: var(--journey-button-secondary-bg, transparent);
+  border: var(--journey-button-border-width-secondary, 2px) solid var(--journey-button-secondary-border, rgba(163, 230, 53, 0.5));
+  color: var(--journey-button-secondary-text, var(--color-lime-300, #a3e635));
+  
+  &:hover:not(:disabled) {
+    background-color: var(--journey-button-secondary-bg-hover, rgba(163, 230, 53, 0.1));
+    box-shadow: var(--journey-button-shadow-hover, 0 5px 15px rgba(163, 230, 53, 0.2));
+    transform: translateY(var(--journey-button-transform-up, -2px));
+    border-color: var(--journey-button-secondary-border-hover, rgba(163, 230, 53, 0.8));
+  }
+}
+
+// Theme overrides using direct selectors - EXACT match to original
+[data-theme="gym"] {
+  .universal-button--journey.universal-button-secondary {
+    border-color: var(--journey-button-secondary-border, rgba(167, 139, 250, 0.5));
+    color: var(--journey-button-secondary-text, var(--color-violet-400, #a78bfa));
+    
+    &:hover:not(:disabled) {
+      background-color: var(--journey-button-secondary-bg-hover, rgba(167, 139, 250, 0.1));
+      border-color: var(--journey-button-secondary-border-hover, rgba(167, 139, 250, 0.8));
+    }
+  }
+}
+
+[data-theme="sports"] {
+  .universal-button--journey.universal-button-secondary {
+    border-color: var(--journey-button-secondary-border, rgba(34, 211, 238, 0.5));
+    color: var(--journey-button-secondary-text, var(--color-cyan-400, #22d3ee));
+    
+    &:hover:not(:disabled) {
+      background-color: var(--journey-button-secondary-bg-hover, rgba(34, 211, 238, 0.1));
+      border-color: var(--journey-button-secondary-border-hover, rgba(34, 211, 238, 0.8));
+    }
+  }
+}
+
+// Theme overrides for Journey primary button hover effects with gradient text
+[data-theme="gym"] {
+  .universal-button--journey.universal-button-primary:hover:not(:disabled):not(.universal-button--loading) {
+    &.universal-gradient-lime {
+      border-color: var(--color-violet-300, #c4b5fd);
+      
+      // Override with gym theme gradient text effect
+      .universal-button__text,
+      .universal-button__icon {
+        background: linear-gradient(to right, var(--color-violet-300, #c4b5fd), var(--color-purple-400, #a78bfa));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+    }
+  }
+}
+
+[data-theme="sports"] {
+  .universal-button--journey.universal-button-primary:hover:not(:disabled):not(.universal-button--loading) {
+    &.universal-gradient-lime {
+      border-color: var(--color-cyan-300, #67e8f9);
+      
+      // Override with sports theme gradient text effect
+      .universal-button__text,
+      .universal-button__icon {
+        background: linear-gradient(to right, var(--color-cyan-300, #67e8f9), var(--color-blue-400, #60a5fa));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+    }
+  }
+}
+
+[data-theme="wellness"] {
+  .universal-button--journey.universal-button-primary:hover:not(:disabled):not(.universal-button--loading) {
+    &.universal-gradient-lime {
+      border-color: var(--color-teal-300, #5eead4);
+      
+      // Override with wellness theme gradient text effect
+      .universal-button__text,
+      .universal-button__icon {
+        background: linear-gradient(to right, var(--color-teal-300, #5eead4), var(--color-emerald-400, #34d399));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+      }
+    }
+  }
+}
+
+// Focus state for all journey buttons - EXACT match to original
+.universal-button--journey:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--journey-button-focus-ring-width, 3px) var(--journey-button-focus-ring-color, rgba(163, 230, 53, 0.5));
+}
+
+// Media query for responsive sizing with font-based icon scaling
+@media (min-width: 768px) {
+  .universal-button--journey.universal-button--medium {
+    min-width: var(--journey-button-size-md-min-width, 180px);
+    font-size: var(--journey-button-size-md-font-size, 1.125rem);
+    
+    // Icons automatically scale with font size for perfect inline alignment
+  }
+  
+  .universal-button--journey.universal-button--large {
+    min-width: var(--journey-button-size-lg-min-width, 260px);
+    padding: var(--journey-button-size-lg-padding-y, 1.125rem) var(--journey-button-size-lg-padding-x, 2.5rem);
+    font-size: var(--journey-button-size-lg-font-size, 1.25rem);
+    
+    // Icons automatically scale with font size for perfect inline alignment
+  }
+}
+
+// Fallback gradients for when gradientColor prop isn't specified
 .universal-gradient-lime {
-  background: linear-gradient(135deg, var(--color-lime-500, #a3e635) 0%, var(--color-lime-600, #84cc16) 100%);
-  color: var(--color-gray-900, #1f2937);
+  background: linear-gradient(
+    to right,
+    var(--color-lime-300, #a3e635),
+    var(--color-green-400, #4ade80)
+  );
+  box-shadow: 0 4px 14px rgba(163, 230, 53, 0.3);
+  color: var(--color-gray-900, #111827);
 }
 
 .universal-gradient-cyan {
-  // Journey Primary Cyan gradient - EXACT match to journey-gradient-cyan
   background: linear-gradient(
     to right,
     var(--color-cyan-300, #67e8f9),
     var(--color-blue-400, #60a5fa)
   );
-  color: var(--color-gray-900, #111827);
   box-shadow: 0 4px 14px rgba(103, 232, 249, 0.3);
-  
-  &:hover:not(:disabled) {
-    // "Lift" effect - retains gradient, adds enhanced shadow and lift transform
-    box-shadow: 0 6px 20px rgba(103, 232, 249, 0.5);
-    transform: translateY(-2px);
-  }
+  color: var(--color-gray-900, #111827);
 }
 
 .universal-gradient-violet {
-  background: linear-gradient(135deg, var(--color-violet-500, #8b5cf6) 0%, var(--color-violet-600, #7c3aed) 100%);
-      color: var(--color-white, #ffffff);
+  background: linear-gradient(
+    to right,
+    var(--color-violet-300, #c4b5fd),
+    var(--color-purple-400, #a78bfa)
+  );
+  box-shadow: 0 4px 14px rgba(196, 181, 253, 0.3);
+  color: var(--color-gray-900, #111827);
 }
 
 .universal-gradient-amber {
-  background: linear-gradient(135deg, var(--color-amber-500, #f59e0b) 0%, var(--color-amber-600, #d97706) 100%);
-  color: var(--color-white, #ffffff);
+  background: linear-gradient(
+    to right,
+    var(--color-amber-300, #fcd34d),
+    var(--color-orange-400, #fb923c)
+  );
+  box-shadow: 0 4px 14px rgba(252, 211, 77, 0.3);
+  color: var(--color-gray-900, #111827);
 }
 
 // Personal Training section styling

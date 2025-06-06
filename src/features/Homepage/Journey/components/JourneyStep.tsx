@@ -1,5 +1,5 @@
 import { ChevronRight } from 'lucide-react';
-import React, { KeyboardEvent } from 'react';
+import React, { KeyboardEvent, useRef } from 'react';
 import {
     ExtendedCSSProperties
 } from '../../../../types/components';
@@ -98,6 +98,7 @@ const getTimelineColorClass = (accentColor?: string): string => {
 
 /**
  * JourneyStep - Renders a single step in the journey process
+ * Uses centralized animation system for consistent animations
  */
 const JourneyStep: React.FC<LocalJourneyStepProps> = ({
   step,
@@ -107,7 +108,7 @@ const JourneyStep: React.FC<LocalJourneyStepProps> = ({
   isLast,
   variant = 'default'
 }) => {
-  const _prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
 
   // Get appropriate classes from our token utility
   const stepGradientClass = getStepGradientClass(step.number);
@@ -143,16 +144,14 @@ const JourneyStep: React.FC<LocalJourneyStepProps> = ({
         aria-controls={`step-content-${index}`}
         onKeyDown={handleKeyDown}
         data-theme={variant !== 'default' ? variant : undefined}
-        data-aos={_prefersReducedMotion ? undefined : 'fade-up'}
-        data-aos-delay={_prefersReducedMotion ? undefined : step.delay?.toString()}
         style={customStyle}
       >
         <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
           {/* Step Icon & Number */}
           <div className="relative">
-            <div className={`w-16 h-16 rounded-xl ${stepGradientClass} flex items-center justify-center group-hover:scale-105 transition-transform duration-300`}>
+            <div className={`w-16 h-16 rounded-xl ${stepGradientClass} flex items-center justify-center group-hover:scale-110 transition-all duration-400 ease-out`}>
               {step.icon}
-              <div className={`absolute inset-0 rounded-xl ${stepGradientClass} opacity-15 blur-[1px] group-hover:opacity-25 transition-opacity`} aria-hidden="true"></div>
+              <div className={`absolute inset-0 rounded-xl ${stepGradientClass} opacity-15 blur-[1px] group-hover:opacity-30 transition-all duration-400 ease-out`} aria-hidden="true"></div>
             </div>
 
             {/* Step number */}
@@ -163,16 +162,16 @@ const JourneyStep: React.FC<LocalJourneyStepProps> = ({
 
           {/* Step Information */}
           <div className="flex-1">
-            <h3 className="text-xl md:text-2xl font-bold mb-2 journey-text-heading group-hover:journey-text-heading-hover transition-colors flex items-center">
+            <h3 className="text-xl md:text-2xl font-bold mb-2 journey-text-heading group-hover:journey-text-heading-hover transition-colors duration-400 ease-out flex items-center">
               {step.title}
             </h3>
-            <p className="journey-text-description group-hover:journey-text-description-hover transition-colors md:pr-12">
+            <p className="journey-text-description group-hover:journey-text-description-hover transition-colors duration-400 ease-out md:pr-12">
               {step.description}
             </p>
           </div>
 
           {/* Expand/Collapse Button */}
-          <div className={`p-2 rounded-full journey-accent-border-30 journey-accent-bg-10 transition-all duration-300 ${isExpanded ? 'rotate-90' : ''}`} aria-hidden="true">
+          <div className={`p-2 rounded-full journey-accent-border-30 journey-accent-bg-10 transition-all duration-400 ease-out ${isExpanded ? 'rotate-90 scale-110' : 'hover:scale-105'}`} aria-hidden="true">
             <ChevronRight size={20} className="journey-text-accent" />
           </div>
         </div>
@@ -196,6 +195,7 @@ const JourneyStep: React.FC<LocalJourneyStepProps> = ({
 
 /**
  * ExpandedContent - Renders the detailed features when a step is expanded
+ * Uses simplified CSS transitions for smooth expand/collapse without scroll sticking
  */
 const ExpandedContent: React.FC<ExpandedContentProps> = ({
   step,
@@ -203,27 +203,30 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({
   isExpanded,
   variant = 'default'
 }) => {
-  const _prefersReducedMotion = useReducedMotion();
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  // Don't render content at all when collapsed to save memory and prevent space issues
-  if (!isExpanded) {
-    return null;
-  }
-
-  // Custom CSS properties with proper typing
-  const customStyle: ExtendedCSSProperties = {
-    '--journey-content-highlight': step.accentColor || 'var(--color-journey-accent)',
-  };
+  if (!step.detailedFeatures) return null;
 
   return (
     <div
+      ref={contentRef}
       id={`step-content-${index}`}
-      className="mt-2 rounded-2xl journey-bg-card journey-border z-10 relative overflow-hidden p-6 animate-fade-in"
-      data-theme={variant !== 'default' ? variant : undefined}
-      style={customStyle}
+      className={`
+        journey-details mt-2 rounded-2xl journey-bg-card journey-border z-10 relative overflow-hidden
+        transition-all duration-300 ease-out
+        ${isExpanded ? 'max-h-96 opacity-100 p-6' : 'max-h-0 opacity-0 p-0'}
+      `}
+      role="region"
+      aria-labelledby={`step-title-${index}`}
+      style={{
+        maxHeight: isExpanded ? '1000px' : '0px' // Generous max height for content
+      }}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {step.detailedFeatures?.map((feature: DetailedFeature, featureIndex: number) => (
+      {/* Feature Grid - Simplified animation */}
+      <div className={`grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 ${
+        isExpanded ? 'animate-fade-slide-up' : ''
+      }`}>
+        {step.detailedFeatures.map((feature: DetailedFeature, featureIndex: number) => (
           <JourneyFeatureCard
             key={featureIndex}
             feature={feature}
@@ -232,12 +235,18 @@ const ExpandedContent: React.FC<ExpandedContentProps> = ({
         ))}
       </div>
 
-      {/* CTA Section */}
-      <StepCTA
-        step={step}
-        isExpanded={true}
-        variant={variant}
-      />
+      {/* CTA Button - Simplified animation */}
+      {step.ctaText && (
+        <div className={`text-center ${
+          isExpanded ? 'animate-fade-in' : ''
+        }`}>
+          <StepCTA
+            step={step}
+            isExpanded={isExpanded} 
+            variant={variant}
+          />
+        </div>
+      )}
     </div>
   );
 };

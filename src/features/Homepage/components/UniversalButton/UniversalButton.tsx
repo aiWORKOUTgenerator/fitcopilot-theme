@@ -15,7 +15,6 @@
 
 import classNames from 'classnames';
 import React from 'react';
-import { useTheme } from '../../../../context/ThemeContext';
 import { Button } from '../../../../features/shared/Button';
 import { ButtonVariant } from '../../../../features/shared/Button/types/standardButtonTypes';
 import { useGlobalVariant } from '../../context/GlobalVariantContext';
@@ -223,26 +222,8 @@ const mapVariantToButtonVariant = (variant?: string): ButtonVariant => {
   }
 };
 
-/**
- * Map theme context value to GlobalVariantKey
- */
-const mapThemeToGlobalVariant = (theme: string): GlobalVariantKey => {
-  // Check if theme is a valid GlobalVariantKey
-  const validVariants: GlobalVariantKey[] = [
-    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
-    'minimalist', 'boutique', 'registration', 'mobile'
-  ];
-  
-  if (validVariants.includes(theme as GlobalVariantKey)) {
-    return theme as GlobalVariantKey;
-  }
-  
-  // Map other theme values to GlobalVariantKey
-  switch (theme) {
-    case 'nutrition': return 'wellness'; // Map nutrition to wellness
-    default: return 'default';
-  }
-};
+// Note: mapThemeToGlobalVariant function removed as ThemeContext not available
+// UniversalButton now relies on GlobalVariantContext and prop overrides only
 
 // ============================================================================
 // COMPONENT IMPLEMENTATION
@@ -283,12 +264,10 @@ export const UniversalButton: React.FC<UniversalButtonProps> = ({
 }) => {
   // Get current theme from GlobalVariantContext
   const { currentVariant } = useGlobalVariant();
-  const { theme: themeContextTheme } = useTheme();
   
-  // Determine active theme (prop override > GlobalVariant > ThemeContext > default)
-  // Ensure proper type mapping for theme context values
-  const mappedThemeContextTheme = themeContextTheme ? mapThemeToGlobalVariant(themeContextTheme) : 'default';
-  const activeTheme = variant || currentVariant || mappedThemeContextTheme;
+  // Determine active theme (prop override > GlobalVariant > default)
+  // Note: ThemeContext not available without ThemeProvider wrapper
+  const activeTheme = variant || currentVariant || 'default';
   
   // Generate CSS classes
   const sectionClasses = getSectionClasses(

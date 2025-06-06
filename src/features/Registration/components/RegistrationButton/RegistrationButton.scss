@@ -84,12 +84,16 @@
     // Elements
     &__text {
         position: relative;
+        display: inline-flex;
+        align-items: center;
     }
 
     &__icon {
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        vertical-align: middle;
+        line-height: 1;
 
         &--left {
             margin-right: var(--registration-button-icon-spacing-left);
@@ -97,6 +101,11 @@
 
         &--right {
             margin-left: var(--registration-button-icon-spacing-right);
+        }
+        
+        svg {
+            display: block;
+            vertical-align: middle;
         }
     }
 

@@ -93,11 +93,13 @@ function Training({
           />
 
           {/* Main CTA */}
-          <TrainingCTA
-            onNavigate={handleNavigate}
-            variant={variant}
-            className="animate-fade-in"
-          />
+          <div className="training-section__cta">
+            <TrainingCTA
+              onNavigate={handleNavigate}
+              variant={variant}
+              className="animate-fade-in"
+            />
+          </div>
         </div>
       </section>
     </ThemeProvider>

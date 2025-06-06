@@ -1,10 +1,10 @@
-import { ArrowRight } from 'lucide-react';
 import React, { memo } from 'react';
 import { BenefitsList, ProgramCard } from '..';
-import { UniversalButton } from '../../../components/UniversalButton';
 import { GlobalVariantKey } from '../../../types/shared';
 import { ProgramType, VariantKey } from '../../types';
 import { generateProgramAriaIds } from '../../utils/accessibilityHelpers';
+import TrainingCTA from '../TrainingCTA/TrainingCTA';
+import { TrainingVariantKey } from '../TrainingCTA/types';
 import './ProgramsList.scss';
 import { ProgramsListProps } from './types';
 
@@ -29,6 +29,22 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
 };
 
 /**
+ * Map variant to TrainingVariantKey for TrainingCTA
+ */
+const mapVariantToTraining = (variant?: string): TrainingVariantKey => {
+  const trainingVariants: TrainingVariantKey[] = [
+    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
+    'minimalist', 'boutique', 'strength', 'fatLoss', 'fitness', 'athletic'
+  ];
+  
+  if (trainingVariants.includes(variant as TrainingVariantKey)) {
+    return variant as TrainingVariantKey;
+  }
+  
+  return 'default';
+};
+
+/**
  * Memoized expanded content component for better performance
  */
 const ExpandedContent = memo(({
@@ -42,7 +58,7 @@ const ExpandedContent = memo(({
     onNavigate: (title: string) => void;
     ariaIds: ReturnType<typeof generateProgramAriaIds>;
 }) => {
-  const globalVariant = mapVariantToGlobal(variant);
+  const trainingVariant = mapVariantToTraining(variant);
   
   return (
     <div
@@ -66,19 +82,13 @@ const ExpandedContent = memo(({
       />
 
       <div className="training-expanded__cta">
-        <UniversalButton
-          sectionContext="training"
-          buttonVariant="secondary"
-          variant={globalVariant}
-          size="medium"
-          rightIcon={<ArrowRight size={16} />}
-          onClick={() => onNavigate(program.title)}
-          aria-label={`Explore ${program.title} program details`}
-          data-section="training"
-          data-context="explore"
-        >
-          Explore {program.title}
-        </UniversalButton>
+        <TrainingCTA
+          onNavigate={() => onNavigate(program.title)}
+          variant={trainingVariant}
+          size="secondary"
+          programTitle={program.title}
+          className="training-expanded__cta-button"
+        />
       </div>
     </div>
   );

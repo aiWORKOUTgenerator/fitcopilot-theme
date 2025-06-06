@@ -2,80 +2,74 @@
 @use "./_tokens" as tokens;
 
 /* Journey Component Animation System
- * Includes reduced motion support for accessibility
+ * Simplified for smooth performance without scroll sticking
+ * Based on optimized approach for better user experience
  */
 
-/* Animation keyframes */
+/* Simplified, high-performance animation keyframes */
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @keyframes fade-slide-up {
     from {
         opacity: 0;
         transform: translateY(10px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
 }
 
-@keyframes subtle-pulse {
-    0% {
-        opacity: 0.08;
-    }
+/* Performance-optimized centralized animation system */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease-out, 
+                transform 0.4s ease-out;
 
-    50% {
-        opacity: 0.15;
-    }
-
-    100% {
-        opacity: 0.08;
-    }
-}
-
-@keyframes slight-bounce {
-    0% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-5px);
-    }
-
-    100% {
+    &.aos-animate {
+        opacity: 1;
         transform: translateY(0);
     }
 }
 
-/* Animation utility classes */
+/* Simplified expand/collapse animations - slower, more graceful */
 .animate-fade-slide-up {
-    animation: fade-slide-up 0.4s ease-out forwards;
+    animation: fade-slide-up 0.6s ease-out forwards;
 }
 
 .animate-fade-in {
-    animation: fadeIn tokens.$animation-duration tokens.$animation-easing forwards;
-    animation-delay: 0.2s;
+    animation: fade-in 0.6s ease-out forwards;
+    animation-delay: 0.3s;
     opacity: 0;
 }
 
-.animate-pulse-slow {
-    animation: subtle-pulse 3s ease-in-out infinite;
+/* Journey-specific transitions with optimized performance */
+.journey-details {
+    transition: max-height 0.4s ease-out,
+                opacity 0.3s ease-out 0.1s,
+                padding 0.4s ease-out;
 }
 
-.animate-slight-bounce {
-    animation: slight-bounce 1s ease-in-out;
-}
-
-/* Transition durations */
+/* Consistent transition utilities */
 .transition-short {
     transition-duration: 150ms;
 }
@@ -85,10 +79,10 @@
 }
 
 .transition-long {
-    transition-duration: 500ms;
+    transition-duration: 400ms;
 }
 
-/* Transition properties */
+/* Transition property utilities */
 .transition-all {
     transition-property: all;
 }
@@ -105,61 +99,40 @@
     transition-property: color, background-color, border-color;
 }
 
-/* Hover effects */
-.hover-scale {
-    transition: transform 0.3s ease;
-}
-
-.hover-scale:hover {
-    transform: scale(1.05);
-}
-
-.hover-translate-up {
-    transition: transform 0.3s ease;
-}
-
-.hover-translate-up:hover {
-    transform: translateY(-5px);
-}
-
 /* Enhanced reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-
-    /* Reset specific animations to ensure content is visible */
+    /* Disable all animations and transitions */
+    .animate-on-scroll,
     .animate-fade-slide-up,
-    .animate-fade-in,
-    .animate-pulse-slow {
-        animation: none;
-        opacity: 1;
+    .animate-fade-in {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
     }
 
-    /* Disable hover effects */
-    .hover-scale:hover,
-    .hover-translate-up:hover {
-        transform: none;
+    .journey-details {
+        transition: none !important;
     }
 
-    /* Disable transitions on journey step */
-    .journey-step {
-        transition: none;
+    /* Disable hover transforms */
+    .group:hover [class*="scale-"],
+    .group:hover [class*="rotate-"] {
+        transform: none !important;
     }
 
-    .journey-step:hover {
-        transform: none;
-    }
-
-    /* Keep button accessible but without animation */
-    [role="button"]:hover,
-    button:hover {
-        box-shadow: none;
-        transform: none;
-    }
-
-    /* Ensure focus states remain accessible */
+    /* Keep focus states accessible */
     [role="button"]:focus-visible,
     button:focus-visible {
         outline: 2px solid var(--journey-accent-primary);
         outline-offset: 3px;
         transition: none;
+    }
+
+    /* Ensure centralized animation elements are visible */
+    [data-animation] {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
     }
 }

@@ -1,28 +1,30 @@
 import {
     Activity,
-    BarChart2,
+    Award,
+    BarChart3,
+    Brain,
     Calendar,
+    CheckCircle,
     Clock,
-    Cpu,
-    Dumbbell,
-    FileText,
-    Flame,
-    Layers,
-    Lightbulb,
-    Microscope,
-    Package,
-    PieChart,
-    Settings,
+    Heart,
+    LineChart,
+    RefreshCw,
+    Share2,
+    Shield,
+    Smile,
+    Star,
     Target,
     TrendingUp,
     Trophy,
+    Users,
     Zap
 } from 'lucide-react';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import logger from '../../../utils/logger';
+import { UniversalButton } from '../components/UniversalButton';
 import { useHomepageAnimation } from '../hooks';
 import './_tokens.scss';
-import { JourneyCTA, JourneyStep, SectionHeader } from './components';
+import { JourneyStep, SectionHeader } from './components';
 import { useReducedMotion } from './hooks/useReducedMotion';
 import './journey-animations.scss';
 import './journey-utility-classes.scss';
@@ -34,10 +36,9 @@ import {
 import { useJourneyStore } from './utils/journeyState';
 import { getIconColorClass, getStepGradientClass } from './utils/tokenUtils';
 
-
-
 /**
  * Journey component - Shows the user journey/process flow with expandable steps
+ * Uses centralized animation system for consistent, performant animations
  */
 const Journey: React.FC<JourneyProps> = ({
   journey = [],
@@ -46,153 +47,154 @@ const Journey: React.FC<JourneyProps> = ({
   const prefersReducedMotion = useReducedMotion();
   const { expandedStep, setExpandedStep } = useJourneyStore();
   
-  // Use the centralized animation system
-  const { isReady, refresh, stats } = useHomepageAnimation({
-    duration: 800,
-    easing: 'ease-in-out',
+  // Use the centralized animation system with enhanced smooth settings
+  const { isReady } = useHomepageAnimation({
+    duration: 900, // Increased from 600ms for smoother, more graceful motion
+    easing: 'ease-out-quad', // Smooth organic easing for graceful motion
     once: true,
-    offset: 100
+    offset: 120, // Slightly higher offset for earlier, smoother trigger
+    // Journey-specific override for enhanced UX
+    disableForReducedMotion: true // Maintain accessibility support
   });
 
-  // Refresh animations when component mounts and when animation system is ready
+  // Initialize and refresh animations when system is ready
   useEffect(() => {
     if (isReady) {
-      logger.debug('🎬 Journey: Animation system ready, refreshing...');
-      refresh();
-      
-      if (stats) {
-        logger.debug('📊 Journey animation stats:', stats);
-      }
+      logger.debug('🎬 Journey: Animation system ready');
     }
-  }, [isReady, refresh, stats]);
+  }, [isReady]);
 
   // Define detailed journey steps if not provided
   const journeySteps = journey.length > 0 ? journey : [
     {
       id: 1,
       number: 1,
-      title: "Define Your Goals",
-      description: "Tell us what you want to achieve - strength, muscle gain, fat loss, or general fitness.",
+      title: "Tell Us About You",
+      description: "Share your fitness goals, experience level, and any limitations or preferences.",
       icon: <Target size={40} className="text-gray-900" />,
       delay: 100,
       accentColor: getStepGradientClass(1),
-      ctaText: "Set Your Goals",
+      ctaText: "Complete Assessment",
+      ctaUrl: "#assessment",
       detailedFeatures: [
         {
-          title: "Strength Building",
-          description: "Focus on compound movements and progressive overload for maximum strength gains.",
-          icon: <Dumbbell size={24} className={getIconColorClass(1)} />
+          title: "Goal Setting",
+          description: "Define your fitness objectives clearly",
+          icon: <Target size={24} className={getIconColorClass(1)} />
         },
         {
-          title: "Fat Loss",
-          description: "Optimize caloric deficit with the right mix of HIIT and steady-state cardio.",
-          icon: <Flame size={24} className={getIconColorClass(1)} />
-        },
-        {
-          title: "Muscle Growth",
-          description: "Hypertrophy-focused programs with proper volume and intensity distribution.",
-          icon: <Zap size={24} className={getIconColorClass(1)} />
-        },
-        {
-          title: "General Fitness",
-          description: "Well-rounded programs balancing strength, endurance, and mobility.",
+          title: "Experience Level",
+          description: "We tailor workouts to your current fitness level",
           icon: <Activity size={24} className={getIconColorClass(1)} />
+        },
+        {
+          title: "Health Considerations",
+          description: "Account for injuries or health restrictions",
+          icon: <Heart size={24} className={getIconColorClass(1)} />
+        },
+        {
+          title: "Time Availability",
+          description: "Workouts that fit your busy schedule",
+          icon: <Clock size={24} className={getIconColorClass(1)} />
         }
       ]
     },
     {
       id: 2,
       number: 2,
-      title: "Customize Your Experience",
-      description: "Specify your experience level, available equipment, and time constraints.",
-      icon: <Settings size={40} className="text-gray-900" />,
+      title: "AI Creates Your Plan",
+      description: "Our advanced AI analyzes your profile and generates a personalized workout plan.",
+      icon: <Brain size={40} className="text-gray-900" />,
       delay: 200,
       accentColor: getStepGradientClass(2),
-      ctaText: "Personalize",
+      ctaText: "See AI Plan Creation",
+      ctaUrl: "#how-it-works",
       detailedFeatures: [
         {
-          title: "Equipment Selection",
-          description: "From minimal home setups to full gym access - we adapt to what you have.",
-          icon: <Dumbbell size={24} className={getIconColorClass(2)} />
+          title: "Smart Algorithm",
+          description: "AI-powered workout generation tailored to you",
+          icon: <Zap size={24} className={getIconColorClass(2)} />
         },
         {
-          title: "Time Management",
-          description: "Short on time? Our AI optimizes workouts from 15 minutes to 90+ minutes.",
-          icon: <Clock size={24} className={getIconColorClass(2)} />
-        },
-        {
-          title: "Experience Level",
-          description: "Whether you're a beginner or advanced, we scale appropriately for your level.",
-          icon: <Layers size={24} className={getIconColorClass(2)} />
-        },
-        {
-          title: "Training Frequency",
-          description: "Flexible scheduling from 2-6 days per week based on your availability.",
+          title: "Flexible Scheduling",
+          description: "Adapts to your availability and preferences",
           icon: <Calendar size={24} className={getIconColorClass(2)} />
+        },
+        {
+          title: "Progressive Overload",
+          description: "Gradually increases intensity for optimal results",
+          icon: <TrendingUp size={24} className={getIconColorClass(2)} />
+        },
+        {
+          title: "Injury Prevention",
+          description: "Built-in safety measures and form guidance",
+          icon: <Shield size={24} className={getIconColorClass(2)} />
         }
       ]
     },
     {
       id: 3,
       number: 3,
-      title: "Receive Your Personalized Plan",
-      description: "Our AI generates a tailored workout program specific to your needs and capabilities.",
-      icon: <Package size={40} className="text-gray-900" />,
+      title: "Track Your Progress",
+      description: "Monitor your improvements with detailed analytics and adaptive adjustments.",
+      icon: <BarChart3 size={40} className="text-gray-900" />,
       delay: 300,
       accentColor: getStepGradientClass(3),
-      ctaText: "See Sample Plan",
+      ctaText: "See Progress Tracking",
+      ctaUrl: "#progress-demo",
       detailedFeatures: [
         {
-          title: "AI-Powered Design",
-          description: "Advanced algorithms create the optimal exercise selection and progression.",
-          icon: <Cpu size={24} className={getIconColorClass(3)} />
+          title: "Performance Metrics",
+          description: "Track strength, endurance, and overall progress",
+          icon: <LineChart size={24} className={getIconColorClass(3)} />
         },
         {
-          title: "Scientific Approach",
-          description: "Evidence-based programming following proven training principles.",
-          icon: <Microscope size={24} className={getIconColorClass(3)} />
+          title: "Achievement System",
+          description: "Celebrate milestones and stay motivated",
+          icon: <Award size={24} className={getIconColorClass(3)} />
         },
         {
-          title: "Adaptive Progression",
-          description: "Your plan evolves as you progress, ensuring continued results.",
-          icon: <TrendingUp size={24} className={getIconColorClass(3)} />
+          title: "Plan Adjustments",
+          description: "AI adapts your plan based on your progress",
+          icon: <RefreshCw size={24} className={getIconColorClass(3)} />
         },
         {
-          title: "Detailed Instructions",
-          description: "Clear guidance on execution, tempo, and form for each exercise.",
-          icon: <FileText size={24} className={getIconColorClass(3)} />
+          title: "Community Support",
+          description: "Connect with others on similar fitness journeys",
+          icon: <Users size={24} className={getIconColorClass(3)} />
         }
       ]
     },
     {
       id: 4,
       number: 4,
-      title: "Track Your Progress",
-      description: "Log your workouts, track your metrics, and watch your progress over time.",
-      icon: <BarChart2 size={40} className="text-gray-900" />,
+      title: "Achieve Your Goals",
+      description: "Whether you're a beginner or advanced, we scale appropriately for your level.",
+      icon: <Trophy size={40} className="text-gray-900" />,
       delay: 400,
       accentColor: getStepGradientClass(4),
-      ctaText: "View Analytics",
+      ctaText: "Start Goal Achievement",
+      ctaUrl: "#get-started",
       detailedFeatures: [
         {
-          title: "Visual Analytics",
-          description: "Interactive charts showing your strength progression and volume over time.",
-          icon: <PieChart size={24} className={getIconColorClass(4)} />
+          title: "Goal Achievement",
+          description: "Systematic approach to reaching your targets",
+          icon: <CheckCircle size={24} className={getIconColorClass(4)} />
         },
         {
-          title: "Achievement System",
-          description: "Unlock badges and achievements as you hit milestones in your fitness journey.",
-          icon: <Trophy size={24} className={getIconColorClass(4)} />
+          title: "Continuous Improvement",
+          description: "Keep challenging yourself with new goals",
+          icon: <Star size={24} className={getIconColorClass(4)} />
         },
         {
-          title: "Body Composition",
-          description: "Track weight, measurements, and body composition changes visually.",
-          icon: <Activity size={24} className={getIconColorClass(4)} />
+          title: "Lifestyle Integration",
+          description: "Make fitness a sustainable part of your life",
+          icon: <Smile size={24} className={getIconColorClass(4)} />
         },
         {
-          title: "Smart Insights",
-          description: "AI-powered observations about your performance patterns and suggestions.",
-          icon: <Lightbulb size={24} className={getIconColorClass(4)} />
+          title: "Share Success",
+          description: "Inspire others with your transformation",
+          icon: <Share2 size={24} className={getIconColorClass(4)} />
         }
       ]
     }
@@ -219,34 +221,28 @@ const Journey: React.FC<JourneyProps> = ({
 
   const timelineColorClass = getTimelineColorClass(journeySteps);
 
-  const handleStepClick = (index: number) => {
-    if (expandedStep === index) {
-      setExpandedStep(null);
-    } else {
-      setExpandedStep(index);
+  // Enhanced delay timing for organic cascade effect
+  const getStepDelay = (index: number): string => {
+    // Exponential-like progression for natural cascade feel
+    const delays = [0, 180, 420, 720]; // More organic timing than linear 100ms intervals
+    return delays[index]?.toString() || '0';
+  };
 
-      // Scroll to the expanded step with a slight delay for animation
-      if (!prefersReducedMotion) {
+  // Handle step toggle - simplified without complex animation management
+  const handleStepToggle = useCallback((index: number) => {
+    const newExpanded = expandedStep === index ? null : index;
+    setExpandedStep(newExpanded);
+
+    // Smooth scroll to expanded step
+    if (newExpanded !== null) {
         setTimeout(() => {
-          const stepElement = document.querySelector(`#journey-step-${index}`);
+        const stepElement = document.querySelector(`[data-step-index="${index}"]`);
           if (stepElement) {
             stepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
-        }, 100);
-      }
+      }, 150); // Small delay to allow expansion animation
     }
-  };
-
-  // Create variant-specific props for the Section component
-  const _sectionProps = {
-    id: "how-it-works",
-    className: "journey-section",
-    backgroundColor: "secondary" as const,
-    backgroundVariant: "grid" as const,
-    spacing: "lg" as const,
-    seamless: true,
-    variant: _variant
-  };
+  }, [expandedStep, setExpandedStep]);
 
   return (
     <section
@@ -257,31 +253,39 @@ const Journey: React.FC<JourneyProps> = ({
       <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-background-primary to-transparent z-0"></div>
 
       <div className="max-w-6xl mx-auto relative z-10">
-        {/* Section Header */}
+        {/* Section Header - Centralized animation */}
+        <div 
+          className="animate-on-scroll"
+          data-animation="fade-up"
+          data-delay="0"
+        >
         <SectionHeader
           title={<>Your Fitness <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">Journey</span></>}
           description="Four simple steps to transform your fitness routine with AI-powered workouts"
           variant={_variant}
         />
+        </div>
 
-        {/* Journey Steps */}
+        {/* Journey Steps - Centralized animation container */}
         <div
-          className="journey-steps mt-16 px-4 md:px-8"
-          data-aos={prefersReducedMotion ? undefined : 'fade-up'}
-          data-aos-delay={prefersReducedMotion ? undefined : '100'}
+          className="journey-steps mt-16 px-4 md:px-8 animate-on-scroll"
+          data-animation="fade-up"
+          data-delay="200"
         >
           <div className={`journey-timeline ${timelineColorClass} space-y-16`}>
             {journeySteps.map((step: JourneyStepType, index: number) => (
               <div
                 key={step.id}
-                className="journey-step-container"
-                id={`journey-step-${index}`}
+                className="journey-step-container animate-on-scroll"
+                data-animation="fade-up"
+                data-delay={getStepDelay(index)}
+                data-step-index={index}
               >
                 <JourneyStep
                   step={step}
                   index={index}
                   isExpanded={expandedStep === index}
-                  onToggle={() => handleStepClick(index)}
+                  onToggle={() => handleStepToggle(index)}
                   isLast={index === journeySteps.length - 1}
                   variant={_variant}
                 />
@@ -290,21 +294,23 @@ const Journey: React.FC<JourneyProps> = ({
           </div>
         </div>
 
-        {/* Main CTA */}
+        {/* Main CTA - Centralized animation */}
         <div
-          className="text-center mt-16"
-          data-aos={prefersReducedMotion ? undefined : 'fade-up'}
-          data-aos-delay={prefersReducedMotion ? undefined : '500'}
+          className="text-center mt-16 animate-on-scroll"
+          data-animation="fade-up"
+          data-delay="1000"
         >
-          <JourneyCTA
-            text="Start Your Journey Now"
-            href="https://aigymengine.com/workout-generator-registration"
-            buttonVariant="gradient"
+          <UniversalButton
+            sectionContext="journey"
+            buttonVariant="primary"
             gradientColor="lime"
-            buttonSize="large"
-            showIcon={true}
+            size="large"
+            href="https://aigymengine.com/workout-generator-registration"
             variant={_variant}
-          />
+            rightIcon={<Zap size={20} />}
+          >
+            Start Your Journey Now
+          </UniversalButton>
         </div>
       </div>
     </section>

@@ -1,22 +1,22 @@
 import {
-  Activity,
-  BarChart2,
-  Calendar,
-  Clock,
-  Cpu,
-  Dumbbell,
-  FileText,
-  Flame,
-  Layers,
-  Lightbulb,
-  Microscope,
-  Package,
-  PieChart,
-  Settings,
-  Target,
-  TrendingUp,
-  Trophy,
-  Zap
+    Activity,
+    BarChart2,
+    Calendar,
+    Clock,
+    Cpu,
+    Dumbbell,
+    FileText,
+    Flame,
+    Layers,
+    Lightbulb,
+    Microscope,
+    Package,
+    PieChart,
+    Settings,
+    Target,
+    TrendingUp,
+    Trophy,
+    Zap
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { JourneyCTA, JourneyStep, SectionHeader } from '../../components';
@@ -58,7 +58,7 @@ export const SportsJourney: React.FC<JourneyProps> = ({ journey = [] }) => {
       icon: <Target size={40} className="text-gray-900" />,
       delay: 100,
       accentColor: "from-red-400 to-orange-500",
-      ctaText: "Set Your Goals",
+      ctaText: "Set Performance Goals",
       detailedFeatures: [
         {
           title: "Strength & Power",
@@ -89,7 +89,7 @@ export const SportsJourney: React.FC<JourneyProps> = ({ journey = [] }) => {
       icon: <Settings size={40} className="text-gray-900" />,
       delay: 200,
       accentColor: "from-orange-400 to-amber-500",
-      ctaText: "Customize",
+      ctaText: "Configure Training Parameters",
       detailedFeatures: [
         {
           title: "Equipment Availability",
@@ -120,7 +120,7 @@ export const SportsJourney: React.FC<JourneyProps> = ({ journey = [] }) => {
       icon: <Package size={40} className="text-gray-900" />,
       delay: 300,
       accentColor: "from-yellow-400 to-lime-500",
-      ctaText: "View Program",
+      ctaText: "Get Athletic Program",
       detailedFeatures: [
         {
           title: "Sports Science Algorithms",
@@ -151,7 +151,7 @@ export const SportsJourney: React.FC<JourneyProps> = ({ journey = [] }) => {
       icon: <BarChart2 size={40} className="text-gray-900" />,
       delay: 400,
       accentColor: "from-lime-400 to-green-500",
-      ctaText: "Track Performance",
+      ctaText: "Monitor Athletic Progress",
       detailedFeatures: [
         {
           title: "Performance Analytics",

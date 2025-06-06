@@ -1,79 +1,92 @@
-import { ArrowRight } from 'lucide-react';
 import React, { memo } from 'react';
-import { ThemeProvider } from '../../../../../context/ThemeContext';
-import { ThemeOption } from '../../../../../utils/theming';
-import { UniversalButton } from '../../../components/UniversalButton';
-import { GlobalVariantKey } from '../../../types/shared';
+import { UniversalButton } from '../../../components/UniversalButton/UniversalButton';
 import './TrainingCTA.scss';
-import { TrainingCTAProps } from './types';
+import { TrainingCTAProps, TrainingCTASize, TrainingVariantKey } from './types';
 
 /**
- * Map GlobalVariantKey to ThemeOption for ThemeProvider
+ * Map TrainingVariantKey to valid variant for UniversalButton
  */
-const mapVariantToTheme = (variant: GlobalVariantKey | undefined): ThemeOption => {
-  // Direct mappings for variants that match themes
-  if (variant === 'default' || variant === 'gym' || variant === 'sports' || variant === 'wellness') {
-    return variant;
+const mapTrainingVariantToGlobal = (variant: TrainingVariantKey) => {
+  // Training-specific variants map to default
+  if (variant === 'strength' || variant === 'fatLoss' || variant === 'fitness' || variant === 'athletic') {
+    return 'default';
   }
-  
-  // Map other variants to appropriate themes
-  switch (variant) {
-    case 'modern': return 'sports';
-    case 'classic': return 'default';
-    case 'minimalist': return 'default';
-    case 'boutique': return 'wellness';
-    case 'registration': return 'default';
-    case 'mobile': return 'default';
-    default: return 'default';
-  }
-};
-
-/**
- * Map Training variant to GlobalVariantKey
- */
-const mapTrainingVariantToGlobal = (variant?: GlobalVariantKey): GlobalVariantKey => {
-  const validVariants: GlobalVariantKey[] = [
-    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
-    'minimalist', 'boutique', 'registration', 'mobile'
-  ];
-  
-  if (validVariants.includes(variant as GlobalVariantKey)) {
-    return variant as GlobalVariantKey;
-  }
-  
-  return 'default';
+  // Return the variant as is for global variants
+  return variant;
 };
 
 /**
  * Training CTA button for the Training section
+ * Uses UniversalButton with training amber/orange color palette
+ * Supports primary (homepage) and secondary (benefits list) size variants
  */
 const TrainingCTA: React.FC<TrainingCTAProps> = memo(function TrainingCTA({
   onNavigate,
   variant = 'default',
+  size = 'primary',
+  programTitle,
   className = '',
 }) {
-  const globalVariant = mapTrainingVariantToGlobal(variant);
-  
+  // Map variant to program type for color styling
+  const getProgramVariantClass = (variant: TrainingVariantKey): string => {
+    const programTypes: TrainingVariantKey[] = ['strength', 'fatLoss', 'fitness', 'athletic'];
+    if (programTypes.includes(variant)) {
+      return `training-cta--${variant}`;
+    }
+    return '';
+  };
+
+  // Map size to CSS class for size-specific styling
+  const getSizeClass = (size: TrainingCTASize): string => {
+    return `training-cta--${size}`;
+  };
+
+  // Determine UniversalButton size based on TrainingCTA size
+  const getUniversalButtonSize = (size: TrainingCTASize): 'medium' | 'large' => {
+    return size === 'secondary' ? 'medium' : 'large';
+  };
+
+  // Generate dynamic CTA text based on program title
+  const getCTAText = (programTitle?: string): string => {
+    if (!programTitle) {
+      return 'View All Programs';
+    }
+
+    // Handle specific program title formatting
+    switch (programTitle) {
+      case 'Strength Building':
+        return 'View Strength Building Programs';
+      case 'Fat Loss':
+        return 'View Fat Loss Programs';
+      case 'General Fitness':
+        return 'View General Fitness Programs';
+      case 'Athletic Performance':
+        return 'View Athletic Performance Programs';
+      default:
+        // Fallback for any other program titles
+        return `View ${programTitle}`;
+    }
+  };
+
+  const programVariantClass = getProgramVariantClass(variant);
+  const sizeClass = getSizeClass(size);
+  const combinedClassName = `training-cta training-cta--${variant} ${sizeClass} ${programVariantClass} ${className}`.trim();
+  const ctaText = getCTAText(programTitle);
+
   return (
-    <ThemeProvider initialTheme={mapVariantToTheme(variant)}>
-      <div className={`training-cta training-cta--${variant} ${className}`}>
-        <UniversalButton
-          sectionContext="training"
-          buttonVariant="primary"
-          variant={globalVariant}
-          size="large"
-          styleVariant="accent"
-          className="training-cta-button"
-          onClick={() => onNavigate('all')}
-          rightIcon={<ArrowRight className="ml-2" size={20} />}
-          aria-label="View all training programs"
-          data-section="training"
-          data-context="cta"
-        >
-          View All Programs
-        </UniversalButton>
-      </div>
-    </ThemeProvider>
+    <div className={combinedClassName}>
+      <UniversalButton
+        sectionContext="training"
+        buttonVariant="primary"
+        gradientColor="amber"
+        size={getUniversalButtonSize(size)}
+        onClick={() => onNavigate(programTitle || 'View All Programs')}
+        className="training-cta__button"
+        variant={mapTrainingVariantToGlobal(variant)}
+      >
+        {ctaText}
+      </UniversalButton>
+    </div>
   );
 });
 

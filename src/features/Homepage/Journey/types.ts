@@ -107,6 +107,10 @@ export interface JourneyStepProps {
 export interface JourneyFeatureCardProps {
   feature: DetailedFeature;
   variant: VariantKey;
+  // Enhanced with action button support
+  showAction?: boolean;
+  actionText?: string;
+  onAction?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 // Call to action component props

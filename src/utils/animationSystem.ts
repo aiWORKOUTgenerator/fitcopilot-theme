@@ -1,6 +1,7 @@
 /**
  * Centralized Animation System
  * Manages all animations including AOS, CSS animations, and reduced motion preferences
+ * Enhanced to support unified animation attributes for consistent usage
  */
 
 import logger from './logger';
@@ -62,6 +63,9 @@ class AnimationSystem {
 
       // Initialize AOS
       await this.initializeAOS();
+
+      // Set up unified animation system
+      this.setupUnifiedAnimations();
 
       // Set up mutation observer for dynamic content
       this.setupMutationObserver();
@@ -146,6 +150,120 @@ class AnimationSystem {
   }
 
   /**
+   * Set up unified animation system for data-animation attributes
+   */
+  private setupUnifiedAnimations(): void {
+    logger.debug('🎭 Setting up unified animation system...');
+
+    // Process existing elements with data-animation attributes
+    this.processUnifiedAnimations();
+
+    // Set up intersection observer for scroll-triggered animations
+    this.setupIntersectionObserver();
+  }
+
+  /**
+   * Process elements with data-animation attributes
+   */
+  private processUnifiedAnimations(): void {
+    const elements = document.querySelectorAll('[data-animation]');
+    
+    elements.forEach((element) => {
+      const animation = element.getAttribute('data-animation');
+      const delay = element.getAttribute('data-delay') || '0';
+      
+      if (!animation) return;
+
+      // Convert to AOS attributes for compatibility
+      element.setAttribute('data-aos', animation);
+      element.setAttribute('data-aos-delay', delay);
+
+      // Add unified animation class for CSS targeting
+      element.classList.add('animate-on-scroll');
+    });
+
+    logger.debug(`🎬 Processed ${elements.length} unified animation elements`);
+  }
+
+  /**
+   * Set up intersection observer for manual animation triggering
+   */
+  private setupIntersectionObserver(): void {
+    if (!window.IntersectionObserver || this.shouldDisableAnimations()) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const element = entry.target;
+          const animation = element.getAttribute('data-animation');
+          
+          if (animation && element.classList.contains('animate-on-scroll')) {
+            this.triggerUnifiedAnimation(element as HTMLElement);
+          }
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: `${this.state.config.offset || 100}px`
+    });
+
+    // Observe all unified animation elements
+    document.querySelectorAll('.animate-on-scroll').forEach((element) => {
+      observer.observe(element);
+    });
+  }
+
+  /**
+   * Trigger unified animation for an element
+   */
+  private triggerUnifiedAnimation(element: HTMLElement): void {
+    const animation = element.getAttribute('data-animation');
+    const delay = parseInt(element.getAttribute('data-delay') || '0', 10);
+
+    if (!animation || this.shouldDisableAnimations()) return;
+
+    setTimeout(() => {
+      // Add AOS animation classes
+      element.classList.add('aos-init', 'aos-animate');
+      
+      // Add custom animation class if needed
+      const animationClass = `animate-${animation}`;
+      if (this.hasAnimationClass(animationClass)) {
+        element.classList.add(animationClass);
+      }
+
+      logger.debug(`🎬 Triggered unified animation: ${animation} for element`, element);
+    }, delay);
+  }
+
+  /**
+   * Check if a custom animation class exists in the stylesheets
+   */
+  private hasAnimationClass(className: string): boolean {
+    const stylesheets = Array.from(document.styleSheets);
+    
+    try {
+      for (const stylesheet of stylesheets) {
+        try {
+          const rules = Array.from(stylesheet.cssRules || []);
+          for (const rule of rules) {
+            if (rule instanceof CSSStyleRule && rule.selectorText?.includes(`.${className}`)) {
+              return true;
+            }
+          }
+        } catch (e) {
+          // Skip stylesheets that can't be accessed (CORS)
+          continue;
+        }
+      }
+    } catch (e) {
+      logger.debug('Could not check for animation class:', className);
+    }
+    
+    return false;
+  }
+
+  /**
    * Check if animations should be disabled
    */
   private shouldDisableAnimations(): boolean {
@@ -186,14 +304,22 @@ class AnimationSystem {
 
     const observer = new MutationObserver((mutations) => {
       let shouldRefresh = false;
+      let hasUnifiedAnimations = false;
 
       mutations.forEach((mutation) => {
         if (mutation.type === 'childList') {
           mutation.addedNodes.forEach((node) => {
             if (node.nodeType === Node.ELEMENT_NODE) {
               const element = node as Element;
+              
+              // Check for AOS elements (legacy support)
               if (element.querySelector('[data-aos]') || element.hasAttribute('data-aos')) {
                 shouldRefresh = true;
+              }
+              
+              // Check for unified animation elements
+              if (element.querySelector('[data-animation]') || element.hasAttribute('data-animation')) {
+                hasUnifiedAnimations = true;
               }
             }
           });
@@ -203,6 +329,11 @@ class AnimationSystem {
       if (shouldRefresh) {
         logger.debug('🔄 New AOS elements detected, refreshing...');
         this.refresh();
+      }
+
+      if (hasUnifiedAnimations) {
+        logger.debug('🎭 New unified animation elements detected, processing...');
+        this.processUnifiedAnimations();
       }
     });
 
@@ -222,7 +353,12 @@ class AnimationSystem {
     }
 
     logger.debug('🔄 Refreshing animations...');
+    
+    // Refresh AOS
     window.AOS.refresh();
+    
+    // Process new unified animations
+    this.processUnifiedAnimations();
 
     // Log current state
     setTimeout(() => {
@@ -237,8 +373,10 @@ class AnimationSystem {
   getAnimationStats() {
     return {
       totalElements: document.querySelectorAll('[data-aos]').length,
+      unifiedElements: document.querySelectorAll('[data-animation]').length,
       initializedElements: document.querySelectorAll('.aos-init').length,
       animatedElements: document.querySelectorAll('.aos-animate').length,
+      onScrollElements: document.querySelectorAll('.animate-on-scroll').length,
       prefersReducedMotion: this.state.prefersReducedMotion,
       aosLoaded: this.state.aosLoaded,
       systemInitialized: this.state.initialized
@@ -251,6 +389,13 @@ class AnimationSystem {
   triggerAnimation(element: Element): void {
     if (!this.state.aosLoaded) return;
 
+    // Handle unified animations
+    if (element.hasAttribute('data-animation')) {
+      this.triggerUnifiedAnimation(element as HTMLElement);
+      return;
+    }
+
+    // Handle legacy AOS animations
     element.classList.add('aos-animate');
   }
 
@@ -258,7 +403,13 @@ class AnimationSystem {
    * Reset animation for an element
    */
   resetAnimation(element: Element): void {
-    element.classList.remove('aos-animate');
+    element.classList.remove('aos-animate', 'aos-init');
+    
+    // Remove unified animation classes
+    const animation = element.getAttribute('data-animation');
+    if (animation) {
+      element.classList.remove(`animate-${animation}`);
+    }
   }
 
   /**
@@ -295,3 +446,4 @@ const animationSystem = new AnimationSystem();
 export default animationSystem;
 export { AnimationSystem };
 export type { AnimationSystemConfig, AnimationSystemState };
+

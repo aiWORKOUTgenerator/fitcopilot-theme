@@ -3,40 +3,36 @@ import { useReducedMotion } from '../hooks/useReducedMotion';
 import { SectionHeaderProps } from '../types';
 
 /**
- * SectionHeader - Component for the main heading of the Journey section
- * Styled to match the PersonalTraining section header
+ * SectionHeader - Displays the main heading and description for the Journey section
+ * Uses centralized animation system for consistent animations
  */
 const SectionHeader: React.FC<SectionHeaderProps> = ({
   title,
   description,
-  variant
+  variant = 'default'
 }) => {
   const prefersReducedMotion = useReducedMotion();
 
-  // Default title with gradient styling similar to PersonalTraining
-  const defaultTitle = (
-    <>
-      Your Fitness <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">Journey</span>
-    </>
-  );
-
   return (
-    <div
-      className="text-center mb-16"
-      data-aos={prefersReducedMotion ? undefined : 'fade-up'}
-      data-theme={variant !== 'default' ? variant : undefined}
-    >
-      <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">
-        How It Works
-      </span>
-
-      <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-        {title || defaultTitle}
+    <div className="text-center mb-12 md:mb-16">
+      {/* Main Title */}
+      <h2 
+        className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 journey-text-heading"
+        data-theme={variant !== 'default' ? variant : undefined}
+      >
+        {title}
       </h2>
-
-      <p className="text-gray-400 mx-auto">
-        {description || "Four simple steps to transform your fitness routine with AI-powered workouts"}
-      </p>
+      
+      {/* Description */}
+      {description && (
+        <p 
+          className="text-lg md:text-xl journey-text-description max-w-3xl mx-auto text-center"
+          style={{ marginLeft: 'auto', marginRight: 'auto', textAlign: 'center' }}
+          data-theme={variant !== 'default' ? variant : undefined}
+        >
+          {description}
+        </p>
+      )}
     </div>
   );
 };

@@ -5,8 +5,24 @@
 // Canonical design system import - MUST BE FIRST
 
 /**
- * BenefitsList component styles
+ * BenefitsList component styles with optional TrainingCTA integration
  */
+.benefits-list-container {
+    width: 100%;
+    
+    /* Enhanced container for CTA integration */
+    &--with-cta {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-6, 1.5rem);
+        
+        /* Ensure proper spacing between benefits and CTA */
+        .benefits-list {
+            margin-bottom: 0; /* Reset margin since gap handles spacing */
+        }
+    }
+}
+
 .benefits-list {
     list-style: none;
     padding: 0;
@@ -34,6 +50,20 @@
         color: var(--color-amber-400, #FB923C);
     }
 
+    /* CTA integration styling */
+    &__cta {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: var(--spacing-4, 1rem);
+        
+        /* Ensure proper focus management */
+        .benefits-list__cta-button {
+            width: 100%;
+            max-width: 280px; /* Match secondary TrainingCTA width */
+        }
+    }
+
     // Variant styling
     &--default {
         .benefits-list__item {
@@ -52,5 +82,28 @@
                 display: inline;
             }
         }
+    }
+}
+
+/* Responsive adjustments for CTA integration */
+@media (max-width: 768px) {
+    .benefits-list-container--with-cta {
+        gap: var(--spacing-4, 1rem); /* Tighter spacing on mobile */
+    }
+    
+    .benefits-list__cta {
+        margin-top: var(--spacing-3, 0.75rem);
+        
+        .benefits-list__cta-button {
+            max-width: 100%; /* Full width on mobile */
+        }
+    }
+}
+
+/* Enhanced accessibility for CTA integration */
+@media (prefers-reduced-motion: reduce) {
+    .benefits-list__cta .benefits-list__cta-button {
+        /* Ensure reduced motion is respected in integrated CTA */
+        transition: none;
     }
 }

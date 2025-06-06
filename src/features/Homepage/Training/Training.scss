@@ -374,12 +374,12 @@ body[data-theme="wellness"] {
 
     // CTA container
     &__cta {
-        margin-top: 4rem;
+        margin-top: 6rem;
         text-align: center;
         margin-bottom: 1rem;
 
         @media (min-width: 768px) {
-            margin-top: 5rem;
+            margin-top: 7rem;
             margin-bottom: 2rem;
         }
     }
@@ -703,6 +703,23 @@ body[data-theme="wellness"] {
     &__cta {
         text-align: center;
         margin-top: var(--spacing-8, 2rem);
+        
+        // Secondary TrainingCTA integration
+        .training-expanded__cta-button {
+            margin: 0 auto;
+            
+            // Ensure proper integration within expanded content
+            .training-cta__splash-context {
+                // Slightly reduced padding for better proportion within the card
+                padding: 0.75rem 1.25rem;
+                
+                // Adjust border radius to match the card context
+                border-radius: 10px;
+                
+                // Ensure the CTA doesn't overpower the content
+                max-width: 260px;
+            }
+        }
     }
 
     // Sports variant styling

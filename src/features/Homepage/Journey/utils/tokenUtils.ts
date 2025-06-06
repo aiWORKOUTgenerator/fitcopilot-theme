@@ -100,13 +100,6 @@ export const getStepCTAUrl = (stepTitle: string): string => {
   return 'https://aigymengine.com/workout-generator-registration';
 };
 
-/**
- * Utility to determine if animation should be applied based on reduced motion preference
- */
-export const getAnimationClass = (className: string, prefersReducedMotion: boolean): string => {
-  return prefersReducedMotion ? '' : className;
-};
-
 export default {
   getStepColorFamily,
   getStepGradientClass,
@@ -115,6 +108,5 @@ export default {
   getIconColorClass,
   getStepToken,
   getStepCTAText,
-  getStepCTAUrl,
-  getAnimationClass
+  getStepCTAUrl
 }; 

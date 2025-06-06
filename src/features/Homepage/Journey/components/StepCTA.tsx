@@ -1,4 +1,3 @@
-import { ChevronRight } from 'lucide-react';
 import React from 'react';
 import { ThemeProvider } from '../../../../context/ThemeContext';
 import { ThemeOption } from '../../../../utils/theming';
@@ -75,7 +74,6 @@ const StepCTA: React.FC<StepCTAProps> = ({
           href={ctaUrl}
           className={className}
           gradientColor={getGradientColor(step.number || 1)}
-          rightIcon={<ChevronRight size={16} className="ml-2" aria-hidden="true" />}
           aria-label={`${step.ctaText} for ${step.title}`}
           data-section="journey"
           data-context="step"

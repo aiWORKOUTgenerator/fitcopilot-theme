@@ -1,22 +1,22 @@
 import {
-  Activity,
-  BarChart2,
-  Calendar,
-  Clock,
-  Cpu,
-  Dumbbell,
-  FileText,
-  Flame,
-  Layers,
-  Lightbulb,
-  Microscope,
-  Package,
-  PieChart,
-  Settings,
-  Target,
-  TrendingUp,
-  Trophy,
-  Zap
+    Activity,
+    BarChart2,
+    Calendar,
+    Clock,
+    Cpu,
+    Dumbbell,
+    FileText,
+    Flame,
+    Layers,
+    Lightbulb,
+    Microscope,
+    Package,
+    PieChart,
+    Settings,
+    Target,
+    TrendingUp,
+    Trophy,
+    Zap
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { JourneyCTA, JourneyStep, SectionHeader } from '../../components';
@@ -58,7 +58,7 @@ export const ModernJourney: React.FC<JourneyProps> = ({ journey = [] }) => {
       icon: <Target size={40} className="text-gray-900" />,
       delay: 100,
       accentColor: "from-blue-300 to-indigo-400",
-      ctaText: "Set Your Goals",
+      ctaText: "Set Goal & Preferences",
       detailedFeatures: [
         {
           title: "Strength Building",
@@ -89,7 +89,7 @@ export const ModernJourney: React.FC<JourneyProps> = ({ journey = [] }) => {
       icon: <Settings size={40} className="text-gray-900" />,
       delay: 200,
       accentColor: "from-indigo-300 to-purple-400",
-      ctaText: "Personalize",
+      ctaText: "Customize Your Experience",
       detailedFeatures: [
         {
           title: "Equipment Selection",
@@ -120,7 +120,7 @@ export const ModernJourney: React.FC<JourneyProps> = ({ journey = [] }) => {
       icon: <Package size={40} className="text-gray-900" />,
       delay: 300,
       accentColor: "from-purple-300 to-pink-400",
-      ctaText: "See Sample Plan",
+      ctaText: "Get Personalized Plan",
       detailedFeatures: [
         {
           title: "AI-Powered Design",

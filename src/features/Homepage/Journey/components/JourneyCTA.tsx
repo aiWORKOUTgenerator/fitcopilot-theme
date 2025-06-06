@@ -49,8 +49,22 @@ const mapButtonVariant = (buttonVariant?: string): 'primary' | 'secondary' => {
 };
 
 /**
+ * @deprecated Use UniversalButton with sectionContext="journey" instead
  * JourneyCTA - Call to action button with gradient styling
- * Now uses JourneyButton for consistent styling and enhanced cyan gradient effects
+ * 
+ * This component is deprecated and will be removed in v2.0.0
+ * Use UniversalButton from '../components/UniversalButton' instead:
+ * 
+ * @example
+ * <UniversalButton
+ *   sectionContext="journey"
+ *   buttonVariant="primary"
+ *   gradientColor="lime"
+ *   size="large"
+ *   href={href}
+ * >
+ *   {text}
+ * </UniversalButton>
  */
 const JourneyCTA: React.FC<JourneyCTAProps> = ({
   text = 'Start Your Journey Now',
@@ -65,6 +79,15 @@ const JourneyCTA: React.FC<JourneyCTAProps> = ({
 }) => {
   const _prefersReducedMotion = useReducedMotion();
   const _globalVariant = mapVariantToGlobal(variant);
+  
+  // Deprecation warning
+  React.useEffect(() => {
+    console.warn(
+      '⚠️  JourneyCTA is deprecated and will be removed in v2.0.0. ' +
+      'Use UniversalButton with sectionContext="journey" instead. ' +
+      'See component documentation for migration examples.'
+    );
+  }, []);
   
   // Map button variant to JourneyButton variant
   const journeyButtonVariant = mapButtonVariant(buttonVariant);
