@@ -1,0 +1,222 @@
+// Canonical design system import - MUST BE FIRST
+@use "../../../../../styles/design-system" as ds;
+
+/**
+ * PersonalTrainingCTA Styling
+ * 
+ * Custom styles for the PersonalTrainingCTA component with oval shape and 
+ * coach-specific gradient styling following the FeatureCTA pattern.
+ */
+
+.pt-cta-oval {
+  // Oval shape using full border radius
+  border-radius: 9999px !important;
+  
+  // Enhanced padding for oval shape to look better
+  &.universal-button--small {
+    padding: 0.625rem 1.5rem !important; // 10px 24px
+  }
+  
+  &.universal-button--medium {
+    padding: 0.75rem 2rem !important; // 12px 32px
+  }
+  
+  &.universal-button--large {
+    padding: 1rem 2.5rem !important; // 16px 40px
+  }
+  
+  // Enhanced text and icon alignment for oval shape
+  .universal-button__text {
+    font-weight: 600;
+  }
+  
+  .universal-button__icon {
+    &--right {
+      margin-left: 0.5rem; // 8px - optimized for Zap icon
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+      
+      // Ensure Zap icon aligns with text baseline
+      svg {
+        display: block;
+        vertical-align: text-bottom;
+      }
+    }
+    
+    &--left {
+      margin-right: 0.5rem; // 8px
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
+  }
+  
+  // Smooth transitions
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, box-shadow, background;
+}
+
+// PersonalTraining-specific gradient styles
+.pt-cta-gradient-violet {
+  background: linear-gradient(
+    to right,
+    var(--color-violet-400, #a78bfa),
+    var(--color-purple-500, #8b5cf6)
+  ) !important;
+  box-shadow: 0 4px 14px rgba(167, 139, 250, 0.3);
+  color: var(--color-white, #ffffff);
+  font-weight: 600;
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(
+      to right,
+      var(--color-violet-500, #8b5cf6),
+      var(--color-purple-600, #7c3aed)
+    ) !important;
+    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.5);
+    transform: translateY(-2px);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(167, 139, 250, 0.4);
+  }
+}
+
+.pt-cta-gradient-emerald {
+  background: linear-gradient(
+    to right,
+    var(--color-emerald-400, #34d399),
+    var(--color-green-500, #10b981)
+  ) !important;
+  box-shadow: 0 4px 14px rgba(52, 211, 153, 0.3);
+  color: var(--color-white, #ffffff);
+  font-weight: 600;
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(
+      to right,
+      var(--color-emerald-500, #10b981),
+      var(--color-green-600, #059669)
+    ) !important;
+    box-shadow: 0 6px 20px rgba(52, 211, 153, 0.5);
+    transform: translateY(-2px);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(52, 211, 153, 0.4);
+  }
+}
+
+.pt-cta-gradient-amber {
+  background: linear-gradient(
+    to right,
+    var(--color-amber-400, #fbbf24),
+    var(--color-orange-500, #f97316)
+  ) !important;
+  box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3);
+  color: var(--color-white, #ffffff);
+  font-weight: 600;
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(
+      to right,
+      var(--color-amber-500, #f59e0b),
+      var(--color-orange-600, #ea580c)
+    ) !important;
+    box-shadow: 0 6px 20px rgba(251, 191, 36, 0.5);
+    transform: translateY(-2px);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(251, 191, 36, 0.4);
+  }
+}
+
+.pt-cta-gradient-lime {
+  background: linear-gradient(
+    to right,
+    var(--color-lime-400, #a3e635),
+    var(--color-green-400, #22c55e)
+  ) !important;
+  box-shadow: 0 4px 14px rgba(163, 230, 53, 0.3);
+  color: var(--color-gray-900, #111827);
+  font-weight: 600;
+  
+  &:hover:not(:disabled) {
+    background: linear-gradient(
+      to right,
+      var(--color-lime-500, #84cc16),
+      var(--color-green-500, #16a34a)
+    ) !important;
+    box-shadow: 0 6px 20px rgba(163, 230, 53, 0.5);
+    transform: translateY(-2px);
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(163, 230, 53, 0.4);
+  }
+}
+
+// Coach type specializations
+.pt-cta-coach-strength {
+  // Inherits violet gradient by default
+  &.pt-cta-gradient-violet {
+    // Enhanced strength-specific styling
+    letter-spacing: 0.025em;
+  }
+}
+
+.pt-cta-coach-nutrition {
+  // Inherits emerald gradient by default
+  &.pt-cta-gradient-emerald {
+    // Enhanced nutrition-specific styling
+    font-weight: 500;
+  }
+}
+
+.pt-cta-coach-performance {
+  // Inherits amber gradient by default
+  &.pt-cta-gradient-amber {
+    // Enhanced performance-specific styling
+    text-transform: uppercase;
+    font-size: 0.95em;
+    letter-spacing: 0.05em;
+  }
+}
+
+.pt-cta-coach-recovery {
+  // Inherits lime gradient by default
+  &.pt-cta-gradient-lime {
+    // Enhanced recovery-specific styling
+    font-weight: 500;
+  }
+}
+
+// Responsive adjustments for oval shape
+@media (max-width: 768px) {
+  .pt-cta-oval {
+    &.universal-button--medium {
+      padding: 0.625rem 1.75rem !important; // Slightly smaller on mobile
+    }
+    
+    &.universal-button--large {
+      padding: 0.75rem 2rem !important; // Reduce large size on mobile
+    }
+  }
+}
+
+// Accessibility and reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .pt-cta-oval {
+    transition: none !important;
+    
+    &:hover:not(:disabled) {
+      transform: none !important;
+    }
+  }
+} 

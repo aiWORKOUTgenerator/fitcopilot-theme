@@ -1,9 +1,5 @@
-@use "@/styles/design-system" as ds;
-
-
-
-// Canonical design system import - MUST BE FIRST
 // Import design system
+@use '../../../../../styles/design-system' as ds;
 
 .video-container {
     position: relative;
@@ -15,6 +11,15 @@
     padding-bottom: var(--vp-container-padding-bottom);
     height: 100%;
     box-shadow: var(--vp-box-shadow);
+}
+
+// VideoPlayer component containers
+.video-player-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit;
 
     // Video wrapper to maintain aspect ratio
     .video-wrapper {
@@ -60,6 +65,19 @@
         .mt-3 {
             display: none;
         }
+    }
+
+    // External video iframe styling (YouTube, Vimeo, etc.)
+    .video-player-iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        border-radius: inherit;
+        display: block;
+        object-fit: cover;
     }
 
     // Play/pause overlay

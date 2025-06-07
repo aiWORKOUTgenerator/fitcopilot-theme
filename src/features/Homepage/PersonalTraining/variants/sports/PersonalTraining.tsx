@@ -1,15 +1,14 @@
 import {
-  ArrowRight,
-  Award,
-  Calendar,
-  Dumbbell,
-  Heart,
-  RefreshCw,
-  User
+    Award,
+    Calendar,
+    Dumbbell,
+    Heart,
+    RefreshCw,
+    User
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { Button } from '../../../../../features/shared/Button';
 import MediaContainer from '../../components/MediaContainer';
+import { PersonalTrainingCTA } from '../../components/PersonalTrainingCTA';
 import '../../PersonalTraining.scss';
 import { PersonalTrainingProps, Trainer } from '../../types';
 
@@ -193,14 +192,12 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
           <p className="text-white/90 mb-6 max-w-2xl mx-auto">
             Schedule a free consultation session with one of our expert trainers. We'll create a personalized plan to help you reach your goals.
           </p>
-          <Button
-            variant="primary"
-            size="lg"
-            className="mb-4"
-          >
-            Book Your Consultation
-            <ArrowRight size={18} className="ml-2" />
-          </Button>
+          <PersonalTrainingCTA
+            text="Book Your Consultation"
+            coachType="performance"
+            buttonSize="large"
+            variant="sports"
+          />
           {/* Date selection hint */}
           <p className="text-sm text-white/70 mt-4 flex items-center justify-center">
             <Calendar size={16} className="mr-2" />

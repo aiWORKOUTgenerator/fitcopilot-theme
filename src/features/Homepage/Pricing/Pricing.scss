@@ -1,475 +1,872 @@
-@use "@/styles/design-system" as ds;
+@use '../../../styles/design-system' as ds;
 
+// Import pricing theme variables
+@use './pricing-theme-variables' as pricing;
 
-
-// Canonical design system import – MUST BE FIRST
-
-/* Define consistent background color that matches the other sections */
+/* Plan-specific color variables for subtle borders */
 :root {
-  --pricing-background: rgba(10, 16, 27, 1); // Matches --journey-background
+  // Basic plan colors (Blue theme) - subtle
+  --pricing-basic-border: rgba(59, 130, 246, 0.3);
+  --pricing-basic-border-hover: rgba(59, 130, 246, 0.5);
+
+  // Pro plan colors (Lime/Green theme) - subtle
+  --pricing-pro-border: rgba(132, 204, 22, 0.3);
+  --pricing-pro-border-hover: rgba(132, 204, 22, 0.5);
+
+  // Elite plan colors (Purple theme) - subtle
+  --pricing-elite-border: rgba(168, 85, 247, 0.3);
+  --pricing-elite-border-hover: rgba(168, 85, 247, 0.5);
 }
 
-/* Pricing Section Styles */
-.pricing-section {
-  position: var(--pr-position-relative);
-  overflow: var(--pr-overflow-hidden);
-  background-color: var(--pricing-background);
+/* ============================================================================
+   ADVANCED PRICING COMPONENT STYLES
+   Enhanced with animations, particles, and accessibility
+   ============================================================================ */
 
-  // Add a gradient fade overlay for smooth transition at the top
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 150px; // Height of the gradient fade
-    background: linear-gradient(to bottom,
-        rgba(10, 16, 27, 0) 0%, // Start completely transparent 
-        rgba(10, 16, 27, 0.6) 40%, // Fade to semi-transparent
-        rgba(10, 16, 27, 1) 100% // End with full opacity
-      );
-    z-index: 1; // Above the pattern but below the content
-    pointer-events: none;
-  }
-
-  &::before {
-    content: var(--pr-content-empty);
-    position: var(--pr-position-absolute);
-    top: var(--pr-top-0);
-    left: var(--pr-left-0);
-    width: var(--pr-width-full);
-    height: var(--pr-height-full);
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23CCFF00' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    opacity: var(--pr-opacity-bg-pattern);
-    z-index: var(--pr-z-index-bg);
-  }
-
-  /* Ensure content is above the gradient */
-  .container {
-    position: relative;
-    z-index: 2;
-  }
-
-  /* Properly centered text styling */
-  .text-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center !important;
-    width: 100%;
-
-    h2 {
-      text-align: center !important;
-      width: 100%;
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
-
-    p {
-      text-align: center !important;
-      width: 100%;
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
-
-    span {
-      text-align: center !important;
-      width: 100%;
-      margin-left: auto !important;
-      margin-right: auto !important;
-    }
-  }
-
-  /* Design system token classes for color */
-  // Text colors
-  .text-accent {
-    color: var(--color-accent-400);
-  }
-
-  .text-inverse {
-    color: var(--color-text-inverse);
-  }
-
-  .text-primary {
-    color: var(--color-text-primary);
-  }
-
-  .text-secondary {
-    color: var(--color-text-secondary);
-  }
-
-  .text-muted {
-    color: var(--color-text-muted);
-  }
-
-  // Background colors
-  .bg-accent {
-    background-color: var(--color-accent-400);
-  }
-
-  .bg-surface {
-    background-color: var(--color-ui-surface);
-  }
-
-  .bg-background-primary {
-    background-color: var(--color-ui-background);
-  }
-
-  .bg-surface-translucent {
-    background-color: rgba(31, 41, 55, 0.7); // Translucent surface color
-  }
-
-  // Border colors
-  .border-accent {
-    border-color: var(--color-accent-400);
-  }
-
-  .border-divider {
-    border-color: var(--color-ui-border);
-  }
-
-  // Card styles
-  .pricing-card {
-    background-color: var(--color-ui-surface);
-    border: 1px solid var(--color-ui-border);
-
-    &.basic-card {
-      border-color: rgba(59, 130, 246, 0.4);
-      box-shadow: var(--pr-shadow-blue);
-    }
-
-    &.pro-card {
-      border-color: rgba(132, 204, 22, 0.4);
-      box-shadow: var(--pr-shadow-lime);
-    }
-
-    &.elite-card {
-      border-color: rgba(139, 92, 246, 0.4);
-      box-shadow: var(--pr-shadow-purple);
-    }
-  }
-
-  // Badge styles
-  .badge {
-    background-color: rgba(31, 41, 55, 0.5);
-    border: 1px solid var(--color-ui-border);
-
-    &.badge-basic {
-      color: var(--color-text-secondary);
-      border-color: rgba(209, 213, 219, 0.3);
-    }
-
-    &.badge-pro {
-      color: var(--color-accent-400); // Use design system variable for lime color
-      border-color: rgba(132, 204, 22, 0.3);
-    }
-
-    &.badge-elite {
-      color: var(--color-primary); // Use design system variable for violet color
-      border-color: rgba(139, 92, 246, 0.3);
-    }
-  }
-
-  // CTA area styles
-  .cta-container {
-    background-color: rgba(31, 41, 55, 0.7);
-    border: 1px solid var(--color-ui-border);
-  }
-
-  // Pricing CTA Button Styles
-  .pricing-cta-button {
-    width: 100%;
-    text-align: center;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-
-    // Basic Plan Button
-    &.basic-cta {
-      background: linear-gradient(to right, var(--color-blue-500, #3b82f6), var(--color-indigo-600, #4f46e5)) !important;
-      color: white !important;
-      border: none !important;
-
-      &:hover {
-        box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2), 0 2px 4px -1px rgba(59, 130, 246, 0.1) !important;
-        transform: translateY(-1px) !important;
-      }
-    }
-
-    // Pro Plan Button
-    &.pro-cta {
-      background: linear-gradient(to right, var(--color-lime-400, #a3e635), var(--color-emerald-500, #10b981)) !important;
-      color: var(--color-gray-900, #111827) !important;
-      border: none !important;
-
-      &:hover {
-        box-shadow: 0 4px 6px -1px rgba(132, 204, 22, 0.2), 0 2px 4px -1px rgba(132, 204, 22, 0.1) !important;
-        transform: translateY(-1px) !important;
-      }
-    }
-
-    // Elite Plan Button
-    &.elite-cta {
-      background: linear-gradient(to right, var(--color-purple-500, #8b5cf6), var(--color-indigo-600, #4f46e5)) !important;
-      color: white !important;
-      border: none !important;
-
-      &:hover {
-        box-shadow: 0 4px 6px -1px rgba(139, 92, 246, 0.2), 0 2px 4px -1px rgba(139, 92, 246, 0.1) !important;
-        transform: translateY(-1px) !important;
-      }
-    }
-
-    // Common hover effects
-    &:hover {
-      svg {
-        transform: translateX(4px);
-        transition: transform 0.3s ease;
-      }
-    }
-
-    // Active state
-    &:active {
-      transform: translateY(0) !important;
-    }
-  }
+/* Grid pattern background */
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: center center;
 }
 
-/* Text gradient effect */
-.text-gradient,
-.price-gradient {
-  background-size: var(--pr-background-size-full);
-  background-clip: var(--pr-bg-clip-text);
-  -webkit-background-clip: var(--pr-webkit-bg-clip-text);
-  -moz-background-clip: var(--pr-moz-bg-clip-text);
-  -webkit-text-fill-color: var(--pr-webkit-text-fill-transparent);
-  -moz-text-fill-color: var(--pr-moz-text-fill-transparent);
-}
-
-.plan-name-gradient {
-  @extend .text-gradient;
-  font-size: var(--pr-font-size-plan-name);
-  font-weight: var(--pr-font-weight-plan-name);
-  line-height: var(--pr-line-height-plan-name);
-}
-
-.price {
-  font-size: var(--pr-font-size-price);
-  font-weight: var(--pr-font-weight-price);
-  line-height: var(--pr-line-height-price);
-}
-
-/* Pricing card shadows */
-.shadow-optimized-blue {
-  box-shadow: var(--pr-shadow-blue);
-}
-
-.shadow-optimized-lime {
-  box-shadow: var(--pr-shadow-lime);
-}
-
-.shadow-optimized-purple {
-  box-shadow: var(--pr-shadow-purple);
-}
-
-/* Pricing animations */
-.price-shake {
-  animation: var(--pr-animation-shake);
-}
-
-.price-flash {
-  animation: var(--pr-animation-flash);
-}
-
-.price-fade-out {
-  animation: var(--pr-animation-fade-out);
-}
-
-.price-fade-in {
-  animation: var(--pr-animation-fade-in);
-}
-
-.price-zoom-in {
-  animation: var(--pr-animation-zoom-in);
+/* Fade-in animation for feature list */
+@keyframes fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
 }
 
 .animate-fade-in {
-  animation: var(--pr-animation-fade-in);
+  animation: fade-in 0.4s ease-out forwards;
 }
 
-/* Pricing particles */
-.price-particles {
-  position: var(--pr-position-absolute);
-  top: var(--pr-top-0);
-  left: var(--pr-left-0);
-  right: var(--pr-right-0);
-  bottom: var(--pr-bottom-0);
-  overflow: var(--pr-overflow-hidden);
-}
-
+/* Price explosion particle animations */
 .price-particle {
-  position: var(--pr-position-absolute);
-  border-radius: var(--pr-border-radius-particle);
-  background: var(--pr-bg-gradient-lime-teal);
-  opacity: var(--pr-opacity-particle);
-  pointer-events: var(--pr-pointer-events-none);
-  animation: var(--pr-animation-float);
+  position: absolute;
+  background: var(--color-accent-400, #84cc16);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
 }
 
-.pricing-card:hover .feature-text.highlighted {
-  background: var(--pr-bg-gradient-highlight);
-  -webkit-background-clip: var(--pr-webkit-bg-clip-text);
-  background-clip: var(--pr-bg-clip-text);
-  -webkit-text-fill-color: var(--pr-webkit-text-fill-transparent);
-  transition: var(--pr-transition-hover);
-}
-
-.popular-badge,
-.elite-badge {
-  display: var(--pr-display-badge);
-  align-items: var(--pr-align-badge);
-}
-
-/* Animation keyframes */
-@keyframes shake {
-
-  0%,
-  100% {
-    transform: var(--pr-transform-none);
+/* Particle explosion animation with design system variables */
+@keyframes particleExplode {
+  0% { 
+    transform: translate(-50%, -50%) scale(0); 
+    opacity: 1; 
   }
-
-  10%,
-  30%,
-  50%,
-  70%,
-  90% {
-    transform: var(--pr-transform-translatex-neg-2);
-  }
-
-  20%,
-  40%,
-  60%,
-  80% {
-    transform: var(--pr-transform-translatex-2);
+  100% { 
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(1); 
+    opacity: 0; 
   }
 }
 
-@keyframes flash {
-
-  0%,
-  50%,
-  100% {
-    opacity: var(--pr-opacity-full);
-  }
-
-  25%,
-  75% {
-    opacity: var(--pr-opacity-half);
+// Generate particle positions using SCSS
+@for $i from 0 through 19 {
+  .price-particle[data-index="#{$i}"] {
+    $angle: ($i * 18deg);
+    $distance: 40px + random(40);
+    --tx: #{cos($angle) * $distance};
+    --ty: #{sin($angle) * $distance};
   }
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: var(--pr-opacity-full);
-  }
-
-  to {
-    opacity: var(--pr-opacity-half);
-  }
+.animate-particle-explode {
+  animation-name: particleExplode;
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: var(--pr-opacity-zero);
-  }
-
-  to {
-    opacity: var(--pr-opacity-full);
-  }
+/* Enhanced pricing headers - Improved for accessibility */
+.pricing-header {
+  position: relative;
+  z-index: 1;
 }
 
-@keyframes zoomIn {
-  from {
-    opacity: var(--pr-opacity-zero);
-    transform: var(--pr-transform-scale-small);
-  }
-
-  to {
-    opacity: var(--pr-opacity-full);
-    transform: var(--pr-transform-scale-full);
-  }
-}
-
-@keyframes float {
-  0% {
-    transform: var(--pr-transform-translate-y0-x0);
-  }
-
-  50% {
-    transform: var(--pr-transform-translate-y30-x15);
-  }
-
-  100% {
-    transform: var(--pr-transform-translate-y0-x0);
-  }
-}
-
-/* Particle explosion animation */
-.price-particle {
-  animation: var(--pr-animation-explode);
-}
-
-@keyframes explode {
-  0% {
-    opacity: var(--pr-opacity-full);
-    transform: var(--pr-transform-translate-neg-50);
-  }
-
-  100% {
-    opacity: var(--pr-opacity-zero);
-    transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty)));
-  }
-}
-
-// CTA buttons styling
-a.block {
-  display: block;
-  width: 100%;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  text-align: center !important;
-  display: flex;
-  justify-content: center;
+/* Plan badge styling - Using design system tokens */
+.plan-badge {
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold, 700);
+  transition: var(--transition-all, all 0.3s ease);
+  box-shadow: var(--shadow-md, 0 0 15px rgba(0, 0, 0, 0.2));
+  font-size: var(--font-size-xs, 0.75rem);
+  line-height: var(--line-height-tight, 1.25);
 
-  span {
-    text-align: center !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+  &:hover {
+    transform: translateY(-1px);
   }
 }
 
-// Bottom CTA area
-.cta-area {
+/* Plan name (title) styling - Base styles */
+.plan-name {
+  margin-left: var(--spacing-4, 1rem);
+  font-size: var(--font-size-xl, 1.75rem);
+  font-weight: var(--font-weight-bold, 700);
+  letter-spacing: var(--letter-spacing-tight, -0.025em);
+  position: relative;
+  z-index: 1;
+  color: var(--color-text-primary, white);
+  line-height: var(--line-height-tight, 1.2);
+}
+
+/* Plan name gradient effect */
+.plan-name-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: gradientShift 8s ease-in-out infinite;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  // Fallback for accessibility
+  &::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    color: var(--color-text-primary, white);
+    opacity: 0.01;
+  }
+}
+
+/* Plan icon container */
+.plan-icon-container {
+  position: relative;
+  transition: var(--transition-all, all 0.3s ease);
+  margin-right: var(--spacing-4, 1rem);
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(132, 204, 22, 0.3);
+  }
+}
+
+/* Plan icon styling */
+.plan-icon {
+  transition: var(--transition-all, all 0.3s ease);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  position: relative;
+}
+
+/* Enhanced pricing section */
+.pricing-section {
+    position: relative;
+  padding: var(--pricing-section-padding-y, 6rem) 0;
+  background: var(--pricing-bg-primary, var(--color-ui-surface-dark));
+  color: var(--pricing-text-primary, var(--color-text-primary));
+  overflow: hidden;
+  
+  // Theme-aware backgrounds
+  &[data-theme="sports"] {
+    background: var(--sports-pricing-bg, var(--color-ui-surface-dark));
+  }
+
+  &[data-theme="wellness"] {
+    background: var(--wellness-pricing-bg, var(--color-ui-surface-dark));
+  }
+
+  &[data-theme="gym"] {
+    background: var(--gym-pricing-bg, var(--color-ui-surface-dark));
+  }
+}
+
+/* Enhanced pricing cards */
+  .pricing-card {
+  transition: var(--transition-transform, transform 0.3s ease), var(--transition-box-shadow, box-shadow 0.3s ease);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
+  position: relative;
+  background: var(--pricing-card-bg, rgba(31, 41, 55, 0.9));
+  border: 1px solid var(--pricing-card-border, var(--color-ui-border));
+  border-radius: var(--pricing-card-radius, 1rem);
+  backdrop-filter: blur(var(--pricing-card-backdrop-blur, 16px));
+  overflow: hidden;
 
-  p {
-    text-align: center !important;
-    width: 100%;
-    margin-left: auto !important;
-    margin-right: auto !important;
+  // Plan-specific background styles (following PersonalTraining pattern)
+  &--basic,
+  &--pro,
+  &--elite,
+  &--default {
+    background-color: rgba(31, 41, 55, 0.9) !important;
+    background: rgba(31, 41, 55, 0.9) !important;
+    backdrop-filter: blur(16px);
   }
 
-  a {
-    text-align: center !important;
+  // Plan-specific subtle border colors
+  &--basic {
+    border-color: var(--pricing-basic-border) !important;
+    
+    &:hover {
+      border-color: var(--pricing-basic-border-hover) !important;
+    }
+  }
+
+  &--pro {
+    border-color: var(--pricing-pro-border) !important;
+    
+    &:hover {
+      border-color: var(--pricing-pro-border-hover) !important;
+    }
+  }
+
+  &--elite {
+    border-color: var(--pricing-elite-border) !important;
+    
+    &:hover {
+      border-color: var(--pricing-elite-border-hover) !important;
+    }
+  }
+
+  &:hover,
+  &:focus-within {
+    transform: translateY(-8px) scale(1.02) !important;
+    box-shadow: var(--shadow-xl, 0 15px 30px -10px rgba(0, 0, 0, 0.3));
+    
+    // Subtle border color intensification on hover
+    &.border-blue-300\/40 {
+      border-color: rgba(59, 130, 246, 0.5) !important;
+    }
+
+    &.border-lime-300\/40 {
+      border-color: rgba(132, 204, 22, 0.5) !important;
+    }
+
+    &.border-purple-300\/40 {
+      border-color: rgba(168, 85, 247, 0.5) !important;
+    }
+  }
+
+  // Subtle enhanced border colors for Tailwind classes
+  &.border-blue-300\/40 {
+    border-color: rgba(59, 130, 246, 0.3) !important;
+  }
+
+  &.border-lime-300\/40 {
+    border-color: rgba(132, 204, 22, 0.3) !important;
+  }
+
+  &.border-purple-300\/40 {
+    border-color: rgba(168, 85, 247, 0.3) !important;
+    }
+
+  // Popular plan styling
+  &.popular-plan {
+    border-color: var(--pricing-popular-border, var(--color-accent-400));
+    box-shadow: var(--pricing-popular-shadow, 0 0 30px rgba(163, 230, 53, 0.2));
+    
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, 
+        rgba(163, 230, 53, 0.1) 0%, 
+        rgba(34, 197, 94, 0.05) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .pricing-card-content {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  // NUCLEAR OPTION - Maximum specificity override
+  &.pricing-card.pricing-card--basic,
+  &.pricing-card.pricing-card--pro, 
+  &.pricing-card.pricing-card--elite,
+  &.pricing-card.pricing-card--default {
+    background-color: rgba(31, 41, 55, 0.9) !important;
+    background: rgba(31, 41, 55, 0.9) !important;
+  }
+}
+
+/* Price styling */
+.price {
+  font-size: var(--pricing-price-size, 2.5rem);
+  font-weight: var(--pricing-price-weight, 800);
+  position: relative;
+  z-index: 1;
+  color: var(--color-text-primary, white);
+  line-height: var(--line-height-none, 1.1);
+  transition: var(--transition-transform, transform 0.3s ease);
+}
+
+/* Price gradient effect */
+.price-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: gradientShift 8s ease-in-out infinite;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  // Fallback for accessibility
+  &::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    color: var(--color-text-primary, white);
+    opacity: 0.01;
+  }
+}
+
+/* Beta badge - Enhanced contrast */
+.beta-badge {
+  animation: shimmer 3s infinite;
+  font-weight: var(--font-weight-bold, 700);
+}
+
+/* Animations - Reduced intensity for accessibility */
+@keyframes gradientShift {
+  0% { 
+    background-position: 0% 50%; 
+    background-size: 200% auto; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+    background-size: 200% auto; 
+  }
+  100% { 
+    background-position: 0% 50%; 
+    background-size: 200% auto; 
+  }
+}
+
+@keyframes shimmer {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(163, 230, 53, 0.5); 
+  }
+  50% { 
+    box-shadow: 0 0 8px 1px rgba(163, 230, 53, 0.6); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(163, 230, 53, 0.5); 
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scale(1);
+}
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.icon-animate {
+  animation: pulse 2s infinite;
+}
+
+.popular-badge {
+  animation: shimmer 3s infinite;
+}
+
+/* Feature icon styling */
+.feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: var(--transition-transform, transform 0.3s ease), var(--transition-colors, color 0.3s ease);
+}
+
+.pricing-card:hover .feature-icon {
+  transform: scale(1.1);
+}
+
+.pricing-card:hover .price {
+  transform: scale(1.05);
+}
+
+/* CTA Tooltip positioned above CTA button */
+.plan-tooltip-cta {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
+  backdrop-filter: blur(8px);
+  padding: var(--spacing-4, 1rem);
+  border-radius: var(--border-radius-lg, 0.5rem);
+  box-shadow: var(--shadow-xl, 0 10px 25px rgba(0, 0, 0, 0.3));
+  z-index: 50;
+  width: 16rem;
+  margin-bottom: 12px;
+  transition: var(--transition-all, all 0.3s ease);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  &:hover {
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+  // Arrow pointing down toward CTA
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #1f2937;
+  }
+
+  h5 {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: var(--font-weight-semibold, 600);
+  }
+
+  p {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    line-height: var(--line-height-relaxed, 1.4);
+  }
+
+  .w-5 {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  }
+}
+
+/* Animation keyframes for price states */
+@keyframes priceShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+  20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+@keyframes priceFlash {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.5; }
+}
+
+@keyframes priceZoomIn {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.8);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  100% { 
+    transform: scale(1);
+    opacity: 1; 
+  }
+}
+
+@keyframes fadeOutUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeInUp {
+  0% { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Animation state classes
+.price-shake {
+  animation: priceShake 0.5s ease-in-out infinite;
+}
+
+.price-flash {
+  animation: priceFlash 0.5s ease-in-out infinite;
+}
+
+.price-zoom-in {
+  animation: priceZoomIn 0.5s ease-out forwards;
+}
+
+.price-fade-out {
+  animation: fadeOutUp 0.5s ease-out forwards;
+}
+
+.price-fade-in {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+/* Hover-to-reveal beta pricing styles */
+.hover-price-state {
+  transform: scale(0.95);
+  opacity: 0.7;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-beta-price {
+  transform: scale(1.1);
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  filter: drop-shadow(0 0 12px rgba(132, 204, 22, 0.5));
+}
+
+.hover-beta-badge {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, rgba(132, 204, 22, 0.2), rgba(16, 185, 129, 0.2));
+  border-color: rgba(132, 204, 22, 0.6);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: gentle-pulse-enhanced 2s infinite;
+}
+
+.hover-price-text {
+  color: var(--color-accent-400, #84cc16);
+  font-weight: var(--font-weight-semibold, 600);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-shadow: 0 0 8px rgba(132, 204, 22, 0.3);
+}
+
+@keyframes gentle-pulse-enhanced {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(132, 204, 22, 0.4);
+    transform: scale(1.05);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(132, 204, 22, 0.1);
+    transform: scale(1.08);
+  }
+}
+
+/* Floating particles */
+.price-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.price-particle {
+  position: absolute;
+  background: linear-gradient(135deg, var(--color-accent-400, #84cc16), #10b981);
+  opacity: 0.3;
+  border-radius: 50%;
+  animation: floatParticle 15s ease-in-out infinite;
+
+  &:nth-child(odd) {
+    background: linear-gradient(135deg, #a855f7, #3b82f6);
+  }
+
+  &:nth-child(3n) {
+    background: linear-gradient(135deg, #eab308, #f97316);
+  }
+}
+
+@keyframes floatParticle {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 0.2;
+  }
+  25% {
+    transform: translateY(-20px) translateX(15px) rotate(90deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-40px) translateX(-15px) rotate(180deg);
+    opacity: 0.2;
+  }
+  75% {
+    transform: translateY(-15px) translateX(-30px) rotate(270deg);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(360deg);
+    opacity: 0.2;
+  }
+}
+
+/* Enhanced entrance animations */
+@keyframes tooltip-fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes tooltip-fade-out-down {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+}
+
+.plan-tooltip-cta.opacity-100 {
+  animation: tooltip-fade-in-up 0.3s ease-out forwards;
+}
+
+.plan-tooltip-cta.opacity-0 {
+  animation: tooltip-fade-out-down 0.3s ease-out forwards;
+}
+
+/* Basic Card Hover Effects - Blue Theme */
+.hover-free-price {
+  animation: price-zoom-in-enhanced 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.4));
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: scale3d(1.1, 1.1, 1) translateZ(0);
+}
+
+.hover-basic-badge {
+  animation: badge-bounce-enhanced 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: scale3d(1.05, 1.05, 1) translateZ(0);
+  }
+
+.basic-cta-hovered {
+  transform: scale3d(1.03, 1.03, 1) translate3d(0, -2px, 0);
+  box-shadow: 0 12px 35px rgba(59, 130, 246, 0.5);
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8, #1e40af);
+  animation: basic-cta-pulse-enhanced 1.8s infinite;
+  will-change: transform, box-shadow;
+  backface-visibility: hidden;
+}
+
+@keyframes price-zoom-in-enhanced {
+  0% { 
+    opacity: 0;
+    transform: scale3d(0.8, 0.8, 1) translateZ(0);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale3d(1.15, 1.15, 1) translateZ(0);
+  }
+  100% { 
+    transform: scale3d(1.1, 1.1, 1) translateZ(0);
+    opacity: 1;
+  }
+}
+
+@keyframes badge-bounce-enhanced {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 1) translate3d(0, 20px, 0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale3d(1.1, 1.1, 1) translate3d(0, -5px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale3d(1.05, 1.05, 1) translateZ(0);
+  }
+}
+
+@keyframes basic-cta-pulse-enhanced {
+  0%, 100% {
+    box-shadow: 0 12px 35px rgba(59, 130, 246, 0.5);
+    transform: scale3d(1.03, 1.03, 1) translate3d(0, -2px, 0);
+  }
+  50% {
+    box-shadow: 0 16px 45px rgba(59, 130, 246, 0.7);
+    transform: scale3d(1.05, 1.05, 1) translate3d(0, -3px, 0);
+  }
+}
+
+/* Performance optimizations */
+.pricing-card,
+.price,
+.hover-beta-price,
+.pro-cta-hovered,
+.beta-badge {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+  .price-particles {
+    display: none;
+}
+
+  .pricing-card {
+    transform: none !important;
+    margin-bottom: var(--spacing-6, 24px);
+    height: auto;
+    padding-bottom: var(--spacing-4, 16px);
+  }
+  
+  .price {
+    font-size: var(--pricing-price-size-mobile, 2.25rem);
+  }
+  
+  .plan-name {
+    font-size: var(--pricing-plan-name-size-mobile, 1.5rem);
+  }
+  
+  .plan-name-gradient,
+  .price-gradient {
+    background-size: 100% auto;
+  }
+  
+  .plan-tooltip-cta {
+    width: calc(100% - 2rem);
+    max-width: 16rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 480px) {
+  .price {
+    font-size: var(--pricing-price-size-mobile-sm, 1.85rem);
+  }
+  
+  .plan-name {
+    font-size: var(--pricing-plan-name-size-mobile-sm, 1.25rem);
+  }
+  
+  .pricing-card div.p-6 {
+    padding: var(--spacing-4, 1rem);
+  }
+  
+  .plan-tooltip-cta {
+    width: calc(100% - 1rem);
+    max-width: 14rem;
+    padding: var(--spacing-3, 0.75rem);
+    margin-bottom: 8px;
+    
+    h5 {
+      font-size: var(--font-size-xs, 0.75rem);
+    }
+    
+    p {
+      font-size: var(--font-size-2xs, 0.625rem);
+      line-height: var(--line-height-tight, 1.3);
+    }
+  }
+}
+
+/* Accessibility and reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .price-particles {
+    display: none;
+  }
+  
+  .price-gradient,
+  .plan-name-gradient {
+    animation: none;
+    background-position: 0 0;
+  }
+  
+  .popular-badge,
+  .beta-badge,
+  .icon-animate {
+    animation: none;
+  }
+  
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  
+  .animate-particle-explode {
+    display: none;
+  }
+  
+  .hover-price-state,
+  .hover-beta-price,
+  .hover-beta-badge,
+  .hover-price-text,
+  .pro-cta-hovered {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+  }
+  
+  .pricing-card:hover {
+    transform: translateY(-4px) !important;
+    transition: transform 0.2s ease !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .pricing-card {
+    border-width: 2px;
+    border-color: var(--color-text-primary);
+  }
+  
+  .popular-plan {
+    border-color: var(--color-accent-400);
+    background: var(--color-ui-surface);
+  }
+}
+
+/* Dark mode optimizations */
+@media (prefers-color-scheme: dark) {
+  .hover-beta-price {
+    filter: drop-shadow(0 0 12px rgba(132, 204, 22, 0.6));
+  }
+  
+  .pro-cta-hovered {
+    box-shadow: 0 12px 35px rgba(132, 204, 22, 0.5) !important;
+  }
+}
+
+/* Print media optimization */
+@media print {
+  .pricing-card,
+  .price,
+  .hover-beta-price,
+  .pro-cta-hovered {
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
+    will-change: auto;
   }
 }

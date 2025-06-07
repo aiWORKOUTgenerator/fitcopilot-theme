@@ -1,0 +1,284 @@
+@use '../../../styles/design-system' as ds;
+
+// Import pricing theme variables
+@use './pricing-theme-variables' as pricing;
+
+// Main pricing section
+.pricing-section {
+    position: relative;
+  padding: var(--pricing-section-padding-y, 6rem) 0;
+  background: var(--pricing-bg-primary, var(--color-ui-surface-dark));
+  color: var(--pricing-text-primary, var(--color-text-primary));
+  overflow: hidden;
+  
+  // Theme-aware background
+  &[data-theme="sports"] {
+    background: var(--sports-pricing-bg, var(--color-ui-surface-dark));
+  }
+
+  &[data-theme="wellness"] {
+    background: var(--wellness-pricing-bg, var(--color-ui-surface-dark));
+  }
+
+  &[data-theme="gym"] {
+    background: var(--gym-pricing-bg, var(--color-ui-surface-dark));
+  }
+
+  // Background particles container
+  .pricing-background {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+  }
+  }
+
+// Pricing cards
+  .pricing-card {
+  position: relative;
+  background: var(--pricing-card-bg, rgba(31, 41, 55, 0.5));
+  border: 1px solid var(--pricing-card-border, var(--color-ui-border));
+  border-radius: var(--pricing-card-radius, 1rem);
+  backdrop-filter: blur(var(--pricing-card-backdrop-blur, 10px));
+  transition: var(--pricing-card-transition, all 0.3s ease);
+  overflow: hidden;
+
+      &:hover {
+    transform: translateY(var(--pricing-card-hover-transform, -8px));
+    border-color: var(--pricing-card-hover-border, var(--color-accent-400));
+    box-shadow: var(--pricing-card-hover-shadow, 0 20px 40px rgba(0, 0, 0, 0.3));
+    }
+
+  // Popular plan styling
+  &.popular-plan {
+    border-color: var(--pricing-popular-border, var(--color-accent-400));
+    box-shadow: var(--pricing-popular-shadow, 0 0 30px rgba(163, 230, 53, 0.2));
+    
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, 
+        rgba(163, 230, 53, 0.1) 0%, 
+        rgba(34, 197, 94, 0.05) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    .pricing-card-content {
+      position: relative;
+      z-index: 1;
+    }
+  }
+}
+
+// Plan name styling
+.plan-name-gradient {
+  font-size: var(--pricing-plan-name-size, 1.5rem);
+  font-weight: var(--pricing-plan-name-weight, 700);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  margin-bottom: var(--pricing-plan-name-margin, 1rem);
+}
+
+// Price styling with animations
+.price {
+  font-size: var(--pricing-price-size, 3rem);
+  font-weight: var(--pricing-price-weight, 800);
+  line-height: 1;
+}
+
+.price-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+}
+
+// Price animations for Pro plan
+.price-shake {
+  animation: priceShake 0.5s ease-in-out;
+}
+
+.price-flash {
+  animation: priceFlash 0.3s ease-in-out;
+}
+
+.price-fade-out {
+  animation: priceFadeOut 0.3s ease-in-out forwards;
+}
+
+.price-fade-in {
+  animation: priceFadeIn 0.5s ease-in-out forwards;
+}
+
+.price-zoom-in {
+  animation: priceZoomIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+// Beta badge styling
+.beta-badge {
+  animation: betaBadgeGlow 2s ease-in-out infinite alternate;
+}
+
+// Keyframe animations
+@keyframes priceShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px) rotate(-1deg); }
+  75% { transform: translateX(5px) rotate(1deg); }
+}
+
+@keyframes priceFlash {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: rgba(163, 230, 53, 0.2); }
+}
+
+@keyframes priceFadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0.3; transform: scale(0.9); }
+}
+
+@keyframes priceFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes priceZoomIn {
+  from { 
+    opacity: 0; 
+    transform: scale(0.5) translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+}
+
+@keyframes betaBadgeGlow {
+  from { box-shadow: 0 0 5px rgba(163, 230, 53, 0.3); }
+  to { box-shadow: 0 0 15px rgba(163, 230, 53, 0.6); }
+}
+
+// Explosion particles
+.explosion-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--color-accent-400);
+  border-radius: 50%;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) translate(
+      calc(var(--random-x, 0) * 100px), 
+      calc(var(--random-y, 0) * 100px)
+    );
+  }
+}
+
+// Background price particles
+.price-particle {
+  position: absolute;
+  background: var(--pricing-particle-color, rgba(163, 230, 53, 0.1));
+  border-radius: 50%;
+  animation: floatParticle linear infinite;
+}
+
+@keyframes floatParticle {
+  0% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(0deg);
+  }
+  10% {
+    opacity: 0.5;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px) rotate(360deg);
+  }
+}
+
+// Text gradient utility
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  }
+
+// Feature styling
+.feature-icon {
+  color: var(--pricing-feature-icon-color, var(--color-accent-400));
+  }
+
+.feature-text {
+  &.highlighted {
+    font-weight: var(--pricing-feature-highlight-weight, 600);
+    color: var(--pricing-feature-highlight-color, var(--color-text-primary));
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .pricing-section {
+    padding: var(--pricing-section-padding-y-mobile, 4rem) 0;
+}
+
+  .pricing-card {
+    &:hover {
+      transform: translateY(var(--pricing-card-hover-transform-mobile, -4px));
+  }
+  }
+  
+  .price {
+    font-size: var(--pricing-price-size-mobile, 2.5rem);
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .pricing-card {
+    transition: none !important;
+    
+    &:hover {
+      transform: none !important;
+    }
+  }
+  
+  .price-shake,
+  .price-flash,
+  .price-fade-out,
+  .price-fade-in,
+  .price-zoom-in,
+  .beta-badge,
+  .explosion-particle,
+  .price-particle {
+    animation: none !important;
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .pricing-card {
+    border-width: 2px;
+    border-color: var(--color-text-primary);
+  }
+  
+  .popular-plan {
+    border-color: var(--color-accent-400);
+    background: var(--color-ui-surface);
+  }
+}

@@ -2,12 +2,12 @@ import { ArrowRight } from 'lucide-react';
 import React from 'react';
 import { ThemeProvider } from '../../../../context/ThemeContext';
 import { ThemeOption } from '../../../../utils/theming';
-import { UniversalButton } from '../../components/UniversalButton';
 import { GlobalVariantKey } from '../../types/shared';
-import { mapPlanTypeToButtonVariant } from '../utils/themeUtils';
+import { PricingButton } from './PricingButton';
 
 /**
  * Props for PricingCTA component
+ * Follows the established pattern from other Homepage section CTAs
  */
 export interface PricingCTAProps {
   /** Text to display on button */
@@ -30,6 +30,8 @@ export interface PricingCTAProps {
   onClick?: (e: React.MouseEvent) => void;
   /** Optional theme variant */
   theme?: ThemeOption;
+  /** Theme variant for consistent styling */
+  themeVariant?: GlobalVariantKey;
 }
 
 /**
@@ -52,20 +54,29 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
 };
 
 /**
- * Map plan type to context type
+ * Map plan type to pricing button plan type
  */
 const mapPlanTypeToContextType = (planType?: string): 'basic' | 'pro' | 'elite' | 'custom' => {
   switch (planType?.toLowerCase()) {
-    case 'basic': return 'basic';
-    case 'pro': return 'pro';
-    case 'elite': return 'elite';
-    case 'custom': return 'custom';
-    default: return 'basic';
+    case 'pro':
+    case 'professional':
+      return 'pro';
+    case 'elite':
+    case 'premium':
+      return 'elite';
+    case 'custom':
+    case 'enterprise':
+      return 'custom';
+    case 'basic':
+    case 'free':
+    default:
+      return 'basic';
   }
 };
 
 /**
  * PricingCTA - Call to action button for the pricing section
+ * Follows the established ThemeProvider + specialized button pattern
  */
 const PricingCTA: React.FC<PricingCTAProps> = ({
   text = 'Upgrade Now',
@@ -77,30 +88,32 @@ const PricingCTA: React.FC<PricingCTAProps> = ({
   planType = 'basic',
   gradientClass,
   onClick,
-  theme = 'default'
+  theme = 'default',
+  themeVariant = 'default'
 }) => {
   // Map the plan type to the appropriate button variant
-  const mappedPlanType = mapPlanTypeToButtonVariant(planType);
+  const mappedPlanType = mapPlanTypeToContextType(planType);
   const globalVariant = mapVariantToGlobal(theme);
-  const contextType = mapPlanTypeToContextType(planType);
+  
+  // Use theme or themeVariant, prioritizing themeVariant
+  const activeTheme = themeVariant !== 'default' ? themeVariant : globalVariant;
   
   return (
     <ThemeProvider initialTheme={theme}>
-      <UniversalButton
-        sectionContext="pricing"
+      <PricingButton
         buttonVariant={buttonVariant}
-        variant={globalVariant}
+        themeVariant={activeTheme}
         size={buttonSize}
-        contextType={contextType}
+        planType={mappedPlanType}
         href={href}
         onClick={onClick}
-        gradientClass={gradientClass}
+        gradientColors={gradientClass}
         rightIcon={showIcon && (icon || <ArrowRight size={buttonSize === 'small' ? 16 : 20} className="ml-2" aria-hidden="true" />)}
         data-section="pricing"
         data-context={`plan-${planType?.toLowerCase()}`}
       >
         {text}
-      </UniversalButton>
+      </PricingButton>
     </ThemeProvider>
   );
 };

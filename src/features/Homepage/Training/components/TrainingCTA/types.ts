@@ -1,4 +1,4 @@
-import { GlobalVariantKey } from '../../../types/shared';
+import { BaseButtonProps, GlobalVariantKey } from '../../../types/shared';
 
 /**
  * Training-specific variant keys that extend the global variants
@@ -15,8 +15,9 @@ export type TrainingCTASize = 'primary' | 'secondary';
 
 /**
  * Props for the TrainingCTA component
+ * Enhanced to align with Homepage architecture while maintaining visual compatibility
  */
-export interface TrainingCTAProps {
+export interface TrainingCTAProps extends Omit<BaseButtonProps, 'size' | 'onClick' | 'variant'> {
     /**
      * Function called when the CTA button is clicked
      */
@@ -47,4 +48,26 @@ export interface TrainingCTAProps {
      * Additional CSS class names
      */
     className?: string;
+
+    /**
+     * Optional href for direct navigation (fallback to onNavigate)
+     */
+    href?: string;
+
+    /**
+     * Whether to show in splash context with enhanced background styling
+     * @default false
+     */
+    useSplashContext?: boolean;
+
+    /**
+     * Loading state for the button
+     * @default false
+     */
+    loading?: boolean;
+
+    /**
+     * Accessibility label override
+     */
+    'aria-label'?: string;
 } 

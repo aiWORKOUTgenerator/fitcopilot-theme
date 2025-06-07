@@ -1,17 +1,19 @@
-import Pricing from './Pricing';
+import { Pricing } from './Pricing';
 import { getPricingVariant, PricingMap } from './variants';
 
 // Export the base Pricing component
 export { Pricing };
+export default Pricing;
 
 // Export the variant selector function and map
 export { getPricingVariant, PricingMap };
 
-// Export all variant components
-export * from './variants';
+// Export components with correct imports
+    export { PricingButton, PricingCard } from './components';
+    export { default as PricingCTA } from './components/PricingCTA';
 
-// Export types
-export * from './types';
+// Export types directly to avoid conflicts
+export type { PricingProps } from './types';
 
-// Default export is the function that returns the appropriate variant
-export default getPricingVariant(); 
+// Export utilities
+export * from './utils/themeUtils';

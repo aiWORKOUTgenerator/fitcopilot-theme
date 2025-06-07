@@ -20,6 +20,8 @@
     --spacing-4: 1rem;
     --spacing-6: 1.5rem;
     --spacing-8: 2rem;
+    --spacing-10: 2.5rem;
+    --spacing-12: 3rem;
 
     // Set explicit consistent background color to match Journey section
     --personal-training-background: rgba(10, 16, 27, 1);
@@ -603,6 +605,20 @@
 
         &:hover svg {
             transform: translateX(4px) !important;
+        }
+    }
+
+    // Team CTA section spacing - with higher specificity to override Tailwind
+    .team-cta-heading {
+        margin-bottom: var(--spacing-4, 1rem) !important; // Standard heading spacing
+    }
+    
+    .text-center .team-cta-description,
+    .team-cta-description {
+        margin-bottom: var(--spacing-10, 2.5rem) !important; // Use design system spacing token for proper separation
+        
+        @media (min-width: 768px) {
+            margin-bottom: var(--spacing-12, 3rem) !important; // Larger spacing on desktop
         }
     }
 

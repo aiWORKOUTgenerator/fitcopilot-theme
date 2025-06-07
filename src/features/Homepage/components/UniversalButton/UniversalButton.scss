@@ -700,12 +700,12 @@ html body .universal-button--hero.universal-button-primary {
   }
   
   &.universal-gradient-cyan {
-    background: linear-gradient(
-      to right,
-      var(--color-cyan-300, #67e8f9),
-      var(--color-blue-400, #60a5fa)
-    );
-    box-shadow: 0 4px 14px rgba(103, 232, 249, 0.3);
+  background: linear-gradient(
+    to right,
+    var(--color-cyan-300, #67e8f9),
+    var(--color-blue-400, #60a5fa)
+  );
+  box-shadow: 0 4px 14px rgba(103, 232, 249, 0.3);
   }
   
   &.universal-gradient-violet {
@@ -921,7 +921,7 @@ html body .universal-button--hero.universal-button-primary {
   );
   box-shadow: 0 4px 14px rgba(163, 230, 53, 0.3);
   color: var(--color-gray-900, #111827);
-}
+  }
 
 .universal-gradient-cyan {
   background: linear-gradient(

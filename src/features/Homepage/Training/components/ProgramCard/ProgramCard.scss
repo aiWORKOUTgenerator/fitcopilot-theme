@@ -118,7 +118,8 @@
 
     // Default variant (dark theme)
     &--default {
-        background-color: var(--card-background, rgba(31, 41, 55, 0.5));
+        background-color: var(--card-background, rgba(31, 41, 55, 0.9));
+        backdrop-filter: blur(16px);
         border-color: var(--border-primary, rgba(55, 65, 81, 0.5));
         color: var(--text-primary, #f9fafb);
 
@@ -153,7 +154,8 @@
 
     // Sports variant
     &--sports {
-        background-color: var(--card-background, #1f2937);
+        background-color: var(--card-background, rgba(31, 41, 55, 0.9));
+        backdrop-filter: blur(16px);
         border-radius: 0.25rem;
         border-width: 0;
         padding: 1.5rem;
@@ -192,7 +194,8 @@
 
     // Wellness variant
     &--wellness {
-        background-color: var(--card-background, white);
+        background-color: var(--card-background, rgba(31, 41, 55, 0.9));
+        backdrop-filter: blur(16px);
         border-color: var(--border-primary, #99f6e4);
         border-radius: 1rem;
         box-shadow: var(--shadow-medium, 0 4px 6px -1px rgba(0, 0, 0, 0.1));

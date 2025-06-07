@@ -1,41 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-    ArrowRight,
-    Award,
-    Dumbbell,
-    Heart,
-    User,
-    Users
+  Award,
+  Dumbbell,
+  Heart,
+  User,
+  Users
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { ThemeProvider } from '../../../context/ThemeContext';
 import logger from '../../../utils/logger';
-import { UniversalButton } from '../components/UniversalButton';
-import { GlobalVariantKey } from '../types/shared';
 import MediaContainer from './components/MediaContainer';
+import PersonalTrainingCTA from './components/PersonalTrainingCTA';
 import './PersonalTraining.scss';
 import { PersonalTrainingProps, Trainer, WordPressVideoData } from './types';
-import { getCoachSpecialtyClass, mapCoachTypeToTheme } from './utils/themeUtils';
+import { getCoachSpecialtyClass } from './utils/themeUtils';
 
-/**
- * Map variant to GlobalVariantKey
- */
-const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
-  const validVariants: GlobalVariantKey[] = [
-    'default', 'gym', 'sports', 'wellness', 'modern', 'classic', 
-    'minimalist', 'boutique', 'registration', 'mobile'
-  ];
-  
-  if (validVariants.includes(variant as GlobalVariantKey)) {
-    return variant as GlobalVariantKey;
-  }
-  
-  // Map PersonalTraining-specific variants to GlobalVariantKey
-  switch (variant) {
-    case 'nutrition': return 'wellness'; // Map nutrition to wellness
-    default: return 'default';
-  }
-};
+
 
 /**
  * Default Personal Training component for the homepage
@@ -131,7 +110,25 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
     }
   ];
 
-  // Find featured trainer
+  // Featured Group Class Instructor (separate from regular trainers)
+  const featuredInstructor: Trainer = {
+    id: "instructor-1",
+    name: "Taylor Martinez",
+    image: "/assets/trainers/instructor1.jpg",
+    specialty: "Group Class Instruction",
+    specialtyIcon: <Users size={14} />,
+    bio: "Lead group fitness instructor specializing in HIIT, yoga, and dance cardio classes. Taylor creates energetic group experiences that motivate and inspire.",
+    years: 7,
+    clients: 240,
+    featured: false, // Not featured in the same way as personal trainer
+    videoCard: {
+      title: "Group Class Energy Demo",
+      image: "/assets/trainers/group-class-demo.jpg",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    }
+  };
+
+  // Find featured trainer (back to original simple logic)
   const featuredTrainer = trainers.find(trainer => trainer.featured);
   const regularTrainers = trainers.filter(trainer => !trainer.featured);
 
@@ -145,6 +142,9 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
     }
     if (specialty.toLowerCase().includes('performance') || specialty.toLowerCase().includes('athletic')) {
       return 'performance';
+    }
+    if (specialty.toLowerCase().includes('group') || specialty.toLowerCase().includes('class')) {
+      return 'performance'; // Group classes get performance styling (energetic amber gradient)
     }
     return 'strength'; // Default
   };
@@ -165,7 +165,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
 
         {/* Trainers Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-16">
-          {/* Featured Trainer */}
+          {/* Featured Personal Trainer - Top Left */}
           {featuredTrainer && (
             <div
               key={featuredTrainer.id}
@@ -206,21 +206,14 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                 </div>
               </div>
 
-              {/* Action Button with ThemeProvider */}
-              <ThemeProvider initialTheme={mapCoachTypeToTheme(getCoachType(featuredTrainer.specialty))}>
-                <UniversalButton
-                  sectionContext="personal-training"
-                  buttonVariant="primary"
-                  variant={mapVariantToGlobal(variant)}
-                  size="large"
-                  contextType={getCoachType(featuredTrainer.specialty)}
-                  rightIcon={<ArrowRight size={18} className="ml-2" />}
-                  data-section="personalTraining"
-                  data-context="featured-trainer"
-                >
-                  Schedule Session
-                </UniversalButton>
-              </ThemeProvider>
+              {/* Action Button - Using PersonalTrainingCTA */}
+              <PersonalTrainingCTA
+                text="Schedule Session"
+                coachType={getCoachType(featuredTrainer.specialty)}
+                buttonSize="large"
+                variant={variant}
+                data-context="featured-trainer"
+              />
 
               {/* Video display - direct instead of flip card */}
               {featuredTrainer.videoCard && (
@@ -236,6 +229,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                     loop={false}
                     alt={`${featuredTrainer.name} training video`}
                     className="rounded-lg overflow-hidden"
+                    aspectRatio="16/9"
                     theme="gym"
                     useWordPressData={true}
                   />
@@ -282,23 +276,87 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                 </div>
               </div>
 
-              {/* Action Button with ThemeProvider */}
-              <ThemeProvider initialTheme={mapCoachTypeToTheme(getCoachType(trainer.specialty))}>
-                <UniversalButton
-                  sectionContext="personal-training"
-                  buttonVariant="primary"
-                  variant={mapVariantToGlobal(variant)}
-                  size="medium"
-                  contextType={getCoachType(trainer.specialty)}
-                  rightIcon={<ArrowRight size={16} className="ml-2" />}
-                  data-section="personalTraining"
-                  data-context="trainer"
-                >
-                  Schedule Session
-                </UniversalButton>
-              </ThemeProvider>
+              {/* Action Button - Using PersonalTrainingCTA */}
+              <PersonalTrainingCTA
+                text="Schedule Session"
+                coachType={getCoachType(trainer.specialty)}
+                buttonSize="medium"
+                variant={variant}
+                data-context="trainer"
+              />
             </div>
           ))}
+
+          {/* Featured Group Class Instructor - Bottom Right */}
+          <div
+            key={featuredInstructor.id}
+            className="trainer-card col-span-1 md:col-span-2 row-span-1"
+          >
+            {/* Instructor Image */}
+            <div className="trainer-image">
+              {featuredInstructor.image && !featuredInstructor.image.includes('assets/trainers') ? (
+                <img
+                  src={featuredInstructor.image}
+                  alt={featuredInstructor.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <Users size={48} className="text-white opacity-70" />
+              )}
+            </div>
+
+            {/* Instructor Specialty Tag */}
+            <div className={`trainer-specialty ${getCoachSpecialtyClass(featuredInstructor.specialty)}`}>
+              {featuredInstructor.specialtyIcon}
+              <span className="ml-1">Featured {featuredInstructor.specialty}</span>
+            </div>
+
+            {/* Instructor Info */}
+            <h3 className="text-xl font-bold mb-2 text-white">{featuredInstructor.name}</h3>
+            <p className="text-gray-400 mb-4">{featuredInstructor.bio}</p>
+
+            {/* Instructor Stats */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="text-center">
+                <span className="text-2xl font-bold text-violet-400 block mb-1">{featuredInstructor.years}</span>
+                <span className="text-sm text-gray-500">Years Exp</span>
+              </div>
+              <div className="text-center">
+                <span className="text-2xl font-bold text-violet-400 block mb-1">{featuredInstructor.clients}</span>
+                <span className="text-sm text-gray-500">Classes Led</span>
+              </div>
+            </div>
+
+            {/* Action Button - Using PersonalTrainingCTA */}
+            <PersonalTrainingCTA
+              text="Join Group Class"
+              coachType={getCoachType(featuredInstructor.specialty)}
+              buttonSize="large"
+              variant={variant}
+              data-context="featured-instructor"
+            />
+
+            {/* Video display - direct instead of flip card */}
+            {featuredInstructor.videoCard && (
+              <div className="mt-6">
+                <h4 className="text-lg font-medium text-white mb-3">{featuredInstructor.videoCard.title}</h4>
+                <MediaContainer
+                  src={featuredInstructor.videoCard.videoUrl || ''}
+                  type="video"
+                  poster={featuredInstructor.videoCard.image || undefined}
+                  muted={false}
+                  autoPlay={false}
+                  controls={true}
+                  loop={false}
+                  alt={`${featuredInstructor.name} group class video`}
+                  className="rounded-lg overflow-hidden"
+                  aspectRatio="16/9"
+                  theme="gym"
+                  useWordPressData={true}
+                />
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Team CTA */}
@@ -306,27 +364,22 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
           <div className="flex justify-center mb-8">
             <Users size={48} className="text-violet-400" />
           </div>
-          <h3 className="text-2xl md:text-3xl font-bold mb-4 text-white">
+          <h3 className="text-2xl md:text-3xl font-bold team-cta-heading text-white">
             Our Complete <span className="bg-gradient-to-r from-violet-300 to-indigo-400 text-transparent bg-clip-text">Trainer Team</span>
           </h3>
-          <p className="text-gray-400 mb-8">
+          <p className="text-gray-400 team-cta-description">
             Browse our full roster of certified fitness professionals. Each trainer has their own specialty, from strength training and nutrition coaching to mobility work and sport-specific performance.
           </p>
           
-          {/* Team CTA Button with ThemeProvider */}
-          <ThemeProvider initialTheme="gym">
-            <UniversalButton
-              sectionContext="personal-training"
-              buttonVariant="secondary"
-              variant="gym"
-              size="large"
-              rightIcon={<ArrowRight size={18} className="ml-2" />}
-              data-section="personalTraining"
-              data-context="team-cta"
-            >
-              Meet Our Team
-            </UniversalButton>
-          </ThemeProvider>
+          {/* Team CTA Button - Using PersonalTrainingCTA */}
+          <PersonalTrainingCTA
+            text="Meet Our Team"
+            buttonVariant="secondary"
+            variant="gym"
+            buttonSize="large"
+            coachType="strength"
+            data-context="team-cta"
+          />
         </div>
       </div>
     </section>

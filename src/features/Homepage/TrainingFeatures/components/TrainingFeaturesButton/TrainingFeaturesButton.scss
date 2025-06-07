@@ -9,14 +9,15 @@
   border-radius: var(--training-features-button-radius, var(--radius-md, 0.375rem));
   transition: var(--training-features-button-transition, all 0.2s ease-in-out);
   min-width: var(--training-features-button-min-width, 160px);
-  padding: var(--training-features-button-padding-y, 0.75rem) var(--training-features-button-padding-x, 1.5rem);
+  padding: var(--training-features-button-padding-y, 0.75rem) var(--training-features-button-padding-x, 2rem);
   font-weight: var(--training-features-button-font-weight, 600);
   
-  // Icon positioning
+  // Icon positioning - inline with typography
   &__icon {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    vertical-align: middle;
     
     &--left {
       margin-right: var(--training-features-button-icon-spacing, 0.5rem);
@@ -24,6 +25,12 @@
     
     &--right {
       margin-left: var(--training-features-button-icon-spacing, 0.5rem);
+      
+      // Ensure icon aligns with text baseline
+      svg {
+        vertical-align: middle;
+        display: inline;
+      }
     }
   }
   
@@ -42,25 +49,25 @@
   &--small {
     font-size: var(--training-features-button-size-sm-font-size, 0.875rem);
     min-width: var(--training-features-button-size-sm-min-width, 120px);
-    padding: var(--training-features-button-size-sm-padding-y, 0.5rem) var(--training-features-button-size-sm-padding-x, 1rem);
+    padding: var(--training-features-button-size-sm-padding-y, 0.5rem) var(--training-features-button-size-sm-padding-x, 1.5rem);
   }
   
   &--medium {
     font-size: var(--training-features-button-size-md-font-size, 1rem);
     min-width: var(--training-features-button-size-md-min-width, 160px);
-    padding: var(--training-features-button-size-md-padding-y, 0.75rem) var(--training-features-button-size-md-padding-x, 1.5rem);
+    padding: var(--training-features-button-size-md-padding-y, 0.75rem) var(--training-features-button-size-md-padding-x, 2rem);
   }
   
   &--large {
     font-size: var(--training-features-button-size-lg-font-size, 1.125rem);
     min-width: var(--training-features-button-size-lg-min-width, 200px);
-    padding: var(--training-features-button-size-lg-padding-y, 1rem) var(--training-features-button-size-lg-padding-x, 2rem);
+    padding: var(--training-features-button-size-lg-padding-y, 1rem) var(--training-features-button-size-lg-padding-x, 3.5rem);
   }
   
   // Feature type variants
   &--virtual {
     --training-features-button-gradient-from: var(--color-lime-300, #a3e635);
-    --training-features-button-gradient-to: var(--color-emerald-400, #34d399);
+    --training-features-button-gradient-to: var(--color-green-400, #4ade80);
   }
   
   &--tracking {
@@ -84,24 +91,24 @@
   }
 }
 
-// Primary variant with gradient background
+// Primary variant with gradient background - Match Journey gradient
 .training-features-button-primary {
   background: linear-gradient(
-    var(--training-features-button-gradient-angle, 90deg),
+    to right,
     var(--training-features-button-gradient-from, var(--color-lime-300, #a3e635)), 
-    var(--training-features-button-gradient-to, var(--color-emerald-400, #34d399))
+    var(--training-features-button-gradient-to, var(--color-green-400, #4ade80))
   );
   border: var(--training-features-button-border-width-primary, 0) solid var(--training-features-button-primary-border, transparent);
   color: var(--training-features-button-primary-text, var(--color-gray-900, #111827));
-  box-shadow: var(--training-features-button-shadow, 0 4px 10px rgba(163, 230, 53, 0.3));
+  box-shadow: var(--training-features-button-shadow, 0 4px 14px rgba(163, 230, 53, 0.3));
   
   &:hover:not(:disabled) {
     background: linear-gradient(
-      var(--training-features-button-gradient-angle, 90deg),
-      var(--training-features-button-gradient-from-hover, var(--color-lime-400, #84cc16)), 
-      var(--training-features-button-gradient-to-hover, var(--color-emerald-500, #10b981))
+      to right,
+      var(--training-features-button-gradient-from-hover, var(--color-lime-400, #a3e635)), 
+      var(--training-features-button-gradient-to-hover, var(--color-green-500, #22c55e))
     );
-    box-shadow: var(--training-features-button-shadow-hover, 0 10px 20px rgba(163, 230, 53, 0.5));
+    box-shadow: var(--training-features-button-shadow-hover, 0 5px 15px rgba(163, 230, 53, 0.2));
     transform: translateY(var(--training-features-button-transform-up, -2px));
   }
 }
@@ -170,7 +177,154 @@
   
   .training-features-button--large {
     min-width: var(--training-features-button-size-lg-min-width, 240px);
-    padding: var(--training-features-button-size-lg-padding-y, 1.125rem) var(--training-features-button-size-lg-padding-x, 2.5rem);
+    padding: var(--training-features-button-size-lg-padding-y, 1.125rem) var(--training-features-button-size-lg-padding-x, 4rem);
     font-size: var(--training-features-button-size-lg-font-size, 1.25rem);
+  }
+}
+
+// Gradient classes - Match JourneyButton pattern with shimmer effect
+.training-features-gradient-lime {
+  position: relative;
+  background: linear-gradient(
+    to right,
+    var(--color-lime-300, #a3e635),
+    var(--color-green-400, #4ade80)
+  ) !important;
+  box-shadow: 0 4px 14px rgba(163, 230, 53, 0.3) !important;
+  overflow: hidden;
+  
+  // Shimmer effect on hover
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transition: left 0.5s ease;
+    opacity: 0;
+  }
+  
+  &:hover::before {
+    left: 100%;
+    opacity: 1;
+  }
+}
+
+.training-features-gradient-violet {
+  position: relative;
+  background: linear-gradient(
+    to right,
+    var(--color-violet-300, #c4b5fd),
+    var(--color-purple-400, #a78bfa)
+  ) !important;
+  box-shadow: 0 4px 14px rgba(196, 181, 253, 0.3) !important;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+    opacity: 0;
+  }
+  
+  &:hover::before {
+    left: 100%;
+    opacity: 1;
+  }
+}
+
+.training-features-gradient-amber {
+  position: relative;
+  background: linear-gradient(
+    to right,
+    var(--color-amber-300, #fcd34d),
+    var(--color-orange-400, #fb923c)
+  ) !important;
+  box-shadow: 0 4px 14px rgba(252, 211, 77, 0.3) !important;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+    opacity: 0;
+  }
+  
+  &:hover::before {
+    left: 100%;
+    opacity: 1;
+  }
+}
+
+.training-features-gradient-cyan {
+  position: relative;
+  background: linear-gradient(
+    to right,
+    var(--color-cyan-300, #67e8f9),
+    var(--color-blue-400, #60a5fa)
+  ) !important;
+  box-shadow: 0 4px 14px rgba(103, 232, 249, 0.3) !important;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+    opacity: 0;
+  }
+  
+  &:hover::before {
+    left: 100%;
+    opacity: 1;
+  }
+}
+
+.training-features-gradient-indigo {
+  position: relative;
+  background: linear-gradient(
+    to right,
+    var(--color-indigo-300, #a5b4fc),
+    var(--color-purple-400, #a78bfa)
+  ) !important;
+  box-shadow: 0 4px 14px rgba(165, 180, 252, 0.3) !important;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+    opacity: 0;
+  }
+  
+  &:hover::before {
+    left: 100%;
+    opacity: 1;
   }
 } 

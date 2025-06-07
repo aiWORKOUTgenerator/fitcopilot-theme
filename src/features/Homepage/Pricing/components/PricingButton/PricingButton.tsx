@@ -1,34 +1,40 @@
 /**
  * PricingButton Component
  * A specialized button for the homepage pricing section with theme support and icon handling
+ * Follows the established Homepage button architecture pattern
  */
 
 import classNames from 'classnames';
 import React from 'react';
 import { useTheme } from '../../../../../context/ThemeContext';
 import { Button } from '../../../../../features/shared/Button';
-import { ButtonSize, HeroButtonProps } from '../../../../../features/shared/Button/types/standardButtonTypes';
+import { ButtonSize, ButtonVariant, HeroButtonProps } from '../../../../../features/shared/Button/types/standardButtonTypes';
+import { GlobalVariantKey } from '../../../types/shared';
 import './PricingButton.scss';
 
 /**
- * Props interface for PricingButton extending HeroButtonProps
+ * Props interface for PricingButton extending HeroButtonProps but with theme variant
  */
-export interface PricingButtonProps extends HeroButtonProps {
+export interface PricingButtonProps extends Omit<HeroButtonProps, 'variant'> {
+  /** Button style variant */
+  buttonVariant?: ButtonVariant;
   /** Optional plan type for styling */
   planType?: 'basic' | 'pro' | 'elite' | 'custom';
-  /** Optional gradient color for the button */
+  /** Optional gradient colors for the button */
   gradientColors?: string;
+  /** Theme variant for styling */
+  themeVariant?: GlobalVariantKey;
 }
 
 /**
- * Maps standardized size values to base Button size values
+ * Map internal size to ButtonSize
  */
-const mapSizeToButtonSize = (size: ButtonSize): 'sm' | 'md' | 'lg' => {
+const mapSizeToButtonSize = (size?: string): ButtonSize => {
   switch (size) {
-    case 'small': return 'sm';
-    case 'medium': return 'md';
-    case 'large': return 'lg';
-    default: return 'md';
+    case 'small': return 'small';
+    case 'large': return 'large';
+    case 'medium': return 'medium';
+    default: return 'medium';
   }
 };
 
@@ -42,7 +48,7 @@ const mapSizeToButtonSize = (size: ButtonSize): 'sm' | 'md' | 'lg' => {
 export const PricingButton: React.FC<PricingButtonProps> = ({
   children,
   className = '',
-  variant = 'primary',
+  buttonVariant = 'primary',
   leftIcon,
   rightIcon,
   fullWidth = false,
@@ -52,40 +58,42 @@ export const PricingButton: React.FC<PricingButtonProps> = ({
   disabled = false,
   planType = 'basic',
   gradientColors,
+  themeVariant = 'default',
   ...restProps
 }) => {
   // Access theme context safely
-  let theme = 'default';
+  let theme = themeVariant;
   try {
     const themeContext = useTheme();
-    if (themeContext) {
-      theme = themeContext.theme;
+    if (themeContext && themeContext.theme) {
+      theme = themeContext.theme as GlobalVariantKey;
     }
   } catch (e) {
-    // If ThemeContext is not available, use default theme
-    console.debug('ThemeContext not available, using default theme');
+    // If ThemeContext is not available, use provided variant or default
+    console.debug('ThemeContext not available, using provided variant or default theme');
   }
   
-  // Construct CSS classes
+  // Construct CSS classes following the established pattern
   const buttonClasses = classNames(
     'pricing-button',
-    `pricing-button-${variant}`,
+    `pricing-button-${buttonVariant}`,
     `pricing-button--${size}`,
     {
       'pricing-button--full-width': fullWidth,
       [`pricing-button--${planType}`]: planType,
+      [`pricing-button--theme-${theme}`]: theme !== 'default',
       [gradientColors || '']: gradientColors
     },
     className
   );
 
   // Create icon elements if needed
-  const startIcon = leftIcon ? <span className="pricing-button__icon--left">{leftIcon}</span> : undefined;
-  const endIcon = rightIcon ? <span className="pricing-button__icon--right">{rightIcon}</span> : undefined;
+  const startIcon = leftIcon ? <span className="pricing-button__icon pricing-button__icon--left">{leftIcon}</span> : undefined;
+  const endIcon = rightIcon ? <span className="pricing-button__icon pricing-button__icon--right">{rightIcon}</span> : undefined;
   
   return (
     <Button
-      variant={variant}
+      variant={buttonVariant}
       size={mapSizeToButtonSize(size)}
       href={href}
       onClick={onClick}

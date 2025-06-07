@@ -1,29 +1,26 @@
 import {
-    Apple,
-    BarChart,
-    Bike,
-    Calendar,
-    ChevronRight,
-    Coffee,
-    Download,
-    Dumbbell,
-    Flame,
-    Footprints,
-    Heart,
-    Medal,
-    MessageSquare,
-    Smartphone,
-    Timer,
-    Video
+  Apple,
+  BarChart,
+  Bike,
+  Calendar,
+  Coffee,
+  Download,
+  Dumbbell,
+  Flame,
+  Footprints,
+  Heart,
+  Medal,
+  MessageSquare,
+  Smartphone,
+  Timer,
+  Video
 } from 'lucide-react';
 import React from 'react';
-import { ThemeProvider } from '../../../context/ThemeContext';
-import { UniversalButton } from '../components/UniversalButton';
 import { GlobalVariantKey } from '../types/shared';
 import FeatureCard from './components/FeatureCard';
+import TrainingFeaturesCTA from './components/TrainingFeaturesCTA';
 import './TrainingFeatures.scss';
 import { DefaultVariantProps, TrainingFeature } from './types';
-import { mapFeatureTypeToTheme } from './utils/themeUtils';
 
 /**
  * FloatingIcon component for decorative background
@@ -288,23 +285,18 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
           ))}
         </div>
 
-        {/* Footer CTA */}
+        {/* Footer CTA - Using new TrainingFeaturesCTA component */}
         <div className="text-center mt-16">
-          <ThemeProvider initialTheme={mapFeatureTypeToTheme('virtual')}>
-            <UniversalButton
-              sectionContext="training-features"
-              buttonVariant="primary"
-              variant={mapVariantToGlobal(variant)}
-              size="large"
-              contextType="virtual"
-              gradientClass="bg-gradient-to-r from-lime-300 to-emerald-400"
-              rightIcon={<ChevronRight size={18} />}
-              data-section="trainingFeatures"
-              data-context="cta"
-            >
-              Explore All Features
-            </UniversalButton>
-          </ThemeProvider>
+          <TrainingFeaturesCTA
+            onNavigate={(featureType: string) => {
+              console.log('Navigate to:', featureType);
+              // Add actual navigation logic here
+            }}
+            variant={variant}
+            size="large"
+            contextType="explore"
+            featureTitle="All Features"
+          />
         </div>
       </div>
     </section>

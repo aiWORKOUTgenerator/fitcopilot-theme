@@ -237,6 +237,7 @@ const MediaContainer: React.FC<MediaContainerProps> = ({
           autoPlay={autoPlay}
           autoPlayOnScroll={autoPlayOnScroll}
           ariaLabel={resolvedAlt}
+          aspectRatio={aspectRatio}
           className="media-content"
           theme={theme}
         />

@@ -28,7 +28,7 @@ export interface FeatureCTAProps {
   variant?: string;
   /** Whether to use oval shape (rounded-full) */
   ovalShape?: boolean;
-}
+  }
 
 /**
  * Map gradientColor to CSS class for Features section
@@ -104,17 +104,17 @@ const FeatureCTA: React.FC<FeatureCTAProps> = ({
     <UniversalButton
       sectionContext="features"
       buttonVariant={universalButtonVariant}
-      size={buttonSize}
-      href={href}
-      rightIcon={iconElement}
+        size={buttonSize}
+        href={href}
+        rightIcon={iconElement}
       className={combinedClassName}
       variant={globalVariant}
-      data-section="features"
-      data-context="cta"
-      aria-label={`${text} - Features call to action`}
+        data-section="features"
+        data-context="cta"
+        aria-label={`${text} - Features call to action`}
       style={ovalShape ? { borderRadius: '9999px' } : undefined}
-    >
-      {text}
+      >
+        {text}
     </UniversalButton>
   );
 };
