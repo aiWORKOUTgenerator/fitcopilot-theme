@@ -5,9 +5,9 @@
 // Canonical design system import - MUST BE FIRST
 
 .pricing-card {
-    background: rgba(17, 24, 39, 0.6);
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    background: var(--pricing-card-bg);
+    backdrop-filter: blur(var(--pricing-card-backdrop-blur));
+    transition: var(--pricing-card-transition);
 
     &:hover {
         transform: translateY(-5px);
@@ -16,25 +16,30 @@
     }
 
     .plan-name {
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-size: var(--pricing-plan-name-size);
+        font-weight: var(--font-weight-bold);
     }
 
     .price {
-        font-size: 2.5rem;
-        font-weight: 700;
-        line-height: 1;
+        font-size: var(--pricing-price-size);
+        font-weight: var(--pricing-price-weight);
+        line-height: var(--line-height-none);
     }
 
     .feature-text {
         &.highlighted {
             font-weight: 600;
-            color: rgba(132, 204, 22, 0.9) !important;
+            color: rgba(255, 255, 255, 1) !important;  // White text for highlighted features
+            
+            // Exception: Allow gradient for specific text
+            &.gradient-text {
+                color: transparent !important;  // Enable gradient background-clip
+            }
         }
     }
 
     &.popular {
-        background: rgba(24, 31, 41, 0.7);
+        background: var(--pricing-card-bg);
         box-shadow: 0 0 30px rgba(132, 204, 22, 0.15);
 
         .plan-name {
@@ -56,3 +61,5 @@
         }
     }
 }
+
+/* Feature list spacing now handled by Homepage-specific CSS in Pricing.scss */

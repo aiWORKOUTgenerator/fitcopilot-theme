@@ -35,6 +35,18 @@
     --color-gray-800: #1f2937;
     --color-gray-900: #111827;
 
+    // Violet scale for Elite pricing plan
+    --color-violet-50: #f5f3ff;
+    --color-violet-100: #ede9fe;
+    --color-violet-200: #ddd6fe;
+    --color-violet-300: #c4b5fd;
+    --color-violet-400: #8b5cf6;
+    --color-violet-500: #7c3aed;
+    --color-violet-600: #6d28d9;
+    --color-violet-700: #5b21b6;
+    --color-violet-800: #4c1d95;
+    --color-violet-900: #2e1065;
+
     // Semantic color mapping
     --color-brand-primary: var(--color-primary-500);
     --color-brand-accent: var(--color-accent-400);
@@ -42,7 +54,7 @@
     // UI state colors
     --color-ui-background: var(--color-gray-900);
     --color-ui-surface: var(--color-gray-800);
-    --color-ui-surface-alt: rgba(31, 41, 55, 0.8);
+    --color-ui-surface-alt: rgba(31, 41, 55, 0.6);  /* Lighter: 0.8 → 0.6 */
     --color-ui-border: var(--color-gray-700);
 
     // Text colors

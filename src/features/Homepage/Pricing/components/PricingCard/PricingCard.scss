@@ -1,0 +1,38 @@
+// Canonical design system import - MUST BE FIRST
+@use '../../../styles/design-system' as ds;
+
+/**
+ * PricingCard Component Styles
+ * 
+ * This file will contain the extracted card-specific styles from Pricing.scss
+ * Will be fully implemented during the migration phases
+ * 
+ * @phase All phases - styles will be moved here incrementally
+ */
+
+// Placeholder styles for development
+.pricing-card-placeholder {
+  padding: 1rem;
+  border: 2px dashed #666;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.1);
+  color: #999;
+  text-align: center;
+  
+  p {
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+  }
+}
+
+// TODO: Phase 2-5 - Extract actual styles from Pricing.scss
+// The following styles will be moved here:
+// - .pricing-card
+// - .pricing-header 
+// - .plan-badge
+// - .plan-name
+// - .price
+// - .pricing-feature-list
+// - .plan-tooltip-cta
+// - All animation keyframes
+// - All responsive styles 

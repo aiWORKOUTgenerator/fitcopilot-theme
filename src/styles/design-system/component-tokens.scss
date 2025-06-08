@@ -500,6 +500,51 @@
     --badge-border-radius: var(--radius-full);
     --badge-font-size: var(--font-size-xs);
     --badge-font-weight: var(--font-weight-medium);
+
+    /* Pricing Component Tokens */
+    // Typography
+    --pricing-section-heading-size: var(--font-size-5xl);          // 3.75rem
+    --pricing-plan-name-size: var(--font-size-xl);                 // 1.75rem  
+    --pricing-price-size: var(--font-size-4xl);                    // 3rem (was 2.5rem)
+    --pricing-price-weight: var(--font-weight-extrabold);          // 800
+    --pricing-badge-size: var(--font-size-xs);                     // 0.75rem
+    --pricing-feature-size: var(--font-size-base);                 // 1rem
+    
+    // Responsive typography
+    --pricing-price-size-mobile: var(--font-size-3xl);             // 2.25rem
+    --pricing-plan-name-size-mobile: var(--font-size-lg);          // 1.25rem
+    --pricing-price-size-mobile-sm: var(--font-size-2xl);          // 1.875rem
+    --pricing-plan-name-size-mobile-sm: var(--font-size-base);     // 1rem
+    
+    // Layout and spacing
+    --pricing-section-padding-y: var(--spacing-24);                // 6rem
+    --pricing-card-padding: var(--spacing-6);                      // 1.5rem
+    --pricing-card-gap: var(--spacing-8);                          // 2rem
+    --pricing-card-radius: var(--radius-2xl);                      // 1rem
+    --pricing-feature-list-spacing: var(--spacing-1);              // 0.25rem (much tighter spacing)
+    
+    // Colors - Plan-specific
+    --pricing-basic-color: var(--color-primary-400);               // Blue
+    --pricing-pro-color: var(--color-accent-400);                  // Lime 
+    --pricing-elite-color: var(--color-violet-400);                // Purple (needs to be added)
+    
+    // Border colors with opacity
+    --pricing-basic-border: rgba(66, 153, 225, 0.3);               // blue-400 with 30% opacity
+    --pricing-basic-border-hover: rgba(66, 153, 225, 0.5);         // blue-400 with 50% opacity
+    --pricing-pro-border: rgba(221, 255, 14, 0.3);                 // accent-400 with 30% opacity  
+    --pricing-pro-border-hover: rgba(221, 255, 14, 0.5);           // accent-400 with 50% opacity
+    --pricing-elite-border: rgba(139, 92, 246, 0.3);               // violet-400 with 30% opacity
+    --pricing-elite-border-hover: rgba(139, 92, 246, 0.5);         // violet-400 with 50% opacity
+    
+    // Background colors
+    --pricing-card-bg: rgba(31, 41, 55, 0.9);                      // Match testimonial card opacity 
+    --pricing-section-bg: var(--color-ui-background);              // gray-900
+    
+    // Effects
+    --pricing-card-backdrop-blur: 16px;
+    --pricing-card-transition: var(--transition-normal);
+    --pricing-tooltip-bg: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
+    --pricing-tooltip-shadow: var(--shadow-xl);
 }
 
 /* Variant Overrides */

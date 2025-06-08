@@ -84,6 +84,28 @@ if (isset($manifest['homepage.css'])) {
     error_log('Homepage template: homepage.css not found in manifest');
 }
 
+// CRITICAL FIX: Load feature-common CSS chunk that contains pricing styles
+if (isset($manifest['feature-common.css'])) {
+    $feature_common_css = $manifest['feature-common.css'];
+    $feature_common_path = get_template_directory() . '/dist/' . $feature_common_css;
+
+    if (file_exists($feature_common_path)) {
+        // NUCLEAR FIX: Direct stylesheet loading instead of preload
+        wp_enqueue_style(
+            'feature-common-css',
+            get_template_directory_uri() . '/dist/' . $feature_common_css,
+            array(),
+            filemtime($feature_common_path),
+            'all'
+        );
+        error_log('Homepage template: NUCLEAR DEBUG - Feature-common CSS loaded successfully from manifest: ' . $feature_common_css);
+    } else {
+        error_log('Homepage template: Feature-common CSS file not found at ' . $feature_common_path);
+    }
+} else {
+    error_log('Homepage template: feature-common.css not found in manifest');
+}
+
 // Set up preloading of chunk files
 foreach ($manifest as $key => $value) {
     if ($key !== 'critical.css' && $key !== 'homepage.js' && strpos($key, '.js') !== false) {

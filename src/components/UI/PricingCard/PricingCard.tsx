@@ -56,7 +56,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         </div>
 
         {/* Features */}
-        <ul className="space-y-4 mb-8">
+        <ul className="pricing-feature-list mb-8">
           {features.map(feature => (
             <li key={feature.id}>
               {feature.renderFeature ? (

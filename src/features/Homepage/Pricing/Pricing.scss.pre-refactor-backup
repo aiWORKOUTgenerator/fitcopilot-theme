@@ -3,10 +3,19 @@
 // Import pricing theme variables
 @use './pricing-theme-variables' as pricing;
 
-/* Plan-specific color variables - now using design system tokens */
+/* Plan-specific color variables for subtle borders */
 :root {
-  // Note: These are now defined in design-system/component-tokens.scss
-  // Keeping this section for any pricing-specific overrides
+  // Basic plan colors (Blue theme) - subtle
+  --pricing-basic-border: rgba(59, 130, 246, 0.3);
+  --pricing-basic-border-hover: rgba(59, 130, 246, 0.5);
+
+  // Pro plan colors (Lime/Green theme) - subtle
+  --pricing-pro-border: rgba(132, 204, 22, 0.3);
+  --pricing-pro-border-hover: rgba(132, 204, 22, 0.5);
+
+  // Elite plan colors (Purple theme) - subtle
+  --pricing-elite-border: rgba(168, 85, 247, 0.3);
+  --pricing-elite-border-hover: rgba(168, 85, 247, 0.5);
 }
 
 /* ============================================================================
@@ -92,29 +101,16 @@
   box-shadow: var(--shadow-md, 0 0 15px rgba(0, 0, 0, 0.2));
   font-size: var(--font-size-xs, 0.75rem);
   line-height: var(--line-height-tight, 1.25);
-  background: var(--pricing-card-bg) !important;
 
   &:hover {
     transform: translateY(-1px);
   }
 }
 
-/* Beta badge styling */
-.beta-badge {
-  background: var(--pricing-card-bg) !important;
-  font-weight: var(--font-weight-bold, 700);
-  animation: shimmer 3s infinite;
-}
-
-/* Pricing expand button */
-.pricing-expand-button:hover {
-  background: var(--pricing-card-bg) !important;
-}
-
 /* Plan name (title) styling - Base styles */
 .plan-name {
   margin-left: var(--spacing-4, 1rem);
-  font-size: var(--pricing-plan-name-size);
+  font-size: var(--font-size-xl, 1.75rem);
   font-weight: var(--font-weight-bold, 700);
   letter-spacing: var(--letter-spacing-tight, -0.025em);
   position: relative;
@@ -170,9 +166,9 @@
 
 /* Enhanced pricing section */
 .pricing-section {
-  position: relative;
+    position: relative;
   padding: var(--pricing-section-padding-y, 6rem) 0;
-  background: var(--pricing-section-bg);
+  background: var(--pricing-bg-primary, var(--color-ui-surface-dark));
   color: var(--pricing-text-primary, var(--color-text-primary));
   overflow: hidden;
   
@@ -190,8 +186,8 @@
   }
 }
 
-/* Enhanced pricing cards - Homepage specific with higher specificity */
-.pricing-section .pricing-card {
+/* Enhanced pricing cards */
+  .pricing-card {
   transition: var(--transition-transform, transform 0.3s ease), var(--transition-box-shadow, box-shadow 0.3s ease);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -200,30 +196,24 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  background: var(--pricing-card-bg);
+  background: var(--pricing-card-bg, rgba(31, 41, 55, 0.9));
   border: 1px solid var(--pricing-card-border, var(--color-ui-border));
   border-radius: var(--pricing-card-radius, 1rem);
   backdrop-filter: blur(var(--pricing-card-backdrop-blur, 16px));
-  -webkit-backdrop-filter: blur(var(--pricing-card-backdrop-blur, 16px));
   overflow: hidden;
-  
-  // Fallback for browsers that don't support backdrop-filter
-  @supports not (backdrop-filter: blur(16px)) {
-    background: rgba(31, 41, 55, 0.95); // Slightly more opaque fallback
-  }
 
-  // Plan-specific background styles (using design system)
-  &.pricing-card--basic,
-  &.pricing-card--pro,
-  &.pricing-card--elite,
-  &.pricing-card--default {
-    background-color: var(--pricing-card-bg) !important;
-    background: var(--pricing-card-bg) !important;
-    backdrop-filter: blur(var(--pricing-card-backdrop-blur)) !important;
+  // Plan-specific background styles (following PersonalTraining pattern)
+  &--basic,
+  &--pro,
+  &--elite,
+  &--default {
+    background-color: rgba(31, 41, 55, 0.9) !important;
+    background: rgba(31, 41, 55, 0.9) !important;
+    backdrop-filter: blur(16px);
   }
 
   // Plan-specific subtle border colors
-  &.pricing-card--basic {
+  &--basic {
     border-color: var(--pricing-basic-border) !important;
     
     &:hover {
@@ -231,7 +221,7 @@
     }
   }
 
-  &.pricing-card--pro {
+  &--pro {
     border-color: var(--pricing-pro-border) !important;
     
     &:hover {
@@ -239,7 +229,7 @@
     }
   }
 
-  &.pricing-card--elite {
+  &--elite {
     border-color: var(--pricing-elite-border) !important;
     
     &:hover {
@@ -252,31 +242,31 @@
     transform: translateY(-8px) scale(1.02) !important;
     box-shadow: var(--shadow-xl, 0 15px 30px -10px rgba(0, 0, 0, 0.3));
     
-    // Border color intensification on hover using design system
+    // Subtle border color intensification on hover
     &.border-blue-300\/40 {
-      border-color: var(--pricing-basic-border-hover) !important;
+      border-color: rgba(59, 130, 246, 0.5) !important;
     }
 
     &.border-lime-300\/40 {
-      border-color: var(--pricing-pro-border-hover) !important;
+      border-color: rgba(132, 204, 22, 0.5) !important;
     }
 
     &.border-purple-300\/40 {
-      border-color: var(--pricing-elite-border-hover) !important;
+      border-color: rgba(168, 85, 247, 0.5) !important;
     }
   }
 
-  // Enhanced border colors using design system tokens
+  // Subtle enhanced border colors for Tailwind classes
   &.border-blue-300\/40 {
-    border-color: var(--pricing-basic-border) !important;
+    border-color: rgba(59, 130, 246, 0.3) !important;
   }
 
   &.border-lime-300\/40 {
-    border-color: var(--pricing-pro-border) !important;
+    border-color: rgba(132, 204, 22, 0.3) !important;
   }
 
   &.border-purple-300\/40 {
-    border-color: var(--pricing-elite-border) !important;
+    border-color: rgba(168, 85, 247, 0.3) !important;
     }
 
   // Popular plan styling
@@ -301,20 +291,20 @@
     }
   }
 
-  // Maximum specificity override using design system
+  // NUCLEAR OPTION - Maximum specificity override
   &.pricing-card.pricing-card--basic,
   &.pricing-card.pricing-card--pro, 
   &.pricing-card.pricing-card--elite,
   &.pricing-card.pricing-card--default {
-    background-color: var(--pricing-card-bg) !important;
-    background: var(--pricing-card-bg) !important;
+    background-color: rgba(31, 41, 55, 0.9) !important;
+    background: rgba(31, 41, 55, 0.9) !important;
   }
 }
 
 /* Price styling */
 .price {
-  font-size: var(--pricing-price-size);
-  font-weight: var(--pricing-price-weight);
+  font-size: var(--pricing-price-size, 2.5rem);
+  font-weight: var(--pricing-price-weight, 800);
   position: relative;
   z-index: 1;
   color: var(--color-text-primary, white);
@@ -399,95 +389,17 @@
   animation: shimmer 3s infinite;
 }
 
-/* Feature list styling - High specificity to ensure application */
-.pricing-section .pricing-card .pricing-feature-list,
-.pricing-card .pricing-feature-list {
-  > li:not(:last-child) {
-    margin-bottom: var(--pricing-feature-list-spacing, 0.25rem) !important;
-  }
+/* Feature icon styling */
+.feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: var(--transition-transform, transform 0.3s ease), var(--transition-colors, color 0.3s ease);
 }
 
-/* Professional feature check mark styling */
-.feature-check-container {
-  position: relative;
-  
-  .feature-check-bg {
-    backdrop-filter: blur(4px);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Ensure perfect circle */
-    border-radius: 50%;
-    width: 1.25rem;
-    height: 1.25rem;
-    
-    /* Perfect centering */
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    
-    /* Remove any potential positioning issues */
-    position: relative;
-  }
-  
-  .feature-icon {
-    /* Ensure crisp rendering */
-    shape-rendering: geometricPrecision;
-    image-rendering: crisp-edges;
-    stroke-width: 2.5;
-    transition: all 0.2s ease;
-  }
-}
-
-/* Enhanced hover effects for professional check marks */
-.pricing-card:hover .feature-check-container {
-  .feature-check-bg {
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  }
-}
-
-/* Plan-specific enhanced styling */
-.pricing-card--basic:hover .feature-check-bg {
-  background: rgba(59, 130, 246, 0.25) !important;
-  border-color: rgba(59, 130, 246, 0.4) !important;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1), 0 2px 8px rgba(59, 130, 246, 0.2);
-}
-
-.pricing-card--pro:hover .feature-check-bg {
-  background: linear-gradient(135deg, rgba(132, 204, 22, 0.25), rgba(16, 185, 129, 0.25)) !important;
-  border-color: rgba(132, 204, 22, 0.4) !important;
-  box-shadow: 0 0 0 2px rgba(132, 204, 22, 0.1), 0 2px 8px rgba(132, 204, 22, 0.2);
-}
-
-.pricing-card--elite:hover .feature-check-bg {
-  background: rgba(139, 92, 246, 0.25) !important;
-  border-color: rgba(139, 92, 246, 0.4) !important;
-  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1), 0 2px 8px rgba(139, 92, 246, 0.2);
-}
-
-/* Responsive adjustments for professional styling */
-@media (max-width: 640px) {
-  .feature-check-container .feature-check-bg {
-    width: 1.125rem;
-    height: 1.125rem;
-  }
-  
-  .feature-check-container .feature-icon {
-    width: 0.75rem;
-    height: 0.75rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .feature-check-container .feature-check-bg {
-    width: 1.375rem;
-    height: 1.375rem;
-  }
-  
-  .feature-check-container .feature-icon {
-    width: 0.875rem;
-    height: 0.875rem;
-  }
+.pricing-card:hover .feature-icon {
+  transform: scale(1.1);
 }
 
 .pricing-card:hover .price {
@@ -500,7 +412,7 @@
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--pricing-tooltip-bg);
+  background: linear-gradient(135deg, rgba(31, 41, 55, 0.95), rgba(17, 24, 39, 0.95));
   backdrop-filter: blur(8px);
   padding: var(--spacing-4, 1rem);
   border-radius: var(--border-radius-lg, 0.5rem);
@@ -828,11 +740,11 @@
   }
   
   .price {
-    font-size: var(--pricing-price-size-mobile);
+    font-size: var(--pricing-price-size-mobile, 2.25rem);
   }
   
   .plan-name {
-    font-size: var(--pricing-plan-name-size-mobile);
+    font-size: var(--pricing-plan-name-size-mobile, 1.5rem);
   }
   
   .plan-name-gradient,
@@ -850,11 +762,11 @@
 
 @media (max-width: 480px) {
   .price {
-    font-size: var(--pricing-price-size-mobile-sm);
+    font-size: var(--pricing-price-size-mobile-sm, 1.85rem);
   }
   
   .plan-name {
-    font-size: var(--pricing-plan-name-size-mobile-sm);
+    font-size: var(--pricing-plan-name-size-mobile-sm, 1.25rem);
   }
   
   .pricing-card div.p-6 {
