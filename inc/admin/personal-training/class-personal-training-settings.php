@@ -81,13 +81,8 @@ class FitCopilot_Personal_Training_Settings {
      * @return array Sanitized settings data
      */
     public function sanitize_settings($input) {
-        return array(
-            'section_title'         => sanitize_text_field($input['section_title'] ?? 'Personal Trainers'),
-            'section_subtitle'      => sanitize_text_field($input['section_subtitle'] ?? ''),
-            'show_featured_trainer' => !empty($input['show_featured_trainer']),
-            'show_group_instructor' => !empty($input['show_group_instructor']),
-            'max_display_count'     => intval($input['max_display_count'] ?? -1)
-        );
+        // ✅ Use data manager's comprehensive sanitization that includes CTA fields
+        return $this->data_manager->sanitize_settings_data($input);
     }
     
     /**
@@ -96,13 +91,8 @@ class FitCopilot_Personal_Training_Settings {
      * @return array Default settings
      */
     public function get_default_settings() {
-        return array(
-            'section_title' => 'Personal Trainers',
-            'section_subtitle' => 'Work directly with our certified fitness professionals',
-            'show_featured_trainer' => true,
-            'show_group_instructor' => true,
-            'max_display_count' => -1
-        );
+        // ✅ Use data manager's comprehensive defaults that include CTA fields
+        return $this->data_manager->get_settings();
     }
     
     /**
@@ -112,7 +102,7 @@ class FitCopilot_Personal_Training_Settings {
      * @return bool Success status
      */
     public function save_settings($settings_data) {
-        $sanitized_settings = $this->sanitize_settings($settings_data);
-        return update_option('fitcopilot_personal_training_settings', $sanitized_settings);
+        // ✅ Use data manager's comprehensive save method
+        return $this->data_manager->save_settings($settings_data);
     }
 } 

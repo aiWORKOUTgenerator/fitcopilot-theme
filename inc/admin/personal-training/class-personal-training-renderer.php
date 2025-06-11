@@ -74,6 +74,8 @@ class FitCopilot_Personal_Training_Renderer {
             $this->render_trainer_profiles_tab($data);
         } elseif ($active_tab === 'group-instructors') {
             $this->render_group_instructors_tab($data);
+        } elseif ($active_tab === 'cta-management') {
+            $this->render_cta_management_tab($settings);
         }
     }
     
@@ -589,6 +591,539 @@ class FitCopilot_Personal_Training_Renderer {
                 <span class="save-status" id="save-status-<?php echo esc_attr($index); ?>"></span>
             </div>
         </div>
+        <?php
+    }
+
+    /**
+     * Render CTA management tab (dedicated tab for call-to-action settings)
+     */
+    private function render_cta_management_tab($settings) {
+        ?>
+        <div id="cta-management" class="tab-content fitcopilot-card">
+            <form method="post" action="">
+                <?php wp_nonce_field('fitcopilot_personal_training_action', 'fitcopilot_personal_training_nonce'); ?>
+                
+                <div class="cta-header">
+                    <h2>📢 Call-to-Action Management</h2>
+                    <p class="tab-description">
+                        Manage the call-to-action section that appears below your trainer profiles. 
+                        This helps convert visitors into clients by providing a clear next step.
+                    </p>
+                </div>
+
+                <!-- CTA Status Overview -->
+                <div class="fitcopilot-status-indicator">
+                    <strong>📊 CTA Status:</strong> 
+                    
+                    <span style="color: <?php echo !empty($settings['cta_enabled']) ? '#84E1BC' : '#ff6b6b'; ?>;">
+                        <?php echo !empty($settings['cta_enabled']) ? '✅ Enabled' : '❌ Disabled'; ?>
+                    </span>
+                    
+                    <br><strong>Current Title:</strong> 
+                    "<?php echo esc_html($settings['cta_title'] ?? 'Ready to Start Your Fitness Journey?'); ?>"
+                    
+                    <br><strong>Button Action:</strong> 
+                    <?php echo esc_html($settings['cta_button_text'] ?? 'Book Your Free Consultation'); ?>
+                </div>
+
+                <!-- CTA Configuration -->
+                <h3>⚙️ CTA Configuration</h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_enabled">Enable CTA Section</label>
+                        </th>
+                        <td>
+                            <label>
+                                <input type="checkbox" id="cta_enabled" name="settings[cta_enabled]" 
+                                       value="1" <?php checked(!empty($settings['cta_enabled'])); ?> />
+                                Show call-to-action section on frontend
+                            </label>
+                            <p class="description">
+                                Toggle to show/hide the entire CTA section below trainer profiles
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Content Settings -->
+                <h3>📝 Content Settings</h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_title">CTA Title</label>
+                        </th>
+                        <td>
+                            <input type="text" id="cta_title" name="settings[cta_title]" 
+                                   value="<?php echo esc_attr($settings['cta_title'] ?? 'Ready to Start Your Fitness Journey?'); ?>" 
+                                   class="regular-text" />
+                            <p class="description">Main headline that grabs attention and sets the tone</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_subtitle">CTA Description</label>
+                        </th>
+                        <td>
+                            <textarea id="cta_subtitle" name="settings[cta_subtitle]" 
+                                      class="large-text" rows="4"
+                                      placeholder="Compelling description that explains your value proposition and encourages action..."><?php echo esc_textarea($settings['cta_subtitle'] ?? ''); ?></textarea>
+                            <p class="description">
+                                Supporting text that explains the value proposition and benefits of taking action.
+                                <br><strong>Tip:</strong> Focus on benefits, address concerns, and create urgency.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Button Settings -->
+                <h3>🔘 Button Settings</h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_button_text">Button Text</label>
+                        </th>
+                        <td>
+                            <input type="text" id="cta_button_text" name="settings[cta_button_text]" 
+                                   value="<?php echo esc_attr($settings['cta_button_text'] ?? 'Book Your Free Consultation'); ?>" 
+                                   class="regular-text" />
+                            <p class="description">
+                                Action-oriented text for the CTA button.
+                                <br><strong>Examples:</strong> "Book Your Free Consultation", "Start My Transformation", "Get Started Today"
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_button_url">Button Destination</label>
+                        </th>
+                        <td>
+                            <input type="url" id="cta_button_url" name="settings[cta_button_url]" 
+                                   value="<?php echo esc_attr($settings['cta_button_url'] ?? '#contact'); ?>" 
+                                   class="regular-text" 
+                                   placeholder="https://example.com/contact" />
+                            <p class="description">
+                                Where visitors go when they click the button.
+                                <br><strong>Examples:</strong> Contact form, booking page, phone number (tel:+1234567890), email (mailto:info@gym.com)
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Icon & Logo Settings -->
+                <h3>🎯 Icon & Logo Settings</h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_icon_type">Icon Type</label>
+                        </th>
+                        <td>
+                            <fieldset>
+                                <legend class="screen-reader-text"><span>Choose icon type for CTA section</span></legend>
+                                <label>
+                                    <input type="radio" name="settings[cta_icon_type]" value="lucide" 
+                                           <?php checked($settings['cta_icon_type'] ?? 'lucide', 'lucide'); ?> 
+                                           onchange="toggleIconOptions(this.value)" />
+                                    <strong>Lucide Icon</strong> - Choose from 1000+ professional icons
+                                </label><br />
+                                <label>
+                                    <input type="radio" name="settings[cta_icon_type]" value="logo" 
+                                           <?php checked($settings['cta_icon_type'] ?? 'lucide', 'logo'); ?> 
+                                           onchange="toggleIconOptions(this.value)" />
+                                    <strong>Custom Logo</strong> - Upload your own logo image
+                                </label><br />
+                                <label>
+                                    <input type="radio" name="settings[cta_icon_type]" value="none" 
+                                           <?php checked($settings['cta_icon_type'] ?? 'lucide', 'none'); ?> 
+                                           onchange="toggleIconOptions(this.value)" />
+                                    <strong>No Icon</strong> - Text-only CTA section
+                                </label>
+                            </fieldset>
+                            <p class="description">Choose how you want to visually represent your CTA section</p>
+                        </td>
+                    </tr>
+                    <tr class="icon-option lucide-option" style="display: <?php echo ($settings['cta_icon_type'] ?? 'lucide') === 'lucide' ? 'table-row' : 'none'; ?>;">
+                        <th scope="row">
+                            <label for="cta_lucide_icon">Lucide Icon</label>
+                        </th>
+                        <td>
+                            <select id="cta_lucide_icon" name="settings[cta_lucide_icon]" class="regular-text">
+                                <?php 
+                                $current_icon = $settings['cta_lucide_icon'] ?? 'Users';
+                                
+                                // Organize icons by categories for better UX
+                                $icon_categories = array(
+                                    'Popular Fitness & CTA' => array(
+                                        'Users' => '👥 Users - Team/People',
+                                        'User' => '👤 User - Single Person',
+                                        'UserCheck' => '✅ User Check - Verified Person',
+                                        'Zap' => '⚡ Zap - Energy/Power',
+                                        'Target' => '🎯 Target - Goals/Focus',
+                                        'Trophy' => '🏆 Trophy - Achievement',
+                                        'Star' => '⭐ Star - Excellence',
+                                        'Heart' => '❤️ Heart - Health/Care',
+                                        'Activity' => '📈 Activity - Progress',
+                                        'Award' => '🏅 Award - Recognition',
+                                        'CheckCircle' => '✅ Check Circle - Success',
+                                        'Play' => '▶️ Play - Start/Action',
+                                        'ArrowRight' => '➡️ Arrow Right - Next Step',
+                                        'ChevronRight' => '▶️ Chevron Right - Continue',
+                                        'Calendar' => '📅 Calendar - Schedule',
+                                        'Clock' => '🕒 Clock - Time',
+                                        'MessageCircle' => '💬 Message Circle - Communication',
+                                        'Phone' => '📞 Phone - Contact',
+                                        'Mail' => '📧 Mail - Email',
+                                        'MapPin' => '📍 Map Pin - Location',
+                                        'Dumbbell' => '🏋️ Dumbbell - Fitness',
+                                        'Flame' => '🔥 Flame - Motivation',
+                                        'Rocket' => '🚀 Rocket - Launch',
+                                        'Sparkles' => '✨ Sparkles - Magic',
+                                    ),
+                                    
+                                    'Sports & Fitness' => array(
+                                        'Dumbbell' => '🏋️ Dumbbell - Weight Training',
+                                        'Activity' => '📈 Activity - Fitness Tracking',
+                                        'Target' => '🎯 Target - Goals',
+                                        'Trophy' => '🏆 Trophy - Achievement',
+                                        'Award' => '🏅 Award - Recognition',
+                                        'Medal' => '🥇 Medal - Victory',
+                                        'Zap' => '⚡ Zap - Energy',
+                                        'Flame' => '🔥 Flame - Intensity',
+                                        'Footprints' => '👣 Footprints - Walking/Running',
+                                        'Timer' => '⏱️ Timer - Workout Time',
+                                        'Stopwatch' => '⏱️ Stopwatch - Timing',
+                                        'Watch' => '⌚ Watch - Time Tracking',
+                                        'Calendar' => '📅 Calendar - Scheduling',
+                                        'CalendarDays' => '📅 Calendar Days - Planning',
+                                        'Clock' => '🕒 Clock - Time Management',
+                                        'Gauge' => '📊 Gauge - Performance',
+                                        'BarChart' => '📊 Bar Chart - Progress',
+                                        'LineChart' => '📈 Line Chart - Growth',
+                                        'TrendingUp' => '📈 Trending Up - Improvement',
+                                        'Mountain' => '⛰️ Mountain - Climbing/Challenge',
+                                        'Waves' => '🌊 Waves - Swimming',
+                                        'Wind' => '💨 Wind - Speed/Movement',
+                                        'Sun' => '☀️ Sun - Outdoor Activities',
+                                        'Sunrise' => '🌅 Sunrise - Morning Workouts',
+                                        'Sunset' => '🌅 Sunset - Evening Workouts',
+                                    ),
+                                    
+                                    'Emoji & Expressions' => array(
+                                        'Smile' => '😊 Smile - Happy',
+                                        'Laugh' => '😂 Laugh - Joy',
+                                        'Heart' => '❤️ Heart - Love/Health',
+                                        'HeartHandshake' => '🤝 Heart Handshake - Care',
+                                        'ThumbsUp' => '👍 Thumbs Up - Approval',
+                                        'ThumbsDown' => '👎 Thumbs Down - Disapproval',
+                                        'Angry' => '😠 Angry - Frustration',
+                                        'Frown' => '☹️ Frown - Sad',
+                                        'Meh' => '😐 Meh - Neutral',
+                                        'PartyPopper' => '🎉 Party Popper - Celebration',
+                                        'Gift' => '🎁 Gift - Reward',
+                                        'Coffee' => '☕ Coffee - Energy',
+                                        'Pizza' => '🍕 Pizza - Food',
+                                        'Apple' => '🍎 Apple - Healthy Food',
+                                        'Carrot' => '🥕 Carrot - Nutrition',
+                                        'Salad' => '🥗 Salad - Healthy Eating',
+                                        'Utensils' => '🍴 Utensils - Dining',
+                                        'UtensilsCrossed' => '🍴 Utensils Crossed - Meal',
+                                        'ChefHat' => '👨‍🍳 Chef Hat - Cooking',
+                                        'Cookie' => '🍪 Cookie - Treats',
+                                        'Cake' => '🎂 Cake - Celebration',
+                                        'IceCream' => '🍦 Ice Cream - Treats',
+                                        'Candy' => '🍬 Candy - Sweet',
+                                        'Lollipop' => '🍭 Lollipop - Fun',
+                                        'Gamepad2' => '🎮 Gamepad - Gaming',
+                                        'Dice1' => '🎲 Dice - Chance',
+                                        'Dice6' => '🎲 Dice Six - Lucky',
+                                        'Puzzle' => '🧩 Puzzle - Problem Solving',
+                                        'Tent' => '⛺ Tent - Camping',
+                                        'Palmtree' => '🌴 Palm Tree - Vacation',
+                                    ),
+                                    
+                                    'Nature & Environment' => array(
+                                        'Tree' => '🌳 Tree - Nature',
+                                        'TreePine' => '🌲 Pine Tree - Forest',
+                                        'TreeDeciduous' => '🌳 Deciduous Tree - Seasons',
+                                        'Flower' => '🌸 Flower - Beauty',
+                                        'Flower2' => '🌺 Flower 2 - Blossom',
+                                        'Cherry' => '🍒 Cherry - Fruit',
+                                        'Leaf' => '🍃 Leaf - Growth',
+                                        'Leaves' => '🍂 Leaves - Autumn',
+                                        'Seedling' => '🌱 Seedling - New Growth',
+                                        'Sun' => '☀️ Sun - Energy',
+                                        'Moon' => '🌙 Moon - Night',
+                                        'Star' => '⭐ Star - Excellence',
+                                        'Stars' => '✨ Stars - Magic',
+                                        'Cloud' => '☁️ Cloud - Weather',
+                                        'CloudRain' => '🌧️ Cloud Rain - Weather',
+                                        'CloudSnow' => '❄️ Cloud Snow - Winter',
+                                        'CloudSun' => '⛅ Cloud Sun - Partly Cloudy',
+                                        'Snowflake' => '❄️ Snowflake - Winter',
+                                        'Droplets' => '💧 Droplets - Water',
+                                        'Umbrella' => '☂️ Umbrella - Protection',
+                                        'Rainbow' => '🌈 Rainbow - Hope',
+                                        'Zap' => '⚡ Lightning - Power',
+                                        'Tornado' => '🌪️ Tornado - Storm',
+                                        'Volcano' => '🌋 Volcano - Power',
+                                        'Globe' => '🌍 Globe - World',
+                                        'Globe2' => '🌎 Globe 2 - Earth',
+                                        'Mountain' => '⛰️ Mountain - Adventure',
+                                        'MountainSnow' => '🏔️ Mountain Snow - Peak',
+                                        'Waves' => '🌊 Waves - Ocean',
+                                        'Fish' => '🐟 Fish - Aquatic',
+                                        'Bird' => '🐦 Bird - Freedom',
+                                        'Butterfly' => '🦋 Butterfly - Transformation',
+                                        'Bug' => '🐛 Bug - Small Life',
+                                        'Ant' => '🐜 Ant - Hard Work',
+                                        'Bee' => '🐝 Bee - Productivity',
+                                        'Ladybug' => '🐞 Ladybug - Good Luck',
+                                        'Squirrel' => '🐿️ Squirrel - Energy',
+                                        'Rabbit' => '🐰 Rabbit - Speed',
+                                        'Turtle' => '🐢 Turtle - Persistence',
+                                        'Snail' => '🐌 Snail - Slow Progress',
+                                        'Shell' => '🐚 Shell - Ocean Life',
+                                        'Feather' => '🪶 Feather - Lightness',
+                                        'Egg' => '🥚 Egg - New Life',
+                                        'Paw' => '🐾 Paw - Animals',
+                                    ),
+                                    
+                                    'External Libs & Lab' => array(
+                                        'Flask' => '🧪 Flask - Chemistry',
+                                        'FlaskConical' => '⚗️ Flask Conical - Laboratory',
+                                        'FlaskRound' => '🧪 Flask Round - Science',
+                                        'TestTube' => '🧪 Test Tube - Experiments',
+                                        'TestTubes' => '🧪 Test Tubes - Research',
+                                        'Microscope' => '🔬 Microscope - Analysis',
+                                        'Telescope' => '🔭 Telescope - Discovery',
+                                        'Atom' => '⚛️ Atom - Science',
+                                        'Dna' => '🧬 DNA - Biology',
+                                        'Pill' => '💊 Pill - Medicine',
+                                        'Syringe' => '💉 Syringe - Medical',
+                                        'Stethoscope' => '🩺 Stethoscope - Healthcare',
+                                        'Thermometer' => '🌡️ Thermometer - Temperature',
+                                        'Bandage' => '🩹 Bandage - Healing',
+                                        'Hospital' => '🏥 Hospital - Healthcare',
+                                        'Ambulance' => '🚑 Ambulance - Emergency',
+                                        'BookOpen' => '📖 Book Open - Learning',
+                                        'GraduationCap' => '🎓 Graduation Cap - Education',
+                                        'Library' => '📚 Library - Knowledge',
+                                        'School' => '🏫 School - Education',
+                                        'Calculator' => '🧮 Calculator - Math',
+                                        'Computer' => '💻 Computer - Technology',
+                                        'Laptop' => '💻 Laptop - Computing',
+                                        'Database' => '🗄️ Database - Storage',
+                                        'Server' => '🖥️ Server - Infrastructure',
+                                        'Cpu' => '🖥️ CPU - Processing',
+                                        'HardDrive' => '💾 Hard Drive - Storage',
+                                        'MemoryStick' => '💾 Memory Stick - Data',
+                                        'Wifi' => '📶 WiFi - Connectivity',
+                                        'Radio' => '📻 Radio - Communication',
+                                        'Satellite' => '📡 Satellite - Technology',
+                                        'Router' => '📡 Router - Network',
+                                        'CircuitBoard' => '🔌 Circuit Board - Electronics',
+                                        'Battery' => '🔋 Battery - Power',
+                                        'BatteryCharging' => '🔋 Battery Charging - Energy',
+                                        'Plug' => '🔌 Plug - Power',
+                                        'Cable' => '🔌 Cable - Connection',
+                                        'Usb' => '🔌 USB - Data Transfer',
+                                        'Bluetooth' => '📶 Bluetooth - Wireless',
+                                        'Signal' => '📶 Signal - Connectivity',
+                                        'Radar' => '📡 Radar - Detection',
+                                        'Satellite' => '🛰️ Satellite - Space Tech',
+                                        'Rocket' => '🚀 Rocket - Innovation',
+                                        'Orbit' => '🛸 Orbit - Space',
+                                        'PlanetEarth' => '🌍 Planet Earth - Global',
+                                        'Galaxy' => '🌌 Galaxy - Universe',
+                                        'Infinity' => '♾️ Infinity - Unlimited',
+                                    ),
+                                );
+                                
+                                foreach ($icon_categories as $category_name => $icons) {
+                                    echo '<optgroup label="' . esc_attr($category_name) . '">';
+                                    foreach ($icons as $icon_name => $icon_label) {
+                                        echo '<option value="' . esc_attr($icon_name) . '"' . selected($current_icon, $icon_name, false) . '>' . esc_html($icon_label) . '</option>';
+                                    }
+                                    echo '</optgroup>';
+                                }
+                                ?>
+                            </select>
+                            <p class="description">
+                                Choose from 130+ professional icons organized by category: Popular Fitness & CTA, Sports & Fitness, Emoji & Expressions, Nature & Environment, and External Libs & Lab. Icons are displayed in your theme's accent color.
+                                <br><a href="https://lucide.dev/icons/" target="_blank">🔗 Browse all Lucide icons</a>
+                            </p>
+                        </td>
+                    </tr>
+                    <tr class="icon-option logo-option" style="display: <?php echo ($settings['cta_icon_type'] ?? 'lucide') === 'logo' ? 'table-row' : 'none'; ?>;">
+                        <th scope="row">
+                            <label for="cta_logo_url">Custom Logo URL</label>
+                        </th>
+                        <td>
+                            <input type="url" id="cta_logo_url" name="settings[cta_logo_url]" 
+                                   value="<?php echo esc_attr($settings['cta_logo_url'] ?? ''); ?>" 
+                                   class="regular-text" 
+                                   placeholder="https://yoursite.com/wp-content/uploads/logo.png" />
+                            <button type="button" class="button" onclick="openMediaUploader()">
+                                📁 Choose Logo
+                            </button>
+                            <p class="description">
+                                Upload or select a logo image. Recommended size: 48x48px to 96x96px.
+                                <br><strong>Supported formats:</strong> PNG, JPG, SVG (with transparency support)
+                            </p>
+                            <?php if (!empty($settings['cta_logo_url'])): ?>
+                                <div class="logo-preview" style="margin-top: 10px;">
+                                    <img src="<?php echo esc_url($settings['cta_logo_url']); ?>" 
+                                         alt="Current CTA Logo" 
+                                         style="max-width: 48px; max-height: 48px; border: 1px solid #ddd; border-radius: 4px;" />
+                                    <span style="margin-left: 10px; color: #666;">Current logo</span>
+                                </div>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Styling Settings -->
+                <h3>🎨 Visual Styling</h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_background_color">Background Color</label>
+                        </th>
+                        <td>
+                            <input type="color" id="cta_background_color" name="settings[cta_background_color]" 
+                                   value="<?php echo esc_attr($settings['cta_background_color'] ?? '#1a1a1a'); ?>" />
+                            <p class="description">Background color for the CTA section (affects transparency overlay)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_text_color">Text Color</label>
+                        </th>
+                        <td>
+                            <input type="color" id="cta_text_color" name="settings[cta_text_color]" 
+                                   value="<?php echo esc_attr($settings['cta_text_color'] ?? '#ffffff'); ?>" />
+                            <p class="description">Text color for the CTA content (title and description)</p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Preview Section -->
+                <div class="cta-preview-section" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 20px; margin: 30px 0; backdrop-filter: blur(10px);">
+                    <h3 style="margin-top: 0; color: #ffffff;">👁️ Live Preview</h3>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 20px;">This is how your CTA will appear on the frontend:</p>
+                    
+                    <div class="cta-preview" style="
+                        background: linear-gradient(135deg, <?php echo esc_attr($settings['cta_background_color'] ?? '#1a1a1a'); ?>20, <?php echo esc_attr($settings['cta_background_color'] ?? '#1a1a1a'); ?>40);
+                        color: <?php echo esc_attr($settings['cta_text_color'] ?? '#ffffff'); ?>;
+                        padding: 40px 20px;
+                        border-radius: 12px;
+                        text-align: center;
+                        border: 1px solid <?php echo esc_attr($settings['cta_background_color'] ?? '#1a1a1a'); ?>40;
+                    ">
+                        <div style="width: 48px; height: 48px; background: #8b5cf6; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+                            <span style="color: white; font-size: 20px;">👥</span>
+                        </div>
+                        <h3 style="font-size: 24px; font-weight: bold; margin-bottom: 16px;">
+                            <?php echo esc_html($settings['cta_title'] ?? 'Ready to Start Your Fitness Journey?'); ?>
+                        </h3>
+                        <p style="margin-bottom: 24px; opacity: 0.9; max-width: 600px; margin-left: auto; margin-right: auto;">
+                            <?php echo esc_html($settings['cta_subtitle'] ?? 'Our expert trainers are here to guide you every step of the way. Whether you\'re just starting out or looking to reach new heights, we\'ll create a personalized plan that fits your goals and lifestyle.'); ?>
+                        </p>
+                        <button style="
+                            background: #8b5cf6;
+                            color: white;
+                            padding: 12px 24px;
+                            border: none;
+                            border-radius: 25px;
+                            font-weight: bold;
+                            cursor: pointer;
+                        ">
+                            <?php echo esc_html($settings['cta_button_text'] ?? 'Book Your Free Consultation'); ?>
+                        </button>
+                    </div>
+                </div>
+
+                <p class="submit">
+                    <input type="submit" name="fitcopilot_personal_training_submit" 
+                           class="button button-primary" value="💾 Save CTA Settings" />
+                    
+                    <button type="button" class="button button-secondary" style="margin-left: 10px;"
+                            onclick="window.open('<?php echo home_url('/#personal-training'); ?>', '_blank')">
+                        🌐 View Live CTA
+                    </button>
+                </p>
+            </form>
+        </div>
+        
+        <script>
+        // Toggle icon option visibility based on selected type
+        function toggleIconOptions(iconType) {
+            const lucideOption = document.querySelector('.lucide-option');
+            const logoOption = document.querySelector('.logo-option');
+            
+            // Hide all options first
+            lucideOption.style.display = 'none';
+            logoOption.style.display = 'none';
+            
+            // Show relevant option
+            if (iconType === 'lucide') {
+                lucideOption.style.display = 'table-row';
+            } else if (iconType === 'logo') {
+                logoOption.style.display = 'table-row';
+            }
+        }
+        
+        // WordPress Media Uploader for logo selection
+        function openMediaUploader() {
+            if (typeof wp !== 'undefined' && wp.media) {
+                const frame = wp.media({
+                    title: 'Select CTA Logo',
+                    button: {
+                        text: 'Use This Logo'
+                    },
+                    multiple: false,
+                    library: {
+                        type: ['image']
+                    }
+                });
+                
+                frame.on('select', function() {
+                    const attachment = frame.state().get('selection').first().toJSON();
+                    document.getElementById('cta_logo_url').value = attachment.url;
+                    
+                    // Update preview if it exists
+                    const preview = document.querySelector('.logo-preview');
+                    if (preview) {
+                        const img = preview.querySelector('img');
+                        if (img) {
+                            img.src = attachment.url;
+                        }
+                    } else {
+                        // Create preview if it doesn't exist
+                        const logoField = document.getElementById('cta_logo_url').parentNode;
+                        const previewDiv = document.createElement('div');
+                        previewDiv.className = 'logo-preview';
+                        previewDiv.style.marginTop = '10px';
+                        previewDiv.innerHTML = '<img src="' + attachment.url + '" alt="Current CTA Logo" style="max-width: 48px; max-height: 48px; border: 1px solid #ddd; border-radius: 4px;" /><span style="margin-left: 10px; color: #666;">Current logo</span>';
+                        logoField.appendChild(previewDiv);
+                    }
+                });
+                
+                frame.open();
+            } else {
+                alert('WordPress media library is not available. Please refresh the page and try again.');
+            }
+        }
+        
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial state based on current selection
+            const checkedRadio = document.querySelector('input[name="settings[cta_icon_type]"]:checked');
+            if (checkedRadio) {
+                toggleIconOptions(checkedRadio.value);
+            }
+        });
+        </script>
         <?php
     }
 } 

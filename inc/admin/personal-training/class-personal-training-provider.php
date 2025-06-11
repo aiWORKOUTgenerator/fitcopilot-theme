@@ -38,7 +38,12 @@ class FitCopilot_Personal_Training_Provider {
      * Initialize frontend data provider
      */
     public function init() {
-        add_action('wp_enqueue_scripts', array($this, 'provide_frontend_data'), 20);
+        // REMOVED: Duplicate hook registration
+        // The base FitCopilot_Admin_Manager_Base class already registers this hook
+        // add_action('wp_enqueue_scripts', array($this, 'provide_frontend_data'), 20);
+        
+        // Data provider is now called through: 
+        // Base class hook → Manager::provide_frontend_data() → Provider::provide_frontend_data()
     }
     
     /**

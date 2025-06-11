@@ -149,10 +149,22 @@ class FitCopilot_Personal_Training_Manager extends FitCopilot_Complex_Manager {
                 }
             }
             
-            // Update settings
+            // Update settings - MERGE with existing settings instead of replacing
             if (isset($_POST['settings'])) {
-                $this->settings_manager->save_settings($_POST['settings']);
-                echo '<div class="notice notice-success is-dismissible"><p>Settings updated successfully!</p></div>';
+                // Get current settings
+                $current_settings = $this->data_manager->get_settings();
+                
+                // Merge new settings with existing settings to preserve all fields
+                $merged_settings = array_merge($current_settings, $_POST['settings']);
+                
+                // Save merged settings
+                $result = $this->settings_manager->save_settings($merged_settings);
+                
+                if ($result) {
+                    echo '<div class="notice notice-success is-dismissible"><p>Settings updated successfully!</p></div>';
+                } else {
+                    echo '<div class="notice notice-error is-dismissible"><p>Error updating settings.</p></div>';
+                }
             }
         }
         
@@ -228,7 +240,8 @@ class FitCopilot_Personal_Training_Manager extends FitCopilot_Complex_Manager {
     protected function get_additional_tabs() {
         return array(
             'trainer-profiles' => array('label' => 'Trainer Profiles'),
-            'group-instructors' => array('label' => 'Group Instructors')
+            'group-instructors' => array('label' => 'Group Instructors'),
+            'cta-management' => array('label' => 'CTA Management')
         );
     }
     

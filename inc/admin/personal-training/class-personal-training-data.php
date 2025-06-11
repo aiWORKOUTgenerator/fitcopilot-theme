@@ -394,7 +394,66 @@ class FitCopilot_Personal_Training_Data {
             'section_subtitle' => 'Work directly with our certified fitness professionals',
             'show_featured_trainer' => true,
             'show_group_instructor' => true,
-            'max_display_count' => -1
+            'max_display_count' => -1,
+            'cta_enabled' => true,
+            'cta_title' => 'Ready to Start Your Fitness Journey?',
+            'cta_subtitle' => 'Our expert trainers are here to guide you every step of the way. Whether you\'re just starting out or looking to reach new heights, we\'ll create a personalized plan that fits your goals and lifestyle.',
+            'cta_button_text' => 'Book Your Free Consultation',
+            'cta_button_url' => '#contact',
+            'cta_background_color' => '#1a1a1a',
+            'cta_text_color' => '#ffffff',
+            'cta_icon_type' => 'lucide', // 'lucide', 'logo', or 'none'
+            'cta_lucide_icon' => 'Users', // Default Lucide icon name
+            'cta_logo_url' => '', // Custom logo URL
         ));
+    }
+
+    /**
+     * Save settings data
+     * 
+     * @param array $settings Raw settings data
+     * @return bool Success status
+     */
+    public function save_settings($settings) {
+        $sanitized_settings = $this->sanitize_settings_data($settings);
+        $result = update_option(self::SETTINGS_OPTION, $sanitized_settings);
+        
+        if ($result) {
+            update_option(self::LAST_UPDATED_OPTION, time());
+        }
+        
+        return $result;
+    }
+
+    /**
+     * Sanitize settings data
+     * 
+     * @param array $settings Raw settings data
+     * @return array Sanitized settings data
+     */
+    public function sanitize_settings_data($settings) {
+        // Validate icon type
+        $valid_icon_types = array('lucide', 'logo', 'none');
+        $icon_type = in_array($settings['cta_icon_type'] ?? 'lucide', $valid_icon_types) 
+            ? $settings['cta_icon_type'] 
+            : 'lucide';
+
+        return array(
+            'section_title' => sanitize_text_field($settings['section_title'] ?? 'Personal Trainers'),
+            'section_subtitle' => sanitize_textarea_field($settings['section_subtitle'] ?? ''),
+            'show_featured_trainer' => !empty($settings['show_featured_trainer']),
+            'show_group_instructor' => !empty($settings['show_group_instructor']),
+            'max_display_count' => absint($settings['max_display_count'] ?? -1),
+            'cta_enabled' => !empty($settings['cta_enabled']),
+            'cta_title' => sanitize_text_field($settings['cta_title'] ?? 'Ready to Start Your Fitness Journey?'),
+            'cta_subtitle' => sanitize_textarea_field($settings['cta_subtitle'] ?? ''),
+            'cta_button_text' => sanitize_text_field($settings['cta_button_text'] ?? 'Book Your Free Consultation'),
+            'cta_button_url' => esc_url_raw($settings['cta_button_url'] ?? '#contact'),
+            'cta_background_color' => sanitize_hex_color($settings['cta_background_color'] ?? '#1a1a1a'),
+            'cta_text_color' => sanitize_hex_color($settings['cta_text_color'] ?? '#ffffff'),
+            'cta_icon_type' => $icon_type,
+            'cta_lucide_icon' => sanitize_text_field($settings['cta_lucide_icon'] ?? 'Users'),
+            'cta_logo_url' => esc_url_raw($settings['cta_logo_url'] ?? ''),
+        );
     }
 } 

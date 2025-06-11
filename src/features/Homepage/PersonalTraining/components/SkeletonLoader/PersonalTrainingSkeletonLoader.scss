@@ -1,0 +1,392 @@
+// Canonical design system import - MUST BE FIRST
+@use '../../../../../styles/design-system' as ds;
+
+/**
+ * PersonalTraining Skeleton Loader Styles
+ * Sophisticated loading animations that match content structure
+ */
+
+/* ==============================================
+   Base Skeleton Animation System
+   ============================================== */
+
+// Base shimmer animation
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Fade-in animation for staggered loading
+@keyframes skeleton-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Pulse animation for loading indicator
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Spinner rotation
+@keyframes skeleton-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==============================================
+   Base Skeleton Elements
+   ============================================== */
+
+.skeleton-base {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s infinite;
+  border-radius: 8px;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: inherit;
+  }
+}
+
+/* ==============================================
+   Header Skeleton
+   ============================================== */
+
+.skeleton-header {
+  animation: skeleton-fade-in 0.6s ease-out;
+  
+  .skeleton-tag {
+    @extend .skeleton-base;
+    height: 24px;
+    width: 120px;
+    margin: 0 auto 1rem;
+    border-radius: 20px;
+  }
+  
+  .skeleton-title {
+    @extend .skeleton-base;
+    height: 48px;
+    width: 300px;
+    margin: 0 auto 1rem;
+    border-radius: 12px;
+  }
+  
+  .skeleton-subtitle {
+    @extend .skeleton-base;
+    height: 20px;
+    width: 400px;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+}
+
+/* ==============================================
+   Trainers Grid Skeleton
+   ============================================== */
+
+.trainers-container-skeleton {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+  
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* ==============================================
+   Trainer Card Skeleton
+   ============================================== */
+
+.trainer-card-skeleton {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2rem;
+  min-height: 400px;
+  animation: skeleton-fade-in 0.8s ease-out both;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+  
+  // Featured trainer spans full width on larger screens
+  &.featured {
+    grid-column: span 2;
+    min-height: 480px;
+    
+    @media (max-width: 1200px) {
+      grid-column: span 2;
+    }
+    
+    @media (max-width: 768px) {
+      grid-column: span 1;
+    }
+  }
+  
+  // Enhanced border animation for featured trainers
+  &.featured::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(204, 255, 0, 0.6),
+      transparent
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 2s infinite;
+  }
+}
+
+/* ==============================================
+   Individual Skeleton Elements
+   ============================================== */
+
+.skeleton-image {
+  @extend .skeleton-base;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  
+  .trainer-card-skeleton.featured & {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+.skeleton-specialty-tag {
+  @extend .skeleton-base;
+  height: 28px;
+  width: 100px;
+  margin-bottom: 1rem;
+  border-radius: 14px;
+}
+
+.skeleton-name {
+  @extend .skeleton-base;
+  height: 28px;
+  width: 70%;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  
+  .trainer-card-skeleton.featured & {
+    height: 32px;
+    width: 60%;
+  }
+}
+
+.skeleton-bio {
+  margin-bottom: 1.5rem;
+  
+  .skeleton-bio-line {
+    @extend .skeleton-base;
+    height: 16px;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    
+    &:nth-child(1) { width: 100%; }
+    &.short { width: 65%; }
+    &.medium { width: 85%; }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.skeleton-stats {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  
+  .skeleton-stat {
+    flex: 1;
+    
+    .skeleton-stat-number {
+      @extend .skeleton-base;
+      height: 24px;
+      width: 40px;
+      margin-bottom: 0.5rem;
+      border-radius: 6px;
+    }
+    
+    .skeleton-stat-label {
+      @extend .skeleton-base;
+      height: 14px;
+      width: 60px;
+      border-radius: 4px;
+    }
+  }
+}
+
+.skeleton-button {
+  @extend .skeleton-base;
+  height: 48px;
+  width: 140px;
+  border-radius: 24px;
+  margin-bottom: 1rem;
+  
+  .trainer-card-skeleton.featured & {
+    height: 52px;
+    width: 160px;
+  }
+}
+
+/* ==============================================
+   Featured Trainer Video Skeleton
+   ============================================== */
+
+.skeleton-video {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  
+  .skeleton-video-thumbnail {
+    @extend .skeleton-base;
+    height: 180px;
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    
+    // Video play icon overlay
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: skeleton-pulse 2s infinite;
+    }
+  }
+  
+  .skeleton-video-title {
+    @extend .skeleton-base;
+    height: 20px;
+    width: 60%;
+    border-radius: 6px;
+  }
+}
+
+/* ==============================================
+   Loading Indicator
+   ============================================== */
+
+.skeleton-loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  
+  .skeleton-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top: 2px solid rgba(204, 255, 0, 0.8);
+    border-radius: 50%;
+    animation: skeleton-spin 1s linear infinite;
+  }
+  
+  .skeleton-loading-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+    animation: skeleton-pulse 1.5s infinite;
+  }
+}
+
+/* ==============================================
+   Responsive Adjustments
+   ============================================== */
+
+@media (max-width: 768px) {
+  .skeleton-header {
+    .skeleton-title {
+      width: 250px;
+      height: 40px;
+    }
+    
+    .skeleton-subtitle {
+      width: 300px;
+    }
+  }
+  
+  .trainer-card-skeleton {
+    padding: 1.5rem;
+    min-height: 350px;
+    
+    &.featured {
+      min-height: 400px;
+    }
+  }
+  
+  .skeleton-stats {
+    gap: 1rem;
+  }
+}
+
+/* ==============================================
+   Accessibility & Reduced Motion
+   ============================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-base,
+  .skeleton-header,
+  .trainer-card-skeleton {
+    animation: none;
+  }
+  
+  .skeleton-spinner {
+    animation: skeleton-pulse 2s infinite;
+  }
+  
+  .skeleton-base {
+    background: rgba(255, 255, 255, 0.08);
+  }
+} 

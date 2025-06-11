@@ -1,24 +1,24 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-    Award,
-    Dumbbell,
-    Heart,
-    User,
-    Users
+  Award,
+  Dumbbell,
+  Heart,
+  User,
+  Users
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import logger from '../../../utils/logger';
 import MediaContainer from './components/MediaContainer';
-import PersonalTrainingCTA from './components/PersonalTrainingCTA';
+import { PersonalTrainingCTA } from './components/PersonalTrainingCTA';
+import {
+  AthleteDashboardData,
+  DataSource,
+  PersonalTrainingSettings,
+  Trainer,
+  WordPressTrainer
+} from './interfaces';
 import './PersonalTraining.scss';
-import { PersonalTrainingProps, Trainer, WordPressVideoData } from './types';
+import { PersonalTrainingProps } from './types';
 import { getCoachSpecialtyClass } from './utils/themeUtils';
 
-
-
-/**
- * Default Personal Training component for the homepage
- */
 // Helper function to get specialty icon
 const getSpecialtyIcon = (specialty: string) => {
   if (specialty.toLowerCase().includes('strength') || specialty.toLowerCase().includes('conditioning')) {
@@ -37,148 +37,104 @@ const getSpecialtyIcon = (specialty: string) => {
 };
 
 const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers, variant = 'default' }) => {
-  // State to store WordPress data
   const [trainerData, setTrainerData] = useState<Trainer[]>([]);
-  const [settings, setSettings] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(true);
-  const [dataSource, setDataSource] = useState<'wordpress' | 'none'>('none');
-  const [wordpressVideoData, setWordpressVideoData] = useState<WordPressVideoData | null>(null);
+  const [settings, setSettings] = useState<PersonalTrainingSettings>({
+    section_title: "Personal Training",
+    section_subtitle: "Work with our certified trainers to achieve your fitness goals with personalized workout plans and expert guidance.",
+    show_featured_trainer: true,
+    show_group_instructor: true,
+    max_display_count: -1,
+    cta_enabled: false,
+    cta_title: '',
+    cta_subtitle: '',
+    cta_button_text: '',
+    cta_button_url: '',
+    cta_background_color: '',
+    cta_text_color: '',
+    cta_icon_type: 'lucide',
+    cta_lucide_icon: 'Users',
+    cta_logo_url: ''
+  });
+  const [loadingState, setLoadingState] = useState<'loading' | 'success' | 'error'>('loading');
+  const [dataSource, setDataSource] = useState<DataSource>('none');
 
   // Load WordPress data on mount
   useEffect(() => {
-    const loadData = () => {
-      try {
-        // Check for WordPress Personal Training data
-        if (typeof window !== 'undefined' && (window as any).fitcopilotPersonalTrainingData) {
-          const wpData = (window as any).fitcopilotPersonalTrainingData;
+    try {
+      if (typeof window !== 'undefined' && window.fitcopilotPersonalTrainingData) {
+        const wpData = window.fitcopilotPersonalTrainingData;
+        
+        if (wpData.trainers && wpData.trainers.length > 0) {
+          console.log('✅ Processing trainers data:', wpData.trainers);
           
-          console.log('📊 PersonalTraining WordPress Data:', {
-            hasData: !!wpData,
-            trainerCount: wpData.trainers?.length || 0,
-            settingsKeys: Object.keys(wpData.settings || {}),
-            meta: wpData.meta
-          });
+          const formattedTrainers = wpData.trainers.map((trainer: WordPressTrainer) => ({
+            id: trainer.id.toString(),
+            name: trainer.name,
+            image: trainer.image_url || "/assets/trainers/trainer-placeholder.jpg",
+            specialty: trainer.specialty,
+            specialtyIcon: getSpecialtyIcon(trainer.specialty),
+            bio: trainer.bio,
+            years: trainer.years_experience,
+            clients: trainer.clients_count,
+            featured: trainer.featured,
+            videoCard: trainer.video_url ? {
+              title: trainer.video_title || "Training Demo",
+              image: trainer.video_poster || "/assets/trainers/workout-demo.jpg",
+              videoUrl: trainer.video_url
+            } : undefined
+          }));
           
-          if (wpData.trainers && wpData.trainers.length > 0) {
-            // ✅ WordPress data available
-            const formattedTrainers = wpData.trainers.map((trainer: any) => ({
-              id: trainer.id.toString(),
-              name: trainer.name,
-              image: trainer.image_url || "/assets/trainers/trainer-placeholder.jpg",
-              specialty: trainer.specialty,
-              specialtyIcon: getSpecialtyIcon(trainer.specialty),
-              bio: trainer.bio,
-              years: trainer.years_experience,
-              clients: trainer.clients_count,
-              featured: trainer.featured,
-              videoCard: trainer.video_url ? {
-                title: trainer.video_title || "Training Demo",
-                image: trainer.video_poster || "/assets/trainers/workout-demo.jpg",
-                videoUrl: trainer.video_url
-              } : undefined
-            }));
-            
-            setTrainerData(formattedTrainers);
-            setSettings(wpData.settings || {});
-            setDataSource('wordpress');
-            
-            console.log(`✅ Loaded ${wpData.trainers.length} active trainers from WordPress`);
-            console.log('🔄 Formatted trainer data:', formattedTrainers);
-            
-            // Log admin state consistency
-            if (wpData.meta) {
-              console.log(`📈 Data Stats: ${wpData.meta.active_count}/${wpData.meta.total_count} trainers active`);
-              console.log(`⏰ Last updated: ${new Date(wpData.meta.last_updated * 1000).toLocaleString()}`);
-            }
-          } else {
-            // ⚠️ WordPress data empty
-            console.warn('⚠️ WordPress trainer data empty');
-            setTrainerData([]);
-            setDataSource('none');
-          }
+          console.log('✅ Formatted trainers for frontend:', formattedTrainers);
+          
+          setTrainerData(formattedTrainers);
+          setSettings(wpData.settings || settings);
+          setDataSource('wordpress');
+          setLoadingState('success');
         } else {
-          // ⚠️ WordPress data not available
-          console.warn('⚠️ WordPress data not found');
-          setTrainerData([]);
-          setDataSource('none');
+          setLoadingState('error');
         }
-
-        // Still check for video data as before
-        if (window.fitcopilotVideoData) {
-          setWordpressVideoData(window.fitcopilotVideoData);
-          logger.debug('WordPress video data loaded from fitcopilotVideoData:', window.fitcopilotVideoData);
-        }
-      } catch (error) {
-        // 🚨 Error loading data
-        console.error('🚨 Error loading PersonalTraining data:', error);
-        setTrainerData([]);
-        setDataSource('none');
-      } finally {
-        setIsLoading(false);
+      } else {
+        setLoadingState('error');
       }
-    };
-
-    loadData();
-  }, []);
-
-  // Safe debug logging (only when data changes, not on every render)
-  useEffect(() => {
-    if (trainerData.length > 0) {
-      const featuredCount = trainerData.filter(t => t.featured).length;
-      const regularCount = trainerData.filter(t => !t.featured).length;
-      
-      console.log('🔍 Safe Trainer Debug:', {
-        total: trainerData.length,
-        featured: featuredCount,
-        regular: regularCount,
-        allTrainerNames: trainerData.map(t => `${t.name} (featured: ${t.featured}, type: ${typeof t.featured})`)
-      });
-
-      // Detailed featured field analysis
-      console.log('🔬 Featured Field Analysis:');
-      trainerData.forEach(trainer => {
-        const featuredValue = trainer.featured as any;
-        const isFeatured = featuredValue === true || featuredValue === 'true' || featuredValue === 1 || featuredValue === '1';
-        console.log(`  ${trainer.name}: featured=${JSON.stringify(featuredValue)} (${typeof featuredValue}) → ${isFeatured ? 'FEATURED' : 'regular'}`);
-      });
-      
-      // CRITICAL DEBUG: Show actual filtering results
-      const featuredTrainer = trainerData.find(trainer => {
-        const featured = trainer.featured;
-        return !!featured;
-      });
-      
-      const regularTrainers = trainerData.filter(trainer => {
-        const featured = trainer.featured;
-        return !featured;
-      });
-      
-      console.log('🎯 FILTERING RESULTS:');
-      console.log('Featured trainer found:', featuredTrainer ? featuredTrainer.name : 'NONE');
-      console.log('Regular trainers:', regularTrainers.map(t => t.name));
-      console.log('Expected to render:', (featuredTrainer ? 1 : 0) + regularTrainers.length, 'trainers total');
+    } catch (error) {
+      console.error('Error loading trainer data:', error);
+      setLoadingState('error');
     }
-  }, [trainerData]);
+  }, []);
 
   // Get video details from WordPress data or use fallbacks
   const getVideoDetails = () => {
-    // Try to get from wordpress data
-    const wpVideoUrl = wordpressVideoData?.personalTraining?.featuredTrainer?.url;
-    const wpVideoTitle = wordpressVideoData?.personalTraining?.featuredTrainer?.title;
-    const wpVideoImage = wordpressVideoData?.personalTraining?.featuredTrainer?.image;
+    // Get video details from WordPress data with fallbacks
+    let wpVideoUrl, wpVideoTitle, wpVideoImage;
+    if (
+      window.athleteDashboardData &&
+      window.athleteDashboardData.wpData &&
+      'videoData' in window.athleteDashboardData.wpData
+    ) {
+      const wpData = window.athleteDashboardData.wpData as AthleteDashboardData['wpData'];
+      const personalTrainingVideo = wpData.videoData?.personalTraining;
+      if (personalTrainingVideo && 'url' in personalTrainingVideo) {
+        const video = personalTrainingVideo as { url: string; title: string; image: string };
+        wpVideoUrl = video.url;
+        wpVideoTitle = video.title;
+        wpVideoImage = video.image;
+      }
+    }
 
-    // Type guard for athleteDashboardData.wpData.videoData
+    // Get video details from registration data (secondary source)
     let athleteVideoUrl, athleteVideoTitle, athleteVideoImage;
     if (
       window.athleteDashboardData &&
-            window.athleteDashboardData.wpData &&
-            'videoData' in window.athleteDashboardData.wpData &&
-            (window.athleteDashboardData.wpData as any).videoData.personalTraining?.featuredTrainer
+      window.athleteDashboardData.wpData &&
+      'videoData' in window.athleteDashboardData.wpData
     ) {
-      const videoData = (window.athleteDashboardData.wpData as any).videoData;
-      athleteVideoUrl = videoData.personalTraining.featuredTrainer.url;
-      athleteVideoTitle = videoData.personalTraining.featuredTrainer.title;
-      athleteVideoImage = videoData.personalTraining.featuredTrainer.image;
+      const wpData = window.athleteDashboardData.wpData as AthleteDashboardData['wpData'];
+      const featuredTrainer = wpData.videoData?.personalTraining?.featuredTrainer;
+      if (featuredTrainer) {
+        athleteVideoUrl = featuredTrainer.url;
+        athleteVideoTitle = featuredTrainer.title;
+        athleteVideoImage = featuredTrainer.image;
+      }
     }
 
     // Return the best available values, with fallbacks
@@ -189,159 +145,192 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
     };
   };
 
-  // Loading state
-  if (isLoading) {
-    return (
-      <section className="personal-training-section w-full py-20 px-4 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <div className="loading-spinner">Loading trainers...</div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // Use WordPress data - no fallback complexity
-  const activeTrainers: Trainer[] = trainerData;
-
-  // If no WordPress data is available, show a clear error state
-  if (!activeTrainers || activeTrainers.length === 0) {
-    return (
-      <section className="personal-training-section w-full py-20 px-4 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold text-white mb-4">Personal Trainers</h2>
-            <div className="text-yellow-400 bg-yellow-900/20 border border-yellow-400/20 rounded-lg p-4 max-w-md mx-auto">
-              <p className="font-medium">⚠️ No trainer data available</p>
-              <p className="text-sm mt-2">Please check the WordPress Personal Training Manager configuration.</p>
-              {process.env.NODE_ENV === 'development' && (
-                <p className="text-xs mt-2 opacity-75">
-                  Data source: {dataSource} | 
-                  WordPress data available: {typeof window !== 'undefined' && !!(window as any).fitcopilotPersonalTrainingData ? 'Yes' : 'No'}
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  // FIXED: Handle multiple featured trainers properly
-  const featuredTrainers = activeTrainers.filter(trainer => {
-    // Convert to boolean using WordPress/PHP semantics
-    const featured = trainer.featured;
-    return !!featured; // Simple truthy check like PHP !empty()
+  // Filter trainers by settings
+  const activeTrainers = trainerData.filter(trainer => {
+    // Show all trainers, not just featured ones
+    if (settings.max_display_count && settings.max_display_count > 0 && trainerData.length > settings.max_display_count) {
+      return trainerData.indexOf(trainer) < settings.max_display_count;
+    }
+    return true;
   });
-  
-  const regularTrainers = activeTrainers.filter(trainer => {
-    // Convert to boolean using WordPress/PHP semantics 
-    const featured = trainer.featured;
-    return !featured; // Simple falsy check
-  });
-  
-  // For backwards compatibility: use first featured trainer for the main featured section
-  const featuredTrainer = featuredTrainers.length > 0 ? featuredTrainers[0] : null;
 
-  // Get coach type from specialty for button styling
-  const getCoachType = (specialty: string): 'strength' | 'nutrition' | 'performance' | 'recovery' => {
-    if (specialty.toLowerCase().includes('strength') || specialty.toLowerCase().includes('conditioning')) {
-      return 'strength';
+  // Render CTA icon based on admin settings
+  const renderCTAIcon = () => {
+    const iconType = settings.cta_icon_type || 'lucide';
+    const iconName = settings.cta_lucide_icon || 'Users';
+    const logoUrl = settings.cta_logo_url;
+
+    if (iconType === 'none') {
+      return null;
     }
-    if (specialty.toLowerCase().includes('nutrition') || specialty.toLowerCase().includes('weight')) {
-      return 'nutrition';
+
+    if (iconType === 'logo' && logoUrl) {
+      return (
+        <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden bg-violet-500/20">
+          <img 
+            src={logoUrl} 
+            alt="CTA Logo" 
+            className="w-8 h-8 object-contain"
+            loading="lazy"
+          />
+        </div>
+      );
     }
-    if (specialty.toLowerCase().includes('performance') || specialty.toLowerCase().includes('athletic')) {
-      return 'performance';
-    }
-    if (specialty.toLowerCase().includes('group') || specialty.toLowerCase().includes('class')) {
-      return 'performance'; // Group classes get performance styling (energetic amber gradient)
-    }
-    return 'strength'; // Default
+
+    // Default to Lucide icon
+    const getLucideIcon = (name: string) => {
+      // Common fitness and CTA icons - map to SVG paths
+      const iconPaths: { [key: string]: string } = {
+        'Users': 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',
+        'User': 'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8z',
+        'UserCheck': 'M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M10.5 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM17 11l2 2 4-4',
+        'Zap': 'M13 2L3 14h9l-1 8 10-12h-9l1-8z',
+        'Target': 'M22 12A10 10 0 1 1 12 2a10 10 0 0 1 10 10zM8 12a4 4 0 1 0 8 0 4 4 0 0 0-8 0zM12 10a2 2 0 1 0 0 4 2 2 0 0 0 0-4z',
+        'Trophy': 'M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M6 18H5.5a2.5 2.5 0 0 1 0-5H6M18 18h1.5a2.5 2.5 0 0 0 0-5H18M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M6 18H5.5a2.5 2.5 0 0 1 0-5H6M18 18h1.5a2.5 2.5 0 0 0 0-5H18M8 21l4-7 4 7M8 3l4 7 4-7',
+        'Star': 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
+        'Heart': 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z',
+        'Activity': 'M22 12h-4l-3 9L9 3l-3 9H2',
+        'Award': 'M8.21 13.89L7 23l5-3 5 3-1.21-9.12M22 9l-9-7-9 7 2.25 14.5L12 19l5.75 4.5L22 9z',
+        'CheckCircle': 'M22 11.08V12a10 10 0 1 1-5.93-9.14M22 4L12 14.01l-3-3',
+        'Play': 'M8 5v14l11-7z',
+        'ArrowRight': 'M5 12h14M12 5l7 7-7 7',
+        'ChevronRight': 'M9 18l6-6-6-6',
+        'Calendar': 'M3 9h18M7 3v4M17 3v4M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z',
+        'Clock': 'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 6v6l4 2',
+        'MessageCircle': 'M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z',
+        'Phone': 'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z',
+        'Mail': 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6',
+        'MapPin': 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0zM12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+        'Dumbbell': 'M6.5 6.5h.01M17.5 6.5h.01M6.5 17.5h.01M17.5 17.5h.01M3 12h3M18 12h3M8 8v8M16 8v8',
+        'Flame': 'M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z',
+        'Rocket': 'M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09zM12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2zM9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M15 9v5s3.03-.55 4-2c1.08-1.62 0-5 0-5',
+        'Sparkles': 'M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .962L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0L9.937 15.5z'
+      };
+
+      return iconPaths[name] || iconPaths['Users']; // Fallback to Users icon
+    };
+
+    return (
+      <div className="w-12 h-12 bg-violet-500 rounded-full flex items-center justify-center">
+        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={getLucideIcon(iconName)} />
+        </svg>
+      </div>
+    );
   };
 
+  // SIMPLE LOGIC: Show trainers if we have them, loading if we don't
+  if (trainerData.length === 0) {
+    return (
+      <div className="text-center text-white py-20">
+        <p>Loading trainers...</p>
+      </div>
+    );
+  }
+
+  // Show error state only for actual errors
+  if (loadingState === 'error') {
+    return (
+      <div className="text-center text-white py-20">
+        <p>Unable to load trainer information. Please try again later.</p>
+      </div>
+    );
+  }
+
+  // Main component render - TRAINERS WILL SHOW
   return (
     <section className="personal-training-section w-full py-20 px-4 bg-gray-900" data-source={dataSource}>
       <div className="container mx-auto px-4">
-        {/* Debug info in development */}
-        {process.env.NODE_ENV === 'development' && (
-          <div className="debug-info text-center mb-4">
-            <small className="text-gray-500">
-              Data Source: {dataSource} | Trainers: {activeTrainers.length}
-            </small>
-          </div>
-        )}
-        
         {/* Section header */}
         <div className="text-center mb-16">
-          <span className="text-xs font-bold tracking-widest uppercase text-violet-300 mb-2 block">Expert Coaching</span>
+          <span className="text-xs font-bold tracking-widest uppercase text-violet-300 mb-2 block">
+            Expert Coaching
+          </span>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-            Personal <span className="bg-gradient-to-r from-violet-300 to-indigo-400 text-transparent bg-clip-text">Trainers</span>
+            {settings.section_title?.split(' ')[0] || 'Personal'}{' '}
+            <span className="bg-gradient-to-r from-violet-300 to-indigo-400 text-transparent bg-clip-text">
+              {settings.section_title?.split(' ').slice(1).join(' ') || 'Trainers'}
+            </span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Work directly with our certified fitness professionals who will create custom training programs tailored to your specific goals and needs.
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            {settings.section_subtitle}
           </p>
         </div>
 
-        {/* Trainers Grid - Using Legacy SCSS Layout */}
-        <div className="trainers-container" data-trainer-count={activeTrainers.length}>
-          {/* All Active Trainers (Featured + Regular) */}
+        {/* Trainers grid */}
+        <div className="trainers-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
           {activeTrainers.map((trainer) => (
             <div
               key={trainer.id}
-              className={`trainer-card ${trainer.featured ? 'featured' : 'regular'}`}
-              data-trainer-id={trainer.id}
-              data-trainer-name={trainer.name}
+              className={`trainer-card bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/50 transition-all duration-300 hover:transform hover:scale-105 hover:border-violet-400/50 ${
+                trainer.featured ? 'lg:col-span-2 featured-trainer' : ''
+              }`}
             >
-              {/* Trainer Image */}
-              <div className="trainer-image">
+              {/* Trainer image */}
+              <div className="text-center mb-4">
                 {trainer.image && !trainer.image.includes('assets/trainers') ? (
                   <img
                     src={trainer.image}
                     alt={trainer.name}
-                    className="w-full h-full object-cover"
+                    className="w-20 h-20 rounded-full mx-auto object-cover border-2 border-gray-600"
+                    loading="lazy"
                   />
                 ) : (
-                  <User size={trainer.featured ? 48 : 40} className="text-white opacity-70" />
+                  <div className="w-20 h-20 rounded-full mx-auto bg-gray-700 flex items-center justify-center">
+                    <span className="text-gray-400 text-lg font-bold">
+                      {trainer.name.charAt(0)}
+                    </span>
+                  </div>
                 )}
               </div>
 
-              {/* Trainer Specialty Tag */}
-              <div className={`trainer-specialty ${getCoachSpecialtyClass(trainer.specialty)}`}>
-                {trainer.specialtyIcon}
-                <span className="ml-1">{trainer.specialty}</span>
+              {/* Specialty tag */}
+              <div className="text-center mb-3">
+                <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${getCoachSpecialtyClass(trainer.specialty)}`}>
+                  {trainer.specialtyIcon}
+                </span>
               </div>
 
-              {/* Trainer Info */}
-              <h3 className="trainer-name">{trainer.name}</h3>
-              <p className="trainer-bio">{trainer.bio}</p>
+              {/* Trainer name */}
+              <h3 className="text-xl font-bold text-white text-center mb-3">
+                {trainer.name}
+              </h3>
 
-              {/* Trainer Stats */}
-              <div className="trainer-stats">
-                <div className="stat-item">
-                  <span className="stat-value">{trainer.years}</span>
-                  <span className="stat-label">Years Exp</span>
+              {/* Bio */}
+              <p className="text-gray-300 text-sm text-center mb-4 line-clamp-3">
+                {trainer.bio}
+              </p>
+
+              {/* Stats */}
+              <div className="flex justify-center gap-8 mb-6">
+                <div className="text-center">
+                  <div className="text-lg font-bold text-white">
+                    {trainer.years}
+                  </div>
+                  <div className="text-xs text-gray-400">Years</div>
                 </div>
-                <div className="stat-item">
-                  <span className="stat-value">{trainer.clients}</span>
-                  <span className="stat-label">Clients</span>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-white">
+                    {trainer.clients}+
+                  </div>
+                  <div className="text-xs text-gray-400">Clients</div>
                 </div>
               </div>
 
-              {/* Action Button - Using PersonalTrainingCTA */}
-              <PersonalTrainingCTA
-                text="Schedule Session"
-                coachType={getCoachType(trainer.specialty)}
-                buttonSize={trainer.featured ? "large" : "medium"}
-                variant={variant}
-                data-context={trainer.featured ? "featured-trainer" : "trainer"}
-              />
+              {/* CTA Button */}
+              <div className="text-center mb-4">
+                <PersonalTrainingCTA 
+                  text="Get Started" 
+                  variant={variant}
+                />
+              </div>
 
-              {/* Video display for featured trainers only */}
-              {trainer.featured && trainer.videoCard && (
-                <div className="mt-6">
-                  <h4 className="text-lg font-medium text-white mb-3">{trainer.videoCard.title}</h4>
+              {/* Featured trainer video */}
+              {trainer.videoCard && (
+                <div className="mt-6 pt-6 border-t border-gray-700">
+                  <h4 className="text-lg font-semibold text-white mb-3 text-center">
+                    {trainer.videoCard.title}
+                  </h4>
                   <MediaContainer
                     src={trainer.videoCard.videoUrl || ''}
                     type="video"
@@ -353,8 +342,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                     alt={`${trainer.name} training video`}
                     className="rounded-lg overflow-hidden"
                     aspectRatio="16/9"
-                    theme="gym"
-                    useWordPressData={true}
+                    theme="default"
                   />
                 </div>
               )}
@@ -362,28 +350,33 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
           ))}
         </div>
 
-        {/* Team CTA */}
-        <div className="text-center max-w-3xl mx-auto">
-          <div className="flex justify-center mb-8">
-            <Users size={48} className="text-violet-400" />
+        {/* Team CTA section - Admin Controlled Content */}
+        {settings.cta_enabled && (
+          <div className="text-center max-w-4xl mx-auto mt-16">
+            <div 
+              className="bg-gradient-to-r from-violet-600/20 to-indigo-600/20 rounded-2xl p-8 border border-violet-400/20"
+              style={{
+                backgroundColor: settings.cta_background_color ? `${settings.cta_background_color}20` : undefined,
+                color: settings.cta_text_color || '#ffffff'
+              }}
+            >
+              <div className="flex justify-center mb-6">
+                {renderCTAIcon()}
+              </div>
+              <h3 className="text-2xl font-bold mb-4">
+                {settings.cta_title || 'Ready to Start Your Fitness Journey?'}
+              </h3>
+              <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+                {settings.cta_subtitle || 'Our expert trainers are here to guide you every step of the way. Whether you\'re just starting out or looking to reach new heights, we\'ll create a personalized plan that fits your goals and lifestyle.'}
+              </p>
+              <PersonalTrainingCTA 
+                text={settings.cta_button_text || 'Book Your Free Consultation'}
+                href={settings.cta_button_url || '#contact'}
+                variant={variant}
+              />
+            </div>
           </div>
-          <h3 className="text-2xl md:text-3xl font-bold team-cta-heading text-white">
-            Our Complete <span className="bg-gradient-to-r from-violet-300 to-indigo-400 text-transparent bg-clip-text">Trainer Team</span>
-          </h3>
-          <p className="text-gray-400 team-cta-description">
-            Browse our full roster of certified fitness professionals. Each trainer has their own specialty, from strength training and nutrition coaching to mobility work and sport-specific performance.
-          </p>
-          
-          {/* Team CTA Button - Using PersonalTrainingCTA */}
-          <PersonalTrainingCTA
-            text="Meet Our Team"
-            buttonVariant="secondary"
-            variant="gym"
-            buttonSize="large"
-            coachType="strength"
-            data-context="team-cta"
-          />
-        </div>
+        )}
       </div>
     </section>
   );
