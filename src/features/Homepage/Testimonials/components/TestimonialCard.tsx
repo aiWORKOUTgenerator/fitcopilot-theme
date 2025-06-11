@@ -77,34 +77,40 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({
 
   return (
     <div
-      className={`testimonial-card bg-gray-800/90 backdrop-blur-lg p-8 rounded-2xl border border-gray-700 transition-all duration-300 group ${getGlowClass()}`}
+      className={`testimonial-card testimonial-card--equal-height bg-gray-800/90 backdrop-blur-lg rounded-2xl border border-gray-700 transition-all duration-300 group ${getGlowClass()}`}
       data-variant={variant}
       data-index={index}
     >
-      {/* Quote icon with direct color styling */}
-      <Quote
-        size={32}
-        className="testimonial-quote mb-3"
-        style={{ color: getIconColor(), filter: `drop-shadow(0 0 8px ${getIconColor()}40)` }}
-      />
+      <div className="testimonial-card__content">
+        {/* Quote icon */}
+        <Quote
+          size={32}
+          className="testimonial-quote mb-3"
+          style={{ color: getIconColor(), filter: `drop-shadow(0 0 8px ${getIconColor()}40)` }}
+        />
 
-      {/* Quote */}
-      <p className="text-white italic mb-6 relative z-10">"{quote}"</p>
-
-      {/* Author */}
-      <div className="flex items-center">
-        <div className="mr-4">
-          {avatar ? (
-            <img src={avatar} alt={name} className="w-12 h-12 rounded-full testimonial-image border-2 border-gray-700" />
-          ) : (
-            <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getAccentClass()} flex items-center justify-center text-gray-900 font-bold text-lg testimonial-image`}>
-              {name.charAt(0)}
-            </div>
-          )}
+        {/* Quote - flexible content area */}
+        <div className="testimonial-card__quote">
+          <p className="text-white italic relative z-10">"{quote}"</p>
         </div>
-        <div>
-          <h4 className="font-bold text-white group-hover:text-accent-500 transition-colors">{name}</h4>
-          <p className="text-sm text-gray-300">{role}</p>
+
+        {/* Author - footer area */}
+        <div className="testimonial-card__author">
+          <div className="flex items-center">
+            <div className="mr-4">
+              {avatar ? (
+                <img src={avatar} alt={name} className="w-12 h-12 rounded-full testimonial-image border-2 border-gray-700" />
+              ) : (
+                <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getAccentClass()} flex items-center justify-center text-gray-900 font-bold text-lg testimonial-image`}>
+                  {name.charAt(0)}
+                </div>
+              )}
+            </div>
+            <div>
+              <h4 className="font-bold text-white group-hover:text-accent-500 transition-colors">{name}</h4>
+              <p className="text-sm text-gray-300">{role}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

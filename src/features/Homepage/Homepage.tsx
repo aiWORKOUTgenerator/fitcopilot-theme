@@ -28,7 +28,7 @@ const Features = lazy(() => import(/* webpackChunkName: "feature-homepage-featur
 const Footer = lazy(() => import(/* webpackChunkName: "feature-homepage-footer" */ './Footer').then(module => ({ default: module.Footer })));
 const Hero = lazy(() => import(/* webpackChunkName: "feature-homepage-hero" */ './Hero'));
 const Journey = lazy(() => import(/* webpackChunkName: "feature-homepage-journey" */ './Journey').then(module => ({ default: module.Journey })));
-const PersonalTraining = lazy(() => import(/* webpackChunkName: "feature-homepage-personal-training" */ './PersonalTraining').then(module => ({ default: module.PersonalTraining })));
+const PersonalTraining = lazy(() => import(/* webpackChunkName: "feature-homepage-personal-training" */ './PersonalTraining'));
 const Pricing = lazy(() => import(/* webpackChunkName: "feature-homepage-pricing" */ './Pricing').then(module => ({ default: module.Pricing })));
 const Testimonials = lazy(() => import(/* webpackChunkName: "feature-homepage-testimonials" */ './Testimonials').then(module => ({ default: module.Testimonials })));
 const Training = lazy(() => import(/* webpackChunkName: "feature-homepage-training" */ './Training'));

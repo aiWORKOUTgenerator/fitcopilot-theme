@@ -89,3 +89,177 @@ body .testimonials-section {
     // Grid pattern is removed for all variants
   }
 }
+
+/* REPLACED: Old Equal Height Grid System - Now Using Carousel */
+/* .testimonials-grid has been replaced with .testimonials-carousel-container */
+
+/* NEW: Testimonials Carousel System */
+.testimonials-carousel-container {
+  position: relative;
+  width: 100%;
+  max-width: 1280px; // xl container
+  margin: 0 auto;
+  
+  // Carousel viewport
+  .testimonials-carousel {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+  }
+  
+  // Carousel track (slides container)
+  .testimonials-track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+    
+    // Each slide
+    .testimonial-slide {
+      flex: 0 0 100%; // Full width on mobile
+      padding: 0 1rem; // Spacing between cards
+      box-sizing: border-box;
+      
+      // Desktop: 3 cards visible
+      @media (min-width: 768px) {
+        flex: 0 0 33.333333%; // 1/3 width for 3 cards
+      }
+      
+      // Ensure equal height testimonial cards
+      .testimonial-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}
+
+/* Navigation Buttons */
+.testimonials-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(31, 41, 55, 0.8); // gray-800 with opacity
+  backdrop-filter: blur(8px);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  
+  &:hover {
+    border-color: rgba(221, 255, 14, 0.5); // accent color
+    background: rgba(31, 41, 55, 0.95);
+    transform: translateY(-50%) scale(1.05);
+  }
+  
+  &:active {
+    transform: translateY(-50%) scale(0.95);
+  }
+  
+  &--prev {
+    left: -24px;
+    
+    @media (max-width: 768px) {
+      left: -20px;
+    }
+  }
+  
+  &--next {
+    right: -24px;
+    
+    @media (max-width: 768px) {
+      right: -20px;
+    }
+  }
+  
+  &--disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  // Icon styling
+  svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+  }
+}
+
+/* Carousel Indicators (Dots) */
+.testimonials-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  
+  .testimonials-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+      transform: scale(1.1);
+    }
+    
+    &--active {
+      background: rgba(221, 255, 14, 1); // accent color
+      transform: scale(1.2);
+    }
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .testimonials-carousel-container {
+    padding: 0 2rem; // More space for nav buttons
+    
+    .testimonials-track .testimonial-slide {
+      padding: 0 0.5rem; // Reduce padding on mobile
+    }
+  }
+  
+  .testimonials-nav {
+    width: 40px;
+    height: 40px;
+    
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+/* Accessibility enhancements */
+@media (prefers-reduced-motion: reduce) {
+  .testimonials-track {
+    transition: none;
+  }
+  
+  .testimonials-nav {
+    transition: none;
+  }
+  
+  .testimonials-indicator {
+    transition: none;
+  }
+}
+
+// Grid item styling - DEPRECATED: Now using carousel slides
+.testimonial-grid-item {
+  display: flex; // Ensure card fills the grid item
+  flex-direction: column;
+  height: 100%; // Fill the grid cell completely
+}

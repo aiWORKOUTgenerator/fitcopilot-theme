@@ -1,0 +1,270 @@
+/**
+ * FitCopilot Admin Base CSS
+ * Core layout, animations, and structural elements for all admin interfaces
+ * 
+ * @package FitCopilot
+ */
+
+/* Reset and base admin styles */
+.wrap.fitcopilot-admin {
+    position: relative;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #0B1121;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Admin container structure */
+.fitcopilot-admin-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Animated background */
+.fitcopilot-admin-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Floating particles animation */
+.fitcopilot-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(132, 225, 188, 0.6);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.fitcopilot-particle:nth-child(1) {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.fitcopilot-particle:nth-child(2) {
+    top: 60%;
+    left: 80%;
+    animation-delay: 2s;
+}
+
+.fitcopilot-particle:nth-child(3) {
+    top: 80%;
+    left: 40%;
+    animation-delay: 4s;
+}
+
+.fitcopilot-particle:nth-child(4) {
+    top: 40%;
+    left: 70%;
+    animation-delay: 3s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+        opacity: 0.6;
+    }
+    50% {
+        transform: translateY(-20px);
+        opacity: 1;
+    }
+}
+
+/* Admin header */
+.fitcopilot-admin-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fitcopilot-admin-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #84E1BC, #CCFF00);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.fitcopilot-admin-logo svg {
+    width: 24px;
+    height: 24px;
+    fill: #0B1121;
+}
+
+.fitcopilot-admin-header h1 {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(90deg, #ffffff, #84E1BC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Tab navigation */
+.nav-tab-wrapper {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-tab {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 8px 8px 0 0;
+    margin-right: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+    top: 1px;
+}
+
+.nav-tab:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.nav-tab-active {
+    background: rgba(132, 225, 188, 0.1);
+    border-color: rgba(132, 225, 188, 0.3);
+    color: #84E1BC;
+}
+
+/* Status indicator */
+.fitcopilot-status-indicator {
+    background: rgba(132, 225, 188, 0.1);
+    border: 1px solid rgba(132, 225, 188, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    color: #ffffff;
+    font-size: 0.9rem;
+}
+
+/* Card system */
+.fitcopilot-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.fitcopilot-card:hover {
+    border-color: rgba(132, 225, 188, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Section dividers */
+.fitcopilot-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(132, 225, 188, 0.3), transparent);
+    margin: 3rem 0;
+}
+
+/* Form elements base styling */
+.fitcopilot-admin-container .form-table {
+    background: transparent;
+}
+
+.fitcopilot-admin-container .form-table th {
+    color: rgba(255, 255, 255, 0.9);
+    padding: 1rem 0;
+    font-weight: 600;
+}
+
+.fitcopilot-admin-container .form-table td {
+    padding: 1rem 0;
+}
+
+/* Button base styling */
+.button-primary {
+    background: linear-gradient(135deg, #84E1BC, #CCFF00);
+    border: none;
+    color: #0B1121;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-shadow: none;
+    box-shadow: 0 4px 12px rgba(132, 225, 188, 0.3);
+}
+
+.button-primary:hover {
+    background: linear-gradient(135deg, #6DD5A8, #B8FF00);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(132, 225, 188, 0.4);
+    color: #0B1121;
+}
+
+.button-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.button-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(132, 225, 188, 0.5);
+    color: #ffffff;
+}
+
+/* Responsive design */
+@media (max-width: 1200px) {
+    .fitcopilot-admin-container {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .fitcopilot-admin-container {
+        padding: 1rem;
+    }
+    
+    .fitcopilot-admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .fitcopilot-admin-header h1 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    .fitcopilot-particle {
+        animation: none;
+    }
+    
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+} 

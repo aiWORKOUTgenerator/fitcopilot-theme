@@ -37,5 +37,6 @@ export const getPersonalTrainingVariant = (): VariantKey => {
 };
 
 export { PersonalTraining };
+export default PersonalTraining;
 export type { PersonalTrainingProps, Trainer };
 

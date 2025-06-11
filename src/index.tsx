@@ -24,6 +24,11 @@ class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { has
     if (debug.isDebugMode()) {
       logger.error('React Error Boundary caught an error:', error, errorInfo);
     }
+    
+    // Handle specific WordPress + React DOM conflicts
+    if (error.message.includes('removeChild') || error.message.includes('Node')) {
+      logger.warn('WordPress + React DOM conflict detected. This is usually harmless and the app will continue to work.');
+    }
   }
 
   handleRefresh = () => {
@@ -97,11 +102,9 @@ const AppContainer: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <React.StrictMode>
-        <Suspense fallback={loadingFallback}>
-          <App />
-        </Suspense>
-      </React.StrictMode>
+      <Suspense fallback={loadingFallback}>
+        <App />
+      </Suspense>
     </ErrorBoundary>
   );
 };
@@ -160,6 +163,7 @@ if (!container) {
   try {
     // Mount app to the existing container
     const root = createRoot(container);
+    // Temporarily disable StrictMode to prevent double-mounting issues in WordPress
     root.render(<AppContainer />);
     logger.debug('React app successfully mounted to existing container');
 

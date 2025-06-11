@@ -105,6 +105,12 @@ require_once get_template_directory() . '/includes/admin-dashboard.php';
 // Include video manager admin page
 require_once get_template_directory() . '/inc/admin/video-manager.php';
 
+// Include testimonials manager admin page
+require_once get_template_directory() . '/inc/admin/testimonials-manager.php';
+
+// Include personal training manager admin page
+require_once get_template_directory() . '/inc/admin/personal-training-manager.php';
+
 // Include critical CSS functions
 require_once get_template_directory() . '/inc/critical-css.php';
 

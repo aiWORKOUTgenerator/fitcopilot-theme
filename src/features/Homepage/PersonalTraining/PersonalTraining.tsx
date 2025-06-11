@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  Award,
-  Dumbbell,
-  Heart,
-  User,
-  Users
+    Award,
+    Dumbbell,
+    Heart,
+    User,
+    Users
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import logger from '../../../utils/logger';
@@ -19,25 +19,146 @@ import { getCoachSpecialtyClass } from './utils/themeUtils';
 /**
  * Default Personal Training component for the homepage
  */
+// Helper function to get specialty icon
+const getSpecialtyIcon = (specialty: string) => {
+  if (specialty.toLowerCase().includes('strength') || specialty.toLowerCase().includes('conditioning')) {
+    return <Dumbbell size={14} />;
+  }
+  if (specialty.toLowerCase().includes('nutrition') || specialty.toLowerCase().includes('weight')) {
+    return <Heart size={14} />;
+  }
+  if (specialty.toLowerCase().includes('performance') || specialty.toLowerCase().includes('athletic')) {
+    return <Award size={14} />;
+  }
+  if (specialty.toLowerCase().includes('group') || specialty.toLowerCase().includes('class')) {
+    return <Users size={14} />;
+  }
+  return <User size={14} />;
+};
+
 const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers, variant = 'default' }) => {
-  // State to store WordPress video data
+  // State to store WordPress data
+  const [trainerData, setTrainerData] = useState<Trainer[]>([]);
+  const [settings, setSettings] = useState<any>({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [dataSource, setDataSource] = useState<'wordpress' | 'none'>('none');
   const [wordpressVideoData, setWordpressVideoData] = useState<WordPressVideoData | null>(null);
 
-  // Load WordPress video data on mount
+  // Load WordPress data on mount
   useEffect(() => {
-    // Check both potential data sources
-    if (window.fitcopilotVideoData) {
-      setWordpressVideoData(window.fitcopilotVideoData);
-      logger.debug('WordPress video data loaded from fitcopilotVideoData:', window.fitcopilotVideoData);
-    }
-    else {
-      logger.debug('No WordPress video data found');
-      logger.debug('Debug - window.athleteDashboardData:', window.athleteDashboardData);
-      if (window.athleteDashboardData?.wpData) {
-        logger.debug('Debug - window.athleteDashboardData.wpData:', window.athleteDashboardData.wpData);
+    const loadData = () => {
+      try {
+        // Check for WordPress Personal Training data
+        if (typeof window !== 'undefined' && (window as any).fitcopilotPersonalTrainingData) {
+          const wpData = (window as any).fitcopilotPersonalTrainingData;
+          
+          console.log('📊 PersonalTraining WordPress Data:', {
+            hasData: !!wpData,
+            trainerCount: wpData.trainers?.length || 0,
+            settingsKeys: Object.keys(wpData.settings || {}),
+            meta: wpData.meta
+          });
+          
+          if (wpData.trainers && wpData.trainers.length > 0) {
+            // ✅ WordPress data available
+            const formattedTrainers = wpData.trainers.map((trainer: any) => ({
+              id: trainer.id.toString(),
+              name: trainer.name,
+              image: trainer.image_url || "/assets/trainers/trainer-placeholder.jpg",
+              specialty: trainer.specialty,
+              specialtyIcon: getSpecialtyIcon(trainer.specialty),
+              bio: trainer.bio,
+              years: trainer.years_experience,
+              clients: trainer.clients_count,
+              featured: trainer.featured,
+              videoCard: trainer.video_url ? {
+                title: trainer.video_title || "Training Demo",
+                image: trainer.video_poster || "/assets/trainers/workout-demo.jpg",
+                videoUrl: trainer.video_url
+              } : undefined
+            }));
+            
+            setTrainerData(formattedTrainers);
+            setSettings(wpData.settings || {});
+            setDataSource('wordpress');
+            
+            console.log(`✅ Loaded ${wpData.trainers.length} active trainers from WordPress`);
+            console.log('🔄 Formatted trainer data:', formattedTrainers);
+            
+            // Log admin state consistency
+            if (wpData.meta) {
+              console.log(`📈 Data Stats: ${wpData.meta.active_count}/${wpData.meta.total_count} trainers active`);
+              console.log(`⏰ Last updated: ${new Date(wpData.meta.last_updated * 1000).toLocaleString()}`);
+            }
+          } else {
+            // ⚠️ WordPress data empty
+            console.warn('⚠️ WordPress trainer data empty');
+            setTrainerData([]);
+            setDataSource('none');
+          }
+        } else {
+          // ⚠️ WordPress data not available
+          console.warn('⚠️ WordPress data not found');
+          setTrainerData([]);
+          setDataSource('none');
+        }
+
+        // Still check for video data as before
+        if (window.fitcopilotVideoData) {
+          setWordpressVideoData(window.fitcopilotVideoData);
+          logger.debug('WordPress video data loaded from fitcopilotVideoData:', window.fitcopilotVideoData);
+        }
+      } catch (error) {
+        // 🚨 Error loading data
+        console.error('🚨 Error loading PersonalTraining data:', error);
+        setTrainerData([]);
+        setDataSource('none');
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
+
+    loadData();
   }, []);
+
+  // Safe debug logging (only when data changes, not on every render)
+  useEffect(() => {
+    if (trainerData.length > 0) {
+      const featuredCount = trainerData.filter(t => t.featured).length;
+      const regularCount = trainerData.filter(t => !t.featured).length;
+      
+      console.log('🔍 Safe Trainer Debug:', {
+        total: trainerData.length,
+        featured: featuredCount,
+        regular: regularCount,
+        allTrainerNames: trainerData.map(t => `${t.name} (featured: ${t.featured}, type: ${typeof t.featured})`)
+      });
+
+      // Detailed featured field analysis
+      console.log('🔬 Featured Field Analysis:');
+      trainerData.forEach(trainer => {
+        const featuredValue = trainer.featured as any;
+        const isFeatured = featuredValue === true || featuredValue === 'true' || featuredValue === 1 || featuredValue === '1';
+        console.log(`  ${trainer.name}: featured=${JSON.stringify(featuredValue)} (${typeof featuredValue}) → ${isFeatured ? 'FEATURED' : 'regular'}`);
+      });
+      
+      // CRITICAL DEBUG: Show actual filtering results
+      const featuredTrainer = trainerData.find(trainer => {
+        const featured = trainer.featured;
+        return !!featured;
+      });
+      
+      const regularTrainers = trainerData.filter(trainer => {
+        const featured = trainer.featured;
+        return !featured;
+      });
+      
+      console.log('🎯 FILTERING RESULTS:');
+      console.log('Featured trainer found:', featuredTrainer ? featuredTrainer.name : 'NONE');
+      console.log('Regular trainers:', regularTrainers.map(t => t.name));
+      console.log('Expected to render:', (featuredTrainer ? 1 : 0) + regularTrainers.length, 'trainers total');
+    }
+  }, [trainerData]);
 
   // Get video details from WordPress data or use fallbacks
   const getVideoDetails = () => {
@@ -68,69 +189,60 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
     };
   };
 
-  // Default trainer data if none provided
-  const trainers: Trainer[] = propTrainers || [
-    {
-      id: "trainer-1",
-      name: "Justin Fassio",
-      image: "/assets/trainers/trainer1.jpg",
-      specialty: "Strength & Conditioning",
-      specialtyIcon: <Dumbbell size={14} />,
-      bio: "Specialized in transforming physiques through science-based training protocols. Alex has helped over 200 clients achieve their fitness goals.",
-      years: 8,
-      clients: 178,
-      featured: true,
-      videoCard: {
-        title: getVideoDetails().title,
-        image: getVideoDetails().image,
-        videoUrl: getVideoDetails().url
-      }
-    },
-    {
-      id: "trainer-2",
-      name: "Morgan Chen",
-      image: "/assets/trainers/trainer2.jpg",
-      specialty: "Nutrition & Weight Loss",
-      specialtyIcon: <Heart size={14} />,
-      bio: "Certified nutritionist and weight management specialist. Morgan creates personalized diet plans that complement your training regimen.",
-      years: 6,
-      clients: 152,
-      featured: false
-    },
-    {
-      id: "trainer-3",
-      name: "Jordan Smith",
-      image: "/assets/trainers/trainer3.jpg",
-      specialty: "Athletic Performance",
-      specialtyIcon: <Award size={14} />,
-      bio: "Former professional athlete who now trains competitors at all levels. Specializes in sport-specific training and performance enhancement.",
-      years: 10,
-      clients: 215,
-      featured: false
-    }
-  ];
+  // Loading state
+  if (isLoading) {
+    return (
+      <section className="personal-training-section w-full py-20 px-4 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <div className="loading-spinner">Loading trainers...</div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-  // Featured Group Class Instructor (separate from regular trainers)
-  const featuredInstructor: Trainer = {
-    id: "instructor-1",
-    name: "Taylor Martinez",
-    image: "/assets/trainers/instructor1.jpg",
-    specialty: "Group Class Instruction",
-    specialtyIcon: <Users size={14} />,
-    bio: "Lead group fitness instructor specializing in HIIT, yoga, and dance cardio classes. Taylor creates energetic group experiences that motivate and inspire.",
-    years: 7,
-    clients: 240,
-    featured: false, // Not featured in the same way as personal trainer
-    videoCard: {
-      title: "Group Class Energy Demo",
-      image: "/assets/trainers/group-class-demo.jpg",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
-    }
-  };
+  // Use WordPress data - no fallback complexity
+  const activeTrainers: Trainer[] = trainerData;
 
-  // Find featured trainer (back to original simple logic)
-  const featuredTrainer = trainers.find(trainer => trainer.featured);
-  const regularTrainers = trainers.filter(trainer => !trainer.featured);
+  // If no WordPress data is available, show a clear error state
+  if (!activeTrainers || activeTrainers.length === 0) {
+    return (
+      <section className="personal-training-section w-full py-20 px-4 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center">
+            <h2 className="text-2xl font-bold text-white mb-4">Personal Trainers</h2>
+            <div className="text-yellow-400 bg-yellow-900/20 border border-yellow-400/20 rounded-lg p-4 max-w-md mx-auto">
+              <p className="font-medium">⚠️ No trainer data available</p>
+              <p className="text-sm mt-2">Please check the WordPress Personal Training Manager configuration.</p>
+              {process.env.NODE_ENV === 'development' && (
+                <p className="text-xs mt-2 opacity-75">
+                  Data source: {dataSource} | 
+                  WordPress data available: {typeof window !== 'undefined' && !!(window as any).fitcopilotPersonalTrainingData ? 'Yes' : 'No'}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // FIXED: Handle multiple featured trainers properly
+  const featuredTrainers = activeTrainers.filter(trainer => {
+    // Convert to boolean using WordPress/PHP semantics
+    const featured = trainer.featured;
+    return !!featured; // Simple truthy check like PHP !empty()
+  });
+  
+  const regularTrainers = activeTrainers.filter(trainer => {
+    // Convert to boolean using WordPress/PHP semantics 
+    const featured = trainer.featured;
+    return !featured; // Simple falsy check
+  });
+  
+  // For backwards compatibility: use first featured trainer for the main featured section
+  const featuredTrainer = featuredTrainers.length > 0 ? featuredTrainers[0] : null;
 
   // Get coach type from specialty for button styling
   const getCoachType = (specialty: string): 'strength' | 'nutrition' | 'performance' | 'recovery' => {
@@ -150,8 +262,17 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
   };
 
   return (
-    <section className="personal-training-section w-full py-20 px-4 bg-gray-900">
+    <section className="personal-training-section w-full py-20 px-4 bg-gray-900" data-source={dataSource}>
       <div className="container mx-auto px-4">
+        {/* Debug info in development */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="debug-info text-center mb-4">
+            <small className="text-gray-500">
+              Data Source: {dataSource} | Trainers: {activeTrainers.length}
+            </small>
+          </div>
+        )}
+        
         {/* Section header */}
         <div className="text-center mb-16">
           <span className="text-xs font-bold tracking-widest uppercase text-violet-300 mb-2 block">Expert Coaching</span>
@@ -163,84 +284,16 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
           </p>
         </div>
 
-        {/* Trainers Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-16">
-          {/* Featured Personal Trainer - Top Left */}
-          {featuredTrainer && (
+        {/* Trainers Grid - Using Legacy SCSS Layout */}
+        <div className="trainers-container" data-trainer-count={activeTrainers.length}>
+          {/* All Active Trainers (Featured + Regular) */}
+          {activeTrainers.map((trainer) => (
             <div
-              key={featuredTrainer.id}
-              className="trainer-card col-span-1 md:col-span-2 row-span-1"
+              key={trainer.id}
+              className={`trainer-card ${trainer.featured ? 'featured' : 'regular'}`}
+              data-trainer-id={trainer.id}
+              data-trainer-name={trainer.name}
             >
-              {/* Trainer Image */}
-              <div className="trainer-image">
-                {featuredTrainer.image && !featuredTrainer.image.includes('assets/trainers') ? (
-                  <img
-                    src={featuredTrainer.image}
-                    alt={featuredTrainer.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <User size={48} className="text-white opacity-70" />
-                )}
-              </div>
-
-              {/* Trainer Specialty Tag */}
-              <div className={`trainer-specialty ${getCoachSpecialtyClass(featuredTrainer.specialty)}`}>
-                {featuredTrainer.specialtyIcon}
-                <span className="ml-1">{featuredTrainer.specialty}</span>
-              </div>
-
-              {/* Trainer Info */}
-              <h3 className="text-xl font-bold mb-2 text-white">{featuredTrainer.name}</h3>
-              <p className="text-gray-400 mb-4">{featuredTrainer.bio}</p>
-
-              {/* Trainer Stats */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="text-center">
-                  <span className="text-2xl font-bold text-violet-400 block mb-1">{featuredTrainer.years}</span>
-                  <span className="text-sm text-gray-500">Years Exp</span>
-                </div>
-                <div className="text-center">
-                  <span className="text-2xl font-bold text-violet-400 block mb-1">{featuredTrainer.clients}</span>
-                  <span className="text-sm text-gray-500">Clients</span>
-                </div>
-              </div>
-
-              {/* Action Button - Using PersonalTrainingCTA */}
-              <PersonalTrainingCTA
-                text="Schedule Session"
-                coachType={getCoachType(featuredTrainer.specialty)}
-                buttonSize="large"
-                variant={variant}
-                data-context="featured-trainer"
-              />
-
-              {/* Video display - direct instead of flip card */}
-              {featuredTrainer.videoCard && (
-                <div className="mt-6">
-                  <h4 className="text-lg font-medium text-white mb-3">{featuredTrainer.videoCard.title}</h4>
-                  <MediaContainer
-                    src={featuredTrainer.videoCard.videoUrl || ''}
-                    type="video"
-                    poster={featuredTrainer.videoCard.image || undefined}
-                    muted={false}
-                    autoPlay={false}
-                    controls={true}
-                    loop={false}
-                    alt={`${featuredTrainer.name} training video`}
-                    className="rounded-lg overflow-hidden"
-                    aspectRatio="16/9"
-                    theme="gym"
-                    useWordPressData={true}
-                  />
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Regular Trainers */}
-          {regularTrainers.map((trainer) => (
-            <div key={trainer.id} className="trainer-card col-span-1">
               {/* Trainer Image */}
               <div className="trainer-image">
                 {trainer.image && !trainer.image.includes('assets/trainers') ? (
@@ -250,7 +303,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <User size={40} className="text-white opacity-70" />
+                  <User size={trainer.featured ? 48 : 40} className="text-white opacity-70" />
                 )}
               </div>
 
@@ -261,18 +314,18 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
               </div>
 
               {/* Trainer Info */}
-              <h3 className="text-xl font-bold mb-2 text-white">{trainer.name}</h3>
-              <p className="text-gray-400 mb-4">{trainer.bio}</p>
+              <h3 className="trainer-name">{trainer.name}</h3>
+              <p className="trainer-bio">{trainer.bio}</p>
 
               {/* Trainer Stats */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="text-center">
-                  <span className="text-2xl font-bold text-violet-400 block mb-1">{trainer.years}</span>
-                  <span className="text-sm text-gray-500">Years Exp</span>
+              <div className="trainer-stats">
+                <div className="stat-item">
+                  <span className="stat-value">{trainer.years}</span>
+                  <span className="stat-label">Years Exp</span>
                 </div>
-                <div className="text-center">
-                  <span className="text-2xl font-bold text-violet-400 block mb-1">{trainer.clients}</span>
-                  <span className="text-sm text-gray-500">Clients</span>
+                <div className="stat-item">
+                  <span className="stat-value">{trainer.clients}</span>
+                  <span className="stat-label">Clients</span>
                 </div>
               </div>
 
@@ -280,83 +333,33 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
               <PersonalTrainingCTA
                 text="Schedule Session"
                 coachType={getCoachType(trainer.specialty)}
-                buttonSize="medium"
+                buttonSize={trainer.featured ? "large" : "medium"}
                 variant={variant}
-                data-context="trainer"
+                data-context={trainer.featured ? "featured-trainer" : "trainer"}
               />
-            </div>
-          ))}
 
-          {/* Featured Group Class Instructor - Bottom Right */}
-          <div
-            key={featuredInstructor.id}
-            className="trainer-card col-span-1 md:col-span-2 row-span-1"
-          >
-            {/* Instructor Image */}
-            <div className="trainer-image">
-              {featuredInstructor.image && !featuredInstructor.image.includes('assets/trainers') ? (
-                <img
-                  src={featuredInstructor.image}
-                  alt={featuredInstructor.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <Users size={48} className="text-white opacity-70" />
+              {/* Video display for featured trainers only */}
+              {trainer.featured && trainer.videoCard && (
+                <div className="mt-6">
+                  <h4 className="text-lg font-medium text-white mb-3">{trainer.videoCard.title}</h4>
+                  <MediaContainer
+                    src={trainer.videoCard.videoUrl || ''}
+                    type="video"
+                    poster={trainer.videoCard.image || undefined}
+                    muted={false}
+                    autoPlay={false}
+                    controls={true}
+                    loop={false}
+                    alt={`${trainer.name} training video`}
+                    className="rounded-lg overflow-hidden"
+                    aspectRatio="16/9"
+                    theme="gym"
+                    useWordPressData={true}
+                  />
+                </div>
               )}
             </div>
-
-            {/* Instructor Specialty Tag */}
-            <div className={`trainer-specialty ${getCoachSpecialtyClass(featuredInstructor.specialty)}`}>
-              {featuredInstructor.specialtyIcon}
-              <span className="ml-1">Featured {featuredInstructor.specialty}</span>
-            </div>
-
-            {/* Instructor Info */}
-            <h3 className="text-xl font-bold mb-2 text-white">{featuredInstructor.name}</h3>
-            <p className="text-gray-400 mb-4">{featuredInstructor.bio}</p>
-
-            {/* Instructor Stats */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="text-center">
-                <span className="text-2xl font-bold text-violet-400 block mb-1">{featuredInstructor.years}</span>
-                <span className="text-sm text-gray-500">Years Exp</span>
-              </div>
-              <div className="text-center">
-                <span className="text-2xl font-bold text-violet-400 block mb-1">{featuredInstructor.clients}</span>
-                <span className="text-sm text-gray-500">Classes Led</span>
-              </div>
-            </div>
-
-            {/* Action Button - Using PersonalTrainingCTA */}
-            <PersonalTrainingCTA
-              text="Join Group Class"
-              coachType={getCoachType(featuredInstructor.specialty)}
-              buttonSize="large"
-              variant={variant}
-              data-context="featured-instructor"
-            />
-
-            {/* Video display - direct instead of flip card */}
-            {featuredInstructor.videoCard && (
-              <div className="mt-6">
-                <h4 className="text-lg font-medium text-white mb-3">{featuredInstructor.videoCard.title}</h4>
-                <MediaContainer
-                  src={featuredInstructor.videoCard.videoUrl || ''}
-                  type="video"
-                  poster={featuredInstructor.videoCard.image || undefined}
-                  muted={false}
-                  autoPlay={false}
-                  controls={true}
-                  loop={false}
-                  alt={`${featuredInstructor.name} group class video`}
-                  className="rounded-lg overflow-hidden"
-                  aspectRatio="16/9"
-                  theme="gym"
-                  useWordPressData={true}
-                />
-              </div>
-            )}
-          </div>
+          ))}
         </div>
 
         {/* Team CTA */}

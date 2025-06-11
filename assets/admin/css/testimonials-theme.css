@@ -1,0 +1,338 @@
+/* FitCopilot Testimonials Admin - Theme & Component Styles */
+
+/* ==========================================================================
+   CSS Custom Properties / Theme Variables
+   ========================================================================== */
+
+:root {
+    /* Primary Brand Colors */
+    --testimonial-primary-color: #84e1bc;
+    --testimonial-primary-gradient: linear-gradient(135deg, #84e1bc 0%, #a7f3d0 100%);
+    --testimonial-secondary-color: #a7f3d0;
+    
+    /* Background Colors */
+    --testimonial-bg-primary: rgba(30, 41, 59, 0.4);
+    --testimonial-bg-secondary: rgba(55, 65, 81, 0.8);
+    --testimonial-bg-input: rgba(30, 41, 59, 0.8);
+    
+    /* Border Colors */
+    --testimonial-border-primary: rgba(255, 255, 255, 0.1);
+    --testimonial-border-secondary: rgba(255, 255, 255, 0.2);
+    --testimonial-border-focus: #84e1bc;
+    
+    /* Text Colors */
+    --testimonial-text-primary: #ffffff;
+    --testimonial-text-secondary: rgba(255, 255, 255, 0.9);
+    --testimonial-text-muted: rgba(255, 255, 255, 0.7);
+    --testimonial-text-placeholder: rgba(255, 255, 255, 0.5);
+    
+    /* Status Colors */
+    --testimonial-success: #22c55e;
+    --testimonial-error: #ef4444;
+    --testimonial-warning: #fbbf24;
+    
+    /* Spacing */
+    --testimonial-radius: 8px;
+    --testimonial-radius-large: 16px;
+    --testimonial-spacing-xs: 0.5rem;
+    --testimonial-spacing-sm: 1rem;
+    --testimonial-spacing-md: 1.5rem;
+    --testimonial-spacing-lg: 2rem;
+}
+
+/* ==========================================================================
+   Typography & Text Elements
+   ========================================================================== */
+
+.fitcopilot-admin-header h1 {
+    color: var(--testimonial-text-primary);
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    background: var(--testimonial-primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+}
+
+.fitcopilot-card h2 {
+    color: var(--testimonial-text-primary);
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    background: var(--testimonial-primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.fitcopilot-card h3 {
+    color: var(--testimonial-primary-color);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: var(--testimonial-spacing-sm);
+}
+
+.fitcopilot-card p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin-bottom: var(--testimonial-spacing-md);
+}
+
+.testimonial-row-header h4 {
+    margin: 0;
+    color: var(--testimonial-primary-color);
+    font-size: 1.125rem;
+    font-weight: 600;
+    background: var(--testimonial-primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ==========================================================================
+   Navigation & Tab Styling
+   ========================================================================== */
+
+.nav-tab {
+    background: transparent;
+    border: none;
+    color: var(--testimonial-text-muted);
+    padding: 12px 24px;
+    margin: 0;
+    border-radius: var(--testimonial-radius);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-tab:hover {
+    color: var(--testimonial-text-primary);
+    background: rgba(132, 225, 188, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-tab.nav-tab-active {
+    background: linear-gradient(135deg, rgba(132, 225, 188, 0.2) 0%, rgba(167, 243, 208, 0.1) 100%);
+    color: var(--testimonial-primary-color);
+    border-color: rgba(132, 225, 188, 0.3);
+    box-shadow: 0 4px 16px rgba(132, 225, 188, 0.2);
+}
+
+/* ==========================================================================
+   Form Elements & Input Styling
+   ========================================================================== */
+
+.form-table th {
+    color: var(--testimonial-text-secondary);
+    font-weight: 500;
+    padding: var(--testimonial-spacing-sm) 0;
+}
+
+.form-table td {
+    padding: var(--testimonial-spacing-sm) 0;
+}
+
+.form-table input[type="text"],
+.form-table input[type="number"],
+.form-table input[type="url"],
+.form-table input[type="email"],
+.form-table textarea,
+.form-table select,
+.field-group input,
+.field-group select,
+.field-group textarea {
+    background: var(--testimonial-bg-input);
+    border: 1px solid var(--testimonial-border-secondary);
+    border-radius: var(--testimonial-radius);
+    color: var(--testimonial-text-primary);
+    padding: 12px 16px;
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    width: 100%;
+    font-size: 0.875rem;
+}
+
+.form-table input[type="text"] {
+    max-width: 400px;
+}
+
+.form-table input:focus,
+.form-table textarea:focus,
+.form-table select:focus,
+.field-group input:focus,
+.field-group textarea:focus,
+.field-group select:focus {
+    outline: none;
+    border-color: var(--testimonial-border-focus);
+    box-shadow: 0 0 0 3px rgba(132, 225, 188, 0.1);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+.form-table input::placeholder,
+.form-table textarea::placeholder,
+.field-group input::placeholder,
+.field-group textarea::placeholder {
+    color: var(--testimonial-text-placeholder);
+}
+
+.field-group label {
+    color: var(--testimonial-text-secondary);
+    font-weight: 500;
+    font-size: 0.875rem;
+    margin-bottom: var(--testimonial-spacing-xs);
+}
+
+.field-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* ==========================================================================
+   Button Styling
+   ========================================================================== */
+
+.button {
+    background: var(--testimonial-primary-gradient);
+    border: none;
+    border-radius: var(--testimonial-radius);
+    color: #1f2937;
+    font-weight: 600;
+    padding: 12px 24px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(132, 225, 188, 0.3);
+    color: #111827;
+}
+
+.button-secondary {
+    background: var(--testimonial-bg-secondary);
+    color: var(--testimonial-text-secondary);
+    border: 1px solid var(--testimonial-border-secondary);
+}
+
+.button-secondary:hover {
+    background: rgba(75, 85, 99, 0.9);
+    color: var(--testimonial-text-primary);
+    border-color: rgba(132, 225, 188, 0.3);
+}
+
+.button-link-delete {
+    color: var(--testimonial-error);
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+}
+
+.button-link-delete:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: var(--testimonial-text-primary);
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Checkbox & Form Controls
+   ========================================================================== */
+
+input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    background: var(--testimonial-bg-secondary);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+input[type="checkbox"]:checked {
+    background: var(--testimonial-primary-gradient);
+    border-color: var(--testimonial-primary-color);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #1f2937;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.active-toggle label {
+    color: var(--testimonial-text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Rating & Status Elements
+   ========================================================================== */
+
+.rating-display {
+    display: flex;
+    gap: 4px;
+    margin: 0.5rem 0;
+}
+
+.rating-star {
+    color: var(--testimonial-warning);
+    font-size: 18px;
+}
+
+/* ==========================================================================
+   Notice & Alert Styling
+   ========================================================================== */
+
+.notice {
+    background: rgba(132, 225, 188, 0.1);
+    border-left: 4px solid var(--testimonial-primary-color);
+    border-radius: 0 var(--testimonial-radius) var(--testimonial-radius) 0;
+    color: var(--testimonial-text-primary);
+    backdrop-filter: blur(8px);
+}
+
+.notice.notice-success {
+    background: rgba(34, 197, 94, 0.1);
+    border-left-color: var(--testimonial-success);
+}
+
+.notice.notice-error {
+    background: rgba(239, 68, 68, 0.1);
+    border-left-color: var(--testimonial-error);
+}
+
+/* ==========================================================================
+   Mobile Theme Adjustments
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .fitcopilot-admin-header h1 {
+        font-size: 2rem;
+    }
+    
+    .nav-tab {
+        width: 100%;
+        text-align: center;
+    }
+} 

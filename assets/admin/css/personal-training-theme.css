@@ -1,0 +1,586 @@
+/**
+ * FitCopilot Personal Training Admin Theme CSS
+ * Colors, typography, and component styling following FitCopilot admin design system
+ * 
+ * @package FitCopilot
+ */
+
+/* FitCopilot Admin Color Palette */
+:root {
+    --fitcopilot-bg-primary: #0B1121;
+    --fitcopilot-bg-secondary: #151F38;
+    --fitcopilot-bg-tertiary: #1F2937;
+    --fitcopilot-text-primary: #FFFFFF;
+    --fitcopilot-text-secondary: #CCFF00;
+    --fitcopilot-accent: #84E1BC;
+    --fitcopilot-accent-light: #A5F3D0;
+    --fitcopilot-accent-dark: #6BD2A8;
+    --fitcopilot-border: rgba(255, 255, 255, 0.1);
+    --fitcopilot-border-hover: rgba(132, 225, 188, 0.3);
+    --fitcopilot-success: #10B981;
+    --fitcopilot-warning: #F59E0B;
+    --fitcopilot-error: #EF4444;
+    --fitcopilot-info: #3B82F6;
+}
+
+/* Personal Training Admin Wrapper - FIXED: Added container constraints */
+.wrap.fitcopilot-personal-training-admin {
+    background: var(--fitcopilot-bg-primary);
+    color: var(--fitcopilot-text-primary);
+    min-height: 100vh;
+    position: relative;
+    max-width: 100%;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    box-sizing: border-box;
+}
+
+/* Main admin container constraint */
+.fitcopilot-admin-container {
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding: 0 20px;
+}
+
+/* Tab content container constraint */
+.tab-content.fitcopilot-card {
+    max-width: 100%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+/* Override WordPress admin styling */
+.fitcopilot-personal-training-admin .form-table {
+    background: transparent;
+}
+
+.fitcopilot-personal-training-admin .form-table th {
+    color: var(--fitcopilot-text-primary);
+    text-shadow: none;
+    padding: 1rem 10px;
+}
+
+.fitcopilot-personal-training-admin .form-table td {
+    color: var(--fitcopilot-text-primary);
+    padding: 1rem 10px;
+}
+
+/* Headers and Typography */
+.fitcopilot-personal-training-admin h1 {
+    color: var(--fitcopilot-text-primary);
+    text-shadow: none;
+}
+
+.fitcopilot-personal-training-admin h2,
+.fitcopilot-personal-training-admin h3,
+.fitcopilot-personal-training-admin h4 {
+    color: var(--fitcopilot-text-primary);
+    text-shadow: none;
+}
+
+.fitcopilot-personal-training-admin p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Tab Content Styling */
+.tab-content {
+    min-height: 400px;
+}
+
+.tab-content h3 {
+    color: var(--fitcopilot-accent);
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+/* Form Input Styling */
+.fitcopilot-personal-training-admin input[type="text"],
+.fitcopilot-personal-training-admin input[type="url"],
+.fitcopilot-personal-training-admin input[type="number"],
+.fitcopilot-personal-training-admin input[type="email"],
+.fitcopilot-personal-training-admin select,
+.fitcopilot-personal-training-admin textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--fitcopilot-border);
+    color: var(--fitcopilot-text-primary);
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+.fitcopilot-personal-training-admin input[type="text"]:focus,
+.fitcopilot-personal-training-admin input[type="url"]:focus,
+.fitcopilot-personal-training-admin input[type="number"]:focus,
+.fitcopilot-personal-training-admin input[type="email"]:focus,
+.fitcopilot-personal-training-admin select:focus,
+.fitcopilot-personal-training-admin textarea:focus {
+    border-color: var(--fitcopilot-border-hover);
+    background: rgba(255, 255, 255, 0.08);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(132, 225, 188, 0.2);
+}
+
+.fitcopilot-personal-training-admin input::placeholder,
+.fitcopilot-personal-training-admin textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Select dropdown styling */
+.fitcopilot-personal-training-admin select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2384E1BC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 3rem;
+    appearance: none;
+}
+
+/* Checkbox styling */
+.fitcopilot-personal-training-admin input[type="checkbox"] {
+    accent-color: var(--fitcopilot-accent);
+    width: 18px;
+    height: 18px;
+    margin-right: 0.5rem;
+}
+
+/* Button styling */
+.fitcopilot-personal-training-admin .button-primary {
+    background: linear-gradient(135deg, var(--fitcopilot-accent), var(--fitcopilot-text-secondary));
+    border: none;
+    color: var(--fitcopilot-bg-primary);
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-shadow: none;
+    box-shadow: 0 4px 12px rgba(132, 225, 188, 0.3);
+    text-decoration: none;
+}
+
+.fitcopilot-personal-training-admin .button-primary:hover,
+.fitcopilot-personal-training-admin .button-primary:focus {
+    background: linear-gradient(135deg, var(--fitcopilot-accent-light), #B8FF00);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(132, 225, 188, 0.4);
+    color: var(--fitcopilot-bg-primary);
+}
+
+.fitcopilot-personal-training-admin .button-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--fitcopilot-border);
+    color: var(--fitcopilot-text-primary);
+    padding: 12px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.fitcopilot-personal-training-admin .button-secondary:hover,
+.fitcopilot-personal-training-admin .button-secondary:focus {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--fitcopilot-border-hover);
+    color: var(--fitcopilot-text-primary);
+    transform: translateY(-1px);
+}
+
+/* Specialty badges */
+.specialty-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.specialty-badge.strength {
+    background: rgba(139, 92, 246, 0.2);
+    color: #a78bfa;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.specialty-badge.nutrition {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.specialty-badge.performance {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.specialty-badge.recovery {
+    background: rgba(132, 225, 188, 0.2);
+    color: var(--fitcopilot-accent);
+    border: 1px solid rgba(132, 225, 188, 0.3);
+}
+
+/* Featured trainer indicator */
+.featured-indicator {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #0B1121;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Status indicators */
+.status-active {
+    color: var(--fitcopilot-success);
+}
+
+.status-inactive {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Video preview styling */
+.video-preview {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--fitcopilot-border);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.video-preview-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--fitcopilot-accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--fitcopilot-bg-primary);
+    font-size: 1.2rem;
+}
+
+.video-preview-info h5 {
+    color: var(--fitcopilot-text-primary);
+    margin: 0 0 0.25rem 0;
+    font-size: 1rem;
+}
+
+.video-preview-info p {
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Image upload area */
+.image-upload-area {
+    border: 2px dashed var(--fitcopilot-border);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.02);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.image-upload-area:hover {
+    border-color: var(--fitcopilot-border-hover);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.image-upload-area.has-image {
+    border-style: solid;
+    border-color: var(--fitcopilot-accent);
+    background: rgba(132, 225, 188, 0.05);
+}
+
+/* Progress indicators */
+.progress-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--fitcopilot-accent), var(--fitcopilot-text-secondary));
+    transition: width 0.3s ease;
+}
+
+/* Validation errors */
+.field-error {
+    color: var(--fitcopilot-error);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.field-error::before {
+    content: "⚠️";
+    font-size: 0.7rem;
+}
+
+/* Success indicators */
+.field-success {
+    color: var(--fitcopilot-success);
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.field-success::before {
+    content: "✅";
+    font-size: 0.7rem;
+}
+
+/* Loading states */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(11, 17, 33, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(132, 225, 188, 0.3);
+    border-top: 3px solid var(--fitcopilot-accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Tooltip styling */
+.tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--fitcopilot-bg-tertiary);
+    color: var(--fitcopilot-text-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+    border: 1px solid var(--fitcopilot-border);
+}
+
+.tooltip:hover::before {
+    opacity: 1;
+}
+
+/* Dark mode WordPress admin integration */
+body.admin-color-fresh .fitcopilot-personal-training-admin,
+body.admin-color-modern .fitcopilot-personal-training-admin,
+body.admin-color-blue .fitcopilot-personal-training-admin {
+    /* Ensure our custom styling takes precedence */
+    background: var(--fitcopilot-bg-primary) !important;
+}
+
+/* Print styles */
+@media print {
+    .fitcopilot-personal-training-admin {
+        background: white !important;
+        color: black !important;
+    }
+    
+    .fitcopilot-admin-background,
+    .button,
+    .nav-tab-wrapper {
+        display: none !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .fitcopilot-personal-training-admin {
+        --fitcopilot-border: rgba(255, 255, 255, 0.3);
+        --fitcopilot-border-hover: rgba(132, 225, 188, 0.6);
+    }
+    
+    .trainer-row {
+        border-width: 2px;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .fitcopilot-personal-training-admin * {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .loading-spinner {
+        animation: none;
+        border-top-color: var(--fitcopilot-accent);
+    }
+}
+
+/* Individual trainer save section */
+.trainer-save-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--fitcopilot-border);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.save-individual-trainer {
+    background: linear-gradient(135deg, #84E1BC, #CCFF00) !important;
+    border: none !important;
+    color: #0B1121 !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-size: 0.9rem !important;
+    text-shadow: none !important;
+    box-shadow: 0 2px 8px rgba(132, 225, 188, 0.2) !important;
+}
+
+.save-individual-trainer:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(132, 225, 188, 0.3) !important;
+    background: linear-gradient(135deg, #A5F3D0, #D4FF33) !important;
+}
+
+.save-individual-trainer:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+.save-individual-trainer.has-changes {
+    background: linear-gradient(135deg, #ff6b6b, #ffa500) !important;
+    animation: pulse-changes 2s infinite;
+    color: #fff !important;
+}
+
+@keyframes pulse-changes {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* Save status indicators */
+.save-status {
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 100px;
+}
+
+.save-status.saving {
+    color: #ffa500;
+}
+
+.save-status.saving::after {
+    content: "...";
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: "..."; }
+    40% { content: ""; }
+    60% { content: "."; }
+    80% { content: ".."; }
+}
+
+.save-status.success {
+    color: #84E1BC;
+    font-weight: 600;
+}
+
+.save-status.error {
+    color: #ff6b6b;
+    font-weight: 600;
+}
+
+/* Unsaved changes indicator */
+.trainer-row.has-unsaved-changes {
+    border-color: rgba(255, 165, 0, 0.5);
+    background: rgba(255, 165, 0, 0.02);
+    position: relative;
+}
+
+.trainer-row.has-unsaved-changes::before {
+    content: "●";
+    color: #ffa500;
+    font-size: 1.2rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    animation: blink 1.5s infinite;
+    z-index: 10;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+/* Just saved flash effect */
+.trainer-row.just-saved {
+    border-color: rgba(132, 225, 188, 0.8);
+    background: rgba(132, 225, 188, 0.05);
+    animation: flash-saved 0.5s ease-out;
+}
+
+@keyframes flash-saved {
+    0% {
+        background: rgba(132, 225, 188, 0.2);
+        border-color: rgba(132, 225, 188, 1);
+    }
+    100% {
+        background: rgba(132, 225, 188, 0.05);
+        border-color: rgba(132, 225, 188, 0.8);
+    }
+}
+
+/* Keyboard shortcut hint */
+.trainer-row:hover .trainer-save-section::after {
+    content: "Ctrl+S";
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-left: auto;
+    font-family: monospace;
+} 

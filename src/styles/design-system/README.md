@@ -171,6 +171,24 @@ import { GlobalBackground } from 'components/shared';
 - [Component Tokens](./component-tokens.scss)
 - [Spacing System](./spacing.md)
 
+## WordPress Admin Interface Standards
+
+The FitCopilot theme includes comprehensive standards for WordPress admin interfaces:
+
+- **[Admin Interface Design System](../../docs/FITCOPILOT-ADMIN-INTERFACE-STANDARD.md)**: Complete guidelines for creating consistent WordPress admin interfaces with responsive grid layouts, modular CSS architecture, and proper data management.
+
+- **[Frontend-Backend Integration Guide](../../docs/FRONTEND-BACKEND-INTEGRATION-GUIDE.md)**: Detailed patterns for ensuring perfect data consistency between WordPress admin interfaces and React frontend components.
+
+### Key Features
+
+- **Unified Styling**: Dark theme with glass morphism effects matching the Registration aesthetic
+- **Responsive Grids**: 3-column → 2-column → 1-column responsive layouts
+- **Data Consistency**: Admin "active" checkboxes control frontend visibility
+- **Modular CSS**: Base → Grid → Theme file structure for maintainability
+- **React Integration**: Seamless data flow from WordPress to React components
+
+**Reference Implementation**: The Testimonials Manager serves as the production example of these standards in action.
+
 ## Token Usage Guidelines
 
 This document outlines the design token system for the FitCopilot theme, including naming conventions, usage patterns, and best practices.

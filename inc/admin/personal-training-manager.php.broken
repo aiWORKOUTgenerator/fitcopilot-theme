@@ -1,0 +1,1131 @@
+<?php
+/**
+ * FitCopilot Personal Training Manager Admin Page
+ * 
+ * Provides admin interface for managing personal trainers and group class instructors
+ * 
+ * @package FitCopilot
+ */
+
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+/**
+ * MIGRATION FEATURE FLAG
+ * 
+ * Set to true to use the new modular architecture
+ * Set to false to use the legacy monolithic system
+ * 
+ * This allows for safe rollback during migration
+ */
+define('FITCOPILOT_USE_MODULAR_PERSONAL_TRAINING', false);
+
+// If using modular system, load that instead
+if (defined('FITCOPILOT_USE_MODULAR_PERSONAL_TRAINING') && FITCOPILOT_USE_MODULAR_PERSONAL_TRAINING) {
+    require_once get_template_directory() . '/inc/admin/personal-training/class-personal-training-manager.php';
+    
+    // Debug logging for migration
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('FitCopilot Personal Training: Using MODULAR architecture');
+    }
+    
+    // Exit to prevent loading legacy code
+    return;
+}
+
+// Debug logging for migration
+if (defined('WP_DEBUG') && WP_DEBUG) {
+    error_log('FitCopilot Personal Training: Using LEGACY monolithic architecture');
+}
+
+// Include shared admin functions
+require_once get_template_directory() . '/inc/admin/shared/admin-base-template.php';
+
+/**
+ * Register the Personal Training Manager admin page
+ */
+function fitcopilot_register_personal_training_manager_page() {
+    add_submenu_page(
+        'fitcopilot-dashboard',                           // Parent slug
+        'Personal Training Manager',                      // Page title
+        'Trainers',                                      // Menu title
+        'manage_options',                                // Capability required
+        'fitcopilot-personal-training',                  // Menu slug
+        'fitcopilot_render_personal_training_manager_page' // Callback function
+    );
+}
+add_action('admin_menu', 'fitcopilot_register_personal_training_manager_page');
+
+
+
+/**
+ * Enqueue admin scripts and styles for Personal Training Manager
+ */
+function fitcopilot_personal_training_manager_admin_scripts($hook) {
+    if ('fitcopilot_page_fitcopilot-personal-training' !== $hook) {
+        return;
+    }
+    
+    // Base styles (required first)
+    wp_enqueue_style(
+        'fitcopilot-admin-base',
+        get_template_directory_uri() . '/assets/admin/css/shared/admin-base.css',
+        array(),
+        filemtime(get_template_directory() . '/assets/admin/css/shared/admin-base.css')
+    );
+    
+    // Grid layout (depends on base)
+    wp_enqueue_style(
+        'fitcopilot-personal-training-grid',
+        get_template_directory_uri() . '/assets/admin/css/personal-training-grid.css',
+        array('fitcopilot-admin-base'),
+        filemtime(get_template_directory() . '/assets/admin/css/personal-training-grid.css')
+    );
+    
+    // Theme styling (depends on base + grid)
+    wp_enqueue_style(
+        'fitcopilot-personal-training-theme',
+        get_template_directory_uri() . '/assets/admin/css/personal-training-theme.css',
+        array('fitcopilot-admin-base', 'fitcopilot-personal-training-grid'),
+        filemtime(get_template_directory() . '/assets/admin/css/personal-training-theme.css')
+    );
+    
+    // Enqueue WordPress media library
+    wp_enqueue_media();
+    
+    // Enqueue jQuery for admin interactions
+    wp_enqueue_script('jquery');
+    
+    // Add admin AJAX script for individual trainer saves
+    wp_enqueue_script(
+        'fitcopilot-personal-training-admin',
+        get_template_directory_uri() . '/assets/admin/js/personal-training-admin.js',
+        array('jquery'),
+        '1.0.0',
+        true
+    );
+    
+    // Localize script for AJAX
+    wp_localize_script('fitcopilot-personal-training-admin', 'fitcopilotPersonalTrainingAjax', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('fitcopilot_save_individual_trainer'),
+        'saving_text' => __('Saving...', 'fitcopilot'),
+        'saved_text' => __('✅ Saved!', 'fitcopilot'),
+        'error_text' => __('❌ Error saving', 'fitcopilot')
+    ));
+}
+add_action('admin_enqueue_scripts', 'fitcopilot_personal_training_manager_admin_scripts');
+
+/**
+ * AJAX handler for saving individual trainer
+ */
+function fitcopilot_save_individual_trainer_ajax() {
+    // Debug: Log the entire POST request
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('FitCopilot Individual Save - Raw POST Data: ' . json_encode($_POST));
+    }
+    
+    // Check nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'fitcopilot_save_individual_trainer')) {
+        $error_response = array('success' => false, 'message' => 'Security check failed');
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('FitCopilot Individual Save - Nonce verification failed');
+        }
+        wp_die(json_encode($error_response));
+    }
+    
+    // Check permissions
+    if (!current_user_can('manage_options')) {
+        $error_response = array('success' => false, 'message' => 'Insufficient permissions');
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('FitCopilot Individual Save - Permission check failed');
+        }
+        wp_die(json_encode($error_response));
+    }
+    
+    // Validate required data
+    if (!isset($_POST['trainer_data']) || !isset($_POST['trainer_index'])) {
+        $error_response = array('success' => false, 'message' => 'Missing required data');
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('FitCopilot Individual Save - Missing trainer_data or trainer_index');
+        }
+        wp_die(json_encode($error_response));
+    }
+    
+    // Get trainer data from POST
+    $trainer_data = $_POST['trainer_data'];
+    $trainer_index = intval($_POST['trainer_index']);
+    
+    // Debug: Log parsed data
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('FitCopilot Individual Save - Parsed Data: ' . json_encode(array(
+            'trainer_index' => $trainer_index,
+            'trainer_data' => $trainer_data,
+            'data_keys' => array_keys($trainer_data)
+        )));
+    }
+    
+    // Get current trainers data
+    $current_trainers = get_option('fitcopilot_personal_training_data', fitcopilot_get_default_personal_training_data());
+    
+    // Debug: Log current data state
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('FitCopilot Individual Save - Current Data State: ' . json_encode(array(
+            'current_trainer_count' => count($current_trainers),
+            'trainer_index_exists' => isset($current_trainers[$trainer_index]),
+            'existing_trainer_name' => isset($current_trainers[$trainer_index]) ? $current_trainers[$trainer_index]['name'] : 'N/A'
+        )));
+    }
+    
+    // Sanitize the trainer data
+    $sanitized_trainer = array(
+        'id' => absint($trainer_data['id'] ?? $trainer_index + 1),
+        'name' => sanitize_text_field($trainer_data['name'] ?? ''),
+        'specialty' => sanitize_text_field($trainer_data['specialty'] ?? ''),
+        'bio' => wp_kses_post($trainer_data['bio'] ?? ''),
+        'image_url' => esc_url_raw($trainer_data['image_url'] ?? ''),
+        'years_experience' => max(0, absint($trainer_data['years_experience'] ?? 0)),
+        'clients_count' => max(0, absint($trainer_data['clients_count'] ?? 0)),
+        'featured' => !empty($trainer_data['featured']),
+        'active' => !empty($trainer_data['active']),
+        'coach_type' => sanitize_text_field($trainer_data['coach_type'] ?? 'strength'),
+        'video_title' => sanitize_text_field($trainer_data['video_title'] ?? ''),
+        'video_url' => esc_url_raw($trainer_data['video_url'] ?? ''),
+        'video_poster' => esc_url_raw($trainer_data['video_poster'] ?? ''),
+        'order' => absint($trainer_data['order'] ?? $trainer_index + 1),
+        'updated_at' => current_time('mysql')
+    );
+    
+    // Add created_at if it's a new trainer
+    if (empty($trainer_data['created_at'])) {
+        $sanitized_trainer['created_at'] = current_time('mysql');
+    } else {
+        $sanitized_trainer['created_at'] = sanitize_text_field($trainer_data['created_at']);
+    }
+    
+    // Debug: Log sanitized data
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('FitCopilot Individual Save - Sanitized Data: ' . json_encode($sanitized_trainer));
+    }
+    
+    // Update the specific trainer in the array
+    if (isset($current_trainers[$trainer_index])) {
+        $current_trainers[$trainer_index] = $sanitized_trainer;
+        $operation = 'update';
+    } else {
+        // If it's a new trainer, add it
+        $current_trainers[] = $sanitized_trainer;
+        $operation = 'create';
+    }
+    
+    // Save updated data
+    $result = update_option('fitcopilot_personal_training_data', $current_trainers);
+    update_option('fitcopilot_personal_training_last_updated', time());
+    
+    // Debug logging
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('FitCopilot Personal Training AJAX Save: ' . json_encode(array(
+            'operation' => $operation,
+            'trainer_index' => $trainer_index,
+            'trainer_name' => $sanitized_trainer['name'],
+            'save_result' => $result !== false ? 'success' : 'failed',
+            'total_trainers' => count($current_trainers),
+            'timestamp' => current_time('mysql'),
+            'database_response' => $result
+        )));
+    }
+    
+    if ($result !== false) {
+        // Clear any relevant caches
+        wp_cache_delete('fitcopilot_personal_training_data', 'options');
+        
+        $success_response = array(
+            'success' => true, 
+            'message' => 'Trainer saved successfully!',
+            'trainer_name' => $sanitized_trainer['name'],
+            'trainer_id' => $sanitized_trainer['id'],
+            'updated_at' => $sanitized_trainer['updated_at'],
+            'active_status' => $sanitized_trainer['active'] ? 'active' : 'inactive',
+            'operation' => $operation,
+            'debug_info' => array(
+                'total_trainers' => count($current_trainers),
+                'trainer_index' => $trainer_index,
+                'database_updated' => true
+            )
+        );
+        
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('FitCopilot Individual Save - Success Response: ' . json_encode($success_response));
+        }
+        
+        wp_die(json_encode($success_response));
+    } else {
+        $error_response = array(
+            'success' => false, 
+            'message' => 'Failed to save trainer data to database',
+            'debug_info' => array(
+                'operation' => $operation,
+                'trainer_index' => $trainer_index,
+                'data_length' => count($current_trainers),
+                'update_option_result' => $result
+            )
+        );
+        
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('FitCopilot Individual Save - Error Response: ' . json_encode($error_response));
+        }
+        
+        wp_die(json_encode($error_response));
+    }
+}
+add_action('wp_ajax_save_individual_trainer', 'fitcopilot_save_individual_trainer_ajax');
+
+/**
+ * AJAX handler for testing frontend data flow
+ */
+function fitcopilot_test_personal_training_frontend_data_ajax() {
+    // Check nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'fitcopilot_save_individual_trainer')) {
+        wp_die(json_encode(array('success' => false, 'message' => 'Security check failed')));
+    }
+    
+    // Check permissions
+    if (!current_user_can('manage_options')) {
+        wp_die(json_encode(array('success' => false, 'message' => 'Insufficient permissions')));
+    }
+    
+    // Get current data
+    $all_data = get_option('fitcopilot_personal_training_data', array());
+    $active_data = array_filter($all_data, function($trainer) {
+        return !empty($trainer['active']);
+    });
+    
+    // Test data provider function
+    $settings = get_option('fitcopilot_personal_training_settings', array());
+    $last_updated = get_option('fitcopilot_personal_training_last_updated', 'never');
+    
+    // Prepare test results
+    $test_data = array(
+        'total_count' => count($all_data),
+        'active_count' => count($active_data),
+        'provider_working' => function_exists('fitcopilot_provide_personal_training_data_for_frontend'),
+        'last_updated' => $last_updated,
+        'settings_exist' => !empty($settings),
+        'sample_trainer' => !empty($active_data) ? array(
+            'name' => $active_data[0]['name'] ?? 'Unknown',
+            'specialty' => $active_data[0]['specialty'] ?? 'Unknown',
+            'active' => $active_data[0]['active'] ?? false
+        ) : null,
+        'data_structure' => array_keys($all_data[0] ?? array()),
+        'frontend_data_format' => array(
+            'trainers' => array_values($active_data),
+            'settings' => $settings,
+            'meta' => array(
+                'total_count' => count($all_data),
+                'active_count' => count($active_data),
+                'last_updated' => $last_updated
+            )
+        )
+    );
+    
+    wp_die(json_encode(array(
+        'success' => true,
+        'message' => 'Frontend data test completed',
+        'data' => $test_data
+    )));
+}
+add_action('wp_ajax_test_personal_training_frontend_data', 'fitcopilot_test_personal_training_frontend_data_ajax');
+
+/**
+ * AJAX handler for resetting to default trainer data
+ */
+function fitcopilot_reset_personal_training_defaults_ajax() {
+    // Check nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'fitcopilot_save_individual_trainer')) {
+        wp_die(json_encode(array('success' => false, 'message' => 'Security check failed')));
+    }
+    
+    // Check permissions
+    if (!current_user_can('manage_options')) {
+        wp_die(json_encode(array('success' => false, 'message' => 'Insufficient permissions')));
+    }
+    
+    try {
+        // Get fresh default data
+        $default_data = fitcopilot_get_default_personal_training_data();
+        
+        // Ensure all trainers are active
+        foreach ($default_data as &$trainer) {
+            $trainer['active'] = true;
+            $trainer['updated_at'] = current_time('mysql');
+        }
+        
+        // Update database with clean defaults
+        $update_result = update_option('fitcopilot_personal_training_data', $default_data);
+        
+        // Reset settings to defaults
+        $default_settings = array(
+            'section_title' => 'Personal Trainers',
+            'section_subtitle' => 'Work directly with our certified fitness professionals',
+            'show_featured_trainer' => true,
+            'show_group_instructor' => true,
+            'max_display_count' => -1
+        );
+        update_option('fitcopilot_personal_training_settings', $default_settings);
+        
+        // Update last modified timestamp
+        update_option('fitcopilot_personal_training_last_updated', time());
+        
+        // Debug logging
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('FitCopilot Personal Training: Reset to defaults completed. Trainer count: ' . count($default_data));
+        }
+        
+        wp_die(json_encode(array(
+            'success' => true,
+            'message' => 'Successfully reset to default trainers',
+            'trainer_count' => count($default_data),
+            'active_count' => count($default_data), // All are active
+            'update_result' => $update_result
+        )));
+        
+    } catch (Exception $e) {
+        error_log('FitCopilot Personal Training Reset Error: ' . $e->getMessage());
+        wp_die(json_encode(array(
+            'success' => false,
+            'message' => 'Reset failed: ' . $e->getMessage()
+        )));
+    }
+}
+add_action('wp_ajax_reset_personal_training_defaults', 'fitcopilot_reset_personal_training_defaults_ajax');
+
+/**
+ * Provide Personal Training data to frontend React components
+ */
+function fitcopilot_provide_personal_training_data_for_frontend() {
+    $data = get_option('fitcopilot_personal_training_data', fitcopilot_get_default_personal_training_data());
+    
+    // Filter only active trainers for frontend
+    $active_trainers = array_filter($data, function($trainer) {
+        return !empty($trainer['active']);
+    });
+    
+    // Get section settings
+    $settings = get_option('fitcopilot_personal_training_settings', array(
+        'section_title' => 'Personal Trainers',
+        'section_subtitle' => 'Work directly with our certified fitness professionals',
+        'show_featured_trainer' => true,
+        'show_group_instructor' => true,
+        'max_display_count' => -1
+    ));
+    
+    // Prepare data for React components
+    $frontend_data = array(
+        'trainers' => array_values($active_trainers), // Reset array keys
+        'settings' => $settings,
+        'meta' => array(
+            'total_count' => count($data),
+            'active_count' => count($active_trainers),
+            'last_updated' => get_option('fitcopilot_personal_training_last_updated', time())
+        )
+    );
+    
+    // Localize script data for React
+    wp_localize_script(
+        'fitcopilot-homepage',              // Frontend script handle
+        'fitcopilotPersonalTrainingData',   // JavaScript global variable
+        $frontend_data                      // Data payload
+    );
+    
+    // Debug logging (remove in production)
+    if (defined('WP_DEBUG') && WP_DEBUG) {
+        error_log('FitCopilot Personal Training Data Provider: ' . json_encode(array(
+            'total_items' => count($data),
+            'active_items' => count($active_trainers),
+            'data_structure' => array_keys($frontend_data),
+            'script_handle_exists' => wp_script_is('fitcopilot-homepage', 'enqueued'),
+            'last_updated' => get_option('fitcopilot_personal_training_last_updated', 'never')
+        )));
+    }
+}
+add_action('wp_enqueue_scripts', 'fitcopilot_provide_personal_training_data_for_frontend', 20);
+
+/**
+ * Register settings for personal training
+ */
+function fitcopilot_register_personal_training_settings() {
+    // Register trainer data
+    register_setting(
+        'fitcopilot_personal_training_options',
+        'fitcopilot_personal_training_data',
+        array(
+            'type'              => 'array',
+            'sanitize_callback' => 'fitcopilot_sanitize_personal_training_data',
+            'default'           => array()
+        )
+    );
+
+    // Register section settings
+    register_setting(
+        'fitcopilot_personal_training_options',
+        'fitcopilot_personal_training_settings',
+        array(
+            'type'              => 'array',
+            'sanitize_callback' => 'fitcopilot_sanitize_personal_training_settings',
+            'default'           => array(
+                'section_title' => 'Personal Trainers',
+                'section_subtitle' => 'Work directly with our certified fitness professionals',
+                'show_featured_trainer' => true,
+                'show_group_instructor' => true,
+                'max_display_count' => -1
+            )
+        )
+    );
+}
+add_action('admin_init', 'fitcopilot_register_personal_training_settings');
+
+/**
+ * Sanitize personal training data
+ * 
+ * @param array $input The raw data
+ * @return array Sanitized data
+ */
+function fitcopilot_sanitize_personal_training_data($input) {
+    $sanitized_input = array();
+    
+    if (is_array($input)) {
+        foreach ($input as $index => $trainer) {
+            $sanitized_input[$index] = array(
+                'id'               => absint($trainer['id'] ?? $index + 1),
+                'name'             => sanitize_text_field($trainer['name'] ?? ''),
+                'specialty'        => sanitize_text_field($trainer['specialty'] ?? ''),
+                'bio'              => wp_kses_post($trainer['bio'] ?? ''),
+                'image_url'        => esc_url_raw($trainer['image_url'] ?? ''),
+                'years_experience' => max(0, absint($trainer['years_experience'] ?? 0)),
+                'clients_count'    => max(0, absint($trainer['clients_count'] ?? 0)),
+                'featured'         => !empty($trainer['featured']),
+                'active'           => !empty($trainer['active']),
+                'coach_type'       => sanitize_text_field($trainer['coach_type'] ?? 'strength'),
+                'video_title'      => sanitize_text_field($trainer['video_title'] ?? ''),
+                'video_url'        => esc_url_raw($trainer['video_url'] ?? ''),
+                'video_poster'     => esc_url_raw($trainer['video_poster'] ?? ''),
+                'order'            => absint($trainer['order'] ?? $index + 1),
+                'created_at'       => sanitize_text_field($trainer['created_at'] ?? current_time('mysql')),
+                'updated_at'       => current_time('mysql')
+            );
+        }
+    }
+    
+    return $sanitized_input;
+}
+
+/**
+ * Sanitize personal training settings
+ * 
+ * @param array $input The raw settings data
+ * @return array Sanitized settings data
+ */
+function fitcopilot_sanitize_personal_training_settings($input) {
+    return array(
+        'section_title'         => sanitize_text_field($input['section_title'] ?? 'Personal Trainers'),
+        'section_subtitle'      => sanitize_text_field($input['section_subtitle'] ?? ''),
+        'show_featured_trainer' => !empty($input['show_featured_trainer']),
+        'show_group_instructor' => !empty($input['show_group_instructor']),
+        'max_display_count'     => intval($input['max_display_count'] ?? -1)
+    );
+}
+
+/**
+ * Get default personal training data
+ */
+function fitcopilot_get_default_personal_training_data() {
+    return array(
+        array(
+            'id' => 1,
+            'name' => 'Justin Fassio',
+            'specialty' => 'Strength & Conditioning',
+            'bio' => 'Specialized in transforming physiques through science-based training protocols. Justin has helped over 200 clients achieve their fitness goals.',
+            'image_url' => '',
+            'years_experience' => 8,
+            'clients_count' => 178,
+            'featured' => true,
+            'active' => true,
+            'coach_type' => 'strength',
+            'video_title' => 'High-Intensity Workout Demo',
+            'video_url' => 'https://www.youtube.com/embed/L27wfHkk2O8',
+            'video_poster' => '',
+            'order' => 1,
+            'created_at' => current_time('mysql'),
+            'updated_at' => current_time('mysql')
+        ),
+        array(
+            'id' => 2,
+            'name' => 'Morgan Chen',
+            'specialty' => 'Nutrition & Weight Loss',
+            'bio' => 'Certified nutritionist and weight management specialist. Morgan creates personalized diet plans that complement your training regimen.',
+            'image_url' => '',
+            'years_experience' => 6,
+            'clients_count' => 152,
+            'featured' => false,
+            'active' => true,
+            'coach_type' => 'nutrition',
+            'video_title' => '',
+            'video_url' => '',
+            'video_poster' => '',
+            'order' => 2,
+            'created_at' => current_time('mysql'),
+            'updated_at' => current_time('mysql')
+        ),
+        array(
+            'id' => 3,
+            'name' => 'Jordan Smith',
+            'specialty' => 'Athletic Performance',
+            'bio' => 'Former professional athlete who now trains competitors at all levels. Specializes in sport-specific training and performance enhancement.',
+            'image_url' => '',
+            'years_experience' => 10,
+            'clients_count' => 215,
+            'featured' => false,
+            'active' => true,
+            'coach_type' => 'performance',
+            'video_title' => '',
+            'video_url' => '',
+            'video_poster' => '',
+            'order' => 3,
+            'created_at' => current_time('mysql'),
+            'updated_at' => current_time('mysql')
+        ),
+        array(
+            'id' => 4,
+            'name' => 'Taylor Martinez',
+            'specialty' => 'Group Class Instruction',
+            'bio' => 'Lead group fitness instructor specializing in HIIT, yoga, and dance cardio classes. Taylor creates energetic group experiences that motivate and inspire.',
+            'image_url' => '',
+            'years_experience' => 7,
+            'clients_count' => 240,
+            'featured' => false,
+            'active' => true,
+            'coach_type' => 'performance',
+            'video_title' => 'Group Class Energy Demo',
+            'video_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            'video_poster' => '',
+            'order' => 4,
+            'created_at' => current_time('mysql'),
+            'updated_at' => current_time('mysql')
+        ),
+        array(
+            'id' => 5,
+            'name' => 'Alex Rivera',
+            'specialty' => 'Recovery & Wellness',
+            'bio' => 'Certified massage therapist and recovery specialist. Alex focuses on injury prevention, mobility work, and helping athletes optimize their recovery for peak performance.',
+            'image_url' => '',
+            'years_experience' => 5,
+            'clients_count' => 120,
+            'featured' => false,
+            'active' => true,
+            'coach_type' => 'recovery',
+            'video_title' => 'Recovery Techniques Demo',
+            'video_url' => 'https://www.youtube.com/embed/E1xkXZs0cAQ',
+            'video_poster' => '',
+            'order' => 5,
+            'created_at' => current_time('mysql'),
+            'updated_at' => current_time('mysql')
+        )
+    );
+}
+
+/**
+ * Render the Personal Training Manager admin page
+ */
+function fitcopilot_render_personal_training_manager_page() {
+    // Check user capabilities
+    if (!current_user_can('manage_options')) {
+        wp_die(__('You do not have sufficient permissions to access this page.'));
+    }
+
+    // Get saved data
+    $trainers_data = get_option('fitcopilot_personal_training_data', fitcopilot_get_default_personal_training_data());
+    $settings = get_option('fitcopilot_personal_training_settings', array(
+        'section_title' => 'Personal Trainers',
+        'section_subtitle' => 'Work directly with our certified fitness professionals',
+        'show_featured_trainer' => true,
+        'show_group_instructor' => true,
+        'max_display_count' => -1
+    ));
+
+    // Handle form submissions
+    if (isset($_POST['fitcopilot_personal_training_submit'])) {
+        check_admin_referer('fitcopilot_personal_training_action', 'fitcopilot_personal_training_nonce');
+        
+        // Update trainers data
+        $updated_trainers = array();
+        if (isset($_POST['trainers']) && is_array($_POST['trainers'])) {
+            foreach ($_POST['trainers'] as $index => $trainer) {
+                $updated_trainers[] = array(
+                    'id' => absint($trainer['id'] ?? $index + 1),
+                    'name' => sanitize_text_field($trainer['name'] ?? ''),
+                    'specialty' => sanitize_text_field($trainer['specialty'] ?? ''),
+                    'bio' => wp_kses_post($trainer['bio'] ?? ''),
+                    'image_url' => esc_url_raw($trainer['image_url'] ?? ''),
+                    'years_experience' => max(0, absint($trainer['years_experience'] ?? 0)),
+                    'clients_count' => max(0, absint($trainer['clients_count'] ?? 0)),
+                    'featured' => !empty($trainer['featured']),
+                    'active' => !empty($trainer['active']),
+                    'coach_type' => sanitize_text_field($trainer['coach_type'] ?? 'strength'),
+                    'video_title' => sanitize_text_field($trainer['video_title'] ?? ''),
+                    'video_url' => esc_url_raw($trainer['video_url'] ?? ''),
+                    'video_poster' => esc_url_raw($trainer['video_poster'] ?? ''),
+                    'order' => absint($trainer['order'] ?? $index + 1),
+                    'updated_at' => current_time('mysql')
+                );
+            }
+        }
+        
+        update_option('fitcopilot_personal_training_data', $updated_trainers);
+        update_option('fitcopilot_personal_training_last_updated', time());
+        
+        // Update settings
+        if (isset($_POST['settings'])) {
+            $updated_settings = array(
+                'section_title' => sanitize_text_field($_POST['settings']['section_title'] ?? 'Personal Trainers'),
+                'section_subtitle' => sanitize_text_field($_POST['settings']['section_subtitle'] ?? ''),
+                'show_featured_trainer' => !empty($_POST['settings']['show_featured_trainer']),
+                'show_group_instructor' => !empty($_POST['settings']['show_group_instructor']),
+                'max_display_count' => intval($_POST['settings']['max_display_count'] ?? -1)
+            );
+            update_option('fitcopilot_personal_training_settings', $updated_settings);
+            $settings = $updated_settings;
+        }
+        
+        echo '<div class="notice notice-success is-dismissible"><p>Personal training data updated successfully!</p></div>';
+        $trainers_data = $updated_trainers;
+    }
+
+    // Handle reset to defaults
+    if (isset($_POST['fitcopilot_reset_defaults'])) {
+        check_admin_referer('fitcopilot_reset_action', 'fitcopilot_reset_nonce');
+        
+        delete_option('fitcopilot_personal_training_data');
+        delete_option('fitcopilot_personal_training_settings');
+        
+        $trainers_data = fitcopilot_get_default_personal_training_data();
+        update_option('fitcopilot_personal_training_data', $trainers_data);
+        
+        $settings = array(
+            'section_title' => 'Personal Trainers',
+            'section_subtitle' => 'Work directly with our certified fitness professionals',
+            'show_featured_trainer' => true,
+            'show_group_instructor' => true,
+            'max_display_count' => -1
+        );
+        update_option('fitcopilot_personal_training_settings', $settings);
+        
+        echo '<div class="notice notice-success is-dismissible"><p>Personal training data reset to defaults!</p></div>';
+    }
+
+    // Get current active tab
+    $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'main-content';
+    ?>
+    
+    <div class="wrap fitcopilot-personal-training-admin">
+        <!-- Animated background -->
+        <div class="fitcopilot-admin-background">
+            <div class="fitcopilot-particle"></div>
+            <div class="fitcopilot-particle"></div>
+            <div class="fitcopilot-particle"></div>
+            <div class="fitcopilot-particle"></div>
+        </div>
+        
+        <div class="fitcopilot-admin-container">
+            <!-- Header -->
+            <div class="fitcopilot-admin-header">
+                <div class="fitcopilot-admin-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+            </div>
+            
+            <!-- Tab Navigation -->
+            <div class="nav-tab-wrapper">
+                <a href="?page=fitcopilot-personal-training&tab=main-content" 
+                   class="nav-tab <?php echo $active_tab === 'main-content' ? 'nav-tab-active' : ''; ?>">
+                   Manage Trainers
+                </a>
+                <a href="?page=fitcopilot-personal-training&tab=settings" 
+                   class="nav-tab <?php echo $active_tab === 'settings' ? 'nav-tab-active' : ''; ?>">
+                   Settings
+                </a>
+                <a href="?page=fitcopilot-personal-training&tab=export-import" 
+                   class="nav-tab <?php echo $active_tab === 'export-import' ? 'nav-tab-active' : ''; ?>">
+                   Export / Import
+                </a>
+            </div>
+            
+            <!-- Status Indicator -->
+            <div class="fitcopilot-status-indicator">
+                <strong>📊 Current Status:</strong> 
+                <?php echo count($trainers_data); ?> trainers loaded. 
+                <?php 
+                $active_count = count(array_filter($trainers_data, function($trainer) { 
+                    return !empty($trainer['active']); 
+                }));
+                echo $active_count . ' active on frontend.';
+                
+                // Debug: Show which trainers are active/inactive
+                if ($active_count !== count($trainers_data)) {
+                    echo '<br><span style="color: #ff6b6b;">⚠️ ' . (count($trainers_data) - $active_count) . ' trainers are hidden from frontend</span>';
+                }
+                ?>
+                
+                <?php if (defined('WP_DEBUG') && WP_DEBUG)): ?>
+                    <br><small style="color: rgba(255,255,255,0.7);">
+                        <strong>Debug Info:</strong>
+                        <?php
+                        foreach ($trainers_data as $index => $trainer) {
+                            $status = !empty($trainer['active']) ? '✅' : '❌';
+                            echo $status . ' ' . htmlspecialchars($trainer['name'] ?? "Trainer $index") . ' ';
+                        }
+                        ?>
+                    </small>
+                <?php endif; ?>
+            </div>
+            
+            <?php if ($active_tab === 'main-content'): ?>
+                <!-- Main Content Tab -->
+                <div id="main-content" class="tab-content fitcopilot-card">
+                    <form method="post" action="">
+                        <?php wp_nonce_field('fitcopilot_personal_training_action', 'fitcopilot_personal_training_nonce'); ?>
+                        
+                        <div class="trainers-header">
+                            <h2>Manage Personal Trainers</h2>
+                            <div class="header-controls">
+                                <button type="button" id="add-trainer-row" class="button button-secondary">
+                                    ➕ Add New Trainer
+                                </button>
+                                
+                                <?php if (defined('WP_DEBUG') && WP_DEBUG)): ?>
+                                    <button type="button" id="debug-test-save" class="button button-secondary" 
+                                            style="margin-left: 10px;">
+                                        🔧 Debug Test Save
+                                    </button>
+                                    <button type="button" id="activate-all-trainers" class="button button-secondary" 
+                                            style="margin-left: 10px;">
+                                        ✅ Activate All Trainers
+                                    </button>
+                                    <button type="button" id="cleanup-debug-data" class="button button-secondary" 
+                                            style="margin-left: 10px;">
+                                        🧹 Clean Debug Data
+                                    </button>
+                                    <button type="button" id="reset-to-defaults" class="button button-secondary" 
+                                            style="margin-left: 10px;">
+                                        🔄 Reset to Defaults
+                                    </button>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        
+                        <div class="trainers-list" id="trainers-list">
+                            <?php foreach ($trainers_data as $index => $trainer): ?>
+                                <?php fitcopilot_render_trainer_row($index, $trainer); ?>
+                            <?php endforeach; ?>
+                        </div>
+                        
+                        <!-- Template row (hidden) -->
+                        <div id="trainer-template" style="display: none;">
+                            <?php fitcopilot_render_trainer_row('{{INDEX}}', array(), true); ?>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <input type="submit" name="fitcopilot_personal_training_submit" 
+                                   class="button button-primary" value="Save All Changes" />
+                            
+                            <input type="submit" name="fitcopilot_reset_defaults" 
+                                   class="button button-secondary" 
+                                   value="Reset to Defaults"
+                                   onclick="return confirm('Are you sure you want to reset all data to defaults? This cannot be undone.');" 
+                                   style="margin-left: 10px;" />
+                                   
+                            <button type="button" id="test-frontend-data" class="button button-secondary" 
+                                    style="margin-left: 10px;">
+                                🔍 Test Frontend Data Flow
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+            <?php elseif ($active_tab === 'settings'): ?>
+                <!-- Settings Tab -->
+                <div id="settings" class="tab-content fitcopilot-card">
+                    <form method="post" action="">
+                        <?php wp_nonce_field('fitcopilot_personal_training_action', 'fitcopilot_personal_training_nonce'); ?>
+                        
+                        <h2>Section Settings</h2>
+                        
+                        <table class="form-table">
+                            <tr>
+                                <th scope="row">Section Title</th>
+                                <td>
+                                    <input type="text" name="settings[section_title]" 
+                                           value="<?php echo esc_attr($settings['section_title']); ?>" 
+                                           class="regular-text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Section Subtitle</th>
+                                <td>
+                                    <input type="text" name="settings[section_subtitle]" 
+                                           value="<?php echo esc_attr($settings['section_subtitle']); ?>" 
+                                           class="regular-text" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Display Options</th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" name="settings[show_featured_trainer]" 
+                                               value="1" <?php checked(!empty($settings['show_featured_trainer'])); ?> />
+                                        Show Featured Trainer
+                                    </label><br />
+                                    
+                                    <label>
+                                        <input type="checkbox" name="settings[show_group_instructor]" 
+                                               value="1" <?php checked(!empty($settings['show_group_instructor'])); ?> />
+                                        Show Group Instructors
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Max Display Count</th>
+                                <td>
+                                    <input type="number" name="settings[max_display_count]" 
+                                           value="<?php echo esc_attr($settings['max_display_count']); ?>" 
+                                           min="-1" step="1" />
+                                    <p class="description">Use -1 to show all active trainers</p>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <p class="submit">
+                            <input type="submit" name="fitcopilot_personal_training_submit" 
+                                   class="button button-primary" value="Save Settings" />
+                        </p>
+                    </form>
+                </div>
+                
+            <?php elseif ($active_tab === 'export-import'): ?>
+                <!-- Export/Import Tab -->
+                <div id="export-import" class="tab-content fitcopilot-card">
+                    <h2>Export / Import Data</h2>
+                    
+                    <div class="export-section">
+                        <h3>Export Current Data</h3>
+                        <p>Download current trainer data as JSON:</p>
+                        <a href="?page=fitcopilot-personal-training&action=export" 
+                           class="button button-secondary">📥 Export Trainers Data</a>
+                    </div>
+                    
+                    <div class="import-section" style="margin-top: 30px;">
+                        <h3>Import Data</h3>
+                        <p><strong>⚠️ Warning:</strong> This will replace all current data.</p>
+                        <form method="post" enctype="multipart/form-data">
+                            <?php wp_nonce_field('fitcopilot_import_action', 'fitcopilot_import_nonce'); ?>
+                            <input type="file" name="import_file" accept=".json" />
+                            <input type="submit" name="fitcopilot_import_submit" 
+                                   class="button button-secondary" value="📤 Import Data" 
+                                   onclick="return confirm('This will replace all current data. Continue?');" />
+                        </form>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php
+}
+
+/**
+ * Render individual trainer row
+ * 
+ * @param int|string $index Row index
+ * @param array $trainer Trainer data
+ * @param bool $is_template Whether this is a template row
+ */
+function fitcopilot_render_trainer_row($index, $trainer = array(), $is_template = false) {
+    // Handle template placeholder index safely
+    $numeric_index = is_numeric($index) ? intval($index) : 0;
+    
+    $trainer = wp_parse_args($trainer, array(
+        'id' => $numeric_index + 1,
+        'name' => '',
+        'specialty' => '',
+        'bio' => '',
+        'image_url' => '',
+        'years_experience' => 0,
+        'clients_count' => 0,
+        'featured' => false,
+        'active' => true,
+        'coach_type' => 'strength',
+        'video_title' => '',
+        'video_url' => '',
+        'video_poster' => '',
+        'order' => $numeric_index + 1
+    ));
+    
+    $is_active = !empty($trainer['active']);
+    $row_class = $is_active ? 'trainer-row active' : 'trainer-row inactive';
+    
+    if ($is_template) {
+        $row_class .= ' template-row';
+    }
+    ?>
+    
+    <div class="<?php echo esc_attr($row_class); ?>" data-index="<?php echo esc_attr($index); ?>">
+        <?php if (!$is_template): ?>
+            <input type="hidden" name="trainers[<?php echo $index; ?>][id]" value="<?php echo esc_attr($trainer['id']); ?>" />
+        <?php endif; ?>
+        
+        <div class="trainer-row-header">
+            <h4>
+                <?php if ($trainer['featured']): ?>
+                    ⭐ Featured Trainer: 
+                <?php endif; ?>
+                <span class="trainer-name-display"><?php echo esc_html($trainer['name'] ?: 'New Trainer'); ?></span>
+            </h4>
+            
+            <div class="row-controls">
+                <label class="active-toggle">
+                    <input type="checkbox" name="trainers[<?php echo $index; ?>][active]" 
+                           value="1" <?php checked($is_active); ?> />
+                    <span class="toggle-label">Show on Frontend</span>
+                </label>
+                
+                <button type="button" class="remove-trainer-row button-link-delete" 
+                        aria-label="Remove trainer">❌</button>
+            </div>
+        </div>
+        
+        <?php if (!$is_active): ?>
+            <div class="inactive-notice">
+                ⚠️ This trainer is hidden from the frontend
+            </div>
+        <?php endif; ?>
+        
+        <div class="trainer-fields-grid">
+            <div class="field-group">
+                <label>Trainer Name *</label>
+                <input type="text" name="trainers[<?php echo $index; ?>][name]" 
+                       value="<?php echo esc_attr($trainer['name']); ?>" 
+                       placeholder="Enter trainer name"
+                       class="trainer-name-input regular-text" required />
+            </div>
+            
+            <div class="field-group">
+                <label>Specialty *</label>
+                <input type="text" name="trainers[<?php echo $index; ?>][specialty]" 
+                       value="<?php echo esc_attr($trainer['specialty']); ?>" 
+                       placeholder="e.g., Strength & Conditioning"
+                       class="regular-text" required />
+            </div>
+            
+            <div class="field-group">
+                <label>Coach Type</label>
+                <select name="trainers[<?php echo $index; ?>][coach_type]" class="regular-text">
+                    <option value="strength" <?php selected($trainer['coach_type'], 'strength'); ?>>Strength Training</option>
+                    <option value="nutrition" <?php selected($trainer['coach_type'], 'nutrition'); ?>>Nutrition</option>
+                    <option value="performance" <?php selected($trainer['coach_type'], 'performance'); ?>>Athletic Performance</option>
+                    <option value="recovery" <?php selected($trainer['coach_type'], 'recovery'); ?>>Recovery & Wellness</option>
+                </select>
+            </div>
+            
+            <div class="field-group full-width">
+                <label>Bio/Description</label>
+                <textarea name="trainers[<?php echo $index; ?>][bio]" 
+                          placeholder="Tell clients about this trainer's experience and approach..."
+                          rows="3" class="large-text"><?php echo esc_textarea($trainer['bio']); ?></textarea>
+            </div>
+            
+            <div class="field-group">
+                <label>Years Experience</label>
+                <input type="number" name="trainers[<?php echo $index; ?>][years_experience]" 
+                       value="<?php echo esc_attr($trainer['years_experience']); ?>" 
+                       min="0" max="50" step="1" class="small-text" />
+            </div>
+            
+            <div class="field-group">
+                <label>Clients Trained</label>
+                <input type="number" name="trainers[<?php echo $index; ?>][clients_count]" 
+                       value="<?php echo esc_attr($trainer['clients_count']); ?>" 
+                       min="0" step="1" class="small-text" />
+            </div>
+            
+            <div class="field-group">
+                <label>Order/Priority</label>
+                <input type="number" name="trainers[<?php echo $index; ?>][order]" 
+                       value="<?php echo esc_attr($trainer['order']); ?>" 
+                       min="1" step="1" class="small-text" />
+            </div>
+            
+            <div class="field-group full-width">
+                <label>Trainer Image</label>
+                <div class="image-upload-group">
+                    <input type="url" name="trainers[<?php echo $index; ?>][image_url]" 
+                           value="<?php echo esc_attr($trainer['image_url']); ?>" 
+                           placeholder="https://example.com/trainer-photo.jpg"
+                           class="image-url-input regular-text" />
+                    <button type="button" class="upload-image-button button button-secondary">
+                        📷 Choose Image
+                    </button>
+                </div>
+                <?php if (!empty($trainer['image_url'])): ?>
+                    <div class="image-preview">
+                        <img src="<?php echo esc_url($trainer['image_url']); ?>" 
+                             alt="<?php echo esc_attr($trainer['name']); ?>" 
+                             style="max-width: 100px; height: auto; margin-top: 10px; border-radius: 8px;" />
+                    </div>
+                <?php endif; ?>
+            </div>
+            
+            <div class="field-group full-width">
+                <label>Video Demo (Optional)</label>
+                <div class="video-fields">
+                    <input type="text" name="trainers[<?php echo $index; ?>][video_title]" 
+                           value="<?php echo esc_attr($trainer['video_title']); ?>" 
+                           placeholder="Video title (e.g., 'High-Intensity Workout Demo')"
+                           class="regular-text" style="margin-bottom: 5px;" />
+                    
+                    <input type="url" name="trainers[<?php echo $index; ?>][video_url]" 
+                           value="<?php echo esc_attr($trainer['video_url']); ?>" 
+                           placeholder="YouTube embed URL (e.g., https://www.youtube.com/embed/ABC123)"
+                           class="regular-text" style="margin-bottom: 5px;" />
+                    
+                    <input type="url" name="trainers[<?php echo $index; ?>][video_poster]" 
+                           value="<?php echo esc_attr($trainer['video_poster']); ?>" 
+                           placeholder="Video poster image URL (optional)"
+                           class="regular-text" />
+                </div>
+            </div>
+            
+            <div class="field-group">
+                <label class="featured-toggle">
+                    <input type="checkbox" name="trainers[<?php echo $index; ?>][featured]" 
+                           value="1" <?php checked(!empty($trainer['featured'])); ?> />
+                    <span class="toggle-label">⭐ Featured Trainer</span>
+                </label>
+                <p class="description">Featured trainers get prominent display on the frontend</p>
+            </div>
+        </div>
+        
+        <!-- Individual Trainer Save Button -->
+        <div class="trainer-save-section">
+            <button type="button" class="save-individual-trainer button button-primary" 
+                    data-trainer-index="<?php echo esc_attr($index); ?>"
+                    data-trainer-id="<?php echo esc_attr($trainer['id']); ?>">
+                💾 Save This Trainer
+            </button>
+            <span class="save-status" id="save-status-<?php echo esc_attr($index); ?>"></span>
+        </div>
+    </div>
+    <?php
+} 

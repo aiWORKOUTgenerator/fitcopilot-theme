@@ -152,6 +152,36 @@
       }
     }
   }
+
+  // NEW: Equal height card styling
+  &--equal-height {
+    height: 100%; // Fill grid cell height
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2rem; // Replace p-8 class
+  }
+
+  &__quote {
+    flex: 1; // Takes up available space
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    
+    p {
+      margin-bottom: 0; // Remove default bottom margin
+    }
+  }
+
+  &__author {
+    margin-top: auto; // Push to bottom
+    flex-shrink: 0; // Don't compress author area
+  }
 }
 
 // Import glow effects from Journey component

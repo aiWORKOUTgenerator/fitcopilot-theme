@@ -12,15 +12,17 @@
 /* ============================================================================
    ADVANCED PRICING COMPONENT STYLES
    Enhanced with animations, particles, and accessibility
+   Synchronized with Personal Training section background
    ============================================================================ */
 
-/* Grid pattern background */
-.bg-grid-pattern {
-  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
-  background-position: center center;
+// Background color variables to match Personal Training section exactly
+:root {
+  // Set exact same background color as Personal Training section
+  --pricing-background: rgba(10, 16, 27, 1);
 }
+
+/* Legacy grid pattern - replaced by integrated ::before pseudo-element */
+/* .bg-grid-pattern has been replaced by the ::before pseudo-element in .pricing-section */
 
 /* Fade-in animation for feature list */
 @keyframes fade-in {
@@ -168,25 +170,90 @@
   position: relative;
 }
 
-/* Enhanced pricing section */
+/* Enhanced pricing section with grid fade background - EXACT COPY from Personal Training */
 .pricing-section {
-  position: relative;
-  padding: var(--pricing-section-padding-y, 6rem) 0;
-  background: var(--pricing-section-bg);
-  color: var(--pricing-text-primary, var(--color-text-primary));
-  overflow: hidden;
+  // Core variables matching Personal Training section
+  --section-spacing-y: var(--spacing-16, 4rem);
+  --section-spacing-x: var(--spacing-4, 1rem);
+  --content-max-width: var(--size-content-max-width, 1200px);
+
+  // Background and colors - exact same as Personal Training
+  --color-pricing-bg: var(--pricing-background); // Use the explicit background color
+  --color-pricing-text: var(--color-text-inverse, #ffffff);
+  --color-pricing-border: rgba(255, 255, 255, 0.1);
+
+  // Grid pattern variables - exact same as Personal Training
+  --size-pricing-grid-pattern: 20px 20px;
+  --color-pricing-grid: rgba(255, 255, 255, 0.03);
+
+  position: var(--pos-pricing-relative, relative);
+  z-index: var(--z-pricing-base, 1);
+  padding: var(--section-spacing-y, 4rem) var(--section-spacing-x, 1rem);
+  background-color: var(--color-pricing-bg, #0f172a) !important; // Use exact same background as Personal Training
+  color: var(--color-pricing-text, #ffffff);
+
+  // Grid pattern background - EXACT COPY from Personal Training section
+  &::before {
+    content: var(--content-pricing-empty, '');
+    position: var(--pos-pricing-absolute, absolute);
+    top: var(--pos-pricing-top-0, 0);
+    left: var(--pos-pricing-left-0, 0);
+    right: var(--pos-pricing-right-0, 0);
+    bottom: var(--pos-pricing-bottom-0, 0);
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: var(--size-pricing-grid-pattern, 20px 20px);
+    background-position: var(--pos-pricing-center, center center);
+    z-index: var(--z-pricing-behind, 0);
+    pointer-events: var(--pointer-pricing-none, none);
+    background-color: transparent; // Ensure no background color on the grid
+
+    // Update mask to fade at both top and bottom - EXACT COPY from Personal Training
+    mask-image:
+      linear-gradient(to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        /* Start transparent at the very top */
+        rgba(0, 0, 0, 1) 15%,
+        /* Fully visible after top 15% */
+        rgba(0, 0, 0, 1) 85%,
+        /* Stay visible until 85% down */
+        rgba(0, 0, 0, 0) 100%
+        /* Fade to transparent at the bottom */
+      );
+    -webkit-mask-image:
+      linear-gradient(to bottom,
+        rgba(0, 0, 0, 0) 0%,
+        /* Start transparent at the very top */
+        rgba(0, 0, 0, 1) 15%,
+        /* Fully visible after top 15% */
+        rgba(0, 0, 0, 1) 85%,
+        /* Stay visible until 85% down */
+        rgba(0, 0, 0, 0) 100%
+        /* Fade to transparent at the bottom */
+      );
+  }
   
-  // Theme-aware backgrounds
+  // Theme-aware backgrounds - all matching testimonials dark background
   &[data-theme="sports"] {
-    background: var(--sports-pricing-bg, var(--color-ui-surface-dark));
+    background: #111827 !important;
   }
 
   &[data-theme="wellness"] {
-    background: var(--wellness-pricing-bg, var(--color-ui-surface-dark));
+    background: #111827 !important;
   }
 
   &[data-theme="gym"] {
-    background: var(--gym-pricing-bg, var(--color-ui-surface-dark));
+    background: #111827 !important;
+  }
+  
+  // Ensure all container elements don't add backgrounds
+  .max-w-6xl,
+  .mx-auto,
+  .relative,
+  .pricing-header,
+  .text-center {
+    background: transparent !important;
   }
 }
 
@@ -416,7 +483,7 @@
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     
     /* Ensure perfect circle */
-    border-radius: 50%;
+  border-radius: 50%;
     width: 1.25rem;
     height: 1.25rem;
     

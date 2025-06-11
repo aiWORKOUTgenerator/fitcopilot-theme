@@ -406,11 +406,10 @@ export const Pricing: React.FC<PricingProps> = ({
   return (
     <section 
       id="pricing" 
-                    className={`pricing-section w-full py-24 px-4 relative overflow-hidden ${className}`}
+                    className={`pricing-section w-full py-24 px-4 relative overflow-hidden bg-gray-900 ${className}`}
       data-theme={currentTheme !== 'default' ? currentTheme : undefined}
     >
-      {/* Background Grid Pattern */}
-      <div className="absolute inset-0 bg-grid-pattern" aria-hidden="true" />
+      {/* Background grid pattern now handled by ::before pseudo-element in CSS */}
       
       {/* Floating particles in background - OPTIMIZED */}
       {showBackgroundParticles && (

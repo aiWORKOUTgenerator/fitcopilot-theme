@@ -1,0 +1,476 @@
+/**
+ * FitCopilot Personal Training Admin Grid CSS
+ * 2-column responsive grid layout for trainer cards
+ * 
+ * @package FitCopilot
+ */
+
+/* Main trainers list container - UPDATED: Changed to 2-column layout */
+.trainers-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 2rem;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent horizontal spillage */
+}
+
+/* Individual trainer row cards - Enhanced for 2-column layout */
+.trainer-row {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden; /* Prevent content spillage */
+    word-wrap: break-word; /* Handle long content */
+}
+
+.trainer-row:hover {
+    border-color: rgba(132, 225, 188, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Active vs inactive trainer states */
+.trainer-row.active {
+    border-color: rgba(132, 225, 188, 0.2);
+}
+
+.trainer-row.inactive {
+    border-color: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.01);
+    opacity: 0.7;
+}
+
+/* Featured trainer support - UPDATED: Full width in 2-column grid */
+.trainer-row.featured {
+    grid-column: span 2; /* Full width across both columns */
+    border-color: rgba(204, 255, 0, 0.3);
+    background: rgba(204, 255, 0, 0.05);
+}
+
+.trainer-row.featured .trainer-row-header {
+    background: linear-gradient(90deg, rgba(204, 255, 0, 0.1), transparent);
+    border-top: 2px solid #CCFF00;
+    border-radius: 8px 8px 0 0;
+    margin: -1.5rem -1.5rem 1rem -1.5rem;
+    padding: 1rem 1.5rem;
+}
+
+/* Trainer row header - Enhanced responsive layout */
+.trainer-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    min-height: 2rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.trainer-row-header h4 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0; /* Allow text truncation */
+}
+
+.trainer-name-display {
+    color: rgba(132, 225, 188, 0.9);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Row controls - Enhanced responsive layout */
+.row-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.active-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.active-toggle input[type="checkbox"] {
+    accent-color: #84E1BC;
+}
+
+.remove-trainer-row {
+    color: #ff6b6b;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0;
+}
+
+.remove-trainer-row:hover {
+    background-color: rgba(255, 107, 107, 0.1);
+}
+
+/* Inactive notice */
+.inactive-notice {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    color: #ffc107;
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Field groups grid layout - UPDATED: Enhanced for 2-column layout */
+.trainer-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Featured trainers get enhanced field layout */
+.trainer-row.featured .trainer-fields-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for featured trainers */
+}
+
+.media-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Featured trainers get enhanced media layout */
+.trainer-row.featured .media-fields-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for featured trainers */
+}
+
+/* Individual field groups - Enhanced content overflow handling */
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0; /* Allow shrinking */
+    overflow: hidden;
+}
+
+.field-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.field-group label {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Form elements - Enhanced width constraints for 2-column layout */
+.field-group input[type="text"],
+.field-group input[type="url"],
+.field-group input[type="number"],
+.field-group select,
+.field-group textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border-radius: 6px;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.field-group input[type="text"]:focus,
+.field-group input[type="url"]:focus,
+.field-group input[type="number"]:focus,
+.field-group select:focus,
+.field-group textarea:focus {
+    border-color: rgba(132, 225, 188, 0.5);
+    background: rgba(255, 255, 255, 0.08);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(132, 225, 188, 0.2);
+}
+
+.field-group input::placeholder,
+.field-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Textarea specific handling */
+.field-group textarea {
+    resize: vertical;
+    min-height: 60px;
+    max-height: 120px;
+}
+
+/* Checkbox styling */
+.field-group input[type="checkbox"] {
+    margin-right: 0.5rem;
+    accent-color: #84E1BC;
+}
+
+/* Upload button styling */
+.upload-image-btn {
+    margin-top: 0.5rem;
+    background: rgba(132, 225, 188, 0.1);
+    border: 1px solid rgba(132, 225, 188, 0.3);
+    color: #84E1BC;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.upload-image-btn:hover {
+    background: rgba(132, 225, 188, 0.2);
+    border-color: rgba(132, 225, 188, 0.5);
+}
+
+/* Form actions */
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+/* Template row (hidden) */
+.trainer-row.template-row {
+    display: none;
+}
+
+/* Responsive design - UPDATED: Enhanced breakpoints for 2-column layout */
+@media (max-width: 1400px) {
+    .trainers-list {
+        gap: 1.5rem;
+    }
+    
+    /* Featured trainers maintain full width */
+    .trainer-row.featured .trainer-fields-grid {
+        grid-template-columns: repeat(2, 1fr); /* Reduce to 2 columns on smaller screens */
+    }
+    
+    .trainer-row.featured .media-fields-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .trainers-list {
+        grid-template-columns: 1fr; /* Single column on tablet */
+        gap: 1.5rem;
+    }
+    
+    /* All trainer rows become single column */
+    .trainer-row.featured {
+        grid-column: 1;
+    }
+    
+    .trainer-fields-grid,
+    .media-fields-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .trainer-row.featured .trainer-fields-grid,
+    .trainer-row.featured .media-fields-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .trainers-list {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0 0.5rem;
+    }
+    
+    .trainer-row {
+        padding: 1rem;
+        min-height: auto;
+    }
+    
+    .trainer-row-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .trainer-row-header h4 {
+        font-size: 1rem;
+    }
+    
+    .trainer-name-display {
+        white-space: normal;
+        word-break: break-word;
+    }
+    
+    .row-controls {
+        align-self: stretch;
+        justify-content: space-between;
+    }
+    
+    .trainer-fields-grid,
+    .media-fields-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .trainer-row.featured .trainer-fields-grid,
+    .trainer-row.featured .media-fields-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .form-actions button {
+        width: 100%;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .trainers-list {
+        padding: 0;
+        gap: 0.75rem;
+    }
+    
+    .trainer-row {
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+    
+    .trainer-row-header h4 {
+        font-size: 0.95rem;
+    }
+    
+    .field-group input[type="text"],
+    .field-group input[type="url"],
+    .field-group input[type="number"],
+    .field-group select,
+    .field-group textarea {
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Animation for new rows */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.trainer-row.new-row {
+    animation: slideInUp 0.3s ease-out;
+}
+
+/* Focus management for accessibility */
+.trainer-row:focus-within {
+    border-color: rgba(132, 225, 188, 0.5);
+    box-shadow: 0 0 0 2px rgba(132, 225, 188, 0.2);
+}
+
+/* Deletion state styling */
+.trainer-row.deleting {
+    pointer-events: none;
+    background: rgba(255, 107, 107, 0.1);
+    border-color: rgba(255, 107, 107, 0.3);
+}
+
+.trainer-row.deleting .remove-trainer-row {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    cursor: not-allowed;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .trainer-row {
+        transition: none;
+    }
+    
+    .trainer-row:hover {
+        transform: none;
+    }
+    
+    .trainer-row.new-row {
+        animation: none;
+    }
+}
+
+/* Trainers list header */
+.trainers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.trainers-header h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-controls .button {
+    white-space: nowrap;
+} 
