@@ -1,26 +1,34 @@
 import {
-  Apple,
-  BarChart,
-  Bike,
-  Calendar,
-  Coffee,
-  Download,
-  Dumbbell,
-  Flame,
-  Footprints,
-  Heart,
-  Medal,
-  MessageSquare,
-  Smartphone,
-  Timer,
-  Video
+    Apple,
+    BarChart,
+    Bike,
+    Calendar,
+    Coffee,
+    Download,
+    Dumbbell,
+    Flame,
+    Footprints,
+    Heart,
+    Medal,
+    MessageSquare,
+    Smartphone,
+    Star,
+    Timer,
+    Video
 } from 'lucide-react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GlobalVariantKey } from '../types/shared';
 import FeatureCard from './components/FeatureCard';
 import TrainingFeaturesCTA from './components/TrainingFeaturesCTA';
 import './TrainingFeatures.scss';
-import { DefaultVariantProps, TrainingFeature } from './types';
+import {
+    DataSource,
+    DefaultVariantProps,
+    LoadingState,
+    TrainingFeature,
+    TrainingFeaturesSettings,
+    WordPressTrainingFeature
+} from './types';
 
 /**
  * FloatingIcon component for decorative background
@@ -75,17 +83,122 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
 };
 
 /**
+ * Icon mapping system for WordPress icon data
+ * Maps WordPress icon names to Lucide React components
+ */
+const getIconComponent = (iconType: string, iconName: string) => {
+  const IconMap: Record<string, any> = {
+    'Video': Video,
+    'Calendar': Calendar,
+    'BarChart': BarChart,
+    'MessageSquare': MessageSquare,
+    'Download': Download,
+    'Smartphone': Smartphone,
+    'Dumbbell': Dumbbell,
+    'Timer': Timer,
+    'Medal': Medal,
+    'Flame': Flame,
+    'Heart': Heart,
+    'Apple': Apple,
+    'Coffee': Coffee,
+    'Footprints': Footprints,
+    'Bike': Bike,
+    'Star': Star,
+  };
+  
+  const IconComponent = IconMap[iconName] || Star;
+  return <IconComponent size={24} className="text-gray-900" />;
+};
+
+/**
+ * Transform WordPress feature data to React component format
+ * Following Personal Training pattern for data transformation
+ */
+const transformWordPressFeature = (wpFeature: WordPressTrainingFeature): TrainingFeature => {
+  return {
+    icon: getIconComponent(wpFeature.icon.type, wpFeature.icon.name),
+    title: wpFeature.title,
+    description: wpFeature.description,
+    gradient: wpFeature.gradientClass,
+    flipFront: wpFeature.flipCard.frontText,
+    media: wpFeature.videoUrl ? {
+      type: 'video' as const,
+      src: wpFeature.videoUrl,
+      poster: wpFeature.videoPoster,
+      alt: wpFeature.title,
+      fallbackSrc: []
+    } : wpFeature.imageUrl ? {
+      type: 'image' as const,
+      src: wpFeature.imageUrl,
+      alt: wpFeature.title
+    } : undefined,
+    flipBack: {
+      title: wpFeature.flipCard.backTitle,
+      details: wpFeature.flipCard.backDetails ? wpFeature.flipCard.backDetails.split('|') : []
+    }
+  };
+};
+
+/**
  * Default Training Features component for the homepage
  */
 const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
   const {
     features: customFeatures,
-    sectionTitle = "Comprehensive Training Features",
-    sectionDescription = "Our training platform includes everything you need to succeed on your fitness journey, from cutting-edge tools to personalized support.",
+    sectionTitle: propSectionTitle,
+    sectionDescription: propSectionDescription,
     sectionTagText = "Premium Experience",
     variant = 'default',
     className = '',
   } = props;
+
+  // ===== WORDPRESS DATA STATE MANAGEMENT =====
+  const [featuresData, setFeaturesData] = useState<TrainingFeature[]>([]);
+  const [settings, setSettings] = useState<TrainingFeaturesSettings>({
+    sectionTitle: "Comprehensive Training Features",
+    sectionDescription: "Our training platform includes everything you need to succeed on your fitness journey, from cutting-edge tools to personalized support.",
+    gridColumns: 3,
+    cardStyle: 'default',
+    showDifficulty: false,
+    showDuration: false,
+    enableAnimations: true
+  });
+  const [loadingState, setLoadingState] = useState<LoadingState>('loading');
+  const [dataSource, setDataSource] = useState<DataSource>('none');
+
+  // ===== WORDPRESS DATA LOADING HOOK =====
+  // Following Personal Training pattern exactly
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined' && window.fitcopilotTrainingFeaturesData) {
+        const wpData = window.fitcopilotTrainingFeaturesData;
+        
+        console.log('✅ WordPress Training Features data found:', wpData);
+        
+        if (wpData.features && wpData.features.length > 0) {
+          console.log('✅ Processing features data:', wpData.features);
+          
+          const transformedFeatures = wpData.features.map(transformWordPressFeature);
+          
+          console.log('✅ Transformed features for frontend:', transformedFeatures);
+          
+          setFeaturesData(transformedFeatures);
+          setSettings(wpData.settings || settings);
+          setDataSource('wordpress');
+          setLoadingState('success');
+        } else {
+          console.warn('⚠️ WordPress data exists but no features found');
+          setLoadingState('error');
+        }
+      } else {
+        console.warn('⚠️ No WordPress Training Features data found, using defaults');
+        setLoadingState('error');
+      }
+    } catch (error) {
+      console.error('❌ Error loading training features data:', error);
+      setLoadingState('error');
+    }
+  }, []);
 
   // Floating icons data - similar to Features section
   const floatingIcons = [
@@ -100,7 +213,7 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
     { Icon: Bike, size: 36, left: 30, top: 70, delay: 1.8, speed: 13 }
   ];
 
-  // Default training features data
+  // Default training features data (fallback)
   const defaultFeatures: TrainingFeature[] = [
     {
       icon: <Video size={24} className="text-gray-900" />,
@@ -237,13 +350,49 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
     }
   ];
 
-  // Use custom features if provided, otherwise use defaults
-  const trainingFeatures = customFeatures || defaultFeatures;
+  // ===== DATA SELECTION LOGIC =====
+  // Priority: customFeatures > WordPress data > default fallback
+  const getTrainingFeatures = (): TrainingFeature[] => {
+    if (customFeatures && customFeatures.length > 0) {
+      return customFeatures;
+    }
+    
+    if (dataSource === 'wordpress' && featuresData.length > 0) {
+      return featuresData;
+    }
+    
+    return defaultFeatures;
+  };
+
+  const trainingFeatures = getTrainingFeatures();
+
+  // ===== SETTINGS RESOLUTION =====
+  // Use prop values if provided, otherwise WordPress settings, otherwise defaults
+  const resolvedSectionTitle = propSectionTitle || settings.sectionTitle || "Comprehensive Training Features";
+  const resolvedSectionDescription = propSectionDescription || settings.sectionDescription || "Our training platform includes everything you need to succeed on your fitness journey, from cutting-edge tools to personalized support.";
+
+  // ===== LOADING STATE HANDLING =====
+  if (loadingState === 'loading') {
+    return (
+      <section className={`training-features-section w-full py-16 md:pt-8 md:pb-24 px-4 relative overflow-hidden ${className}`}>
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center">
+            <div className="animate-pulse">
+              <div className="h-4 bg-lime-300 rounded w-32 mx-auto mb-4"></div>
+              <div className="h-12 bg-white/20 rounded w-96 mx-auto mb-4"></div>
+              <div className="h-6 bg-gray-400 rounded w-64 mx-auto"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
       className={`training-features-section w-full py-16 md:pt-8 md:pb-24 px-4 relative overflow-hidden ${className}`}
       data-theme={variant}
+      data-source={dataSource}
       id="training-features"
     >
       {/* Create a visual connector from previous section */}
@@ -269,9 +418,9 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
         <div className="text-center mb-12">
           <span className="text-xs font-bold tracking-widest uppercase text-lime-300 mb-2 block">{sectionTagText}</span>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-            <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">{sectionTitle}</span>
+            <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">{resolvedSectionTitle}</span>
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">{sectionDescription}</p>
+          <p className="text-gray-400 max-w-2xl mx-auto">{resolvedSectionDescription}</p>
         </div>
 
         {/* Features List */}
@@ -298,6 +447,16 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
             featureTitle="All Features"
           />
         </div>
+
+        {/* Debug Information (Development Only) */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="mt-8 p-4 bg-black/20 rounded-lg text-xs text-gray-400">
+            <strong>🔧 Debug Info:</strong> Data Source: {dataSource} | 
+            Features Count: {trainingFeatures.length} | 
+            Loading State: {loadingState} |
+            WordPress Data Available: {typeof window !== 'undefined' && !!window.fitcopilotTrainingFeaturesData ? 'Yes' : 'No'}
+          </div>
+        )}
       </div>
     </section>
   );

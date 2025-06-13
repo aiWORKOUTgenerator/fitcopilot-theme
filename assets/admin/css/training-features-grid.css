@@ -1,0 +1,803 @@
+/**
+ * FitCopilot Training Features Admin - Grid Layout Styles
+ * 
+ * Grid layout and structural styles for the Training Features admin interface
+ * Following the established Personal Training Admin grid patterns
+ * 
+ * @package FitCopilot
+ * @since 1.0.0
+ */
+
+/* ===== MAIN GRID LAYOUT ===== */
+
+.fitcopilot-training-features-admin .features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin: 20px 0;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ===== ENHANCED HEADER LAYOUT ===== */
+
+.fitcopilot-training-features-admin .features-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.fitcopilot-training-features-admin .features-header h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 600;
+    flex: 1;
+    min-width: 250px;
+}
+
+.fitcopilot-training-features-admin .header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* ===== BULK ACTIONS STYLING ===== */
+
+.fitcopilot-training-features-admin .bulk-actions-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fitcopilot-training-features-admin .bulk-action-select {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    color: #ffffff;
+    padding: 6px 10px;
+    font-size: 13px;
+    min-width: 150px;
+}
+
+.fitcopilot-training-features-admin .bulk-action-select:focus {
+    outline: none;
+    border-color: rgba(204, 255, 0, 0.5);
+    box-shadow: 0 0 0 2px rgba(204, 255, 0, 0.1);
+}
+
+.fitcopilot-training-features-admin .select-all-container {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fitcopilot-training-features-admin .select-all-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.fitcopilot-training-features-admin .select-all-toggle input[type="checkbox"] {
+    margin: 0;
+    transform: scale(1.1);
+}
+
+/* ===== FEATURE SELECTION CHECKBOXES ===== */
+
+.fitcopilot-training-features-admin .feature-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.fitcopilot-training-features-admin .feature-select-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.fitcopilot-training-features-admin .feature-select-checkbox:hover {
+    background: rgba(204, 255, 0, 0.1);
+}
+
+.fitcopilot-training-features-admin .feature-bulk-select {
+    margin: 0;
+    transform: scale(1.2);
+    accent-color: #CCFF00;
+}
+
+.fitcopilot-training-features-admin .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.fitcopilot-training-features-admin .feature-row {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.fitcopilot-training-features-admin .feature-row:hover {
+    border-color: rgba(204, 255, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(204, 255, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+/* ===== FEATURED FEATURES STYLING ===== */
+
+.fitcopilot-training-features-admin .feature-row.featured {
+    background: linear-gradient(135deg, rgba(204, 255, 0, 0.05), rgba(204, 255, 0, 0.02));
+    border: 2px solid rgba(204, 255, 0, 0.2);
+    position: relative;
+}
+
+.fitcopilot-training-features-admin .feature-row.featured::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px; 
+    background: linear-gradient(90deg, #CCFF00, #84E1BC);
+    border-radius: 12px 12px 0 0;
+}
+
+.fitcopilot-training-features-admin .feature-row.featured .feature-row-header h4 {
+    background: linear-gradient(135deg, #CCFF00, #84E1BC);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== INACTIVE FEATURES ===== */
+
+.fitcopilot-training-features-admin .feature-row.inactive {
+    opacity: 0.6;
+    background: rgba(255, 255, 255, 0.01);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.fitcopilot-training-features-admin .feature-row.inactive .inactive-notice {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+/* ===== FEATURE ROW HEADER ===== */
+
+.fitcopilot-training-features-admin .feature-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fitcopilot-training-features-admin .feature-row-header h4 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.fitcopilot-training-features-admin .feature-name-display {
+    font-weight: normal;
+    opacity: 0.9;
+}
+
+.fitcopilot-training-features-admin .row-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* ===== TOGGLE CONTROLS ===== */
+
+.fitcopilot-training-features-admin .active-toggle,
+.fitcopilot-training-features-admin .featured-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    user-select: none;
+}
+
+.fitcopilot-training-features-admin .active-toggle:hover,
+.fitcopilot-training-features-admin .featured-toggle:hover {
+    color: #CCFF00;
+}
+
+.fitcopilot-training-features-admin .active-toggle input[type="checkbox"],
+.fitcopilot-training-features-admin .featured-toggle input[type="checkbox"] {
+    margin: 0;
+    transform: scale(1.1);
+}
+
+.fitcopilot-training-features-admin .remove-feature-row {
+    background: none;
+    border: none;
+    color: rgba(255, 107, 107, 0.7);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.fitcopilot-training-features-admin .remove-feature-row:hover {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+}
+
+/* ===== COLLAPSIBLE FIELD SECTIONS ===== */
+
+.fitcopilot-training-features-admin .feature-fields-section {
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.fitcopilot-training-features-admin .fields-section-header {
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.fitcopilot-training-features-admin .fields-section-header:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.fitcopilot-training-features-admin .fields-section-header.clickable-header {
+    cursor: pointer;
+}
+
+.fitcopilot-training-features-admin .fields-section-title {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.fitcopilot-training-features-admin .fields-section-subtitle {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.fitcopilot-training-features-admin .collapse-toggle {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.fitcopilot-training-features-admin .collapse-toggle:hover {
+    color: #CCFF00;
+    background: rgba(204, 255, 0, 0.1);
+}
+
+.fitcopilot-training-features-admin .collapse-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 12px;
+}
+
+.fitcopilot-training-features-admin .collapsible-content.collapsed + .fields-section-header .collapse-icon,
+.fitcopilot-training-features-admin .collapsible-content.collapsed ~ .fields-section-header .collapse-icon {
+    transform: rotate(-90deg);
+}
+
+/* ===== COLLAPSIBLE CONTENT ANIMATIONS ===== */
+
+.fitcopilot-training-features-admin .collapsible-content {
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+    opacity: 1;
+    padding: 20px;
+}
+
+.fitcopilot-training-features-admin .collapsible-content.collapsed {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 20px;
+}
+
+/* ===== FEATURE FIELDS GRID ===== */
+
+.fitcopilot-training-features-admin .feature-fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.fitcopilot-training-features-admin .feature-fields-grid.essential-fields {
+    grid-template-columns: 1fr 1fr;
+}
+
+.fitcopilot-training-features-admin .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fitcopilot-training-features-admin .field-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.fitcopilot-training-features-admin .field-group label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+/* ===== FORM FIELD STYLING ===== */
+
+.fitcopilot-training-features-admin input[type="text"],
+.fitcopilot-training-features-admin input[type="url"],
+.fitcopilot-training-features-admin input[type="number"],
+.fitcopilot-training-features-admin select,
+.fitcopilot-training-features-admin textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.fitcopilot-training-features-admin input[type="text"]:focus,
+.fitcopilot-training-features-admin input[type="url"]:focus,
+.fitcopilot-training-features-admin input[type="number"]:focus,
+.fitcopilot-training-features-admin select:focus,
+.fitcopilot-training-features-admin textarea:focus {
+    border-color: rgba(204, 255, 0, 0.5);
+    box-shadow: 0 0 0 2px rgba(204, 255, 0, 0.1);
+    outline: none;
+}
+
+.fitcopilot-training-features-admin textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.fitcopilot-training-features-admin select {
+    cursor: pointer;
+}
+
+.fitcopilot-training-features-admin input[type="text"]::placeholder,
+.fitcopilot-training-features-admin input[type="url"]::placeholder,
+.fitcopilot-training-features-admin textarea::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ===== IMAGE UPLOAD STYLING ===== */
+
+.fitcopilot-training-features-admin .image-upload-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.fitcopilot-training-features-admin .image-url-input {
+    flex: 1;
+}
+
+.fitcopilot-training-features-admin .upload-image-button {
+    background: rgba(204, 255, 0, 0.1);
+    border: 1px solid rgba(204, 255, 0, 0.3);
+    color: #CCFF00;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.fitcopilot-training-features-admin .upload-image-button:hover {
+    background: rgba(204, 255, 0, 0.2);
+    border-color: rgba(204, 255, 0, 0.5);
+}
+
+.fitcopilot-training-features-admin .image-preview {
+    margin-top: 10px;
+}
+
+.fitcopilot-training-features-admin .image-preview img {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+}
+
+/* ===== INDIVIDUAL SAVE SECTION ===== */
+
+.fitcopilot-training-features-admin .feature-save-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 15px;
+}
+
+.fitcopilot-training-features-admin .save-individual-feature {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.fitcopilot-training-features-admin .save-individual-feature:hover {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    transform: translateY(-1px);
+}
+
+.fitcopilot-training-features-admin .save-status {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 8px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.fitcopilot-training-features-admin .save-status.show {
+    opacity: 1;
+}
+
+.fitcopilot-training-features-admin .save-status.success {
+    color: #84E1BC;
+    background: rgba(132, 225, 188, 0.1);
+}
+
+.fitcopilot-training-features-admin .save-status.error {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+}
+
+/* ===== CATEGORIES GRID ===== */
+
+.fitcopilot-training-features-admin .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.fitcopilot-training-features-admin .category-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.fitcopilot-training-features-admin .category-card:hover {
+    border-color: rgba(204, 255, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.fitcopilot-training-features-admin .category-card h3 {
+    color: #ffffff;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+}
+
+.fitcopilot-training-features-admin .category-count {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    margin: 0 0 15px 0;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+@media (max-width: 1200px) {
+    .fitcopilot-training-features-admin .header-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .fitcopilot-training-features-admin .bulk-actions-container {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 768px) {
+    .fitcopilot-training-features-admin .feature-fields-grid,
+    .fitcopilot-training-features-admin .feature-fields-grid.essential-fields {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* Enhanced header layout for mobile */
+    .fitcopilot-training-features-admin .features-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .fitcopilot-training-features-admin .features-header h2 {
+        font-size: 20px;
+        min-width: auto;
+    }
+
+    .fitcopilot-training-features-admin .header-controls {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .fitcopilot-training-features-admin .bulk-actions-container {
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px;
+    }
+
+    .fitcopilot-training-features-admin .bulk-action-select {
+        min-width: auto;
+        width: 100%;
+    }
+    
+    .fitcopilot-training-features-admin .feature-row-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .fitcopilot-training-features-admin .feature-header-left {
+        width: 100%;
+    }
+    
+    .fitcopilot-training-features-admin .row-controls {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+        gap: 8px;
+    }
+
+    /* Collapsible sections on mobile */
+    .fitcopilot-training-features-admin .fields-section-header {
+        padding: 12px 15px;
+    }
+
+    .fitcopilot-training-features-admin .fields-section-title {
+        font-size: 13px;
+    }
+
+    .fitcopilot-training-features-admin .fields-section-subtitle {
+        font-size: 11px;
+        display: none; /* Hide subtitle on mobile to save space */
+    }
+
+    .fitcopilot-training-features-admin .collapsible-content {
+        padding: 15px;
+    }
+    
+    .fitcopilot-training-features-admin .image-upload-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .fitcopilot-training-features-admin .upload-image-button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .fitcopilot-training-features-admin .feature-save-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .fitcopilot-training-features-admin .save-individual-feature {
+        width: 100%;
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    /* Enhanced touch targets for mobile */
+    .fitcopilot-training-features-admin input[type="text"],
+    .fitcopilot-training-features-admin input[type="url"],
+    .fitcopilot-training-features-admin input[type="number"],
+    .fitcopilot-training-features-admin select,
+    .fitcopilot-training-features-admin textarea {
+        padding: 12px 15px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        border-radius: 8px;
+        min-height: 44px; /* Minimum touch target size */
+    }
+
+    .fitcopilot-training-features-admin textarea {
+        min-height: 80px;
+    }
+
+    .fitcopilot-training-features-admin button,
+    .fitcopilot-training-features-admin .button {
+        min-height: 44px;
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 8px;
+        touch-action: manipulation; /* Removes 300ms delay */
+    }
+
+    .fitcopilot-training-features-admin .feature-select-checkbox,
+    .fitcopilot-training-features-admin .active-toggle,
+    .fitcopilot-training-features-admin .featured-toggle {
+        min-height: 44px;
+        padding: 8px;
+        border-radius: 6px;
+    }
+
+    .fitcopilot-training-features-admin .collapse-toggle {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 10px;
+    }
+
+    .fitcopilot-training-features-admin .remove-feature-row {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .fitcopilot-training-features-admin input[type="checkbox"] {
+        transform: scale(1.5);
+        margin: 8px;
+    }
+}
+
+/* ===== ICON TYPE CONDITIONAL FIELDS ===== */
+
+.fitcopilot-training-features-admin .icon-name-field {
+    transition: all 0.3s ease;
+}
+
+.fitcopilot-training-features-admin .icon-name-field[style*="none"] {
+    display: none !important;
+}
+
+/* ===== EXPORT/IMPORT SECTION STYLING ===== */
+
+.fitcopilot-training-features-admin .export-section,
+.fitcopilot-training-features-admin .import-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.fitcopilot-training-features-admin .export-section h3,
+.fitcopilot-training-features-admin .import-section h3 {
+    color: #ffffff;
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.fitcopilot-training-features-admin .export-section p,
+.fitcopilot-training-features-admin .import-section p {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 15px;
+}
+
+.fitcopilot-training-features-admin .import-section form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.fitcopilot-training-features-admin .import-section input[type="file"] {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+/* ===== HEADER ACTIONS ===== */
+
+.fitcopilot-training-features-admin .features-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.fitcopilot-training-features-admin .features-header h2 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 20px;
+}
+
+.fitcopilot-training-features-admin #add-new-feature {
+    background: linear-gradient(135deg, #CCFF00, #84E1BC);
+    border: none;
+    color: #1a1a1a;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.fitcopilot-training-features-admin #add-new-feature:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(204, 255, 0, 0.3);
+} 

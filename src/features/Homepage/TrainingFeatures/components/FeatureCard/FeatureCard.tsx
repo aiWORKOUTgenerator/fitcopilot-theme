@@ -7,6 +7,7 @@ import { FeatureCardProps } from './types';
 
 /**
  * FeatureCard component displays training features with flip animation and media support
+ * Phase 1 Enhanced: Prominent CTAs with gradient backgrounds and improved visibility
  */
 const FeatureCard: React.FC<FeatureCardProps> = ({
   feature,
@@ -21,6 +22,15 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
       e.stopPropagation();
     }
     setIsFlipped(prev => !prev);
+  };
+
+  // Map feature type for TrainingFeaturesButton consistency
+  const getFeatureType = () => {
+    if (feature.gradient.includes('lime') || feature.gradient.includes('emerald')) return 'virtual';
+    if (feature.gradient.includes('violet') || feature.gradient.includes('purple')) return 'tracking';
+    if (feature.gradient.includes('amber') || feature.gradient.includes('orange')) return 'support';
+    if (feature.gradient.includes('cyan') || feature.gradient.includes('blue')) return 'mobile';
+    return 'virtual'; // default
   };
 
   return (
@@ -43,13 +53,13 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
           </div>
           <p className="text-gray-300 mt-4">{feature.flipFront}</p>
           <Button
-            variant="secondary"
-            size="sm"
-            className="mt-4 text-lime-300 hover:text-lime-400 feature-card-button"
+            variant="primary"
+            size="medium"
+            className="mt-4 feature-card__cta-enhanced"
             onClick={(e) => toggleFlip(e)}
           >
             <Info size={16} className="mr-1" />
-            See more details
+            Explore Details
           </Button>
         </div>
 
@@ -107,13 +117,13 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
                 ))}
               </ul>
               <Button
-                variant="secondary"
-                size="sm"
-                className="mt-2 text-xs text-lime-300 hover:text-lime-400 feature-card-button"
+                variant="primary"
+                size="small"
+                className="mt-2 feature-card__cta-enhanced feature-card__cta-compact"
                 onClick={(e) => toggleFlip(e)}
               >
                 <RotateCw size={12} className="mr-1" />
-                Flip back
+                Back to Overview
               </Button>
             </div>
           </div>

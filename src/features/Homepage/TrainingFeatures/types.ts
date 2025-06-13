@@ -2,7 +2,7 @@
  * TrainingFeatures component types
  */
 
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { GlobalVariantKey } from '../types/shared';
 
 /**
@@ -10,6 +10,83 @@ import { GlobalVariantKey } from '../types/shared';
  * @deprecated Use GlobalVariantKey from '../types/shared' instead
  */
 export type VariantKey = GlobalVariantKey;
+
+/**
+ * WordPress Training Feature Interface
+ * Matches the backend data structure from Training Features Data Provider
+ */
+export interface WordPressTrainingFeature {
+  id: number;
+  title: string;
+  description: string;
+  featureType: string;
+  difficultyLevel: 'beginner' | 'intermediate' | 'advanced';
+  durationMinutes: number;
+  imageUrl: string;
+  videoUrl: string;
+  videoPoster: string;
+  icon: {
+    type: 'lucide' | 'custom' | 'emoji';
+    name: string;
+  };
+  gradientClass: string;
+  flipCard: {
+    frontText: string;
+    backTitle: string;
+    backDetails: string;
+  };
+  cta: {
+    text: string;
+    url: string;
+  };
+  displayOrder: number;
+  isFeatured: boolean;
+  isActive: boolean;
+}
+
+/**
+ * WordPress Training Features Settings
+ * Matches backend settings structure
+ */
+export interface TrainingFeaturesSettings {
+  sectionTitle: string;
+  sectionDescription: string;
+  gridColumns: number;
+  cardStyle: string;
+  showDifficulty: boolean;
+  showDuration: boolean;
+  enableAnimations: boolean;
+}
+
+/**
+ * WordPress Data Meta Information
+ */
+export interface TrainingFeaturesDataMeta {
+  total_count: number;
+  active_count: number;
+  display_count: number;
+  last_updated: number;
+}
+
+/**
+ * Complete WordPress Training Features Data Structure
+ * This is what's provided by wp_localize_script
+ */
+export interface WordPressTrainingFeaturesData {
+  features: WordPressTrainingFeature[];
+  settings: TrainingFeaturesSettings;
+  meta: TrainingFeaturesDataMeta;
+}
+
+/**
+ * Data Source Type for tracking data origin
+ */
+export type DataSource = 'wordpress' | 'default' | 'none';
+
+/**
+ * Loading State Type
+ */
+export type LoadingState = 'loading' | 'success' | 'error';
 
 /**
  * Media type definitions for feature cards
@@ -44,7 +121,7 @@ export interface FlipBackContent {
 }
 
 /**
- * Individual training feature definition
+ * Individual training feature definition (React component format)
  */
 export interface TrainingFeature {
     icon: ReactNode;
@@ -145,22 +222,11 @@ export type VariantProps =
 export type TrainingFeaturesProps = VariantProps;
 
 /**
- * Training Feature item interface
+ * Extended Window interface for WordPress data
+ * Following Personal Training pattern exactly
  */
-export interface TrainingFeature {
-    title: string;
-    description: string;
-    icon?: React.ReactNode;
-    link?: string;
-    linkText?: string;
-}
-
-/**
- * Training Features component props
- */
-export interface TrainingFeaturesProps {
-    title?: string;
-    subtitle?: string;
-    features?: TrainingFeature[];
-    className?: string;
+declare global {
+  interface Window {
+    fitcopilotTrainingFeaturesData?: WordPressTrainingFeaturesData;
+  }
 } 

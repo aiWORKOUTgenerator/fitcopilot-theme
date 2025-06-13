@@ -1,0 +1,598 @@
+/* ==================================================
+   FITCOPILOT TRAINING FEATURES ADMIN STYLES
+   Following Personal Training Admin architecture patterns
+   Enhanced for Phase 2 sophisticated field types
+   ================================================== */
+
+/* ... existing styles ... */
+
+/* ==================================================
+   PHASE 2: ENHANCED FIELD TYPES STYLING
+   ================================================== */
+
+/* Difficulty Level Visual Selector */
+.difficulty-field .field-group {
+    position: relative;
+}
+
+.difficulty-selector {
+    width: 100%;
+}
+
+.difficulty-options {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.difficulty-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.difficulty-option:hover {
+    border-color: #ccff00;
+    background: rgba(204, 255, 0, 0.05);
+    transform: translateY(-1px);
+}
+
+.difficulty-option.selected {
+    border-color: #ccff00;
+    background: rgba(204, 255, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(204, 255, 0, 0.2);
+}
+
+.difficulty-option input[type="radio"] {
+    display: none;
+}
+
+.difficulty-indicator {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.difficulty-indicator.beginner {
+    color: #4CAF50;
+}
+
+.difficulty-indicator.intermediate {
+    color: #FF9800;
+}
+
+.difficulty-indicator.advanced {
+    color: #F44336;
+}
+
+.difficulty-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Duration Slider Enhancement */
+.duration-field {
+    position: relative;
+}
+
+.duration-slider-container {
+    width: 100%;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+}
+
+.duration-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: #e9ecef;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    margin-bottom: 15px;
+    background: linear-gradient(to right, #ccff00 0%, #ccff00 var(--slider-percent, 0%), #e9ecef var(--slider-percent, 0%), #e9ecef 100%);
+}
+
+.duration-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ccff00;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.duration-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(204, 255, 0, 0.4);
+}
+
+.duration-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ccff00;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.duration-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.duration-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    padding: 8px 16px;
+    background: #fff;
+    border-radius: 6px;
+    border: 2px solid #ccff00;
+    min-width: 80px;
+    text-align: center;
+}
+
+.duration-presets {
+    display: flex;
+    gap: 8px;
+}
+
+.duration-preset {
+    padding: 6px 12px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    transition: all 0.2s ease;
+}
+
+.duration-preset:hover {
+    background: #ccff00;
+    color: #333;
+    border-color: #ccff00;
+    transform: translateY(-1px);
+}
+
+/* Rich Text Editor Container */
+.rich-text-container {
+    position: relative;
+    margin-top: 8px;
+}
+
+.rich-text-container .wp-editor-container {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #e0e0e0;
+    transition: border-color 0.3s ease;
+}
+
+.rich-text-container .wp-editor-container:focus-within {
+    border-color: #ccff00;
+}
+
+.rich-text-container .mce-toolbar {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #e9ecef !important;
+}
+
+.rich-text-container .mce-btn {
+    border-radius: 4px !important;
+    margin: 2px !important;
+}
+
+.rich-text-container .mce-btn:hover {
+    background: rgba(204, 255, 0, 0.1) !important;
+}
+
+/* Tag Input System */
+.tag-input-container {
+    width: 100%;
+    min-height: 120px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 16px;
+    background: #fff;
+    transition: border-color 0.3s ease;
+}
+
+.tag-input-container:focus-within {
+    border-color: #ccff00;
+    box-shadow: 0 0 0 3px rgba(204, 255, 0, 0.1);
+}
+
+.tags-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 40px;
+    margin-bottom: 12px;
+    padding: 8px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px dashed #ddd;
+}
+
+.feature-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #ccff00, #a3d900);
+    color: #333;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: tagFadeIn 0.3s ease;
+}
+
+@keyframes tagFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.remove-tag {
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-tag:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(1.1);
+}
+
+.tag-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.tag-input:focus {
+    border-color: #ccff00;
+    box-shadow: 0 0 0 3px rgba(204, 255, 0, 0.1);
+}
+
+.tag-input::placeholder {
+    color: #999;
+    font-style: italic;
+}
+
+.field-help {
+    margin-top: 8px;
+}
+
+.field-help small {
+    color: #666;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+/* CTA Preview Section */
+.cta-preview {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    border: 2px dashed #ddd;
+    text-align: center;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #ccff00, #a3d900);
+    color: #333;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(204, 255, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.preview-cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(204, 255, 0, 0.4);
+    color: #333;
+    text-decoration: none;
+}
+
+.preview-cta-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s ease;
+}
+
+.preview-cta-button:hover::before {
+    left: 100%;
+}
+
+.cta-placeholder {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+}
+
+.cta-placeholder span {
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    border: 1px dashed #ccc;
+}
+
+/* URL Input Enhancement */
+.url-input {
+    position: relative;
+}
+
+.url-input:valid {
+    border-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.05);
+}
+
+.url-input:invalid:not(:placeholder-shown) {
+    border-color: #F44336;
+    background: rgba(244, 67, 54, 0.05);
+}
+
+/* Field Group Enhancements */
+.field-group.difficulty-field,
+.field-group.duration-field {
+    grid-column: span 2;
+}
+
+.field-group.full-width {
+    grid-column: span 2;
+}
+
+/* Responsive Design for Enhanced Fields */
+@media (max-width: 1200px) {
+    .difficulty-options {
+        gap: 10px;
+    }
+    
+    .difficulty-option {
+        min-width: 100px;
+        padding: 10px 12px;
+    }
+    
+    .duration-presets {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    
+    .duration-preset {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 768px) {
+    .field-group.difficulty-field,
+    .field-group.duration-field,
+    .field-group.full-width {
+        grid-column: span 1;
+    }
+    
+    .difficulty-options {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .difficulty-option {
+        justify-content: flex-start;
+        min-width: auto;
+    }
+    
+    .duration-display {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .duration-presets {
+        justify-content: center;
+    }
+    
+    .tags-display {
+        min-height: 60px;
+    }
+    
+    .feature-tag {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+
+/* Enhanced Field Section Styling */
+.feature-fields-section.collapsible-section {
+    margin-bottom: 20px;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    transition: all 0.3s ease;
+}
+
+.feature-fields-section.collapsible-section:hover {
+    border-color: rgba(204, 255, 0, 0.3);
+}
+
+.clickable-header {
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.clickable-header:hover {
+    background: linear-gradient(135deg, rgba(204, 255, 0, 0.1), rgba(204, 255, 0, 0.05));
+}
+
+.fields-section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+}
+
+.fields-section-subtitle {
+    font-size: 13px;
+    color: #666;
+    font-style: italic;
+}
+
+.collapse-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.collapse-toggle:hover {
+    background: rgba(204, 255, 0, 0.2);
+}
+
+.collapse-icon {
+    font-size: 14px;
+    color: #666;
+    transition: transform 0.3s ease;
+}
+
+.collapsible-content.collapsed + .clickable-header .collapse-icon {
+    transform: rotate(-90deg);
+}
+
+/* Individual Save Button Enhancement */
+.feature-save-section {
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-top: 2px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.save-individual-feature {
+    background: linear-gradient(135deg, #ccff00, #a3d900) !important;
+    border: none !important;
+    color: #333 !important;
+    font-weight: 700 !important;
+    padding: 12px 24px !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(204, 255, 0, 0.3) !important;
+}
+
+.save-individual-feature:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(204, 255, 0, 0.4) !important;
+}
+
+.save-status {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.save-status.success {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    opacity: 1;
+}
+
+.save-status.error {
+    background: rgba(244, 67, 54, 0.1);
+    color: #F44336;
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    opacity: 1;
+}
+
+.save-status.loading {
+    background: rgba(255, 193, 7, 0.1);
+    color: #FF9800;
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    opacity: 1;
+}
+
+/* Animation Enhancements */
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(204, 255, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(204, 255, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(204, 255, 0, 0);
+    }
+}
+
+.feature-row.featured .save-individual-feature {
+    animation: pulseGlow 2s infinite;
+} 

@@ -229,93 +229,153 @@
             transform: translateY(0) !important;
         }
     }
-}
 
-// Individual card variants
-.feature-card[data-variant="gym"] {
-    --feature-card-border-color: var(--color-slate-700);
-    --feature-card-border-hover: var(--color-red-300-30);
-    --feature-card-shadow-color: var(--color-red-300-10);
-    --feature-card-bullet-color: var(--color-red-300);
-    --feature-card-link-color: var(--color-red-300);
-    --feature-card-link-hover: var(--color-red-400);
-    --feature-card-front-bg-from: var(--color-slate-800);
-    --feature-card-front-bg-to: var(--color-slate-900);
-    --feature-card-back-bg-from: var(--color-slate-800);
-    --feature-card-back-bg-to: var(--color-slate-900);
+    // ============================================================================
+    // PHASE 1: ENHANCED CTA STYLING
+    // ============================================================================
 
-    .feature-icon {
-        background: var(--color-gradient-red);
+    // Enhanced CTA button styling
+    &__cta-enhanced {
+        // Base styling with gradient background
+        background: linear-gradient(
+            to right, 
+            var(--color-lime-300, #a3e635), 
+            var(--color-emerald-400, #34d399)
+        ) !important;
+        color: var(--color-gray-900, #111827) !important;
+        border: none !important;
+        padding: 0.875rem 1.5rem !important;
+        font-weight: 600 !important;
+        border-radius: 0.5rem !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3) !important;
+        text-transform: none !important;
+        letter-spacing: 0.025em !important;
+        
+        // Enhanced hover effects
+        &:hover:not(:disabled) {
+            background: linear-gradient(
+                to right, 
+                var(--color-lime-400, #a3e635), 
+                var(--color-emerald-500, #10b981)
+            ) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(163, 230, 53, 0.4) !important;
+        }
+        
+        &:active:not(:disabled) {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3) !important;
+        }
+        
+        // Icon styling
+        svg {
+            transition: transform 0.2s ease !important;
+        }
+        
+        &:hover:not(:disabled) svg {
+            transform: scale(1.1) !important;
+        }
+    }
+    
+    // Compact variant for flip back button
+    &__cta-compact {
+        padding: 0.625rem 1rem !important;
+        font-size: 0.875rem !important;
+        
+        svg {
+            width: 12px !important;
+            height: 12px !important;
+        }
     }
 }
 
-.feature-card[data-variant="sports"] {
-    --feature-card-border-color: var(--color-gray-700);
-    --feature-card-border-hover: var(--color-blue-300-30);
-    --feature-card-shadow-color: var(--color-blue-300-10);
-    --feature-card-bullet-color: var(--color-blue-300);
-    --feature-card-link-color: var(--color-blue-300);
-    --feature-card-link-hover: var(--color-blue-400);
-    --feature-card-front-bg-from: var(--color-blue-900);
-    --feature-card-front-bg-to: var(--color-blue-950);
-    --feature-card-back-bg-from: var(--color-blue-900);
-    --feature-card-back-bg-to: var(--color-blue-950);
+// ============================================================================
+// FEATURE-SPECIFIC CTA THEMING
+// ============================================================================
 
-    .feature-icon {
-        background: var(--color-gradient-blue);
-    }
-}
-
-.feature-card[data-variant="wellness"] {
-    --feature-card-border-color: var(--color-gray-700);
-    --feature-card-border-hover: var(--color-purple-300-30);
-    --feature-card-shadow-color: var(--color-purple-300-10);
-    --feature-card-bullet-color: var(--color-purple-300);
-    --feature-card-link-color: var(--color-purple-300);
-    --feature-card-link-hover: var(--color-purple-400);
-    --feature-card-front-bg-from: var(--color-purple-900);
-    --feature-card-front-bg-to: var(--color-purple-950);
-    --feature-card-back-bg-from: var(--color-purple-900);
-    --feature-card-back-bg-to: var(--color-purple-950);
-
-    .feature-icon {
-        background: var(--color-gradient-purple);
-    }
-}
-
-// Feature-specific card styles for hover borders
+// Virtual features - Lime/emerald (default)
 .feature-card[data-gradient="from-lime-300 to-emerald-400"] {
-
-    &:hover,
-    &:focus-within {
-        border-color: rgba(190, 242, 100, 0.3); // lime-300 at 30% opacity
-        box-shadow: 0 4px 12px rgba(190, 242, 100, 0.1); // lime-300 at 10% opacity
+    .feature-card__cta-enhanced {
+        background: linear-gradient(to right, #a3e635, #34d399) !important;
+        box-shadow: 0 4px 12px rgba(163, 230, 53, 0.3) !important;
+        
+        &:hover:not(:disabled) {
+            background: linear-gradient(to right, #84cc16, #10b981) !important;
+            box-shadow: 0 6px 20px rgba(163, 230, 53, 0.4) !important;
+        }
     }
 }
 
-.feature-card[data-gradient="from-cyan-300 to-blue-400"] {
-
-    &:hover,
-    &:focus-within {
-        border-color: rgba(103, 232, 249, 0.3); // cyan-300 at 30% opacity
-        box-shadow: 0 4px 12px rgba(103, 232, 249, 0.1); // cyan-300 at 10% opacity
-    }
-}
-
+// Tracking features - Violet/purple
 .feature-card[data-gradient="from-violet-300 to-purple-400"] {
-
-    &:hover,
-    &:focus-within {
-        border-color: rgba(196, 181, 253, 0.3); // violet-300 at 30% opacity
-        box-shadow: 0 4px 12px rgba(196, 181, 253, 0.1); // violet-300 at 10% opacity
+    .feature-card__cta-enhanced {
+        background: linear-gradient(to right, #c4b5fd, #a78bfa) !important;
+        box-shadow: 0 4px 12px rgba(196, 181, 253, 0.3) !important;
+        
+        &:hover:not(:disabled) {
+            background: linear-gradient(to right, #a78bfa, #8b5cf6) !important;
+            box-shadow: 0 6px 20px rgba(196, 181, 253, 0.4) !important;
+        }
     }
 }
 
+// Support features - Amber/orange
 .feature-card[data-gradient="from-amber-300 to-orange-400"] {
+    .feature-card__cta-enhanced {
+        background: linear-gradient(to right, #fcd34d, #fb923c) !important;
+        box-shadow: 0 4px 12px rgba(252, 211, 77, 0.3) !important;
+        
+        &:hover:not(:disabled) {
+            background: linear-gradient(to right, #f59e0b, #ea580c) !important;
+            box-shadow: 0 6px 20px rgba(252, 211, 77, 0.4) !important;
+        }
+    }
+}
 
-    &:hover,
-    &:focus-within {
-        border-color: rgba(252, 211, 77, 0.3); // amber-300 at 30% opacity
-        box-shadow: 0 4px 12px rgba(252, 211, 77, 0.1); // amber-300 at 10% opacity
+// Mobile features - Cyan/blue
+.feature-card[data-gradient="from-cyan-300 to-blue-400"] {
+    .feature-card__cta-enhanced {
+        background: linear-gradient(to right, #67e8f9, #60a5fa) !important;
+        box-shadow: 0 4px 12px rgba(103, 232, 249, 0.3) !important;
+        
+        &:hover:not(:disabled) {
+            background: linear-gradient(to right, #22d3ee, #3b82f6) !important;
+            box-shadow: 0 6px 20px rgba(103, 232, 249, 0.4) !important;
+        }
+    }
+}
+
+// ============================================================================
+// ACCESSIBILITY ENHANCEMENTS
+// ============================================================================
+
+// Ensure proper focus states
+.feature-card__cta-enhanced {
+    &:focus:not(:disabled) {
+        outline: 2px solid var(--color-lime-400, #a3e635) !important;
+        outline-offset: 2px !important;
+    }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+    .feature-card__cta-enhanced {
+        transition: none !important;
+        
+        &:hover:not(:disabled) {
+            transform: none !important;
+        }
+        
+        &:hover:not(:disabled) svg {
+            transform: none !important;
+        }
+    }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+    .feature-card__cta-enhanced {
+        border: 2px solid var(--color-gray-900, #111827) !important;
     }
 }

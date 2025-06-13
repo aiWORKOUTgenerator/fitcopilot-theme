@@ -111,6 +111,9 @@ require_once get_template_directory() . '/inc/admin/testimonials-manager.php';
 // Include personal training manager admin page
 require_once get_template_directory() . '/inc/admin/personal-training-manager.php';
 
+// Include training features manager admin page
+require_once get_template_directory() . '/inc/admin/training-features-manager.php';
+
 // Include critical CSS functions
 require_once get_template_directory() . '/inc/critical-css.php';
 

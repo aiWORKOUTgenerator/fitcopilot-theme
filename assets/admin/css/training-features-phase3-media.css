@@ -1,0 +1,748 @@
+/**
+ * FitCopilot Training Features - Phase 3 Media Management CSS
+ * 
+ * Enhanced styling for advanced media management features including:
+ * - WordPress Media Library integration
+ * - Enhanced icon picker system
+ * - Video management and preview
+ * - Media validation feedback
+ * - Advanced upload components
+ * 
+ * @package FitCopilot
+ * @since Phase 3
+ */
+
+/* ===== ENHANCED MEDIA UPLOAD COMPONENTS ===== */
+
+.enhanced-media-upload-group {
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    padding: 16px;
+    background: #fafafa;
+    transition: all 0.3s ease;
+}
+
+.enhanced-media-upload-group:hover {
+    border-color: #00ff00;
+    background: #f8fff8;
+}
+
+.media-input-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.media-input-container input[type="url"] {
+    flex: 1;
+    min-width: 0;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    transition: border-color 0.3s ease;
+}
+
+.media-input-container input[type="url"]:focus {
+    border-color: #00ff00;
+    box-shadow: 0 0 0 1px rgba(0, 255, 0, 0.3);
+    outline: none;
+}
+
+.media-buttons {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.media-buttons .button {
+    padding: 8px 12px;
+    font-size: 13px;
+    line-height: 1;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.upload-media-library-button {
+    background: #00ff00 !important;
+    border-color: #00ff00 !important;
+    color: #fff !important;
+}
+
+.upload-media-library-button:hover {
+    background: #00e600 !important;
+    border-color: #00e600 !important;
+    transform: translateY(-1px);
+}
+
+.validate-media-button:hover {
+    background: #f0f0f0;
+    border-color: #999;
+}
+
+/* ===== MEDIA VALIDATION FEEDBACK ===== */
+
+.media-validation-feedback {
+    margin-top: 8px;
+    padding: 0;
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1.4;
+    min-height: 0;
+    transition: all 0.3s ease;
+}
+
+.media-validation-feedback.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 8px 12px;
+}
+
+.media-validation-feedback.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    padding: 8px 12px;
+}
+
+.media-validation-feedback.warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 8px 12px;
+}
+
+.validation-details {
+    margin-top: 6px;
+}
+
+.validation-details ul {
+    margin: 0;
+    padding-left: 16px;
+}
+
+.validation-suggestions {
+    margin-top: 8px;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* ===== ENHANCED IMAGE PREVIEW ===== */
+
+.enhanced-image-preview {
+    margin-top: 12px;
+    transition: all 0.3s ease;
+}
+
+.image-preview-container {
+    position: relative;
+    display: inline-block;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    transition: all 0.3s ease;
+}
+
+.image-preview-container:hover {
+    border-color: #00ff00;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.preview-image {
+    display: block;
+    max-width: 200px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.image-preview-container:hover .preview-image {
+    transform: scale(1.02);
+}
+
+.image-preview-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-preview-container:hover .image-preview-actions {
+    opacity: 1;
+}
+
+.image-preview-actions .button {
+    padding: 4px 8px;
+    font-size: 11px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    border: none;
+}
+
+.edit-image-button:hover {
+    background: rgba(0, 255, 0, 0.8) !important;
+}
+
+.remove-image-button:hover {
+    background: rgba(220, 53, 69, 0.8) !important;
+}
+
+.image-metadata {
+    padding: 8px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+}
+
+.image-info {
+    color: #6c757d;
+    font-size: 11px;
+}
+
+.no-image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px;
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    color: #6c757d;
+    transition: all 0.3s ease;
+}
+
+.no-image-placeholder:hover {
+    border-color: #00ff00;
+    background: #f8fff8;
+}
+
+.placeholder-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    opacity: 0.5;
+}
+
+/* ===== VIDEO MANAGEMENT ===== */
+
+.enhanced-video-upload-group {
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    padding: 16px;
+    background: #fafafa;
+}
+
+.video-platform-detector {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 6px;
+    font-size: 13px;
+    color: #1976d2;
+}
+
+.video-preview-container {
+    margin-top: 12px;
+}
+
+.video-preview-wrapper {
+    display: inline-block;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid #e1e1e1;
+}
+
+.video-thumbnail {
+    position: relative;
+    width: 200px;
+    height: 112px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+}
+
+.poster-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: #666;
+}
+
+.video-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    opacity: 0.6;
+}
+
+.video-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.video-preview-wrapper:hover .video-play-overlay {
+    opacity: 1;
+}
+
+.video-play-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.video-play-button:hover {
+    background: #fff;
+    transform: scale(1.1);
+}
+
+.video-metadata {
+    padding: 8px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+}
+
+.video-info {
+    color: #6c757d;
+    font-size: 11px;
+}
+
+.auto-generate-poster {
+    background: #6f42c1 !important;
+    border-color: #6f42c1 !important;
+    color: #fff !important;
+}
+
+.auto-generate-poster:hover {
+    background: #5a2d91 !important;
+    border-color: #5a2d91 !important;
+}
+
+/* ===== ENHANCED ICON PICKER SYSTEM ===== */
+
+.enhanced-icon-picker-container {
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.icon-type-tabs {
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.icon-type-tab {
+    flex: 1;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid #e1e1e1;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #6c757d;
+}
+
+.icon-type-tab:last-child {
+    border-right: none;
+}
+
+.icon-type-tab:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.icon-type-tab.active {
+    background: #00ff00;
+    color: #fff;
+    font-weight: 600;
+}
+
+.icon-panel {
+    display: none;
+    padding: 16px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.icon-panel.active {
+    display: block;
+}
+
+/* Lucide Icon Grid */
+.icon-search-container {
+    margin-bottom: 16px;
+}
+
+.icon-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.icon-search-input:focus {
+    border-color: #00ff00;
+    outline: none;
+    box-shadow: 0 0 0 1px rgba(0, 255, 0, 0.3);
+}
+
+.icon-category {
+    margin-bottom: 20px;
+}
+
+.icon-category-title {
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.icon-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
+}
+
+.icon-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 4px;
+    border: 1px solid #e1e1e1;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 11px;
+}
+
+.icon-option:hover {
+    border-color: #00ff00;
+    background: #f8fff8;
+    transform: translateY(-1px);
+}
+
+.icon-option.selected {
+    border-color: #00ff00;
+    background: #e8f5e8;
+    box-shadow: 0 2px 8px rgba(0, 255, 0, 0.3);
+}
+
+.icon-preview {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.icon-label {
+    text-align: center;
+    line-height: 1.2;
+    color: #6c757d;
+}
+
+/* Emoji Grid */
+.emoji-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.emoji-category-btn {
+    padding: 6px 12px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.emoji-category-btn:hover {
+    background: #e9ecef;
+    border-color: #adb5bd;
+}
+
+.emoji-category-btn.active {
+    background: #00ff00;
+    border-color: #00ff00;
+    color: #fff;
+}
+
+.emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 6px;
+}
+
+.emoji-category-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 6px;
+}
+
+.emoji-option {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e1e1e1;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 18px;
+}
+
+.emoji-option:hover {
+    border-color: #00ff00;
+    background: #f8fff8;
+    transform: scale(1.1);
+}
+
+.emoji-option.selected {
+    border-color: #00ff00;
+    background: #e8f5e8;
+    box-shadow: 0 2px 8px rgba(0, 255, 0, 0.3);
+}
+
+/* Custom Icon Panel */
+.custom-icon-upload {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.custom-icon-url {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.upload-custom-icon-button {
+    background: #6f42c1 !important;
+    border-color: #6f42c1 !important;
+    color: #fff !important;
+}
+
+.custom-icon-preview {
+    text-align: center;
+    padding: 16px;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    background: #f8f9fa;
+}
+
+.custom-icon-img {
+    max-width: 64px;
+    max-height: 64px;
+    border-radius: 4px;
+}
+
+/* Selected Icon Preview */
+.selected-icon-preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-top: 1px solid #e1e1e1;
+}
+
+.preview-label {
+    font-weight: 600;
+    font-size: 13px;
+    color: #495057;
+}
+
+.preview-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lucide-icon-preview {
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+}
+
+.emoji-icon-preview {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.custom-icon-preview {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+}
+
+.icon-name {
+    font-size: 13px;
+    color: #6c757d;
+    font-weight: 500;
+}
+
+.no-icon-placeholder {
+    color: #6c757d;
+    font-style: italic;
+    font-size: 13px;
+}
+
+.default-icon-preview {
+    font-size: 24px;
+    line-height: 1;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 768px) {
+    .media-input-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .media-buttons {
+        justify-content: center;
+    }
+    
+    .icon-type-tabs {
+        flex-direction: column;
+    }
+    
+    .icon-type-tab {
+        border-right: none;
+        border-bottom: 1px solid #e1e1e1;
+    }
+    
+    .icon-row {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+    
+    .emoji-grid {
+        grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+    }
+    
+    .custom-icon-upload {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* ===== ACCESSIBILITY ENHANCEMENTS ===== */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+.icon-option:focus,
+.emoji-option:focus,
+.icon-type-tab:focus {
+    outline: 2px solid #00ff00;
+    outline-offset: 2px;
+}
+
+/* ===== ANIMATION KEYFRAMES ===== */
+
+@keyframes media-upload-success {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.media-upload-success {
+    animation: media-upload-success 0.5s ease;
+}
+
+@keyframes validation-feedback-slide {
+    0% { 
+        opacity: 0; 
+        transform: translateY(-10px); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.media-validation-feedback {
+    animation: validation-feedback-slide 0.3s ease;
+}
+
+@keyframes icon-selection-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(0, 255, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); }
+}
+
+.icon-option.selected,
+.emoji-option.selected {
+    animation: icon-selection-pulse 0.6s ease;
+}
+
+/* Media Library Success Feedback */
+.validation-success {
+    color: #28a745;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+} 
