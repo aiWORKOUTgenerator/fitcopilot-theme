@@ -1,13 +1,13 @@
 import { Info, RotateCw } from 'lucide-react';
 import React, { useState } from 'react';
-import { Button } from '../../../../../features/shared/Button';
+import { UniversalButton } from '../../../components/UniversalButton';
 import { MediaContainer } from '../MediaContainer';
 import './FeatureCard.scss';
 import { FeatureCardProps } from './types';
 
 /**
  * FeatureCard component displays training features with flip animation and media support
- * Phase 1 Enhanced: Prominent CTAs with gradient backgrounds and improved visibility
+ * Phase 3 Enhanced: Uses UniversalButton for complete architectural consistency
  */
 const FeatureCard: React.FC<FeatureCardProps> = ({
   feature,
@@ -16,16 +16,27 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
 
-  // Toggle flip state
+  // Toggle flip state with analytics
   const toggleFlip = (e?: React.MouseEvent) => {
     if (e) {
       e.stopPropagation();
     }
     setIsFlipped(prev => !prev);
+    
+    // Analytics tracking for CTA interactions
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'feature_card_interaction', {
+        event_category: 'TrainingFeatures',
+        event_label: feature.title,
+        action: isFlipped ? 'flip_to_front' : 'flip_to_back',
+        feature_type: getFeatureTypeFromGradient(),
+        variant: variant
+      });
+    }
   };
 
-  // Map feature type for TrainingFeaturesButton consistency
-  const getFeatureType = () => {
+  // Generate feature type from gradient for contextType
+  const getFeatureTypeFromGradient = () => {
     if (feature.gradient.includes('lime') || feature.gradient.includes('emerald')) return 'virtual';
     if (feature.gradient.includes('violet') || feature.gradient.includes('purple')) return 'tracking';
     if (feature.gradient.includes('amber') || feature.gradient.includes('orange')) return 'support';
@@ -33,11 +44,39 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
     return 'virtual'; // default
   };
 
+  // Generate gradient color for UniversalButton
+  const getGradientColor = () => {
+    if (feature.gradient.includes('lime')) return 'lime';
+    if (feature.gradient.includes('violet')) return 'violet';
+    if (feature.gradient.includes('amber')) return 'amber';
+    if (feature.gradient.includes('cyan')) return 'cyan';
+    return 'lime'; // default
+  };
+
+  // Handle navigation with analytics
+  const handleNavigate = (action: string) => {
+    console.log(`Navigate to feature: ${feature.title} - ${action}`);
+    
+    // Analytics tracking for navigation
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'feature_navigation', {
+        event_category: 'TrainingFeatures',
+        event_label: feature.title,
+        action: action,
+        feature_type: getFeatureTypeFromGradient(),
+        variant: variant
+      });
+    }
+    
+    toggleFlip();
+  };
+
   return (
     <div
       className={`feature-card rounded-xl border border-gray-700 transition-all duration-300 ${className}`}
       data-variant={variant}
       data-gradient={feature.gradient}
+      data-feature-type={getFeatureTypeFromGradient()}
     >
       <div className="flex flex-col md:flex-row">
         {/* Feature Info - Left Side */}
@@ -52,15 +91,27 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
             </div>
           </div>
           <p className="text-gray-300 mt-4">{feature.flipFront}</p>
-          <Button
-            variant="primary"
-            size="medium"
-            className="mt-4 feature-card__cta-enhanced"
-            onClick={(e) => toggleFlip(e)}
-          >
-            <Info size={16} className="mr-1" />
-            Explore Details
-          </Button>
+          
+          {/* Phase 3: UniversalButton Integration */}
+          <div className="mt-4">
+            <UniversalButton
+              sectionContext="training-features"
+              buttonVariant="primary"
+              size="medium"
+              contextType={getFeatureTypeFromGradient()}
+              gradientColor={getGradientColor()}
+              gradientClass={feature.gradient}
+              variant={variant}
+              leftIcon={<Info size={16} />}
+              onClick={() => handleNavigate('explore_details')}
+              className="feature-card__cta-phase3"
+              data-section="training-features"
+              data-context={getFeatureTypeFromGradient()}
+              aria-label={`Explore ${feature.title} details`}
+            >
+              Explore Details
+            </UniversalButton>
+          </div>
         </div>
 
         {/* Flip Card - Right Side */}
@@ -116,15 +167,27 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
                   </li>
                 ))}
               </ul>
-              <Button
-                variant="primary"
-                size="small"
-                className="mt-2 feature-card__cta-enhanced feature-card__cta-compact"
-                onClick={(e) => toggleFlip(e)}
-              >
-                <RotateCw size={12} className="mr-1" />
-                Back to Overview
-              </Button>
+              
+              {/* Phase 3: UniversalButton for Back Side */}
+              <div className="mt-2">
+                <UniversalButton
+                  sectionContext="training-features"
+                  buttonVariant="secondary"
+                  size="small"
+                  contextType={getFeatureTypeFromGradient()}
+                  gradientColor={getGradientColor()}
+                  gradientClass={feature.gradient}
+                  variant={variant}
+                  leftIcon={<RotateCw size={12} />}
+                  onClick={() => handleNavigate('back_to_overview')}
+                  className="feature-card__cta-phase3 feature-card__cta-compact"
+                  data-section="training-features"
+                  data-context={getFeatureTypeFromGradient()}
+                  aria-label={`Return to ${feature.title} overview`}
+                >
+                  Back to Overview
+                </UniversalButton>
+              </div>
             </div>
           </div>
         </div>

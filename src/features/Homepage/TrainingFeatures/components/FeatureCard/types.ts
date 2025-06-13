@@ -94,4 +94,28 @@ export interface MediaContainerProps {
      * @default 'default'
      */
     variant?: 'default' | 'gym' | 'sports' | 'wellness';
+}
+
+/**
+ * Analytics event data for feature card interactions
+ */
+export interface FeatureCardAnalytics {
+  event_category: 'TrainingFeatures';
+  event_label: string;
+  action: 'flip_to_front' | 'flip_to_back' | 'explore_details' | 'back_to_overview';
+  feature_type: 'virtual' | 'tracking' | 'support' | 'mobile';
+  variant: string;
+}
+
+/**
+ * Global gtag function declaration for analytics
+ */
+declare global {
+  interface Window {
+    gtag?: (
+      command: 'event',
+      eventName: string,
+      parameters: FeatureCardAnalytics
+    ) => void;
+  }
 } 
