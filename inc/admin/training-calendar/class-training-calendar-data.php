@@ -499,16 +499,120 @@ class FitCopilot_Training_Calendar_Data {
     public function update_event($event_id, $event_data) {
         global $wpdb;
         
-        // Simple update implementation
-        $sanitized_data = array(
-            'title' => sanitize_text_field($event_data['title'] ?? ''),
-            'description' => sanitize_textarea_field($event_data['description'] ?? ''),
-            'booking_status' => sanitize_text_field($event_data['booking_status'] ?? 'available')
+        // Enhanced update implementation supporting all event fields
+        $sanitized_data = array();
+        
+        // Basic fields
+        if (isset($event_data['title'])) {
+            $sanitized_data['title'] = sanitize_text_field($event_data['title']);
+        }
+        if (isset($event_data['description'])) {
+            $sanitized_data['description'] = sanitize_textarea_field($event_data['description']);
+        }
+        
+        // Date/time fields
+        if (isset($event_data['start'])) {
+            $sanitized_data['start_datetime'] = sanitize_text_field($event_data['start']);
+        }
+        if (isset($event_data['end'])) {
+            $sanitized_data['end_datetime'] = sanitize_text_field($event_data['end']);
+        }
+        
+        // Event configuration
+        if (isset($event_data['trainerId']) || isset($event_data['trainer_id'])) {
+            $sanitized_data['trainer_id'] = absint($event_data['trainerId'] ?? $event_data['trainer_id']);
+        }
+        if (isset($event_data['eventType']) || isset($event_data['event_type'])) {
+            $sanitized_data['event_type'] = sanitize_text_field($event_data['eventType'] ?? $event_data['event_type']);
+        }
+        if (isset($event_data['bookingStatus']) || isset($event_data['booking_status'])) {
+            $sanitized_data['booking_status'] = sanitize_text_field($event_data['bookingStatus'] ?? $event_data['booking_status'] ?? 'available');
+        }
+        if (isset($event_data['sessionType']) || isset($event_data['session_type'])) {
+            $sanitized_data['session_type'] = sanitize_text_field($event_data['sessionType'] ?? $event_data['session_type']);
+        }
+        
+        // Location and capacity
+        if (isset($event_data['location'])) {
+            $sanitized_data['location'] = sanitize_text_field($event_data['location']);
+        }
+        if (isset($event_data['maxParticipants']) || isset($event_data['max_participants'])) {
+            $sanitized_data['max_participants'] = absint($event_data['maxParticipants'] ?? $event_data['max_participants']);
+        }
+        if (isset($event_data['currentParticipants']) || isset($event_data['current_participants'])) {
+            $sanitized_data['current_participants'] = absint($event_data['currentParticipants'] ?? $event_data['current_participants']);
+        }
+        
+        // Styling
+        if (isset($event_data['backgroundColor']) || isset($event_data['background_color'])) {
+            $sanitized_data['background_color'] = sanitize_hex_color($event_data['backgroundColor'] ?? $event_data['background_color']);
+        }
+        if (isset($event_data['borderColor']) || isset($event_data['border_color'])) {
+            $sanitized_data['border_color'] = sanitize_hex_color($event_data['borderColor'] ?? $event_data['border_color']);
+        }
+        if (isset($event_data['textColor']) || isset($event_data['text_color'])) {
+            $sanitized_data['text_color'] = sanitize_hex_color($event_data['textColor'] ?? $event_data['text_color']);
+        }
+        
+        // Pricing
+        if (isset($event_data['price'])) {
+            $sanitized_data['price'] = floatval($event_data['price']);
+        }
+        if (isset($event_data['currency'])) {
+            $sanitized_data['currency'] = sanitize_text_field($event_data['currency']);
+        }
+        
+        // Virtual session data
+        if (isset($event_data['zoomLink']) || isset($event_data['zoom_link'])) {
+            $sanitized_data['zoom_link'] = esc_url_raw($event_data['zoomLink'] ?? $event_data['zoom_link']);
+        }
+        if (isset($event_data['specialInstructions']) || isset($event_data['special_instructions'])) {
+            $sanitized_data['special_instructions'] = sanitize_textarea_field($event_data['specialInstructions'] ?? $event_data['special_instructions']);
+        }
+        
+        // Recurring event fields
+        if (isset($event_data['recurring'])) {
+            $sanitized_data['recurring'] = $event_data['recurring'] ? 1 : 0;
+        }
+        if (isset($event_data['recurringRule']) || isset($event_data['recurring_rule'])) {
+            $recurring_rule = $event_data['recurringRule'] ?? $event_data['recurring_rule'];
+            $sanitized_data['recurring_rule'] = is_array($recurring_rule) ? json_encode($recurring_rule) : sanitize_text_field($recurring_rule);
+        }
+        
+        // Metadata
+        if (isset($event_data['tags'])) {
+            $tags = is_array($event_data['tags']) ? implode(',', array_map('sanitize_text_field', $event_data['tags'])) : sanitize_text_field($event_data['tags']);
+            $sanitized_data['tags'] = $tags;
+        }
+        if (isset($event_data['metadata'])) {
+            $metadata = is_array($event_data['metadata']) ? json_encode($event_data['metadata']) : sanitize_text_field($event_data['metadata']);
+            $sanitized_data['metadata'] = $metadata;
+        }
+        
+        // Update timestamp
+        $sanitized_data['updated'] = current_time('mysql');
+        
+        // Validation: ensure we have at least one field to update
+        if (empty($sanitized_data)) {
+            error_log('Training Calendar: No valid fields provided for event update');
+            return false;
+        }
+        
+        // Perform update
+        $result = $wpdb->update(
+            $this->events_table, 
+            $sanitized_data, 
+            array('id' => $event_id), 
+            null, 
+            array('%d')
         );
         
-        $result = $wpdb->update($this->events_table, $sanitized_data, array('id' => $event_id), null, array('%d'));
+        if ($result !== false) {
+            update_option(self::LAST_UPDATED_OPTION, time());
+            return true;
+        }
         
-        return $result !== false;
+        return false;
     }
     
     /**

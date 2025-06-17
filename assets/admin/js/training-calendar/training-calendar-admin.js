@@ -1151,10 +1151,318 @@ jQuery(document).ready(function($) {
         },
         
         /**
-         * Edit event (placeholder for future implementation)
+         * Edit event - show edit modal with pre-filled data
          */
         editEvent: function(eventId) {
-            alert('Edit event functionality will be implemented in a future update. Event ID: ' + eventId);
+            console.log('📝 Opening edit modal for event ID:', eventId);
+            
+            // Find the event data
+            const events = window.fitcopilotTrainingCalendarData?.events || [];
+            const event = events.find(e => e.id == eventId);
+            
+            if (!event) {
+                alert('Error: Event not found. Please refresh the page and try again.');
+                return;
+            }
+            
+            // Show the edit modal with pre-filled data
+            this.showEditEventModal(event);
+        },
+
+        /**
+         * Show edit event modal with pre-filled data
+         */
+        showEditEventModal: function(event) {
+            console.log('📝 Showing edit modal for event:', event.title);
+            
+            // Remove any existing modal
+            $('#edit-event-modal').remove();
+            
+            const modalHtml = `
+                <div id="edit-event-modal" class="training-calendar-modal">
+                    <div class="modal-overlay"></div>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>✏️ Edit Training Event</h3>
+                            <button type="button" class="modal-close">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="edit-event-form">
+                                <input type="hidden" id="edit-event-id" value="${event.id}">
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-event-title">Event Title *</label>
+                                        <input type="text" id="edit-event-title" value="${event.title || ''}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-event-type">Event Type</label>
+                                        <select id="edit-event-type">
+                                            <option value="session" ${event.event_type === 'session' ? 'selected' : ''}>Training Session</option>
+                                            <option value="assessment" ${event.event_type === 'assessment' ? 'selected' : ''}>Fitness Assessment</option>
+                                            <option value="consultation" ${event.event_type === 'consultation' ? 'selected' : ''}>Consultation</option>
+                                            <option value="group_class" ${event.event_type === 'group_class' ? 'selected' : ''}>Group Class</option>
+                                            <option value="workshop" ${event.event_type === 'workshop' ? 'selected' : ''}>Workshop</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="edit-event-description">Description</label>
+                                    <textarea id="edit-event-description" rows="3">${event.description || ''}</textarea>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-start-date">Start Date *</label>
+                                        <input type="date" id="edit-start-date" value="${this.formatDateForInput(event.start_datetime || event.start)}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-start-time">Start Time *</label>
+                                        <input type="time" id="edit-start-time" value="${this.formatTimeForInput(event.start_datetime || event.start)}" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-end-date">End Date *</label>
+                                        <input type="date" id="edit-end-date" value="${this.formatDateForInput(event.end_datetime || event.end)}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-end-time">End Time *</label>
+                                        <input type="time" id="edit-end-time" value="${this.formatTimeForInput(event.end_datetime || event.end)}" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-trainer-id">Trainer</label>
+                                        <select id="edit-trainer-id">
+                                            <option value="">Select Trainer</option>
+                                            ${this.getTrainerOptions(event.trainer_id)}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-location">Location</label>
+                                        <input type="text" id="edit-location" value="${event.location || ''}" placeholder="e.g., Gym Floor A, Online, etc.">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-max-participants">Max Participants</label>
+                                        <input type="number" id="edit-max-participants" value="${event.max_participants || 1}" min="1">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-booking-status">Booking Status</label>
+                                        <select id="edit-booking-status">
+                                            <option value="available" ${event.booking_status === 'available' ? 'selected' : ''}>Available</option>
+                                            <option value="confirmed" ${event.booking_status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                                            <option value="pending" ${event.booking_status === 'pending' ? 'selected' : ''}>Pending</option>
+                                            <option value="cancelled" ${event.booking_status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="edit-background-color">Background Color</label>
+                                        <input type="color" id="edit-background-color" value="${event.background_color || '#8b5cf6'}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="edit-text-color">Text Color</label>
+                                        <input type="color" id="edit-text-color" value="${event.text_color || '#ffffff'}">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="cancel-edit-event" class="button">Cancel</button>
+                            <button type="button" id="save-edit-event" class="button button-primary">💾 Update Event</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add styles (reuse existing modal styles)
+            this.addModalStyles();
+            
+            // Add modal to page
+            $('body').append(modalHtml);
+            
+            // Bind modal events
+            this.bindEditEventModalEvents();
+            
+            // Show modal
+            $('#edit-event-modal').fadeIn(300);
+        },
+
+        /**
+         * Bind edit event modal events
+         */
+        bindEditEventModalEvents: function() {
+            // Close modal events
+            $('#edit-event-modal .modal-close, #cancel-edit-event').on('click', function() {
+                $('#edit-event-modal').fadeOut(300, function() {
+                    $(this).remove();
+                });
+            });
+            
+            // Close on overlay click
+            $('#edit-event-modal .modal-overlay').on('click', function() {
+                $('#edit-event-modal').fadeOut(300, function() {
+                    $(this).remove();
+                });
+            });
+            
+            // Save button event
+            $('#save-edit-event').on('click', function() {
+                TrainingCalendarAdmin.saveEditedEvent();
+            });
+            
+            // Form submit event
+            $('#edit-event-form').on('submit', function(e) {
+                e.preventDefault();
+                TrainingCalendarAdmin.saveEditedEvent();
+            });
+        },
+
+        /**
+         * Save edited event
+         */
+        saveEditedEvent: function() {
+            console.log('💾 Saving edited event...');
+            
+            // Gather form data with error handling
+            const eventData = {
+                id: $('#edit-event-id').val(),
+                title: $('#edit-event-title').val()?.trim() || '',
+                description: $('#edit-event-description').val()?.trim() || '',
+                event_type: $('#edit-event-type').val() || 'session',
+                start_datetime: $('#edit-start-date').val() + ' ' + $('#edit-start-time').val(),
+                end_datetime: $('#edit-end-date').val() + ' ' + $('#edit-end-time').val(),
+                trainer_id: $('#edit-trainer-id').val() || null,
+                location: $('#edit-location').val()?.trim() || '',
+                max_participants: parseInt($('#edit-max-participants').val()) || 1,
+                booking_status: $('#edit-booking-status').val() || 'available',
+                background_color: $('#edit-background-color').val() || '#3498db',
+                text_color: $('#edit-text-color').val() || '#ffffff'
+            };
+            
+            // Basic validation
+            if (!eventData.title) {
+                alert('Please enter an event title.');
+                $('#edit-event-title').focus();
+                return;
+            }
+            
+            if (!eventData.start_datetime.includes(':')) {
+                alert('Please select both start date and time.');
+                return;
+            }
+            
+            if (!eventData.end_datetime.includes(':')) {
+                alert('Please select both end date and time.');
+                return;
+            }
+            
+            // Disable save button and show loading
+            $('#save-edit-event').prop('disabled', true).text('Updating...');
+            
+            // Prepare AJAX data - send both formats for maximum compatibility
+            const ajaxData = {
+                action: 'save_individual_calendar_event',
+                nonce: fitcopilotTrainingCalendarAjax.nonce,
+                event_data: JSON.stringify(eventData)
+            };
+            
+            console.log('📤 Sending AJAX data:', ajaxData);
+            
+            // Make AJAX request to update event
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: ajaxData,
+                success: function(response) {
+                    console.log('📥 Edit Event AJAX Response:', response);
+                    
+                    $('#save-edit-event').prop('disabled', false).text('💾 Update Event');
+                    
+                    if (response.success) {
+                        // Close modal
+                        $('#edit-event-modal').fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                        
+                        // Show success message
+                        TrainingCalendarAdmin.showMessage('Event updated successfully!', 'success');
+                        
+                        // Refresh the events list if function exists
+                        if (typeof TrainingCalendarAdmin.loadAllEvents === 'function') {
+                            TrainingCalendarAdmin.loadAllEvents();
+                        }
+                        
+                        // Refresh the page to show updates
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        TrainingCalendarAdmin.showMessage('Error updating event: ' + (response.data?.message || 'Unknown error'), 'error');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Update event error:', {xhr, status, error});
+                    $('#save-edit-event').prop('disabled', false).text('💾 Update Event');
+                    TrainingCalendarAdmin.showMessage('Error updating event. Please try again.', 'error');
+                }
+            });
+        },
+        
+        /**
+         * Format date for HTML date input (YYYY-MM-DD)
+         */
+        formatDateForInput: function(datetime) {
+            if (!datetime) return '';
+            
+            try {
+                const date = new Date(datetime);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            } catch (e) {
+                console.warn('Date formatting error:', e);
+                return '';
+            }
+        },
+        
+        /**
+         * Format time for HTML time input (HH:MM)
+         */
+        formatTimeForInput: function(datetime) {
+            if (!datetime) return '';
+            
+            try {
+                const date = new Date(datetime);
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                return `${hours}:${minutes}`;
+            } catch (e) {
+                console.warn('Time formatting error:', e);
+                return '';
+            }
+        },
+        
+        /**
+         * Get trainer options HTML with selected value
+         */
+        getTrainerOptions: function(selectedTrainerId) {
+            const trainers = window.fitcopilotTrainingCalendarData?.trainers || [];
+            
+            return trainers.map(trainer => {
+                const selected = trainer.id == selectedTrainerId ? 'selected' : '';
+                return `<option value="${trainer.id}" ${selected}>${trainer.name}</option>`;
+            }).join('');
         },
         
         /**

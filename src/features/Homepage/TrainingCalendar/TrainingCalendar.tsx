@@ -13,6 +13,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 // Component imports
 import CalendarView from './components/CalendarView/CalendarView';
+import EventModal from './components/EventModal/EventModal';
 
 // Hook imports
 import { useCalendarData } from './hooks/useCalendarData';
@@ -34,6 +35,15 @@ export interface TrainingCalendarProps {
 }
 
 /**
+ * Event Modal State Interface
+ */
+interface EventModalState {
+  isOpen: boolean;
+  event: CalendarEvent | null;
+  mode: 'view' | 'edit' | 'create';
+}
+
+/**
  * Training Calendar Component
  */
 export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
@@ -48,15 +58,26 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   const [currentView, setCurrentView] = useState<CalendarViewType>(initialView);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   
+  // Modal state management
+  const [modalState, setModalState] = useState<EventModalState>({
+    isOpen: false,
+    event: null,
+    mode: 'view'
+  });
+  
   // ===== HOOKS =====
 
-  // Calendar data management
+  // Calendar data management with CRUD operations
   const {
     events,
     trainers,
     statistics,
     loading,
-    error
+    error,
+    updateEvent,
+    deleteEvent,
+    createEvent,
+    refreshData
   } = useCalendarData();
 
   // ===== DATA TRANSFORMATION =====
@@ -152,27 +173,175 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
     }));
   }, [wordpressData.trainers, trainers]);
 
-  // ===== EVENT HANDLERS =====
+  // ===== MODAL HANDLERS =====
   
-  const handleEventClick = useCallback((event: any) => {
-    console.log('Event clicked:', event);
-    // TODO: Open event modal
+  const openEventModal = useCallback((event: CalendarEvent | null, mode: 'view' | 'edit' | 'create') => {
+    setModalState({
+      isOpen: true,
+      event,
+      mode
+    });
   }, []);
+  
+  const closeEventModal = useCallback(() => {
+    setModalState({
+      isOpen: false,
+      event: null,
+      mode: 'view'
+    });
+  }, []);
+  
+  const handleModalModeChange = useCallback((mode: 'view' | 'edit' | 'create') => {
+    setModalState(prev => ({
+      ...prev,
+      mode
+    }));
+  }, []);
+  
+  const handleEventSave = useCallback(async (eventData: Partial<CalendarEvent>) => {
+    try {
+      if (modalState.mode === 'create') {
+        // Create new event
+        await createEvent(eventData as Omit<CalendarEvent, 'id'>);
+        console.log('✅ Event created successfully');
+      } else if (modalState.mode === 'edit' && modalState.event) {
+        // Update existing event
+        const updatedEvent = { ...modalState.event, ...eventData };
+        await updateEvent(updatedEvent);
+        console.log('✅ Event updated successfully');
+      }
+      
+      // Refresh calendar data to show changes
+      await refreshData();
+      
+      // Close modal
+      closeEventModal();
+    } catch (error) {
+      console.error('❌ Error saving event:', error);
+      // Error is already handled by the hooks, just log it
+    }
+  }, [modalState, createEvent, updateEvent, refreshData, closeEventModal]);
+  
+  const handleEventDelete = useCallback(async (eventId: number) => {
+    try {
+      await deleteEvent(eventId);
+      console.log('✅ Event deleted successfully');
+      
+      // Refresh calendar data to remove deleted event
+      await refreshData();
+      
+      // Close modal
+      closeEventModal();
+    } catch (error) {
+      console.error('❌ Error deleting event:', error);
+      // Error is already handled by the hooks, just log it
+    }
+  }, [deleteEvent, refreshData, closeEventModal]);
+
+  // ===== CALENDAR EVENT HANDLERS =====
+  
+  const handleEventClick = useCallback((eventInfo: any) => {
+    console.log('📅 Event clicked:', eventInfo.event.title);
+    
+    // Find the corresponding calendar event
+    const eventId = eventInfo.event.id;
+    const calendarEvent = calendarEvents.find(event => 
+      event.id.toString() === eventId.toString()
+    );
+    
+    if (calendarEvent) {
+      // Open event in view mode
+      openEventModal(calendarEvent, 'view');
+    } else {
+      console.warn('⚠️ Event not found in calendar data:', eventId);
+    }
+  }, [calendarEvents, openEventModal]);
 
   const handleDateSelect = useCallback((selectInfo: any) => {
-    console.log('Date selected:', selectInfo);
-    // TODO: Open create event modal
-  }, []);
+    console.log('📅 Date selected for new event:', selectInfo.startStr);
+    
+    // Create a new event template
+    const newEventTemplate: Partial<CalendarEvent> = {
+      title: '',
+      description: '',
+      start: selectInfo.start.toISOString(),
+      end: selectInfo.end.toISOString(),
+      trainerId: calendarTrainers.length > 0 ? calendarTrainers[0].id : undefined,
+      eventType: 'session',
+      bookingStatus: 'available',
+      sessionType: 'individual',
+      location: '',
+      maxParticipants: 1,
+      currentParticipants: 0,
+      price: 0,
+      currency: 'USD'
+    };
+    
+    // Open modal in create mode
+    openEventModal(newEventTemplate as CalendarEvent, 'create');
+  }, [calendarTrainers, openEventModal]);
 
-  const handleEventDrop = useCallback((dropInfo: any) => {
-    console.log('Event dropped:', dropInfo);
-    // TODO: Update event via API
-  }, []);
+  const handleEventDrop = useCallback(async (dropInfo: any) => {
+    console.log('📅 Event dropped:', dropInfo.event.title);
+    
+    try {
+      // Find the corresponding calendar event
+      const eventId = dropInfo.event.id;
+      const calendarEvent = calendarEvents.find(event => 
+        event.id.toString() === eventId.toString()
+      );
+      
+      if (calendarEvent) {
+        // Update event with new dates
+        const updatedEvent = {
+          ...calendarEvent,
+          start: dropInfo.event.start.toISOString(),
+          end: dropInfo.event.end.toISOString()
+        };
+        
+        await updateEvent(updatedEvent);
+        console.log('✅ Event moved successfully');
+        
+        // Refresh calendar data
+        await refreshData();
+      }
+    } catch (error) {
+      console.error('❌ Error moving event:', error);
+      // Revert the move
+      dropInfo.revert();
+    }
+  }, [calendarEvents, updateEvent, refreshData]);
 
-  const handleEventResize = useCallback((resizeInfo: any) => {
-    console.log('Event resized:', resizeInfo);
-    // TODO: Update event via API
-  }, []);
+  const handleEventResize = useCallback(async (resizeInfo: any) => {
+    console.log('📅 Event resized:', resizeInfo.event.title);
+    
+    try {
+      // Find the corresponding calendar event
+      const eventId = resizeInfo.event.id;
+      const calendarEvent = calendarEvents.find(event => 
+        event.id.toString() === eventId.toString()
+      );
+      
+      if (calendarEvent) {
+        // Update event with new end time
+        const updatedEvent = {
+          ...calendarEvent,
+          start: resizeInfo.event.start.toISOString(),
+          end: resizeInfo.event.end.toISOString()
+        };
+        
+        await updateEvent(updatedEvent);
+        console.log('✅ Event resized successfully');
+        
+        // Refresh calendar data
+        await refreshData();
+      }
+    } catch (error) {
+      console.error('❌ Error resizing event:', error);
+      // Revert the resize
+      resizeInfo.revert();
+    }
+  }, [calendarEvents, updateEvent, refreshData]);
 
   const handleViewChange = useCallback((view: CalendarViewType) => {
     setCurrentView(view);
@@ -326,6 +495,18 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
           className="training-calendar__calendar-view"
         />
       </div>
+      
+      {/* Event Modal for Create/Edit/View */}
+      <EventModal
+        isOpen={modalState.isOpen}
+        onClose={closeEventModal}
+        event={modalState.event}
+        trainers={calendarTrainers}
+        mode={modalState.mode}
+        onModeChange={handleModalModeChange}
+        onSave={handleEventSave}
+        onDelete={modalState.event ? handleEventDelete : undefined}
+      />
     </div>
   );
 };

@@ -90,6 +90,9 @@ class FitCopilot_Training_Calendar_Ajax {
             
             // Handle both JSON string and array formats from frontend
             if (is_string($event_data)) {
+                // Remove WordPress auto-slashes before JSON parsing
+                $event_data = wp_unslash($event_data);
+                
                 // If it's a JSON string, decode it
                 $decoded_data = json_decode($event_data, true);
                 if (json_last_error() === JSON_ERROR_NONE) {
