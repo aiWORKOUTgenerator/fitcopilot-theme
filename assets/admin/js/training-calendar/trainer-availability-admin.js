@@ -12,8 +12,10 @@
         
         // Configuration
         config: {
-            nonce: fitcopilotTrainingCalendarData?.nonce || '',
-            ajaxUrl: ajaxurl || '/wp-admin/admin-ajax.php'
+            nonce: (window.fitcopilotTrainingCalendarAjax && window.fitcopilotTrainingCalendarAjax.nonce) || 
+                   (window.fitcopilotTrainingCalendarData && window.fitcopilotTrainingCalendarData.nonce) || '',
+            ajaxUrl: (window.fitcopilotTrainingCalendarAjax && window.fitcopilotTrainingCalendarAjax.ajax_url) || 
+                     window.ajaxurl || '/wp-admin/admin-ajax.php'
         },
         
         // Current state
@@ -28,6 +30,13 @@
          * Initialize the trainer availability interface
          */
         init: function() {
+            console.log('TrainerAvailability: Configuration:', this.config);
+            console.log('TrainerAvailability: Available global objects:', {
+                fitcopilotTrainingCalendarAjax: window.fitcopilotTrainingCalendarAjax,
+                fitcopilotTrainingCalendarData: window.fitcopilotTrainingCalendarData,
+                ajaxurl: window.ajaxurl
+            });
+            
             this.bindEvents();
             this.initializeModal();
             console.log('TrainerAvailability: Initialized');
@@ -151,12 +160,25 @@
                 success: (response) => {
                     this.showLoading(false);
                     
+                    console.log('TrainerAvailability: AJAX Response:', response);
+                    
                     if (response.success) {
-                        this.populateAvailabilityForm(response.data.availability);
+                        const availability = response.data.availability;
+                        
+                        this.populateAvailabilityForm(availability);
                         $('#availability-schedule-form').show();
                         $('#no-trainer-selected').hide();
                         
-                        this.showSuccess('Trainer availability loaded successfully');
+                        if (availability && availability.length > 0) {
+                            this.showSuccess(`Trainer availability loaded successfully (${availability.length} records)`);
+                        } else {
+                            this.showSuccess('No existing availability found. You can create a new schedule below.');
+                        }
+                        
+                        // Debug information
+                        if (response.data.debug_info) {
+                            console.log('Debug Info:', response.data.debug_info);
+                        }
                     } else {
                         this.showError(response.data?.message || 'Failed to load trainer availability');
                     }
@@ -174,6 +196,14 @@
         populateAvailabilityForm: function(availability) {
             // Clear existing data
             this.resetScheduleForm();
+            
+            // Defensive programming: ensure availability is an array
+            if (!availability || !Array.isArray(availability)) {
+                console.log('TrainerAvailability: No availability data found, showing empty form');
+                this.state.currentAvailability = [];
+                this.state.hasUnsavedChanges = false;
+                return;
+            }
             
             // Group availability by day of week
             const availabilityByDay = {};

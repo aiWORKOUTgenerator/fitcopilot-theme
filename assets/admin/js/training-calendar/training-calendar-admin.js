@@ -369,11 +369,11 @@ jQuery(document).ready(function($) {
                 TrainingCalendarAdmin.showAllEventsModal();
             });
             
-            // Manage Trainers button
-            $('#manage-trainers-btn').on('click', function() {
-                const personalTrainingUrl = '/wp-admin/admin.php?page=fitcopilot-personal-training';
-                window.open(personalTrainingUrl, '_blank');
-            });
+            // Manage Trainers button - handled by trainer-availability-admin.js
+            // $('#manage-trainers-btn').on('click', function() {
+            //     const personalTrainingUrl = '/wp-admin/admin.php?page=fitcopilot-personal-training';
+            //     window.open(personalTrainingUrl, '_blank');
+            // });
         },
         
         /**

@@ -280,16 +280,44 @@ class FitCopilot_Training_Calendar_Ajax {
             
             $availability = $this->data_manager->get_trainer_availability($trainer_id, $date);
             
+            // Debug logging
+            $this->log_debug('Get Trainer Availability', array(
+                'trainer_id' => $trainer_id,
+                'date' => $date,
+                'availability_count' => is_array($availability) ? count($availability) : 'NOT_ARRAY',
+                'availability_type' => gettype($availability),
+                'availability_data' => $availability
+            ));
+            
+            // Ensure availability is always an array
+            if (!is_array($availability)) {
+                $availability = array();
+            }
+            
             $this->send_success('Availability retrieved successfully', array(
                 'trainer_id' => $trainer_id,
                 'availability' => $availability,
-                'date' => $date
+                'date' => $date,
+                'debug_info' => array(
+                    'availability_count' => count($availability),
+                    'has_availability_table' => $this->check_availability_table_exists()
+                )
             ));
             
         } catch (Exception $e) {
             $this->log_error('Get Availability Error: ' . $e->getMessage());
             $this->send_error('Failed to retrieve availability: ' . $e->getMessage());
         }
+    }
+    
+    /**
+     * Check if availability table exists
+     */
+    private function check_availability_table_exists() {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'fitcopilot_calendar_availability';
+        $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name;
+        return $table_exists;
     }
     
     /**
