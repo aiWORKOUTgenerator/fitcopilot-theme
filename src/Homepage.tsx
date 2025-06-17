@@ -36,11 +36,15 @@ const LoadingFallback = () => (
  * All initialization happens in index.tsx
  */
 const Homepage: React.FC = () => {
+  console.log('🏠 Homepage component rendering...');
+  
   // Use debug hook to measure render time
   debug.useRenderTime('Homepage');
 
   // Determine if in debug mode
   const isDebug = debug.isDebugMode();
+  
+  console.log('🔧 Homepage debug mode:', isDebug);
 
   // Check if registration page is requested (based on URL hash or query param)
   const showRegistration = window.location.hash.includes('#registration') ||
@@ -65,7 +69,7 @@ const Homepage: React.FC = () => {
     return (
       <Suspense fallback={<LoadingFallback />}>
         <LazyRegistration
-          initialStep={1}
+          initialStep={'personal-info' as any}
           onComplete={() => window.location.href = '/dashboard'}
           onCancel={() => window.location.href = '/'}
         />

@@ -56,6 +56,17 @@ export interface TrainingFeaturesSettings {
   showDifficulty: boolean;
   showDuration: boolean;
   enableAnimations: boolean;
+  // CTA Settings
+  ctaEnabled: boolean;
+  ctaTitle: string;
+  ctaSubtitle: string;
+  ctaButtonText: string;
+  ctaButtonUrl: string;
+  ctaBackgroundColor: string;
+  ctaTextColor: string;
+  ctaIconType: string;
+  ctaLucideIcon: string;
+  ctaLogoUrl: string;
 }
 
 /**
@@ -131,6 +142,10 @@ export interface TrainingFeature {
     flipFront: string;
     media?: FeatureMedia;
     flipBack: FlipBackContent;
+    cta?: {
+        text: string;
+        url: string;
+    };
 }
 
 /**

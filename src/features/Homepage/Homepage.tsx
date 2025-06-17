@@ -33,6 +33,7 @@ const Pricing = lazy(() => import(/* webpackChunkName: "feature-homepage-pricing
 const Testimonials = lazy(() => import(/* webpackChunkName: "feature-homepage-testimonials" */ './Testimonials').then(module => ({ default: module.Testimonials })));
 const Training = lazy(() => import(/* webpackChunkName: "feature-homepage-training" */ './Training'));
 const TrainingFeatures = lazy(() => import(/* webpackChunkName: "feature-homepage-training-features" */ './TrainingFeatures'));
+const TrainingCalendar = lazy(() => import(/* webpackChunkName: "feature-homepage-training-calendar" */ './TrainingCalendar'));
 
 // Import feature-specific components
 import { DemoNav } from './components';
@@ -314,6 +315,16 @@ const Homepage: React.FC<HomepageProps> = ({ demoMode = false }) => {
           <Suspense fallback={<LoadingSkeleton height="500px" type="personal-training" />}>
             <PersonalTraining
               variant={variants.personalTraining as PersonalTrainingVariant}
+            />
+          </Suspense>
+        </div>
+
+        {/* Training Calendar Section */}
+        <div id="training-calendar" className={showRegistration ? 'dimmed' : ''}>
+          <Suspense fallback={<LoadingSkeleton height="600px" type="training-calendar" />}>
+            <TrainingCalendar
+              context="homepage"
+              height={400}
             />
           </Suspense>
         </div>

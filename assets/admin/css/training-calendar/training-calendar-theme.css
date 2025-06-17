@@ -1,0 +1,367 @@
+/**
+ * FitCopilot Training Calendar Admin - Theme Styles
+ * 
+ * Theme-specific styling for Training Calendar admin interface
+ * Following established FitCopilot design system and brand colors
+ * 
+ * @package FitCopilot
+ * @since 1.0.0
+ */
+
+/* ===== FITCOPILOT THEME COLORS ===== */
+:root {
+    --fc-calendar-primary: #2271b1;
+    --fc-calendar-primary-light: #3582c4;
+    --fc-calendar-primary-dark: #135e96;
+    --fc-calendar-success: #00a32a;
+    --fc-calendar-warning: #ff8c00;
+    --fc-calendar-error: #d63638;
+    --fc-calendar-info: #00a0d2;
+    
+    --fc-calendar-bg: #fff;
+    --fc-calendar-bg-alt: #f9f9f9;
+    --fc-calendar-border: #ddd;
+    --fc-calendar-text: #1d2327;
+    --fc-calendar-text-light: #666;
+    
+    --fc-calendar-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --fc-calendar-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --fc-calendar-radius: 8px;
+}
+
+/* ===== ADMIN HEADER THEMING ===== */
+.fitcopilot-admin-wrap h1 {
+    color: var(--fc-calendar-text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.fitcopilot-admin-wrap h1::before {
+    content: "📅";
+    font-size: 1.2em;
+}
+
+/* ===== TAB NAVIGATION THEMING ===== */
+.fitcopilot-nav-tabs .nav-tab {
+    background: var(--fc-calendar-bg-alt);
+    border-color: var(--fc-calendar-border);
+    color: var(--fc-calendar-text);
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.fitcopilot-nav-tabs .nav-tab:hover {
+    background: var(--fc-calendar-bg);
+    color: var(--fc-calendar-primary);
+}
+
+.fitcopilot-nav-tabs .nav-tab-active {
+    background: var(--fc-calendar-bg);
+    border-bottom-color: var(--fc-calendar-bg);
+    color: var(--fc-calendar-primary);
+}
+
+.fitcopilot-nav-tabs .nav-tab-active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--fc-calendar-primary);
+    border-radius: 2px 2px 0 0;
+}
+
+/* ===== STATS CARD THEMING ===== */
+.stat-card {
+    background: var(--fc-calendar-bg);
+    border: 1px solid var(--fc-calendar-border);
+    border-radius: var(--fc-calendar-radius);
+    box-shadow: var(--fc-calendar-shadow);
+    transition: all 0.2s ease;
+}
+
+.stat-card:hover {
+    box-shadow: var(--fc-calendar-shadow-hover);
+    border-color: var(--fc-calendar-primary);
+}
+
+.stat-content h4 {
+    color: var(--fc-calendar-primary);
+}
+
+.stat-content p {
+    color: var(--fc-calendar-text-light);
+}
+
+/* ===== FORM THEMING ===== */
+.training-calendar-form {
+    background: var(--fc-calendar-bg);
+    border: 1px solid var(--fc-calendar-border);
+    border-radius: var(--fc-calendar-radius);
+    box-shadow: var(--fc-calendar-shadow);
+}
+
+.training-calendar-form .form-table th {
+    color: var(--fc-calendar-text);
+}
+
+.training-calendar-form input[type="text"],
+.training-calendar-form input[type="number"],
+.training-calendar-form select,
+.training-calendar-form textarea {
+    border: 1px solid var(--fc-calendar-border);
+    border-radius: 4px;
+    transition: border-color 0.2s ease;
+}
+
+.training-calendar-form input[type="text"]:focus,
+.training-calendar-form input[type="number"]:focus,
+.training-calendar-form select:focus,
+.training-calendar-form textarea:focus {
+    border-color: var(--fc-calendar-primary);
+    box-shadow: 0 0 0 1px var(--fc-calendar-primary);
+}
+
+/* ===== BUTTON THEMING ===== */
+.button-primary {
+    background: var(--fc-calendar-primary) !important;
+    border-color: var(--fc-calendar-primary-dark) !important;
+    transition: all 0.2s ease;
+}
+
+.button-primary:hover {
+    background: var(--fc-calendar-primary-light) !important;
+    border-color: var(--fc-calendar-primary) !important;
+}
+
+.reset-calendar-defaults {
+    background: var(--fc-calendar-warning);
+    border-color: #e67e22;
+    color: #fff;
+    text-decoration: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+.reset-calendar-defaults:hover {
+    background: #e67e22;
+    color: #fff;
+}
+
+/* ===== CALENDAR WIDGET THEMING ===== */
+.calendar-widget {
+    background: var(--fc-calendar-bg-alt);
+    border: 2px dashed var(--fc-calendar-border);
+    border-radius: var(--fc-calendar-radius);
+    color: var(--fc-calendar-text-light);
+    position: relative;
+}
+
+.calendar-widget::before {
+    content: "📅";
+    font-size: 3rem;
+    opacity: 0.3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+.calendar-widget .calendar-placeholder {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+}
+
+.calendar-placeholder h4 {
+    color: var(--fc-calendar-primary);
+    margin: 0 0 1rem 0;
+}
+
+.calendar-placeholder p {
+    margin: 0.5rem 0;
+}
+
+.calendar-placeholder .description {
+    font-size: 0.9rem;
+    color: var(--fc-calendar-text-light);
+}
+
+/* ===== NOTICE THEMING ===== */
+.calendar-notice {
+    border-radius: var(--fc-calendar-radius);
+    box-shadow: var(--fc-calendar-shadow);
+}
+
+.calendar-success {
+    border-left-color: var(--fc-calendar-success);
+    background: #f0f8f0;
+}
+
+.calendar-error {
+    border-left-color: var(--fc-calendar-error);
+    background: #fdf0f0;
+}
+
+/* ===== SETTINGS GROUP THEMING ===== */
+.settings-group {
+    background: var(--fc-calendar-bg-alt);
+    border: 1px solid var(--fc-calendar-border);
+    border-radius: var(--fc-calendar-radius);
+    transition: all 0.2s ease;
+}
+
+.settings-group:hover {
+    border-color: var(--fc-calendar-primary);
+    box-shadow: var(--fc-calendar-shadow);
+}
+
+.settings-group h4 {
+    color: var(--fc-calendar-primary);
+}
+
+/* ===== LOADING STATES THEMING ===== */
+.calendar-loading::after {
+    border-color: var(--fc-calendar-border);
+    border-top-color: var(--fc-calendar-primary);
+}
+
+/* ===== RESPONSIVE THEMING ===== */
+@media (max-width: 768px) {
+    .fitcopilot-nav-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .fitcopilot-nav-tabs .nav-tab {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+        border-radius: 4px;
+        margin: 0;
+    }
+    
+    .fitcopilot-nav-tabs .nav-tab-active::after {
+        display: none;
+    }
+}
+
+/* ===== ACCESSIBILITY THEMING ===== */
+@media (prefers-reduced-motion: reduce) {
+    .stat-card,
+    .training-calendar-form input,
+    .button-primary,
+    .reset-calendar-defaults,
+    .settings-group {
+        transition: none;
+    }
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --fc-calendar-bg: #1e1e1e;
+        --fc-calendar-bg-alt: #2a2a2a;
+        --fc-calendar-border: #404040;
+        --fc-calendar-text: #e0e0e0;
+        --fc-calendar-text-light: #b0b0b0;
+        --fc-calendar-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        --fc-calendar-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.4);
+    }
+    
+    .calendar-widget::before {
+        opacity: 0.2;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+    .fitcopilot-nav-tabs,
+    .calendar-widget,
+    .reset-calendar-defaults {
+        display: none;
+    }
+    
+    .fitcopilot-section {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+    
+    .stat-card {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+} 
+
+/**
+ * FitCopilot Training Calendar Admin Theme Styles
+ * Phase 1: Backend Foundation
+ */
+
+.fitcopilot-training-calendar .nav-tab-wrapper {
+    margin-bottom: 20px;
+}
+
+.fitcopilot-training-calendar .nav-tab {
+    background: #f1f1f1;
+    border-color: #ccc;
+    color: #666;
+}
+
+.fitcopilot-training-calendar .nav-tab-active {
+    background: #8b5cf6;
+    border-color: #8b5cf6;
+    color: #fff;
+}
+
+.fitcopilot-training-calendar .nav-tab:hover {
+    background: #7c3aed;
+    color: #fff;
+}
+
+.calendar-quick-actions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.calendar-quick-actions .button-primary {
+    background: #8b5cf6;
+    border-color: #8b5cf6;
+}
+
+.calendar-quick-actions .button-primary:hover {
+    background: #7c3aed;
+    border-color: #7c3aed;
+}
+
+.calendar-loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.calendar-error {
+    background: #fcf8e3;
+    border: 1px solid #faebcc;
+    color: #8a6d3b;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.calendar-success {
+    background: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+} 

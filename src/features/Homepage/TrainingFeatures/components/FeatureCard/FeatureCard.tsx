@@ -68,7 +68,18 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
       });
     }
     
-    toggleFlip();
+    // If CTA URL is provided and action is explore_details, navigate to URL
+    if (action === 'explore_details' && feature.cta?.url) {
+      window.open(feature.cta.url, '_blank', 'noopener,noreferrer');
+    } else {
+      // Default behavior: toggle flip
+      toggleFlip();
+    }
+  };
+
+  // Get CTA text from WordPress or use default
+  const getCtaText = (defaultText: string) => {
+    return feature.cta?.text || defaultText;
   };
 
   return (
@@ -107,9 +118,9 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
               className="feature-card__cta-phase3"
               data-section="training-features"
               data-context={getFeatureTypeFromGradient()}
-              aria-label={`Explore ${feature.title} details`}
+              aria-label={`${getCtaText('Explore')} ${feature.title} details`}
             >
-              Explore Details
+              {getCtaText('Explore Details')}
             </UniversalButton>
           </div>
         </div>

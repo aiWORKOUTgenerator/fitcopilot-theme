@@ -27,10 +27,10 @@ const EXPECTED_CHUNKS = {
 const EXPECTED_CSS = {
   root: [
     'critical',
-    'homepage'
+    'homepage-styles'  // Updated to match webpack output
   ],
   chunks: [
-    'feature-common'
+    'feature-styles'  // Updated to match webpack output
   ]
 };
 

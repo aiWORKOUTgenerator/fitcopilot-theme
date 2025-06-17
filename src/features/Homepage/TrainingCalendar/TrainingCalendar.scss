@@ -1,0 +1,762 @@
+/**
+ * Training Calendar Main Styles
+ * 
+ * Comprehensive styling for the Training Calendar component including:
+ * - Base calendar layout and structure
+ * - Responsive design patterns
+ * - Theme integration
+ * - Accessibility features
+ * - Loading states and animations
+ * 
+ * @package FitCopilot
+ * @subpackage TrainingCalendar
+ * @since 1.0.0
+ */
+
+@use '@/styles/design-system' as ds;
+@use '@/styles/design-system/spacing' as spacing;
+@use '@/styles/design-system/breakpoints' as breakpoints;
+
+// ===== CALENDAR VARIABLES =====
+
+:root {
+  // Calendar Colors
+  --calendar-primary: var(--color-brand-primary);
+  --calendar-primary-hover: var(--color-primary-600);
+  --calendar-primary-light: var(--color-primary-100);
+  --calendar-secondary: var(--color-violet-500);
+  --calendar-background: var(--color-ui-background);
+  --calendar-surface: var(--color-ui-surface);
+  --calendar-border: var(--color-ui-border);
+  --calendar-text: var(--color-text-primary);
+  --calendar-text-muted: var(--color-text-secondary);
+  --calendar-text-light: var(--color-text-muted);
+  
+  // Event Type Colors
+  --event-session: #4caf50;
+  --event-availability: var(--color-primary-500);
+  --event-blocked: #f44336;
+  --event-group-class: #ff9800;
+  --event-workshop: var(--color-violet-500);
+  --event-assessment: #00bcd4;
+  
+  // Calendar Spacing
+  --calendar-padding: var(--spacing-6);
+  --calendar-gap: var(--spacing-4);
+  --calendar-border-radius: 8px;
+  
+  // Calendar Dimensions
+  --calendar-header-height: 60px;
+  --calendar-controls-height: 48px;
+  --calendar-min-height: 400px;
+  
+  // Animation Variables
+  --calendar-transition: 200ms ease-out;
+  --calendar-transition-slow: 300ms ease-out;
+}
+
+// ===== MAIN CALENDAR CONTAINER =====
+
+.training-calendar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: var(--calendar-min-height);
+  background: var(--calendar-background);
+  border: 1px solid var(--calendar-border);
+  border-radius: var(--calendar-border-radius);
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  
+  // Context Variants
+  &--homepage {
+    min-height: 400px;
+    
+    @media (max-width: 768px) {
+      min-height: 300px;
+    }
+  }
+  
+  &--fullpage {
+    min-height: calc(100vh - 200px);
+    max-height: calc(100vh - 200px);
+  }
+  
+  &--widget {
+    min-height: 300px;
+    max-height: 400px;
+  }
+  
+  // Loading State
+  &--loading {
+    pointer-events: none;
+    
+    .training-calendar__main {
+      opacity: 0.6;
+    }
+  }
+  
+  // Error State
+  &--error {
+    .training-calendar__main {
+      display: none;
+    }
+  }
+}
+
+// ===== CALENDAR HEADER =====
+
+.training-calendar__header {
+  background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-600) 100%);
+  color: white;
+  padding: var(--spacing-6) var(--calendar-padding);
+  border-radius: var(--calendar-border-radius) var(--calendar-border-radius) 0 0;
+  
+  .training-calendar__header-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--spacing-6);
+    margin-bottom: var(--spacing-4);
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: var(--spacing-4);
+    }
+  }
+  
+  .training-calendar__title-section {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+    flex: 1;
+    
+    .training-calendar__icon {
+      margin-top: 2px;
+      opacity: 0.9;
+    }
+    
+    .training-calendar__title-group {
+      .training-calendar__title {
+        margin: 0 0 var(--spacing-1) 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        
+        @media (max-width: 768px) {
+          font-size: 1.25rem;
+        }
+      }
+      
+      .training-calendar__subtitle {
+        margin: 0;
+        font-size: 0.875rem;
+        opacity: 0.9;
+        font-weight: 400;
+        line-height: 1.4;
+      }
+    }
+  }
+  
+  // Custom Navigation Controls
+  .training-calendar__navigation {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    background: rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-2);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    
+    @media (max-width: 768px) {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .nav-button {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: var(--spacing-2) var(--spacing-3);
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+      
+      &--prev, &--next {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        padding: 0;
+      }
+      
+      &--today {
+        font-size: 0.875rem;
+        min-width: 60px;
+      }
+    }
+    
+    .current-month {
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0 var(--spacing-3);
+      min-width: 140px;
+      text-align: center;
+      
+      @media (max-width: 768px) {
+        min-width: 120px;
+        font-size: 0.875rem;
+      }
+    }
+  }
+  
+  // Assessment Booking Stats
+  .training-calendar__booking-stats {
+    display: flex;
+    gap: var(--spacing-4);
+    
+    @media (max-width: 768px) {
+      justify-content: center;
+      width: 100%;
+    }
+    
+    .stat-item {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: var(--spacing-3);
+      border-radius: 8px;
+      backdrop-filter: blur(10px);
+      min-width: 80px;
+      
+      .stat-value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: var(--spacing-1);
+        
+        @media (max-width: 768px) {
+          font-size: 1.25rem;
+        }
+      }
+      
+      .stat-label {
+        display: block;
+        font-size: 0.75rem;
+        opacity: 0.9;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 500;
+      }
+    }
+  }
+  
+  // Booking Instructions
+  .training-calendar__instructions {
+    background: rgba(255, 255, 255, 0.1);
+    padding: var(--spacing-4);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    
+    p {
+      margin: 0;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      opacity: 0.95;
+      text-align: center;
+      
+      @media (max-width: 768px) {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+// ===== CALENDAR CONTROLS =====
+
+.training-calendar__controls {
+  padding: var(--spacing-3) var(--calendar-padding);
+  background: var(--calendar-background);
+  border-bottom: 1px solid var(--calendar-border);
+  
+  @media (max-width: 768px) {
+    padding: var(--spacing-2) var(--spacing-4);
+  }
+}
+
+// ===== MAIN CALENDAR AREA =====
+
+.training-calendar__main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  transition: opacity var(--calendar-transition);
+  
+  // FullCalendar Integration
+  .fc {
+    height: 100%;
+    font-family: inherit;
+    
+    // Toolbar customization
+    .fc-toolbar {
+      padding: var(--spacing-3) var(--calendar-padding);
+      background: var(--calendar-surface);
+      border-bottom: 1px solid var(--calendar-border);
+      
+      .fc-toolbar-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--calendar-text);
+      }
+      
+      .fc-button-group {
+        .fc-button {
+          padding: 0.5rem 1rem;
+          border: 1px solid var(--calendar-border);
+          background: transparent;
+          color: var(--calendar-text);
+          border-radius: 6px;
+          margin: 0 var(--spacing-1);
+          transition: var(--calendar-transition);
+          
+          &:hover {
+            background-color: var(--calendar-surface);
+          }
+          
+          &.fc-button-active {
+            background-color: var(--calendar-primary);
+            border-color: var(--calendar-primary);
+            color: white;
+          }
+        }
+      }
+    }
+    
+    // Calendar grid
+    .fc-scrollgrid {
+      border-color: var(--calendar-border);
+      
+      th {
+        background: var(--calendar-surface);
+        color: var(--calendar-text-muted);
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.05em;
+        padding: var(--spacing-3);
+      }
+      
+      td {
+        border-color: var(--calendar-border);
+      }
+    }
+    
+    // Day cells
+    .fc-daygrid-day {
+      &:hover {
+        background-color: var(--calendar-primary-light);
+        transition: background-color var(--calendar-transition);
+      }
+      
+      .fc-daygrid-day-number {
+        color: var(--calendar-text);
+        font-weight: 500;
+        padding: var(--spacing-2);
+      }
+      
+      &.fc-day-today {
+        background-color: var(--calendar-primary-light);
+        
+        .fc-daygrid-day-number {
+          background-color: var(--calendar-primary);
+          color: white;
+          border-radius: 50%;
+          width: 28px;
+          height: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+    
+    // Events
+    .fc-event {
+      border: none;
+      border-radius: 4px;
+      padding: var(--spacing-1) var(--spacing-2);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--calendar-transition);
+      
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      }
+      
+      .fc-event-title {
+        font-weight: 500;
+      }
+      
+      .fc-event-time {
+        font-weight: 400;
+        opacity: 0.9;
+      }
+      
+      // Event type variants
+      &.event-session {
+        background-color: var(--event-session);
+        color: white;
+      }
+      
+      &.event-availability {
+        background-color: var(--event-availability);
+        color: white;
+      }
+      
+      &.event-blocked {
+        background-color: var(--event-blocked);
+        color: white;
+      }
+      
+      &.event-group-class {
+        background-color: var(--event-group-class);
+        color: white;
+      }
+      
+      &.event-workshop {
+        background-color: var(--event-workshop);
+        color: white;
+      }
+      
+      &.event-assessment {
+        background-color: var(--event-assessment);
+        color: white;
+      }
+    }
+    
+    // Time grid view
+    .fc-timegrid {
+      .fc-timegrid-slot {
+        height: 30px;
+        
+        &:hover {
+          background-color: var(--calendar-primary-light);
+        }
+      }
+      
+      .fc-timegrid-slot-minor {
+        border-color: var(--calendar-border);
+        opacity: 0.5;
+      }
+    }
+    
+    // List view
+    .fc-list {
+      border-color: var(--calendar-border);
+      
+      .fc-list-event {
+        &:hover {
+          background-color: var(--calendar-surface);
+        }
+        
+        .fc-list-event-title {
+          color: var(--calendar-text);
+          font-weight: 500;
+        }
+        
+        .fc-list-event-time {
+          color: var(--calendar-text-muted);
+        }
+      }
+    }
+  }
+}
+
+// ===== CALENDAR VIEW COMPONENT =====
+
+.training-calendar__view {
+  height: 100%;
+  position: relative;
+}
+
+// ===== ERROR STATES =====
+
+.training-calendar__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-8);
+  text-align: center;
+  height: 100%;
+  min-height: var(--calendar-min-height);
+  
+  h3 {
+    margin: 0 0 var(--spacing-4);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--calendar-text);
+  }
+  
+  p {
+    margin: 0 0 var(--spacing-6);
+    color: var(--calendar-text-muted);
+    font-size: 1rem;
+  }
+}
+
+.training-calendar__retry-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--calendar-primary);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: var(--calendar-primary-hover);
+  }
+}
+
+// ===== LOADING STATES =====
+
+.training-calendar__loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  
+  backdrop-filter: blur(2px);
+}
+
+.training-calendar__loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--calendar-border);
+  border-top: 3px solid var(--calendar-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+}
+
+// ===== ADMIN FEATURES =====
+
+.training-calendar__admin {
+  padding: var(--spacing-4) var(--calendar-padding);
+  background: var(--calendar-surface);
+  border-top: 1px solid var(--calendar-border);
+  display: flex;
+  gap: var(--spacing-3);
+  
+  button {
+    padding: 0.25rem 0.75rem;
+    border: 1px solid var(--calendar-border);
+    background: transparent;
+    color: var(--calendar-text);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: var(--calendar-surface);
+    }
+  }
+}
+
+// ===== ACCESSIBILITY FEATURES =====
+
+// Focus management
+.training-calendar {
+  &:focus-within {
+    .fc-event:focus {
+      outline: 2px solid var(--calendar-primary);
+      outline-offset: 2px;
+    }
+    
+    .fc-button:focus {
+      outline: 2px solid var(--calendar-primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// Screen reader support
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .training-calendar {
+    --calendar-border: #111827;
+    --calendar-text: #111827;
+    --calendar-background: #ffffff;
+    
+    .fc-event {
+      border: 2px solid transparent;
+      
+      &:focus {
+        border-color: currentColor;
+      }
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .training-calendar {
+    --calendar-transition: none;
+    --calendar-transition-slow: none;
+    
+    .fc-event {
+      transition: none;
+      
+      &:hover {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+    
+    .training-calendar__loading-spinner {
+      animation: none;
+      border-top-color: var(--calendar-border);
+    }
+  }
+}
+
+// ===== RESPONSIVE DESIGN =====
+
+@media (max-width: 1024px) {
+  .training-calendar {
+    --calendar-padding: var(--spacing-4);
+    
+    .fc {
+      .fc-toolbar {
+        flex-direction: column;
+        gap: var(--spacing-2);
+        
+        .fc-toolbar-title {
+          font-size: 1.125rem;
+        }
+      }
+      
+      .fc-button-group {
+        .fc-button {
+          padding: var(--spacing-1) var(--spacing-2);
+          font-size: 0.875rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .training-calendar {
+    --calendar-padding: var(--spacing-3);
+    --calendar-min-height: 300px;
+    
+    .fc {
+      .fc-toolbar {
+        .fc-toolbar-title {
+          font-size: 1rem;
+        }
+      }
+      
+      .fc-daygrid-day-number {
+        font-size: 0.875rem;
+      }
+      
+      .fc-event {
+        font-size: 0.75rem;
+        padding: 0.125rem var(--spacing-1);
+      }
+    }
+  }
+  
+  .training-calendar__admin {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// ===== DARK MODE SUPPORT =====
+
+@media (prefers-color-scheme: dark) {
+  .training-calendar {
+    --calendar-background: #111827;
+    --calendar-surface: #1f2937;
+    --calendar-border: #374151;
+    --calendar-text: #f3f4f6;
+    --calendar-text-muted: #9ca3af;
+    --calendar-text-light: #6b7280;
+    --calendar-primary-light: #4c1d95;
+  }
+}
+
+// ===== PRINT STYLES =====
+
+@media print {
+  .training-calendar {
+    --calendar-border: #d1d5db;
+    --calendar-background: #ffffff;
+    --calendar-text: #000000;
+    
+    .training-calendar__controls,
+    .training-calendar__admin,
+    .training-calendar__loading-overlay {
+      display: none;
+    }
+    
+    .fc {
+      .fc-toolbar {
+        display: none;
+      }
+      
+      .fc-event {
+        background: transparent !important;
+        color: #000000 !important;
+        border: 1px solid #9ca3af !important;
+      }
+    }
+  }
+} 

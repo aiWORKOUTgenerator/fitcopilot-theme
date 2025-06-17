@@ -111,6 +111,7 @@ const TrainingFeaturesCTA: React.FC<TrainingFeaturesCTAProps> = ({
   variant,
   size = 'large',
   featureTitle,
+  customText,
   contextType = 'explore',
   className = '',
   href,
@@ -120,8 +121,8 @@ const TrainingFeaturesCTA: React.FC<TrainingFeaturesCTAProps> = ({
   const _prefersReducedMotion = useReducedMotion();
   const _globalVariant = mapVariantToGlobal(variant);
   
-  // Generate CTA text
-  const ctaText = generateCTAText(featureTitle, contextType);
+  // Use custom text if provided, otherwise generate CTA text
+  const ctaText = customText || generateCTAText(featureTitle, contextType);
   
   // Map button variant to TrainingFeaturesButton variant
   const trainingFeaturesButtonVariant = mapButtonVariant('primary');

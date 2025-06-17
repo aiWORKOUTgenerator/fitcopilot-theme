@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bundle Size Report - 6/14/2025</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header { background: #8b5cf6; color: white; padding: 20px; border-radius: 8px 8px 0 0; }
+        .content { padding: 20px; }
+        .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .metric { background: #f8f9fa; padding: 15px; border-radius: 6px; text-align: center; }
+        .metric-value { font-size: 24px; font-weight: bold; color: #8b5cf6; }
+        .metric-label { font-size: 14px; color: #666; margin-top: 5px; }
+        .section { margin-bottom: 30px; }
+        .section h2 { color: #333; border-bottom: 2px solid #8b5cf6; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; font-weight: 600; }
+        .status-ok { color: #28a745; }
+        .status-warning { color: #ffc107; }
+        .status-error { color: #dc3545; }
+        .alert { padding: 15px; border-radius: 6px; margin: 10px 0; }
+        .alert-warning { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        .alert-error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .progress-bar { width: 100%; height: 20px; background: #e9ecef; border-radius: 10px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #28a745, #ffc107, #dc3545); transition: width 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Bundle Size Report</h1>
+            <p>Generated on 6/14/2025, 7:17:25 PM</p>
+        </div>
+        
+        <div class="content">
+            <div class="summary">
+                <div class="metric">
+                    <div class="metric-value">2.2 MB</div>
+                    <div class="metric-label">Total Size</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">480.18 KB</div>
+                    <div class="metric-label">Gzipped Size</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">78.6%</div>
+                    <div class="metric-label">Compression Ratio</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">50</div>
+                    <div class="metric-label">Total Assets</div>
+                </div>
+            </div>
+            
+            
+            <div class="section">
+                <h2>❌ Errors</h2>
+                <div class="alert alert-error">feature-styles.css exceeds budget: 529.15 KB > 500 KB</div>
+            </div>
+            
+            
+            
+            
+            <div class="section">
+                <h2>📊 Entrypoints</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Entrypoint</th>
+                            <th>JS Size</th>
+                            <th>CSS Size</th>
+                            <th>Total Size</th>
+                            <th>Gzipped</th>
+                            <th>Budget Usage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr>
+                                <td><strong>homepage</strong></td>
+                                <td>10.79 KB</td>
+                                <td>-</td>
+                                <td>10.79 KB</td>
+                                <td>4.76 KB</td>
+                                <td class="status-ok">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 1.3%"></div>
+                                    </div>
+                                    1.3%
+                                </td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>critical</strong></td>
+                                <td>0 Bytes</td>
+                                <td>11.35 KB</td>
+                                <td>11.35 KB</td>
+                                <td>2.56 KB</td>
+                                <td class="status-ok">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 1.4%"></div>
+                                    </div>
+                                    1.4%
+                                </td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>debug</strong></td>
+                                <td>6.65 KB</td>
+                                <td>-</td>
+                                <td>6.65 KB</td>
+                                <td>0 Bytes</td>
+                                <td class="status-ok">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 0.8%"></div>
+                                    </div>
+                                    0.8%
+                                </td>
+                            </tr>
+                          
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="section">
+                <h2>📦 All Assets</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Size</th>
+                            <th>Gzipped</th>
+                            <th>Compression</th>
+                            <th>Path</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr>
+                                <td><strong>feature-styles.css</strong></td>
+                                <td>529.15 KB</td>
+                                <td>76.35 KB</td>
+                                <td>85.6%</td>
+                                <td><code>chunks/feature-styles.eea2a1a3500c384a528a.css</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>975.js</strong></td>
+                                <td>342.21 KB</td>
+                                <td>87.61 KB</td>
+                                <td>74.4%</td>
+                                <td><code>chunks/975.c2a0a2d3fca10a1658b7.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>lucide-icons.js</strong></td>
+                                <td>285.34 KB</td>
+                                <td>70.82 KB</td>
+                                <td>75.2%</td>
+                                <td><code>chunks/lucide-icons.dd7f4f84efdf9d17c372.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>fullcalendar.js</strong></td>
+                                <td>250.52 KB</td>
+                                <td>70.96 KB</td>
+                                <td>71.7%</td>
+                                <td><code>chunks/fullcalendar.b84c230aa252641b6588.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>vendors.js</strong></td>
+                                <td>223.13 KB</td>
+                                <td>50.38 KB</td>
+                                <td>77.4%</td>
+                                <td><code>vendors.69483fa59bb13627779a.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>homepage-styles.css</strong></td>
+                                <td>174.76 KB</td>
+                                <td>21.96 KB</td>
+                                <td>87.4%</td>
+                                <td><code>homepage-styles.2dca713157d17f9f9aa7.css</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>feature-registration.js</strong></td>
+                                <td>169.11 KB</td>
+                                <td>42.81 KB</td>
+                                <td>74.7%</td>
+                                <td><code>chunks/feature-registration.08de80bd222ecb5dbe99.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>feature-shared.js</strong></td>
+                                <td>71.23 KB</td>
+                                <td>18.32 KB</td>
+                                <td>74.3%</td>
+                                <td><code>chunks/feature-shared.47e2d30f88d5382d297f.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>726.js</strong></td>
+                                <td>39.27 KB</td>
+                                <td>10.54 KB</td>
+                                <td>73.2%</td>
+                                <td><code>chunks/726.52373c47adf4f9bb904d.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>998.js</strong></td>
+                                <td>38.02 KB</td>
+                                <td>9.86 KB</td>
+                                <td>74.1%</td>
+                                <td><code>chunks/998.4ddbfd7cfacf84afaaf9.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>utils.js</strong></td>
+                                <td>21.09 KB</td>
+                                <td>6.61 KB</td>
+                                <td>68.7%</td>
+                                <td><code>utils.11b93d5c752f66ec7040.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>critical.css</strong></td>
+                                <td>11.35 KB</td>
+                                <td>2.56 KB</td>
+                                <td>77.5%</td>
+                                <td><code>critical.1cdda793a92f6cfff108.css</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>homepage.js</strong></td>
+                                <td>10.79 KB</td>
+                                <td>4.76 KB</td>
+                                <td>55.9%</td>
+                                <td><code>homepage.9fdaf22ff516493a5ac4.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>framework.js</strong></td>
+                                <td>10.59 KB</td>
+                                <td>4.19 KB</td>
+                                <td>60.4%</td>
+                                <td><code>framework.360c28a00eab0780b925.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>44.js</strong></td>
+                                <td>8.04 KB</td>
+                                <td>2.45 KB</td>
+                                <td>69.6%</td>
+                                <td><code>chunks/44.406daa1bac8106ccef27.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>936.js</strong></td>
+                                <td>7.12 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/936.16ea7a1b91e20aef3f88.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>debug.js</strong></td>
+                                <td>6.65 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>debug.a8f6d3a6867c63c827e7.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>5.js</strong></td>
+                                <td>6.32 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/5.ba08137e9a412f71679a.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>289.js</strong></td>
+                                <td>4.86 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/289.4f08c70974fd7dff2df3.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>814.js</strong></td>
+                                <td>4.83 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/814.2d1690c365748a848556.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>934.js</strong></td>
+                                <td>4.09 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/934.c0f5e400b772b7a97d0a.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>176.js</strong></td>
+                                <td>3.15 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/176.9666c893af0fd0ecd339.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>204.js</strong></td>
+                                <td>2.78 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/204.8cf671991eafb6eb2d1b.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>variant-registration.js</strong></td>
+                                <td>2.56 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/variant-registration.f27b1c0617fe64d821f8.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>929.js</strong></td>
+                                <td>2.28 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/929.7087d77efc755d5228bb.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>527.js</strong></td>
+                                <td>2.2 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/527.19f6a05cdd6c55eaa5e0.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>14.js</strong></td>
+                                <td>2.18 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/14.3df20e5e855477cd81af.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>394.js</strong></td>
+                                <td>2.12 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/394.bd00b147d7e2d8fe9778.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>620.js</strong></td>
+                                <td>2.1 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/620.743d3fafd19020470417.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>822.js</strong></td>
+                                <td>1.65 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/822.d5245abcba964634f4d4.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>485.js</strong></td>
+                                <td>1.49 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/485.978802c938fe7c0de9ed.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>355.js</strong></td>
+                                <td>1.47 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/355.e9216b00fcbdb2c7cfad.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>974.js</strong></td>
+                                <td>1.45 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/974.9b064b67324918c2d167.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>416.js</strong></td>
+                                <td>1.13 KB</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/416.fa5dfea22d492dad9a4e.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>771.js</strong></td>
+                                <td>490 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/771.073cd23f3eb0c095f4ec.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>199.js</strong></td>
+                                <td>283 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/199.4aae29835c88cc27b7d5.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>896.js</strong></td>
+                                <td>236 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/896.970bc486d3bb34ae1020.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>397.js</strong></td>
+                                <td>217 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/397.857fd478ede22aa18808.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>920.js</strong></td>
+                                <td>204 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/920.ee093b04185aed22bcf4.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>233.js</strong></td>
+                                <td>201 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/233.40858f401ca54f8e7202.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>650.js</strong></td>
+                                <td>197 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/650.5b86c47d2ab895574592.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>702.js</strong></td>
+                                <td>195 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/702.1b0a621c6e50bd93ea55.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>266.js</strong></td>
+                                <td>195 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/266.0cbfac8d00b351a08cb6.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>915.js</strong></td>
+                                <td>195 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/915.c7203530d9da60710c61.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>663.js</strong></td>
+                                <td>195 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/663.6942a99dc120a5b9076d.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>425.js</strong></td>
+                                <td>195 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/425.36a537f7d2de5baefa8a.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>697.js</strong></td>
+                                <td>195 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/697.585bb319f9171ca7b812.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>362.js</strong></td>
+                                <td>194 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>chunks/362.ee70a236219fcc7be8aa.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>homepage-styles.js</strong></td>
+                                <td>142 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>100%</td>
+                                <td><code>homepage-styles.588dbd98f81475f6ef69.js</code></td>
+                            </tr>
+                          
+                            <tr>
+                                <td><strong>critical.js</strong></td>
+                                <td>0 Bytes</td>
+                                <td>0 Bytes</td>
+                                <td>0%</td>
+                                <td><code>critical.31d6cfe0d16ae931b73c.js</code></td>
+                            </tr>
+                          
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+  

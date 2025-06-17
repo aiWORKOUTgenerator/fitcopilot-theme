@@ -10,6 +10,7 @@ export { PersonalTraining } from './PersonalTraining';
 export { Pricing } from './Pricing';
 export { Testimonials } from './Testimonials';
 export { default as Training } from './Training';
+export { default as TrainingCalendar } from './TrainingCalendar';
 export { default as TrainingFeatures } from './TrainingFeatures';
 
 // Export hooks

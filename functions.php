@@ -192,4 +192,93 @@ function fitcopilot_output_body_attributes() {
     }
     
     echo trim($output);
-} 
+}
+
+// Initialize Training Calendar Manager - PHASE 1: Backend Foundation
+// Load admin patterns first to ensure base classes are available
+require_once get_template_directory() . '/inc/admin/shared/admin-patterns.php';
+
+// Initialize Training Calendar Manager with enhanced error handling and frontend data provision
+function fitcopilot_init_training_calendar_phase2() {
+    try {
+        // PHASE 2: Enable frontend data provision while maintaining admin safety
+        $is_admin_area = is_admin();
+        $needs_frontend_data = !is_admin() && (is_front_page() || is_home());
+        
+        // PHASE 2: Always initialize in admin area, and on specific frontend pages
+        if (!$is_admin_area && !$needs_frontend_data) {
+            return;
+        }
+        
+        // Check if base class exists for admin area
+        if (!class_exists('FitCopilot_Complex_Manager') && $is_admin_area) {
+            error_log('FitCopilot Training Calendar Phase 2: Base class FitCopilot_Complex_Manager not found');
+            return;
+        }
+        
+        // Load Training Calendar Manager
+        $manager_file = get_template_directory() . '/inc/admin/training-calendar/class-training-calendar-manager.php';
+        if (!file_exists($manager_file)) {
+            error_log('FitCopilot Training Calendar Phase 2: Manager file not found at ' . $manager_file);
+            return;
+        }
+        
+        require_once $manager_file;
+        
+        // Check if Training Calendar Manager class exists
+        if (!class_exists('FitCopilot_Training_Calendar_Manager')) {
+            error_log('FitCopilot Training Calendar Phase 2: Manager class not found after including file');
+            return;
+        }
+        
+        // PHASE 2: Initialize the manager (includes AJAX handlers)
+        global $fitcopilot_training_calendar_manager;
+        $fitcopilot_training_calendar_manager = new FitCopilot_Training_Calendar_Manager();
+        
+        error_log('FitCopilot Training Calendar Phase 2: Successfully initialized (full manager with AJAX handlers)');
+        
+        // PHASE 2 VERIFICATION: Add admin notice to confirm initialization
+        if ($is_admin_area) {
+            add_action('admin_notices', function() {
+                if (current_user_can('manage_options')) {
+                    echo '<div class="notice notice-success is-dismissible">';
+                    echo '<p><strong>Training Calendar Phase 2:</strong> Backend foundation + AJAX handlers initialized successfully.</p>';
+                    echo '</div>';
+                }
+            });
+        }
+        
+    } catch (Exception $e) {
+        error_log('FitCopilot Training Calendar Phase 2 Error: ' . $e->getMessage());
+        error_log('FitCopilot Training Calendar Phase 2 Stack Trace: ' . $e->getTraceAsString());
+        
+        // Add admin error notice
+        if (is_admin()) {
+            add_action('admin_notices', function() use ($e) {
+                if (current_user_can('manage_options')) {
+                    echo '<div class="notice notice-error is-dismissible">';
+                    echo '<p><strong>Training Calendar Phase 2 Error:</strong> ' . esc_html($e->getMessage()) . '</p>';
+                    echo '</div>';
+                }
+            });
+        }
+        
+    } catch (Error $e) {
+        error_log('FitCopilot Training Calendar Phase 2 Fatal Error: ' . $e->getMessage());
+        error_log('FitCopilot Training Calendar Phase 2 Fatal Error File: ' . $e->getFile() . ' Line: ' . $e->getLine());
+        
+        // Add admin error notice for fatal errors
+        if (is_admin()) {
+            add_action('admin_notices', function() use ($e) {
+                if (current_user_can('manage_options')) {
+                    echo '<div class="notice notice-error is-dismissible">';
+                    echo '<p><strong>Training Calendar Phase 2 Fatal Error:</strong> ' . esc_html($e->getMessage()) . '</p>';
+                    echo '</div>';
+                }
+            });
+        }
+    }
+}
+
+// PHASE 2: Initialize in both admin and frontend contexts
+add_action('init', 'fitcopilot_init_training_calendar_phase2'); 

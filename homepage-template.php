@@ -64,47 +64,32 @@ window.ReactDOM = window.ReactDOM || ReactDOM;
 console.log("React and ReactDOM globals initialized for webpack externals");
 ', 'after');
 
-// Don't enqueue critical CSS here since it's inlined in the head
-// Instead, set up async loading for non-critical CSS
-if (isset($manifest['homepage.css'])) {
-    $css_file = $manifest['homepage.css'];
+// PERFORMANCE FIX: Only load homepage-specific CSS, not feature CSS
+// This prevents the 792KB feature-styles.css from loading on homepage
+if (isset($manifest['homepage-styles.css'])) {
+    $css_file = $manifest['homepage-styles.css'];
     $css_path = get_template_directory() . '/dist/' . $css_file;
     
     if (file_exists($css_path)) {
-        // Add as a preload link with onload handler to non-blocking rendering
-        add_action('wp_head', function() use ($css_file) {
-            $css_url = get_template_directory_uri() . '/dist/' . $css_file;
-            echo '<link rel="preload" href="' . esc_url($css_url) . '" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">';
-            echo '<noscript><link rel="stylesheet" href="' . esc_url($css_url) . '"></noscript>';
-        }, 6);
-    } else {
-        error_log('Homepage template: CSS file not found at ' . $css_path);
-    }
-} else {
-    error_log('Homepage template: homepage.css not found in manifest');
-}
-
-// CRITICAL FIX: Load feature-common CSS chunk that contains pricing styles
-if (isset($manifest['feature-common.css'])) {
-    $feature_common_css = $manifest['feature-common.css'];
-    $feature_common_path = get_template_directory() . '/dist/' . $feature_common_css;
-
-    if (file_exists($feature_common_path)) {
-        // NUCLEAR FIX: Direct stylesheet loading instead of preload
+        // Load homepage CSS directly for better performance
         wp_enqueue_style(
-            'feature-common-css',
-            get_template_directory_uri() . '/dist/' . $feature_common_css,
+            'homepage-styles',
+            get_template_directory_uri() . '/dist/' . $css_file,
             array(),
-            filemtime($feature_common_path),
+            filemtime($css_path),
             'all'
         );
-        error_log('Homepage template: NUCLEAR DEBUG - Feature-common CSS loaded successfully from manifest: ' . $feature_common_css);
+        error_log('Homepage template: Homepage-specific CSS loaded: ' . $css_file);
     } else {
-        error_log('Homepage template: Feature-common CSS file not found at ' . $feature_common_path);
+        error_log('Homepage template: Homepage CSS file not found at ' . $css_path);
     }
 } else {
-    error_log('Homepage template: feature-common.css not found in manifest');
+    error_log('Homepage template: homepage-styles.css not found in manifest');
 }
+
+// PERFORMANCE OPTIMIZATION: Do NOT load feature-styles.css on homepage
+// Feature styles (792KB) are only loaded when needed by other pages
+// This prevents the performance regression reported by the user
 
 // Set up preloading of chunk files
 foreach ($manifest as $key => $value) {

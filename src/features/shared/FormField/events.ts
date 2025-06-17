@@ -7,17 +7,22 @@
 
 import * as React from 'react';
 import {
-  FocusEventHandler,
-  FormSubmitHandler,
-  InputChangeHandler,
-  InputKeyPressHandler,
-  SelectChangeHandler,
-  TextAreaChangeHandler
+    FormSubmitHandler,
+    InputChangeHandler,
+    InputFocusHandler,
+    InputKeyboardHandler,
+    SelectChangeHandler,
+    TextareaChangeHandler
 } from '../../../types/events';
 
 // Re-export common event handlers for FormField components
-export {
-  FocusEventHandler, FormSubmitHandler, InputChangeHandler, InputKeyPressHandler, SelectChangeHandler, TextAreaChangeHandler
+export type {
+    FormSubmitHandler,
+    InputChangeHandler,
+    InputFocusHandler,
+    InputKeyboardHandler,
+    SelectChangeHandler,
+    TextareaChangeHandler
 };
 
 /**
@@ -42,14 +47,14 @@ export interface InputFieldEventHandlers {
   onChange: InputChangeHandler;
   onBlur?: FieldBlurHandler;
   onFocus?: FieldFocusHandler;
-  onKeyPress?: InputKeyPressHandler;
+  onKeyPress?: InputKeyboardHandler;
 }
 
 /**
  * Common event handlers interface for textarea fields
  */
 export interface TextAreaFieldEventHandlers {
-  onChange: TextAreaChangeHandler;
+  onChange: TextareaChangeHandler;
   onBlur?: React.FocusEventHandler<HTMLTextAreaElement>;
   onFocus?: React.FocusEventHandler<HTMLTextAreaElement>;
 }

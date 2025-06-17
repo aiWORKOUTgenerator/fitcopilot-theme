@@ -1,0 +1,604 @@
+/**
+ * Event Modal Component Styles
+ * 
+ * Comprehensive styling for the event modal with form fields, validation,
+ * and responsive design following FitCopilot design system
+ * 
+ * @package FitCopilot
+ * @subpackage TrainingCalendar
+ * @since 1.0.0
+ */
+
+// Design system imports - temporarily commenting out due to SCSS variable conflicts
+// @use "@/styles/design-system/colors-next" as colors;
+// @use "@/styles/design-system/typography" as typography;
+// @use "@/styles/design-system/shadows" as shadows;
+// @use "@/styles/design-system/components" as borders;
+// @use "@/styles/design-system/spacing" as spacing;
+// @use "@/styles/animations" as animations;
+
+// ===== MODAL BACKDROP =====
+
+.event-modal__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+  
+  &:focus {
+    outline: none;
+  }
+}
+
+// ===== MODAL CONTAINER =====
+
+.event-modal__container {
+  background: var(--color-ui-surface);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90vw;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+  
+  @media (max-width: 768px) {
+    width: 95vw;
+    max-height: 95vh;
+    border-radius: 8px;
+  }
+}
+
+// ===== MODAL HEADER =====
+
+.event-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  
+  @media (max-width: 768px) {
+    padding: 16px 24px;
+  }
+}
+
+.event-modal__title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.event-modal__header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+// ===== MODAL CONTENT =====
+
+.event-modal__content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px;
+  
+  @media (max-width: 768px) {
+    padding: 24px;
+  }
+}
+
+.event-modal__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  gap: 16px;
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  span {
+    color: #6b7280;
+    font-size: 14px;
+  }
+}
+
+// ===== FORM STYLING =====
+
+.event-modal__form {
+  width: 100%;
+}
+
+.event-modal__form-grid {
+  display: grid;
+  gap: 32px;
+  
+  @media (max-width: 768px) {
+    gap: 24px;
+  }
+}
+
+.event-modal__form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.event-modal__section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #3b82f6;
+}
+
+.event-modal__form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.event-modal__form-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111827;
+  
+  .required {
+    color: #ef4444;
+    margin-left: 2px;
+  }
+}
+
+.event-modal__form-input {
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+  color: #111827;
+  transition: all 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  &:hover:not(:focus):not(:disabled) {
+    border-color: #9ca3af;
+  }
+  
+  &:disabled,
+  &[readonly] {
+    background: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+  }
+  
+  &.error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  }
+  
+  &::placeholder {
+    color: #9ca3af;
+  }
+}
+
+textarea.event-modal__form-input {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.6;
+}
+
+select.event-modal__form-input {
+  cursor: pointer;
+  
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.event-modal__form-error {
+  font-size: 12px;
+  color: #ef4444;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  
+  &::before {
+    content: '⚠';
+    font-size: 14px;
+  }
+}
+
+// ===== TRAINER INFO SECTION =====
+
+.event-modal__trainer-info {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.event-modal__trainer-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.event-modal__trainer-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #d1d5db;
+}
+
+.event-modal__trainer-details {
+  flex: 1;
+  
+  h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 8px 0;
+  }
+  
+  p {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0 0 8px 0;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// ===== MODAL FOOTER =====
+
+.event-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 24px 32px;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+  
+  @media (max-width: 768px) {
+    padding: 16px 24px;
+    flex-direction: column-reverse;
+    gap: 12px;
+    
+    .event-modal__button {
+      width: 100%;
+    }
+  }
+}
+
+// ===== BUTTON STYLING =====
+
+.event-modal__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  text-decoration: none;
+  min-height: 40px;
+  
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    
+    &.spinner--small {
+      width: 14px;
+      height: 14px;
+      border-width: 1.5px;
+    }
+  }
+  
+  // Primary button
+  &--primary {
+    background: #3b82f6;
+    color: #ffffff;
+    border-color: #3b82f6;
+    
+    &:hover:not(:disabled) {
+      background: #2563eb;
+      border-color: #2563eb;
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  // Secondary button
+  &--secondary {
+    background: #ffffff;
+    color: #111827;
+    border-color: #d1d5db;
+    
+    &:hover:not(:disabled) {
+      background: #f3f4f6;
+      border-color: #9ca3af;
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  // Ghost button
+  &--ghost {
+    background: transparent;
+    color: #6b7280;
+    border-color: transparent;
+    padding: 8px;
+    min-height: auto;
+    
+    &:hover:not(:disabled) {
+      background: #f3f4f6;
+      color: #111827;
+    }
+  }
+  
+  // Danger button
+  &--danger {
+    background: #ef4444;
+    color: #ffffff;
+    border-color: #ef4444;
+    
+    &:hover:not(:disabled) {
+      background: #dc2626;
+      border-color: #dc2626;
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// ===== DELETE CONFIRMATION =====
+
+.event-modal__delete-confirm {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(2px);
+}
+
+.event-modal__delete-confirm-content {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 16px 0;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0 0 16px 0;
+    line-height: 1.6;
+  }
+}
+
+.event-modal__delete-confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  
+  @media (max-width: 480px) {
+    flex-direction: column-reverse;
+    
+    .event-modal__button {
+      width: 100%;
+    }
+  }
+}
+
+// ===== RESPONSIVE DESIGN =====
+
+@media (max-width: 640px) {
+  .event-modal__container {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  
+  .event-modal__form-grid {
+    gap: 16px;
+  }
+  
+  .event-modal__form-section {
+    gap: 8px;
+  }
+  
+  .event-modal__trainer-card {
+    flex-direction: column;
+    text-align: center;
+    
+    .event-modal__trainer-avatar {
+      width: 80px;
+      height: 80px;
+    }
+  }
+}
+
+// ===== ACCESSIBILITY =====
+
+@media (prefers-reduced-motion: reduce) {
+  .event-modal__backdrop {
+    animation: none;
+  }
+  
+  .event-modal__container {
+    animation: none;
+  }
+  
+  .event-modal__button {
+    transition: none;
+    
+    &:hover:not(:disabled) {
+      transform: none;
+    }
+  }
+  
+  .spinner {
+    animation: none;
+    border-top-color: currentColor;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .event-modal__container {
+    border: 2px solid #111827;
+  }
+  
+  .event-modal__form-input {
+    border-width: 2px;
+    
+    &:focus {
+      border-width: 3px;
+    }
+  }
+  
+  .event-modal__button {
+    border-width: 2px;
+    
+    &:focus {
+      outline-width: 3px;
+    }
+  }
+}
+
+// ===== PRINT STYLES =====
+
+@media print {
+  .event-modal__backdrop {
+    position: static;
+    background: none;
+    backdrop-filter: none;
+  }
+  
+  .event-modal__container {
+    box-shadow: none;
+    border: 1px solid #111827;
+    max-height: none;
+    width: 100%;
+    max-width: none;
+  }
+  
+  .event-modal__footer {
+    display: none;
+  }
+  
+  .event-modal__delete-confirm {
+    display: none;
+  }
+}
+
+// ===== KEYFRAME ANIMATIONS =====
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

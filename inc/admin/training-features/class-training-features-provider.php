@@ -77,7 +77,17 @@ class FitCopilot_Training_Features_Provider {
                 'cardStyle' => $settings['card_style'] ?? 'default',
                 'showDifficulty' => !empty($settings['show_difficulty']),
                 'showDuration' => !empty($settings['show_duration']),
-                'enableAnimations' => !empty($settings['enable_animations'])
+                'enableAnimations' => !empty($settings['enable_animations']),
+                'ctaEnabled' => !empty($settings['cta_enabled']),
+                'ctaTitle' => $settings['cta_title'] ?? '',
+                'ctaSubtitle' => $settings['cta_subtitle'] ?? '',
+                'ctaButtonText' => $settings['cta_button_text'] ?? 'Explore Features',
+                'ctaButtonUrl' => $settings['cta_button_url'] ?? '',
+                'ctaBackgroundColor' => $settings['cta_background_color'] ?? '',
+                'ctaTextColor' => $settings['cta_text_color'] ?? '',
+                'ctaIconType' => $settings['cta_icon_type'] ?? 'lucide',
+                'ctaLucideIcon' => $settings['cta_lucide_icon'] ?? 'ArrowRight',
+                'ctaLogoUrl' => $settings['cta_logo_url'] ?? ''
             ),
             'meta' => array(
                 'total_count' => count($data),

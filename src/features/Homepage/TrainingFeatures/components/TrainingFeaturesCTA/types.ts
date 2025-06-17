@@ -49,6 +49,13 @@ export interface TrainingFeaturesCTAProps extends Omit<BaseButtonProps, 'size' |
     featureTitle?: string;
 
     /**
+     * Custom text override for the CTA button
+     * When provided, this exact text will be used instead of generated text
+     * Takes precedence over featureTitle and contextType
+     */
+    customText?: string;
+
+    /**
      * Context type for CTA text variation
      * @default 'explore'
      */

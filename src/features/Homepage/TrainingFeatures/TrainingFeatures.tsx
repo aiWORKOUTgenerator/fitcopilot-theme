@@ -1,8 +1,14 @@
 import {
+    Activity,
     Apple,
+    ArrowRight,
+    Award,
     BarChart,
     Bike,
     Calendar,
+    CheckCircle,
+    ChevronRight,
+    Clock,
     Coffee,
     Download,
     Dumbbell,
@@ -11,10 +17,16 @@ import {
     Heart,
     Medal,
     MessageSquare,
+    Play,
+    Rocket,
     Smartphone,
+    Sparkles,
     Star,
+    Target,
     Timer,
-    Video
+    Trophy,
+    Video,
+    Zap
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { GlobalVariantKey } from '../types/shared';
@@ -104,10 +116,69 @@ const getIconComponent = (iconType: string, iconName: string) => {
     'Footprints': Footprints,
     'Bike': Bike,
     'Star': Star,
+    'Activity': Activity,
+    'ArrowRight': ArrowRight,
+    'Award': Award,
+    'CheckCircle': CheckCircle,
+    'ChevronRight': ChevronRight,
+    'Clock': Clock,
+    'Play': Play,
+    'Rocket': Rocket,
+    'Sparkles': Sparkles,
+    'Target': Target,
+    'Trophy': Trophy,
+    'Zap': Zap,
   };
   
   const IconComponent = IconMap[iconName] || Star;
   return <IconComponent size={24} className="text-gray-900" />;
+};
+
+/**
+ * Render CTA icon based on WordPress admin settings
+ */
+const renderCTAIcon = (settings: TrainingFeaturesSettings) => {
+  const iconType = settings.ctaIconType || 'lucide';
+  const iconName = settings.ctaLucideIcon || 'ArrowRight';
+  const logoUrl = settings.ctaLogoUrl;
+
+  if (iconType === 'none') {
+    return null;
+  }
+
+  if (iconType === 'logo' && logoUrl) {
+    return (
+      <img 
+        src={logoUrl} 
+        alt="CTA Logo" 
+        className="w-7 h-7 object-contain"
+        loading="lazy"
+      />
+    );
+  }
+
+  // Default to Lucide icon
+  const IconMap: Record<string, any> = {
+    'Activity': Activity,
+    'ArrowRight': ArrowRight,
+    'Award': Award,
+    'CheckCircle': CheckCircle,
+    'ChevronRight': ChevronRight,
+    'Clock': Clock,
+    'Dumbbell': Dumbbell,
+    'Flame': Flame,
+    'Heart': Heart,
+    'Play': Play,
+    'Rocket': Rocket,
+    'Sparkles': Sparkles,
+    'Star': Star,
+    'Target': Target,
+    'Trophy': Trophy,
+    'Zap': Zap,
+  };
+
+  const IconComponent = IconMap[iconName] || ArrowRight;
+  return <IconComponent size={28} className="text-white" />;
 };
 
 /**
@@ -135,7 +206,11 @@ const transformWordPressFeature = (wpFeature: WordPressTrainingFeature): Trainin
     flipBack: {
       title: wpFeature.flipCard.backTitle,
       details: wpFeature.flipCard.backDetails ? wpFeature.flipCard.backDetails.split('|') : []
-    }
+    },
+    cta: wpFeature.cta && wpFeature.cta.text && wpFeature.cta.url ? {
+      text: wpFeature.cta.text,
+      url: wpFeature.cta.url
+    } : undefined
   };
 };
 
@@ -161,7 +236,18 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
     cardStyle: 'default',
     showDifficulty: false,
     showDuration: false,
-    enableAnimations: true
+    enableAnimations: true,
+    // CTA Settings defaults
+    ctaEnabled: false,
+    ctaTitle: '',
+    ctaSubtitle: '',
+    ctaButtonText: 'Explore Features',
+    ctaButtonUrl: '',
+    ctaBackgroundColor: '#8b5cf6', // Violet gradient default
+    ctaTextColor: '#ffffff',
+    ctaIconType: 'lucide',
+    ctaLucideIcon: 'ArrowRight',
+    ctaLogoUrl: ''
   });
   const [loadingState, setLoadingState] = useState<LoadingState>('loading');
   const [dataSource, setDataSource] = useState<DataSource>('none');
@@ -434,19 +520,61 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
           ))}
         </div>
 
-        {/* Footer CTA - Using new TrainingFeaturesCTA component */}
-        <div className="text-center mt-16">
-          <TrainingFeaturesCTA
-            onNavigate={(featureType: string) => {
-              console.log('Navigate to:', featureType);
-              // Add actual navigation logic here
-            }}
-            variant={variant}
-            size="large"
-            contextType="explore"
-            featureTitle="All Features"
-          />
-        </div>
+        {/* Footer CTA - Using WordPress settings or TrainingFeaturesCTA component */}
+        {settings.ctaEnabled ? (
+          <div className="text-center mt-16">
+            <div 
+              className="bg-gradient-to-r from-violet-500/30 to-purple-600/30 rounded-2xl p-12 md:p-16 border border-violet-400/30"
+              style={{
+                background: settings.ctaBackgroundColor 
+                  ? `linear-gradient(to right, ${settings.ctaBackgroundColor}30, ${settings.ctaBackgroundColor}40)` 
+                  : 'linear-gradient(to right, rgb(139 92 246 / 0.3), rgb(147 51 234 / 0.3))',
+                color: settings.ctaTextColor || '#ffffff'
+              }}
+            >
+              <div className="flex justify-center mb-8">
+                <div className="w-16 h-16 bg-violet-400 rounded-full flex items-center justify-center">
+                  {renderCTAIcon(settings)}
+                </div>
+              </div>
+              <h3 className="text-3xl font-bold mb-6">
+                {settings.ctaTitle || 'Ready to Get Started?'}
+              </h3>
+              <p className="text-gray-300 mb-8 max-w-2xl mx-auto text-lg leading-relaxed">
+                {settings.ctaSubtitle || 'Discover all the features that will help you achieve your fitness goals.'}
+              </p>
+              <div className="mt-4">
+                <TrainingFeaturesCTA
+                  onNavigate={(featureType: string) => {
+                    if (settings.ctaButtonUrl) {
+                      window.location.href = settings.ctaButtonUrl;
+                    } else {
+                      console.log('Navigate to:', featureType);
+                    }
+                  }}
+                  variant={variant}
+                  size="large"
+                  contextType="explore"
+                  customText={settings.ctaButtonText}
+                  href={settings.ctaButtonUrl}
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center mt-16">
+            <TrainingFeaturesCTA
+              onNavigate={(featureType: string) => {
+                console.log('Navigate to:', featureType);
+                // Add actual navigation logic here
+              }}
+              variant={variant}
+              size="large"
+              contextType="explore"
+              featureTitle="All Features"
+            />
+          </div>
+        )}
 
         {/* Debug Information (Development Only) */}
         {process.env.NODE_ENV === 'development' && (

@@ -1,0 +1,301 @@
+@use "@/styles/design-system" as *;
+
+// Training Calendar Skeleton Loader Styles
+.training-calendar-skeleton {
+  padding: 2rem;
+  background: var(--color-background-primary);
+  border-radius: 12px;
+  border: 1px solid var(--color-border-light);
+
+  // Variants
+  &--compact {
+    padding: 1rem;
+    
+    .training-calendar-skeleton__calendar {
+      min-height: 300px;
+    }
+  }
+
+  &--widget {
+    padding: 1rem;
+    
+    .training-calendar-skeleton__calendar {
+      min-height: 200px;
+    }
+    
+    .training-calendar-skeleton__stats {
+      display: none;
+    }
+  }
+
+  // Header Section
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
+  &__title {
+    flex: 1;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 0.75rem;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  // Filters Section
+  &__filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--color-background-secondary);
+    border-radius: 8px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+
+  // Calendar Section
+  &__calendar {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--color-border-light);
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  &__calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: var(--color-background-secondary);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  &__calendar-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__week {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid var(--color-border-light);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__day {
+    min-height: 80px;
+    padding: 0.5rem;
+    border-right: 1px solid var(--color-border-light);
+    position: relative;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    @media (max-width: 768px) {
+      min-height: 60px;
+      padding: 0.25rem;
+    }
+  }
+
+  // Statistics Section
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  &__stat {
+    text-align: center;
+    padding: 1rem;
+    background: var(--color-background-secondary);
+    border-radius: 8px;
+  }
+}
+
+// Skeleton Shimmer Elements
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-background-secondary) 25%,
+    var(--color-background-tertiary) 50%,
+    var(--color-background-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 4px;
+
+  // Specific shimmer types
+  &--title {
+    height: 2rem;
+    width: 60%;
+    margin-bottom: 0.5rem;
+  }
+
+  &--subtitle {
+    height: 1rem;
+    width: 80%;
+  }
+
+  &--button {
+    height: 2.5rem;
+    width: 100px;
+    border-radius: 6px;
+  }
+
+  &--filter {
+    height: 2rem;
+    width: 120px;
+    border-radius: 6px;
+  }
+
+  &--day-header {
+    height: 2rem;
+    margin: 0.5rem;
+    border-radius: 4px;
+  }
+
+  &--day-number {
+    height: 1.25rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    margin-bottom: 0.25rem;
+  }
+
+  &--event {
+    height: 1.5rem;
+    width: 90%;
+    margin-bottom: 0.25rem;
+    border-radius: 3px;
+
+    &--small {
+      height: 1rem;
+      width: 70%;
+    }
+  }
+
+  &--stat-number {
+    height: 2rem;
+    width: 60%;
+    margin: 0 auto 0.5rem;
+    border-radius: 4px;
+  }
+
+  &--stat-label {
+    height: 1rem;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 4px;
+  }
+}
+
+// Shimmer Animation
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+// Fade-in Animation for when skeleton is replaced
+.skeleton-fade-in {
+  animation: skeleton-fade-in 0.3s ease-out;
+}
+
+@keyframes skeleton-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Pulse Animation for loading states
+.skeleton-pulse {
+  animation: skeleton-pulse 2s infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+// Spin Animation for loading indicators
+.skeleton-spin {
+  animation: skeleton-spin 1s linear infinite;
+}
+
+@keyframes skeleton-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Accessibility: Respect reduced motion preferences
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer,
+  .skeleton-fade-in,
+  .skeleton-pulse,
+  .skeleton-spin {
+    animation: none;
+  }
+  
+  .skeleton-shimmer {
+    background: var(--color-background-secondary);
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .training-calendar-skeleton {
+    background: var(--color-background-dark);
+    border-color: var(--color-border-dark);
+  }
+
+  .training-calendar-skeleton__calendar {
+    background: var(--color-background-dark-secondary);
+    border-color: var(--color-border-dark);
+  }
+
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--color-background-dark-secondary) 25%,
+      var(--color-background-dark-tertiary) 50%,
+      var(--color-background-dark-secondary) 75%
+    );
+    background-size: 200% 100%;
+  }
+} 

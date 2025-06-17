@@ -64,6 +64,8 @@ class FitCopilot_Training_Features_Renderer {
     public function render_tab_content($active_tab, $data, $settings) {
         if ($active_tab === 'main-content') {
             $this->render_main_content_tab($data);
+        } elseif ($active_tab === 'cta-management') {
+            $this->render_cta_management_tab($settings);
         } elseif ($active_tab === 'categories') {
             $this->render_categories_tab($data);
         } elseif ($active_tab === 'settings') {
@@ -125,6 +127,10 @@ class FitCopilot_Training_Features_Renderer {
             <a href="?page=fitcopilot-training-features&tab=main-content" 
                class="nav-tab <?php echo $active_tab === 'main-content' ? 'nav-tab-active' : ''; ?>">
                Manage Features
+            </a>
+            <a href="?page=fitcopilot-training-features&tab=cta-management" 
+               class="nav-tab <?php echo $active_tab === 'cta-management' ? 'nav-tab-active' : ''; ?>">
+               CTA Management
             </a>
             <a href="?page=fitcopilot-training-features&tab=categories" 
                class="nav-tab <?php echo $active_tab === 'categories' ? 'nav-tab-active' : ''; ?>">
@@ -244,6 +250,264 @@ class FitCopilot_Training_Features_Renderer {
                 </div>
             </form>
         </div>
+        <?php
+    }
+    
+    /**
+     * Render CTA management tab (dedicated tab for call-to-action settings)
+     */
+    private function render_cta_management_tab($settings) {
+        ?>
+        <div id="cta-management" class="tab-content fitcopilot-card">
+            <form method="post" action="">
+                <?php wp_nonce_field('fitcopilot_training_features_action', 'fitcopilot_training_features_nonce'); ?>
+                
+                <div class="cta-header">
+                    <h2>📢 Call-to-Action Management</h2>
+                    <p class="tab-description">
+                        Manage the call-to-action section that appears below your training features. 
+                        This helps convert visitors into clients by providing a clear next step.
+                    </p>
+                </div>
+
+                <!-- CTA Status Overview -->
+                <div class="fitcopilot-status-indicator">
+                    <strong>📊 CTA Status:</strong> 
+                    
+                    <span style="color: <?php echo !empty($settings['cta_enabled']) ? '#84E1BC' : '#ff6b6b'; ?>;">
+                        <?php echo !empty($settings['cta_enabled']) ? '✅ Enabled' : '❌ Disabled'; ?>
+                    </span>
+                    
+                    <br><strong>Current Title:</strong> 
+                    "<?php echo esc_html($settings['cta_title'] ?? 'Ready to Transform Your Fitness?'); ?>"
+                    
+                    <br><strong>Button Action:</strong> 
+                    <?php echo esc_html($settings['cta_button_text'] ?? 'Explore All Features'); ?>
+                </div>
+
+                <!-- CTA Configuration -->
+                <h3>⚙️ CTA Configuration</h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_enabled">Enable CTA Section</label>
+                        </th>
+                        <td>
+                            <label>
+                                <input type="checkbox" id="cta_enabled" name="settings[cta_enabled]" 
+                                       value="1" <?php checked(!empty($settings['cta_enabled'])); ?> />
+                                Show call-to-action section on frontend
+                            </label>
+                            <p class="description">
+                                Toggle to show/hide the entire CTA section below training features
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Content Settings -->
+                <h3>📝 Content Settings</h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_title">CTA Title</label>
+                        </th>
+                        <td>
+                            <input type="text" id="cta_title" name="settings[cta_title]" 
+                                   value="<?php echo esc_attr($settings['cta_title'] ?? 'Ready to Transform Your Fitness?'); ?>" 
+                                   class="regular-text" />
+                            <p class="description">Main headline that grabs attention and sets the tone</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_subtitle">CTA Description</label>
+                        </th>
+                        <td>
+                            <textarea id="cta_subtitle" name="settings[cta_subtitle]" 
+                                      class="large-text" rows="4"
+                                      placeholder="Compelling description that explains your value proposition and encourages action..."><?php echo esc_textarea($settings['cta_subtitle'] ?? ''); ?></textarea>
+                            <p class="description">
+                                Supporting text that explains the value proposition and benefits of taking action.
+                                <br><strong>Tip:</strong> Focus on benefits, address concerns, and create urgency.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Button Settings -->
+                <h3>🔘 Button Settings</h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_button_text">Button Text</label>
+                        </th>
+                        <td>
+                            <input type="text" id="cta_button_text" name="settings[cta_button_text]" 
+                                   value="<?php echo esc_attr($settings['cta_button_text'] ?? 'Explore All Features'); ?>" 
+                                   class="regular-text" />
+                            <p class="description">
+                                Action-oriented text for the CTA button.
+                                <br><strong>Examples:</strong> "Explore All Features", "Schedule Free Virtual Consultation", "Start Your Journey"
+                            </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_button_url">Button Destination</label>
+                        </th>
+                        <td>
+                            <input type="url" id="cta_button_url" name="settings[cta_button_url]" 
+                                   value="<?php echo esc_attr($settings['cta_button_url'] ?? '#contact'); ?>" 
+                                   class="regular-text" 
+                                   placeholder="https://example.com/contact" />
+                            <p class="description">
+                                Where visitors go when they click the button.
+                                <br><strong>Examples:</strong> Contact form, booking page, phone number (tel:+1234567890), email (mailto:info@gym.com)
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Icon & Logo Settings -->
+                <h3>🎯 Icon & Logo Settings</h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_icon_type">Icon Type</label>
+                        </th>
+                        <td>
+                            <fieldset>
+                                <legend class="screen-reader-text"><span>Choose icon type for CTA section</span></legend>
+                                <label>
+                                    <input type="radio" name="settings[cta_icon_type]" value="lucide" 
+                                           <?php checked($settings['cta_icon_type'] ?? 'lucide', 'lucide'); ?> 
+                                           onchange="toggleIconOptions(this.value)" />
+                                    <strong>Lucide Icon</strong> - Choose from 1000+ professional icons
+                                </label><br />
+                                <label>
+                                    <input type="radio" name="settings[cta_icon_type]" value="logo" 
+                                           <?php checked($settings['cta_icon_type'] ?? 'lucide', 'logo'); ?> 
+                                           onchange="toggleIconOptions(this.value)" />
+                                    <strong>Custom Logo</strong> - Upload your own logo image
+                                </label><br />
+                                <label>
+                                    <input type="radio" name="settings[cta_icon_type]" value="none" 
+                                           <?php checked($settings['cta_icon_type'] ?? 'lucide', 'none'); ?> 
+                                           onchange="toggleIconOptions(this.value)" />
+                                    <strong>No Icon</strong> - Text-only CTA section
+                                </label>
+                            </fieldset>
+                            <p class="description">Choose how you want to visually represent your CTA section</p>
+                        </td>
+                    </tr>
+                    <tr class="icon-option lucide-option" style="display: <?php echo ($settings['cta_icon_type'] ?? 'lucide') === 'lucide' ? 'table-row' : 'none'; ?>;">
+                        <th scope="row">
+                            <label for="cta_lucide_icon">Lucide Icon</label>
+                        </th>
+                        <td>
+                            <select id="cta_lucide_icon" name="settings[cta_lucide_icon]" class="regular-text">
+                                <?php 
+                                $current_icon = $settings['cta_lucide_icon'] ?? 'ArrowRight';
+                                
+                                // Training Features specific icons
+                                $icon_categories = array(
+                                    'Popular Training & CTA' => array(
+                                        'ArrowRight' => '➡️ Arrow Right - Next Step',
+                                        'ChevronRight' => '▶️ Chevron Right - Continue',
+                                        'Play' => '▶️ Play - Start/Action',
+                                        'Zap' => '⚡ Zap - Energy/Power',
+                                        'Target' => '🎯 Target - Goals/Focus',
+                                        'Trophy' => '🏆 Trophy - Achievement',
+                                        'Star' => '⭐ Star - Excellence',
+                                        'Heart' => '❤️ Heart - Health/Care',
+                                        'Activity' => '📈 Activity - Progress',
+                                        'Award' => '🏅 Award - Recognition',
+                                        'CheckCircle' => '✅ Check Circle - Success',
+                                        'Dumbbell' => '🏋️ Dumbbell - Fitness',
+                                        'Flame' => '🔥 Flame - Motivation',
+                                        'Rocket' => '🚀 Rocket - Launch',
+                                        'Sparkles' => '✨ Sparkles - Magic',
+                                    )
+                                );
+                                
+                                foreach ($icon_categories as $category => $icons) {
+                                    echo "<optgroup label=\"{$category}\">";
+                                    foreach ($icons as $value => $label) {
+                                        $selected = selected($current_icon, $value, false);
+                                        echo "<option value=\"{$value}\" {$selected}>{$label}</option>";
+                                    }
+                                    echo "</optgroup>";
+                                }
+                                ?>
+                            </select>
+                            <p class="description">Choose an icon that represents your training features or call-to-action</p>
+                        </td>
+                    </tr>
+                    <tr class="icon-option logo-option" style="display: <?php echo ($settings['cta_icon_type'] ?? 'lucide') === 'logo' ? 'table-row' : 'none'; ?>;">
+                        <th scope="row">
+                            <label for="cta_logo_url">Custom Logo URL</label>
+                        </th>
+                        <td>
+                            <input type="url" id="cta_logo_url" name="settings[cta_logo_url]" 
+                                   value="<?php echo esc_attr($settings['cta_logo_url'] ?? ''); ?>" 
+                                   class="regular-text" 
+                                   placeholder="https://example.com/logo.png" />
+                            <p class="description">URL to your custom logo image (recommended size: 64x64px)</p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Styling Settings -->
+                <h3>🎨 Styling Settings</h3>
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_background_color">Background Color</label>
+                        </th>
+                        <td>
+                            <input type="color" id="cta_background_color" name="settings[cta_background_color]" 
+                                   value="<?php echo esc_attr($settings['cta_background_color'] ?? '#8b5cf6'); ?>" 
+                                   class="color-picker" />
+                            <p class="description">Background color for the CTA section (default: violet gradient)</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="cta_text_color">Text Color</label>
+                        </th>
+                        <td>
+                            <input type="color" id="cta_text_color" name="settings[cta_text_color]" 
+                                   value="<?php echo esc_attr($settings['cta_text_color'] ?? '#ffffff'); ?>" 
+                                   class="color-picker" />
+                            <p class="description">Text color for the CTA section (leave empty for default)</p>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Save Button -->
+                <p class="submit">
+                    <input type="submit" name="fitcopilot_training_features_submit" 
+                           class="button button-primary" value="Save CTA Settings" />
+                </p>
+            </form>
+        </div>
+        
+        <script type="text/javascript">
+            function toggleIconOptions(iconType) {
+                // Hide all icon options
+                document.querySelectorAll('.icon-option').forEach(function(option) {
+                    option.style.display = 'none';
+                });
+                
+                // Show selected icon option
+                if (iconType === 'lucide') {
+                    document.querySelector('.lucide-option').style.display = 'table-row';
+                } else if (iconType === 'logo') {
+                    document.querySelector('.logo-option').style.display = 'table-row';
+                }
+            }
+        </script>
         <?php
     }
     

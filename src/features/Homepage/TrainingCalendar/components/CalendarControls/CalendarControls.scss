@@ -1,0 +1,703 @@
+/**
+ * Calendar Controls Component Styles
+ * 
+ * Comprehensive styling for calendar navigation, view switching, and filtering
+ * Following FitCopilot design system patterns
+ * 
+ * @package FitCopilot
+ * @subpackage TrainingCalendar
+ * @since 1.0.0
+ */
+
+// Design system imports - temporarily commenting out due to SCSS variable conflicts
+// @use "@/styles/design-system/colors-next" as colors;
+// @use "@/styles/design-system/typography" as typography;
+// @use "@/styles/design-system/shadows" as shadows;
+// @use "@/styles/design-system/components" as borders;
+// @use "@/styles/design-system/spacing" as spacing;
+// @use "@/styles/animations" as animations;
+
+// ===== MAIN CONTAINER =====
+
+.calendar-controls {
+  position: relative;
+  background: var(--color-ui-surface);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  
+  &:focus-within {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// ===== MAIN CONTROLS ROW =====
+
+.calendar-controls__main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--color-ui-border);
+  gap: 24px;
+  
+  @media (max-width: 1024px) {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+}
+
+// ===== NAVIGATION SECTION =====
+
+.calendar-controls__navigation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  @media (max-width: 768px) {
+    justify-content: center;
+    order: 2;
+  }
+}
+
+.calendar-controls__nav-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-ui-border);
+  background: var(--color-ui-surface);
+  color: var(--color-text-primary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 18px;
+  font-weight: 600;
+  
+      &:hover:not(:disabled) {
+      background: var(--color-ui-surface-hover);
+      border-color: var(--color-ui-border-hover);
+      transform: translateY(-1px);
+    }
+  
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.calendar-controls__today-button {
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  &:hover:not(:disabled) {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    color: #1d4ed8;
+    transform: translateY(-1px);
+  }
+  
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+// ===== DATE DISPLAY =====
+
+.calendar-controls__date-display {
+  position: relative;
+  margin: 0 16px;
+  
+  @media (max-width: 768px) {
+    margin: 0;
+    order: 1;
+  }
+}
+
+.calendar-controls__date-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 200px;
+  justify-content: space-between;
+  
+  &:hover:not(:disabled) {
+    background: #f3f4f6;
+    border-color: #9ca3af;
+  }
+  
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 768px) {
+    min-width: auto;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.calendar-controls__date-arrow {
+  font-size: 12px;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+  
+  .calendar-controls__date-button:hover & {
+    transform: translateY(1px);
+  }
+}
+
+.calendar-controls__date-picker {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  margin-top: 8px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.calendar-controls__date-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+  color: #111827;
+  
+  &:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+}
+
+// ===== VIEW SWITCHER =====
+
+.calendar-controls__view-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 8px;
+  
+  @media (max-width: 768px) {
+    order: 3;
+    justify-content: center;
+  }
+}
+
+.calendar-controls__view-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  &:hover:not(:disabled) {
+    background: #f3f4f6;
+    color: #111827;
+  }
+  
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  &.active {
+    background: #3b82f6;
+    color: #ffffff;
+    
+    &:hover {
+      background: #2563eb;
+    }
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  @media (max-width: 640px) {
+    padding: 8px 12px;
+    
+    .calendar-controls__view-label {
+      display: none;
+    }
+  }
+}
+
+.calendar-controls__view-icon {
+  font-size: 16px;
+}
+
+.calendar-controls__view-label {
+  font-size: 14px;
+  
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+// ===== ACTION BUTTONS =====
+
+.calendar-controls__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  
+  @media (max-width: 768px) {
+    order: 4;
+    justify-content: center;
+  }
+}
+
+.calendar-controls__filter-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-ui-border);
+  background: var(--color-ui-surface);
+  color: var(--color-text-secondary);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 16px;
+  
+  &:hover:not(:disabled) {
+    background: var(--color-ui-surface-hover);
+    border-color: var(--color-ui-border-hover);
+    color: var(--color-text-primary);
+  }
+  
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  &.active {
+    background: var(--color-primary-500);
+    border-color: var(--color-primary-500);
+    color: var(--color-text-on-primary);
+    
+    &:hover {
+      background: var(--color-primary-600);
+      border-color: var(--color-primary-600);
+    }
+  }
+  
+  &.has-filters {
+    background: var(--color-warning-100);
+    border-color: var(--color-warning-300);
+    color: var(--color-warning-700);
+    
+    &:hover {
+      background: var(--color-warning-200);
+      border-color: var(--color-warning-400);
+    }
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.calendar-controls__filter-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--color-error-500);
+  color: var(--color-text-on-primary);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.calendar-controls__create-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--color-primary-500);
+  color: var(--color-text-on-primary);
+  border: 1px solid var(--color-primary-500);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  &:hover:not(:disabled) {
+    background: var(--color-primary-600);
+    border-color: var(--color-primary-600);
+    transform: translateY(-1px);
+  }
+  
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 12px;
+    font-size: 12px;
+  }
+}
+
+// ===== FILTERS PANEL =====
+
+.calendar-controls__filters {
+  background: var(--color-ui-surface-secondary);
+  border-top: 1px solid var(--color-ui-border-subtle);
+  padding: 24px;
+  animation: fadeIn 0.3s ease-out;
+  
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+}
+
+.calendar-controls__filters-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+}
+
+.calendar-controls__clear-filters {
+  padding: 8px 12px;
+  background: transparent;
+  color: var(--color-error-600);
+  border: 1px solid var(--color-error-300);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  &:hover {
+    background: var(--color-error-50);
+    border-color: var(--color-error-400);
+    color: var(--color-error-700);
+  }
+  
+  &:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+}
+
+.calendar-controls__filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.calendar-controls__filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendar-controls__filter-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.calendar-controls__filter-select {
+  padding: 12px 16px;
+  border: 1px solid var(--color-ui-border);
+  border-radius: 8px;
+  background: var(--color-ui-surface);
+  color: var(--color-text-primary);
+  font-size: 14px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary-500);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-500), 0.1);
+  }
+  
+  &:hover:not(:focus) {
+    border-color: var(--color-ui-border-hover);
+  }
+  
+  option {
+    padding: 8px;
+    background: var(--color-ui-surface);
+    color: var(--color-text-primary);
+  }
+}
+
+// ===== LOADING OVERLAY =====
+
+.calendar-controls__loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--color-ui-surface-primary), 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  backdrop-filter: blur(2px);
+}
+
+.calendar-controls__loading-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--color-ui-border-subtle);
+    border-top: 3px solid var(--color-primary-500);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+// ===== RESPONSIVE DESIGN =====
+
+@media (max-width: 640px) {
+  .calendar-controls__main {
+    padding: 12px;
+  }
+  
+  .calendar-controls__navigation {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .calendar-controls__date-button {
+    min-width: 150px;
+    font-size: 14px;
+  }
+  
+  .calendar-controls__view-switcher {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .calendar-controls__actions {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .calendar-controls__filters {
+    padding: 12px;
+  }
+  
+  .calendar-controls__filters-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-controls {
+    border-radius: 8px;
+  }
+  
+  .calendar-controls__main {
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .calendar-controls__nav-button,
+  .calendar-controls__filter-button {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+  
+  .calendar-controls__today-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .calendar-controls__date-button {
+    min-width: 120px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  
+  .calendar-controls__view-button {
+    padding: 8px;
+    
+    .calendar-controls__view-icon {
+      font-size: 16px;
+    }
+  }
+  
+  .calendar-controls__create-button {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+// ===== ACCESSIBILITY =====
+
+@media (prefers-reduced-motion: reduce) {
+  .calendar-controls__filters {
+    animation: none;
+  }
+  
+  .calendar-controls__date-picker {
+    animation: none;
+  }
+  
+  .calendar-controls__nav-button,
+  .calendar-controls__today-button,
+  .calendar-controls__create-button {
+    transition: none;
+    
+    &:hover:not(:disabled) {
+      transform: none;
+    }
+  }
+  
+  .spinner {
+    animation: none;
+    border-top-color: var(--color-primary-500);
+  }
+}
+
+@media (prefers-contrast: high) {
+  .calendar-controls {
+    border: 2px solid var(--color-text-primary);
+  }
+  
+  .calendar-controls__nav-button,
+  .calendar-controls__today-button,
+  .calendar-controls__date-button,
+  .calendar-controls__view-button,
+  .calendar-controls__filter-button,
+  .calendar-controls__create-button,
+  .calendar-controls__filter-select {
+    border-width: 2px;
+    
+    &:focus {
+      outline-width: 3px;
+    }
+  }
+  
+  .calendar-controls__view-button.active {
+    border: 2px solid var(--color-text-on-primary);
+  }
+}
+
+// ===== PRINT STYLES =====
+
+@media print {
+  .calendar-controls {
+    box-shadow: none;
+    border: 1px solid var(--color-text-primary);
+  }
+  
+  .calendar-controls__actions,
+  .calendar-controls__filters {
+    display: none;
+  }
+  
+  .calendar-controls__loading {
+    display: none;
+  }
+} 
