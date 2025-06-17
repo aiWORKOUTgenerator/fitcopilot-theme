@@ -198,6 +198,31 @@ function fitcopilot_output_body_attributes() {
 // Load admin patterns first to ensure base classes are available
 require_once get_template_directory() . '/inc/admin/shared/admin-patterns.php';
 
+// Early initialization for REST API endpoints (must run on all requests)
+function fitcopilot_init_rest_api_early() {
+    // Prevent double initialization
+    if (defined('FITCOPILOT_TRAINER_API_INITIALIZED')) {
+        return;
+    }
+    
+    $api_file = get_template_directory() . '/inc/admin/training-calendar/class-trainer-availability-api.php';
+    if (file_exists($api_file)) {
+        require_once $api_file;
+        
+        if (class_exists('FitCopilot_Trainer_Availability_API')) {
+            $fitcopilot_trainer_availability_api = new FitCopilot_Trainer_Availability_API();
+            $fitcopilot_trainer_availability_api->init();
+            define('FITCOPILOT_TRAINER_API_INITIALIZED', true);
+            error_log('FitCopilot: REST API routes initialized early');
+        } else {
+            error_log('FitCopilot: API class not found after requiring file');
+        }
+    } else {
+        error_log('FitCopilot: API file not found at ' . $api_file);
+    }
+}
+add_action('rest_api_init', 'fitcopilot_init_rest_api_early', 5); // Early priority
+
 // Initialize Training Calendar Manager with enhanced error handling and frontend data provision
 function fitcopilot_init_training_calendar_phase2() {
     try {
@@ -205,7 +230,8 @@ function fitcopilot_init_training_calendar_phase2() {
         $is_admin_area = is_admin();
         $needs_frontend_data = !is_admin() && (is_front_page() || is_home());
         
-        // PHASE 2: Always initialize in admin area, and on specific frontend pages
+        // PHASE 2: Only initialize manager on admin area and specific frontend pages
+        // NOTE: API routes are initialized separately in rest_api_init hook above
         if (!$is_admin_area && !$needs_frontend_data) {
             return;
         }
@@ -242,7 +268,7 @@ function fitcopilot_init_training_calendar_phase2() {
             add_action('admin_notices', function() {
                 if (current_user_can('manage_options')) {
                     echo '<div class="notice notice-success is-dismissible">';
-                    echo '<p><strong>Training Calendar Phase 2:</strong> Backend foundation + AJAX handlers initialized successfully.</p>';
+                    echo '<p><strong>Training Calendar Phase 2:</strong> Backend foundation + AJAX handlers + REST API endpoints initialized successfully.</p>';
                     echo '</div>';
                 }
             });

@@ -590,15 +590,22 @@ jQuery(document).ready(function($) {
         },
         
         getTrainerInfo: function(event) {
-            // For now, use static trainer names. In future, this could be enhanced with trainer lookup
-            const trainerNames = {
-                1: 'Justin Fassio',
-                2: 'Sarah Johnson', 
-                3: 'Mike Chen'
-            };
+            // Use dynamic trainer data from WordPress
+            const trainers = window.fitcopilotTrainingCalendarData?.trainers || [];
             
-            const trainerName = trainerNames[event.trainer_id] || 'Unknown Trainer';
-            return `with ${trainerName}`;
+            if (!event.trainer_id) {
+                return '';
+            }
+            
+            // Find trainer by ID in dynamic data
+            const trainer = trainers.find(t => t.id == event.trainer_id);
+            if (trainer) {
+                return `with ${this.escapeHtml(trainer.name)}`;
+            }
+            
+            // Fallback for unknown trainer
+            console.warn('Training Calendar: Unknown trainer ID', event.trainer_id);
+            return 'with Unknown Trainer';
         },
         
         escapeHtml: function(text) {
@@ -701,8 +708,12 @@ jQuery(document).ready(function($) {
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="event-title">Event Title *</label>
-                                        <input type="text" id="event-title" name="title" required 
-                                               placeholder="e.g., Personal Training Session">
+                                        <select id="event-title" name="title" required>
+                                            <option value="" selected>- Choose Event -</option>
+                                            <option value="Free Consultation (20 Min)">Free Consultation (20 Min)</option>
+                                            <option value="Online Group Fitness Class (45 Min)">Online Group Fitness Class (45 Min)</option>
+                                            <option value="Personal Training Session">Personal Training Session</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="event-type">Event Type *</label>
@@ -719,8 +730,24 @@ jQuery(document).ready(function($) {
                                 
                                 <div class="form-group">
                                     <label for="event-description">Description</label>
-                                    <textarea id="event-description" name="description" rows="3" 
-                                              placeholder="Event details and instructions..."></textarea>
+                                    <textarea id="event-description" name="description" rows="3" readonly 
+                                              style="background-color: #f9fafb; border-color: #e5e7eb; color: #6b7280; cursor: default;"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="event-special-instructions">Additional Details</label>
+                                    <textarea id="event-special-instructions" name="special_instructions" rows="3" 
+                                              placeholder="Add any special instructions or additional details"></textarea>
+                                </div>
+                                
+                                <div class="form-group" id="duration-field-container" style="display: none;">
+                                    <label for="event-duration">Duration *</label>
+                                    <select id="event-duration" name="duration">
+                                        <option value="" selected>- Select Duration -</option>
+                                        <option value="30">30 Min</option>
+                                        <option value="45">45 Min</option>
+                                        <option value="60">60 Min</option>
+                                    </select>
                                 </div>
                                 
                                 <div class="form-row">
@@ -750,15 +777,16 @@ jQuery(document).ready(function($) {
                                         <label for="event-trainer">Trainer</label>
                                         <select id="event-trainer" name="trainer_id">
                                             <option value="">Select Trainer (Optional)</option>
-                                            <option value="1">Justin Fassio</option>
-                                            <option value="2">Sarah Johnson</option>
-                                            <option value="3">Mike Chen</option>
+                                            ${this.getTrainerOptions()}
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="event-location">Location</label>
-                                        <input type="text" id="event-location" name="location" 
-                                               placeholder="e.g., Gym Floor A, Studio B">
+                                        <label for="event-location">Location *</label>
+                                        <select id="event-location" name="location" required>
+                                            <option value="" selected>- Select Location -</option>
+                                            <option value="google_meet">Google Meet (Active)</option>
+                                            <option value="zoom" disabled>Zoom (Coming Soon)</option>
+                                        </select>
                                     </div>
                                 </div>
                                 
@@ -816,6 +844,10 @@ jQuery(document).ready(function($) {
             $('#event-start-time').val('10:00');
             $('#event-end-time').val('11:00');
             
+            // Initialize with empty state - no default selection
+            $('#event-description').val('');
+            $('#duration-field-container').hide(); // Hide duration field initially
+            
             // Bind modal events
             this.bindCreateEventModalEvents();
             
@@ -844,12 +876,7 @@ jQuery(document).ready(function($) {
                         <div class="modal-body">
                             <div class="events-filter">
                                 <div class="filter-row">
-                                    <select id="filter-trainer">
-                                        <option value="">All Trainers</option>
-                                        <option value="1">Justin Fassio</option>
-                                        <option value="2">Sarah Johnson</option>
-                                        <option value="3">Mike Chen</option>
-                                    </select>
+                                    <!-- REMOVED: Trainer filter no longer needed -->
                                     <select id="filter-status">
                                         <option value="">All Statuses</option>
                                         <option value="available">Available</option>
@@ -925,6 +952,14 @@ jQuery(document).ready(function($) {
                 }
             });
             
+            // Event title change handler - update description and toggle duration field
+            $('#event-title').on('change', function() {
+                const selectedTitle = $(this).val();
+                const description = TrainingCalendarAdmin.getDefaultDescription(selectedTitle);
+                $('#event-description').val(description);
+                TrainingCalendarAdmin.toggleDurationField(selectedTitle);
+            });
+            
             // Save event
             $('#save-create-event').on('click', function() {
                 TrainingCalendarAdmin.saveNewEvent();
@@ -969,6 +1004,28 @@ jQuery(document).ready(function($) {
             const $spinner = $saveBtn.find('.button-spinner');
             const $text = $saveBtn.find('.button-text');
             
+            // Custom validation for dropdown selections
+            const eventTitle = $('#event-title').val();
+            if (!eventTitle) {
+                alert('Please select an event type from the dropdown.');
+                $('#event-title').focus();
+                return;
+            }
+            
+            // Duration validation for Personal Training Session
+            if (eventTitle === 'Personal Training Session' && !$('#event-duration').val()) {
+                alert('Please select a duration for the Personal Training Session.');
+                $('#event-duration').focus();
+                return;
+            }
+
+            // Location validation
+            if (!$('#event-location').val()) {
+                alert('Please select a location for the session.');
+                $('#event-location').focus();
+                return;
+            }
+            
             // Validate form
             if (!$form[0].checkValidity()) {
                 $form[0].reportValidity();
@@ -984,6 +1041,7 @@ jQuery(document).ready(function($) {
             const formData = {
                 title: $('#event-title').val(),
                 description: $('#event-description').val(),
+                special_instructions: $('#event-special-instructions').val() || '',
                 start_datetime: $('#event-start-date').val() + ' ' + $('#event-start-time').val() + ':00',
                 end_datetime: $('#event-end-date').val() + ' ' + $('#event-end-time').val() + ':00',
                 trainer_id: $('#event-trainer').val() || null,
@@ -991,9 +1049,23 @@ jQuery(document).ready(function($) {
                 booking_status: $('#event-booking-status').val(),
                 location: $('#event-location').val(),
                 max_participants: parseInt($('#event-max-participants').val()) || 1,
+                duration: $('#event-duration').is(':visible') ? parseInt($('#event-duration').val()) || null : null,
                 background_color: $('#event-background-color').val(),
                 text_color: $('#event-text-color').val()
             };
+            
+            // Validate trainer ID if provided
+            if (formData.trainer_id) {
+                const validationResult = this.validateTrainerId(formData.trainer_id);
+                if (!validationResult.valid) {
+                    alert(validationResult.message);
+                    // Reset button state
+                    $saveBtn.prop('disabled', false);
+                    $spinner.hide();
+                    $text.show();
+                    return;
+                }
+            }
             
             // Make AJAX request
             $.ajax({
@@ -1191,10 +1263,15 @@ jQuery(document).ready(function($) {
                                 <input type="hidden" id="edit-event-id" value="${event.id}">
                                 
                                 <div class="form-row">
-                                    <div class="form-group">
-                                        <label for="edit-event-title">Event Title *</label>
-                                        <input type="text" id="edit-event-title" value="${event.title || ''}" required>
-                                    </div>
+                                                                    <div class="form-group">
+                                    <label for="edit-event-title">Event Title *</label>
+                                    <select id="edit-event-title" required>
+                                        <option value="" ${!event.title || (event.title !== 'Free Consultation (20 Min)' && event.title !== 'Online Group Fitness Class (45 Min)' && event.title !== 'Personal Training Session') ? 'selected' : ''}>- Choose Event -</option>
+                                        <option value="Free Consultation (20 Min)" ${event.title === 'Free Consultation (20 Min)' ? 'selected' : ''}>Free Consultation (20 Min)</option>
+                                        <option value="Online Group Fitness Class (45 Min)" ${event.title === 'Online Group Fitness Class (45 Min)' ? 'selected' : ''}>Online Group Fitness Class (45 Min)</option>
+                                        <option value="Personal Training Session" ${event.title === 'Personal Training Session' ? 'selected' : ''}>Personal Training Session</option>
+                                    </select>
+                                </div>
                                     <div class="form-group">
                                         <label for="edit-event-type">Event Type</label>
                                         <select id="edit-event-type">
@@ -1209,7 +1286,24 @@ jQuery(document).ready(function($) {
                                 
                                 <div class="form-group">
                                     <label for="edit-event-description">Description</label>
-                                    <textarea id="edit-event-description" rows="3">${event.description || ''}</textarea>
+                                    <textarea id="edit-event-description" rows="3" readonly 
+                                              style="background-color: #f9fafb; border-color: #e5e7eb; color: #6b7280; cursor: default;">${event.description || ''}</textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="edit-event-special-instructions">Additional Details</label>
+                                    <textarea id="edit-event-special-instructions" rows="3" 
+                                              placeholder="Add any special instructions or additional details">${event.special_instructions || ''}</textarea>
+                                </div>
+                                
+                                <div class="form-group" id="edit-duration-field-container" style="display: ${event.title === 'Personal Training Session' ? 'block' : 'none'};">
+                                    <label for="edit-event-duration">Duration *</label>
+                                    <select id="edit-event-duration" name="duration">
+                                        <option value="" ${!event.duration ? 'selected' : ''}>- Select Duration -</option>
+                                        <option value="30" ${event.duration == 30 ? 'selected' : ''}>30 Min</option>
+                                        <option value="45" ${event.duration == 45 ? 'selected' : ''}>45 Min</option>
+                                        <option value="60" ${event.duration == 60 ? 'selected' : ''}>60 Min</option>
+                                    </select>
                                 </div>
                                 
                                 <div class="form-row">
@@ -1243,8 +1337,12 @@ jQuery(document).ready(function($) {
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="edit-location">Location</label>
-                                        <input type="text" id="edit-location" value="${event.location || ''}" placeholder="e.g., Gym Floor A, Online, etc.">
+                                        <label for="edit-location">Location *</label>
+                                        <select id="edit-location" required>
+                                            <option value="" ${!event.location ? 'selected' : ''}>- Select Location -</option>
+                                            <option value="google_meet" ${event.location === 'google_meet' ? 'selected' : ''}>Google Meet (Active)</option>
+                                            <option value="zoom" ${event.location === 'zoom' ? 'selected' : ''} disabled>Zoom (Coming Soon)</option>
+                                        </select>
                                     </div>
                                 </div>
                                 
@@ -1325,6 +1423,14 @@ jQuery(document).ready(function($) {
                 e.preventDefault();
                 TrainingCalendarAdmin.saveEditedEvent();
             });
+            
+            // Event title change handler - update description and toggle duration field
+            $('#edit-event-title').on('change', function() {
+                const selectedTitle = $(this).val();
+                const description = TrainingCalendarAdmin.getDefaultDescription(selectedTitle);
+                $('#edit-event-description').val(description);
+                TrainingCalendarAdmin.toggleEditDurationField(selectedTitle);
+            });
         },
 
         /**
@@ -1336,14 +1442,16 @@ jQuery(document).ready(function($) {
             // Gather form data with error handling
             const eventData = {
                 id: $('#edit-event-id').val(),
-                title: $('#edit-event-title').val()?.trim() || '',
-                description: $('#edit-event-description').val()?.trim() || '',
+                title: $('#edit-event-title').val() || '',
+                description: $('#edit-event-description').val() || '',
+                special_instructions: $('#edit-event-special-instructions').val() || '',
                 event_type: $('#edit-event-type').val() || 'session',
                 start_datetime: $('#edit-start-date').val() + ' ' + $('#edit-start-time').val(),
                 end_datetime: $('#edit-end-date').val() + ' ' + $('#edit-end-time').val(),
                 trainer_id: $('#edit-trainer-id').val() || null,
                 location: $('#edit-location').val()?.trim() || '',
                 max_participants: parseInt($('#edit-max-participants').val()) || 1,
+                duration: $('#edit-event-duration').is(':visible') ? parseInt($('#edit-event-duration').val()) || null : null,
                 booking_status: $('#edit-booking-status').val() || 'available',
                 background_color: $('#edit-background-color').val() || '#3498db',
                 text_color: $('#edit-text-color').val() || '#ffffff'
@@ -1351,9 +1459,33 @@ jQuery(document).ready(function($) {
             
             // Basic validation
             if (!eventData.title) {
-                alert('Please enter an event title.');
+                alert('Please select an event type from the dropdown.');
                 $('#edit-event-title').focus();
                 return;
+            }
+            
+            // Duration validation for Personal Training Session
+            if (eventData.title === 'Personal Training Session' && !eventData.duration) {
+                alert('Please select a duration for the Personal Training Session.');
+                $('#edit-event-duration').focus();
+                return;
+            }
+
+            // Location validation
+            if (!eventData.location) {
+                alert('Please select a location for the session.');
+                $('#edit-location').focus();
+                return;
+            }
+            
+            // Validate trainer ID if provided
+            if (eventData.trainer_id) {
+                const validationResult = this.validateTrainerId(eventData.trainer_id);
+                if (!validationResult.valid) {
+                    alert(validationResult.message);
+                    $('#edit-trainer-id').focus();
+                    return;
+                }
             }
             
             if (!eventData.start_datetime.includes(':')) {
@@ -1454,15 +1586,133 @@ jQuery(document).ready(function($) {
         },
         
         /**
+         * Get default description based on event title
+         */
+        getDefaultDescription: function(title) {
+            switch (title) {
+                case 'Free Consultation (20 Min)':
+                    return 'A complimentary 20-minute consultation to discuss your fitness goals, assess your current fitness level, and create a personalized training plan. This session includes a brief movement assessment and goal-setting discussion to determine the best approach for your fitness journey.';
+                case 'Online Group Fitness Class (45 Min)':
+                    return 'Join our energizing 45-minute online group fitness class designed for all fitness levels. This virtual session includes a dynamic warm-up, full-body workout with modifications provided, and cool-down stretching. All you need is a small space and water bottle!';
+                case 'Personal Training Session':
+                    return 'One-on-one personalized training session tailored to your specific goals and fitness level. Includes customized workout programming, form correction, motivation, and progress tracking. Sessions can be conducted in-person or virtually based on your preference.';
+                default:
+                    return '';
+            }
+        },
+
+        /**
+         * Show/hide duration field based on event title (create modal)
+         */
+        toggleDurationField: function(title) {
+            const durationField = $('#duration-field-container');
+            if (title === 'Personal Training Session') {
+                durationField.show();
+                // Reset to default "Select Duration" message
+                $('#event-duration').val('');
+            } else {
+                durationField.hide();
+                $('#event-duration').val('');
+            }
+        },
+
+        /**
+         * Show/hide duration field based on event title (edit modal)
+         */
+        toggleEditDurationField: function(title) {
+            const durationField = $('#edit-duration-field-container');
+            if (title === 'Personal Training Session') {
+                durationField.show();
+                // Reset to default "Select Duration" message if no value
+                if (!$('#edit-event-duration').val()) {
+                    $('#edit-event-duration').val('');
+                }
+            } else {
+                durationField.hide();
+                $('#edit-event-duration').val('');
+            }
+        },
+
+        /**
          * Get trainer options HTML with selected value
+         * Includes trainer specialty and proper HTML escaping for XSS protection
          */
         getTrainerOptions: function(selectedTrainerId) {
             const trainers = window.fitcopilotTrainingCalendarData?.trainers || [];
             
+            if (trainers.length === 0) {
+                console.warn('Training Calendar: No trainers available in WordPress data');
+                return '<option value="" disabled>No trainers available</option>';
+            }
+            
             return trainers.map(trainer => {
+                // Validate trainer data
+                if (!trainer.id || !trainer.name) {
+                    console.warn('Training Calendar: Invalid trainer data', trainer);
+                    return '';
+                }
+                
                 const selected = trainer.id == selectedTrainerId ? 'selected' : '';
-                return `<option value="${trainer.id}" ${selected}>${trainer.name}</option>`;
-            }).join('');
+                const trainerName = this.escapeHtml(trainer.name);
+                const trainerSpecialty = trainer.specialty ? this.escapeHtml(trainer.specialty) : '';
+                const displayText = trainerSpecialty ? `${trainerName} - ${trainerSpecialty}` : trainerName;
+                
+                return `<option value="${this.escapeHtml(trainer.id)}" ${selected}>${displayText}</option>`;
+            }).filter(option => option !== '').join('');
+        },
+        
+        /**
+         * Validate trainer ID exists in available trainers
+         * @param {string|number} trainerId - Trainer ID to validate
+         * @returns {object} Validation result with valid flag and message
+         */
+        validateTrainerId: function(trainerId) {
+            if (!trainerId) {
+                return { valid: true, message: '' }; // Optional trainer is valid
+            }
+            
+            const trainers = window.fitcopilotTrainingCalendarData?.trainers || [];
+            
+            if (trainers.length === 0) {
+                return { 
+                    valid: false, 
+                    message: 'No trainers are currently available. Please contact the administrator.' 
+                };
+            }
+            
+            const trainer = trainers.find(t => t.id == trainerId);
+            if (!trainer) {
+                return { 
+                    valid: false, 
+                    message: `Invalid trainer selected (ID: ${trainerId}). Please select a valid trainer from the dropdown.` 
+                };
+            }
+            
+            // Check if trainer is active (if this property exists)
+            if (trainer.hasOwnProperty('active') && !trainer.active) {
+                return { 
+                    valid: false, 
+                    message: `The selected trainer (${trainer.name}) is currently inactive. Please select an active trainer.` 
+                };
+            }
+            
+            return { valid: true, message: '', trainer: trainer };
+        },
+        
+        /**
+         * Get default trainer ID for new events
+         * @returns {string|null} Default trainer ID or null
+         */
+        getDefaultTrainerId: function() {
+            const trainers = window.fitcopilotTrainingCalendarData?.trainers || [];
+            
+            if (trainers.length === 0) {
+                return null;
+            }
+            
+            // Find first active trainer, or first trainer if none marked as active
+            const activeTrainer = trainers.find(t => t.active !== false);
+            return activeTrainer ? activeTrainer.id : trainers[0].id;
         },
         
         /**

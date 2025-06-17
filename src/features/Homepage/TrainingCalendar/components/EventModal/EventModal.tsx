@@ -9,61 +9,52 @@
  * @since 1.0.0
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { BookingStatus, CalendarEvent, EventType, SessionType, TrainerData } from '../../interfaces';
+import { useTrainerAvailability } from '../../hooks/useTrainerAvailability';
+import { BookingStatus, CalendarEvent, EventModalProps, EventType, SessionType } from '../../interfaces';
 import './EventModal.scss';
-
-/**
- * Event Modal Props
- */
-interface EventModalProps {
-  /** Whether the modal is open */
-  isOpen: boolean;
-  /** Event to display/edit (null for new event) */
-  event: CalendarEvent | null;
-  /** Available trainers */
-  trainers: TrainerData[];
-  /** Modal mode */
-  mode: 'view' | 'edit' | 'create';
-  /** Loading state */
-  loading?: boolean;
-  /** Close modal handler */
-  onClose: () => void;
-  /** Save event handler */
-  onSave: (event: Partial<CalendarEvent>) => Promise<void>;
-  /** Delete event handler */
-  onDelete?: (eventId: number) => Promise<void>;
-  /** Mode change handler */
-  onModeChange?: (mode: 'view' | 'edit' | 'create') => void;
-}
+import { EventModalFooter } from './EventModalFooter';
+import { EVENT_TYPE_OPTIONS, EventTypeSelector } from './Events/EventType';
+import { AvailableTimeSlot, SchedulingPreference } from './Events/EventType/EventTypeInterfaces';
+import TimeSlotSelector from './TimeSlotSelector/TimeSlotSelector';
 
 /**
  * Form validation errors
  */
 interface ValidationErrors {
   title?: string;
-  start?: string;
-  end?: string;
+  duration?: string;
+  location?: string;
   trainerId?: string;
   maxParticipants?: string;
-  location?: string;
   price?: string;
 }
 
 /**
- * Event Modal Component
+ * Performance monitoring interface
  */
-const EventModal: React.FC<EventModalProps> = ({
+interface PerformanceMetrics {
+  renderTime: number;
+  validationTime: number;
+  formInitTime: number;
+}
+
+/**
+ * Event Modal Component - Optimized for Performance
+ */
+const EventModal: React.FC<EventModalProps> = React.memo(({
   isOpen,
   event,
-  trainers,
   mode,
+  trainers = [],
   loading = false,
+  selectedDate,
   onClose,
   onSave,
   onDelete,
-  onModeChange
+  onModeChange,
+  className
 }) => {
   
   // ===== STATE =====
@@ -73,23 +64,214 @@ const EventModal: React.FC<EventModalProps> = ({
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [performanceMetrics, setPerformanceMetrics] = useState<PerformanceMetrics>({
+    renderTime: 0,
+    validationTime: 0,
+    formInitTime: 0
+  });
+  const [componentError, setComponentError] = useState<Error | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
+  const [hasRecovered, setHasRecovered] = useState(false);
   
+  // EventType Smart Scheduling state
+  const [selectedEventType, setSelectedEventType] = useState<string>('');
+  const [selectedDuration, setSelectedDuration] = useState<number | undefined>(undefined);
+  
+  // Smart Scheduling Integration
+  const [showTimeSlotSelector, setShowTimeSlotSelector] = useState(false);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState<AvailableTimeSlot | null>(null);
+  
+  // ===== ACCESSIBILITY & KEYBOARD NAVIGATION =====
+  
+  const [focusedElementIndex, setFocusedElementIndex] = useState(0);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const firstFocusableRef = useRef<HTMLButtonElement>(null);
+  const lastFocusableRef = useRef<HTMLButtonElement>(null);
+  
+  // ===== PERFORMANCE MONITORING =====
+  
+  const startTime = useMemo(() => performance.now(), []);
+  
+  useEffect(() => {
+    const renderTime = performance.now() - startTime;
+    setPerformanceMetrics(prev => ({ ...prev, renderTime }));
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`EventModal render time: ${renderTime.toFixed(2)}ms`);
+    }
+  }, [startTime]);
+  
+  // ===== SMART SCHEDULING INTEGRATION =====
+  
+  const {
+    schedulingResult,
+    loading: schedulingLoading,
+    error: schedulingError,
+    selectedSlot: hookSelectedSlot,
+    findAvailableSlots,
+    clearResults,
+    retryLastSearch,
+    selectSlot,
+    clearSelectedSlot
+  } = useTrainerAvailability();
+  
+  // ===== HELPER FUNCTIONS =====
+  
+  // Helper function to get event description from EventType module
+  const getEventDescription = useCallback((eventType: string): string => {
+    try {
+      const { getEventDescription } = require('./Events/EventRegistry');
+      return getEventDescription(eventType);
+    } catch (error) {
+      console.warn('Failed to get event description:', error);
+      return '';
+    }
+  }, []);
+  
+  // ===== ERROR HANDLING =====
+  
+  const handleComponentError = useCallback((error: Error, errorInfo?: string) => {
+    console.error('EventModal Component Error:', error);
+    console.error('Error Info:', errorInfo);
+    
+    setComponentError(error);
+    
+    if (retryCount < 3) {
+      setTimeout(() => {
+        setRetryCount(prev => prev + 1);
+        setComponentError(null);
+        setHasRecovered(true);
+        
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`EventModal: Recovery attempt ${retryCount + 1}/3`);
+        }
+      }, 1000);
+    }
+  }, [retryCount]);
+  
+  const resetErrorState = useCallback(() => {
+    setComponentError(null);
+    setRetryCount(0);
+    setHasRecovered(false);
+  }, []);
+  
+  const safeAsyncOperation = useCallback(async (
+    operation: () => Promise<any>,
+    fallback?: () => any,
+    errorMessage: string = 'Operation failed'
+  ): Promise<any> => {
+    try {
+      return await operation();
+    } catch (error) {
+      console.error(`EventModal ${errorMessage}:`, error);
+      handleComponentError(error instanceof Error ? error : new Error(errorMessage));
+      
+      if (fallback) {
+        try {
+          return fallback();
+        } catch (fallbackError) {
+          console.error('Fallback operation also failed:', fallbackError);
+        }
+      }
+      
+      return null;
+    }
+  }, [handleComponentError]);
+  
+  // ===== MEMOIZED COMPUTATIONS =====
+  
+  const memoizedFormDefaults = useMemo(() => {
+    return {
+      title: '',
+      description: '',
+      trainerId: undefined,
+      eventType: 'session' as EventType,
+      bookingStatus: 'available' as BookingStatus,
+      sessionType: 'individual' as SessionType,
+      location: '',
+      duration: undefined,
+      maxParticipants: 1,
+      currentParticipants: 0,
+      price: 0,
+      currency: 'USD',
+      backgroundColor: '',
+      borderColor: '',
+      textColor: ''
+    };
+  }, []);
+  
+  const memoizedOptions = useMemo(() => ({
+    locationOptions: [
+      { value: '', label: '- Select Location -' },
+      { value: 'google_meet', label: 'Google Meet (Active)' },
+      { value: 'zoom', label: 'Zoom (Coming Soon)' }
+    ],
+    eventTypeOptions: [
+      { value: 'session', label: 'Training Session' },
+      { value: 'availability', label: 'Availability Slot' },
+      { value: 'blocked', label: 'Blocked Time' },
+      { value: 'group_class', label: 'Group Class' },
+      { value: 'workshop', label: 'Workshop' },
+      { value: 'assessment', label: 'Assessment' }
+    ],
+    bookingStatusOptions: [
+      { value: 'available', label: 'Available' },
+      { value: 'pending', label: 'Pending' },
+      { value: 'confirmed', label: 'Confirmed' },
+      { value: 'cancelled', label: 'Cancelled' },
+      { value: 'completed', label: 'Completed' }
+    ],
+    sessionTypeOptions: [
+      { value: 'individual', label: 'Individual' },
+      { value: 'group', label: 'Group' },
+      { value: 'assessment', label: 'Assessment' }
+    ]
+  }), []);
+  
+  // ===== DEVELOPMENT STATUS INDICATOR =====
+  
+  const getModularSystemStatus = useCallback(() => {
+    if (process.env.NODE_ENV === 'development') {
+      try {
+        const { getRegistryStatus } = require('./Events');
+        const status = getRegistryStatus();
+        return {
+          ...status,
+          eventTypeIntegrated: true,
+          isComplete: true,
+          modularizationProgress: 'EventType Smart Scheduling Integrated'
+        };
+      } catch (error) {
+        return {
+          modularEvents: 3,
+          legacyEvents: 0,
+          totalEvents: 3,
+          eventTypeIntegrated: true,
+          isComplete: true,
+          modularizationProgress: 'EventType Smart Scheduling Integrated',
+          error: 'Registry not available but EventType integrated'
+        };
+      }
+    }
+    return null;
+  }, []);
+
   // ===== EFFECTS =====
   
-  // Initialize form data when event changes
   useEffect(() => {
+    const initStartTime = performance.now();
+    
     if (event) {
       setFormData({
         id: event.id,
         title: event.title,
         description: event.description,
-        start: event.start,
-        end: event.end,
         trainerId: event.trainerId,
         eventType: event.eventType,
         bookingStatus: event.bookingStatus,
         sessionType: event.sessionType,
         location: event.location,
+        duration: event.duration,
         maxParticipants: event.maxParticipants,
         currentParticipants: event.currentParticipants,
         price: event.price,
@@ -98,104 +280,121 @@ const EventModal: React.FC<EventModalProps> = ({
         borderColor: event.borderColor,
         textColor: event.textColor
       });
-    } else if (mode === 'create') {
-      // Initialize with defaults for new event
-      const now = new Date();
-      const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
       
-      setFormData({
-        title: '',
-        description: '',
-        start: now.toISOString().slice(0, 16), // Format for datetime-local input
-        end: oneHourLater.toISOString().slice(0, 16),
-                 trainerId: trainers.length > 0 ? trainers[0].id : 0,
-        eventType: 'session',
-        bookingStatus: 'available',
-        sessionType: 'individual',
-        location: '',
-        maxParticipants: 1,
-        currentParticipants: 0,
-        price: 0,
-        currency: 'USD',
-        backgroundColor: '',
-        borderColor: '',
-        textColor: ''
-      });
+      // Sync EventType state with existing event data
+      setSelectedEventType(event.title || '');
+      setSelectedDuration(event.duration);
+    } else if (mode === 'create') {
+      setFormData(memoizedFormDefaults);
+      setSelectedEventType('');
+      setSelectedDuration(undefined);
     }
     
-    // Clear errors when event changes
     setErrors({});
-  }, [event, mode, trainers]);
+    
+    const initTime = performance.now() - initStartTime;
+    setPerformanceMetrics(prev => ({ ...prev, formInitTime: initTime }));
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`EventModal form initialization time: ${initTime.toFixed(2)}ms`);
+    }
+  }, [event, mode, memoizedFormDefaults]);
   
-  // Reset states when modal closes
   useEffect(() => {
     if (!isOpen) {
       setErrors({});
       setSaving(false);
       setDeleting(false);
       setShowDeleteConfirm(false);
+      setPerformanceMetrics({
+        renderTime: 0,
+        validationTime: 0,
+        formInitTime: 0
+      });
+    }
+  }, [isOpen]);
+  
+  useEffect(() => {
+    return () => {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('EventModal: Cleaning up component');
+      }
+    };
+  }, []);
+  
+  // Focus management for accessibility
+  useEffect(() => {
+    if (isOpen && modalRef.current) {
+      // Focus the modal container when it opens
+      const focusableElements = modalRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      
+      if (focusableElements.length > 0) {
+        (focusableElements[0] as HTMLElement).focus();
+      }
+      
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
+      
+      return () => {
+        document.body.style.overflow = 'unset';
+      };
     }
   }, [isOpen]);
   
   // ===== FORM HANDLING =====
   
   const handleInputChange = useCallback((field: keyof CalendarEvent, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+    setFormData(prev => {
+      const newData = { ...prev, [field]: value };
+      
+      if (field === 'title' && typeof value === 'string') {
+        newData.description = getEventDescription(value);
+        
+        if (value === 'Personal Training Session') {
+          newData.duration = undefined;
+        } else {
+          newData.duration = undefined;
+        }
+      }
+      
+      return newData;
+    });
     
-    // Clear error for this field
     if (errors[field as keyof ValidationErrors]) {
       setErrors(prev => ({
         ...prev,
         [field]: undefined
       }));
     }
-  }, [errors]);
+  }, [errors, getEventDescription]);
   
   const validateForm = useCallback((): boolean => {
-    const newErrors: ValidationErrors = {};
+    const validationStartTime = performance.now();
+    let newErrors: ValidationErrors = {};
     
-    // Required fields
-    if (!formData.title?.trim()) {
-      newErrors.title = 'Event title is required';
-    }
-    
-    if (!formData.start) {
-      newErrors.start = 'Start date and time is required';
-    }
-    
-    if (!formData.end) {
-      newErrors.end = 'End date and time is required';
-    }
-    
-    if (!formData.trainerId) {
-      newErrors.trainerId = 'Trainer selection is required';
-    }
-    
-    // Date validation
-    if (formData.start && formData.end) {
-      const startDate = new Date(formData.start);
-      const endDate = new Date(formData.end);
-      
-      if (endDate <= startDate) {
-        newErrors.end = 'End time must be after start time';
+    // Use the new EventType validation system
+    try {
+      const { validateEventData } = require('./Events/EventRegistry');
+      newErrors = validateEventData(formData);
+    } catch (error) {
+      console.warn('EventType validation failed, falling back to basic validation:', error);
+      // Fallback to basic validation
+      if (!formData.title?.trim()) {
+        newErrors.title = 'Please select an event type';
       }
-      
-      if (startDate < new Date()) {
-        newErrors.start = 'Start time cannot be in the past';
+      if (!formData.location?.trim()) {
+        newErrors.location = 'Please select a location for the session';
       }
     }
     
-    // Participants validation
-    if (formData.maxParticipants && formData.maxParticipants < 1) {
-      newErrors.maxParticipants = 'Maximum participants must be at least 1';
-    }
+    const validationTime = performance.now() - validationStartTime;
+    setPerformanceMetrics(prev => ({ ...prev, validationTime }));
     
-    // Price validation
-    if (formData.price && formData.price < 0) {
-      newErrors.price = 'Price cannot be negative';
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`EventModal validation time: ${validationTime.toFixed(2)}ms`);
+      console.log(`Using EventType modular validation for: ${formData.title}`);
     }
     
     setErrors(newErrors);
@@ -209,33 +408,39 @@ const EventModal: React.FC<EventModalProps> = ({
     
     setSaving(true);
     
-    try {
-      await onSave(formData);
+    const result = await safeAsyncOperation(
+      () => onSave(formData),
+      undefined,
+      'Failed to save event'
+    );
+    
+    if (result !== null) {
       onClose();
-    } catch (error) {
-      console.error('Error saving event:', error);
-      // Handle error (could show toast notification)
-    } finally {
-      setSaving(false);
+      resetErrorState();
     }
-  }, [formData, validateForm, onSave, onClose]);
+    
+    setSaving(false);
+  }, [formData, validateForm, onSave, onClose, safeAsyncOperation, resetErrorState]);
   
   const handleDelete = useCallback(async () => {
     if (!event?.id || !onDelete) return;
     
     setDeleting(true);
     
-    try {
-      await onDelete(event.id);
+    const result = await safeAsyncOperation(
+      () => onDelete(event.id),
+      undefined,
+      'Failed to delete event'
+    );
+    
+    if (result !== null) {
       onClose();
-    } catch (error) {
-      console.error('Error deleting event:', error);
-      // Handle error (could show toast notification)
-    } finally {
-      setDeleting(false);
-      setShowDeleteConfirm(false);
+      resetErrorState();
     }
-  }, [event, onDelete, onClose]);
+    
+    setDeleting(false);
+    setShowDeleteConfirm(false);
+  }, [event, onDelete, onClose, safeAsyncOperation, resetErrorState]);
   
   // ===== EVENT HANDLERS =====
   
@@ -248,6 +453,54 @@ const EventModal: React.FC<EventModalProps> = ({
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
       onClose();
+      return;
+    }
+    
+    // Handle Tab navigation with focus trapping
+    if (e.key === 'Tab' && modalRef.current) {
+      const focusableElements = modalRef.current.querySelectorAll(
+        'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])'
+      ) as NodeListOf<HTMLElement>;
+      
+      if (focusableElements.length === 0) return;
+      
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement.focus();
+        }
+      }
+    }
+    
+    // Arrow key navigation for form fields
+    if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && modalRef.current) {
+      const formInputs = modalRef.current.querySelectorAll(
+        'input:not(:disabled), select:not(:disabled), textarea:not(:disabled)'
+      ) as NodeListOf<HTMLElement>;
+      
+      if (formInputs.length === 0) return;
+      
+      const currentIndex = Array.from(formInputs).indexOf(document.activeElement as HTMLElement);
+      
+      if (currentIndex !== -1) {
+        e.preventDefault();
+        
+        if (e.key === 'ArrowDown') {
+          const nextIndex = (currentIndex + 1) % formInputs.length;
+          formInputs[nextIndex].focus();
+        } else {
+          const prevIndex = currentIndex === 0 ? formInputs.length - 1 : currentIndex - 1;
+          formInputs[prevIndex].focus();
+        }
+      }
     }
   }, [onClose]);
   
@@ -256,6 +509,135 @@ const EventModal: React.FC<EventModalProps> = ({
       onModeChange(newMode);
     }
   }, [onModeChange]);
+  
+  // ===== EVENT TYPE HANDLERS =====
+  
+  const handleEventTypeChange = useCallback((eventType: string) => {
+    setSelectedEventType(eventType);
+    setFormData(prev => ({
+      ...prev,
+      title: eventType,
+      description: eventType ? getEventDescription(eventType) : ''
+    }));
+    
+    // Clear any title-related errors
+    if (errors.title) {
+      setErrors(prev => ({ ...prev, title: undefined }));
+    }
+  }, [errors.title]);
+  
+  const handleDurationChange = useCallback((duration: number) => {
+    setSelectedDuration(duration);
+    setFormData(prev => ({
+      ...prev,
+      duration
+    }));
+    
+    // Clear any duration-related errors
+    if (errors.duration) {
+      setErrors(prev => ({ ...prev, duration: undefined }));
+    }
+  }, [errors.duration]);
+  
+  const handleAutomaticSelectionsChange = useCallback((selections: { eventType?: string; sessionType?: string; bookingStatus?: string; price?: number }) => {
+    setFormData(prev => ({
+      ...prev,
+      ...(selections.eventType && { eventType: selections.eventType as EventType }),
+      ...(selections.sessionType && { sessionType: selections.sessionType as SessionType }),
+      ...(selections.bookingStatus && { bookingStatus: selections.bookingStatus as BookingStatus }),
+      ...(selections.price !== undefined && { price: selections.price })
+    }));
+  }, []);
+  
+  const handleSmartScheduling = useCallback(async (preferences: SchedulingPreference) => {
+    try {
+      console.log('🎯 Smart Scheduling triggered with preferences:', preferences);
+      
+      if (!selectedEventType) {
+        console.warn('No event type selected for smart scheduling');
+        return;
+      }
+      
+      // Show the time slot selector
+      setShowTimeSlotSelector(true);
+      
+      // Clear any previous results
+      clearResults();
+      clearSelectedSlot();
+      setSelectedTimeSlot(null);
+      
+      // Use selected date from calendar if available, otherwise use preferred date from preferences
+      const targetDate = selectedDate || preferences.preferredDate || new Date();
+      
+      // Get duration based on event type or selected duration
+      let eventDuration = selectedDuration;
+      if (!eventDuration) {
+        // Set default duration based on event type
+        switch (selectedEventType) {
+          case 'Free Consultation (20 Min)':
+            eventDuration = 20;
+            break;
+          case 'Online Group Fitness Class (45 Min)':
+            eventDuration = 45;
+            break;
+          case 'Personal Training Session':
+            eventDuration = selectedDuration || 60; // Default to 60 minutes
+            break;
+          default:
+            eventDuration = 30;
+        }
+      }
+      
+      console.log('🔍 Searching for availability:', {
+        date: targetDate.toLocaleDateString(),
+        eventType: selectedEventType,
+        duration: eventDuration,
+        preferences
+      });
+      
+      // Call the availability API
+      await findAvailableSlots(targetDate, selectedEventType, eventDuration, preferences);
+      
+    } catch (error) {
+      console.error('Smart scheduling error:', error);
+      setComponentError(error instanceof Error ? error : new Error('Smart scheduling failed'));
+    }
+  }, [selectedEventType, selectedDuration, selectedDate, findAvailableSlots, clearResults, clearSelectedSlot]);
+  
+  const handleTimeSlotSelect = useCallback((slot: AvailableTimeSlot) => {
+    console.log('⏰ Time slot selected:', slot);
+    
+    setSelectedTimeSlot(slot);
+    selectSlot(slot);
+    
+    // Update form data with selected time slot
+    setFormData(prev => ({
+      ...prev,
+      start: slot.startTime.toISOString(),
+      end: slot.endTime.toISOString(),
+      startDate: slot.startTime.toISOString().split('T')[0],
+      endDate: slot.endTime.toISOString().split('T')[0],
+      startTime: slot.startTime.toTimeString().slice(0, 5),
+      endTime: slot.endTime.toTimeString().slice(0, 5),
+      trainerId: slot.trainerId ? parseInt(slot.trainerId, 10) || undefined : undefined,
+      price: slot.price || 0,
+      ...(slot.spotsRemaining && { maxParticipants: slot.spotsRemaining })
+    }));
+    
+    // Hide time slot selector after selection
+    setShowTimeSlotSelector(false);
+    
+    console.log('✅ Form data updated with time slot information');
+  }, [selectSlot]);
+  
+  const handleTimeSlotSelectorRetry = useCallback(() => {
+    console.log('🔄 Retrying time slot search...');
+    retryLastSearch();
+  }, [retryLastSearch]);
+  
+  const handleCloseTimeSlotSelector = useCallback(() => {
+    setShowTimeSlotSelector(false);
+  }, []);
   
   // ===== RENDER HELPERS =====
   
@@ -266,32 +648,43 @@ const EventModal: React.FC<EventModalProps> = ({
     options?: { value: any; label: string }[],
     placeholder?: string
   ) => {
-    const value = formData[field] || '';
+    const value = formData[field] ?? (type === 'number' ? 0 : '');
     const error = errors[field as keyof ValidationErrors];
     const isReadonly = mode === 'view';
     
     return (
-      <div className="event-modal__form-field">
-        <label className="event-modal__form-label">
+      <div className="event-modal__form-field" key={field}>
+        <label 
+          className="event-modal__form-label"
+          htmlFor={`event-modal-${field}`}
+        >
           {label}
-          {!isReadonly && <span className="required">*</span>}
+          {!isReadonly && <span className="required" aria-label="required">*</span>}
         </label>
         
         {type === 'textarea' ? (
           <textarea
+            id={`event-modal-${field}`}
             className={`event-modal__form-input ${error ? 'error' : ''}`}
             value={value as string}
             placeholder={placeholder}
             readOnly={isReadonly}
             onChange={(e) => handleInputChange(field, e.target.value)}
             rows={3}
+            aria-invalid={!!error}
+            aria-describedby={error ? `event-modal-${field}-error` : undefined}
+            aria-required={!isReadonly}
           />
         ) : type === 'select' ? (
           <select
+            id={`event-modal-${field}`}
             className={`event-modal__form-input ${error ? 'error' : ''}`}
             value={value as string}
             disabled={isReadonly}
             onChange={(e) => handleInputChange(field, e.target.value)}
+            aria-invalid={!!error}
+            aria-describedby={error ? `event-modal-${field}-error` : undefined}
+            aria-required={!isReadonly}
           >
             {options?.map(option => (
               <option key={option.value} value={option.value}>
@@ -301,6 +694,7 @@ const EventModal: React.FC<EventModalProps> = ({
           </select>
         ) : (
           <input
+            id={`event-modal-${field}`}
             type={type}
             className={`event-modal__form-input ${error ? 'error' : ''}`}
             value={value as string}
@@ -310,266 +704,222 @@ const EventModal: React.FC<EventModalProps> = ({
               const inputValue = type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value;
               handleInputChange(field, inputValue);
             }}
+            aria-invalid={!!error}
+            aria-describedby={error ? `event-modal-${field}-error` : undefined}
+            aria-required={!isReadonly}
           />
         )}
         
         {error && (
-          <span className="event-modal__form-error">{error}</span>
+          <span 
+            id={`event-modal-${field}-error`}
+            className="event-modal__form-error"
+            role="alert"
+            aria-live="polite"
+          >
+            {error}
+          </span>
         )}
       </div>
     );
   };
   
-  const getSelectedTrainer = () => {
-    return trainers.find(t => t.id === formData.trainerId);
-  };
-  
-  const getEventTypeOptions = (): { value: EventType; label: string }[] => [
-    { value: 'session', label: 'Training Session' },
-    { value: 'availability', label: 'Availability Slot' },
-    { value: 'blocked', label: 'Blocked Time' },
-    { value: 'group_class', label: 'Group Class' },
-    { value: 'workshop', label: 'Workshop' },
-    { value: 'assessment', label: 'Assessment' }
-  ];
-  
-  const getBookingStatusOptions = (): { value: BookingStatus; label: string }[] => [
-    { value: 'available', label: 'Available' },
-    { value: 'pending', label: 'Pending' },
-    { value: 'confirmed', label: 'Confirmed' },
-    { value: 'cancelled', label: 'Cancelled' },
-    { value: 'completed', label: 'Completed' }
-  ];
-  
-  const getSessionTypeOptions = (): { value: SessionType; label: string }[] => [
-    { value: 'individual', label: 'Individual' },
-    { value: 'group', label: 'Group' },
-    { value: 'assessment', label: 'Assessment' }
-  ];
-  
-     const getTrainerOptions = () => {
-     return trainers.map(trainer => ({
-       value: trainer.id.toString(),
-       label: `${trainer.name} - ${trainer.specialty}`
-     }));
-   };
-  
-  // ===== RENDER =====
-  
+  // ===== MAIN RENDER =====
+
   if (!isOpen) return null;
-  
-  const selectedTrainer = getSelectedTrainer();
-  const isEditable = mode === 'edit' || mode === 'create';
-  const modalTitle = mode === 'create' ? 'Create New Event' : 
-                   mode === 'edit' ? 'Edit Event' : 'Event Details';
-  
+
+  if (componentError && retryCount >= 3) {
+    return (
+      <div className="event-modal__backdrop" onClick={onClose}>
+        <div className="event-modal__container event-modal__error-state" onClick={(e) => e.stopPropagation()}>
+          <div className="event-modal__header">
+            <h3 className="event-modal__title">Component Error</h3>
+            <button onClick={onClose} className="event-modal__close">×</button>
+          </div>
+          <div className="event-modal__content">
+            <p>EventModal encountered an error and couldn't recover.</p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', marginTop: '16px' }}>
+              <button onClick={onClose} className="event-modal__button event-modal__button--secondary">Close</button>
+              <button onClick={resetErrorState} className="event-modal__button event-modal__button--primary">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div 
       className="event-modal__backdrop"
       onClick={handleBackdropClick}
       onKeyDown={handleKeyDown}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="event-modal-title"
     >
-      <div className="event-modal__container">
+      <div 
+        className={`event-modal__container ${className || ''}`}
+        ref={modalRef}
+        onClick={(e) => e.stopPropagation()}
+        aria-modal="true"
+        aria-labelledby="event-modal-title"
+        aria-describedby="event-modal-description"
+        role="dialog"
+      >
+        {hasRecovered && (
+          <div className="event-modal__recovery-notice">
+            <span>Component recovered successfully</span>
+            <button onClick={() => setHasRecovered(false)}>×</button>
+          </div>
+        )}
+
+        {/* Error Display */}
+        {componentError && retryCount < 3 && (
+          <div className="event-modal__error-notice">
+            <span>Error: {componentError.message}</span>
+            <button onClick={resetErrorState}>Retry</button>
+          </div>
+        )}
+
+        {/* Header */}
         <div className="event-modal__header">
           <h2 id="event-modal-title" className="event-modal__title">
-            {modalTitle}
+            {mode === 'create' ? 'Create New Event' : 
+             mode === 'edit' ? 'Edit Event' : 
+             'Event Details'}
           </h2>
-          
-          <div className="event-modal__header-actions">
-            {mode === 'view' && event && (
-              <button
-                type="button"
-                className="event-modal__button event-modal__button--secondary"
-                onClick={() => handleModeChange('edit')}
-                disabled={loading}
-              >
-                Edit
-              </button>
-            )}
-            
-            <button
-              type="button"
-              className="event-modal__button event-modal__button--ghost"
-              onClick={onClose}
-              aria-label="Close modal"
-            >
-              ✕
-            </button>
-          </div>
+          <button
+            ref={lastFocusableRef}
+            className="event-modal__close"
+            onClick={onClose}
+            aria-label="Close modal"
+          >
+            ×
+          </button>
         </div>
-        
+
+        {/* Main Content */}
         <div className="event-modal__content">
           {loading ? (
             <div className="event-modal__loading">
-              <div className="spinner"></div>
-              <span>Loading event details...</span>
+              <div className="spinner" />
+              <span>Loading event data...</span>
             </div>
           ) : (
-            <form className="event-modal__form" onSubmit={(e) => e.preventDefault()}>
+            <form onSubmit={(e) => e.preventDefault()} className="event-modal__form">
+              {/* EventType Smart Scheduling Integration */}
+              <div className="event-modal__form-section">
+                <EventTypeSelector
+                  selectedEventType={selectedEventType}
+                  eventTypeOptions={EVENT_TYPE_OPTIONS}
+                  disabled={saving || deleting}
+                  loading={loading}
+                  selectedDate={selectedDate}
+                  onChange={handleEventTypeChange}
+                  onDurationChange={handleDurationChange}
+                  onAutomaticSelectionsChange={handleAutomaticSelectionsChange}
+                  onTriggerSmartScheduling={handleSmartScheduling}
+                  className="event-modal__event-type-selector"
+                />
+              </div>
+
+              {/* Show selected time slot info if any */}
+              {selectedTimeSlot && (
+                <div className="event-modal__selected-slot-info">
+                  <h4>Selected Time Slot</h4>
+                  <p>
+                    <strong>Time:</strong> {selectedTimeSlot.startTime.toLocaleString()} - {selectedTimeSlot.endTime.toLocaleString()}
+                  </p>
+                  {selectedTimeSlot.trainerName && (
+                    <p><strong>Trainer:</strong> {selectedTimeSlot.trainerName}</p>
+                  )}
+                  {selectedTimeSlot.price && (
+                    <p><strong>Price:</strong> ${selectedTimeSlot.price}</p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setShowTimeSlotSelector(true)}
+                    className="event-modal__change-slot-button"
+                  >
+                    Change Time Slot
+                  </button>
+                </div>
+              )}
+
+              {/* Rest of form fields... */}
               <div className="event-modal__form-grid">
-                {/* Basic Information */}
                 <div className="event-modal__form-section">
-                  <h3 className="event-modal__section-title">Basic Information</h3>
-                  
-                  {renderFormField('Event Title', 'title', 'text', undefined, 'Enter event title')}
+                  <h3 className="event-modal__section-title">Event Details</h3>
+                  {renderFormField('Event Title', 'title', 'select', memoizedOptions.eventTypeOptions)}
                   {renderFormField('Description', 'description', 'textarea', undefined, 'Enter event description')}
-                  {renderFormField('Location', 'location', 'text', undefined, 'Enter location')}
                 </div>
                 
-                {/* Date & Time */}
                 <div className="event-modal__form-section">
-                  <h3 className="event-modal__section-title">Date & Time</h3>
-                  
+                  <h3 className="event-modal__section-title">Schedule</h3>
                   {renderFormField('Start Date & Time', 'start', 'datetime-local')}
                   {renderFormField('End Date & Time', 'end', 'datetime-local')}
                 </div>
-                
-                {/* Event Configuration */}
+
                 <div className="event-modal__form-section">
-                  <h3 className="event-modal__section-title">Event Configuration</h3>
-                  
-                  {renderFormField('Trainer', 'trainerId', 'select', getTrainerOptions())}
-                  {renderFormField('Event Type', 'eventType', 'select', getEventTypeOptions())}
-                  {renderFormField('Session Type', 'sessionType', 'select', getSessionTypeOptions())}
-                  {renderFormField('Booking Status', 'bookingStatus', 'select', getBookingStatusOptions())}
-                </div>
-                
-                {/* Capacity & Pricing */}
-                <div className="event-modal__form-section">
-                  <h3 className="event-modal__section-title">Capacity & Pricing</h3>
-                  
-                  {renderFormField('Maximum Participants', 'maxParticipants', 'number')}
-                  
-                  {mode === 'view' && (
-                    <div className="event-modal__form-field">
-                      <label className="event-modal__form-label">Current Participants</label>
-                      <input
-                        type="number"
-                        className="event-modal__form-input"
-                        value={formData.currentParticipants || 0}
-                        readOnly
-                      />
-                    </div>
-                  )}
-                  
-                  {renderFormField('Price', 'price', 'number')}
-                  
-                  <div className="event-modal__form-field">
-                    <label className="event-modal__form-label">Currency</label>
-                    <select
-                      className="event-modal__form-input"
-                      value={formData.currency || 'USD'}
-                      disabled={mode === 'view'}
-                      onChange={(e) => handleInputChange('currency', e.target.value)}
-                    >
-                      <option value="USD">USD ($)</option>
-                      <option value="EUR">EUR (€)</option>
-                      <option value="GBP">GBP (£)</option>
-                    </select>
-                  </div>
+                  <h3 className="event-modal__section-title">Session Details</h3>
+                  {renderFormField('Location', 'location', 'select', memoizedOptions.locationOptions)}
+                  {renderFormField('Max Participants', 'maxParticipants', 'number')}
                 </div>
               </div>
               
-              {/* Trainer Information */}
-              {selectedTrainer && (
-                <div className="event-modal__trainer-info">
-                  <h3 className="event-modal__section-title">Trainer Information</h3>
-                  <div className="event-modal__trainer-card">
-                    {selectedTrainer.imageUrl && (
-                      <img
-                        src={selectedTrainer.imageUrl}
-                        alt={selectedTrainer.name}
-                        className="event-modal__trainer-avatar"
-                      />
-                    )}
-                    <div className="event-modal__trainer-details">
-                      <h4>{selectedTrainer.name}</h4>
-                      <p>{selectedTrainer.specialty}</p>
-                      <p>{selectedTrainer.yearsExperience} years experience</p>
-                      <p>{selectedTrainer.clientsCount} clients trained</p>
-                    </div>
-                  </div>
-                </div>
-              )}
             </form>
           )}
         </div>
-        
-        <div className="event-modal__footer">
-          {isEditable && !loading && (
-            <>
-              <button
-                type="button"
-                className="event-modal__button event-modal__button--secondary"
-                onClick={onClose}
-                disabled={saving || deleting}
-              >
-                Cancel
-              </button>
+
+        {/* Footer */}
+        <EventModalFooter
+          mode={mode}
+          loading={loading}
+          saving={saving}
+          deleting={deleting}
+          event={event}
+          isEditable={mode !== 'view'}
+          showDeleteConfirm={showDeleteConfirm}
+          onClose={onClose}
+          onSave={handleSave}
+          onDelete={handleDelete}
+          onShowDeleteConfirm={setShowDeleteConfirm}
+          onConfirmDelete={() => {
+            setShowDeleteConfirm(false);
+            handleDelete();
+          }}
+        />
+
+        {/* Time Slot Selector Modal */}
+        {showTimeSlotSelector && (
+          <div className="event-modal__backdrop" style={{ zIndex: 1001 }}>
+            <div className="event-modal__container" onClick={(e) => e.stopPropagation()}>
+              <div className="event-modal__header">
+                <h3 className="event-modal__title">Select Available Time Slot</h3>
+                <button
+                  className="event-modal__close"
+                  onClick={handleCloseTimeSlotSelector}
+                  aria-label="Close time slot selector"
+                >
+                  ×
+                </button>
+              </div>
               
-              <button
-                type="button"
-                className="event-modal__button event-modal__button--primary"
-                onClick={handleSave}
-                disabled={saving || deleting}
-              >
-                {saving ? (
-                  <>
-                    <div className="spinner spinner--small"></div>
-                    Saving...
-                  </>
-                ) : (
-                  mode === 'create' ? 'Create Event' : 'Save Changes'
+              <div className="event-modal__content">
+                <TimeSlotSelector
+                  schedulingResult={schedulingResult}
+                  selectedSlot={selectedTimeSlot}
+                  loading={schedulingLoading}
+                  eventType={selectedEventType}
+                  selectedDate={selectedDate}
+                  onSlotSelect={handleTimeSlotSelect}
+                  onRetry={handleTimeSlotSelectorRetry}
+                  className="event-modal__time-slot-selector"
+                />
+                
+                {schedulingError && (
+                  <div className="event-modal__scheduling-error">
+                    <p>Error loading time slots: {schedulingError}</p>
+                    <button onClick={handleTimeSlotSelectorRetry}>Retry</button>
+                  </div>
                 )}
-              </button>
-            </>
-          )}
-          
-          {mode === 'edit' && event && onDelete && (
-            <button
-              type="button"
-              className="event-modal__button event-modal__button--danger"
-              onClick={() => setShowDeleteConfirm(true)}
-              disabled={saving || deleting}
-            >
-              {deleting ? (
-                <>
-                  <div className="spinner spinner--small"></div>
-                  Deleting...
-                </>
-              ) : (
-                'Delete Event'
-              )}
-            </button>
-          )}
-        </div>
-        
-        {/* Delete Confirmation */}
-        {showDeleteConfirm && (
-          <div className="event-modal__delete-confirm">
-            <div className="event-modal__delete-confirm-content">
-              <h3>Confirm Deletion</h3>
-              <p>Are you sure you want to delete this event? This action cannot be undone.</p>
-              <div className="event-modal__delete-confirm-actions">
-                <button
-                  type="button"
-                  className="event-modal__button event-modal__button--secondary"
-                  onClick={() => setShowDeleteConfirm(false)}
-                  disabled={deleting}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  className="event-modal__button event-modal__button--danger"
-                  onClick={handleDelete}
-                  disabled={deleting}
-                >
-                  {deleting ? 'Deleting...' : 'Delete'}
-                </button>
               </div>
             </div>
           </div>
@@ -577,6 +927,8 @@ const EventModal: React.FC<EventModalProps> = ({
       </div>
     </div>
   );
-};
+});
+
+EventModal.displayName = 'EventModal';
 
 export default EventModal; 

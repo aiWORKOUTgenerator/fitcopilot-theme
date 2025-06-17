@@ -1,0 +1,287 @@
+/**
+ * Event Modal Footer Component Styles
+ * 
+ * Styling for modal footer with action buttons and delete confirmation
+ * Extracted from EventModal.scss for better component separation
+ * 
+ * @package FitCopilot
+ * @subpackage TrainingCalendar
+ * @since 1.0.0
+ */
+
+// Design system imports
+@use "@/styles/design-system/colors-next" as colors;
+@use "@/styles/design-system/typography" as typography;
+@use "@/styles/design-system/shadows" as shadows;
+@use "@/styles/design-system/components" as components;
+@use "@/styles/design-system/spacing" as spacing;
+@use "@/styles/design-system/transitions" as transitions;
+
+// ===== MODAL FOOTER =====
+
+.event-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 24px 32px;
+  border-top: 1px solid var(--color-gray-200);
+  background: var(--color-gray-50);
+  
+  @media (max-width: 768px) {
+    padding: 16px 24px;
+    flex-direction: column-reverse;
+    gap: 12px;
+    
+    .event-modal__button {
+      width: 100%;
+    }
+  }
+}
+
+// ===== BUTTON STYLING =====
+
+.event-modal__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 32px !important;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  text-decoration: none;
+  min-height: 40px;
+  
+  &:focus {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    
+    &.spinner--small {
+      width: 14px;
+      height: 14px;
+      border-width: 1.5px;
+    }
+  }
+  
+  // Primary button - FIXED with proper dark background
+  &--primary {
+    background: #1f2937 !important;
+    color: #ffffff !important;
+    border: 1px solid #1f2937 !important;
+    padding: 12px 32px !important;
+    
+    &:hover:not(:disabled) {
+      background: #374151 !important;
+      border-color: #374151 !important;
+      color: #ffffff !important;
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      background: #1f2937 !important;
+      color: #ffffff !important;
+    }
+    
+    &:focus {
+      background: #1f2937 !important;
+      color: #ffffff !important;
+      outline: 2px solid #3b82f6;
+      outline-offset: 2px;
+    }
+  }
+  
+  // Secondary button
+  &--secondary {
+    background: #ffffff !important;
+    color: #374151 !important;
+    border: 1px solid #d1d5db !important;
+    padding: 12px 32px !important;
+    
+    &:hover:not(:disabled) {
+      background: #f9fafb !important;
+      border-color: #9ca3af !important;
+      color: #374151 !important;
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      background: #ffffff !important;
+      color: #374151 !important;
+    }
+  }
+  
+  // Ghost button
+  &--ghost {
+    background: transparent !important;
+    color: #6b7280 !important;
+    border: 1px solid transparent !important;
+    padding: 8px 20px !important;
+    min-height: auto;
+    
+    &:hover:not(:disabled) {
+      background: #f9fafb !important;
+      color: #111827 !important;
+    }
+  }
+  
+  // Danger button
+  &--danger {
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    border: 1px solid #ef4444 !important;
+    padding: 12px 32px !important;
+    
+    &:hover:not(:disabled) {
+      background: #dc2626 !important;
+      border-color: #dc2626 !important;
+      color: #ffffff !important;
+      transform: translateY(-1px);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      background: #ef4444 !important;
+      color: #ffffff !important;
+    }
+  }
+}
+
+// ===== DELETE CONFIRMATION =====
+
+.event-modal__delete-confirm {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(2px);
+}
+
+.event-modal__delete-confirm-content {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 16px 0;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0 0 16px 0;
+    line-height: 1.6;
+  }
+}
+
+.event-modal__delete-confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  
+  @media (max-width: 480px) {
+    flex-direction: column-reverse;
+    
+    .event-modal__button {
+      width: 100%;
+    }
+  }
+}
+
+// ===== ACCESSIBILITY =====
+
+@media (prefers-reduced-motion: reduce) {
+  .event-modal__button {
+    transition: none;
+    
+    &:hover:not(:disabled) {
+      transform: none;
+    }
+    
+    // Preserve primary button colors even with reduced motion
+    &.event-modal__button--primary {
+      background: #1f2937 !important;
+      color: #ffffff !important;
+      border-color: #1f2937 !important;
+      
+      &:hover:not(:disabled) {
+        background: #374151 !important;
+        border-color: #374151 !important;
+        color: #ffffff !important;
+      }
+    }
+  }
+  
+  .spinner {
+    animation: none;
+    border-top-color: currentColor;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .event-modal__button {
+    border-width: 2px;
+    
+    &:focus {
+      outline-width: 3px;
+    }
+    
+    // Preserve primary button colors even with high contrast
+    &.event-modal__button--primary {
+      background: #1f2937 !important;
+      color: #ffffff !important;
+      border-color: #1f2937 !important;
+      border-width: 2px;
+      
+      &:hover:not(:disabled) {
+        background: #374151 !important;
+        border-color: #374151 !important;
+        color: #ffffff !important;
+      }
+    }
+  }
+}
+
+// ===== KEYFRAME ANIMATIONS =====
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} 

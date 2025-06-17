@@ -19,7 +19,7 @@ import EventModal from './components/EventModal/EventModal';
 import { useCalendarData } from './hooks/useCalendarData';
 
 // Type imports
-import { CalendarEvent, CalendarSettings, CalendarView as CalendarViewType, TrainerData } from './interfaces';
+import { CalendarEvent, CalendarSettings, CalendarView as CalendarViewType } from './interfaces';
 
 import './TrainingCalendar.scss';
 
@@ -41,6 +41,7 @@ interface EventModalState {
   isOpen: boolean;
   event: CalendarEvent | null;
   mode: 'view' | 'edit' | 'create';
+  selectedDate?: Date; // Date selected from calendar for new events
 }
 
 /**
@@ -62,7 +63,8 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   const [modalState, setModalState] = useState<EventModalState>({
     isOpen: false,
     event: null,
-    mode: 'view'
+    mode: 'view',
+    selectedDate: undefined
   });
   
   // ===== HOOKS =====
@@ -85,7 +87,15 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   // Get WordPress calendar data
   const wordpressData = useMemo(() => {
     if (typeof window !== 'undefined') {
-      return (window as any)?.fitcopilotTrainingCalendarData || {};
+      console.log('🔍 TrainingCalendar: Checking window data...');
+      console.log('🔍 window.fitcopilotTrainingCalendarData:', (window as any)?.fitcopilotTrainingCalendarData);
+      console.log('🔍 All window.fitcopilot* keys:', Object.keys(window).filter(key => key.includes('fitcopilot')));
+      
+      const data = (window as any)?.fitcopilotTrainingCalendarData || {};
+      console.log('🔍 Using data:', data);
+      console.log('🔍 Trainers in data:', data.trainers);
+      
+      return data;
     }
     return {};
   }, []);
@@ -149,37 +159,16 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
     }));
   }, [wordpressData.events, events]);
 
-  // Transform WordPress trainers to TrainerData format
-  const calendarTrainers: TrainerData[] = useMemo(() => {
-    const wpTrainers = wordpressData.trainers || trainers || [];
-    
-    return wpTrainers.map((trainer: any) => ({
-      id: trainer.id,
-      name: trainer.name,
-      email: trainer.email || '',
-      specialty: trainer.specialty || '',
-      bio: trainer.bio || '',
-      imageUrl: trainer.imageUrl || trainer.image_url || '',
-      avatar: trainer.avatar || trainer.imageUrl || trainer.image_url || '',
-      yearsExperience: trainer.yearsExperience || trainer.years_experience || 0,
-      clientsCount: trainer.clientsCount || trainer.clients_count || 0,
-      featured: trainer.featured || false,
-      active: trainer.active !== false,
-      isActive: trainer.isActive !== false && trainer.active !== false,
-      coachType: trainer.coachType || trainer.coach_type || 'personal',
-      availability: trainer.availability || {},
-      color: trainer.color || trainer.calendarConfig?.color || '#8b5cf6',
-      metadata: trainer.metadata || {}
-    }));
-  }, [wordpressData.trainers, trainers]);
+  // REMOVED: All trainer data processing - no longer needed
 
   // ===== MODAL HANDLERS =====
   
-  const openEventModal = useCallback((event: CalendarEvent | null, mode: 'view' | 'edit' | 'create') => {
+  const openEventModal = useCallback((event: CalendarEvent | null, mode: 'view' | 'edit' | 'create', selectedDate?: Date) => {
     setModalState({
       isOpen: true,
       event,
-      mode
+      mode,
+      selectedDate
     });
   }, []);
   
@@ -187,7 +176,8 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
     setModalState({
       isOpen: false,
       event: null,
-      mode: 'view'
+      mode: 'view',
+      selectedDate: undefined
     });
   }, []);
   
@@ -222,7 +212,7 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
     }
   }, [modalState, createEvent, updateEvent, refreshData, closeEventModal]);
   
-  const handleEventDelete = useCallback(async (eventId: number) => {
+  const handleEventDelete = useCallback(async (eventId: string | number) => {
     try {
       await deleteEvent(eventId);
       console.log('✅ Event deleted successfully');
@@ -261,12 +251,14 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
     console.log('📅 Date selected for new event:', selectInfo.startStr);
     
     // Create a new event template
+    // REMOVED: defaultTrainerId - no longer using trainers
+    
     const newEventTemplate: Partial<CalendarEvent> = {
       title: '',
       description: '',
       start: selectInfo.start.toISOString(),
       end: selectInfo.end.toISOString(),
-      trainerId: calendarTrainers.length > 0 ? calendarTrainers[0].id : undefined,
+      trainerId: undefined, // REMOVED: No longer using trainers
       eventType: 'session',
       bookingStatus: 'available',
       sessionType: 'individual',
@@ -277,9 +269,9 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
       currency: 'USD'
     };
     
-    // Open modal in create mode
-    openEventModal(newEventTemplate as CalendarEvent, 'create');
-  }, [calendarTrainers, openEventModal]);
+    // Open modal in create mode with selected date
+    openEventModal(newEventTemplate as CalendarEvent, 'create', selectInfo.start);
+  }, [openEventModal]); // REMOVED: calendarTrainers dependency
 
   const handleEventDrop = useCallback(async (dropInfo: any) => {
     console.log('📅 Event dropped:', dropInfo.event.title);
@@ -481,7 +473,6 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
       <div className="training-calendar__content">
         <CalendarView
           events={calendarEvents}
-          trainers={calendarTrainers}
           settings={calendarSettings}
           loading={isLoading}
           currentView={currentView}
@@ -500,9 +491,10 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
       <EventModal
         isOpen={modalState.isOpen}
         onClose={closeEventModal}
-        event={modalState.event}
-        trainers={calendarTrainers}
+        event={modalState.event || undefined}
         mode={modalState.mode}
+        loading={loading !== 'success' && loading !== 'error'}
+        selectedDate={modalState.selectedDate}
         onModeChange={handleModalModeChange}
         onSave={handleEventSave}
         onDelete={modalState.event ? handleEventDelete : undefined}

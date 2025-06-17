@@ -28,6 +28,7 @@ export interface CalendarEvent {
   bookingStatus: BookingStatus;
   sessionType: SessionType;
   location?: string;
+  duration?: number; // Duration in minutes for Personal Training Sessions
   maxParticipants: number;
   currentParticipants: number;
   backgroundColor?: string;
@@ -498,10 +499,13 @@ export interface EventModalProps {
   event?: CalendarEvent;
   isOpen: boolean;
   mode: 'view' | 'edit' | 'create';
-  trainers: TrainerData[];
+  trainers?: TrainerData[];
+  loading?: boolean;
+  selectedDate?: Date; // Date selected from calendar for new events
   onClose: () => void;
-  onSave: (event: CalendarEvent) => void;
-  onDelete?: (eventId: string | number) => void;
+  onSave: (event: Partial<CalendarEvent>) => Promise<void>;
+  onDelete?: (eventId: string | number) => Promise<void>;
+  onModeChange?: (mode: 'view' | 'edit' | 'create') => void;
   className?: string;
 }
 

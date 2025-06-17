@@ -1,0 +1,619 @@
+/**
+ * Time Slot Selector Component Styles
+ * 
+ * Modern, responsive styling for time slot selection interface
+ * Integrates with FitCopilot design system
+ * 
+ * @package FitCopilot
+ * @subpackage TrainingCalendar
+ * @since 1.0.0
+ */
+
+// Design system imports
+@use "@/styles/design-system/colors-next" as colors;
+@use "@/styles/design-system/typography" as typography;
+@use "@/styles/design-system/shadows" as shadows;
+@use "@/styles/design-system/components" as components;
+@use "@/styles/design-system/spacing" as spacing;
+@use "@/styles/design-system/transitions" as transitions;
+
+// ===== MAIN CONTAINER =====
+
+.time-slot-selector {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+// ===== HEADER SECTION =====
+
+.time-slot-selector__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--color-gray-100);
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+}
+
+.time-slot-selector__title-section {
+  flex: 1;
+}
+
+.time-slot-selector__title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+  
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+}
+
+.time-slot-selector__date {
+  font-weight: 500;
+  color: var(--color-primary-500);
+}
+
+.time-slot-selector__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.time-slot-selector__stat {
+  font-size: 14px;
+  color: #6b7280;
+  background: var(--color-gray-50);
+  padding: 4px 12px;
+  border-radius: 16px;
+  border: 1px solid var(--color-gray-200);
+}
+
+.time-slot-selector__recommended {
+  font-size: 14px;
+  font-weight: 500;
+  color: #f59e0b;
+  background: #fef3c7;
+  padding: 4px 12px;
+  border-radius: 16px;
+  border: 1px solid #fde68a;
+}
+
+.time-slot-selector__controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.time-slot-selector__view-mode {
+  display: flex;
+  background: var(--color-gray-100);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.time-slot-selector__view-button {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: #374151;
+    background: rgba(255, 255, 255, 0.5);
+  }
+  
+  &--active {
+    background: #ffffff;
+    color: #1f2937;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  
+  &:focus {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+}
+
+// ===== RECOMMENDED SECTION =====
+
+.time-slot-selector__recommended-section {
+  margin-bottom: 32px;
+  padding: 20px;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent 30%, 
+      rgba(255, 255, 255, 0.1) 50%, 
+      transparent 70%
+    );
+    animation: shimmer 3s infinite;
+    pointer-events: none;
+  }
+}
+
+.time-slot-selector__recommended-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #92400e;
+  margin: 0 0 16px 0;
+  
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
+}
+
+// ===== TIME SLOTS GRID =====
+
+.time-slot-selector__slots {
+  display: grid;
+  gap: 16px;
+  
+  &--list {
+    grid-template-columns: 1fr;
+  }
+  
+  &--grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.time-slot-selector__time-group {
+  margin-bottom: 24px;
+}
+
+.time-slot-selector__time-group-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 12px 0;
+  padding-left: 12px;
+  border-left: 3px solid var(--color-primary-500);
+}
+
+.time-slot-selector__time-group-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+  
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ===== TIME SLOT CARDS =====
+
+.time-slot-card {
+  background: #ffffff;
+  border: 2px solid var(--color-gray-200);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  
+  &:hover {
+    border-color: var(--color-primary-300);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+    transform: translateY(-1px);
+  }
+  
+  &:focus {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+  
+  &--selected {
+    border-color: var(--color-primary-500);
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(52, 152, 219, 0.25);
+    }
+  }
+  
+  &--available {
+    border-left: 4px solid #10b981;
+  }
+  
+  &--limited {
+    border-left: 4px solid #f59e0b;
+  }
+  
+  &--waitlist {
+    border-left: 4px solid #ef4444;
+    opacity: 0.8;
+  }
+}
+
+.time-slot-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.time-slot-card__time {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  line-height: 1.2;
+}
+
+.time-slot-card__status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 6px;
+  
+  .time-slot-card--available & {
+    background: #d1fae5;
+    color: #065f46;
+  }
+  
+  .time-slot-card--limited & {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  
+  .time-slot-card--waitlist & {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+}
+
+.time-slot-card__status-icon {
+  font-size: 14px;
+}
+
+.time-slot-card__status-text {
+  white-space: nowrap;
+}
+
+.time-slot-card__details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.time-slot-card__trainer,
+.time-slot-card__spots,
+.time-slot-card__price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.time-slot-card__trainer-label,
+.time-slot-card__spots-label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.time-slot-card__trainer-name,
+.time-slot-card__spots-count {
+  color: #374151;
+  font-weight: 500;
+}
+
+.time-slot-card__price {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-gray-100);
+}
+
+.time-slot-card__price-amount {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary-600);
+}
+
+.time-slot-card__selected-indicator {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--color-primary-500);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 6px;
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+// ===== LOADING STATE =====
+
+.time-slot-selector__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.time-slot-selector__loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-gray-200);
+  border-top: 3px solid var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.time-slot-selector__loading-text {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+}
+
+// ===== EMPTY STATE =====
+
+.time-slot-selector__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  background: var(--color-gray-50);
+  border: 2px dashed var(--color-gray-300);
+  border-radius: 12px;
+}
+
+.time-slot-selector__empty-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.time-slot-selector__empty-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 12px 0;
+}
+
+.time-slot-selector__empty-message {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0 0 8px 0;
+  line-height: 1.5;
+  max-width: 400px;
+}
+
+.time-slot-selector__empty-suggestion {
+  font-size: 14px;
+  color: #9ca3af;
+  margin: 0 0 16px 0;
+}
+
+// ===== ERROR STATE =====
+
+.time-slot-selector__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 12px;
+}
+
+.time-slot-selector__error-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.time-slot-selector__error-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #991b1b;
+  margin: 0 0 12px 0;
+}
+
+.time-slot-selector__error-message {
+  font-size: 16px;
+  color: #dc2626;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+  max-width: 400px;
+}
+
+// ===== RETRY BUTTON =====
+
+.time-slot-selector__retry-button {
+  background: var(--color-primary-500);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: var(--color-primary-600);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:focus {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+}
+
+// ===== DEBUG SECTION =====
+
+.time-slot-selector__debug {
+  margin-top: 32px;
+  padding: 16px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  font-size: 12px;
+  
+  details {
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #6c757d;
+      margin-bottom: 8px;
+    }
+    
+    pre {
+      background: #ffffff;
+      padding: 12px;
+      border-radius: 4px;
+      overflow: auto;
+      margin: 0;
+      font-family: 'Monaco', 'Consolas', monospace;
+      line-height: 1.4;
+    }
+  }
+}
+
+// ===== RESPONSIVE DESIGN =====
+
+@media (max-width: 640px) {
+  .time-slot-selector {
+    padding: 0 16px;
+  }
+  
+  .time-slot-card {
+    padding: 14px;
+  }
+  
+  .time-slot-card__time {
+    font-size: 16px;
+  }
+  
+  .time-slot-card__header {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  
+  .time-slot-card__status {
+    align-self: flex-end;
+  }
+}
+
+// ===== ACCESSIBILITY =====
+
+@media (prefers-reduced-motion: reduce) {
+  .time-slot-card,
+  .time-slot-selector__retry-button,
+  .time-slot-selector__view-button {
+    transition: none;
+    
+    &:hover {
+      transform: none;
+    }
+  }
+  
+  .time-slot-selector__loading-spinner {
+    animation: none;
+    border-top-color: currentColor;
+  }
+  
+  .time-slot-selector__recommended-section::before {
+    animation: none;
+  }
+  
+  .time-slot-card__selected-indicator {
+    animation: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .time-slot-card {
+    border-width: 3px;
+    
+    &:focus {
+      outline-width: 3px;
+    }
+  }
+  
+  .time-slot-selector__recommended-section {
+    border-width: 3px;
+  }
+}
+
+// ===== KEYFRAME ANIMATIONS =====
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+} 

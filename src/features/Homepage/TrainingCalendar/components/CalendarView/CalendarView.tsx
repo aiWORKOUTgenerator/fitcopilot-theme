@@ -16,7 +16,7 @@ import FullCalendar from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { CalendarEvent, CalendarSettings, CalendarView as CalendarViewType, TrainerData } from '../../interfaces';
+import { CalendarEvent, CalendarSettings, CalendarView as CalendarViewType } from '../../interfaces';
 import './CalendarView.scss';
 
 /**
@@ -25,8 +25,7 @@ import './CalendarView.scss';
 interface CalendarViewProps {
   /** Array of calendar events to display */
   events: CalendarEvent[];
-  /** Array of available trainers */
-  trainers: TrainerData[];
+  /** REMOVED: trainers - no longer needed */
   /** Calendar configuration settings */
   settings: CalendarSettings;
   /** Loading state indicator */
@@ -56,7 +55,6 @@ interface CalendarViewProps {
  */
 const CalendarView: React.FC<CalendarViewProps> = ({
   events = [],
-  trainers = [],
   settings,
   loading = false,
   currentView = 'dayGridMonth',
@@ -119,7 +117,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   // Transform events for FullCalendar
   const fullCalendarEvents = useMemo(() => {
     return events.map((event: CalendarEvent) => {
-      const trainer = trainers.find(t => t.id === event.trainerId);
+      // REMOVED: trainer logic - no longer needed
       
       return {
         id: String(event.id),
@@ -133,12 +131,12 @@ const CalendarView: React.FC<CalendarViewProps> = ({
           `event-type-${event.eventType}`,
           `booking-status-${event.bookingStatus}`,
           `session-type-${event.sessionType}`,
-          trainer?.featured ? 'featured-trainer' : '',
+          // REMOVED: trainer featured class
         ].filter(Boolean),
         extendedProps: {
           description: event.description,
           trainerId: event.trainerId,
-          trainerName: trainer?.name || 'Unknown Trainer',
+          trainerName: 'Fitness Trainer', // SIMPLIFIED: Generic trainer name
           eventType: event.eventType,
           bookingStatus: event.bookingStatus,
           sessionType: event.sessionType,
@@ -153,7 +151,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         }
       };
     });
-  }, [events, trainers, settings.calendarColors]);
+  }, [events, settings.calendarColors]); // REMOVED: trainers dependency
   
   // FullCalendar configuration
   const calendarConfig = useMemo(() => ({
@@ -244,8 +242,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   }, [onEventClick]);
   
   const handleDateSelect = useCallback((selectInfo: DateSelectArg) => {
+    console.log('🔍 CalendarView: Date selected!', selectInfo);
+    console.log('🔍 CalendarView: onDateSelect exists?', !!onDateSelect);
     if (onDateSelect) {
+      console.log('🔍 CalendarView: Calling onDateSelect...');
       onDateSelect(selectInfo);
+    } else {
+      console.log('⚠️ CalendarView: No onDateSelect handler provided!');
     }
   }, [onDateSelect]);
   

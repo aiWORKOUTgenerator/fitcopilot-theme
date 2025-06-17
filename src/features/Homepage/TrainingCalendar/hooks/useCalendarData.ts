@@ -595,6 +595,26 @@ export const useCalendarData = ({
             return;
           }
           
+          // PHASE 2: Check for trainer data synchronization
+          const calendarData = getCalendarData();
+          const lastTrainerSync = calendarData?.integration?.personalTraining?.lastSync;
+          const currentTime = Date.now();
+          
+          if (lastTrainerSync) {
+            const syncAge = currentTime - new Date(lastTrainerSync).getTime();
+            
+            // If trainer data was synced recently (within last 30 seconds), force full refresh
+            if (syncAge < 30000) {
+              console.log('🎯 PHASE 2: Trainer data recently synchronized, forcing full refresh...');
+              // Force full data refresh to pick up trainer changes
+              fetchTrainers().then(() => {
+                console.log('✅ Trainer data refreshed due to recent sync');
+              }).catch(err => {
+                console.warn('⚠️ Trainer refresh failed:', err.message);
+              });
+            }
+          }
+          
           console.log('🔄 Auto-refresh triggered');
           refreshData().catch(err => {
             console.warn('⚠️ Auto-refresh failed:', err.message);

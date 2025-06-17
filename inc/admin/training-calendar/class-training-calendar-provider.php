@@ -37,7 +37,7 @@ class FitCopilot_Training_Calendar_Provider {
     
     /**
      * Initialize frontend data provider
-     * Following Personal Training hook pattern exactly
+     * Phase 2: Enhanced with real-time synchronization
      */
     public function init() {
         // Provide data to frontend
@@ -46,6 +46,19 @@ class FitCopilot_Training_Calendar_Provider {
         // AJAX endpoints for frontend
         add_action('wp_ajax_get_training_calendar_data', array($this, 'get_calendar_data'));
         add_action('wp_ajax_nopriv_get_training_calendar_data', array($this, 'get_calendar_data'));
+        
+        // Phase 2: Real-time synchronization hooks
+        add_action('fitcopilot_personal_training_data_updated', array($this, 'handle_trainer_data_update'));
+        add_action('fitcopilot_personal_training_trainer_saved', array($this, 'handle_trainer_saved'), 10, 2);
+        add_action('fitcopilot_personal_training_trainer_deleted', array($this, 'handle_trainer_deleted'), 10, 1);
+        
+        // Cache invalidation hooks
+        add_action('save_post', array($this, 'maybe_invalidate_cache'));
+        add_action('deleted_post', array($this, 'maybe_invalidate_cache'));
+        
+        // Performance optimization hooks
+        add_action('wp_loaded', array($this, 'schedule_cache_cleanup'));
+        add_filter('fitcopilot_training_calendar_cache_duration', array($this, 'adjust_cache_duration'), 10, 2);
     }
     
     /**
@@ -291,15 +304,28 @@ class FitCopilot_Training_Calendar_Provider {
                 'deleteEvent' => admin_url('admin-ajax.php?action=delete_calendar_event'),
                 'getTrainers' => admin_url('admin-ajax.php?action=get_trainer_availability'),
                 'saveBooking' => admin_url('admin-ajax.php?action=mobile_book_event'),
-                'getAvailability' => admin_url('admin-ajax.php?action=get_trainer_availability')
+                'getAvailability' => admin_url('admin-ajax.php?action=get_trainer_availability'),
+                'trainerAvailabilityAPI' => home_url('/wp-json/fitcopilot/v1/trainer-availability'),
+                'trainerAvailabilityRangeAPI' => home_url('/wp-json/fitcopilot/v1/trainer-availability/range')
+            ],
+            'api' => [
+                'baseUrl' => home_url('/wp-json/fitcopilot/v1'),
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'restNonce' => wp_create_nonce('wp_rest'),
+                'ajaxNonce' => wp_create_nonce('training_calendar_nonce')
             ],
             'debug' => [
-                'phase' => 'Phase 2 - Real Database Integration',
+                'phase' => 'Phase 2 - Smart Scheduling Integration',
                 'timestamp' => current_time('mysql'),
-                'dataSource' => 'WordPress Database',
+                'dataSource' => 'WordPress Database + REST API',
                 'eventsCount' => count($events),
                 'trainersCount' => count($trainers),
-                'realStats' => $real_stats
+                'realStats' => $real_stats,
+                'apiEndpoints' => [
+                    'trainerAvailability' => 'ACTIVE',
+                    'smartScheduling' => 'ACTIVE',
+                    'eventMapping' => 'Free Consultation ↔ Fitness Assessment'
+                ]
             ],
             'nonce' => wp_create_nonce('training_calendar_nonce')
         ];
@@ -373,38 +399,69 @@ class FitCopilot_Training_Calendar_Provider {
     
     /**
      * Get integrated trainers from Personal Training
-     * Following cross-feature integration pattern
+     * Phase 2: Enhanced integration with caching and real-time sync
      */
     private function get_integrated_trainers() {
-        // Get Personal Training data if available
+        // Check cache first for performance
+        $cache_key = 'fitcopilot_training_calendar_trainers_v2';
+        $cached_data = wp_cache_get($cache_key);
+        
+        if ($cached_data !== false && is_array($cached_data)) {
+            return $cached_data;
+        }
+        
+        // Get Personal Training data using the same pattern as Personal Training Provider
         $personal_training_data = get_option('fitcopilot_personal_training_data', array());
         
         if (empty($personal_training_data)) {
+            // Cache empty result to prevent repeated database calls
+            wp_cache_set($cache_key, array(), '', 300); // 5 minutes cache
             return array();
         }
         
         $trainers = array();
+        $last_sync = get_option('fitcopilot_training_calendar_last_sync', 0);
         
         foreach ($personal_training_data as $trainer) {
+            // Enhanced validation and data integrity checks
+            if (!$this->validate_trainer_data($trainer)) {
+                continue;
+            }
+            
             if (isset($trainer['active']) && $trainer['active']) {
-                $trainers[] = array(
+                $trainer_data = array(
                     'id' => $trainer['id'] ?? 0,
                     'name' => $trainer['name'] ?? '',
                     'specialty' => $trainer['specialty'] ?? '',
+                    'bio' => $trainer['bio'] ?? '',
                     'yearsExperience' => $trainer['years_experience'] ?? 0,
                     'clientsCount' => $trainer['clients_count'] ?? 0,
                     'featured' => $trainer['featured'] ?? false,
                     'imageUrl' => $trainer['image_url'] ?? '',
                     'coachType' => $trainer['coach_type'] ?? 'personal',
-                    'availability' => array(), // Will be populated separately
+                    'active' => true,
+                    'availability' => $this->get_trainer_availability($trainer['id'] ?? 0),
                     'calendarConfig' => array(
                         'color' => $this->get_trainer_color($trainer['id'] ?? 0),
                         'borderColor' => $this->get_trainer_border_color($trainer['id'] ?? 0),
                         'textColor' => '#ffffff'
+                    ),
+                    'integrationMeta' => array(
+                        'sourceModule' => 'personal-training',
+                        'lastSync' => current_time('mysql'),
+                        'dataVersion' => get_option('fitcopilot_personal_training_last_updated', 0)
                     )
                 );
+                
+                $trainers[] = $trainer_data;
             }
         }
+        
+        // Cache the processed trainer data for 10 minutes
+        wp_cache_set($cache_key, $trainers, '', 600);
+        
+        // Update last sync timestamp
+        update_option('fitcopilot_training_calendar_last_sync', current_time('timestamp'));
         
         return $trainers;
     }
@@ -449,6 +506,102 @@ class FitCopilot_Training_Calendar_Provider {
     private function get_trainer_border_color($trainer_id) {
         $colors = array('#388E3C', '#1976D2', '#F57C00', '#7B1FA2', '#C2185B', '#0097A7');
         return $colors[$trainer_id % count($colors)];
+    }
+    
+    /**
+     * Validate trainer data structure and integrity
+     * Phase 2: Enhanced validation for data consistency
+     */
+    private function validate_trainer_data($trainer) {
+        // Required fields validation
+        if (!isset($trainer['id']) || empty($trainer['id'])) {
+            error_log('Training Calendar: Invalid trainer - missing ID');
+            return false;
+        }
+        
+        if (!isset($trainer['name']) || empty(trim($trainer['name']))) {
+            error_log('Training Calendar: Invalid trainer - missing name for ID ' . $trainer['id']);
+            return false;
+        }
+        
+        // Data type validation
+        if (!is_numeric($trainer['id'])) {
+            error_log('Training Calendar: Invalid trainer - non-numeric ID: ' . $trainer['id']);
+            return false;
+        }
+        
+        // Optional fields validation
+        if (isset($trainer['active']) && !is_bool($trainer['active'])) {
+            // Try to convert string boolean values
+            if (in_array($trainer['active'], ['1', '0', 1, 0, 'true', 'false'], true)) {
+                // Valid convertible value, will be handled later
+            } else {
+                error_log('Training Calendar: Invalid trainer - invalid active status for ID ' . $trainer['id']);
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Get trainer availability from calendar events
+     * Phase 2: Real-time availability calculation
+     */
+    private function get_trainer_availability($trainer_id) {
+        // Get trainer's existing events to calculate availability
+        $events = $this->data_manager->get_trainer_events($trainer_id, array(
+            'start_date' => current_time('Y-m-d'),
+            'end_date' => date('Y-m-d', strtotime('+30 days'))
+        ));
+        
+        $availability = array();
+        
+        // Default availability slots (9 AM to 5 PM, Monday to Friday)
+        $default_hours = array(
+            'monday' => array('09:00', '17:00'),
+            'tuesday' => array('09:00', '17:00'),
+            'wednesday' => array('09:00', '17:00'),
+            'thursday' => array('09:00', '17:00'),
+            'friday' => array('09:00', '17:00'),
+            'saturday' => array('10:00', '14:00'),
+            'sunday' => array() // Not available
+        );
+        
+        foreach ($default_hours as $day => $hours) {
+            if (empty($hours)) {
+                continue;
+            }
+            
+            $day_number = array_search($day, array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'));
+            
+            $availability[] = array(
+                'dayOfWeek' => $day_number,
+                'startTime' => $hours[0],
+                'endTime' => $hours[1],
+                'dayName' => ucfirst($day),
+                'available' => true,
+                'bookedSlots' => $this->count_booked_slots($events, $day_number)
+            );
+        }
+        
+        return $availability;
+    }
+    
+    /**
+     * Count booked time slots for a specific day
+     */
+    private function count_booked_slots($events, $day_of_week) {
+        $booked_count = 0;
+        
+        foreach ($events as $event) {
+            $event_day = date('w', strtotime($event['start_datetime']));
+            if ($event_day == $day_of_week && $event['booking_status'] !== 'cancelled') {
+                $booked_count++;
+            }
+        }
+        
+        return $booked_count;
     }
     
     /**
@@ -695,5 +848,217 @@ class FitCopilot_Training_Calendar_Provider {
             ],
             'nextAvailable' => date('Y-m-d H:i:s', strtotime('+1 day 10:00'))
         ];
+    }
+    
+    // ===== PHASE 2: REAL-TIME SYNCHRONIZATION HANDLERS =====
+    
+    /**
+     * Handle Personal Training data update
+     * Called when Personal Training module saves data
+     */
+    public function handle_trainer_data_update() {
+        // Invalidate trainer cache immediately
+        $this->invalidate_trainer_cache();
+        
+        // Log synchronization event
+        error_log('Training Calendar: Trainer data synchronized from Personal Training module');
+        
+        // Trigger custom action for other integrations
+        do_action('fitcopilot_training_calendar_trainers_synced');
+    }
+    
+    /**
+     * Handle individual trainer save
+     * Called when a specific trainer is saved in Personal Training
+     * 
+     * @param int $trainer_id Trainer ID
+     * @param array $trainer_data Trainer data
+     */
+    public function handle_trainer_saved($trainer_id, $trainer_data) {
+        // Invalidate cache for this specific trainer
+        $cache_key = 'fitcopilot_training_calendar_trainer_' . $trainer_id;
+        wp_cache_delete($cache_key);
+        
+        // Invalidate the main trainer list cache
+        $this->invalidate_trainer_cache();
+        
+        // Update calendar events if trainer status changed
+        if (isset($trainer_data['active']) && !$trainer_data['active']) {
+            $this->handle_trainer_deactivation($trainer_id);
+        }
+        
+        error_log('Training Calendar: Individual trainer synchronized - ID: ' . $trainer_id);
+    }
+    
+    /**
+     * Handle trainer deletion
+     * Called when a trainer is deleted from Personal Training
+     * 
+     * @param int $trainer_id Trainer ID
+     */
+    public function handle_trainer_deleted($trainer_id) {
+        // Remove trainer-specific cache
+        $cache_key = 'fitcopilot_training_calendar_trainer_' . $trainer_id;
+        wp_cache_delete($cache_key);
+        
+        // Invalidate main trainer cache
+        $this->invalidate_trainer_cache();
+        
+        // Handle existing calendar events for this trainer
+        $this->reassign_trainer_events($trainer_id);
+        
+        error_log('Training Calendar: Trainer removed from calendar - ID: ' . $trainer_id);
+    }
+    
+    /**
+     * Handle trainer deactivation
+     * Cancel or reassign future events when trainer is deactivated
+     * 
+     * @param int $trainer_id Trainer ID
+     */
+    private function handle_trainer_deactivation($trainer_id) {
+        // Get future events for this trainer
+        $future_events = $this->data_manager->get_trainer_events($trainer_id, array(
+            'start_date' => current_time('Y-m-d'),
+            'end_date' => date('Y-m-d', strtotime('+1 year'))
+        ));
+        
+        foreach ($future_events as $event) {
+            // Mark events as cancelled or require manual reassignment
+            if ($event['booking_status'] === 'available') {
+                // Cancel available slots
+                $this->data_manager->update_event_status($event['id'], array(
+                    'booking_status' => 'cancelled',
+                    'notes' => 'Trainer deactivated - event cancelled'
+                ));
+            } else {
+                // Flag booked events for manual review
+                $this->data_manager->update_event_status($event['id'], array(
+                    'booking_status' => 'requires_attention',
+                    'notes' => 'Trainer deactivated - requires reassignment'
+                ));
+            }
+        }
+    }
+    
+    /**
+     * Reassign events when trainer is deleted
+     * 
+     * @param int $trainer_id Deleted trainer ID
+     */
+    private function reassign_trainer_events($trainer_id) {
+        // Get all future events for the deleted trainer
+        $events = $this->data_manager->get_trainer_events($trainer_id, array(
+            'start_date' => current_time('Y-m-d')
+        ));
+        
+        // Get active trainers for reassignment
+        $active_trainers = $this->get_integrated_trainers();
+        
+        foreach ($events as $event) {
+            if (empty($active_trainers)) {
+                // No trainers available, cancel the event
+                $this->data_manager->update_event_status($event['id'], array(
+                    'booking_status' => 'cancelled',
+                    'trainer_id' => null,
+                    'notes' => 'Original trainer deleted - no replacement available'
+                ));
+            } else {
+                // Mark for manual reassignment
+                $this->data_manager->update_event_status($event['id'], array(
+                    'booking_status' => 'requires_attention',
+                    'notes' => 'Original trainer deleted - requires manual reassignment'
+                ));
+            }
+        }
+    }
+    
+    /**
+     * Invalidate trainer cache
+     */
+    private function invalidate_trainer_cache() {
+        $cache_keys = array(
+            'fitcopilot_training_calendar_trainers_v2',
+            'fitcopilot_training_calendar_integration_status'
+        );
+        
+        foreach ($cache_keys as $key) {
+            wp_cache_delete($key);
+        }
+        
+        // Update last sync timestamp
+        update_option('fitcopilot_training_calendar_last_sync', current_time('timestamp'));
+    }
+    
+    /**
+     * Maybe invalidate cache on post save
+     * Only if it's a calendar-related post type
+     * 
+     * @param int $post_id Post ID
+     */
+    public function maybe_invalidate_cache($post_id) {
+        // Only invalidate for relevant post types
+        $post_type = get_post_type($post_id);
+        
+        if (in_array($post_type, array('fitcopilot_event', 'fitcopilot_trainer'))) {
+            $this->invalidate_trainer_cache();
+        }
+    }
+    
+    /**
+     * Schedule cache cleanup
+     * Remove stale cache entries periodically
+     */
+    public function schedule_cache_cleanup() {
+        if (!wp_next_scheduled('fitcopilot_training_calendar_cache_cleanup')) {
+            wp_schedule_event(time(), 'hourly', 'fitcopilot_training_calendar_cache_cleanup');
+        }
+        
+        // Hook the cleanup function
+        add_action('fitcopilot_training_calendar_cache_cleanup', array($this, 'cleanup_stale_cache'));
+    }
+    
+    /**
+     * Clean up stale cache entries
+     */
+    public function cleanup_stale_cache() {
+        // This would typically involve more complex cache management
+        // For now, just clean up known cache keys older than 1 hour
+        $stale_keys = array(
+            'fitcopilot_training_calendar_trainers_v2',
+            'fitcopilot_training_calendar_integration_status'
+        );
+        
+        foreach ($stale_keys as $key) {
+            // WordPress object cache doesn't have expiration checking,
+            // so we'll rely on the TTL set when caching
+            wp_cache_delete($key);
+        }
+    }
+    
+    /**
+     * Adjust cache duration based on context
+     * 
+     * @param int $duration Current duration
+     * @param string $context Cache context
+     * @return int Adjusted duration
+     */
+    public function adjust_cache_duration($duration, $context) {
+        switch ($context) {
+            case 'trainer_data':
+                // Shorter cache for trainer data (5 minutes)
+                return 300;
+                
+            case 'availability':
+                // Very short cache for availability (1 minute)
+                return 60;
+                
+            case 'events':
+                // Medium cache for events (10 minutes)
+                return 600;
+                
+            default:
+                return $duration;
+        }
     }
 } 

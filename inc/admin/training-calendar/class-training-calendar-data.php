@@ -979,4 +979,149 @@ class FitCopilot_Training_Calendar_Data {
         
         return $trainers;
     }
+    
+    /**
+     * Get events for a specific trainer
+     * Phase 2: Support for availability calculation
+     * 
+     * @param int $trainer_id Trainer ID
+     * @param array $options Query options (start_date, end_date, status)
+     * @return array Trainer events
+     */
+    public function get_trainer_events($trainer_id, $options = array()) {
+        global $wpdb;
+        
+        // Default options
+        $defaults = array(
+            'start_date' => current_time('Y-m-d'),
+            'end_date' => date('Y-m-d', strtotime('+30 days')),
+            'status' => null
+        );
+        
+        $options = array_merge($defaults, $options);
+        
+        // Build query
+        $where_conditions = array();
+        $where_conditions[] = $wpdb->prepare('trainer_id = %d', $trainer_id);
+        
+        if (!empty($options['start_date'])) {
+            $where_conditions[] = $wpdb->prepare('DATE(start_datetime) >= %s', $options['start_date']);
+        }
+        
+        if (!empty($options['end_date'])) {
+            $where_conditions[] = $wpdb->prepare('DATE(start_datetime) <= %s', $options['end_date']);
+        }
+        
+        if (!empty($options['status'])) {
+            $where_conditions[] = $wpdb->prepare('booking_status = %s', $options['status']);
+        }
+        
+        $where_clause = 'WHERE ' . implode(' AND ', $where_conditions);
+        
+        $sql = "SELECT * FROM {$this->events_table} {$where_clause} ORDER BY start_datetime ASC";
+        $events = $wpdb->get_results($sql, ARRAY_A);
+        
+        return $events ?: array();
+    }
+    
+    /**
+     * Update event status for trainer management
+     * Phase 2: Support for trainer deactivation/deletion handling
+     * 
+     * @param int $event_id Event ID
+     * @param array $data Event data to update
+     * @return bool Success status
+     */
+    public function update_event_status($event_id, $data) {
+        global $wpdb;
+        
+        // Validate event exists
+        $existing_event = $wpdb->get_row(
+            $wpdb->prepare("SELECT * FROM {$this->events_table} WHERE id = %d", $event_id),
+            ARRAY_A
+        );
+        
+        if (!$existing_event) {
+            error_log('Training Calendar: Cannot update non-existent event ID: ' . $event_id);
+            return false;
+        }
+        
+        // Sanitize and validate update data
+        $allowed_fields = array(
+            'booking_status', 'trainer_id', 'notes'
+        );
+        
+        $update_data = array();
+        foreach ($data as $field => $value) {
+            if (in_array($field, $allowed_fields)) {
+                $update_data[$field] = $value;
+            }
+        }
+        
+        if (empty($update_data)) {
+            error_log('Training Calendar: No valid fields to update for event ID: ' . $event_id);
+            return false;
+        }
+        
+        // Add updated timestamp
+        $update_data['updated_at'] = current_time('mysql');
+        
+        // Perform update
+        $result = $wpdb->update(
+            $this->events_table,
+            $update_data,
+            array('id' => $event_id),
+            null,
+            array('%d')
+        );
+        
+        if ($result === false) {
+            error_log('Training Calendar: Database error updating event ID: ' . $event_id . ' - ' . $wpdb->last_error);
+            return false;
+        }
+        
+        // Update last modified timestamp
+        update_option(self::LAST_UPDATED_OPTION, current_time('timestamp'));
+        
+        // Clear related caches
+        wp_cache_delete('fitcopilot_training_calendar_event_' . $event_id);
+        wp_cache_delete('fitcopilot_training_calendar_events_list');
+        
+        return true;
+    }
+    
+    /**
+     * Get events by status
+     * Phase 2: Support for event management
+     * 
+     * @param string $status Event status
+     * @param array $options Additional query options
+     * @return array Events with specified status
+     */
+    public function get_events_by_status($status, $options = array()) {
+        global $wpdb;
+        
+        $defaults = array(
+            'limit' => 50,
+            'offset' => 0,
+            'order_by' => 'start_datetime',
+            'order' => 'ASC'
+        );
+        
+        $options = array_merge($defaults, $options);
+        
+        $sql = $wpdb->prepare(
+            "SELECT * FROM {$this->events_table} 
+             WHERE booking_status = %s 
+             ORDER BY {$options['order_by']} {$options['order']} 
+             LIMIT %d OFFSET %d",
+            $status,
+            $options['limit'],
+            $options['offset']
+        );
+        
+        $events = $wpdb->get_results($sql, ARRAY_A);
+        
+        return $events ?: array();
+    }
 } 
