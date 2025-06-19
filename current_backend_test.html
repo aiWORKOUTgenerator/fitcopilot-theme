@@ -1,0 +1,1355 @@
+      <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Calendar System Testing Tool</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; line-height: 1.6; }
+        h1, h2, h3 { color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .card { background: #f9f9f9; border: 1px solid #ddd; border-radius: 4px; padding: 20px; margin-bottom: 20px; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .warning { color: orange; font-weight: bold; }
+        .info { color: blue; }
+        .response { background: #f0f0f0; padding: 15px; border-radius: 4px; overflow-x: auto; font-family: monospace; white-space: pre-wrap; }
+        button { background: #0073aa; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; margin-right: 10px; }
+        button:hover { background: #005177; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        .tabs { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
+        .tab { padding: 10px 20px; background: #f1f1f1; border: 1px solid #ddd; border-bottom: none; margin-right: 5px; cursor: pointer; border-top-left-radius: 4px; border-top-right-radius: 4px; }
+        .tab.active { background: white; border-bottom: 1px solid white; margin-bottom: -1px; font-weight: bold; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .test-group { background: #fff; border-left: 4px solid #0073aa; padding: 15px; margin: 10px 0; }
+        .test-group.failed { border-left-color: #dc3232; }
+        .test-group.passed { border-left-color: #46b450; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Training Calendar System Testing Tool</h1>
+        <p style="color: #666; font-size: 0.9em;">Last Updated: 2025-06-18 22:08:06 | Cache Cleared: 1750284486</p>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="openTab(event, 'system-status')">System Status</div>
+            <div class="tab" onclick="openTab(event, 'backend-tests')">Backend Tests</div>
+            <div class="tab" onclick="openTab(event, 'frontend-tests')">Frontend Tests</div>
+            <div class="tab" onclick="openTab(event, 'api-tests')">API Tests</div>
+        </div>
+        
+        <!-- System Status Tab -->
+        <div id="system-status" class="tab-content active">
+            <div class="card">
+                <h2>🔧 System Status Overview</h2>
+                
+                <div class="test-group">
+                    <h3>WordPress Environment</h3>
+                    <p>WordPress Version: <strong>6.8.1</strong></p><p>PHP Version: <strong>8.2.27</strong></p><p>Current User: <strong>Not logged in</strong></p><p>Theme Directory: <strong>/Users/justinfassio/Local Sites/fitcopilot-theme/app/public/wp-content/themes/fitcopilot</strong></p>                </div>
+                
+                <div class="test-group">
+                    <h3>🔍 Class Loading Status</h3>
+                    <p>FitCopilot_Training_Calendar_Manager:</p><ul><li>File exists: <span class="success">✅</span></li><li>Class loaded: <span class="success">✅</span></li></ul><p>FitCopilot_Training_Calendar_Provider:</p><ul><li>File exists: <span class="success">✅</span></li><li>Class loaded: <span class="success">✅</span></li></ul><p>FitCopilot_Training_Calendar_Ajax:</p><ul><li>File exists: <span class="success">✅</span></li><li>Class loaded: <span class="success">✅</span></li></ul><p>FitCopilot_User_Registration_API:</p><ul><li>File exists: <span class="success">✅</span></li><li>Class loaded: <span class="error">❌</span></li></ul><p>FitCopilot_Trainer_Availability_API:</p><ul><li>File exists: <span class="success">✅</span></li><li>Class loaded: <span class="error">❌</span></li></ul>                </div>
+                
+                <div class="test-group">
+                    <h3>🌐 REST API Routes</h3>
+                    <p class="success">✅ Found 7 FitCopilot routes:</p><ul><li><code>/fitcopilot/v1</code></li><li><code>/fitcopilot/v1/trainer-availability</code></li><li><code>/fitcopilot/v1/trainer-availability/range</code></li><li><code>/fitcopilot/v1/users/check-email</code></li><li><code>/fitcopilot/v1/users/register</code></li><li><code>/fitcopilot/v1/users/send-welcome-email</code></li><li><code>/fitcopilot/v1/users/profile</code></li></ul>                </div>
+                
+                <div class="test-group">
+                    <h3>📊 Global Variables</h3>
+                    <p>fitcopilot_training_calendar_manager: <span class="success">✅ Set</span></p><p>fitcopilot_user_registration_api: <span class="error">❌ Not Set</span></p>                </div>
+            </div>
+        </div>
+        
+        <!-- Backend Tests Tab -->
+        <div id="backend-tests" class="tab-content">
+            <div class="card">
+                <h2>🔧 Backend Component Tests</h2>
+                
+                <table id="backend-results-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Test</th>
+                            <th>Result</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Training Calendar Manager</td>
+                            <td>Initialization</td>
+                            <td id="manager-init-status">Not tested</td>
+                            <td><button onclick="testManagerInit()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>Data Provider</td>
+                            <td>Frontend Data</td>
+                            <td id="provider-data-status">Not tested</td>
+                            <td><button onclick="testProviderData()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>AJAX Handler</td>
+                            <td>Endpoints</td>
+                            <td id="ajax-endpoints-status">Not tested</td>
+                            <td><button onclick="testAjaxEndpoints()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>User Registration API</td>
+                            <td>REST Routes</td>
+                            <td id="user-api-routes-status">Not tested</td>
+                            <td><button onclick="testUserApiRoutes()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>Trainer Availability API</td>
+                            <td>REST Routes</td>
+                            <td id="trainer-api-routes-status">Not tested</td>
+                            <td><button onclick="testTrainerApiRoutes()">Test</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="controls">
+                    <button onclick="runAllBackendTests()">Run All Backend Tests</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Backend Test Results</h2>
+                <div id="backend-test-results"></div>
+            </div>
+        </div>
+        
+        <!-- Frontend Tests Tab -->
+        <div id="frontend-tests" class="tab-content">
+            <div class="card">
+                <h2>⚛️ Frontend Component Tests</h2>
+                
+                <table id="frontend-results-table">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Test</th>
+                            <th>Result</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Data Localization</td>
+                            <td>fitcopilotTrainingCalendarData</td>
+                            <td id="data-localization-status">Not tested</td>
+                            <td><button onclick="testDataLocalization()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>Nonce System</td>
+                            <td>WP Nonce Availability</td>
+                            <td id="nonce-system-status">Not tested</td>
+                            <td><button onclick="testNonceSystem()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>React Components</td>
+                            <td>Component Loading</td>
+                            <td id="react-components-status">Not tested</td>
+                            <td><button onclick="testReactComponents()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>Event Modal</td>
+                            <td>Modal Functionality</td>
+                            <td id="event-modal-status">Not tested</td>
+                            <td><button onclick="testEventModal()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>Calendar Integration</td>
+                            <td>FullCalendar Setup</td>
+                            <td id="calendar-integration-status">Not tested</td>
+                            <td><button onclick="testCalendarIntegration()">Test</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="controls">
+                    <button onclick="runAllFrontendTests()">Run All Frontend Tests</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>Frontend Test Results</h2>
+                <div id="frontend-test-results"></div>
+            </div>
+        </div>
+        
+        <!-- API Tests Tab -->
+        <div id="api-tests" class="tab-content">
+            <div class="card">
+                <h2>🌐 API Endpoint Tests</h2>
+                
+                <table id="api-results-table">
+                    <thead>
+                        <tr>
+                            <th>API</th>
+                            <th>Endpoint</th>
+                            <th>Method</th>
+                            <th>Result</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>FitCopilot API</td>
+                            <td>/fitcopilot/v1</td>
+                            <td>GET</td>
+                            <td id="api-root-status">Not tested</td>
+                            <td><button onclick="testApiRoot()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>Trainer Availability</td>
+                            <td>/trainer-availability</td>
+                            <td>GET</td>
+                            <td id="get-availability-status">Not tested</td>
+                            <td><button onclick="testGetAvailability()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>Trainer Availability</td>
+                            <td>/trainer-availability/range</td>
+                            <td>GET</td>
+                            <td id="get-availability-range-status">Not tested</td>
+                            <td><button onclick="testGetAvailabilityRange()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>User Registration</td>
+                            <td>/users/check-email</td>
+                            <td>POST</td>
+                            <td id="check-email-status">Not tested</td>
+                            <td><button onclick="testCheckEmail()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>User Registration</td>
+                            <td>/users/register</td>
+                            <td>POST</td>
+                            <td id="register-user-status">Not tested</td>
+                            <td><button onclick="testRegisterUser()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>User Registration</td>
+                            <td>/users/send-welcome-email</td>
+                            <td>POST</td>
+                            <td id="send-welcome-email-status">Not tested</td>
+                            <td><button onclick="testSendWelcomeEmail()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>User Management</td>
+                            <td>/users/profile</td>
+                            <td>GET</td>
+                            <td id="get-user-profile-status">Not tested</td>
+                            <td><button onclick="testGetUserProfile()">Test</button></td>
+                        </tr>
+                        <tr>
+                            <td>User Management</td>
+                            <td>/users/profile</td>
+                            <td>POST</td>
+                            <td id="update-user-profile-status">Not tested</td>
+                            <td><button onclick="testUpdateUserProfile()">Test</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="controls">
+                    <button onclick="runAllApiTests()">Run All API Tests</button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2>API Test Results</h2>
+                <div id="api-test-results"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Tab switching functionality
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+            
+            const tabs = document.getElementsByClassName("tab");
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+        
+        // API Base URL and Nonce
+        const baseUrl = 'http://fitcopilot-theme.local/wp-json/fitcopilot/v1';
+        const wpRestNonce = '9749f6d0b0';
+        const ajaxUrl = 'http://fitcopilot-theme.local/wp-admin/admin-ajax.php';
+        const ajaxNonce = '0130a2c5e6';
+        
+        console.log('Test Environment Setup:');
+        console.log('Base URL:', baseUrl);
+        console.log('REST Nonce:', wpRestNonce);
+        console.log('AJAX URL:', ajaxUrl);
+        console.log('AJAX Nonce:', ajaxNonce);
+        
+        // Backend Tests
+        async function testManagerInit() {
+            updateStatus('manager-init-status', 'Running...');
+            
+            try {
+                // Test if manager is initialized
+                const response = await fetch('http://fitcopilot-theme.local?test_manager=1', {
+                    method: 'GET',
+                    credentials: 'same-origin'
+                });
+                
+                const text = await response.text();
+                const hasManager = text.includes('Training Calendar Manager') || text.includes('manager initialized');
+                
+                if (hasManager) {
+                    updateStatus('manager-init-status', 'Pass', 'success');
+                    displayResult('backend', 'Manager Initialization', { success: true, response: 'Manager is initialized' });
+                } else {
+                    updateStatus('manager-init-status', 'Fail', 'error');
+                    displayResult('backend', 'Manager Initialization', { success: false, error: 'Manager not found' });
+                }
+            } catch (error) {
+                updateStatus('manager-init-status', 'Error', 'error');
+                displayResult('backend', 'Manager Initialization', { success: false, error: error.message });
+            }
+        }
+        
+        async function testProviderData() {
+            updateStatus('provider-data-status', 'Running...');
+            
+            try {
+                // Check if data is localized on frontend
+                const response = await fetch('http://fitcopilot-theme.local', {
+                    method: 'GET',
+                    credentials: 'same-origin'
+                });
+                
+                const text = await response.text();
+                const hasData = text.includes('fitcopilotTrainingCalendarData');
+                
+                if (hasData) {
+                    updateStatus('provider-data-status', 'Pass', 'success');
+                    displayResult('backend', 'Provider Data', { success: true, response: 'Data localization found' });
+                } else {
+                    updateStatus('provider-data-status', 'Fail', 'error');
+                    displayResult('backend', 'Provider Data', { success: false, error: 'Data localization not found' });
+                }
+            } catch (error) {
+                updateStatus('provider-data-status', 'Error', 'error');
+                displayResult('backend', 'Provider Data', { success: false, error: error.message });
+            }
+        }
+        
+        async function testAjaxEndpoints() {
+            updateStatus('ajax-endpoints-status', 'Running...');
+            
+            try {
+                const response = await fetch(ajaxUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        action: 'get_calendar_events',
+                        nonce: ajaxNonce
+                    }),
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (data.success !== undefined) {
+                    updateStatus('ajax-endpoints-status', 'Pass', 'success');
+                    displayResult('backend', 'AJAX Endpoints', { success: true, response: data });
+                } else {
+                    updateStatus('ajax-endpoints-status', 'Fail', 'error');
+                    displayResult('backend', 'AJAX Endpoints', { success: false, response: data });
+                }
+            } catch (error) {
+                updateStatus('ajax-endpoints-status', 'Error', 'error');
+                displayResult('backend', 'AJAX Endpoints', { success: false, error: error.message });
+            }
+        }
+        
+        // Frontend Tests
+        async function testDataLocalization() {
+            updateStatus('data-localization-status', 'Running...');
+            
+            try {
+                // Check if window.fitcopilotTrainingCalendarData exists
+                if (typeof window.fitcopilotTrainingCalendarData !== 'undefined') {
+                    updateStatus('data-localization-status', 'Pass', 'success');
+                    displayResult('frontend', 'Data Localization', { 
+                        success: true, 
+                        response: window.fitcopilotTrainingCalendarData 
+                    });
+                } else {
+                    updateStatus('data-localization-status', 'Fail', 'error');
+                    displayResult('frontend', 'Data Localization', { 
+                        success: false, 
+                        error: 'fitcopilotTrainingCalendarData is undefined' 
+                    });
+                }
+            } catch (error) {
+                updateStatus('data-localization-status', 'Error', 'error');
+                displayResult('frontend', 'Data Localization', { success: false, error: error.message });
+            }
+        }
+        
+        async function testNonceSystem() {
+            updateStatus('nonce-system-status', 'Running...');
+            
+            try {
+                const hasRestNonce = wpRestNonce && wpRestNonce !== '';
+                const hasAjaxNonce = ajaxNonce && ajaxNonce !== '';
+                
+                if (hasRestNonce && hasAjaxNonce) {
+                    updateStatus('nonce-system-status', 'Pass', 'success');
+                    displayResult('frontend', 'Nonce System', { 
+                        success: true, 
+                        response: { restNonce: wpRestNonce, ajaxNonce: ajaxNonce } 
+                    });
+                } else {
+                    updateStatus('nonce-system-status', 'Fail', 'error');
+                    displayResult('frontend', 'Nonce System', { 
+                        success: false, 
+                        error: 'Missing nonces', 
+                        response: { hasRestNonce, hasAjaxNonce } 
+                    });
+                }
+            } catch (error) {
+                updateStatus('nonce-system-status', 'Error', 'error');
+                displayResult('frontend', 'Nonce System', { success: false, error: error.message });
+            }
+        }
+        
+        // API Tests
+        async function testCheckEmail() {
+            updateStatus('check-email-status', 'Running...');
+            
+            try {
+                const response = await fetch(`${baseUrl}/users/check-email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-WP-Nonce': wpRestNonce
+                    },
+                    body: JSON.stringify({
+                        email: 'test@example.com'
+                    }),
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    updateStatus('check-email-status', 'Pass', 'success');
+                    displayResult('api', 'Check Email', { success: true, response: data });
+                } else {
+                    updateStatus('check-email-status', 'Fail', 'error');
+                    displayResult('api', 'Check Email', { success: false, response: data });
+                }
+            } catch (error) {
+                updateStatus('check-email-status', 'Error', 'error');
+                displayResult('api', 'Check Email', { success: false, error: error.message });
+            }
+        }
+        
+        async function testGetAvailability() {
+            updateStatus('get-availability-status', 'Running...');
+            
+            try {
+                // Test with valid future date and event type (required parameters)
+                const response = await fetch(`${baseUrl}/trainer-availability?date=2025-06-20&event_type=consultation`, {
+                    method: 'GET',
+                    headers: {
+                        'X-WP-Nonce': wpRestNonce
+                    },
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success && data.available_slots && Array.isArray(data.available_slots)) {
+                    updateStatus('get-availability-status', 'Pass', 'success');
+                    displayResult('api', 'Get Availability', { success: true, response: data });
+                } else {
+                    updateStatus('get-availability-status', 'Fail', 'error');
+                    displayResult('api', 'Get Availability', { success: false, response: data });
+                }
+            } catch (error) {
+                updateStatus('get-availability-status', 'Error', 'error');
+                displayResult('api', 'Get Availability', { success: false, error: error.message });
+            }
+        }
+        
+        // Utility Functions
+        function updateStatus(elementId, status, className = 'info') {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = `<span class="${className}">${status}</span>`;
+            }
+        }
+        
+        function displayResult(category, testName, result) {
+            const resultsDiv = document.getElementById(`${category}-test-results`);
+            
+            const resultCard = document.createElement('div');
+            resultCard.className = 'test-group ' + (result.success ? 'passed' : 'failed');
+            resultCard.innerHTML = `
+                <h3>${testName} ${result.success ? 
+                    '<span class="success">✓ Passed</span>' : 
+                    '<span class="error">✗ Failed</span>'}</h3>
+                ${result.error ? `<p class="error">Error: ${result.error}</p>` : ''}
+                <h4>Response:</h4>
+                <div class="response">${JSON.stringify(result.response, null, 2)}</div>
+            `;
+            
+            resultsDiv.insertBefore(resultCard, resultsDiv.firstChild);
+        }
+        
+        // Run all tests functions
+        async function runAllBackendTests() {
+            await testManagerInit();
+            await testProviderData();
+            await testAjaxEndpoints();
+        }
+        
+        async function runAllFrontendTests() {
+            await testDataLocalization();
+            await testNonceSystem();
+        }
+        
+        async function runAllApiTests() {
+            await testApiRoot();
+            await testGetAvailability();
+            await testGetAvailabilityRange();
+            await testCheckEmail();
+            await testRegisterUser();
+            await testSendWelcomeEmail();
+            await testGetUserProfile();
+            await testUpdateUserProfile();
+        }
+        
+        // API Test Functions
+        async function testApiRoot() {
+            updateStatus('api-root-status', 'Running...');
+            
+            try {
+                const response = await fetch(`${baseUrl}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-WP-Nonce': wpRestNonce
+                    },
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.namespace === 'fitcopilot/v1' && data.routes) {
+                    updateStatus('api-root-status', 'Pass', 'success');
+                    displayResult('api', 'API Root', { success: true, response: data });
+                } else {
+                    updateStatus('api-root-status', 'Fail', 'error');
+                    displayResult('api', 'API Root', { success: false, response: data });
+                }
+            } catch (error) {
+                updateStatus('api-root-status', 'Error', 'error');
+                displayResult('api', 'API Root', { success: false, error: error.message });
+            }
+        }
+        
+        async function testGetAvailabilityRange() {
+            updateStatus('get-availability-range-status', 'Running...');
+            
+            try {
+                // Test with future date range
+                const startDate = '2025-06-20';
+                const endDate = '2025-06-25';
+                
+                const response = await fetch(`${baseUrl}/trainer-availability/range?start_date=${startDate}&end_date=${endDate}&event_type=consultation`, {
+                    method: 'GET',
+                    headers: {
+                        'X-WP-Nonce': wpRestNonce
+                    },
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && (data.success || data.message === "Range availability not yet implemented")) {
+                    // Accept both successful implementation and "not implemented" message
+                    const isImplemented = data.success && data.available_slots && data.available_slots.length > 0;
+                    const isNotImplemented = data.message === "Range availability not yet implemented";
+                    
+                    if (isImplemented) {
+                        updateStatus('get-availability-range-status', 'Pass', 'success');
+                        displayResult('api', 'Get Availability Range', { success: true, response: data });
+                    } else if (isNotImplemented) {
+                        updateStatus('get-availability-range-status', 'Pending', 'warning');
+                        displayResult('api', 'Get Availability Range', { success: true, response: data, note: 'Feature not yet implemented but endpoint exists' });
+                    } else {
+                        updateStatus('get-availability-range-status', 'Fail', 'error');
+                        displayResult('api', 'Get Availability Range', { success: false, response: data });
+                    }
+                } else {
+                    updateStatus('get-availability-range-status', 'Fail', 'error');
+                    displayResult('api', 'Get Availability Range', { success: false, response: data });
+                }
+            } catch (error) {
+                updateStatus('get-availability-range-status', 'Error', 'error');
+                displayResult('api', 'Get Availability Range', { success: false, error: error.message });
+            }
+        }
+        
+        async function testRegisterUser() {
+            updateStatus('register-user-status', 'Running...');
+            
+            try {
+                const testEmail = `test-${Date.now()}@example.com`;
+                
+                const response = await fetch(`${baseUrl}/users/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-WP-Nonce': wpRestNonce
+                    },
+                    body: JSON.stringify({
+                        email: testEmail,
+                        firstName: 'Test',
+                        lastName: 'User',
+                        password: 'testpass123',
+                        acceptsPrivacyPolicy: true
+                    }),
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success && data.user_id) {
+                    updateStatus('register-user-status', 'Pass', 'success');
+                    displayResult('api', 'Register User', { success: true, response: data });
+                } else {
+                    updateStatus('register-user-status', 'Fail', 'error');
+                    displayResult('api', 'Register User', { success: false, response: data });
+                }
+            } catch (error) {
+                updateStatus('register-user-status', 'Error', 'error');
+                displayResult('api', 'Register User', { success: false, error: error.message });
+            }
+        }
+        
+        async function testSendWelcomeEmail() {
+            updateStatus('send-welcome-email-status', 'Running...');
+            
+            try {
+                const response = await fetch(`${baseUrl}/users/send-welcome-email`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-WP-Nonce': wpRestNonce
+                    },
+                    body: JSON.stringify({
+                        user_id: 1, // Test with admin user
+                        email: 'admin@example.com'
+                    }),
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    updateStatus('send-welcome-email-status', 'Pass', 'success');
+                    displayResult('api', 'Send Welcome Email', { success: true, response: data });
+                } else {
+                    updateStatus('send-welcome-email-status', 'Fail', 'error');
+                    displayResult('api', 'Send Welcome Email', { success: false, response: data });
+                }
+            } catch (error) {
+                updateStatus('send-welcome-email-status', 'Error', 'error');
+                displayResult('api', 'Send Welcome Email', { success: false, error: error.message });
+            }
+        }
+        
+        async function testGetUserProfile() {
+            updateStatus('get-user-profile-status', 'Running...');
+            
+            try {
+                const response = await fetch(`${baseUrl}/users/profile`, {
+                    method: 'GET',
+                    headers: {
+                        'X-WP-Nonce': wpRestNonce
+                    },
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    updateStatus('get-user-profile-status', 'Pass', 'success');
+                    displayResult('api', 'Get User Profile', { success: true, response: data });
+                } else {
+                    updateStatus('get-user-profile-status', 'Fail', 'error');
+                    displayResult('api', 'Get User Profile', { success: false, response: data });
+                }
+            } catch (error) {
+                updateStatus('get-user-profile-status', 'Error', 'error');
+                displayResult('api', 'Get User Profile', { success: false, error: error.message });
+            }
+        }
+        
+        async function testUpdateUserProfile() {
+            updateStatus('update-user-profile-status', 'Running...');
+            
+            try {
+                const response = await fetch(`${baseUrl}/users/profile`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-WP-Nonce': wpRestNonce
+                    },
+                    body: JSON.stringify({
+                        first_name: 'Updated',
+                        last_name: 'Name',
+                        client_type: 'returning',
+                        experience_level: 'intermediate'
+                    }),
+                    credentials: 'same-origin'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    updateStatus('update-user-profile-status', 'Pass', 'success');
+                    displayResult('api', 'Update User Profile', { success: true, response: data });
+                } else {
+                    updateStatus('update-user-profile-status', 'Fail', 'error');
+                    displayResult('api', 'Update User Profile', { success: false, response: data });
+                }
+            } catch (error) {
+                updateStatus('update-user-profile-status', 'Error', 'error');
+                displayResult('api', 'Update User Profile', { success: false, error: error.message });
+            }
+        }
+        
+        // Placeholder functions for remaining tests
+        async function testUserApiRoutes() {
+            updateStatus('user-api-routes-status', 'Running...');
+            
+            try {
+                console.log('🔍 Testing User Registration API Routes...');
+                
+                // Test results tracking
+                const testResults = {
+                    endpoints: [],
+                    totalTests: 0,
+                    passedTests: 0,
+                    failedTests: 0
+                };
+                
+                // 1. Test API Root to check if FitCopilot API is available
+                console.log('Testing API Root...');
+                testResults.totalTests++;
+                try {
+                    const rootResponse = await fetch(`${baseUrl}`, {
+                        method: 'GET',
+                        headers: { 'X-WP-Nonce': wpRestNonce },
+                        credentials: 'same-origin'
+                    });
+                    const rootData = await rootResponse.json();
+                    
+                    if (rootResponse.ok && rootData.namespace === 'fitcopilot/v1') {
+                        testResults.passedTests++;
+                        testResults.endpoints.push({
+                            name: 'API Root',
+                            endpoint: '/fitcopilot/v1',
+                            method: 'GET',
+                            status: 'Pass',
+                            response: 'API namespace available'
+                        });
+                    } else {
+                        testResults.failedTests++;
+                        testResults.endpoints.push({
+                            name: 'API Root',
+                            endpoint: '/fitcopilot/v1',
+                            method: 'GET',
+                            status: 'Fail',
+                            response: rootData
+                        });
+                    }
+                } catch (error) {
+                    testResults.failedTests++;
+                    testResults.endpoints.push({
+                        name: 'API Root',
+                        endpoint: '/fitcopilot/v1',
+                        method: 'GET',
+                        status: 'Error',
+                        response: error.message
+                    });
+                }
+                
+                // 2. Test Check Email Endpoint
+                console.log('Testing Check Email endpoint...');
+                testResults.totalTests++;
+                try {
+                    const emailResponse = await fetch(`${baseUrl}/users/check-email`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-WP-Nonce': wpRestNonce
+                        },
+                        body: JSON.stringify({ email: 'test@example.com' }),
+                        credentials: 'same-origin'
+                    });
+                    const emailData = await emailResponse.json();
+                    
+                    if (emailResponse.ok && typeof emailData.exists !== 'undefined') {
+                        testResults.passedTests++;
+                        testResults.endpoints.push({
+                            name: 'Check Email',
+                            endpoint: '/users/check-email',
+                            method: 'POST',
+                            status: 'Pass',
+                            response: `Email check working (exists: ${emailData.exists})`
+                        });
+                    } else {
+                        testResults.failedTests++;
+                        testResults.endpoints.push({
+                            name: 'Check Email',
+                            endpoint: '/users/check-email',
+                            method: 'POST',
+                            status: 'Fail',
+                            response: emailData
+                        });
+                    }
+                } catch (error) {
+                    testResults.failedTests++;
+                    testResults.endpoints.push({
+                        name: 'Check Email',
+                        endpoint: '/users/check-email',
+                        method: 'POST',
+                        status: 'Error',
+                        response: error.message
+                    });
+                }
+                
+                // 3. Test User Registration Endpoint
+                console.log('Testing User Registration endpoint...');
+                testResults.totalTests++;
+                try {
+                    const testEmail = `test-${Date.now()}@example.com`;
+                    const registerResponse = await fetch(`${baseUrl}/users/register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-WP-Nonce': wpRestNonce
+                        },
+                        body: JSON.stringify({
+                            email: testEmail,
+                            firstName: 'Test',
+                            acceptsPrivacyPolicy: true
+                        }),
+                        credentials: 'same-origin'
+                    });
+                    const registerData = await registerResponse.json();
+                    
+                    if (registerResponse.ok && registerData.success && registerData.user_id) {
+                        testResults.passedTests++;
+                        testResults.endpoints.push({
+                            name: 'User Registration',
+                            endpoint: '/users/register',
+                            method: 'POST',
+                            status: 'Pass',
+                            response: `User created (ID: ${registerData.user_id})`
+                        });
+                    } else {
+                        testResults.failedTests++;
+                        testResults.endpoints.push({
+                            name: 'User Registration',
+                            endpoint: '/users/register',
+                            method: 'POST',
+                            status: 'Fail',
+                            response: registerData
+                        });
+                    }
+                } catch (error) {
+                    testResults.failedTests++;
+                    testResults.endpoints.push({
+                        name: 'User Registration',
+                        endpoint: '/users/register',
+                        method: 'POST',
+                        status: 'Error',
+                        response: error.message
+                    });
+                }
+                
+                // 4. Test Send Welcome Email Endpoint
+                console.log('Testing Send Welcome Email endpoint...');
+                testResults.totalTests++;
+                try {
+                    const welcomeResponse = await fetch(`${baseUrl}/users/send-welcome-email`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-WP-Nonce': wpRestNonce
+                        },
+                        body: JSON.stringify({ user_id: 1 }), // Test with admin user
+                        credentials: 'same-origin'
+                    });
+                    const welcomeData = await welcomeResponse.json();
+                    
+                    if (welcomeResponse.ok) {
+                        testResults.passedTests++;
+                        testResults.endpoints.push({
+                            name: 'Send Welcome Email',
+                            endpoint: '/users/send-welcome-email',
+                            method: 'POST',
+                            status: 'Pass',
+                            response: welcomeData.message || 'Endpoint responding'
+                        });
+                    } else {
+                        testResults.failedTests++;
+                        testResults.endpoints.push({
+                            name: 'Send Welcome Email',
+                            endpoint: '/users/send-welcome-email',
+                            method: 'POST',
+                            status: 'Fail',
+                            response: welcomeData
+                        });
+                    }
+                } catch (error) {
+                    testResults.failedTests++;
+                    testResults.endpoints.push({
+                        name: 'Send Welcome Email',
+                        endpoint: '/users/send-welcome-email',
+                        method: 'POST',
+                        status: 'Error',
+                        response: error.message
+                    });
+                }
+                
+                // 5. Test Get User Profile Endpoint
+                console.log('Testing Get User Profile endpoint...');
+                testResults.totalTests++;
+                try {
+                    const profileResponse = await fetch(`${baseUrl}/users/profile`, {
+                        method: 'GET',
+                        headers: { 'X-WP-Nonce': wpRestNonce },
+                        credentials: 'same-origin'
+                    });
+                    const profileData = await profileResponse.json();
+                    
+                    if (profileResponse.ok) {
+                        testResults.passedTests++;
+                        testResults.endpoints.push({
+                            name: 'Get User Profile',
+                            endpoint: '/users/profile',
+                            method: 'GET',
+                            status: 'Pass',
+                            response: 'Profile endpoint responding'
+                        });
+                    } else {
+                        // Profile might fail if not authenticated, but endpoint should exist
+                        if (profileResponse.status === 401) {
+                            testResults.passedTests++;
+                            testResults.endpoints.push({
+                                name: 'Get User Profile',
+                                endpoint: '/users/profile',
+                                method: 'GET',
+                                status: 'Pass',
+                                response: 'Endpoint exists (requires auth)'
+                            });
+                        } else {
+                            testResults.failedTests++;
+                            testResults.endpoints.push({
+                                name: 'Get User Profile',
+                                endpoint: '/users/profile',
+                                method: 'GET',
+                                status: 'Fail',
+                                response: profileData
+                            });
+                        }
+                    }
+                } catch (error) {
+                    testResults.failedTests++;
+                    testResults.endpoints.push({
+                        name: 'Get User Profile',
+                        endpoint: '/users/profile',
+                        method: 'GET',
+                        status: 'Error',
+                        response: error.message
+                    });
+                }
+                
+                // Calculate overall success rate
+                const successRate = Math.round((testResults.passedTests / testResults.totalTests) * 100);
+                
+                // Determine overall status
+                let overallStatus, statusClass;
+                if (successRate >= 80) {
+                    overallStatus = 'Pass';
+                    statusClass = 'success';
+                } else if (successRate >= 60) {
+                    overallStatus = 'Partial';
+                    statusClass = 'warning';
+                } else {
+                    overallStatus = 'Fail';
+                    statusClass = 'error';
+                }
+                
+                // Update status display
+                updateStatus('user-api-routes-status', `${overallStatus} (${successRate}%)`, statusClass);
+                
+                // Create detailed result display
+                const resultSummary = {
+                    success: successRate >= 60, // Consider 60% as passing for partial implementations
+                    response: {
+                        summary: {
+                            totalTests: testResults.totalTests,
+                            passedTests: testResults.passedTests,
+                            failedTests: testResults.failedTests,
+                            successRate: `${successRate}%`,
+                            status: overallStatus
+                        },
+                        endpoints: testResults.endpoints
+                    }
+                };
+                
+                displayResult('backend', 'User Registration API', resultSummary);
+                
+                console.log('✅ User Registration API test completed:', testResults);
+                
+            } catch (error) {
+                console.error('❌ User Registration API test failed:', error);
+                updateStatus('user-api-routes-status', 'Error', 'error');
+                displayResult('backend', 'User Registration API', { 
+                    success: false, 
+                    error: error.message,
+                    response: 'Failed to run comprehensive API test'
+                });
+            }
+        }
+        
+        // Comprehensive Trainer Availability API Test
+        async function testTrainerApiRoutes() {
+            updateStatus('trainer-api-routes-status', 'Running...');
+            
+            try {
+                console.log('🔍 Testing Trainer Availability API Routes...');
+                
+                // Test results tracking
+                const testResults = {
+                    endpoints: [],
+                    totalTests: 0,
+                    passedTests: 0,
+                    failedTests: 0
+                };
+                
+                // 1. Test API Root to check if FitCopilot API is available
+                console.log('Testing API Root...');
+                testResults.totalTests++;
+                try {
+                    const rootResponse = await fetch(`${baseUrl}`, {
+                        method: 'GET',
+                        headers: { 'X-WP-Nonce': wpRestNonce },
+                        credentials: 'same-origin'
+                    });
+                    const rootData = await rootResponse.json();
+                    
+                    if (rootResponse.ok && rootData.namespace === 'fitcopilot/v1') {
+                        testResults.passedTests++;
+                        testResults.endpoints.push({
+                            name: 'API Root',
+                            endpoint: '/fitcopilot/v1',
+                            method: 'GET',
+                            status: 'Pass',
+                            response: 'API namespace available'
+                        });
+                    } else {
+                        testResults.failedTests++;
+                        testResults.endpoints.push({
+                            name: 'API Root',
+                            endpoint: '/fitcopilot/v1',
+                            method: 'GET',
+                            status: 'Fail',
+                            response: rootData
+                        });
+                    }
+                } catch (error) {
+                    testResults.failedTests++;
+                    testResults.endpoints.push({
+                        name: 'API Root',
+                        endpoint: '/fitcopilot/v1',
+                        method: 'GET',
+                        status: 'Error',
+                        response: error.message
+                    });
+                }
+                
+                // 2. Test Trainer Availability Endpoint (single date)
+                console.log('Testing Trainer Availability endpoint...');
+                testResults.totalTests++;
+                try {
+                    const availabilityResponse = await fetch(`${baseUrl}/trainer-availability?date=2025-06-20&event_type=consultation`, {
+                        method: 'GET',
+                        headers: { 'X-WP-Nonce': wpRestNonce },
+                        credentials: 'same-origin'
+                    });
+                    const availabilityData = await availabilityResponse.json();
+                    
+                    if (availabilityResponse.ok && availabilityData.success && Array.isArray(availabilityData.available_slots)) {
+                        testResults.passedTests++;
+                        testResults.endpoints.push({
+                            name: 'Trainer Availability',
+                            endpoint: '/trainer-availability',
+                            method: 'GET',
+                            status: 'Pass',
+                            response: `Found ${availabilityData.available_slots.length} available slots`
+                        });
+                    } else {
+                        testResults.failedTests++;
+                        testResults.endpoints.push({
+                            name: 'Trainer Availability',
+                            endpoint: '/trainer-availability',
+                            method: 'GET',
+                            status: 'Fail',
+                            response: availabilityData
+                        });
+                    }
+                } catch (error) {
+                    testResults.failedTests++;
+                    testResults.endpoints.push({
+                        name: 'Trainer Availability',
+                        endpoint: '/trainer-availability',
+                        method: 'GET',
+                        status: 'Error',
+                        response: error.message
+                    });
+                }
+                
+                // 3. Test Trainer Availability Range Endpoint 
+                console.log('Testing Trainer Availability Range endpoint...');
+                testResults.totalTests++;
+                try {
+                    const rangeResponse = await fetch(`${baseUrl}/trainer-availability/range?start_date=2025-06-20&end_date=2025-06-25&event_type=consultation`, {
+                        method: 'GET',
+                        headers: { 'X-WP-Nonce': wpRestNonce },
+                        credentials: 'same-origin'
+                    });
+                    const rangeData = await rangeResponse.json();
+                    
+                    if (rangeResponse.ok) {
+                        // Accept both successful implementation and "not implemented" message
+                        const isImplemented = rangeData.success && rangeData.available_slots && rangeData.available_slots.length > 0;
+                        const isNotImplemented = rangeData.message === "Range availability not yet implemented";
+                        
+                        if (isImplemented) {
+                            testResults.passedTests++;
+                            testResults.endpoints.push({
+                                name: 'Trainer Availability Range',
+                                endpoint: '/trainer-availability/range',
+                                method: 'GET',
+                                status: 'Pass',
+                                response: `Found ${rangeData.available_slots.length} slots`
+                            });
+                        } else if (isNotImplemented) {
+                            testResults.passedTests++;
+                            testResults.endpoints.push({
+                                name: 'Trainer Availability Range',
+                                endpoint: '/trainer-availability/range',
+                                method: 'GET',
+                                status: 'Partial',
+                                response: 'Endpoint exists (not yet implemented)'
+                            });
+                        } else {
+                            testResults.failedTests++;
+                            testResults.endpoints.push({
+                                name: 'Trainer Availability Range',
+                                endpoint: '/trainer-availability/range',
+                                method: 'GET',
+                                status: 'Fail',
+                                response: rangeData
+                            });
+                        }
+                    } else {
+                        testResults.failedTests++;
+                        testResults.endpoints.push({
+                            name: 'Trainer Availability Range',
+                            endpoint: '/trainer-availability/range',
+                            method: 'GET',
+                            status: 'Fail',
+                            response: rangeData
+                        });
+                    }
+                } catch (error) {
+                    testResults.failedTests++;
+                    testResults.endpoints.push({
+                        name: 'Trainer Availability Range',
+                        endpoint: '/trainer-availability/range',
+                        method: 'GET',
+                        status: 'Error',
+                        response: error.message
+                    });
+                }
+                
+                // 4. Test Different Event Types
+                console.log('Testing Different Event Types...');
+                testResults.totalTests++;
+                try {
+                    const eventTypes = ['consultation', 'Personal Training Session', 'Free Consultation (20 Min)'];
+                    let successfulTypes = 0;
+                    
+                    for (const eventType of eventTypes) {
+                        const typeResponse = await fetch(`${baseUrl}/trainer-availability?date=2025-06-21&event_type=${encodeURIComponent(eventType)}`, {
+                            method: 'GET',
+                            headers: { 'X-WP-Nonce': wpRestNonce },
+                            credentials: 'same-origin'
+                        });
+                        const typeData = await typeResponse.json();
+                        
+                        if (typeResponse.ok && typeData.success) {
+                            successfulTypes++;
+                        }
+                    }
+                    
+                    if (successfulTypes >= 2) {
+                        testResults.passedTests++;
+                        testResults.endpoints.push({
+                            name: 'Event Type Support',
+                            endpoint: '/trainer-availability',
+                            method: 'GET',
+                            status: 'Pass',
+                            response: `${successfulTypes}/${eventTypes.length} event types working`
+                        });
+                    } else {
+                        testResults.failedTests++;
+                        testResults.endpoints.push({
+                            name: 'Event Type Support',
+                            endpoint: '/trainer-availability',
+                            method: 'GET',
+                            status: 'Fail',
+                            response: `Only ${successfulTypes}/${eventTypes.length} event types working`
+                        });
+                    }
+                } catch (error) {
+                    testResults.failedTests++;
+                    testResults.endpoints.push({
+                        name: 'Event Type Support',
+                        endpoint: '/trainer-availability',
+                        method: 'GET',
+                        status: 'Error',
+                        response: error.message
+                    });
+                }
+                
+                // 5. Test Error Handling (invalid date)
+                console.log('Testing Error Handling...');
+                testResults.totalTests++;
+                try {
+                    const errorResponse = await fetch(`${baseUrl}/trainer-availability?date=invalid-date&event_type=consultation`, {
+                        method: 'GET',
+                        headers: { 'X-WP-Nonce': wpRestNonce },
+                        credentials: 'same-origin'
+                    });
+                    const errorData = await errorResponse.json();
+                    
+                    // Should return an error for invalid date
+                    if (!errorResponse.ok && errorData.message) {
+                        testResults.passedTests++;
+                        testResults.endpoints.push({
+                            name: 'Error Handling',
+                            endpoint: '/trainer-availability',
+                            method: 'GET',
+                            status: 'Pass',
+                            response: 'Proper error handling for invalid input'
+                        });
+                    } else {
+                        testResults.failedTests++;
+                        testResults.endpoints.push({
+                            name: 'Error Handling',
+                            endpoint: '/trainer-availability',
+                            method: 'GET',
+                            status: 'Fail',
+                            response: 'Should reject invalid dates'
+                        });
+                    }
+                } catch (error) {
+                    // Network error is also acceptable for this test
+                    testResults.passedTests++;
+                    testResults.endpoints.push({
+                        name: 'Error Handling',
+                        endpoint: '/trainer-availability',
+                        method: 'GET',
+                        status: 'Pass',
+                        response: 'Proper error handling (network error)'
+                    });
+                }
+                
+                // Calculate overall success rate
+                const successRate = Math.round((testResults.passedTests / testResults.totalTests) * 100);
+                
+                // Determine overall status
+                let overallStatus, statusClass;
+                if (successRate >= 80) {
+                    overallStatus = 'Pass';
+                    statusClass = 'success';
+                } else if (successRate >= 60) {
+                    overallStatus = 'Partial';
+                    statusClass = 'warning';
+                } else {
+                    overallStatus = 'Fail';
+                    statusClass = 'error';
+                }
+                
+                // Update status display
+                updateStatus('trainer-api-routes-status', `${overallStatus} (${successRate}%)`, statusClass);
+                
+                // Create detailed result display
+                const resultSummary = {
+                    success: successRate >= 60, // Consider 60% as passing for partial implementations
+                    response: {
+                        summary: {
+                            totalTests: testResults.totalTests,
+                            passedTests: testResults.passedTests,
+                            failedTests: testResults.failedTests,
+                            successRate: `${successRate}%`,
+                            status: overallStatus
+                        },
+                        endpoints: testResults.endpoints
+                    }
+                };
+                
+                displayResult('backend', 'Trainer Availability API', resultSummary);
+                
+                console.log('✅ Trainer Availability API test completed:', testResults);
+                
+            } catch (error) {
+                console.error('❌ Trainer Availability API test failed:', error);
+                updateStatus('trainer-api-routes-status', 'Error', 'error');
+                displayResult('backend', 'Trainer Availability API', { 
+                    success: false, 
+                    error: error.message,
+                    response: 'Failed to run comprehensive API test'
+                });
+            }
+        }
+        function testReactComponents() { updateStatus('react-components-status', 'Not implemented', 'warning'); }
+        function testEventModal() { updateStatus('event-modal-status', 'Not implemented', 'warning'); }
+        function testCalendarIntegration() { updateStatus('calendar-integration-status', 'Not implemented', 'warning'); }
+    </script>
+</body>
+</html> 

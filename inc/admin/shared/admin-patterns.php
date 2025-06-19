@@ -63,14 +63,28 @@ abstract class FitCopilot_Admin_Manager_Base {
      * Register admin page - consistent across all managers
      */
     public function register_admin_page() {
-        add_submenu_page(
-            $this->parent_slug,
-            $this->page_title,
-            $this->menu_title,
-            $this->capability,
-            $this->menu_slug,
-            array($this, 'render_admin_page')
-        );
+        // Check if child class overrides menu configuration
+        if (method_exists($this, 'get_menu_config')) {
+            $menu_config = $this->get_menu_config();
+            
+            add_submenu_page(
+                $this->parent_slug,
+                $menu_config['page_title'] ?? $this->page_title,
+                $menu_config['menu_title'] ?? $this->menu_title,
+                $this->capability,
+                $menu_config['menu_slug'] ?? $this->menu_slug,
+                array($this, 'render_admin_page')
+            );
+        } else {
+            add_submenu_page(
+                $this->parent_slug,
+                $this->page_title,
+                $this->menu_title,
+                $this->capability,
+                $this->menu_slug,
+                array($this, 'render_admin_page')
+            );
+        }
     }
     
     /**

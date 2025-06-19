@@ -49,6 +49,15 @@ export interface CalendarEvent {
   updated?: string | Date;
   tags?: string[];
   metadata?: Record<string, any>;
+  
+  // Phase 3: User Association Fields
+  userId?: number;        // WordPress user ID who booked the event
+  createdBy?: number;     // WordPress user ID who created the event
+  userContext?: {         // Enhanced user context
+    isAuthenticated: boolean;
+    user?: RegisteredUser | WordPressUser;
+    registrationSource?: string;
+  };
 }
 
 /**
@@ -572,8 +581,8 @@ export interface SkeletonLoaderProps {
  * Error Boundary Component Props
  */
 export interface ErrorBoundaryProps {
-  children: React.ReactNode;
-  fallback?: React.ComponentType<ErrorFallbackProps>;
+  children: any;
+  fallback?: any;
   onError?: (error: Error, errorInfo: any) => void;
   className?: string;
 }
@@ -705,4 +714,130 @@ export const isBookingData = (obj: any): obj is BookingData => {
     obj.clientInfo &&
     typeof obj.clientInfo.name === 'string' &&
     typeof obj.clientInfo.email === 'string';
-}; 
+};
+
+// ===== USER REGISTRATION INTERFACES =====
+
+/**
+ * User Registration Data Interface
+ */
+export interface UserRegistrationData {
+  email: string;
+  firstName: string;
+  acceptsPrivacyPolicy: boolean;
+}
+
+/**
+ * Enhanced User Registration Data Interface
+ * Extended registration data that integrates with WordPress user fields
+ */
+export interface EnhancedUserRegistrationData extends UserRegistrationData {
+  // WordPress core fields
+  firstName: string;
+  lastName?: string;
+  
+  // Custom meta fields that will be stored in WordPress
+  clientType?: 'new' | 'returning' | 'premium' | 'trial';
+  fitnessGoals?: string;
+  experienceLevel?: 'beginner' | 'intermediate' | 'advanced' | 'professional';
+  preferredContactMethod?: 'email' | 'phone' | 'text' | 'app_notification';
+  registrationSource: string; // Always "Training Calendar" for calendar registrations
+  
+  // Personal information
+  phoneNumber?: string;
+  dateOfBirth?: string;
+  
+  // Emergency contact
+  emergencyContactName?: string;
+  emergencyContactPhone?: string;
+  
+  // Health information
+  medicalConditions?: string;
+  dietaryRestrictions?: string;
+  
+  // Privacy and consent
+  acceptsPrivacyPolicy: boolean;
+  acceptsMarketing?: boolean;
+}
+
+/**
+ * Registered User Interface
+ */
+export interface RegisteredUser {
+  id: number;
+  email: string;
+  firstName: string;
+  lastName?: string;
+  username?: string;
+}
+
+/**
+ * WordPress User Interface
+ * Complete user data structure including WordPress fields and meta
+ */
+export interface WordPressUser extends RegisteredUser {
+  // WordPress core fields
+  userLogin: string;
+  userEmail: string;
+  firstName: string;
+  lastName?: string;
+  displayName: string;
+  userRegistered: string;
+  
+  // Custom meta fields
+  clientType: string;
+  fitnessGoals?: string;
+  experienceLevel: string;
+  preferredContactMethod: string;
+  registrationSource: string;
+  phoneNumber?: string;
+  dateOfBirth?: string;
+  
+  // Emergency contact
+  emergencyContact: {
+    name?: string;
+    phone?: string;
+  };
+  
+  // Health information
+  medicalConditions?: string;
+  dietaryRestrictions?: string;
+  
+  // Privacy and consent
+  privacyPolicyAccepted: string; // Date timestamp
+  marketingConsent: boolean;
+  
+  // WordPress user roles and capabilities
+  roles: string[];
+  capabilities: Record<string, boolean>;
+  
+  // Registration tracking
+  registrationDate: string;
+}
+
+/**
+ * User Registration Context Interface
+ * Context data for user registration state management
+ */
+export interface UserRegistrationContext {
+  currentUser: WordPressUser | null;
+  isAuthenticated: boolean;
+  isRegistering: boolean;
+  registrationError: string | null;
+  
+  // Actions
+  registerUser: (data: EnhancedUserRegistrationData) => Promise<WordPressUser>;
+  loginUser: (credentials: UserLoginCredentials) => Promise<WordPressUser>;
+  logoutUser: () => void;
+  updateUserProfile: (data: Partial<WordPressUser>) => Promise<WordPressUser>;
+  checkEmailExists: (email: string) => Promise<boolean>;
+}
+
+/**
+ * User Login Credentials Interface
+ */
+export interface UserLoginCredentials {
+  email: string;
+  password: string;
+  rememberMe?: boolean;
+} 

@@ -12,6 +12,7 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import React, { useCallback, useMemo, useState } from 'react';
 
 // Component imports
+import { BookingConfirmation } from './components/BookingConfirmation';
 import CalendarView from './components/CalendarView/CalendarView';
 import EventModal from './components/EventModal/EventModal';
 
@@ -76,10 +77,13 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
     statistics,
     loading,
     error,
+    recentBooking,
+    bookingConfirmationVisible,
     updateEvent,
     deleteEvent,
     createEvent,
-    refreshData
+    refreshData,
+    clearBookingConfirmation
   } = useCalendarData();
 
   // ===== DATA TRANSFORMATION =====
@@ -164,13 +168,22 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   // ===== MODAL HANDLERS =====
   
   const openEventModal = useCallback((event: CalendarEvent | null, mode: 'view' | 'edit' | 'create', selectedDate?: Date) => {
+    console.log('🚀 openEventModal CALLED with:', {
+      event: event ? { id: event.id, title: event.title } : null,
+      mode,
+      selectedDate
+    });
+    console.log('🚀 Current modal state before change:', modalState);
+    
     setModalState({
       isOpen: true,
       event,
       mode,
       selectedDate
     });
-  }, []);
+    
+    console.log('🚀 setModalState called - modal should now be open');
+  }, [modalState]);
   
   const closeEventModal = useCallback(() => {
     setModalState({
@@ -231,21 +244,62 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   // ===== CALENDAR EVENT HANDLERS =====
   
   const handleEventClick = useCallback((eventInfo: any) => {
-    console.log('📅 Event clicked:', eventInfo.event.title);
-    
-    // Find the corresponding calendar event
-    const eventId = eventInfo.event.id;
-    const calendarEvent = calendarEvents.find(event => 
-      event.id.toString() === eventId.toString()
-    );
-    
-    if (calendarEvent) {
-      // Open event in view mode
-      openEventModal(calendarEvent, 'view');
-    } else {
-      console.warn('⚠️ Event not found in calendar data:', eventId);
+    try {
+      console.log('🔥 EVENT CLICK DEBUG START 🔥');
+      console.log('📅 Event clicked:', eventInfo?.event?.title || 'Unknown event');
+      console.log('📅 Full eventInfo structure:', eventInfo);
+      console.log('📅 Event object:', eventInfo?.event);
+      console.log('📅 Event extendedProps:', eventInfo?.event?.extendedProps);
+      
+      // Safely extract event ID
+      const eventId = eventInfo?.event?.id;
+      console.log('🆔 Extracted event ID:', eventId, typeof eventId);
+      
+      if (!eventId) {
+        console.warn('⚠️ No event ID found in eventInfo:', eventInfo);
+        return;
+      }
+      
+      // Debug available calendar events
+      console.log('📊 Available calendar events:', calendarEvents.length);
+      console.log('📊 Calendar events IDs:', calendarEvents.map(e => ({ id: e.id, type: typeof e.id, title: e.title })));
+      
+      // Find the corresponding calendar event
+      const calendarEvent = calendarEvents.find(event => 
+        event.id.toString() === eventId.toString()
+      );
+      
+      console.log('🔍 Looking for event with ID:', eventId);
+      console.log('🔍 Found calendar event:', calendarEvent);
+      
+      if (calendarEvent) {
+        console.log('✅ Found calendar event:', calendarEvent);
+        console.log('🚀 About to open modal with event:', calendarEvent.title);
+        console.log('🚀 Modal state before opening:', modalState);
+        
+        // Open event in view mode
+        openEventModal(calendarEvent, 'view');
+        
+        console.log('🚀 openEventModal called successfully');
+        
+        // Check modal state after a brief delay
+        setTimeout(() => {
+          console.log('🚀 Modal state after opening (delayed check):', modalState);
+        }, 100);
+        
+      } else {
+        console.warn('⚠️ Event not found in calendar data:', eventId);
+        console.warn('Available events:', calendarEvents.map(e => ({ id: e.id, title: e.title })));
+      }
+      
+      console.log('🔥 EVENT CLICK DEBUG END 🔥');
+      
+    } catch (error) {
+      console.error('❌ Error in handleEventClick:', error);
+      console.error('EventInfo that caused error:', eventInfo);
+      console.error('Stack trace:', error instanceof Error ? error.stack : 'No stack trace available');
     }
-  }, [calendarEvents, openEventModal]);
+  }, [calendarEvents, openEventModal, modalState]);
 
   const handleDateSelect = useCallback((selectInfo: any) => {
     console.log('📅 Date selected for new event:', selectInfo.startStr);
@@ -463,9 +517,15 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
             </div>
           </div>
           
-          {/* Booking Instructions */}
+          {/* Booking Instructions or Confirmation */}
           <div className="training-calendar__instructions">
-            <p>Click on any available date to schedule your fitness assessment. Our certified trainers will evaluate your current fitness level and create a personalized training plan.</p>
+            {bookingConfirmationVisible && recentBooking && (
+              <BookingConfirmation
+                event={recentBooking}
+                onClose={clearBookingConfirmation}
+                className="training-calendar__booking-confirmation"
+              />
+            )}
           </div>
         </div>
       )}
@@ -493,7 +553,7 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
         onClose={closeEventModal}
         event={modalState.event || undefined}
         mode={modalState.mode}
-        loading={loading !== 'success' && loading !== 'error'}
+        loading={isLoading}
         selectedDate={modalState.selectedDate}
         onModeChange={handleModalModeChange}
         onSave={handleEventSave}

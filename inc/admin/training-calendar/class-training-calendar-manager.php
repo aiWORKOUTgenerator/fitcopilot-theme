@@ -82,6 +82,11 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
         $this->ajax_handler->init();
         $this->settings_manager->init();
         $this->data_provider->init();
+        
+        // REMOVED: Hook frontend data provider to wp_enqueue_scripts
+        // This is now handled directly in functions.php fitcopilot_enqueue_scripts()
+        // to ensure proper script enqueue timing
+        // add_action('wp_enqueue_scripts', array($this, 'provide_frontend_data'), 20);
     }
     
     /**
@@ -207,7 +212,7 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
     protected function get_menu_config() {
         return array(
             'page_title' => __('Training Calendar Manager', 'fitcopilot'),
-            'menu_title' => __('Calendar', 'fitcopilot'),
+            'menu_title' => __('Training Calendar', 'fitcopilot'),
             'menu_slug' => 'fitcopilot-training-calendar',
             'position' => 25 // Position after Personal Training (20) and Training Features (23)
         );
@@ -433,5 +438,25 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
      */
     public function provide_frontend_data() {
         $this->data_provider->provide_frontend_data();
+    }
+    
+    /**
+     * Get the data provider instance
+     * Used for accessing calendar data in test environments and frontend
+     * 
+     * @return FitCopilot_Training_Calendar_Provider
+     */
+    public function get_provider() {
+        return $this->data_provider;
+    }
+    
+    /**
+     * Get the data manager instance
+     * Used for direct data access when needed
+     * 
+     * @return FitCopilot_Training_Calendar_Data
+     */
+    public function get_data_manager() {
+        return $this->data_manager;
     }
 } 

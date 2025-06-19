@@ -82,7 +82,7 @@ function fitcopilot_dequeue_critical_css() {
 }
 
 /**
- * Add preload tags for non-critical CSS files
+ * Add preload tags for non-critical CSS files (only when they will be used)
  */
 function fitcopilot_add_preload_tags() {
     // Get the manifest file
@@ -93,12 +93,34 @@ function fitcopilot_add_preload_tags() {
         return;
     }
     
-    // Skip critical CSS file since it's inlined
+    // Only preload CSS files that will actually be used on this page
     foreach ($manifest as $key => $file) {
         if ($key !== 'critical.css' && strpos($key, '.css') !== false) {
-            $css_url = get_template_directory_uri() . '/dist/' . $file;
-            echo '<link rel="preload" href="' . esc_url($css_url) . '" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">';
-            echo '<noscript><link rel="stylesheet" href="' . esc_url($css_url) . '"></noscript>';
+            // Check if this CSS file is actually needed for the current page
+            $should_preload = false;
+            
+            // Homepage-specific CSS
+            if ($key === 'homepage-styles.css' && (is_front_page() || is_home())) {
+                $should_preload = true;
+            }
+            
+            // Feature-specific CSS (only preload if the page uses features)
+            if ($key === 'feature-styles.css' && !is_front_page() && !is_home()) {
+                $should_preload = true;
+            }
+            
+            // Calendar-specific CSS (only if training calendar is present)
+            if (strpos($key, 'calendar') !== false && 
+                (is_page_template('calendar-template.php') || 
+                 has_shortcode(get_post()->post_content ?? '', 'training_calendar'))) {
+                $should_preload = true;
+            }
+            
+            if ($should_preload) {
+                $css_url = get_template_directory_uri() . '/dist/' . $file;
+                echo '<link rel="preload" href="' . esc_url($css_url) . '" as="style" onload="this.onload=null;this.rel=\'stylesheet\'" crossorigin="anonymous">';
+                echo '<noscript><link rel="stylesheet" href="' . esc_url($css_url) . '"></noscript>';
+            }
         }
     }
 }

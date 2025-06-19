@@ -91,15 +91,21 @@ if (isset($manifest['homepage-styles.css'])) {
 // Feature styles (792KB) are only loaded when needed by other pages
 // This prevents the performance regression reported by the user
 
-// Set up preloading of chunk files
+// Set up efficient preloading of chunk files (only for chunks that will be used)
 foreach ($manifest as $key => $value) {
-    if ($key !== 'critical.css' && $key !== 'homepage.js' && strpos($key, '.js') !== false) {
+    // Only preload JavaScript chunks that are actually needed for the homepage
+    if ($key !== 'critical.css' && 
+        $key !== 'homepage.js' && // Homepage script is loaded normally
+        strpos($key, '.js') !== false && 
+        strpos($key, 'vendor') === false && // Don't preload vendor chunks
+        strpos($key, 'node_modules') === false) { // Don't preload node_modules chunks
+        
         $chunk_path = get_template_directory() . '/dist/' . $value;
         
         if (file_exists($chunk_path)) {
-            // Add chunk as a preload
+            // Add chunk as a preload with crossorigin for modules
             add_action('wp_head', function() use ($value) {
-                echo '<link rel="preload" href="' . get_template_directory_uri() . '/dist/' . $value . '" as="script">';
+                echo '<link rel="preload" href="' . get_template_directory_uri() . '/dist/' . $value . '" as="script" crossorigin="anonymous">';
             }, 7);
             
             // Still enqueue the script normally but with defer attribute

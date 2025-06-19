@@ -471,38 +471,47 @@ export class TrainerApiService {
    * Get WordPress nonce for API requests
    */
   private getNonce(): string {
-    // Try to get REST API nonce from different global sources
-    const restNonce = 
-      (window as any).fitcopilotTrainingCalendarData?.api?.restNonce ||
-      (window as any).wpApiSettings?.nonce ||
-      (window as any).fitcopilotTrainingCalendarAjax?.nonce ||
-      (window as any).fitcopilotTrainingCalendarData?.nonce ||
-      '';
+    // Try multiple sources in order of preference with validation
+    const sources = [
+      () => (window as any).fitcopilotApiConfig?.restNonce,
+      () => (window as any).wpApiSettings?.nonce,
+      () => (window as any).fitcopilotTrainingCalendarData?.api?.restNonce,
+      () => (window as any).fitcopilotTrainingCalendarAjax?.nonce,
+      () => (window as any).fitcopilotTrainingCalendarData?.nonce
+    ];
+
+    for (const source of sources) {
+      try {
+        const nonce = source();
+        if (nonce && typeof nonce === 'string' && nonce.length === 10) {
+          if (process.env.NODE_ENV === 'development') {
+            console.log('🔐 Valid nonce found:', {
+              nonce: nonce,
+              source: source.toString().match(/\w+(?=\?\.)/)?.[0] || 'unknown'
+            });
+          }
+          return nonce;
+        }
+      } catch (e) {
+        // Continue to next source
+    if (process.env.NODE_ENV === 'development') {
+          console.warn('⚠️ Nonce source failed:', e);
+        }
+      }
+    }
     
     if (process.env.NODE_ENV === 'development') {
-      console.log('🔐 Nonce Debug:', {
-        restNonce: (window as any).fitcopilotTrainingCalendarData?.api?.restNonce,
-        wpApiSettings: (window as any).wpApiSettings?.nonce,
-        ajaxNonce: (window as any).fitcopilotTrainingCalendarAjax?.nonce,
-        legacyNonce: (window as any).fitcopilotTrainingCalendarData?.nonce,
-        selectedNonce: restNonce,
-        globalObjects: {
-          fitcopilotTrainingCalendarData: !!(window as any).fitcopilotTrainingCalendarData,
-          fitcopilotTrainingCalendarAjax: !!(window as any).fitcopilotTrainingCalendarAjax,
-          wpApiSettings: !!(window as any).wpApiSettings
-        }
-      });
-    }
-    
-    if (!restNonce && process.env.NODE_ENV === 'development') {
-      console.warn('⚠️ No REST API nonce found for API requests. Available global objects:', {
+      console.error('❌ No valid nonce found for API requests. Debug info:', {
+        fitcopilotApiConfig: (window as any).fitcopilotApiConfig,
+        wpApiSettings: (window as any).wpApiSettings,
         fitcopilotTrainingCalendarData: (window as any).fitcopilotTrainingCalendarData,
         fitcopilotTrainingCalendarAjax: (window as any).fitcopilotTrainingCalendarAjax,
-        wpApiSettings: (window as any).wpApiSettings
+        allGlobalKeys: Object.keys(window).filter(key => key.includes('fitcopilot') || key.includes('wp'))
       });
     }
     
-    return restNonce;
+    console.error('🚨 CRITICAL: No valid REST API nonce found - API requests will fail with 403');
+    return '';
   }
   
   /**

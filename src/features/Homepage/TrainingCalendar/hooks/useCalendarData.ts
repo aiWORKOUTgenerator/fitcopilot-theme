@@ -40,11 +40,16 @@ interface UseCalendarDataReturn {
   hasMore: boolean;
   totalEvents: number;
   
+  // Recent booking tracking
+  recentBooking: CalendarEvent | null;
+  bookingConfirmationVisible: boolean;
+  
   // Actions
   fetchEvents: (startDate?: Date, endDate?: Date) => Promise<void>;
   fetchTrainers: () => Promise<void>;
   refreshData: () => Promise<void>;
   clearError: () => void;
+  clearBookingConfirmation: () => void;
   
   // Event management
   addEvent: (event: Omit<CalendarEvent, 'id'>) => Promise<CalendarEvent>;
@@ -155,24 +160,24 @@ const transformWordPressEvent = (wpEvent: any): CalendarEvent => {
     id: wpEvent.id,
     title: wpEvent.title,
     description: wpEvent.description || '',
-    start: parseDate(wpEvent.start) || new Date(),
-    end: parseDate(wpEvent.end) || new Date(),
-    trainerId: wpEvent.trainer_id,
-    eventType: wpEvent.event_type || 'session',
-    bookingStatus: wpEvent.booking_status || 'available',
-    sessionType: wpEvent.session_type || 'individual',
+    start: parseDate(wpEvent.start_datetime || wpEvent.start) || new Date(),
+    end: parseDate(wpEvent.end_datetime || wpEvent.end) || new Date(),
+    trainerId: wpEvent.trainer_id || wpEvent.trainerId,
+    eventType: wpEvent.event_type || wpEvent.eventType || 'session',
+    bookingStatus: wpEvent.booking_status || wpEvent.bookingStatus || 'available',
+    sessionType: wpEvent.session_type || wpEvent.sessionType || 'individual',
     location: wpEvent.location || '',
-    maxParticipants: wpEvent.max_participants || 1,
-    currentParticipants: wpEvent.current_participants || 0,
-    backgroundColor: wpEvent.background_color || '#8b5cf6',
-    borderColor: wpEvent.border_color || '#8b5cf6',
-    textColor: wpEvent.text_color || '#ffffff',
+    maxParticipants: wpEvent.max_participants || wpEvent.maxParticipants || 1,
+    currentParticipants: wpEvent.current_participants || wpEvent.currentParticipants || 0,
+    backgroundColor: wpEvent.background_color || wpEvent.backgroundColor || '#8b5cf6',
+    borderColor: wpEvent.border_color || wpEvent.borderColor || '#8b5cf6',
+    textColor: wpEvent.text_color || wpEvent.textColor || '#ffffff',
     recurring: wpEvent.recurring || false,
-    recurringRule: wpEvent.recurring_rule,
+    recurringRule: wpEvent.recurring_rule || wpEvent.recurringRule,
     tags: wpEvent.tags || [],
     metadata: wpEvent.metadata || {},
-    created: parseDate(wpEvent.created) || new Date(),
-    updated: parseDate(wpEvent.updated) || new Date()
+    created: parseDate(wpEvent.created_at || wpEvent.created) || new Date(),
+    updated: parseDate(wpEvent.updated_at || wpEvent.updated) || new Date()
   };
 };
 
@@ -215,54 +220,21 @@ export const useCalendarData = ({
   // PHASE 2: Initialize state with WordPress localized data
   const [events, setEvents] = useState<CalendarEvent[]>(() => {
     const calendarData = getCalendarData();
-    // Transform WordPress events to React format
+    // Transform WordPress events to React format using the proper transformation function
     const wpEvents = calendarData.events || [];
-    return wpEvents.map((event: any) => ({
-      id: event.id,
-      title: event.title,
-      description: event.description || '',
-      start: new Date(event.start),
-      end: new Date(event.end),
-      trainerId: event.extendedProps?.trainerId || null,
-      eventType: event.extendedProps?.eventType || 'session',
-      bookingStatus: event.extendedProps?.bookingStatus || 'available',
-      sessionType: event.extendedProps?.sessionType || 'individual',
-      location: event.extendedProps?.location || '',
-      maxParticipants: event.extendedProps?.maxParticipants || 1,
-      currentParticipants: event.extendedProps?.currentParticipants || 0,
-      backgroundColor: event.backgroundColor || '#8b5cf6',
-      borderColor: event.borderColor || '#8b5cf6',
-      textColor: event.textColor || '#ffffff',
-      recurring: false,
-      recurringRule: null,
-      tags: [],
-      metadata: {},
-      created: new Date(),
-      updated: new Date()
-    }));
+    return wpEvents.map((event: any) => {
+      // Use transformWordPressEvent for consistent data transformation
+      return transformWordPressEvent(event);
+    });
   });
   
   const [trainers, setTrainers] = useState<TrainerData[]>(() => {
     const calendarData = getCalendarData();
     const wpTrainers = calendarData.trainers || [];
-    return wpTrainers.map((trainer: any) => ({
-      id: trainer.id,
-      name: trainer.name,
-      email: '',
-      specialty: trainer.specialty || '',
-      bio: trainer.bio || '',
-      imageUrl: trainer.imageUrl || '',
-      avatar: trainer.imageUrl || '',
-      yearsExperience: trainer.yearsExperience || 0,
-      clientsCount: trainer.clientsCount || 0,
-      featured: trainer.featured || false,
-      active: trainer.active !== false,
-      isActive: trainer.active !== false,
-      coachType: trainer.coachType || 'personal',
-      availability: trainer.availability || {},
-      color: trainer.color || '#8b5cf6',
-      metadata: trainer.calendarConfig || {}
-    }));
+    return wpTrainers.map((trainer: any) => {
+      // Use transformWordPressTrainer for consistent data transformation
+      return transformWordPressTrainer(trainer);
+    });
   });
   
   const [loading, setLoading] = useState<LoadingState>('idle');
@@ -270,6 +242,10 @@ export const useCalendarData = ({
   const [lastFetch, setLastFetch] = useState<Date | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [totalEvents, setTotalEvents] = useState(0);
+  
+  // PHASE 4: Add recent booking tracking state
+  const [recentBooking, setRecentBooking] = useState<CalendarEvent | null>(null);
+  const [bookingConfirmationVisible, setBookingConfirmationVisible] = useState(false);
   
   // ===== REFS =====
   
@@ -299,10 +275,13 @@ export const useCalendarData = ({
   
   const clearError = useCallback(() => {
     setError(null);
-    if (loading === 'error') {
-      setLoading('idle');
-    }
-  }, [loading]);
+  }, []);
+  
+  // Clear booking confirmation
+  const clearBookingConfirmation = useCallback(() => {
+    setBookingConfirmationVisible(false);
+    setRecentBooking(null);
+  }, []);
   
   // ===== DATA FETCHING =====
   
@@ -422,9 +401,18 @@ export const useCalendarData = ({
         updated: new Date()
       };
       
-        setEvents(prev => [...prev, newEvent]);
+      setEvents(prev => [...prev, newEvent]);
+      
+      // Track if this is a 20-minute consultation booking
+      if (newEvent.title === 'Free Consultation (20 Min)' || 
+          (newEvent.duration === 20 && newEvent.eventType === 'assessment')) {
+        setRecentBooking(newEvent);
+        setBookingConfirmationVisible(true);
+        console.log('🎉 20-minute consultation booked:', newEvent);
+      }
+      
       console.log('✅ AJAX create successful:', newEvent.title);
-        return newEvent;
+      return newEvent;
       
     } catch (err) {
       if (err instanceof Error) {
@@ -440,6 +428,15 @@ export const useCalendarData = ({
         };
         
         setEvents(prev => [...prev, newEvent]);
+        
+        // Track if this is a 20-minute consultation booking (fallback case)
+        if (newEvent.title === 'Free Consultation (20 Min)' || 
+            (newEvent.duration === 20 && newEvent.eventType === 'assessment')) {
+          setRecentBooking(newEvent);
+          setBookingConfirmationVisible(true);
+          console.log('🎉 20-minute consultation booked (fallback):', newEvent);
+        }
+        
         console.log('🔄 Fallback create successful:', newEvent.title);
         return newEvent;
       }
@@ -681,16 +678,21 @@ export const useCalendarData = ({
     
     // Metadata
     lastFetch,
-    hasMore,
-    totalEvents,
+    hasMore: false, // Current implementation doesn't support pagination
+    totalEvents: events.length,
     
-    // Actions
+    // Recent booking tracking
+    recentBooking,
+    bookingConfirmationVisible,
+    
+    // Event actions
     fetchEvents,
     fetchTrainers,
     refreshData,
     clearError,
+    clearBookingConfirmation,
     
-    // Event management
+    // Event CRUD operations
     addEvent,
     createEvent,
     updateEvent: updateEventById,

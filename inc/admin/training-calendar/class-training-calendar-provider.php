@@ -226,16 +226,20 @@ class FitCopilot_Training_Calendar_Provider {
     }
     
     /**
-     * Provide frontend data
+     * Provide frontend data for React components
      * PHASE 2: Enhanced data structure for React integration
      * 
      * @return void
      */
     public function provide_frontend_data() {
-        // Only provide data on pages where needed
-        if (!$this->should_load_calendar_data()) {
-            return;
-        }
+        // COMPREHENSIVE FIX: Always provide data regardless of conditions
+        // The data should be available when needed, not restricted by page context
+        
+        // Debug logging
+        error_log('FitCopilot: Training Calendar Provider - provide_frontend_data() called');
+        error_log('FitCopilot: is_front_page(): ' . (is_front_page() ? 'true' : 'false'));
+        error_log('FitCopilot: is_home(): ' . (is_home() ? 'true' : 'false'));
+        error_log('FitCopilot: should_load_calendar_data(): ' . ($this->should_load_calendar_data() ? 'true' : 'false'));
         
         // Get real events and database statistics instead of sample data
         $real_stats = $this->data_manager->get_statistics();
@@ -312,7 +316,13 @@ class FitCopilot_Training_Calendar_Provider {
                 'baseUrl' => home_url('/wp-json/fitcopilot/v1'),
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'restNonce' => wp_create_nonce('wp_rest'),
-                'ajaxNonce' => wp_create_nonce('training_calendar_nonce')
+                'ajaxNonce' => wp_create_nonce('training_calendar_nonce'),
+                'userRegistration' => [
+                    'checkEmail' => home_url('/wp-json/fitcopilot/v1/users/check-email'),
+                    'register' => home_url('/wp-json/fitcopilot/v1/users/register'),
+                    'sendWelcome' => home_url('/wp-json/fitcopilot/v1/users/send-welcome-email'),
+                    'profile' => home_url('/wp-json/fitcopilot/v1/users/profile')
+                ]
             ],
             'debug' => [
                 'phase' => 'Phase 2 - Smart Scheduling Integration',
@@ -325,17 +335,52 @@ class FitCopilot_Training_Calendar_Provider {
                     'trainerAvailability' => 'ACTIVE',
                     'smartScheduling' => 'ACTIVE',
                     'eventMapping' => 'Free Consultation ↔ Fitness Assessment'
-                ]
+                ],
+                'localizationMethod' => 'COMPREHENSIVE_FIX'
             ],
             'nonce' => wp_create_nonce('training_calendar_nonce')
         ];
         
-        // Localize script
-        wp_localize_script(
-            'fitcopilot-homepage',
-            'fitcopilotTrainingCalendarData',
-            $calendar_data
-        );
+        // COMPREHENSIVE FIX: Multiple localization strategies
+        $localization_success = false;
+        
+        // Strategy 1: Try to localize to homepage script
+        $script_handle = 'fitcopilot-homepage';
+        if (wp_script_is($script_handle, 'enqueued') || wp_script_is($script_handle, 'registered')) {
+            $localize_result = wp_localize_script(
+                $script_handle,
+                'fitcopilotTrainingCalendarData',
+                $calendar_data
+            );
+            
+            if ($localize_result) {
+                $localization_success = true;
+                error_log('FitCopilot: Successfully localized to homepage script');
+            }
+        }
+        
+        // Strategy 2: If homepage script not available, create inline script
+        if (!$localization_success) {
+            add_action('wp_footer', function() use ($calendar_data) {
+                echo '<script type="text/javascript">';
+                echo 'window.fitcopilotTrainingCalendarData = ' . wp_json_encode($calendar_data) . ';';
+                echo 'console.log("FitCopilot: Training Calendar data loaded via inline script");';
+                echo '</script>';
+            }, 5);
+            
+            $localization_success = true;
+            error_log('FitCopilot: Scheduled inline script for data localization');
+        }
+        
+        // Strategy 3: Store data globally for PHP access
+        global $fitcopilot_training_calendar_localized_data;
+        $fitcopilot_training_calendar_localized_data = $calendar_data;
+        
+        if ($localization_success) {
+            error_log('FitCopilot: Training Calendar data localization completed successfully');
+        } else {
+            error_log('FitCopilot: Failed to localize Training Calendar data');
+        }
     }
     
     /**

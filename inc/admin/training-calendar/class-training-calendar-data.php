@@ -71,7 +71,11 @@ class FitCopilot_Training_Calendar_Data {
             event_type enum('session','availability','blocked','group_class','workshop','assessment') DEFAULT 'session',
             booking_status enum('available','pending','confirmed','cancelled','completed') DEFAULT 'available',
             
-            -- Client information
+            -- User Association (Phase 3)
+            user_id bigint(20) unsigned,
+            created_by bigint(20) unsigned,
+            
+            -- Client information (legacy support)
             client_name varchar(255),
             client_email varchar(255),
             client_phone varchar(20),
@@ -103,6 +107,8 @@ class FitCopilot_Training_Calendar_Data {
             
             PRIMARY KEY (id),
             KEY trainer_id (trainer_id),
+            KEY user_id (user_id),
+            KEY created_by (created_by),
             KEY start_datetime (start_datetime),
             KEY event_type (event_type),
             KEY booking_status (booking_status),
@@ -481,10 +487,36 @@ class FitCopilot_Training_Calendar_Data {
             'duration_minutes' => absint($event_data['duration_minutes'] ?? 60),
             'background_color' => sanitize_hex_color($event_data['background_color'] ?? ''),
             'border_color' => sanitize_hex_color($event_data['border_color'] ?? ''),
-            'text_color' => sanitize_hex_color($event_data['text_color'] ?? '')
+            'text_color' => sanitize_hex_color($event_data['text_color'] ?? ''),
+            
+            // Phase 3: User Association Fields
+            'user_id' => absint($event_data['userId'] ?? $event_data['user_id'] ?? 0),
+            'created_by' => absint($event_data['createdBy'] ?? $event_data['created_by'] ?? get_current_user_id()),
+            
+            // Legacy client info (maintain backward compatibility)
+            'client_name' => sanitize_text_field($event_data['client_name'] ?? ''),
+            'client_email' => sanitize_email($event_data['client_email'] ?? ''),
+            'client_phone' => sanitize_text_field($event_data['client_phone'] ?? ''),
+            'client_notes' => sanitize_textarea_field($event_data['client_notes'] ?? '')
         );
         
+        // Remove empty values to prevent database constraint issues
+        $sanitized_data = array_filter($sanitized_data, function($value) {
+            return !empty($value) || $value === 0;
+        });
+        
         $result = $wpdb->insert($this->events_table, $sanitized_data);
+        
+        if ($result) {
+            // Log successful event creation with user context
+            error_log(sprintf(
+                'Training Calendar: Event created - ID: %d, Title: %s, User: %d, Created By: %d',
+                $wpdb->insert_id,
+                $sanitized_data['title'],
+                $sanitized_data['user_id'] ?? 0,
+                $sanitized_data['created_by'] ?? 0
+            ));
+        }
         
         return $result ? $wpdb->insert_id : false;
     }

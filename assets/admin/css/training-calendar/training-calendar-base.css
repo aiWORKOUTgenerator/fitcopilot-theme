@@ -198,7 +198,136 @@
     background: #e8f4fd;
     border: 1px solid #bee5eb;
     color: #0c5460;
-    padding: 12px;
+    padding: 12px 16px;
     border-radius: 4px;
-    margin-bottom: 20px;
+    margin: 20px 0;
+}
+
+/* ===== MODAL SYSTEM ===== */
+.training-calendar-modal {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999999 !important;
+    display: none;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+.training-calendar-modal.show {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.training-calendar-modal .modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.training-calendar-modal .modal-content {
+    position: relative;
+    z-index: 2;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: hidden;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+.training-calendar-modal .modal-content.large-modal {
+    width: 1000px;
+    max-width: 95vw;
+}
+
+.training-calendar-modal .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 25px;
+    border-bottom: 1px solid #ddd;
+    background: #f8f9fa;
+}
+
+.training-calendar-modal .modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.training-calendar-modal .modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.training-calendar-modal .modal-close:hover {
+    background: #e9ecef;
+    color: #333;
+}
+
+.training-calendar-modal .modal-body {
+    padding: 25px;
+    max-height: calc(90vh - 100px);
+    overflow-y: auto;
+}
+
+/* Modal Animations */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: scale(0.9) translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Body scroll lock when modal is open */
+body.modal-open {
+    overflow: hidden !important;
+}
+
+/* Mobile responsiveness for modals */
+@media (max-width: 768px) {
+    .training-calendar-modal .modal-content {
+        margin: 20px;
+        max-width: calc(100vw - 40px);
+        max-height: calc(100vh - 40px);
+    }
+    
+    .training-calendar-modal .modal-content.large-modal {
+        width: auto;
+    }
+    
+    .training-calendar-modal .modal-header,
+    .training-calendar-modal .modal-body {
+        padding: 15px 20px;
+    }
 } 

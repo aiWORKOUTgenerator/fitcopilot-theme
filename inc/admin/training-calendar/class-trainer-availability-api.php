@@ -99,60 +99,12 @@ class FitCopilot_Trainer_Availability_API {
             error_log('=== TRAINER AVAILABILITY API AUTH DEBUG ===');
             error_log('Request method: ' . $request->get_method());
             error_log('Request URL: ' . $request->get_route());
-            error_log('Request headers: ' . print_r($request->get_headers(), true));
             error_log('Current user ID: ' . get_current_user_id());
             error_log('Is user logged in: ' . (is_user_logged_in() ? 'yes' : 'no'));
-            
-            // Check nonce sources
-            $wp_nonce_header = $request->get_header('X-WP-Nonce');
-            $wp_nonce_param = $request->get_param('_wpnonce');
-            $wp_nonce_get = $_GET['_wpnonce'] ?? null;
-            $wp_nonce_post = $_POST['_wpnonce'] ?? null;
-            
-            error_log('X-WP-Nonce header: ' . ($wp_nonce_header ?: 'NOT SET'));
-            error_log('_wpnonce param: ' . ($wp_nonce_param ?: 'NOT SET'));
-            error_log('_wpnonce GET: ' . ($wp_nonce_get ?: 'NOT SET'));
-            error_log('_wpnonce POST: ' . ($wp_nonce_post ?: 'NOT SET'));
-            
-            // Test nonce validation
-            if ($wp_nonce_header) {
-                $wp_rest_valid = wp_verify_nonce($wp_nonce_header, 'wp_rest');
-                $training_calendar_valid = wp_verify_nonce($wp_nonce_header, 'training_calendar_nonce');
-                error_log('wp_rest nonce validation: ' . ($wp_rest_valid ? 'VALID' : 'INVALID'));
-                error_log('training_calendar nonce validation: ' . ($training_calendar_valid ? 'VALID' : 'INVALID'));
-            }
-            
-            error_log('WordPress REST API status: ' . (rest_url() ? 'ENABLED' : 'DISABLED'));
-            error_log('Current user capabilities: ' . print_r(wp_get_current_user()->allcaps ?? [], true));
-            error_log('=== END AUTH DEBUG ===');
         }
         
-        // Multiple authentication strategies
-        
-        // Strategy 1: Check if user is logged in (for admin/authenticated users)
-        if (is_user_logged_in()) {
-            return true;
-        }
-        
-        // Strategy 2: Verify REST nonce (standard WordPress REST API auth)
-        $nonce = $request->get_header('X-WP-Nonce');
-        if ($nonce && wp_verify_nonce($nonce, 'wp_rest')) {
-            return true;
-        }
-        
-        // Strategy 3: Verify training calendar specific nonce
-        if ($nonce && wp_verify_nonce($nonce, 'training_calendar_nonce')) {
-            return true;
-        }
-        
-        // Strategy 4: Check for nonce in URL parameters (fallback)
-        $param_nonce = $request->get_param('_wpnonce');
-        if ($param_nonce && wp_verify_nonce($param_nonce, 'wp_rest')) {
-            return true;
-        }
-        
-        // Strategy 5: Allow public access for trainer availability (calendar is public)
-        // This is reasonable since trainer availability viewing should be public
+        // Trainer availability is public information needed for calendar display
+        // Allow public access to trainer availability endpoints
         $route = $request->get_route();
         if (strpos($route, '/trainer-availability') !== false) {
             if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -161,9 +113,20 @@ class FitCopilot_Trainer_Availability_API {
             return true;
         }
         
+        // For other endpoints, check authentication
+        if (is_user_logged_in()) {
+            return true;
+        }
+        
+        // Verify REST nonce for authenticated requests
+        $nonce = $request->get_header('X-WP-Nonce');
+        if ($nonce && wp_verify_nonce($nonce, 'wp_rest')) {
+            return true;
+        }
+        
         // If all strategies fail, log the issue and return false
         if (defined('WP_DEBUG') && WP_DEBUG) {
-            error_log('TRAINER AVAILABILITY API: All authentication strategies failed');
+            error_log('TRAINER AVAILABILITY API: Authentication failed');
         }
         
         return false;

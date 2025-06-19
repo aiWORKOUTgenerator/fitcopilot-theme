@@ -6,6 +6,11 @@
 
 (function($) {
     'use strict';
+    
+    // Ensure $ is available - fallback to jQuery if $ is not defined
+    if (typeof $ === 'undefined' && typeof jQuery !== 'undefined') {
+        $ = jQuery;
+    }
 
     // Main TrainerAvailability object
     window.TrainerAvailability = {
@@ -23,7 +28,8 @@
             selectedTrainerId: null,
             currentAvailability: {},
             isLoading: false,
-            hasUnsavedChanges: false
+            hasUnsavedChanges: false,
+            modalJustOpened: false
         },
         
         /**
@@ -47,11 +53,24 @@
          */
         bindEvents: function() {
             // Modal triggers
-            $(document).on('click', '#manage-trainers-btn', this.showAvailabilityModal.bind(this));
+            $(document).on('click', '#manage-trainers-btn', function(e) {
+                console.log('TrainerAvailability: Manage trainers button clicked');
+                this.showAvailabilityModal(e);
+            }.bind(this));
             
-            // Modal controls
-            $(document).on('click', '#trainer-availability-modal .modal-close', this.hideModal.bind(this));
-            $(document).on('click', '#trainer-availability-modal .modal-overlay', this.hideModal.bind(this));
+            // Modal controls - with debugging
+            $(document).on('click', '#trainer-availability-modal .modal-close', function(e) {
+                console.log('TrainerAvailability: Close button clicked');
+                this.hideModal(e);
+            }.bind(this));
+            
+            $(document).on('click', '#trainer-availability-modal .modal-overlay', function(e) {
+                console.log('TrainerAvailability: Overlay clicked');
+                // Only close if clicking directly on overlay, not on content
+                if (e.target === e.currentTarget) {
+                    this.hideModal(e);
+                }
+            }.bind(this));
             
             // Trainer selection
             $(document).on('change', '#availability-trainer-select', this.onTrainerSelect.bind(this));
@@ -75,6 +94,12 @@
          * Initialize modal state
          */
         initializeModal: function() {
+            // Defensive check: only initialize if modal exists
+            if ($('#trainer-availability-modal').length === 0) {
+                console.log('TrainerAvailability: Modal template not found in DOM, skipping initialization');
+                return;
+            }
+            
             // Hide all sections initially
             $('#availability-schedule-form').hide();
             $('#availability-loading').hide();
@@ -87,11 +112,74 @@
         showAvailabilityModal: function(e) {
             e.preventDefault();
             
-            $('#trainer-availability-modal').fadeIn(300);
+            // Check if modal exists in DOM
+            const $modal = $('#trainer-availability-modal');
+            console.log('TrainerAvailability: Modal search result:', {
+                modalFound: $modal.length > 0,
+                modalCount: $modal.length,
+                modalElement: $modal[0],
+                allModals: $('.training-calendar-modal').length
+            });
+            
+            if ($modal.length === 0) {
+                console.error('TrainerAvailability: Modal template #trainer-availability-modal not found in DOM');
+                console.log('TrainerAvailability: Available modal-like elements:', 
+                    $('[id*="modal"], [class*="modal"]').map(function() {
+                        return {id: this.id, className: this.className};
+                    }).get()
+                );
+                alert('Trainer availability modal is not available. Please refresh the page.');
+                return;
+            }
+            
+            console.log('TrainerAvailability: Opening modal with CSS:', {
+                currentDisplay: $modal.css('display'),
+                currentVisibility: $modal.css('visibility'),
+                currentOpacity: $modal.css('opacity'),
+                zIndex: $modal.css('z-index')
+            });
+            
+            // Use proper modal display with CSS classes
+            $modal.addClass('show').fadeIn(300);
             $('body').addClass('modal-open');
             
-            // Reset form state
-            this.resetForm();
+            // Prevent immediate closing by setting a flag
+            this.state.modalJustOpened = true;
+            setTimeout(() => {
+                this.state.modalJustOpened = false;
+            }, 500);
+            
+            // Additional debugging - check what's actually visible
+            setTimeout(() => {
+                console.log('TrainerAvailability: Post-fadeIn modal state:', {
+                    isVisible: $modal.is(':visible'),
+                    display: $modal.css('display'),
+                    opacity: $modal.css('opacity'),
+                    position: $modal.position(),
+                    zIndex: $modal.css('z-index'),
+                    modalHeight: $modal.height(),
+                    modalWidth: $modal.width()
+                });
+                
+                // Check if there are other visible modals
+                const visibleModals = $('[id*="modal"]:visible, [class*="modal"]:visible');
+                console.log('TrainerAvailability: All visible modals:', 
+                    visibleModals.map(function() {
+                        return {
+                            id: this.id, 
+                            className: this.className,
+                            zIndex: $(this).css('z-index')
+                        };
+                    }).get()
+                );
+            }, 350);
+            
+            // Reset form state (with safety check)
+            try {
+                this.resetForm();
+            } catch(error) {
+                console.error('TrainerAvailability: Error resetting form:', error);
+            }
             
             console.log('TrainerAvailability: Modal opened');
         },
@@ -100,6 +188,19 @@
          * Hide the modal
          */
         hideModal: function(e) {
+            console.log('TrainerAvailability: hideModal called', {
+                event: e ? e.type : 'no event',
+                target: e ? e.target : 'no target',
+                modalJustOpened: this.state.modalJustOpened,
+                stackTrace: new Error().stack
+            });
+            
+            // Prevent immediate closing
+            if (this.state.modalJustOpened) {
+                console.log('TrainerAvailability: Preventing immediate close - modal just opened');
+                return;
+            }
+            
             if (e) e.preventDefault();
             
             // Check for unsaved changes
@@ -109,8 +210,14 @@
                 }
             }
             
-            $('#trainer-availability-modal').fadeOut(300);
+            // Hide modal with proper CSS classes
+            $('#trainer-availability-modal').removeClass('show').fadeOut(300);
+            
+            // Force remove modal-open class and restore scrolling
             $('body').removeClass('modal-open');
+            $('body').css('overflow', '');
+            
+            console.log('TrainerAvailability: Body scroll restored, modal-open class removed');
             
             this.resetForm();
             console.log('TrainerAvailability: Modal closed');
@@ -682,7 +789,27 @@
     
     // Initialize when document is ready
     $(document).ready(function() {
-        TrainerAvailability.init();
+        console.log('TrainerAvailability: Document ready, initializing...');
+        try {
+            TrainerAvailability.init();
+            console.log('TrainerAvailability: Initialization completed successfully');
+        } catch (error) {
+            console.error('TrainerAvailability: Initialization failed:', error);
+            
+            // Fallback: Try again with jQuery if $ was not available
+            if (typeof $ === 'undefined' && typeof jQuery !== 'undefined') {
+                console.log('TrainerAvailability: Retrying initialization with jQuery...');
+                window.$ = jQuery;
+                setTimeout(() => {
+                    try {
+                        TrainerAvailability.init();
+                        console.log('TrainerAvailability: Fallback initialization successful');
+                    } catch (retryError) {
+                        console.error('TrainerAvailability: Fallback initialization also failed:', retryError);
+                    }
+                }, 100);
+            }
+        }
     });
     
 })(jQuery); 
