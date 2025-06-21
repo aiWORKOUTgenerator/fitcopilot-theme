@@ -92,14 +92,6 @@
                 this.modules.formValidation.init(this.modules.eventTypes, this.modules.formManagement);
             }
             
-            // Initialize Event Integration module
-            if (typeof TrainerAvailabilityEventIntegration === 'undefined') {
-                console.warn('Event Integration module not loaded');
-            } else {
-                this.modules.eventIntegration = TrainerAvailabilityEventIntegration;
-                this.modules.eventIntegration.init();
-            }
-            
             // Initialize Modal module (depends on other modules)
             if (typeof TrainerAvailabilityModal === 'undefined') {
                 console.warn('Modal module not loaded');

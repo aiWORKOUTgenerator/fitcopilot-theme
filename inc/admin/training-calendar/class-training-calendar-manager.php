@@ -30,6 +30,7 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
     private $settings_manager;
     private $renderer;
     private $data_provider;
+    private $availability_handler;
     
     /**
      * Constructor
@@ -58,6 +59,7 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
         require_once $base_path . 'class-training-calendar-settings.php';
         require_once $base_path . 'class-training-calendar-renderer.php';
         require_once $base_path . 'class-training-calendar-provider.php';
+        require_once $base_path . 'class-trainer-availability-handler.php';
         
         // Include shared admin functions
         require_once get_template_directory() . '/inc/admin/shared/admin-base-template.php';
@@ -72,6 +74,7 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
         $this->ajax_handler = new FitCopilot_Training_Calendar_Ajax($this->data_manager);
         $this->renderer = new FitCopilot_Training_Calendar_Renderer($this->data_manager);
         $this->data_provider = new FitCopilot_Training_Calendar_Provider($this->data_manager);
+        $this->availability_handler = new FitCopilot_Trainer_Availability_Handler();
     }
     
     /**
@@ -82,6 +85,7 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
         $this->ajax_handler->init();
         $this->settings_manager->init();
         $this->data_provider->init();
+        $this->availability_handler->init();
         
         // REMOVED: Hook frontend data provider to wp_enqueue_scripts
         // This is now handled directly in functions.php fitcopilot_enqueue_scripts()
@@ -170,11 +174,69 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
             true
         );
         
-        // Enqueue trainer availability management script
+        // Enqueue trainer availability management modules (Phase 2 modular architecture)
+        wp_enqueue_script(
+            'fitcopilot-trainer-availability-event-types',
+            get_template_directory_uri() . '/assets/admin/js/training-calendar/modules/event-types.js',
+            array('jquery'),
+            filemtime(get_template_directory() . '/assets/admin/js/training-calendar/modules/event-types.js'),
+            true
+        );
+        
+        wp_enqueue_script(
+            'fitcopilot-trainer-availability-form-management',
+            get_template_directory_uri() . '/assets/admin/js/training-calendar/modules/form-management.js',
+            array('jquery', 'fitcopilot-trainer-availability-event-types'),
+            filemtime(get_template_directory() . '/assets/admin/js/training-calendar/modules/form-management.js'),
+            true
+        );
+        
+        wp_enqueue_script(
+            'fitcopilot-trainer-availability-time-slot-manager',
+            get_template_directory_uri() . '/assets/admin/js/training-calendar/modules/time-slot-manager.js',
+            array('jquery', 'fitcopilot-trainer-availability-event-types', 'fitcopilot-trainer-availability-form-management'),
+            filemtime(get_template_directory() . '/assets/admin/js/training-calendar/modules/time-slot-manager.js'),
+            true
+        );
+        
+        wp_enqueue_script(
+            'fitcopilot-trainer-availability-form-validation',
+            get_template_directory_uri() . '/assets/admin/js/training-calendar/modules/form-validation.js',
+            array('jquery', 'fitcopilot-trainer-availability-event-types', 'fitcopilot-trainer-availability-form-management'),
+            filemtime(get_template_directory() . '/assets/admin/js/training-calendar/modules/form-validation.js'),
+            true
+        );
+        
+        wp_enqueue_script(
+            'fitcopilot-trainer-availability-modal-manager',
+            get_template_directory_uri() . '/assets/admin/js/training-calendar/modules/modal-manager.js',
+            array('jquery', 'fitcopilot-trainer-availability-form-management'),
+            filemtime(get_template_directory() . '/assets/admin/js/training-calendar/modules/modal-manager.js'),
+            true
+        );
+        
+        wp_enqueue_script(
+            'fitcopilot-trainer-availability-event-integration',
+            get_template_directory_uri() . '/assets/admin/js/training-calendar/modules/event-type-integration.js',
+            array('jquery', 'fitcopilot-trainer-availability-event-types'),
+            filemtime(get_template_directory() . '/assets/admin/js/training-calendar/modules/event-type-integration.js'),
+            true
+        );
+        
+        // Enqueue main trainer availability admin orchestrator (depends on all modules)
         wp_enqueue_script(
             'fitcopilot-trainer-availability-admin',
             get_template_directory_uri() . '/assets/admin/js/training-calendar/trainer-availability-admin.js',
-            array('jquery', 'fitcopilot-training-calendar-admin'),
+            array(
+                'jquery', 
+                'fitcopilot-training-calendar-admin',
+                'fitcopilot-trainer-availability-event-types',
+                'fitcopilot-trainer-availability-form-management',
+                'fitcopilot-trainer-availability-time-slot-manager',
+                'fitcopilot-trainer-availability-form-validation',
+                'fitcopilot-trainer-availability-modal-manager',
+                'fitcopilot-trainer-availability-event-integration'
+            ),
             filemtime(get_template_directory() . '/assets/admin/js/training-calendar/trainer-availability-admin.js'),
             true
         );
