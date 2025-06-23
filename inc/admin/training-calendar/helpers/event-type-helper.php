@@ -100,7 +100,7 @@ class FitCopilot_Training_Calendar_Event_Type_Helper {
             return $options;
         }
         
-        $event_types = FitCopilot_Training_Calendar_Event_Types_Config::get_event_types();
+        $event_types = FitCopilot_Training_Calendar_Event_Types_Config::get_all_event_types();
         
         foreach ($event_types as $id => $config) {
             $selected = ($selected_value === $id) ? ' selected' : '';

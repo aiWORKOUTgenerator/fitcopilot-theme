@@ -21,9 +21,24 @@ if (!defined('ABSPATH')) {
 class FitCopilot_Trainer_Availability_Handler {
     
     /**
+     * Assignment manager for trainer-event type relationships
+     * @var FitCopilot_Trainer_Assignment_Manager
+     */
+    private $assignment_manager;
+    
+    /**
      * Initialize the handler
      */
     public function __construct() {
+        // Load assignment manager
+        require_once get_template_directory() . '/inc/admin/training-calendar/class-trainer-assignment-manager.php';
+        $this->assignment_manager = new FitCopilot_Trainer_Assignment_Manager();
+    }
+    
+    /**
+     * Initialize the handler - called by Training Calendar Manager
+     */
+    public function init() {
         $this->register_ajax_handlers();
     }
     
@@ -41,6 +56,12 @@ class FitCopilot_Trainer_Availability_Handler {
         
         // Event type availability integration
         add_action('wp_ajax_get_event_type_availability', array($this, 'get_event_type_availability'));
+        
+        // Trainer assignment management AJAX handlers (Day 2 enhancement)
+        add_action('wp_ajax_assign_trainer_to_event_type', array($this, 'assign_trainer_to_event_type'));
+        add_action('wp_ajax_get_trainer_assignments', array($this, 'get_trainer_assignments'));
+        add_action('wp_ajax_remove_trainer_assignment', array($this, 'remove_trainer_assignment'));
+        add_action('wp_ajax_get_assignment_statistics', array($this, 'get_assignment_statistics'));
     }
     
     /**
@@ -150,7 +171,7 @@ class FitCopilot_Trainer_Availability_Handler {
                 require_once get_template_directory() . '/inc/admin/training-calendar/config/event-types-config.php';
             }
             
-            $config = FitCopilot_Training_Calendar_Event_Types_Config::get_event_types();
+            $config = FitCopilot_Training_Calendar_Event_Types_Config::get_all_event_types();
             
             wp_send_json_success($config);
             
@@ -457,4 +478,269 @@ class FitCopilot_Trainer_Availability_Handler {
         return $slot['start_time'] >= $business_hours['start'] && 
                $slot['end_time'] <= $business_hours['end'];
     }
+    
+    // ===== DAY 2 ENHANCEMENT: TRAINER ASSIGNMENT AJAX HANDLERS =====
+    
+    /**
+     * AJAX handler for assigning trainer to event type
+     */
+    public function assign_trainer_to_event_type() {
+        // Verify nonce
+        if (!wp_verify_nonce($_POST['nonce'], 'fitcopilot_training_calendar_nonce')) {
+            wp_send_json_error(array('message' => 'Security check failed'));
+            return;
+        }
+        
+        $trainer_id = sanitize_text_field($_POST['trainer_id'] ?? '');
+        $event_type = sanitize_text_field($_POST['event_type'] ?? '');
+        $assignment_data = $_POST['assignment_data'] ?? array();
+        
+        if (empty($trainer_id) || empty($event_type)) {
+            wp_send_json_error(array('message' => 'Trainer ID and event type are required'));
+            return;
+        }
+        
+        try {
+            // Check if assignment table exists and create if needed
+            if (!$this->assignment_table_exists()) {
+                // Try to create tables
+                if (!$this->create_assignment_table()) {
+                    wp_send_json_error(array('message' => 'Assignment system not available. Please contact administrator.'));
+                    return;
+                }
+            }
+            
+            $result = $this->assignment_manager->assign_trainer_to_event_type(
+                intval($trainer_id),
+                $event_type,
+                $assignment_data
+            );
+            
+            if ($result !== false) {
+                wp_send_json_success(array(
+                    'message' => 'Trainer assignment saved successfully',
+                    'assignment' => array(
+                        'assignment_id' => $result,
+                        'trainer_id' => $trainer_id,
+                        'event_type' => $event_type,
+                        'is_active' => true
+                    )
+                ));
+            } else {
+                wp_send_json_error(array('message' => 'Failed to save trainer assignment'));
+            }
+            
+        } catch (Exception $e) {
+            error_log('Training Calendar - Assign Trainer Error: ' . $e->getMessage());
+            wp_send_json_error(array('message' => 'Failed to save assignment: ' . $e->getMessage()));
+        }
+    }
+    
+    /**
+     * AJAX handler for getting trainer assignments
+     */
+    public function get_trainer_assignments() {
+        // Verify nonce
+        if (!wp_verify_nonce($_POST['nonce'], 'fitcopilot_training_calendar_nonce')) {
+            wp_send_json_error(array('message' => 'Security check failed'));
+            return;
+        }
+        
+        $trainer_id = sanitize_text_field($_POST['trainer_id'] ?? '');
+        $event_type = sanitize_text_field($_POST['event_type'] ?? '');
+        
+        try {
+            // Check if assignment table exists
+            if (!$this->assignment_table_exists()) {
+                wp_send_json_success(array(
+                    'assignments' => array(),
+                    'message' => 'Assignment system not yet configured'
+                ));
+                return;
+            }
+            
+            if (!empty($trainer_id)) {
+                // Get assignments for specific trainer
+                $assignments = $this->assignment_manager->get_trainer_assignments(intval($trainer_id));
+                
+                wp_send_json_success(array(
+                    'assignments' => $assignments,
+                    'trainer_id' => $trainer_id
+                ));
+                
+            } elseif (!empty($event_type)) {
+                // Get trainers for specific event type
+                $trainers = $this->assignment_manager->get_event_type_trainers($event_type);
+                
+                wp_send_json_success(array(
+                    'trainers' => $trainers,
+                    'event_type' => $event_type
+                ));
+                
+            } else {
+                // Get assignment matrix data (enhanced format for frontend)
+                $matrix_data = $this->assignment_manager->get_assignment_matrix_data();
+                
+                wp_send_json_success(array(
+                    'assignments' => $matrix_data,
+                    'matrix_format' => true,
+                    'total_trainers' => count($matrix_data),
+                    'trainers_with_assignments' => count(array_filter($matrix_data, function($trainer) {
+                        return !empty($trainer['assignments']);
+                    }))
+                ));
+            }
+            
+        } catch (Exception $e) {
+            error_log('Training Calendar - Get Assignments Error: ' . $e->getMessage());
+            wp_send_json_error(array('message' => 'Failed to retrieve assignments: ' . $e->getMessage()));
+        }
+    }
+    
+    /**
+     * AJAX handler for removing trainer assignment
+     */
+    public function remove_trainer_assignment() {
+        // Verify nonce
+        if (!wp_verify_nonce($_POST['nonce'], 'fitcopilot_training_calendar_nonce')) {
+            wp_send_json_error(array('message' => 'Security check failed'));
+            return;
+        }
+        
+        $trainer_id = sanitize_text_field($_POST['trainer_id'] ?? '');
+        $event_type = sanitize_text_field($_POST['event_type'] ?? '');
+        $hard_delete = isset($_POST['hard_delete']) && $_POST['hard_delete'] === 'true';
+        
+        if (empty($trainer_id) || empty($event_type)) {
+            wp_send_json_error(array('message' => 'Trainer ID and event type are required'));
+            return;
+        }
+        
+        try {
+            $result = $this->assignment_manager->remove_trainer_assignment(
+                intval($trainer_id),
+                $event_type,
+                !$hard_delete // soft_delete is opposite of hard_delete
+            );
+            
+            if ($result) {
+                wp_send_json_success(array(
+                    'message' => 'Trainer assignment removed successfully',
+                    'trainer_id' => $trainer_id,
+                    'event_type' => $event_type,
+                    'hard_delete' => $hard_delete
+                ));
+            } else {
+                wp_send_json_error(array('message' => 'Failed to remove trainer assignment'));
+            }
+            
+        } catch (Exception $e) {
+            error_log('Training Calendar - Remove Assignment Error: ' . $e->getMessage());
+            wp_send_json_error(array('message' => 'Failed to remove assignment: ' . $e->getMessage()));
+        }
+    }
+    
+    /**
+     * AJAX handler for getting assignment statistics
+     */
+    public function get_assignment_statistics() {
+        // Verify nonce
+        if (!wp_verify_nonce($_POST['nonce'], 'fitcopilot_training_calendar_nonce')) {
+            wp_send_json_error(array('message' => 'Security check failed'));
+            return;
+        }
+        
+        try {
+            // Check if assignment table exists
+            if (!$this->assignment_table_exists()) {
+                wp_send_json_success(array(
+                    'total_assignments' => 0,
+                    'active_assignments' => 0,
+                    'trainers_with_assignments' => 0,
+                    'coverage_rate' => '0%',
+                    'avg_assignments_per_trainer' => '0',
+                    'specialization_rate' => '0%',
+                    'coverage_detail' => 'Assignment system not configured',
+                    'assignment_range' => 'No data available',
+                    'specialization_detail' => 'No data available',
+                    'trainer_summary' => array(),
+                    'event_type_coverage' => array(),
+                    'recommendations' => array(
+                        array(
+                            'type' => 'info',
+                            'title' => 'System Setup',
+                            'description' => 'Assignment system is not yet configured. Start by assigning trainers to event types.',
+                            'action' => null,
+                            'action_label' => null
+                        )
+                    ),
+                    'generated_at' => current_time('mysql'),
+                    'message' => 'Assignment system not configured'
+                ));
+                return;
+            }
+            
+            $statistics = $this->assignment_manager->get_assignment_statistics();
+            $statistics['generated_at'] = current_time('mysql');
+            
+            wp_send_json_success($statistics);
+            
+        } catch (Exception $e) {
+            error_log('Training Calendar - Get Statistics Error: ' . $e->getMessage());
+            wp_send_json_error(array('message' => 'Failed to retrieve statistics: ' . $e->getMessage()));
+        }
+    }
+    
+         /**
+      * Check if assignment table exists
+      * 
+      * @return bool True if table exists
+      */
+     private function assignment_table_exists() {
+         global $wpdb;
+         
+         $table_name = $wpdb->prefix . 'training_calendar_trainer_assignments';
+         $table_exists = $wpdb->get_var($wpdb->prepare(
+             "SHOW TABLES LIKE %s",
+             $table_name
+         )) === $table_name;
+         
+         return $table_exists;
+     }
+     
+     /**
+      * Create assignment table
+      * 
+      * @return bool True if table created successfully
+      */
+     private function create_assignment_table() {
+         global $wpdb;
+         
+         $table_name = $wpdb->prefix . 'training_calendar_trainer_assignments';
+         
+         $charset_collate = $wpdb->get_charset_collate();
+         
+         $sql = "CREATE TABLE $table_name (
+             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+             trainer_id bigint(20) unsigned NOT NULL,
+             event_type varchar(50) NOT NULL,
+             is_active tinyint(1) NOT NULL DEFAULT 1,
+             specialization_notes text,
+             hourly_rate decimal(8,2) DEFAULT NULL,
+             max_sessions_per_day int(11) DEFAULT 8,
+             created_at datetime DEFAULT CURRENT_TIMESTAMP,
+             updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+             PRIMARY KEY (id),
+             UNIQUE KEY trainer_event_type (trainer_id, event_type),
+             KEY idx_trainer_id (trainer_id),
+             KEY idx_event_type (event_type),
+             KEY idx_is_active (is_active)
+         ) $charset_collate;";
+         
+         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+         dbDelta($sql);
+         
+         // Check if table was created
+         return $this->assignment_table_exists();
+     }
 } 

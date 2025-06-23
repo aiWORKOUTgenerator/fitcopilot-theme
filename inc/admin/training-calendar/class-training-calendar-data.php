@@ -976,38 +976,57 @@ class FitCopilot_Training_Calendar_Data {
      * @return array Trainer data
      */
     public function get_integrated_trainers() {
-        // Get Personal Training data if available
+        // FIXED: Proper Personal Training integration
         $personal_training_data = get_option('fitcopilot_personal_training_data', array());
         
         if (empty($personal_training_data)) {
-            // Return sample trainers if no Personal Training data
+            // Fallback to sample trainers only if no Personal Training data exists
             return array(
                 array(
                     'id' => 1,
                     'name' => 'Justin Fassio',
                     'specialty' => 'Strength Training',
-                    'active' => true
+                    'active' => true,
+                    'bio' => 'Sample trainer - configure in Personal Training module'
                 ),
                 array(
                     'id' => 2,
                     'name' => 'Sarah Johnson',
                     'specialty' => 'HIIT & Cardio',
-                    'active' => true
+                    'active' => true,
+                    'bio' => 'Sample trainer - configure in Personal Training module'
                 )
             );
         }
         
+        // Transform Personal Training data to Training Calendar format
         $trainers = array();
         foreach ($personal_training_data as $trainer) {
+            // Only include active trainers
             if (isset($trainer['active']) && $trainer['active']) {
                 $trainers[] = array(
                     'id' => $trainer['id'] ?? 0,
                     'name' => $trainer['name'] ?? '',
                     'specialty' => $trainer['specialty'] ?? '',
-                    'active' => true
+                    'bio' => $trainer['bio'] ?? '',
+                    'image_url' => $trainer['image_url'] ?? '',
+                    'years_experience' => $trainer['years_experience'] ?? 0,
+                    'clients_count' => $trainer['clients_count'] ?? 0,
+                    'featured' => $trainer['featured'] ?? false,
+                    'active' => true,
+                    'coach_type' => $trainer['coach_type'] ?? 'personal',
+                    'order' => $trainer['order'] ?? 99
                 );
             }
         }
+        
+        // Sort by order, then by name
+        usort($trainers, function($a, $b) {
+            if ($a['order'] === $b['order']) {
+                return strcmp($a['name'], $b['name']);
+            }
+            return $a['order'] <=> $b['order'];
+        });
         
         return $trainers;
     }

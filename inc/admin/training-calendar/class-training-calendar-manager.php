@@ -31,6 +31,8 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
     private $renderer;
     private $data_provider;
     private $availability_handler;
+    private $schema_manager;
+    private $assignment_manager;
     
     /**
      * Constructor
@@ -60,6 +62,8 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
         require_once $base_path . 'class-training-calendar-renderer.php';
         require_once $base_path . 'class-training-calendar-provider.php';
         require_once $base_path . 'class-trainer-availability-handler.php';
+        require_once $base_path . 'class-training-calendar-schema-manager.php';
+        require_once $base_path . 'class-trainer-assignment-manager.php';
         
         // Include shared admin functions
         require_once get_template_directory() . '/inc/admin/shared/admin-base-template.php';
@@ -75,9 +79,11 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
         $this->renderer = new FitCopilot_Training_Calendar_Renderer($this->data_manager);
         $this->data_provider = new FitCopilot_Training_Calendar_Provider($this->data_manager);
         $this->availability_handler = new FitCopilot_Trainer_Availability_Handler();
+        $this->schema_manager = new FitCopilot_Training_Calendar_Schema_Manager();
+        $this->assignment_manager = new FitCopilot_Trainer_Assignment_Manager();
     }
     
-    /**
+     /**
      * Initialize module-specific hooks
      */
     private function init_module_hooks() {
@@ -85,6 +91,8 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
         $this->ajax_handler->init();
         $this->settings_manager->init();
         $this->data_provider->init();
+        
+        // Initialize availability handler - this will register all AJAX handlers
         $this->availability_handler->init();
         
         // REMOVED: Hook frontend data provider to wp_enqueue_scripts
@@ -103,17 +111,17 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
             $tables_created = get_option('fitcopilot_training_calendar_tables_created', false);
             
             if (!$tables_created) {
+                // First create basic tables
                 $result = $this->data_manager->create_tables();
                 if ($result) {
                     update_option('fitcopilot_training_calendar_tables_created', true);
-                    
-                    // Show admin notice about successful setup
-                    add_action('admin_notices', function() {
-                        echo '<div class="notice notice-success is-dismissible">';
-                        echo '<p><strong>Training Calendar:</strong> Database tables created and sample data added successfully!</p>';
-                        echo '</div>';
-                    });
                 }
+            }
+            
+            // Handle schema updates for event type assignments
+            if ($this->schema_manager && method_exists($this->schema_manager, 'maybe_update_schema')) {
+                // Schema manager will automatically check and update if needed
+                // This handles both fresh installations and updates
             }
         }
     }
@@ -223,6 +231,15 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
             true
         );
         
+        // Day 3: Assignment Manager module
+        wp_enqueue_script(
+            'fitcopilot-trainer-availability-assignment-manager',
+            get_template_directory_uri() . '/assets/admin/js/training-calendar/modules/assignment-manager.js',
+            array('jquery', 'fitcopilot-trainer-availability-event-types'),
+            filemtime(get_template_directory() . '/assets/admin/js/training-calendar/modules/assignment-manager.js'),
+            true
+        );
+        
         // Enqueue main trainer availability admin orchestrator (depends on all modules)
         wp_enqueue_script(
             'fitcopilot-trainer-availability-admin',
@@ -235,7 +252,8 @@ class FitCopilot_Training_Calendar_Manager extends FitCopilot_Complex_Manager {
                 'fitcopilot-trainer-availability-time-slot-manager',
                 'fitcopilot-trainer-availability-form-validation',
                 'fitcopilot-trainer-availability-modal-manager',
-                'fitcopilot-trainer-availability-event-integration'
+                'fitcopilot-trainer-availability-event-integration',
+                'fitcopilot-trainer-availability-assignment-manager'
             ),
             filemtime(get_template_directory() . '/assets/admin/js/training-calendar/trainer-availability-admin.js'),
             true

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Calendar Tab Debug</title>
+    <style>
+        .modal-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-button:hover {
+            background: rgba(29, 78, 216, 0.05);
+            color: #1d4ed8;
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #1d4ed8;
+            border-bottom-color: #1d4ed8;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            margin-top: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .debug-info {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Training Calendar Tab Debug Test</h1>
+    
+    <div class="debug-info" id="debug-log">
+        Debug Log: Waiting for tab clicks...
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="modal-tabs">
+        <button type="button" class="tab-button active" data-tab="availability">
+            🗓️ Trainer Availability
+        </button>
+        <button type="button" class="tab-button" data-tab="assignments">
+            🎯 Event Type Assignments
+        </button>
+        <button type="button" class="tab-button" data-tab="statistics">
+            📊 Assignment Statistics
+        </button>
+    </div>
+
+    <!-- Tab Content -->
+    <div id="tab-availability" class="tab-content active">
+        <h3>Trainer Availability Tab</h3>
+        <p>This is the availability management interface.</p>
+        <p>Default active tab content.</p>
+    </div>
+
+    <div id="tab-assignments" class="tab-content">
+        <h3>Event Type Assignments Tab</h3>
+        <p>This is the assignment matrix interface.</p>
+        <p>Assignment content should show here when tab is clicked.</p>
+    </div>
+
+    <div id="tab-statistics" class="tab-content">
+        <h3>Assignment Statistics Tab</h3>
+        <p>This is the statistics dashboard interface.</p>
+        <p>Statistics content should show here when tab is clicked.</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            console.log('Tab debug test loaded');
+            
+            // Simulate the modal manager tab switching logic
+            $(document).on('click', '.tab-button', function(e) {
+                e.preventDefault();
+                
+                const $clickedTab = $(e.target);
+                const targetTab = $clickedTab.data('tab');
+                
+                $('#debug-log').html(`Debug Log: Clicked tab "${targetTab}" at ${new Date().toLocaleTimeString()}`);
+                
+                if (!targetTab) {
+                    console.warn('No target tab found');
+                    return;
+                }
+                
+                console.log('Switching to tab:', targetTab);
+                
+                // Update tab button states
+                $('.tab-button').removeClass('active').css({
+                    'background': 'transparent',
+                    'color': '#666',
+                    'border-bottom': '2px solid transparent'
+                });
+                
+                $clickedTab.addClass('active').css({
+                    'background': 'white',
+                    'color': '#1d4ed8',
+                    'border-bottom': '2px solid #1d4ed8'
+                });
+                
+                // Hide all tab content
+                $('.tab-content').removeClass('active').hide();
+                
+                // Show target tab content
+                const $targetContent = $(`#tab-${targetTab}`);
+                if ($targetContent.length) {
+                    $targetContent.addClass('active').show();
+                    
+                    // Trigger custom events (simulating assignment manager)
+                    $(document).trigger(`tab:activated:${targetTab}`);
+                    
+                    console.log(`Switched to ${targetTab} tab successfully`);
+                    $('#debug-log').append(`<br>✅ Successfully switched to "${targetTab}" tab`);
+                    
+                    // Simulate assignment manager events
+                    if (targetTab === 'assignments') {
+                        $('#debug-log').append(`<br>🎯 Assignment tab activated - would load assignment matrix`);
+                    } else if (targetTab === 'statistics') {
+                        $('#debug-log').append(`<br>📊 Statistics tab activated - would load statistics data`);
+                    }
+                } else {
+                    console.warn(`Tab content not found for ${targetTab}`);
+                    $('#debug-log').append(`<br>❌ Tab content not found for "${targetTab}"`);
+                }
+            });
+            
+            // Simulate assignment manager event listeners
+            $(document).on('tab:activated:assignments', function() {
+                console.log('Assignment tab activated event received');
+                $('#debug-log').append(`<br>📡 Custom event "tab:activated:assignments" triggered`);
+            });
+            
+            $(document).on('tab:activated:statistics', function() {
+                console.log('Statistics tab activated event received');
+                $('#debug-log').append(`<br>📡 Custom event "tab:activated:statistics" triggered`);
+            });
+        });
+    </script>
+</body>
+</html> 

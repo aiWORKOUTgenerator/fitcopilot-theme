@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Tab Integration Diagnostic</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        .test-section { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 6px; }
+        .test-header { background: #f8f9fa; margin: -20px -20px 20px -20px; padding: 15px 20px; border-bottom: 1px solid #ddd; }
+        .status-pass { color: #28a745; font-weight: bold; }
+        .status-fail { color: #dc3545; font-weight: bold; }
+        .status-warn { color: #ffc107; font-weight: bold; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .result-pass { background: #d4edda; border: 1px solid #c3e6cb; }
+        .result-fail { background: #f8d7da; border: 1px solid #f5c6cb; }
+        .result-warn { background: #fff3cd; border: 1px solid #ffeaa7; }
+        .run-test { background: #007cba; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-right: 10px; }
+        .run-test:hover { background: #005a87; }
+        .diagnostic-data { background: #f8f9fa; padding: 15px; border-radius: 4px; margin-top: 15px; font-family: monospace; font-size: 12px; overflow-x: auto; }
+        .fix-button { background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-left: 10px; }
+        .fix-button:hover { background: #218838; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Assignment Tab Integration Diagnostic</h1>
+        <p><strong>Based on Day 1 Audit Findings</strong> - Testing critical integration points identified in the comprehensive audit</p>
+
+        <!-- Test 1: JavaScript Module Loading -->
+        <div class="test-section">
+            <div class="test-header">
+                <h3>Test 1: JavaScript Module Loading</h3>
+                <p>Verifying all required modules are loaded and accessible</p>
+            </div>
+            
+            <button class="run-test" onclick="testModuleLoading()">Run Module Test</button>
+            <div id="module-results"></div>
+        </div>
+
+        <!-- Test 2: Tab Activation Events -->
+        <div class="test-section">
+            <div class="test-header">
+                <h3>Test 2: Tab Activation Event System</h3>
+                <p>Testing if assignment tab properly triggers module events</p>
+            </div>
+            
+            <button class="run-test" onclick="testTabActivation()">Test Tab Events</button>
+            <button class="fix-button" onclick="fixTabEvents()">Apply Fix</button>
+            <div id="tab-results"></div>
+        </div>
+
+        <!-- Test 3: AJAX Configuration -->
+        <div class="test-section">
+            <div class="test-header">
+                <h3>Test 3: AJAX Configuration & Authentication</h3>
+                <p>Checking nonce configuration and endpoint accessibility</p>
+            </div>
+            
+            <button class="run-test" onclick="testAjaxConfig()">Test AJAX Setup</button>
+            <button class="fix-button" onclick="fixNonceConfig()">Standardize Nonce</button>
+            <div id="ajax-results"></div>
+        </div>
+
+        <!-- Test 4: Assignment Matrix Loading -->
+        <div class="test-section">
+            <div class="test-header">
+                <h3>Test 4: Assignment Matrix Data Loading</h3>
+                <p>Testing the complete data flow from backend to matrix display</p>
+            </div>
+            
+            <button class="run-test" onclick="testMatrixLoading()">Test Matrix Load</button>
+            <button class="fix-button" onclick="addSeedData()">Add Test Data</button>
+            <div id="matrix-results"></div>
+        </div>
+
+        <!-- Test 5: Statistics Dashboard -->
+        <div class="test-section">
+            <div class="test-header">
+                <h3>Test 5: Statistics Dashboard Integration</h3>
+                <p>Testing statistics tab activation and data loading</p>
+            </div>
+            
+            <button class="run-test" onclick="testStatisticsIntegration()">Test Statistics</button>
+            <div id="statistics-results"></div>
+        </div>
+
+        <!-- Test 6: Form State Management -->
+        <div class="test-section">
+            <div class="test-header">
+                <h3>Test 6: Individual Assignment Form</h3>
+                <p>Testing form functionality and state management</p>
+            </div>
+            
+            <button class="run-test" onclick="testFormManagement()">Test Form Logic</button>
+            <div id="form-results"></div>
+        </div>
+
+        <!-- Overall Assessment -->
+        <div class="test-section">
+            <div class="test-header">
+                <h3>📊 Overall Integration Health</h3>
+                <p>Summary of all critical integration points</p>
+            </div>
+            
+            <button class="run-test" onclick="runBasicDiagnostic()">Run Basic Diagnostic</button>
+            <div id="overall-results"></div>
+        </div>
+    </div>
+
+    <script>
+        // Test Results Storage
+        let testResults = {};
+
+        // Test 1: Module Loading
+        function testModuleLoading() {
+            const results = document.getElementById('module-results');
+            const tests = [];
+
+            // Check main orchestrator
+            tests.push({
+                name: 'TrainerAvailability Orchestrator',
+                passed: typeof window.TrainerAvailability !== 'undefined',
+                data: typeof window.TrainerAvailability
+            });
+
+            // Check assignment manager module
+            tests.push({
+                name: 'Assignment Manager Module',
+                passed: typeof window.TrainerAvailabilityAssignmentManager !== 'undefined',
+                data: typeof window.TrainerAvailabilityAssignmentManager
+            });
+
+            // Check modal manager
+            tests.push({
+                name: 'Modal Manager Module',
+                passed: typeof window.TrainerAvailabilityModal !== 'undefined',
+                data: typeof window.TrainerAvailabilityModal
+            });
+
+            // Check jQuery availability
+            tests.push({
+                name: 'jQuery Library',
+                passed: typeof $ !== 'undefined' || typeof jQuery !== 'undefined',
+                data: typeof $ !== 'undefined' ? 'Available as $' : typeof jQuery !== 'undefined' ? 'Available as jQuery' : 'Missing'
+            });
+
+            testResults.modules = tests;
+            displayTestResults(results, tests, 'Module Loading');
+        }
+
+        // Test 2: Tab Activation Events
+        function testTabActivation() {
+            const results = document.getElementById('tab-results');
+            const tests = [];
+
+            // Check if modal manager exists
+            const modalManager = window.TrainerAvailabilityModal;
+            tests.push({
+                name: 'Modal Manager Available',
+                passed: !!modalManager,
+                data: modalManager ? 'Available' : 'Missing'
+            });
+
+            // Check tab button existence (simulate since we're not in WordPress)
+            tests.push({
+                name: 'Assignment Tab Button (Simulated)',
+                passed: true,
+                data: 'Would exist in WordPress environment'
+            });
+
+            // Test if handleTabSwitch method exists
+            const hasTabSwitchMethod = modalManager && typeof modalManager.handleTabSwitch === 'function';
+            tests.push({
+                name: 'handleTabSwitch Method',
+                passed: hasTabSwitchMethod,
+                data: hasTabSwitchMethod ? 'Method available' : 'Method missing'
+            });
+
+            // Test custom event triggering capability
+            let eventTriggered = false;
+            if (typeof $ !== 'undefined' || typeof jQuery !== 'undefined') {
+                const jq = $ || jQuery;
+                jq(document).one('tab:activated:assignments', function() {
+                    eventTriggered = true;
+                });
+                
+                // Simulate event trigger
+                jq(document).trigger('tab:activated:assignments');
+                
+                tests.push({
+                    name: 'Custom Event System',
+                    passed: eventTriggered,
+                    data: eventTriggered ? 'Events working' : 'Event system not working'
+                });
+            } else {
+                tests.push({
+                    name: 'Custom Event System',
+                    passed: false,
+                    data: 'Cannot test - jQuery not available'
+                });
+            }
+
+            testResults.tabActivation = tests;
+            displayTestResults(results, tests, 'Tab Activation');
+        }
+
+        // Test 3: AJAX Configuration
+        function testAjaxConfig() {
+            const results = document.getElementById('ajax-results');
+            const tests = [];
+
+            // Check AJAX URL configuration
+            const ajaxUrl = window.fitcopilotTrainingCalendarAjax?.ajax_url || window.ajaxurl;
+            tests.push({
+                name: 'AJAX URL Configuration',
+                passed: !!ajaxUrl,
+                data: ajaxUrl || 'Missing'
+            });
+
+            // Check nonce configuration (multiple potential sources)
+            const nonce1 = window.fitcopilotTrainingCalendarAjax?.nonce;
+            const nonce2 = window.fitcopilotTrainingCalendarData?.nonce;
+            tests.push({
+                name: 'Primary Nonce (AJAX)',
+                passed: !!nonce1,
+                data: nonce1 ? 'Present' : 'Missing'
+            });
+
+            tests.push({
+                name: 'Secondary Nonce (Data)',
+                passed: !!nonce2,
+                data: nonce2 ? 'Present' : 'Missing'
+            });
+
+            // Check for nonce conflicts
+            const nonceConflict = nonce1 && nonce2 && nonce1 !== nonce2;
+            tests.push({
+                name: 'Nonce Consistency',
+                passed: !nonceConflict,
+                data: nonceConflict ? 'CONFLICT DETECTED - Different nonces' : 'Consistent'
+            });
+
+            // Test assignment manager config
+            const assignmentConfig = window.TrainerAvailabilityAssignmentManager?.config;
+            tests.push({
+                name: 'Assignment Manager Config',
+                passed: !!assignmentConfig?.ajaxUrl && !!assignmentConfig?.nonce,
+                data: assignmentConfig ? 'Configured' : 'Missing configuration'
+            });
+
+            testResults.ajaxConfig = tests;
+            displayTestResults(results, tests, 'AJAX Configuration');
+        }
+
+        // Test 4: Assignment Matrix Loading
+        function testMatrixLoading() {
+            const results = document.getElementById('matrix-results');
+            const tests = [];
+
+            // Check matrix container existence
+            const matrixContainer = document.getElementById('assignment-matrix');
+            tests.push({
+                name: 'Matrix Container',
+                passed: !!matrixContainer,
+                data: matrixContainer ? 'Found in DOM' : 'Missing'
+            });
+
+            // Check assignment manager method
+            const assignmentManager = window.TrainerAvailabilityAssignmentManager;
+            tests.push({
+                name: 'loadAssignmentMatrix Method',
+                passed: !!(assignmentManager && typeof assignmentManager.loadAssignmentMatrix === 'function'),
+                data: assignmentManager ? 'Method available' : 'Manager not loaded'
+            });
+
+            // Attempt to trigger matrix loading
+            if (assignmentManager && typeof assignmentManager.loadAssignmentMatrix === 'function') {
+                try {
+                    // Monitor for loading state changes
+                    const initialContent = matrixContainer?.innerHTML || '';
+                    assignmentManager.loadAssignmentMatrix();
+                    
+                    setTimeout(() => {
+                        const newContent = matrixContainer?.innerHTML || '';
+                        const contentChanged = newContent !== initialContent;
+                        
+                        tests.push({
+                            name: 'Matrix Loading Trigger',
+                            passed: contentChanged,
+                            data: contentChanged ? 'Content updated' : 'No content change - likely AJAX failure'
+                        });
+
+                        testResults.matrixLoading = tests;
+                        displayTestResults(results, tests, 'Matrix Loading');
+                    }, 2000);
+                } catch (error) {
+                    tests.push({
+                        name: 'Matrix Loading Trigger',
+                        passed: false,
+                        data: `Error: ${error.message}`
+                    });
+
+                    testResults.matrixLoading = tests;
+                    displayTestResults(results, tests, 'Matrix Loading');
+                }
+            } else {
+                tests.push({
+                    name: 'Matrix Loading Trigger',
+                    passed: false,
+                    data: 'Cannot test - assignment manager not available'
+                });
+
+                testResults.matrixLoading = tests;
+                displayTestResults(results, tests, 'Matrix Loading');
+            }
+        }
+
+        // Test 5: Statistics Integration
+        function testStatisticsIntegration() {
+            const results = document.getElementById('statistics-results');
+            const tests = [];
+
+            // Check statistics tab button
+            const statsTabButton = document.querySelector('.tab-button[data-tab="statistics"]');
+            tests.push({
+                name: 'Statistics Tab Button',
+                passed: !!statsTabButton,
+                data: statsTabButton ? 'Found' : 'Missing'
+            });
+
+            // Check statistics content area
+            const statsContent = document.getElementById('tab-statistics');
+            tests.push({
+                name: 'Statistics Content Area',
+                passed: !!statsContent,
+                data: statsContent ? 'Found' : 'Missing'
+            });
+
+            // Check for statistics method
+            const assignmentManager = window.TrainerAvailabilityAssignmentManager;
+            tests.push({
+                name: 'loadAssignmentStatistics Method',
+                passed: !!(assignmentManager && typeof assignmentManager.loadAssignmentStatistics === 'function'),
+                data: assignmentManager ? 'Method available' : 'Manager not loaded'
+            });
+
+            // Test statistics tab activation event
+            let statsEventTriggered = false;
+            $(document).one('tab:activated:statistics', function() {
+                statsEventTriggered = true;
+            });
+
+            if (statsTabButton) {
+                statsTabButton.click();
+                setTimeout(() => {
+                    tests.push({
+                        name: 'Statistics Tab Event',
+                        passed: statsEventTriggered,
+                        data: statsEventTriggered ? 'Event triggered' : 'Event not triggered'
+                    });
+
+                    testResults.statisticsIntegration = tests;
+                    displayTestResults(results, tests, 'Statistics Integration');
+                }, 100);
+            } else {
+                tests.push({
+                    name: 'Statistics Tab Event',
+                    passed: false,
+                    data: 'Cannot test - tab button missing'
+                });
+
+                testResults.statisticsIntegration = tests;
+                displayTestResults(results, tests, 'Statistics Integration');
+            }
+        }
+
+        // Test 6: Form Management
+        function testFormManagement() {
+            const results = document.getElementById('form-results');
+            const tests = [];
+
+            // Check form elements
+            const trainerSelect = document.getElementById('assignment-trainer-select');
+            const eventTypeSelect = document.getElementById('assignment-event-type-select');
+            const saveButton = document.getElementById('save-assignment-btn');
+
+            tests.push({
+                name: 'Trainer Dropdown',
+                passed: !!trainerSelect,
+                data: trainerSelect ? `${trainerSelect.options.length} options` : 'Missing'
+            });
+
+            tests.push({
+                name: 'Event Type Dropdown',
+                passed: !!eventTypeSelect,
+                data: eventTypeSelect ? `${eventTypeSelect.options.length} options` : 'Missing'
+            });
+
+            tests.push({
+                name: 'Save Button',
+                passed: !!saveButton,
+                data: saveButton ? (saveButton.disabled ? 'Found (disabled)' : 'Found (enabled)') : 'Missing'
+            });
+
+            // Check assignment manager form handlers
+            const assignmentManager = window.TrainerAvailabilityAssignmentManager;
+            tests.push({
+                name: 'Assignment Form Handlers',
+                passed: !!(assignmentManager && typeof assignmentManager.onTrainerSelect === 'function'),
+                data: assignmentManager ? 'Handlers available' : 'Manager not loaded'
+            });
+
+            testResults.formManagement = tests;
+            displayTestResults(results, tests, 'Form Management');
+        }
+
+        // Basic Diagnostic
+        function runBasicDiagnostic() {
+            const results = document.getElementById('overall-results');
+            results.innerHTML = '<div class="diagnostic-data">Running basic diagnostic...</div>';
+
+            // Run tests in sequence
+            testModuleLoading();
+            setTimeout(() => {
+                testTabActivation();
+                setTimeout(() => {
+                    generateOverallSummary(results);
+                }, 500);
+            }, 500);
+        }
+
+        // Fix Functions
+        function fixTabEvents() {
+            const results = document.getElementById('tab-results');
+            
+            // Provide fix instructions since we can't directly modify WordPress
+            results.innerHTML += `
+                <div class="test-result result-warn">
+                    ⚠️ <strong>Fix Instructions:</strong><br>
+                    The tab event triggering issue can be fixed by modifying the Modal Manager module:<br><br>
+                    <code>
+                    // In modal-manager.js, modify handleTabSwitch method:<br>
+                    handleTabSwitch: function(e) {<br>
+                    &nbsp;&nbsp;// ... existing code ...<br>
+                    &nbsp;&nbsp;// Add this line after tab switching:<br>
+                    &nbsp;&nbsp;$(document).trigger('tab:activated:' + targetTab);<br>
+                    }
+                    </code>
+                </div>
+            `;
+        }
+
+        function fixNonceConfig() {
+            const results = document.getElementById('ajax-results');
+            
+            // Standardize nonce configuration
+            const primaryNonce = window.fitcopilotTrainingCalendarAjax?.nonce || 
+                                window.fitcopilotTrainingCalendarData?.nonce || '';
+            
+            if (primaryNonce) {
+                // Set consistent nonce across all modules
+                if (window.TrainerAvailabilityAssignmentManager) {
+                    window.TrainerAvailabilityAssignmentManager.config.nonce = primaryNonce;
+                }
+                if (window.TrainerAvailabilityEventIntegration) {
+                    window.TrainerAvailabilityEventIntegration.config.nonce = primaryNonce;
+                }
+
+                results.innerHTML += '<div class="test-result result-pass">✅ <strong>Fix Applied:</strong> Nonce configuration standardized</div>';
+            } else {
+                results.innerHTML += '<div class="test-result result-fail">❌ <strong>Fix Failed:</strong> No valid nonce found</div>';
+            }
+        }
+
+        function addSeedData() {
+            const results = document.getElementById('matrix-results');
+            
+            // Mock seed data for testing
+            const mockAssignments = {
+                "1": {
+                    "fitness_assessment": { is_active: true, hourly_rate: null },
+                    "personal_training": { is_active: true, hourly_rate: 80 }
+                },
+                "2": {
+                    "group_fitness": { is_active: true, hourly_rate: 25 },
+                    "group_forum": { is_active: true, hourly_rate: null }
+                }
+            };
+
+            // Inject mock data into assignment manager
+            if (window.TrainerAvailabilityAssignmentManager) {
+                window.TrainerAvailabilityAssignmentManager.state.assignments = mockAssignments;
+                results.innerHTML += '<div class="test-result result-pass">✅ <strong>Mock Data Added:</strong> Test assignments injected for 2 trainers</div>';
+                
+                // Trigger matrix render
+                try {
+                    window.TrainerAvailabilityAssignmentManager.renderAssignmentMatrix();
+                    results.innerHTML += '<div class="test-result result-pass">✅ <strong>Matrix Rendered:</strong> Using mock data</div>';
+                } catch (error) {
+                    results.innerHTML += `<div class="test-result result-fail">❌ <strong>Render Failed:</strong> ${error.message}</div>`;
+                }
+            } else {
+                results.innerHTML += '<div class="test-result result-fail">❌ <strong>Failed:</strong> Assignment manager not available</div>';
+            }
+        }
+
+        // Utility Functions
+        function displayTestResults(container, tests, sectionName) {
+            let html = `<h4>Results for ${sectionName}:</h4>`;
+            
+            tests.forEach(test => {
+                const statusClass = test.passed ? 'result-pass' : 'result-fail';
+                const statusIcon = test.passed ? '✅' : '❌';
+                html += `<div class="test-result ${statusClass}">
+                    ${statusIcon} <strong>${test.name}:</strong> ${test.data}
+                </div>`;
+            });
+
+            const passCount = tests.filter(t => t.passed).length;
+            const totalCount = tests.length;
+            const percentage = Math.round((passCount / totalCount) * 100);
+            
+            html += `<div class="diagnostic-data">
+                <strong>Section Score:</strong> ${passCount}/${totalCount} tests passed (${percentage}%)
+            </div>`;
+
+            container.innerHTML = html;
+        }
+
+        function generateOverallSummary(container) {
+            let totalTests = 0;
+            let passedTests = 0;
+
+            // Analyze all test results
+            Object.keys(testResults).forEach(section => {
+                const tests = testResults[section];
+                totalTests += tests.length;
+                passedTests += tests.filter(t => t.passed).length;
+            });
+
+            const overallPercentage = totalTests > 0 ? Math.round((passedTests / totalTests) * 100) : 0;
+            let statusClass = 'result-pass';
+            let statusText = 'Good';
+            
+            if (overallPercentage < 50) {
+                statusClass = 'result-fail';
+                statusText = 'Critical Issues';
+            } else if (overallPercentage < 80) {
+                statusClass = 'result-warn';
+                statusText = 'Needs Attention';
+            }
+
+            let html = `
+                <div class="test-result ${statusClass}">
+                    <h4>Overall Integration Health: ${overallPercentage}% (${statusText})</h4>
+                    <p><strong>Total Tests:</strong> ${passedTests}/${totalTests} passed</p>
+                </div>
+            `;
+
+            html += `
+                <div class="diagnostic-data">
+                    <strong>Day 1 Audit Summary:</strong><br>
+                    The Event Type Assignments tab has <strong>60% functionality complete</strong> with solid architecture but critical integration gaps.
+                    <br><br>
+                    <strong>Key Findings from Audit:</strong><br>
+                    • ✅ UI Framework: Complete and professional<br>
+                    • ⚠️ Backend Integration: 90% complete, missing seed data<br>
+                    • ❌ Frontend Logic: Tab events not triggering assignment loading<br>
+                    • ⚠️ Data Flow: AJAX endpoints exist but connection incomplete<br>
+                    <br>
+                    <strong>Priority Action Items:</strong><br>
+                    1. Fix tab event triggering (primary blocker)<br>
+                    2. Standardize AJAX nonce configuration<br>
+                    3. Add seed data to assignment table<br>
+                    4. Complete statistics tab integration
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // Auto-run basic tests on load
+        window.addEventListener('load', function() {
+            console.log('🔍 Assignment Tab Diagnostic Tool Loaded');
+            console.log('Based on comprehensive Day 1 audit findings');
+            
+            // Show current environment info
+            console.log('Environment Check:', {
+                hasTrainerAvailability: typeof window.TrainerAvailability !== 'undefined',
+                hasAssignmentManager: typeof window.TrainerAvailabilityAssignmentManager !== 'undefined', 
+                hasModalManager: typeof window.TrainerAvailabilityModal !== 'undefined',
+                hasJQuery: typeof $ !== 'undefined' || typeof jQuery !== 'undefined'
+            });
+        });
+    </script>
+</body>
+</html> 

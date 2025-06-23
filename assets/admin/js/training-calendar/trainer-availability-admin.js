@@ -100,6 +100,14 @@
                 this.modules.eventIntegration.init();
             }
             
+            // Initialize Assignment Manager module (Day 3)
+            if (typeof TrainerAvailabilityAssignmentManager === 'undefined') {
+                console.warn('Assignment Manager module not loaded');
+            } else {
+                this.modules.assignmentManager = TrainerAvailabilityAssignmentManager;
+                this.modules.assignmentManager.init();
+            }
+            
             // Initialize Modal module (depends on other modules)
             if (typeof TrainerAvailabilityModal === 'undefined') {
                 console.warn('Modal module not loaded');
@@ -157,8 +165,8 @@
             if (this.modules.modal) {
                 if (trainerId) {
                     // Reset form and prepare for loading
-                    if (this.modules.form) {
-                        this.modules.form.resetForm();
+                    if (this.modules.formManagement) {
+                        this.modules.formManagement.resetForm();
                     }
                 } else {
                     this.modules.modal.showNoTrainerSelected();
@@ -299,12 +307,12 @@
         saveAvailability: function(e) {
             e.preventDefault();
             
-            if (!this.modules.form) {
-                this.showError('Form module not available');
+            if (!this.modules.formValidation) {
+                this.showError('Form validation module not available');
                 return;
             }
             
-            const validation = this.modules.form.validateForm();
+            const validation = this.modules.formValidation.validateForm(e);
             if (!validation.valid) {
                 this.showError('Validation failed: ' + validation.errors.join(', '));
                 return;
@@ -328,8 +336,8 @@
                     
                     if (response.success) {
                         this.showSuccess('Trainer availability saved successfully!');
-                        if (this.modules.form) {
-                            this.modules.form.clearUnsavedChanges();
+                        if (this.modules.formManagement) {
+                            this.modules.formManagement.markSaved();
                         }
                     } else {
                         this.showError(response.data?.message || 'Failed to save trainer availability');

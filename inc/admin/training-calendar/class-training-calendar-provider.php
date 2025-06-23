@@ -244,7 +244,7 @@ class FitCopilot_Training_Calendar_Provider {
         // Get real events and database statistics instead of sample data
         $real_stats = $this->data_manager->get_statistics();
         $events = $this->data_manager->get_all_events();
-        $trainers = $this->get_sample_trainers(); // Keep trainers as sample for now
+        $trainers = $this->get_integrated_trainers(); // FIXED: Use real trainers from Personal Training
         
         // Get settings
         $settings = $this->data_manager->get_settings();
@@ -898,18 +898,144 @@ class FitCopilot_Training_Calendar_Provider {
     // ===== PHASE 2: REAL-TIME SYNCHRONIZATION HANDLERS =====
     
     /**
-     * Handle Personal Training data update
+     * Handle Personal Training data update - ENHANCED for real-time sync
      * Called when Personal Training module saves data
      */
     public function handle_trainer_data_update() {
+        // Get current trainer data for comparison
+        $current_trainers = $this->get_integrated_trainers();
+        $previous_trainer_ids = get_option('fitcopilot_training_calendar_trainer_ids', array());
+        $current_trainer_ids = array_column($current_trainers, 'id');
+        
+        // Detect changes
+        $added_trainers = array_diff($current_trainer_ids, $previous_trainer_ids);
+        $removed_trainers = array_diff($previous_trainer_ids, $current_trainer_ids);
+        
+        // Handle added trainers
+        if (!empty($added_trainers)) {
+            foreach ($added_trainers as $trainer_id) {
+                $this->handle_trainer_added($trainer_id);
+            }
+        }
+        
+        // Handle removed trainers
+        if (!empty($removed_trainers)) {
+            foreach ($removed_trainers as $trainer_id) {
+                $this->handle_trainer_removed($trainer_id);
+            }
+        }
+        
+        // Update stored trainer IDs for next comparison
+        update_option('fitcopilot_training_calendar_trainer_ids', $current_trainer_ids);
+        
         // Invalidate trainer cache immediately
         $this->invalidate_trainer_cache();
         
-        // Log synchronization event
-        error_log('Training Calendar: Trainer data synchronized from Personal Training module');
+        // Log synchronization event with details
+        error_log('Training Calendar: Trainer data synchronized - Added: ' . count($added_trainers) . ', Removed: ' . count($removed_trainers) . ', Total: ' . count($current_trainers));
         
-        // Trigger custom action for other integrations
-        do_action('fitcopilot_training_calendar_trainers_synced');
+        // Trigger enhanced custom action for other integrations
+        do_action('fitcopilot_training_calendar_trainers_synced', array(
+            'added' => $added_trainers,
+            'removed' => $removed_trainers,
+            'total_trainers' => count($current_trainers),
+            'sync_timestamp' => current_time('timestamp')
+        ));
+    }
+    
+    /**
+     * Handle trainer added to Personal Training
+     */
+    private function handle_trainer_added($trainer_id) {
+        // Log new trainer
+        error_log("Training Calendar: New trainer detected - ID: {$trainer_id}");
+        
+        // Optionally auto-assign to common event types
+        $auto_assign_settings = get_option('fitcopilot_training_calendar_auto_assign', array(
+            'enabled' => false,
+            'event_types' => array('fitness_assessment') // Default to free assessments
+        ));
+        
+        if (!empty($auto_assign_settings['enabled']) && !empty($auto_assign_settings['event_types'])) {
+            $this->auto_assign_trainer($trainer_id, $auto_assign_settings['event_types']);
+        }
+        
+        // Trigger action for frontend notifications
+        do_action('fitcopilot_training_calendar_trainer_added', $trainer_id);
+    }
+    
+    /**
+     * Handle trainer removed from Personal Training
+     */
+    private function handle_trainer_removed($trainer_id) {
+        // Log removal
+        error_log("Training Calendar: Trainer removed - ID: {$trainer_id}");
+        
+        // Clean up assignments for removed trainer
+        $this->cleanup_trainer_assignments($trainer_id);
+        
+        // Update any events assigned to this trainer
+        $this->reassign_trainer_events($trainer_id);
+        
+        // Trigger action for frontend notifications
+        do_action('fitcopilot_training_calendar_trainer_removed', $trainer_id);
+    }
+    
+    /**
+     * Auto-assign trainer to specified event types
+     */
+    private function auto_assign_trainer($trainer_id, $event_types) {
+        // Get assignment manager
+        if (!class_exists('FitCopilot_Trainer_Assignment_Manager')) {
+            return;
+        }
+        
+        $assignment_manager = new FitCopilot_Trainer_Assignment_Manager();
+        
+        foreach ($event_types as $event_type) {
+            try {
+                $result = $assignment_manager->assign_trainer($trainer_id, $event_type, array(
+                    'is_active' => true,
+                    'auto_assigned' => true,
+                    'specialization_notes' => 'Auto-assigned when trainer was added',
+                    'created_at' => current_time('mysql')
+                ));
+                
+                if ($result) {
+                    error_log("Training Calendar: Auto-assigned trainer {$trainer_id} to {$event_type}");
+                }
+            } catch (Exception $e) {
+                error_log("Training Calendar: Failed to auto-assign trainer {$trainer_id} to {$event_type}: " . $e->getMessage());
+            }
+        }
+    }
+    
+    /**
+     * Clean up assignments for removed trainer
+     */
+    private function cleanup_trainer_assignments($trainer_id) {
+        // Get assignment manager
+        if (!class_exists('FitCopilot_Trainer_Assignment_Manager')) {
+            return;
+        }
+        
+        $assignment_manager = new FitCopilot_Trainer_Assignment_Manager();
+        
+        try {
+            // Get trainer's assignments
+            $assignments = $assignment_manager->get_trainer_assignments($trainer_id);
+            
+            // Remove each assignment
+            foreach ($assignments as $assignment) {
+                $assignment_manager->remove_assignment($trainer_id, $assignment['event_type']);
+                error_log("Training Calendar: Removed assignment for trainer {$trainer_id} from {$assignment['event_type']}");
+            }
+            
+            // Log cleanup completion
+            error_log("Training Calendar: Cleaned up " . count($assignments) . " assignments for removed trainer {$trainer_id}");
+        } catch (Exception $e) {
+            error_log("Training Calendar: Failed to cleanup assignments for trainer {$trainer_id}: " . $e->getMessage());
+        }
     }
     
     /**

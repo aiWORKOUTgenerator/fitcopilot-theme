@@ -54,6 +54,9 @@
             $(document).on('click', this.config.modalSelector + ' ' + this.config.closeSelector, this.hide.bind(this));
             $(document).on('click', this.config.modalSelector + ' ' + this.config.overlaySelector, this.onOverlayClick.bind(this));
             
+            // Tab switching
+            $(document).on('click', '.tab-button', this.handleTabSwitch.bind(this));
+            
             // Escape key
             $(document).on('keydown', this.onKeyDown.bind(this));
             
@@ -89,11 +92,44 @@
             $('#availability-loading').hide();
             $('#no-trainer-selected').show();
             
+            // Initialize tabs - set first tab as active
+            this.initializeTabs();
+            
             // Initialize event type selector if present
             const $eventTypeSelect = $('#event-type-select');
             if ($eventTypeSelect.length === 0) {
                 console.log('TrainerAvailabilityModal: Adding event type selector to modal');
                 this.addEventTypeSelector();
+            }
+        },
+        
+        /**
+         * Initialize tabs state
+         */
+        initializeTabs: function() {
+            // Hide all tab content
+            $('.tab-content').removeClass('active').hide();
+            
+            // Reset all tab buttons
+            $('.tab-button').removeClass('active').css({
+                'background': 'none',
+                'color': '#666',
+                'border-bottom': '2px solid transparent'
+            });
+            
+            // Activate first tab (availability)
+            const $firstTab = $('.tab-button[data-tab="availability"]');
+            const $firstContent = $('#tab-availability');
+            
+            if ($firstTab.length && $firstContent.length) {
+                $firstTab.addClass('active').css({
+                    'background': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    'color': 'white',
+                    'border-bottom': '2px solid #667eea'
+                });
+                
+                $firstContent.addClass('active').show();
+                console.log('TrainerAvailabilityModal: Initialized with availability tab active');
             }
         },
         
@@ -226,6 +262,68 @@
             // Only close if clicking directly on overlay
             if (e.target === e.currentTarget) {
                 this.hide(e);
+            }
+        },
+        
+        /**
+         * Handle tab switching
+         */
+        handleTabSwitch: function(e) {
+            e.preventDefault();
+            
+            const $clickedTab = $(e.target);
+            const targetTab = $clickedTab.data('tab');
+            
+            console.log('TrainerAvailabilityModal: Tab switch requested for:', targetTab);
+            
+            if (!targetTab) {
+                console.warn('TrainerAvailabilityModal: No target tab specified');
+                return;
+            }
+            
+            // Debug: Log current tab states
+            console.log('TrainerAvailabilityModal: Current tab buttons:', $('.tab-button').length);
+            console.log('TrainerAvailabilityModal: Current tab content elements:', $('.tab-content').length);
+            
+            // Update tab button states
+            $('.tab-button').removeClass('active').css({
+                'background': 'none',
+                'color': '#666',
+                'border-bottom': '2px solid transparent'
+            });
+            
+            $clickedTab.addClass('active').css({
+                'background': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                'color': 'white',
+                'border-bottom': '2px solid #667eea'
+            });
+            
+            console.log('TrainerAvailabilityModal: Updated tab button styles');
+            
+            // Hide all tab content
+            $('.tab-content').removeClass('active').hide();
+            console.log('TrainerAvailabilityModal: Hidden all tab content');
+            
+            // Show target tab content
+            const $targetContent = $(`#tab-${targetTab}`);
+            console.log(`TrainerAvailabilityModal: Looking for tab content: #tab-${targetTab}, found:`, $targetContent.length);
+            
+            if ($targetContent.length) {
+                $targetContent.addClass('active').show();
+                console.log(`TrainerAvailabilityModal: Showed tab content for ${targetTab}`);
+                
+                // Debug: Check if content is actually visible
+                const isVisible = $targetContent.is(':visible');
+                const hasActiveClass = $targetContent.hasClass('active');
+                console.log(`TrainerAvailabilityModal: Tab ${targetTab} - Visible: ${isVisible}, Has active class: ${hasActiveClass}`);
+                
+                // Trigger tab-specific events
+                $(document).trigger(`tab:activated:${targetTab}`);
+                
+                console.log(`TrainerAvailabilityModal: Switched to ${targetTab} tab successfully`);
+            } else {
+                console.warn(`TrainerAvailabilityModal: Tab content not found for ${targetTab}`);
+                console.log('TrainerAvailabilityModal: Available tab content IDs:', $('.tab-content').map(function() { return this.id; }).get());
             }
         },
         

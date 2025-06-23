@@ -67,6 +67,13 @@
             try {
                 this.state.isLoading = true;
                 
+                // Debug AJAX configuration
+                console.log('Event Integration Debug - AJAX Config:', {
+                    url: this.config.ajaxUrl,
+                    nonce: this.config.nonce ? 'Present' : 'Missing',
+                    action: 'get_event_type_config'
+                });
+                
                 const response = await $.ajax({
                     url: this.config.ajaxUrl,
                     method: 'POST',
@@ -76,6 +83,8 @@
                     },
                     timeout: this.config.timeout
                 });
+                
+                console.log('Event Integration Debug - AJAX Response:', response);
                 
                 if (response.success) {
                     this.config.cache.eventTypes = response.data;
