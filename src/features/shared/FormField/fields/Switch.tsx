@@ -20,8 +20,8 @@ const Switch: React.FC<SwitchFieldProps> = ({
   onChange,
   onBlur,
   onFocus,
-  onLabel,
-  offLabel,
+  onLabel = '',
+  offLabel = '',
   disabled = false,
   required = false,
   error,
@@ -29,7 +29,7 @@ const Switch: React.FC<SwitchFieldProps> = ({
   className,
   'data-testid': testId,
   isLoading = false,
-  validators,
+  _validators,
   ...otherProps
 }) => {
   // Generate ID if not provided

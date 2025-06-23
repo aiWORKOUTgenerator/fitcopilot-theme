@@ -3,9 +3,9 @@ import React from 'react';
 import { Button } from '../../../../features/shared/Button';
 import './RegistrationButton.scss';
 import {
-    ButtonCompatibleProps,
-    LinkRegistrationButtonProps,
-    RegistrationButtonProps
+  ButtonCompatibleProps,
+  LinkRegistrationButtonProps,
+  RegistrationButtonProps
 } from './types';
 
 /**
@@ -163,15 +163,15 @@ const RegistrationButton: React.FC<RegistrationButtonProps> = ({
    */
   const getButtonVariant = React.useCallback((): 'primary' | 'secondary' => {
     switch (variant) {
-      case 'primary':
-        return 'primary';
-      case 'secondary':
-        return 'secondary';
-      case 'tertiary':
-        return 'secondary'; // Use secondary for tertiary with custom styling
-      default:
-        // This should never happen due to TypeScript, but provides fallback
-        return 'primary';
+    case 'primary':
+      return 'primary';
+    case 'secondary':
+      return 'secondary';
+    case 'tertiary':
+      return 'secondary'; // Use secondary for tertiary with custom styling
+    default:
+      // This should never happen due to TypeScript, but provides fallback
+      return 'primary';
     }
   }, [variant]);
 

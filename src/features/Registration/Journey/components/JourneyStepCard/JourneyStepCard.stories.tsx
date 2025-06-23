@@ -1,21 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import {
-    Activity,
-    BarChart2,
-    Clock,
-    Cpu,
-    Dumbbell,
-    FileText,
-    Flame,
-    Layers,
-    Lightbulb,
-    Microscope,
-    Package,
-    Settings,
-    Target,
-    TrendingUp,
-    Trophy,
-    Zap
+  Activity,
+  BarChart2,
+  Clock,
+  Cpu,
+  Dumbbell,
+  FileText,
+  Flame,
+  Layers,
+  Lightbulb,
+  Microscope,
+  Package,
+  Settings,
+  Target,
+  TrendingUp,
+  Trophy,
+  Zap
 } from 'lucide-react';
 import React from 'react';
 
@@ -408,7 +408,7 @@ export const GoalsStep: Story = {
     <JourneyStepCardWrapper
       step={sampleSteps[0]}
       index={0}
-      onStepAction={(index) => console.log(`Goals step action: ${index}`)}
+      onStepAction={(index) => logger.info(`Goals step action: ${index}`)}
     />
   ),
   parameters: {
@@ -425,7 +425,7 @@ export const CustomizationStep: Story = {
     <JourneyStepCardWrapper
       step={sampleSteps[1]}
       index={1}
-      onStepAction={(index) => console.log(`Customization step action: ${index}`)}
+      onStepAction={(index) => logger.info(`Customization step action: ${index}`)}
     />
   ),
   parameters: {
@@ -442,7 +442,7 @@ export const MedicalStep: Story = {
     <JourneyStepCardWrapper
       step={sampleSteps[2]}
       index={2}
-      onStepAction={(index) => console.log(`Medical step action: ${index}`)}
+      onStepAction={(index) => logger.info(`Medical step action: ${index}`)}
     />
   ),
   parameters: {
@@ -459,7 +459,7 @@ export const AnalyticsStep: Story = {
     <JourneyStepCardWrapper
       step={sampleSteps[3]}
       index={3}
-      onStepAction={(index) => console.log(`Analytics step action: ${index}`)}
+      onStepAction={(index) => logger.info(`Analytics step action: ${index}`)}
     />
   ),
   parameters: {
@@ -480,7 +480,7 @@ export const CompleteJourneySequence: Story = {
       if (!completedSteps.includes(stepIndex)) {
         setCompletedSteps(prev => [...prev, stepIndex]);
       }
-      console.log(`Step ${stepIndex} completed`);
+      logger.info(`Step ${stepIndex} completed`);
     };
 
     return (
@@ -524,7 +524,7 @@ export const InteractiveDemo: Story = {
         setCurrentStep(stepIndex + 1);
       }
       
-      console.log(`Step ${stepIndex} completed, moving to step ${stepIndex + 1}`);
+      logger.info(`Step ${stepIndex} completed, moving to step ${stepIndex + 1}`);
     };
 
     const resetDemo = () => {
@@ -598,7 +598,7 @@ export const ExpandedStateDemo: Story = {
                 key={index}
                 step={step}
                 index={index}
-                onStepAction={(stepIndex: number) => console.log(`Step ${stepIndex} action triggered`)}
+                onStepAction={(stepIndex: number) => logger.info(`Step ${stepIndex} action triggered`)}
               />
             ))}
           </div>
@@ -621,7 +621,7 @@ export const ResponsiveShowcase: Story = {
     <JourneyStepCardWrapper
       step={sampleSteps[0]}
       index={0}
-      onStepAction={(index) => console.log(`Responsive test: ${index}`)}
+      onStepAction={(index) => logger.info(`Responsive test: ${index}`)}
     />
   ),
   parameters: {
@@ -660,7 +660,7 @@ export const AccessibilityDemo: Story = {
               key={index}
               step={step}
               index={index}
-              onStepAction={(stepIndex: number) => console.log(`Accessibility test: Step ${stepIndex}`)}
+              onStepAction={(stepIndex: number) => logger.info(`Accessibility test: Step ${stepIndex}`)}
             />
           ))}
         </div>

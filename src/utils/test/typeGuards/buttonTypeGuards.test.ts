@@ -1,14 +1,14 @@
 import {
-    ButtonProps,
-    IconButtonProps,
-    LinkButtonProps
+  ButtonProps,
+  IconButtonProps,
+  LinkButtonProps
 } from '../../../types/button';
 import {
-    isActionButton,
-    isDisabled,
-    isIconButton,
-    isLinkButton,
-    isLoading
+  isActionButton,
+  isDisabled,
+  isIconButton,
+  isLinkButton,
+  isLoading
 } from '../../typeGuards/buttonTypeGuards';
 
 describe('Button Type Guards', () => {

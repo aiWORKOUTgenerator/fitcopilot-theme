@@ -1,32 +1,32 @@
 import {
-    Activity,
-    Apple,
-    ArrowRight,
-    Award,
-    BarChart,
-    Bike,
-    Calendar,
-    CheckCircle,
-    ChevronRight,
-    Clock,
-    Coffee,
-    Download,
-    Dumbbell,
-    Flame,
-    Footprints,
-    Heart,
-    Medal,
-    MessageSquare,
-    Play,
-    Rocket,
-    Smartphone,
-    Sparkles,
-    Star,
-    Target,
-    Timer,
-    Trophy,
-    Video,
-    Zap
+  Activity,
+  Apple,
+  ArrowRight,
+  Award,
+  BarChart,
+  Bike,
+  Calendar,
+  CheckCircle,
+  ChevronRight,
+  Clock,
+  Coffee,
+  Download,
+  Dumbbell,
+  Flame,
+  Footprints,
+  Heart,
+  Medal,
+  MessageSquare,
+  Play,
+  Rocket,
+  Smartphone,
+  Sparkles,
+  Star,
+  Target,
+  Timer,
+  Trophy,
+  Video,
+  Zap
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { GlobalVariantKey } from '../types/shared';
@@ -34,12 +34,12 @@ import FeatureCard from './components/FeatureCard';
 import TrainingFeaturesCTA from './components/TrainingFeaturesCTA';
 import './TrainingFeatures.scss';
 import {
-    DataSource,
-    DefaultVariantProps,
-    LoadingState,
-    TrainingFeature,
-    TrainingFeaturesSettings,
-    WordPressTrainingFeature
+  DataSource,
+  DefaultVariantProps,
+  LoadingState,
+  TrainingFeature,
+  TrainingFeaturesSettings,
+  WordPressTrainingFeature
 } from './types';
 
 /**
@@ -90,7 +90,7 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
   
   // Map TrainingFeatures-specific variants to GlobalVariantKey
   switch (variant) {
-    default: return 'default';
+  default: return 'default';
   }
 };
 
@@ -259,29 +259,29 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
       if (typeof window !== 'undefined' && window.fitcopilotTrainingFeaturesData) {
         const wpData = window.fitcopilotTrainingFeaturesData;
         
-        console.log('✅ WordPress Training Features data found:', wpData);
+        logger.info('✅ WordPress Training Features data found:', wpData);
         
         if (wpData.features && wpData.features.length > 0) {
-          console.log('✅ Processing features data:', wpData.features);
+          logger.info('✅ Processing features data:', wpData.features);
           
           const transformedFeatures = wpData.features.map(transformWordPressFeature);
           
-          console.log('✅ Transformed features for frontend:', transformedFeatures);
+          logger.info('✅ Transformed features for frontend:', transformedFeatures);
           
           setFeaturesData(transformedFeatures);
           setSettings(wpData.settings || settings);
           setDataSource('wordpress');
           setLoadingState('success');
         } else {
-          console.warn('⚠️ WordPress data exists but no features found');
+          logger.warn('⚠️ WordPress data exists but no features found');
           setLoadingState('error');
         }
       } else {
-        console.warn('⚠️ No WordPress Training Features data found, using defaults');
+        logger.warn('⚠️ No WordPress Training Features data found, using defaults');
         setLoadingState('error');
       }
     } catch (error) {
-      console.error('❌ Error loading training features data:', error);
+      logger.error('❌ Error loading training features data:', error);
       setLoadingState('error');
     }
   }, []);
@@ -549,7 +549,7 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
                     if (settings.ctaButtonUrl) {
                       window.location.href = settings.ctaButtonUrl;
                     } else {
-                      console.log('Navigate to:', featureType);
+                      logger.info('Navigate to:', featureType);
                     }
                   }}
                   variant={variant}
@@ -565,7 +565,7 @@ const TrainingFeatures: React.FC<DefaultVariantProps> = (props) => {
           <div className="text-center mt-16">
             <TrainingFeaturesCTA
               onNavigate={(featureType: string) => {
-                console.log('Navigate to:', featureType);
+                logger.info('Navigate to:', featureType);
                 // Add actual navigation logic here
               }}
               variant={variant}

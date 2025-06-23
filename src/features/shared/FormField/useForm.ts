@@ -5,13 +5,13 @@
 import { useCallback, useMemo, useReducer } from 'react';
 import { FormSubmitHandler } from '../../../types/events';
 import {
-    FieldState,
-    FormState,
-    createFieldState,
-    createFormState,
-    getFormValues,
-    runValidators,
-    validateFormState
+  FieldState,
+  FormState,
+  createFieldState,
+  createFormState,
+  getFormValues,
+  runValidators,
+  validateFormState
 } from './formState';
 import { ValidatorFn } from './validators';
 

@@ -31,10 +31,10 @@ export interface PricingButtonProps extends Omit<HeroButtonProps, 'variant'> {
  */
 const mapSizeToButtonSize = (size?: string): ButtonSize => {
   switch (size) {
-    case 'small': return 'small';
-    case 'large': return 'large';
-    case 'medium': return 'medium';
-    default: return 'medium';
+  case 'small': return 'small';
+  case 'large': return 'large';
+  case 'medium': return 'medium';
+  default: return 'medium';
   }
 };
 
@@ -68,9 +68,9 @@ export const PricingButton: React.FC<PricingButtonProps> = ({
     if (themeContext && themeContext.theme) {
       theme = themeContext.theme as GlobalVariantKey;
     }
-  } catch (e) {
+  } catch (_e) {
     // If ThemeContext is not available, use provided variant or default
-    console.debug('ThemeContext not available, using provided variant or default theme');
+    logger.debug('ThemeContext not available, using provided variant or default theme');
   }
   
   // Construct CSS classes following the established pattern

@@ -23,8 +23,8 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
   
   // Map Training-specific variants to GlobalVariantKey
   switch (variant) {
-    case 'athletic': return 'sports'; // Map athletic to sports
-    default: return 'default';
+  case 'athletic': return 'sports'; // Map athletic to sports
+  default: return 'default';
   }
 };
 

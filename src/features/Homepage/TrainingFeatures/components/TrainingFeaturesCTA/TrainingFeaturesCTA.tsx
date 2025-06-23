@@ -33,7 +33,7 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
   
   // Map TrainingFeatures-specific variants to GlobalVariantKey
   switch (variant) {
-    default: return 'default';
+  default: return 'default';
   }
 };
 
@@ -132,10 +132,10 @@ const TrainingFeaturesCTA: React.FC<TrainingFeaturesCTAProps> = ({
   
   // Map feature type for TrainingFeaturesButton
   const featureType = featureTitle?.toLowerCase().includes('virtual') ? 'virtual' :
-                     featureTitle?.toLowerCase().includes('tracking') ? 'tracking' :
-                     featureTitle?.toLowerCase().includes('support') ? 'support' :
-                     featureTitle?.toLowerCase().includes('mobile') ? 'mobile' :
-                     'virtual'; // default
+    featureTitle?.toLowerCase().includes('tracking') ? 'tracking' :
+      featureTitle?.toLowerCase().includes('support') ? 'support' :
+        featureTitle?.toLowerCase().includes('mobile') ? 'mobile' :
+          'virtual'; // default
 
   // Determine the icon to display - inline with typography
   const iconElement = showIcon ? (

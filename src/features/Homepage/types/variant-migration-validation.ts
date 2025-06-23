@@ -61,7 +61,7 @@ export function validateVariantMigration(): {
   success: boolean;
   errors: string[];
   summary: string;
-} {
+  } {
   const errors: string[] = [];
   
   // Test that all GlobalVariantKey values are valid
@@ -149,5 +149,5 @@ export const migrationValidation = {
  * ✅ All variant maps validated to work with GlobalVariantKey
  */
 
-console.log('🎯 Story 2.1: Migrate All Sections to GlobalVariantKey - COMPLETED');
-console.log(validateVariantMigration().summary); 
+logger.info('🎯 Story 2.1: Migrate All Sections to GlobalVariantKey - COMPLETED');
+logger.info(validateVariantMigration().summary); 

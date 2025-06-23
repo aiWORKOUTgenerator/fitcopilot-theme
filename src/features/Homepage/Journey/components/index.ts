@@ -20,24 +20,24 @@ export { UniversalButton } from '../../components/UniversalButton';
 
 // Recommended exports (actively maintained)
 export {
-    JourneyFeatureCard,
-    JourneyStep,
-    SectionHeader,
-    StepCTA
+  JourneyFeatureCard,
+  JourneyStep,
+  SectionHeader,
+  StepCTA
 };
 
 // Legacy exports (deprecated - use UniversalButton instead)
-    export {
-        /**
+export {
+  /**
          * @deprecated Use UniversalButton with sectionContext="journey" instead
          * Will be removed in v2.0.0
          */
-        JourneyButton,
+  JourneyButton,
 
-        /**
+  /**
          * @deprecated Use UniversalButton with sectionContext="journey" instead
          * Will be removed in v2.0.0
          */
-        JourneyCTA
-    };
+  JourneyCTA
+};
 

@@ -1208,7 +1208,7 @@ export const IconCenteringTest: Story = {
           Icon Centering & Compact Padding Verification
         </h4>
         <p style={{ color: '#9ca3af', fontSize: '14px', marginBottom: '20px', maxWidth: '500px' }}>
-          ✅ The arrow icon should be perfectly centered vertically with the text.<br/>
+          ✅ The arrow icon should be perfectly centered vertically with the text.<br />
           ✅ The secondary variant should have very tight padding where borders hug the font.
         </p>
       </div>
@@ -2175,7 +2175,7 @@ export const ArchitecturalPattern: Story = {
           marginBottom: '16px',
           overflow: 'auto'
         }}>
-{`<!-- Training.tsx -->
+          {`<!-- Training.tsx -->
 <div className="training-section__cta">
   <TrainingCTA
     onNavigate={handleNavigate}
@@ -2211,7 +2211,7 @@ export const ArchitecturalPattern: Story = {
           marginBottom: '16px',
           overflow: 'auto'
         }}>
-{`<!-- Missing training-section__cta wrapper -->
+          {`<!-- Missing training-section__cta wrapper -->
 <TrainingCTA
   onNavigate={handleNavigate}
   variant={variant}
@@ -2261,7 +2261,7 @@ export const ArchitecturalPattern: Story = {
           marginTop: '12px',
           overflow: 'auto'
         }}>
-{`// Training.scss
+          {`// Training.scss
 .training-section {
   &__cta {
     margin-top: 6rem;  // Mobile spacing

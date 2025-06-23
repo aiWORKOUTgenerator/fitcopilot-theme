@@ -528,7 +528,7 @@ export const GradientWithIcon: Story = {
 };
 
 export const GradientThemes: Story = {
-  render: (args) => <ButtonWithThemes {...args} />,
+  render: (_args) => <ButtonWithThemes {..._args} />,
   args: {
     variant: 'primary',
     children: 'Gradient Button',
@@ -545,7 +545,7 @@ export const GradientThemes: Story = {
 };
 
 export const ShadowThemes: Story = {
-  render: (args) => <ButtonWithThemes {...args} />,
+  render: (_args) => <ButtonWithThemes {..._args} />,
   args: {
     variant: 'primary',
     children: 'Shadow Button',
@@ -562,7 +562,7 @@ export const ShadowThemes: Story = {
 };
 
 export const HoverEffectThemes: Story = {
-  render: (args) => <ButtonWithThemes {...args} />,
+  render: (_args) => <ButtonWithThemes {..._args} />,
   args: {
     variant: 'primary',
     children: 'Hover Effect Button',

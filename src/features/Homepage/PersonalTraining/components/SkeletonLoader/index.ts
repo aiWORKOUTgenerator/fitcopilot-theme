@@ -6,13 +6,13 @@
  */
 
 export {
-    DebouncedPersonalTrainingSkeletonLoader, PersonalTrainingSkeletonLoader,
-    TrainerCardSkeleton
+  DebouncedPersonalTrainingSkeletonLoader, PersonalTrainingSkeletonLoader,
+  TrainerCardSkeleton
 } from './PersonalTrainingSkeletonLoader';
 
 // Export types for external usage
 export type {
-    PersonalTrainingSkeletonLoaderProps,
-    TrainerCardSkeletonProps
+  PersonalTrainingSkeletonLoaderProps,
+  TrainerCardSkeletonProps
 } from './PersonalTrainingSkeletonLoader';
 

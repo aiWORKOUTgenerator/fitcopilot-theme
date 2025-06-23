@@ -2,9 +2,9 @@ import { Activity, BarChart3, HeartHandshake } from 'lucide-react';
 import React, { useMemo } from 'react';
 import { FeatureData } from '../types';
 import {
-    getFeatureById,
-    groupFeaturesByCategory,
-    validateFeatures
+  getFeatureById,
+  groupFeaturesByCategory,
+  validateFeatures
 } from '../utils';
 
 // Default demo components (these would be imported from actual components in real implementation)

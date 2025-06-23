@@ -13,15 +13,15 @@ import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library
 import React from 'react';
 import { GlobalVariantKey } from '../../types/shared';
 import {
-    ALL_GLOBAL_VARIANTS,
-    getVariantAttribute,
-    getVariantClass,
-    GlobalVariantProvider,
-    isWordPressEnvironment,
-    useGlobalVariant,
-    useSectionVariant,
-    useWordPressVariant,
-    withGlobalVariant,
+  ALL_GLOBAL_VARIANTS,
+  getVariantAttribute,
+  getVariantClass,
+  GlobalVariantProvider,
+  isWordPressEnvironment,
+  useGlobalVariant,
+  useSectionVariant,
+  useWordPressVariant,
+  withGlobalVariant,
 } from '../GlobalVariantContext';
 
 // ============================================================================

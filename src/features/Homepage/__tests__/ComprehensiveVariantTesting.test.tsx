@@ -191,31 +191,31 @@ const SectionRenderer: React.FC<{
   const activeVariant = variant || currentVariant;
 
   switch (sectionName) {
-    case 'hero':
-      return <Hero {...MOCK_DATA.hero} variant={activeVariant} />;
-    case 'features':
-      return <Features variant={activeVariant} />;
-    case 'training':
-      return <Training variant={activeVariant} />;
-         case 'personalTraining':
-       // PersonalTraining uses PersonalTrainingVariant, map GlobalVariantKey to it
-       const personalTrainingVariant = (['default', 'gym', 'sports', 'wellness', 'modern'].includes(activeVariant) 
-         ? activeVariant 
-         : 'default') as PersonalTrainingVariant;
-       return <PersonalTraining variant={personalTrainingVariant} />;
-    case 'journey':
-      return <Journey {...MOCK_DATA.journey} variant={activeVariant} />;
-    case 'trainingFeatures':
-      // TrainingFeatures supports a subset of variants, use type assertion for testing
-      return <TrainingFeatures variant={'default' as any} />;
-    case 'testimonials':
-      return <Testimonials variant={activeVariant} />;
-    case 'pricing':
-      return <Pricing variant={activeVariant} />;
-    case 'footer':
-      return <Footer variant={activeVariant} />;
-    default:
-      return <div data-testid={`unknown-section-${sectionName}`}>Unknown section</div>;
+  case 'hero':
+    return <Hero {...MOCK_DATA.hero} variant={activeVariant} />;
+  case 'features':
+    return <Features variant={activeVariant} />;
+  case 'training':
+    return <Training variant={activeVariant} />;
+  case 'personalTraining':
+    // PersonalTraining uses PersonalTrainingVariant, map GlobalVariantKey to it
+    const personalTrainingVariant = (['default', 'gym', 'sports', 'wellness', 'modern'].includes(activeVariant) 
+      ? activeVariant 
+      : 'default') as PersonalTrainingVariant;
+    return <PersonalTraining variant={personalTrainingVariant} />;
+  case 'journey':
+    return <Journey {...MOCK_DATA.journey} variant={activeVariant} />;
+  case 'trainingFeatures':
+    // TrainingFeatures supports a subset of variants, use type assertion for testing
+    return <TrainingFeatures variant={'default' as any} />;
+  case 'testimonials':
+    return <Testimonials variant={activeVariant} />;
+  case 'pricing':
+    return <Pricing variant={activeVariant} />;
+  case 'footer':
+    return <Footer variant={activeVariant} />;
+  default:
+    return <div data-testid={`unknown-section-${sectionName}`}>Unknown section</div>;
   }
 };
 
@@ -801,11 +801,11 @@ describe('Comprehensive Variant Testing - Story 2.3', () => {
       // Simulate WordPress change at the same time
       mockWordPressEnvironment('registration');
       
-             // Should handle gracefully and end up in a consistent state
-       await waitFor(() => {
-         const currentVariant = screen.getByTestId('current-variant').textContent as GlobalVariantKey;
-         expect(['boutique', 'registration']).toContain(currentVariant);
-       });
+      // Should handle gracefully and end up in a consistent state
+      await waitFor(() => {
+        const currentVariant = screen.getByTestId('current-variant').textContent as GlobalVariantKey;
+        expect(['boutique', 'registration']).toContain(currentVariant);
+      });
     });
   });
 });

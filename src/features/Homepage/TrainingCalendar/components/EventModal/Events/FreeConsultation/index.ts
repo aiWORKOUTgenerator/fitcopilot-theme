@@ -11,10 +11,10 @@ export { FreeConsultationConfig } from './FreeConsultationConfig';
 
 // Export validator functions
 export {
-    getConsultationSpecificErrors, isFreeConsultation, validateFreeConsultation
+  getConsultationSpecificErrors, isFreeConsultation, validateFreeConsultation
 } from './FreeConsultationValidator';
 
 // Export complete module and helpers
 export {
-    FreeConsultationModule, getFreeConsultationFormConfig, isFreeConsultationEvent
+  FreeConsultationModule, getFreeConsultationFormConfig, isFreeConsultationEvent
 } from './FreeConsultationModule';

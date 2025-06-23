@@ -1,8 +1,8 @@
 import logger from '../../../utils/logger';
 import {
-    DEFAULT_FLOATING_ICONS,
-    MINIMAL_FLOATING_ICONS,
-    REDUCED_MOTION_CONFIG
+  DEFAULT_FLOATING_ICONS,
+  MINIMAL_FLOATING_ICONS,
+  REDUCED_MOTION_CONFIG
 } from './constants';
 import { FeatureData, FloatingIconData, ProgressDataPoint, VariantKey, WorkoutExercise } from './types';
 

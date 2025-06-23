@@ -9,10 +9,10 @@
 
 export { default as TrainingFeaturesCTA, default } from './TrainingFeaturesCTA';
 export type {
-    TrainingFeaturesCTAProps,
-    TrainingFeaturesCTASize, TrainingFeaturesContextType, TrainingFeaturesVariantKey
+  TrainingFeaturesCTAProps,
+  TrainingFeaturesCTASize, TrainingFeaturesContextType, TrainingFeaturesVariantKey
 } from './types';
 export {
-    generateFeaturesCTAText,
-    generateFeaturesStyleClasses, mapFeaturesSizeToUniversalButton, mapFeaturesVariantToGlobal, validateTrainingFeaturesCTAProps
+  generateFeaturesCTAText,
+  generateFeaturesStyleClasses, mapFeaturesSizeToUniversalButton, mapFeaturesVariantToGlobal, validateTrainingFeaturesCTAProps
 } from './utils';

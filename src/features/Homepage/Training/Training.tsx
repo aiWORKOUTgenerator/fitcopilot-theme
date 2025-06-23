@@ -21,13 +21,13 @@ const mapVariantToTheme = (variant: string | undefined): ThemeOption => {
   
   // Map other variants to appropriate themes
   switch (variant) {
-    case 'modern': return 'sports';
-    case 'classic': return 'default';
-    case 'minimalist': return 'default';
-    case 'boutique': return 'wellness';
-    case 'registration': return 'default';
-    case 'mobile': return 'default';
-    default: return 'default';
+  case 'modern': return 'sports';
+  case 'classic': return 'default';
+  case 'minimalist': return 'default';
+  case 'boutique': return 'wellness';
+  case 'registration': return 'default';
+  case 'mobile': return 'default';
+  default: return 'default';
   }
 };
 

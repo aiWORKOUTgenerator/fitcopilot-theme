@@ -133,9 +133,9 @@ const EventTypeSelector: React.FC<EventTypeSelectorProps> = ({
       
       // Add selected date context for smart scheduling
       if (selectedDate) {
-        console.log('🎯 Smart Scheduling triggered for date:', selectedDate.toLocaleDateString());
-        console.log('📋 Event Type:', selectedEventType);
-        console.log('⚙️ Preferences:', preferences);
+        logger.info('🎯 Smart Scheduling triggered for date:', selectedDate.toLocaleDateString());
+        logger.info('📋 Event Type:', selectedEventType);
+        logger.info('⚙️ Preferences:', preferences);
       }
       
       onTriggerSmartScheduling(preferences);

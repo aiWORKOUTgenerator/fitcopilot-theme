@@ -21,27 +21,27 @@ export { usePricingCardAnimations } from './hooks/usePricingCardAnimations';
 
 // Constants
 export {
-    ANIMATION_TIMINGS, BACKGROUND_PARTICLE_CONFIG, BASIC_ANIMATION_TIMINGS,
-    INTERACTION_TIMINGS,
-    PARTICLE_CONFIG
+  ANIMATION_TIMINGS, BACKGROUND_PARTICLE_CONFIG, BASIC_ANIMATION_TIMINGS,
+  INTERACTION_TIMINGS,
+  PARTICLE_CONFIG
 } from './constants';
 
 // Export all types
 export type {
-    AnimationConfig,
-    AnimationState,
-    AnimationTimings,
-    ParticleConfig,
-    PlanFeature,
-    PricingCardAnimationHook,
-    PricingCardCTAProps,
-    PricingCardData,
-    PricingCardFeaturesProps,
-    PricingCardHeaderProps,
-    PricingCardPriceProps,
-    PricingCardProps,
-    PricingCardTooltipProps,
-    TooltipStates
+  AnimationConfig,
+  AnimationState,
+  AnimationTimings,
+  ParticleConfig,
+  PlanFeature,
+  PricingCardAnimationHook,
+  PricingCardCTAProps,
+  PricingCardData,
+  PricingCardFeaturesProps,
+  PricingCardHeaderProps,
+  PricingCardPriceProps,
+  PricingCardProps,
+  PricingCardTooltipProps,
+  TooltipStates
 } from './types';
 
 

@@ -231,7 +231,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
       
       await onSubmit(bookingData);
     } catch (error) {
-      console.error('Error submitting booking:', error);
+      logger.error('Error submitting booking:', error);
       // Handle error (could show toast notification)
     } finally {
       setSubmitting(false);
@@ -394,13 +394,13 @@ const BookingForm: React.FC<BookingFormProps> = ({
               key={step}
               className={`progress-step ${
                 step === currentStep ? 'active' : 
-                step < currentStep ? 'completed' : ''
+                  step < currentStep ? 'completed' : ''
               }`}
             >
               <div className="step-number">{step}</div>
               <div className="step-label">
                 {step === 1 ? 'Personal Info' :
-                 step === 2 ? 'Emergency Contact' : 'Review & Confirm'}
+                  step === 2 ? 'Emergency Contact' : 'Review & Confirm'}
               </div>
             </div>
           ))}

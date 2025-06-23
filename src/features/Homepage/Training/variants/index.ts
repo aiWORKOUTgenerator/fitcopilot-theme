@@ -52,10 +52,10 @@ export const getVariantComponent = (variant: VariantKey): React.ComponentType<Om
 
 // Export all variants for direct import
 export {
-    BoutiqueVariant,
-    ClassicVariant, DefaultVariant, MinimalistVariant,
-    ModernVariant,
-    SportsVariant,
-    WellnessVariant
+  BoutiqueVariant,
+  ClassicVariant, DefaultVariant, MinimalistVariant,
+  ModernVariant,
+  SportsVariant,
+  WellnessVariant
 };
 

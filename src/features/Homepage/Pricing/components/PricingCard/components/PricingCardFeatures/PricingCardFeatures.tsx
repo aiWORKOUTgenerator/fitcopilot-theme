@@ -39,7 +39,7 @@ export const PricingCardFeatures: React.FC<PricingCardFeaturesProps> = ({
   planName,
   expanded,
   onToggleExpand,
-  variant = 'default'
+  _variant = 'default'
 }) => {
   // Determine how many features to show based on expansion state
   const visibleFeatures = expanded ? features : features.slice(0, Math.min(5, features.length));
@@ -53,14 +53,14 @@ export const PricingCardFeatures: React.FC<PricingCardFeaturesProps> = ({
 
   // Create professional styled check mark with background
   const renderStyledCheckMark = () => (
-    <div className={`feature-check-container relative flex-shrink-0 mr-3 mt-1`}>
+    <div className="feature-check-container relative flex-shrink-0 mr-3 mt-1">
       {/* Background circle with plan color */}
       <div 
         className={`feature-check-bg w-5 h-5 rounded-full ${
           planName === 'Basic' ? 'bg-blue-500/20 border border-blue-500/30' :
-          planName === 'Pro' ? 'bg-gradient-to-br from-lime-300/20 to-emerald-400/20 border border-lime-400/30' :
-          planName === 'Elite' ? 'bg-purple-500/20 border border-purple-500/30' :
-          'bg-gray-500/20 border border-gray-500/30'
+            planName === 'Pro' ? 'bg-gradient-to-br from-lime-300/20 to-emerald-400/20 border border-lime-400/30' :
+              planName === 'Elite' ? 'bg-purple-500/20 border border-purple-500/30' :
+                'bg-gray-500/20 border border-gray-500/30'
         } backdrop-blur-sm transition-all duration-200 group-hover:scale-110`}
         style={{
           boxShadow: `0 0 0 1px ${primaryColor}15, 0 1px 3px rgba(0,0,0,0.1)`,
@@ -85,9 +85,9 @@ export const PricingCardFeatures: React.FC<PricingCardFeaturesProps> = ({
       <div 
         className={`absolute inset-0 w-5 h-5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
           planName === 'Basic' ? 'bg-blue-500/10' :
-          planName === 'Pro' ? 'bg-lime-400/10' :
-          planName === 'Elite' ? 'bg-purple-500/10' :
-          'bg-gray-500/10'
+            planName === 'Pro' ? 'bg-lime-400/10' :
+              planName === 'Elite' ? 'bg-purple-500/10' :
+                'bg-gray-500/10'
         }`}
         style={{
           filter: `blur(2px)`,

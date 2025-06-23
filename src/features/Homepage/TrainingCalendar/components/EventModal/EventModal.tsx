@@ -103,7 +103,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
     setPerformanceMetrics(prev => ({ ...prev, renderTime }));
     
     if (process.env.NODE_ENV === 'development') {
-      console.log(`EventModal render time: ${renderTime.toFixed(2)}ms`);
+      logger.info(`EventModal render time: ${renderTime.toFixed(2)}ms`);
     }
   }, [startTime]);
   
@@ -129,7 +129,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
       const { getEventDescription } = require('./Events/EventRegistry');
       return getEventDescription(eventType);
     } catch (error) {
-      console.warn('Failed to get event description:', error);
+      logger.warn('Failed to get event description:', error);
       return '';
     }
   }, []);
@@ -137,8 +137,8 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
   // ===== ERROR HANDLING =====
   
   const handleComponentError = useCallback((error: Error, errorInfo?: string) => {
-    console.error('EventModal Component Error:', error);
-    console.error('Error Info:', errorInfo);
+    logger.error('EventModal Component Error:', error);
+    logger.error('Error Info:', errorInfo);
     
     setComponentError(error);
     
@@ -149,7 +149,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
         setHasRecovered(true);
         
         if (process.env.NODE_ENV === 'development') {
-          console.log(`EventModal: Recovery attempt ${retryCount + 1}/3`);
+          logger.info(`EventModal: Recovery attempt ${retryCount + 1}/3`);
         }
       }, 1000);
     }
@@ -169,14 +169,14 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
     try {
       return await operation();
     } catch (error) {
-      console.error(`EventModal ${errorMessage}:`, error);
+      logger.error(`EventModal ${errorMessage}:`, error);
       handleComponentError(error instanceof Error ? error : new Error(errorMessage));
       
       if (fallback) {
         try {
           return fallback();
         } catch (fallbackError) {
-          console.error('Fallback operation also failed:', fallbackError);
+          logger.error('Fallback operation also failed:', fallbackError);
         }
       }
       
@@ -301,7 +301,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
     setPerformanceMetrics(prev => ({ ...prev, formInitTime: initTime }));
     
     if (process.env.NODE_ENV === 'development') {
-      console.log(`EventModal form initialization time: ${initTime.toFixed(2)}ms`);
+      logger.info(`EventModal form initialization time: ${initTime.toFixed(2)}ms`);
     }
   }, [event, mode, memoizedFormDefaults]);
   
@@ -322,7 +322,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
   useEffect(() => {
     return () => {
       if (process.env.NODE_ENV === 'development') {
-        console.log('EventModal: Cleaning up component');
+        logger.info('EventModal: Cleaning up component');
       }
     };
   }, []);
@@ -399,7 +399,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
       const { validateEventData } = require('./Events/EventRegistry');
       newErrors = validateEventData(formData);
     } catch (error) {
-      console.warn('EventType validation failed, falling back to basic validation:', error);
+      logger.warn('EventType validation failed, falling back to basic validation:', error);
       // Fallback to basic validation
       if (!formData.title?.trim()) {
         newErrors.title = 'Please select an event type';
@@ -413,8 +413,8 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
     setPerformanceMetrics(prev => ({ ...prev, validationTime }));
     
     if (process.env.NODE_ENV === 'development') {
-      console.log(`EventModal validation time: ${validationTime.toFixed(2)}ms`);
-      console.log(`Using EventType modular validation for: ${formData.title}`);
+      logger.info(`EventModal validation time: ${validationTime.toFixed(2)}ms`);
+      logger.info(`Using EventType modular validation for: ${formData.title}`);
     }
     
     setErrors(newErrors);
@@ -436,7 +436,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
   }, [mode]);
   
   const handleUserRegistered = useCallback(async (user: RegisteredUser) => {
-    console.log('User registered successfully:', user);
+    logger.info('User registered successfully:', user);
     
     // Store user context for this session
     setUserRegistrationData(user);
@@ -610,10 +610,10 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
   
   const handleSmartScheduling = useCallback(async (preferences: SchedulingPreference) => {
     try {
-      console.log('🎯 Smart Scheduling triggered with preferences:', preferences);
+      logger.info('🎯 Smart Scheduling triggered with preferences:', preferences);
       
       if (!selectedEventType) {
-        console.warn('No event type selected for smart scheduling');
+        logger.warn('No event type selected for smart scheduling');
         return;
       }
       
@@ -633,21 +633,21 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
       if (!eventDuration) {
         // Set default duration based on event type
         switch (selectedEventType) {
-          case 'Free Consultation (20 Min)':
-            eventDuration = 20;
-            break;
-          case 'Online Group Fitness Class (45 Min)':
-            eventDuration = 45;
-            break;
-          case 'Personal Training Session':
-            eventDuration = selectedDuration || 60; // Default to 60 minutes
-            break;
-          default:
-            eventDuration = 30;
+        case 'Free Consultation (20 Min)':
+          eventDuration = 20;
+          break;
+        case 'Online Group Fitness Class (45 Min)':
+          eventDuration = 45;
+          break;
+        case 'Personal Training Session':
+          eventDuration = selectedDuration || 60; // Default to 60 minutes
+          break;
+        default:
+          eventDuration = 30;
         }
       }
       
-      console.log('🔍 Searching for availability:', {
+      logger.info('🔍 Searching for availability:', {
         date: targetDate.toLocaleDateString(),
         eventType: selectedEventType,
         duration: eventDuration,
@@ -658,17 +658,17 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
       await findAvailableSlots(targetDate, selectedEventType, eventDuration, preferences);
       
     } catch (error) {
-      console.error('Smart scheduling error:', error);
+      logger.error('Smart scheduling error:', error);
       setComponentError(error instanceof Error ? error : new Error('Smart scheduling failed'));
     }
   }, [selectedEventType, selectedDuration, selectedDate, findAvailableSlots, clearResults, clearSelectedSlot]);
   
   const handleTimeSlotSelect = useCallback((slot: AvailableTimeSlot) => {
-    console.log('⏰ Time slot selected:', slot);
+    logger.info('⏰ Time slot selected:', slot);
     
     // Validate slot has required time properties
     if (!slot || !slot.startTime || !slot.endTime) {
-      console.error('Invalid time slot selected - missing time properties:', slot);
+      logger.error('Invalid time slot selected - missing time properties:', slot);
       return;
     }
     
@@ -692,11 +692,11 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
     // Hide time slot selector after selection
     setShowTimeSlotSelector(false);
     
-    console.log('✅ Form data updated with time slot information');
+    logger.info('✅ Form data updated with time slot information');
   }, [selectSlot]);
   
   const handleTimeSlotSelectorRetry = useCallback(() => {
-    console.log('🔄 Retrying time slot search...');
+    logger.info('🔄 Retrying time slot search...');
     retryLastSearch();
   }, [retryLastSearch]);
   
@@ -816,7 +816,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
     }
   }, [errors]);
   
-    // ===== VIEW MODE RENDERING =====
+  // ===== VIEW MODE RENDERING =====
   
   /**
    * Render event details in view mode (read-only)
@@ -862,33 +862,33 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
 
     const getEventTypeLabel = (eventType: string) => {
       switch (eventType) {
-        case 'Free Consultation (20 Min)': return 'Free Consultation';
-        case 'Online Group Fitness Class (45 Min)': return 'Group Fitness Class';
-        case 'Personal Training Session': return 'Personal Training';
-        case 'assessment': return 'Fitness Assessment';
-        case 'session': return 'Training Session';
-        case 'consultation': return 'Consultation';
-        default: return eventType || 'Training Session';
+      case 'Free Consultation (20 Min)': return 'Free Consultation';
+      case 'Online Group Fitness Class (45 Min)': return 'Group Fitness Class';
+      case 'Personal Training Session': return 'Personal Training';
+      case 'assessment': return 'Fitness Assessment';
+      case 'session': return 'Training Session';
+      case 'consultation': return 'Consultation';
+      default: return eventType || 'Training Session';
       }
     };
 
     const getLocationDisplay = (location: string) => {
       switch (location) {
-        case 'Google Meet (Active)': return '📹 Google Meet (Online)';
-        case 'Zoom (Coming Soon)': return '📹 Zoom (Coming Soon)';
-        case 'online': return '📹 Online Session';
-        case 'in-person': return '🏢 In-Person';
-        default: return location || '📹 Online Session';
+      case 'Google Meet (Active)': return '📹 Google Meet (Online)';
+      case 'Zoom (Coming Soon)': return '📹 Zoom (Coming Soon)';
+      case 'online': return '📹 Online Session';
+      case 'in-person': return '🏢 In-Person';
+      default: return location || '📹 Online Session';
       }
     };
 
     const getBookingStatusDisplay = (status: string) => {
       switch (status) {
-        case 'available': return { text: 'Available for Booking', class: 'status--available', icon: '✅' };
-        case 'confirmed': return { text: 'Confirmed Booking', class: 'status--confirmed', icon: '🔒' };
-        case 'cancelled': return { text: 'Cancelled', class: 'status--cancelled', icon: '❌' };
-        case 'completed': return { text: 'Completed', class: 'status--completed', icon: '✅' };
-        default: return { text: status || 'Unknown', class: 'status--unknown', icon: '❓' };
+      case 'available': return { text: 'Available for Booking', class: 'status--available', icon: '✅' };
+      case 'confirmed': return { text: 'Confirmed Booking', class: 'status--confirmed', icon: '🔒' };
+      case 'cancelled': return { text: 'Cancelled', class: 'status--cancelled', icon: '❌' };
+      case 'completed': return { text: 'Completed', class: 'status--completed', icon: '✅' };
+      default: return { text: status || 'Unknown', class: 'status--unknown', icon: '❓' };
       }
     };
 
@@ -1106,8 +1106,8 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
         <div className="event-modal__header">
           <h2 id="event-modal-title" className="event-modal__title">
             {mode === 'create' ? 'Create New Event' : 
-             mode === 'edit' ? 'Edit Event' : 
-             'Event Details'}
+              mode === 'edit' ? 'Edit Event' : 
+                'Event Details'}
           </h2>
           <button
             ref={lastFocusableRef}
@@ -1186,7 +1186,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
                     }
 
                   } catch (dateError) {
-                    console.error('❌ Error creating Date objects:', dateError);
+                    logger.error('❌ Error creating Date objects:', dateError);
                     return null;
                   }
 
@@ -1199,7 +1199,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
                           try {
                             return `${startTime.toLocaleString()} - ${endTime.toLocaleString()}`;
                           } catch (formatError) {
-                            console.warn('⚠️ Error formatting time:', formatError);
+                            logger.warn('⚠️ Error formatting time:', formatError);
                             return `${startTime.toString()} - ${endTime.toString()}`;
                           }
                         })()}
@@ -1221,7 +1221,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
                   );
 
                 } catch (error) {
-                  console.error('❌ Error rendering time slot info:', error);
+                  logger.error('❌ Error rendering time slot info:', error);
                   
                   return (
                     <div className="event-modal__selected-slot-info event-modal__error-fallback">
@@ -1245,7 +1245,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
                   // Enhanced safety checks for time slot display
                   if (!selectedTimeSlot) {
                     if (process.env.NODE_ENV === 'development') {
-                      console.log('🔍 No time slot selected');
+                      logger.info('🔍 No time slot selected');
                     }
                     return null;
                   }
@@ -1260,7 +1260,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
                                          typeof selectedTimeSlot.endTime === 'string');
 
                   if (process.env.NODE_ENV === 'development') {
-                    console.log('🔍 Time Slot Validation:', {
+                    logger.info('🔍 Time Slot Validation:', {
                       hasTimeSlot: !!selectedTimeSlot,
                       hasStartTime: hasValidStartTime,
                       hasEndTime: hasValidEndTime,
@@ -1273,7 +1273,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
 
                   if (!hasValidStartTime || !hasValidEndTime) {
                     if (process.env.NODE_ENV === 'development') {
-                      console.warn('⚠️ Invalid time slot structure:', selectedTimeSlot);
+                      logger.warn('⚠️ Invalid time slot structure:', selectedTimeSlot);
                     }
                     return null;
                   }
@@ -1294,14 +1294,14 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
                     // Validate Date objects
                     if (isNaN(startTime.getTime()) || isNaN(endTime.getTime())) {
                       if (process.env.NODE_ENV === 'development') {
-                        console.warn('⚠️ Invalid Date objects created from time slot');
+                        logger.warn('⚠️ Invalid Date objects created from time slot');
                       }
                       return null;
                     }
 
                   } catch (dateError) {
                     if (process.env.NODE_ENV === 'development') {
-                      console.error('❌ Error creating Date objects:', dateError);
+                      logger.error('❌ Error creating Date objects:', dateError);
                     }
                     return null;
                   }
@@ -1316,7 +1316,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
                             return `${startTime.toLocaleString()} - ${endTime.toLocaleString()}`;
                           } catch (formatError) {
                             if (process.env.NODE_ENV === 'development') {
-                              console.warn('⚠️ Error formatting time:', formatError);
+                              logger.warn('⚠️ Error formatting time:', formatError);
                             }
                             return `${startTime.toString()} - ${endTime.toString()}`;
                           }
@@ -1340,8 +1340,8 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
 
                 } catch (error) {
                   if (process.env.NODE_ENV === 'development') {
-                    console.error('❌ Error rendering time slot info:', error);
-                    console.error('Time slot data:', selectedTimeSlot);
+                    logger.error('❌ Error rendering time slot info:', error);
+                    logger.error('Time slot data:', selectedTimeSlot);
                   }
                   
                   return (

@@ -123,19 +123,19 @@ const TimeSlotSelector: React.FC<TimeSlotSelectorProps> = ({
   
   const getSlotStatusIcon = (status: AvailableTimeSlot['status']): string => {
     switch (status) {
-      case 'available': return '✅';
-      case 'limited': return '⚠️';
-      case 'waitlist': return '⏳';
-      default: return '❓';
+    case 'available': return '✅';
+    case 'limited': return '⚠️';
+    case 'waitlist': return '⏳';
+    default: return '❓';
     }
   };
   
   const getSlotStatusText = (status: AvailableTimeSlot['status']): string => {
     switch (status) {
-      case 'available': return 'Available';
-      case 'limited': return 'Limited Spots';
-      case 'waitlist': return 'Waitlist';
-      default: return 'Unknown';
+    case 'available': return 'Available';
+    case 'limited': return 'Limited Spots';
+    case 'waitlist': return 'Waitlist';
+    default: return 'Unknown';
     }
   };
   

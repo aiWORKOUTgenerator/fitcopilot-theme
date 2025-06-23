@@ -22,7 +22,7 @@ const SelectField: React.FC<SelectFieldProps> = React.memo(({
   onBlur,
   onFocus,
   options,
-  placeholder,
+  placeholder = 'Select an option',
   disabled = false,
   required = false,
   error,
@@ -30,7 +30,7 @@ const SelectField: React.FC<SelectFieldProps> = React.memo(({
   className,
   'data-testid': testId,
   isLoading = false,
-  validators,
+  _validators,
   ...otherProps
 }) => {
   // Generate ID if not provided

@@ -1,9 +1,9 @@
 export {
-    PersonalTrainingErrorState,
-    determineErrorType
+  PersonalTrainingErrorState,
+  determineErrorType
 } from './PersonalTrainingErrorState';
 
 export type {
-    PersonalTrainingErrorStateProps,
-    PersonalTrainingErrorType
+  PersonalTrainingErrorStateProps,
+  PersonalTrainingErrorType
 } from './PersonalTrainingErrorState';

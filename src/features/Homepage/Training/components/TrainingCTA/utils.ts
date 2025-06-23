@@ -246,27 +246,21 @@ export const validateTrainingCTAProps = (props: {
   
   // Enhanced validation with actionable warnings
   if (!onNavigate && !href) {
-    console.warn(
-      '🚨 TrainingCTA: Either onNavigate or href should be provided for navigation functionality.\n' +
-      '💡 Suggestion: Add onNavigate prop or href prop for button functionality.'
-    );
+    logger.warn('🚨 TrainingCTA: Either onNavigate or href should be provided for navigation functionality.\n' +
+      '💡 Suggestion: Add onNavigate prop or href prop for button functionality.');
   }
   
   if (programTitle && !PROGRAM_CTA_TEXT_MAP[programTitle] && programTitle.trim()) {
-    console.info(
-      `ℹ️  TrainingCTA: programTitle "${programTitle}" is not in predefined mapping.\n` +
+    logger.info(`ℹ️  TrainingCTA: programTitle "${programTitle}" is not in predefined mapping.\n` +
       `💡 Consider adding to PROGRAM_CTA_TEXT_MAP for consistent text formatting.\n` +
-      `📝 Current available titles: ${Object.keys(PROGRAM_CTA_TEXT_MAP).join(', ')}`
-    );
+      `📝 Current available titles: ${Object.keys(PROGRAM_CTA_TEXT_MAP).join(', ')}`);
   }
 
   // Performance warning for excessive re-renders
   if (typeof window !== 'undefined' && (window as any).__TRAINING_CTA_RENDER_COUNT) {
     (window as any).__TRAINING_CTA_RENDER_COUNT++;
     if ((window as any).__TRAINING_CTA_RENDER_COUNT > 10) {
-      console.warn(
-        '⚠️  TrainingCTA: High render count detected. Consider memoizing props or checking for unnecessary re-renders.'
-      );
+      logger.warn('⚠️  TrainingCTA: High render count detected. Consider memoizing props or checking for unnecessary re-renders.');
     }
   } else if (typeof window !== 'undefined') {
     (window as any).__TRAINING_CTA_RENDER_COUNT = 1;
@@ -283,7 +277,7 @@ export const validateTrainingCTAProps = (props: {
 export const clearUtilityCaches = (): void => {
   cssClassCache.clear();
   variantMappingCache.clear();
-  console.info('🧹 TrainingCTA utility caches cleared');
+  logger.info('🧹 TrainingCTA utility caches cleared');
 };
 
 /**
@@ -321,7 +315,7 @@ export const preloadCommonCombinations = (): void => {
     generateCTAText(title);
   });
   
-  console.info('🚀 TrainingCTA common combinations preloaded for optimal performance');
+  logger.info('🚀 TrainingCTA common combinations preloaded for optimal performance');
 };
 
 // ============================================================================

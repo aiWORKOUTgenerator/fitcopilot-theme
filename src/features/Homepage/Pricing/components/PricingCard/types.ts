@@ -136,10 +136,10 @@ export interface PricingCardFeaturesProps {
  */
 export interface PricingCardCTAProps {
   plan: PricingCardData;
-  isHovered: boolean;
+  _isHovered: boolean;
   tooltipStates: TooltipStates;
   onClick: () => void;
-  variant?: GlobalVariantKey;
+  _variant?: GlobalVariantKey;
 }
 
 /**

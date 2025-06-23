@@ -507,18 +507,18 @@ export const calculateDuration = (
   const diffMs = end.getTime() - start.getTime();
   
   switch (unit) {
-    case 'milliseconds':
-      return diffMs;
-    case 'seconds':
-      return Math.round(diffMs / 1000);
-    case 'minutes':
-      return Math.round(diffMs / (1000 * 60));
-    case 'hours':
-      return Math.round(diffMs / (1000 * 60 * 60));
-    case 'days':
-      return Math.round(diffMs / (1000 * 60 * 60 * 24));
-    default:
-      return diffMs;
+  case 'milliseconds':
+    return diffMs;
+  case 'seconds':
+    return Math.round(diffMs / 1000);
+  case 'minutes':
+    return Math.round(diffMs / (1000 * 60));
+  case 'hours':
+    return Math.round(diffMs / (1000 * 60 * 60));
+  case 'days':
+    return Math.round(diffMs / (1000 * 60 * 60 * 24));
+  default:
+    return diffMs;
   }
 };
 

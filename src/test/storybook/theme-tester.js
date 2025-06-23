@@ -39,11 +39,11 @@
 
   // Helper to format console output
   const format = {
-    header: (text) => console.log(`%c ${text} `, 'background: #8b5cf6; color: white; font-weight: bold; padding: 3px 6px; border-radius: 3px;'),
-    success: (text) => console.log(`%c ✓ ${text} `, 'color: #22c55e; font-weight: bold;'),
-    error: (text) => console.log(`%c ✗ ${text} `, 'color: #ef4444; font-weight: bold;'),
-    warning: (text) => console.log(`%c ⚠ ${text} `, 'color: #f59e0b; font-weight: bold;'),
-    info: (text) => console.log(`%c ℹ ${text} `, 'color: #3b82f6; font-weight: bold;'),
+    header: (text) => logger.info(`%c ${text} `, 'background: #8b5cf6; color: white; font-weight: bold; padding: 3px 6px; border-radius: 3px;'),
+    success: (text) => logger.info(`%c ✓ ${text} `, 'color: #22c55e; font-weight: bold;'),
+    error: (text) => logger.info(`%c ✗ ${text} `, 'color: #ef4444; font-weight: bold;'),
+    warning: (text) => logger.info(`%c ⚠ ${text} `, 'color: #f59e0b; font-weight: bold;'),
+    info: (text) => logger.info(`%c ℹ ${text} `, 'color: #3b82f6; font-weight: bold;'),
     table: (data) => console.table(data),
     group: (title, fn) => {
       console.groupCollapsed(`%c ${title} `, 'color: #8b5cf6; font-weight: bold;');

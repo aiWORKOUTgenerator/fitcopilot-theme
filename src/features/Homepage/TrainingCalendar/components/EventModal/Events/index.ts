@@ -24,6 +24,6 @@ export * from './EventType';
 
 // Export event registry
 export {
-    EventRegistry, eventRequiresDuration, getDurationOptions, getEventConfig, getEventDescription, getEventFormDefaults, getEventModule,
-    getEventTitleOptions, getRegistryStatus, validateEventData
+  EventRegistry, eventRequiresDuration, getDurationOptions, getEventConfig, getEventDescription, getEventFormDefaults, getEventModule,
+  getEventTitleOptions, getRegistryStatus, validateEventData
 } from './EventRegistry';

@@ -95,28 +95,28 @@ let timerCounter = 0;
 const safeConsole = {
   log: (...args: unknown[]) => {
     try {
-      console.log(...args);
+      logger.info(...args);
     } catch (_e) {
       // Silent fallback if console is not available
     }
   },
   info: (...args: unknown[]) => {
     try {
-      console.info(...args);
+      logger.info(...args);
     } catch (_e) {
       // Silent fallback if console is not available
     }
   },
   warn: (...args: unknown[]) => {
     try {
-      console.warn(...args);
+      logger.warn(...args);
     } catch (_e) {
       // Silent fallback if console is not available
     }
   },
   error: (...args: unknown[]) => {
     try {
-      console.error(...args);
+      logger.error(...args);
     } catch (_e) {
       // Silent fallback if console is not available
     }

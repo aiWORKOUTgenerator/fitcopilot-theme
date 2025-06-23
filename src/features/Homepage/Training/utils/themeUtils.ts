@@ -47,11 +47,11 @@ export const mapVariantToTheme = (variant: TrainingVariant | undefined): ThemeOp
   
   // Map other variants to appropriate themes
   switch (variant) {
-    case 'modern': return 'sports';
-    case 'classic': return 'default';
-    case 'minimalist': return 'default';
-    case 'athletic': return 'sports';
-    default: return 'default';
+  case 'modern': return 'sports';
+  case 'classic': return 'default';
+  case 'minimalist': return 'default';
+  case 'athletic': return 'sports';
+  default: return 'default';
   }
 };
 

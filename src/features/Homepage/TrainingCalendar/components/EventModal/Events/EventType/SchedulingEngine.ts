@@ -11,20 +11,20 @@
 
 import { getSmartSchedulingConfig } from './EventTypeConfig';
 import {
-    AvailableTimeSlot,
-    SchedulingPreference,
-    SchedulingResult,
-    SmartSchedulingConfig
+  AvailableTimeSlot,
+  SchedulingPreference,
+  SchedulingResult,
+  SmartSchedulingConfig
 } from './EventTypeInterfaces';
 import {
-    validateEventConfiguration,
-    validateSchedulingPreferences
+  validateEventConfiguration,
+  validateSchedulingPreferences
 } from './EventTypeValidator';
 import {
-    filterSlotsByPreferences,
-    generateTimeSlots,
-    getNextAvailableSlot,
-    sortSlotsByPreference
+  filterSlotsByPreferences,
+  generateTimeSlots,
+  getNextAvailableSlot,
+  sortSlotsByPreference
 } from './SchedulingUtils';
 
 /**

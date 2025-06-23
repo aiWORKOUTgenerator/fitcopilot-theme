@@ -129,7 +129,7 @@ export const useTrainerAvailability = (): UseTrainerAvailabilityReturn => {
       
       // Log search initiation
       if (process.env.NODE_ENV === 'development') {
-        console.log('🔍 Searching for trainer availability:', {
+        logger.info('🔍 Searching for trainer availability:', {
           date: date.toLocaleDateString(),
           eventType,
           duration,
@@ -171,7 +171,7 @@ export const useTrainerAvailability = (): UseTrainerAvailabilityReturn => {
       
       // Log results
       if (process.env.NODE_ENV === 'development') {
-        console.log('✅ Trainer availability results:', {
+        logger.info('✅ Trainer availability results:', {
           success: result.success,
           slotsFound: result.availableSlots.length,
           hasRecommendation: !!result.recommendedSlot,
@@ -182,11 +182,11 @@ export const useTrainerAvailability = (): UseTrainerAvailabilityReturn => {
     } catch (error) {
       // Check if error was due to cancellation
       if (error instanceof Error && error.message.includes('cancelled')) {
-        console.log('Trainer availability search was cancelled');
+        logger.info('Trainer availability search was cancelled');
         return;
       }
       
-      console.error('Error finding trainer availability:', error);
+      logger.error('Error finding trainer availability:', error);
       
       setState(prev => ({
         ...prev,
@@ -199,7 +199,7 @@ export const useTrainerAvailability = (): UseTrainerAvailabilityReturn => {
   
   const retryLastSearch = useCallback(async (): Promise<void> => {
     if (!state.lastSearchParams) {
-      console.warn('No previous search to retry');
+      logger.warn('No previous search to retry');
       return;
     }
     
@@ -233,7 +233,7 @@ export const useTrainerAvailability = (): UseTrainerAvailabilityReturn => {
     }));
     
     if (process.env.NODE_ENV === 'development') {
-      console.log('📅 Time slot selected:', {
+      logger.info('📅 Time slot selected:', {
         time: `${slot.startTime.toLocaleTimeString()} - ${slot.endTime.toLocaleTimeString()}`,
         trainer: slot.trainerName,
         status: slot.status,

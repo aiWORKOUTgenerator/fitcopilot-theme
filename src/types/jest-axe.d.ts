@@ -12,7 +12,7 @@ declare module 'jest-axe' {
   }
 
   export interface RunOptions {
-    rules?: Object;
+    rules?: object;
     context?: any;
     runOnly?: {
       type: 'tag' | 'rule';
@@ -28,8 +28,8 @@ declare module 'jest-axe' {
 
   export interface JestAxeConfigureOptions {
     globalOptions?: RunOptions;
-    rules?: Object[];
-    checks?: Object[];
+    rules?: object[];
+    checks?: object[];
     disableOtherRules?: boolean;
   }
 

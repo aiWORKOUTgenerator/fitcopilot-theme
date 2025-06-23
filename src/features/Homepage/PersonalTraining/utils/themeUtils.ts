@@ -19,9 +19,9 @@ export const mapVariantToTheme = (variant: PersonalTrainingVariant | undefined):
   
   // Map other variants to appropriate themes
   switch (variant) {
-    case 'modern': return 'sports';
-    case 'nutrition': return 'wellness';
-    default: return 'gym'; // Default to gym theme for personal training
+  case 'modern': return 'sports';
+  case 'nutrition': return 'wellness';
+  default: return 'gym'; // Default to gym theme for personal training
   }
 };
 
@@ -33,11 +33,11 @@ export const mapVariantToTheme = (variant: PersonalTrainingVariant | undefined):
  */
 export const mapCoachTypeToTheme = (coachType: string | undefined): ThemeOption => {
   switch (coachType) {
-    case 'strength': return 'gym';
-    case 'nutrition': return 'wellness';
-    case 'performance': return 'sports';
-    case 'recovery': return 'wellness';
-    default: return 'gym';
+  case 'strength': return 'gym';
+  case 'nutrition': return 'wellness';
+  case 'performance': return 'sports';
+  case 'recovery': return 'wellness';
+  default: return 'gym';
   }
 };
 

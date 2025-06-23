@@ -94,7 +94,7 @@ export const useRealTimeUpdates = (
         }
 
       } catch (error) {
-        console.error('Polling error:', error);
+        logger.error('Polling error:', error);
         if (connectionStatus !== 'disconnected') {
           setConnectionStatus('disconnected');
           callbacks.onConnectionStatusChange?.('disconnected');
@@ -122,7 +122,7 @@ export const useRealTimeUpdates = (
       const websocket = new WebSocket(wsUrl);
 
       websocket.onopen = () => {
-        console.log('WebSocket connected');
+        logger.info('WebSocket connected');
         setConnectionStatus('connected');
         callbacks.onConnectionStatusChange?.('connected');
         reconnectAttemptsRef.current = 0;
@@ -133,12 +133,12 @@ export const useRealTimeUpdates = (
           const update = JSON.parse(event.data) as RealTimeUpdate;
           processUpdates([update]);
         } catch (error) {
-          console.error('WebSocket message parsing error:', error);
+          logger.error('WebSocket message parsing error:', error);
         }
       };
 
       websocket.onclose = (event) => {
-        console.log('WebSocket closed:', event.code, event.reason);
+        logger.info('WebSocket closed:', event.code, event.reason);
         setConnectionStatus('disconnected');
         callbacks.onConnectionStatusChange?.('disconnected');
 
@@ -149,14 +149,14 @@ export const useRealTimeUpdates = (
       };
 
       websocket.onerror = (error) => {
-        console.error('WebSocket error:', error);
+        logger.error('WebSocket error:', error);
         callbacks.onError?.(new Error('WebSocket connection error'));
       };
 
       websocketRef.current = websocket;
 
     } catch (error) {
-      console.error('WebSocket initialization error:', error);
+      logger.error('WebSocket initialization error:', error);
       callbacks.onError?.(error instanceof Error ? error : new Error('WebSocket initialization failed'));
     }
   }, [settings.reconnectAttempts, callbacks]);
@@ -187,21 +187,21 @@ export const useRealTimeUpdates = (
 
     newUpdates.forEach(update => {
       switch (update.type) {
-        case 'event_created':
-          callbacks.onEventCreated?.(update.data as CalendarEvent);
-          break;
-        case 'event_updated':
-          callbacks.onEventUpdated?.(update.data as CalendarEvent);
-          break;
-        case 'event_deleted':
-          callbacks.onEventDeleted?.(update.entityId);
-          break;
-        case 'booking_confirmed':
-          callbacks.onBookingConfirmed?.(update.entityId, update.data);
-          break;
-        case 'booking_cancelled':
-          callbacks.onBookingCancelled?.(update.entityId, update.data?.reason);
-          break;
+      case 'event_created':
+        callbacks.onEventCreated?.(update.data as CalendarEvent);
+        break;
+      case 'event_updated':
+        callbacks.onEventUpdated?.(update.data as CalendarEvent);
+        break;
+      case 'event_deleted':
+        callbacks.onEventDeleted?.(update.entityId);
+        break;
+      case 'booking_confirmed':
+        callbacks.onBookingConfirmed?.(update.entityId, update.data);
+        break;
+      case 'booking_cancelled':
+        callbacks.onBookingCancelled?.(update.entityId, update.data?.reason);
+        break;
       }
     });
   }, [callbacks]);
@@ -265,7 +265,7 @@ export const useRealTimeUpdates = (
         nonce: (window as any).fitcopilotTrainingCalendarAjax?.nonce || ''
       })
     }).catch(error => {
-      console.error('Failed to mark updates as read:', error);
+      logger.error('Failed to mark updates as read:', error);
     });
   }, []);
 

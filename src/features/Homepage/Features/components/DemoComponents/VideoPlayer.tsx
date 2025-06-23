@@ -16,7 +16,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   variant = 'default',
   className = '',
   style = {},
-  autoplay = false,
+  _autoplay = false,
   loop = true,
   muted = true,
   controls,
@@ -174,8 +174,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
             <button
               className={`rounded-full bg-violet-500/80 flex items-center justify-center hover:bg-violet-600/80 transition-colors ${
                 finalControls.buttonSize === 'sm' ? 'h-8 w-8' :
-                finalControls.buttonSize === 'lg' ? 'h-16 w-16' :
-                'h-12 w-12'
+                  finalControls.buttonSize === 'lg' ? 'h-16 w-16' :
+                    'h-12 w-12'
               }`}
               onClick={handlePlayPause}
               aria-label={isPlaying ? 'Pause video' : 'Play video'}

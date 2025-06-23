@@ -11,5 +11,5 @@ export { useVideoPlayer } from './useVideoPlayer';
 
 // Re-export types for convenience
 export type {
-    FeatureData, FeatureInteractionHandlers, FeatureInteractionState, FloatingIconData, VideoPlayerState
+  FeatureData, FeatureInteractionHandlers, FeatureInteractionState, FloatingIconData, VideoPlayerState
 } from '../types';

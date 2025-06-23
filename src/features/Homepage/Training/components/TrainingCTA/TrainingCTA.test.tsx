@@ -18,9 +18,9 @@ import { GlobalVariantKey } from '../../../types/shared';
 import TrainingCTA from './TrainingCTA';
 import { TrainingCTAProps, TrainingVariantKey } from './types';
 import {
-    clearUtilityCaches,
-    getCacheStatistics,
-    preloadCommonCombinations
+  clearUtilityCaches,
+  getCacheStatistics,
+  preloadCommonCombinations
 } from './utils';
 
 // ============================================================================

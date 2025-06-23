@@ -10,15 +10,15 @@
 
 import { CalendarEvent } from '../../../../interfaces';
 import {
-    getPersonalTrainingSessionFormConfig,
-    getPersonalTrainingSpecificErrors,
-    getSuggestedPricing,
-    isPersonalTrainingSession,
-    isPersonalTrainingSessionEvent,
-    isValidDuration,
-    PersonalTrainingSessionConfig,
-    PersonalTrainingSessionModule,
-    validatePersonalTrainingSession
+  getPersonalTrainingSessionFormConfig,
+  getPersonalTrainingSpecificErrors,
+  getSuggestedPricing,
+  isPersonalTrainingSession,
+  isPersonalTrainingSessionEvent,
+  isValidDuration,
+  PersonalTrainingSessionConfig,
+  PersonalTrainingSessionModule,
+  validatePersonalTrainingSession
 } from './index';
 
 describe('Personal Training Session Event Module', () => {

@@ -25,10 +25,10 @@ export interface TrainingFeaturesButtonProps extends HeroButtonProps {
  */
 const mapSizeToButtonSize = (size: ButtonSize): 'sm' | 'md' | 'lg' => {
   switch (size) {
-    case 'small': return 'sm';
-    case 'medium': return 'md';
-    case 'large': return 'lg';
-    default: return 'md';
+  case 'small': return 'sm';
+  case 'medium': return 'md';
+  case 'large': return 'lg';
+  default: return 'md';
   }
 };
 

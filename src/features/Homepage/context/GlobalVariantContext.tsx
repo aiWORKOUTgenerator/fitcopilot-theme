@@ -167,7 +167,7 @@ const getWordPressVariant = (): GlobalVariantKey | null => {
 
     return null;
   } catch (error) {
-    console.warn('Error getting WordPress variant:', error);
+    logger.warn('Error getting WordPress variant:', error);
     return null;
   }
 };
@@ -195,7 +195,7 @@ const updateWordPressVariant = (variant: GlobalVariantKey): Promise<boolean> => 
 
       resolve(false);
     } catch (error) {
-      console.warn('Error updating WordPress variant:', error);
+      logger.warn('Error updating WordPress variant:', error);
       resolve(false);
     }
   });
@@ -292,7 +292,7 @@ export const GlobalVariantProvider: React.FC<GlobalVariantProviderProps> = ({
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to update variant';
       setError(errorMessage);
-      console.error('Error setting variant:', err);
+      logger.error('Error setting variant:', err);
     } finally {
       setIsLoading(false);
     }

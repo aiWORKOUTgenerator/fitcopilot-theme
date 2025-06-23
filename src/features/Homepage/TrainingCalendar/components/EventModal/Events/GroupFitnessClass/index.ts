@@ -11,10 +11,10 @@ export { GroupFitnessClassConfig } from './GroupFitnessClassConfig';
 
 // Export validator functions
 export {
-    getGroupClassSpecificErrors, isGroupFitnessClass, validateGroupFitnessClass
+  getGroupClassSpecificErrors, isGroupFitnessClass, validateGroupFitnessClass
 } from './GroupFitnessClassValidator';
 
 // Export complete module and helpers
 export {
-    GroupFitnessClassModule, getGroupFitnessClassFormConfig, isGroupFitnessClassEvent
+  GroupFitnessClassModule, getGroupFitnessClassFormConfig, isGroupFitnessClassEvent
 } from './GroupFitnessClassModule';

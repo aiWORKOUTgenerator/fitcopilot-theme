@@ -7,22 +7,22 @@
 
 import * as React from 'react';
 import {
-    FormSubmitHandler,
-    InputChangeHandler,
-    InputFocusHandler,
-    InputKeyboardHandler,
-    SelectChangeHandler,
-    TextareaChangeHandler
+  FormSubmitHandler,
+  InputChangeHandler,
+  InputFocusHandler,
+  InputKeyboardHandler,
+  SelectChangeHandler,
+  TextareaChangeHandler
 } from '../../../types/events';
 
 // Re-export common event handlers for FormField components
 export type {
-    FormSubmitHandler,
-    InputChangeHandler,
-    InputFocusHandler,
-    InputKeyboardHandler,
-    SelectChangeHandler,
-    TextareaChangeHandler
+  FormSubmitHandler,
+  InputChangeHandler,
+  InputFocusHandler,
+  InputKeyboardHandler,
+  SelectChangeHandler,
+  TextareaChangeHandler
 };
 
 /**

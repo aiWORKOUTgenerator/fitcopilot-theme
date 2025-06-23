@@ -11,11 +11,11 @@ export { PersonalTrainingSessionConfig } from './PersonalTrainingSessionConfig';
 
 // Export validator functions
 export {
-    getPersonalTrainingSpecificErrors, isPersonalTrainingSession, validatePersonalTrainingSession
+  getPersonalTrainingSpecificErrors, isPersonalTrainingSession, validatePersonalTrainingSession
 } from './PersonalTrainingSessionValidator';
 
 // Export complete module and helpers
 export {
-    PersonalTrainingSessionModule, getPersonalTrainingSessionFormConfig,
-    getSuggestedPricing, isPersonalTrainingSessionEvent, isValidDuration
+  PersonalTrainingSessionModule, getPersonalTrainingSessionFormConfig,
+  getSuggestedPricing, isPersonalTrainingSessionEvent, isValidDuration
 } from './PersonalTrainingSessionModule';

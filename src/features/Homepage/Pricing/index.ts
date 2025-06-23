@@ -9,8 +9,8 @@ export default Pricing;
 export { getPricingVariant, PricingMap };
 
 // Export components with correct imports
-    export { PricingButton, PricingCard } from './components';
-    export { default as PricingCTA } from './components/PricingCTA';
+export { PricingButton, PricingCard } from './components';
+export { default as PricingCTA } from './components/PricingCTA';
 
 // Export types directly to avoid conflicts
 export type { PricingProps } from './types';

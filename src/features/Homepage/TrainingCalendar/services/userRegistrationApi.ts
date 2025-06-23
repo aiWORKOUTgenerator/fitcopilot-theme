@@ -57,7 +57,7 @@ const getApiConfig = () => {
   const calendarData = (window as any).fitcopilotTrainingCalendarData;
   
   if (!calendarData) {
-    console.error('Training Calendar data not found. API calls may fail.');
+    logger.error('Training Calendar data not found. API calls may fail.');
     return {
       baseUrl: '/wp-json/fitcopilot/v1',
       nonce: '',
@@ -101,7 +101,7 @@ const apiRequest = async <T>(
   
   // Warn if configuration is invalid
   if (!config.hasValidConfig && requireAuth) {
-    console.warn('API configuration invalid. Request may fail due to missing nonce.');
+    logger.warn('API configuration invalid. Request may fail due to missing nonce.');
   }
   
   const url = `${config.baseUrl}${endpoint}`;
@@ -114,7 +114,7 @@ const apiRequest = async <T>(
   };
   
   try {
-    console.log(`🌐 API Request: ${options.method || 'GET'} ${url}`);
+    logger.info(`🌐 API Request: ${options.method || 'GET'} ${url}`);
     
     const response = await fetch(url, requestOptions);
     
@@ -127,11 +127,11 @@ const apiRequest = async <T>(
     }
     
     const data = await response.json();
-    console.log(`✅ API Response: ${endpoint}`, data);
+    logger.info(`✅ API Response: ${endpoint}`, data);
     
     return data;
   } catch (error) {
-    console.error(`❌ API Error: ${endpoint}`, error);
+    logger.error(`❌ API Error: ${endpoint}`, error);
     throw error;
   }
 };
@@ -152,7 +152,7 @@ export const checkEmailExists = async (email: string): Promise<boolean> => {
     
     return response.exists;
   } catch (error) {
-    console.error('Email check failed:', error);
+    logger.error('Email check failed:', error);
     // Return false on error to allow registration attempt
     return false;
   }
@@ -194,11 +194,11 @@ export const registerUser = async (
       firstName: response.first_name
     };
     
-    console.log('✅ User registered successfully:', registeredUser);
+    logger.info('✅ User registered successfully:', registeredUser);
     
     return registeredUser;
   } catch (error) {
-    console.error('User registration failed:', error);
+    logger.error('User registration failed:', error);
     throw new Error(
       error instanceof Error 
         ? error.message 
@@ -222,7 +222,7 @@ export const sendWelcomeEmail = async (userId: number): Promise<boolean> => {
     
     return response.success;
   } catch (error) {
-    console.error('Welcome email failed:', error);
+    logger.error('Welcome email failed:', error);
     return false;
   }
 };
@@ -238,7 +238,7 @@ export const getUserProfile = async (): Promise<any> => {
     
     return response;
   } catch (error) {
-    console.error('Get user profile failed:', error);
+    logger.error('Get user profile failed:', error);
     throw error;
   }
 };
@@ -262,7 +262,7 @@ export const updateUserProfile = async (profileData: {
     
     return response.success;
   } catch (error) {
-    console.error('Update user profile failed:', error);
+    logger.error('Update user profile failed:', error);
     return false;
   }
 };
@@ -325,7 +325,7 @@ export const checkApiHealth = async (): Promise<{
     
     healthCheck.healthy = response.status !== 404;
   } catch (error) {
-    console.warn('API health check failed:', error);
+    logger.warn('API health check failed:', error);
   }
   
   return healthCheck;
@@ -338,8 +338,8 @@ export const debugApiConfig = () => {
   const config = getApiConfig();
   
   console.group('🔍 User Registration API Debug');
-  console.log('Configuration:', config);
-  console.log('Window data:', (window as any).fitcopilotTrainingCalendarData);
+  logger.info('Configuration:', config);
+  logger.info('Window data:', (window as any).fitcopilotTrainingCalendarData);
   console.groupEnd();
   
   return config;

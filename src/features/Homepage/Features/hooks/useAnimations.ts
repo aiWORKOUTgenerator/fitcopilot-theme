@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 import { ANIMATION_EASINGS, ANIMATION_TIMINGS, REDUCED_MOTION_CONFIG } from '../constants';
 import { AnimationConfig, AnimationEasing } from '../types';
 import {
-    calculateStaggerDelay,
-    getAnimationDuration,
-    prefersReducedMotion
+  calculateStaggerDelay,
+  getAnimationDuration,
+  prefersReducedMotion
 } from '../utils';
 
 /**
@@ -186,18 +186,18 @@ export const useAnimations = (respectReducedMotion: boolean = true) => {
    */
   const shouldAnimate = (animationType: 'hover' | 'floating' | 'video' | 'chart' | 'general') => {
     switch (animationType) {
-      case 'hover':
-        return hover.enabled;
-      case 'floating':
-        return floatingIcons.enabled;
-      case 'video':
-        return video.enabled;
-      case 'chart':
-        return progressChart.enabled;
-      case 'general':
-        return !isMotionReduced;
-      default:
-        return !isMotionReduced;
+    case 'hover':
+      return hover.enabled;
+    case 'floating':
+      return floatingIcons.enabled;
+    case 'video':
+      return video.enabled;
+    case 'chart':
+      return progressChart.enabled;
+    case 'general':
+      return !isMotionReduced;
+    default:
+      return !isMotionReduced;
     }
   };
 

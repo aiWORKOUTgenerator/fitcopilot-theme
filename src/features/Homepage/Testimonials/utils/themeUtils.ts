@@ -5,16 +5,16 @@
  */
 export const mapVariantToTheme = (variant?: string): string => {
   switch (variant) {
-    case 'gym':
-      return 'gym';
-    case 'sports':
-      return 'sports';
-    case 'wellness':
-      return 'wellness';
-    case 'modern':
-      return 'modern';
-    default:
-      return 'default';
+  case 'gym':
+    return 'gym';
+  case 'sports':
+    return 'sports';
+  case 'wellness':
+    return 'wellness';
+  case 'modern':
+    return 'modern';
+  default:
+    return 'default';
   }
 };
 
@@ -25,13 +25,13 @@ export const mapVariantToTheme = (variant?: string): string => {
  */
 export const mapTestimonialTypeToVariant = (testimonialType?: string): 'athlete' | 'professional' | 'enthusiast' | 'success' => {
   switch (testimonialType) {
-    case 'professional':
-      return 'professional';
-    case 'enthusiast':
-      return 'enthusiast';
-    case 'success':
-      return 'success';
-    default:
-      return 'athlete';
+  case 'professional':
+    return 'professional';
+  case 'enthusiast':
+    return 'enthusiast';
+  case 'success':
+    return 'success';
+  default:
+    return 'athlete';
   }
 }; 

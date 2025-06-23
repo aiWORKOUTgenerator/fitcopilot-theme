@@ -80,7 +80,7 @@ export { SectionComponent as Section };
  * <SectionVariant />
  * ```
  */
-    export { getSectionVariant };
+export { getSectionVariant };
 
 /**
  * Variant component map
@@ -97,7 +97,7 @@ export { SectionComponent as Section };
  * <GymVariant />
  * ```
  */
-    export { SectionMap };
+export { SectionMap };
 
 // ============================================================================
 // TYPE EXPORTS
@@ -119,7 +119,7 @@ export { SectionComponent as Section };
  * };
  * ```
  */
-    export * from './types';
+export * from './types';
 
 // ============================================================================
 // UTILITY EXPORTS (if applicable)
@@ -245,10 +245,10 @@ export { SectionComponent as Section };
  * These help ensure the template is correctly implemented
  */
 export type {
-    // Component type validation
-    ComponentType,
-    FC,
-    ReactNode
+  // Component type validation
+  ComponentType,
+  FC,
+  ReactNode
 } from 'react';
 
 // Re-export shared types for convenience

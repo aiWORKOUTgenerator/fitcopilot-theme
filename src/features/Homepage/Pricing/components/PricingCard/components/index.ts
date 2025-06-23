@@ -17,6 +17,6 @@ export * from './PricingCardTooltip';
 
 // Re-export types for convenience
 export type {
-    PricingCardCTAProps, PricingCardFeaturesProps, PricingCardHeaderProps,
-    PricingCardPriceProps, PricingCardTooltipProps
+  PricingCardCTAProps, PricingCardFeaturesProps, PricingCardHeaderProps,
+  PricingCardPriceProps, PricingCardTooltipProps
 } from '../types';

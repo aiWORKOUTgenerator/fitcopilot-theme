@@ -23,10 +23,10 @@ export interface TestimonialsButtonProps extends HeroButtonProps {
  */
 const mapSizeToButtonSize = (size: ButtonSize): 'sm' | 'md' | 'lg' => {
   switch (size) {
-    case 'small': return 'sm';
-    case 'medium': return 'md';
-    case 'large': return 'lg';
-    default: return 'md';
+  case 'small': return 'sm';
+  case 'medium': return 'md';
+  case 'large': return 'lg';
+  default: return 'md';
   }
 };
 
@@ -52,15 +52,15 @@ export const TestimonialsButton: React.FC<TestimonialsButtonProps> = ({
   ...restProps
 }) => {
   // Access theme context safely
-  let theme = 'default';
+  let _theme = 'default';
   try {
     const themeContext = useTheme();
     if (themeContext) {
-      theme = themeContext.theme;
+      _theme = themeContext.theme;
     }
   } catch (e) {
     // If ThemeContext is not available, use default theme
-    console.debug('ThemeContext not available, using default theme');
+    logger.debug('ThemeContext not available, using default theme');
   }
   
   // Construct CSS classes
@@ -79,12 +79,20 @@ export const TestimonialsButton: React.FC<TestimonialsButtonProps> = ({
   const startIcon = leftIcon ? <span className="testimonials-button__icon--left">{leftIcon}</span> : undefined;
   const endIcon = rightIcon ? <span className="testimonials-button__icon--right">{rightIcon}</span> : undefined;
   
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    try {
+      onClick?.(e);
+    } catch (_e) {
+      // Handle any potential errors
+    }
+  };
+
   return (
     <Button
       variant={variant}
       size={mapSizeToButtonSize(size)}
       href={href}
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       className={buttonClasses}
       aria-label={restProps['aria-label']}

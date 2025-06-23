@@ -36,7 +36,7 @@ const getSpecialtyIcon = (specialty: string) => {
   return <User size={14} />;
 };
 
-const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrainers, variant = 'default' }) => {
+const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: _propTrainers, variant = 'default' }) => {
   const [trainerData, setTrainerData] = useState<Trainer[]>([]);
   const [settings, setSettings] = useState<PersonalTrainingSettings>({
     section_title: "Personal Training",
@@ -65,7 +65,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
         const wpData = window.fitcopilotPersonalTrainingData;
         
         if (wpData.trainers && wpData.trainers.length > 0) {
-          console.log('✅ Processing trainers data:', wpData.trainers);
+          logger.info('✅ Processing trainers data:', wpData.trainers);
           
           const formattedTrainers = wpData.trainers.map((trainer: WordPressTrainer) => ({
             id: trainer.id.toString(),
@@ -84,7 +84,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
             } : undefined
           }));
           
-          console.log('✅ Formatted trainers for frontend:', formattedTrainers);
+          logger.info('✅ Formatted trainers for frontend:', formattedTrainers);
           
           setTrainerData(formattedTrainers);
           setSettings(wpData.settings || settings);
@@ -97,7 +97,7 @@ const PersonalTraining: React.FC<PersonalTrainingProps> = ({ trainers: propTrain
         setLoadingState('error');
       }
     } catch (error) {
-      console.error('Error loading trainer data:', error);
+      logger.error('Error loading trainer data:', error);
       setLoadingState('error');
     }
   }, []);

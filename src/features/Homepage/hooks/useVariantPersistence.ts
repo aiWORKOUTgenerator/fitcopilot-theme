@@ -45,7 +45,7 @@ const getStoredVariant = (): GlobalVariantKey | null => {
     const stored = localStorage.getItem(VARIANT_STORAGE_KEY);
     return stored as GlobalVariantKey | null;
   } catch (error) {
-    console.warn('Error reading variant from localStorage:', error);
+    logger.warn('Error reading variant from localStorage:', error);
     return null;
   }
 };
@@ -60,7 +60,7 @@ const storeVariant = (variant: GlobalVariantKey): boolean => {
     localStorage.setItem(VARIANT_STORAGE_KEY, variant);
     return true;
   } catch (error) {
-    console.warn('Error storing variant in localStorage:', error);
+    logger.warn('Error storing variant in localStorage:', error);
     return false;
   }
 };
@@ -75,7 +75,7 @@ const getSessionVariant = (): GlobalVariantKey | null => {
     const stored = sessionStorage.getItem(VARIANT_SESSION_KEY);
     return stored as GlobalVariantKey | null;
   } catch (error) {
-    console.warn('Error reading session variant:', error);
+    logger.warn('Error reading session variant:', error);
     return null;
   }
 };
@@ -90,7 +90,7 @@ const storeSessionVariant = (variant: GlobalVariantKey): boolean => {
     sessionStorage.setItem(VARIANT_SESSION_KEY, variant);
     return true;
   } catch (error) {
-    console.warn('Error storing session variant:', error);
+    logger.warn('Error storing session variant:', error);
     return false;
   }
 };
@@ -105,7 +105,7 @@ const clearSessionVariant = (): boolean => {
     sessionStorage.removeItem(VARIANT_SESSION_KEY);
     return true;
   } catch (error) {
-    console.warn('Error clearing session variant:', error);
+    logger.warn('Error clearing session variant:', error);
     return false;
   }
 };
@@ -137,7 +137,7 @@ const getWordPressVariant = async (): Promise<GlobalVariantKey | null> => {
     
     return null;
   } catch (error) {
-    console.warn('Error getting WordPress variant:', error);
+    logger.warn('Error getting WordPress variant:', error);
     return null;
   }
 };
@@ -168,7 +168,7 @@ const updateWordPressVariant = async (variant: GlobalVariantKey): Promise<boolea
     
     return false;
   } catch (error) {
-    console.warn('Error updating WordPress variant:', error);
+    logger.warn('Error updating WordPress variant:', error);
     return false;
   }
 };
@@ -378,7 +378,7 @@ export const clearAllVariantStorage = (): boolean => {
       sessionStorage.removeItem(VARIANT_SESSION_KEY);
     }
   } catch (error) {
-    console.warn('Error clearing variant storage:', error);
+    logger.warn('Error clearing variant storage:', error);
     success = false;
   }
 

@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-    MediaErrorInfo,
-    MediaPlayerControls,
-    MediaPlayerState,
-    UseMediaPlayerOptions
+  MediaErrorInfo,
+  MediaPlayerControls,
+  MediaPlayerState,
+  UseMediaPlayerOptions
 } from '../types/media';
 import { VendorExtendedDocument } from '../types/vendor';
 import logger from '../utils/logger';
 import {
-    documentHasMsFullscreen,
-    documentHasWebkitFullscreen,
-    hasMsFullscreenMethods,
-    hasWebkitFullscreenMethods,
-    supportsPictureInPicture
+  documentHasMsFullscreen,
+  documentHasWebkitFullscreen,
+  hasMsFullscreenMethods,
+  hasWebkitFullscreenMethods,
+  supportsPictureInPicture
 } from '../utils/typeGuards/mediaApiGuards';
 
 /**

@@ -202,7 +202,7 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = React.memo((
       setEmailExists(mockExistingEmails.includes(email.toLowerCase()));
       
     } catch (error) {
-      console.error('Error checking email existence:', error);
+      logger.error('Error checking email existence:', error);
       // Don't set emailExists to avoid blocking registration on API errors
     } finally {
       setCheckingEmail(false);
@@ -264,11 +264,11 @@ const UserRegistrationModal: React.FC<UserRegistrationModalProps> = React.memo((
         username: formData.email.split('@')[0],
       };
       
-      console.log('✅ User registration successful:', mockUser);
+      logger.info('✅ User registration successful:', mockUser);
       onUserRegistered(mockUser);
       
     } catch (error) {
-      console.error('❌ User registration failed:', error);
+      logger.error('❌ User registration failed:', error);
       setErrors(prev => ({
         ...prev,
         general: 'Registration failed. Please try again or contact support if the problem persists.'

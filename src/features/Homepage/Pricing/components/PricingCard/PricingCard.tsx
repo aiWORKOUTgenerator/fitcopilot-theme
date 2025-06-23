@@ -12,10 +12,10 @@
 import { Crown, Star } from 'lucide-react';
 import React from 'react';
 import {
-    PricingCardCTA,
-    PricingCardFeatures,
-    PricingCardPrice,
-    PricingCardTooltip
+  PricingCardCTA,
+  PricingCardFeatures,
+  PricingCardPrice,
+  PricingCardTooltip
 } from './components';
 import { PricingCardProps } from './types';
 
@@ -125,9 +125,9 @@ export const PricingCard: React.FC<PricingCardProps> = ({
         <div className="flex items-center mb-4">
           <h3 className={`plan-name plan-name-gradient bg-gradient-to-r ${
             plan.name === 'Basic' ? plan.titleTextColors : 
-            plan.name === 'Elite' ? plan.titleTextColors : 
-            plan.name === 'Pro' ? 'from-purple-300 to-indigo-400' : 
-            plan.accentColors
+              plan.name === 'Elite' ? plan.titleTextColors : 
+                plan.name === 'Pro' ? 'from-purple-300 to-indigo-400' : 
+                  plan.accentColors
           }`} data-text={plan.name}>{plan.name}</h3>
         </div>
 

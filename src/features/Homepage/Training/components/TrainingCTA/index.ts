@@ -12,25 +12,25 @@ export { default as TrainingCTA, default } from './TrainingCTA';
 
 // Export enhanced types
 export type {
-    TrainingCTAProps,
-    TrainingCTASize,
-    TrainingVariantKey
+  TrainingCTAProps,
+  TrainingCTASize,
+  TrainingVariantKey
 } from './types';
 
 // Export core utility functions for advanced usage
 export {
-    PROGRAM_CTA_TEXT_MAP, TRAINING_PROGRAM_TYPES, generateAccessibilityLabel,
-    generateCTAText,
-    generateStyleClasses, isTrainingProgramType, mapSizeToUniversalButton,
-    mapTrainingVariantToGlobal,
-    validateTrainingCTAProps
+  PROGRAM_CTA_TEXT_MAP, TRAINING_PROGRAM_TYPES, generateAccessibilityLabel,
+  generateCTAText,
+  generateStyleClasses, isTrainingProgramType, mapSizeToUniversalButton,
+  mapTrainingVariantToGlobal,
+  validateTrainingCTAProps
 } from './utils';
 
 // Export Phase 3 performance and development utilities
 export {
-    __DEV__, clearUtilityCaches,
-    getCacheStatistics,
-    preloadCommonCombinations
+  __DEV__, clearUtilityCaches,
+  getCacheStatistics,
+  preloadCommonCombinations
 } from './utils';
 
 // Re-export GlobalVariantKey for convenience

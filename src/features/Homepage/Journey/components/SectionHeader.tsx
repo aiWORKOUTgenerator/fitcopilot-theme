@@ -11,7 +11,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
   description,
   variant = 'default'
 }) => {
-  const prefersReducedMotion = useReducedMotion();
+  const _prefersReducedMotion = useReducedMotion();
 
   return (
     <div className="text-center mb-12 md:mb-16">

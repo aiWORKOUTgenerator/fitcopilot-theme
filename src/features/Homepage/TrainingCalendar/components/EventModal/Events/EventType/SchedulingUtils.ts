@@ -9,9 +9,9 @@
  */
 
 import {
-    AvailableTimeSlot,
-    SchedulingPreference,
-    SmartSchedulingConfig
+  AvailableTimeSlot,
+  SchedulingPreference,
+  SmartSchedulingConfig
 } from './EventTypeInterfaces';
 
 /**
@@ -104,15 +104,15 @@ export const filterSlotsByPreferences = (
       const hour = slot.startTime.getHours();
       
       switch (preferences.preferredTimeOfDay) {
-        case 'morning':
-          if (hour < 6 || hour >= 12) return false;
-          break;
-        case 'afternoon':
-          if (hour < 12 || hour >= 17) return false;
-          break;
-        case 'evening':
-          if (hour < 17 || hour >= 21) return false;
-          break;
+      case 'morning':
+        if (hour < 6 || hour >= 12) return false;
+        break;
+      case 'afternoon':
+        if (hour < 12 || hour >= 17) return false;
+        break;
+      case 'evening':
+        if (hour < 17 || hour >= 21) return false;
+        break;
       }
     }
     
@@ -160,15 +160,15 @@ export const calculatePreferenceScore = (
   
   // Base score for availability status
   switch (slot.status) {
-    case 'available':
-      score += 100;
-      break;
-    case 'limited':
-      score += 50;
-      break;
-    case 'waitlist':
-      score += 10;
-      break;
+  case 'available':
+    score += 100;
+    break;
+  case 'limited':
+    score += 50;
+    break;
+  case 'waitlist':
+    score += 10;
+    break;
   }
   
   // Bonus for preferred days
@@ -183,18 +183,18 @@ export const calculatePreferenceScore = (
     let timeBonus = 0;
     
     switch (preferences.preferredTimeOfDay) {
-      case 'morning':
-        if (hour >= 8 && hour < 10) timeBonus = 15; // Peak morning
-        else if (hour >= 6 && hour < 12) timeBonus = 10;
-        break;
-      case 'afternoon':
-        if (hour >= 13 && hour < 15) timeBonus = 15; // Peak afternoon
-        else if (hour >= 12 && hour < 17) timeBonus = 10;
-        break;
-      case 'evening':
-        if (hour >= 18 && hour < 20) timeBonus = 15; // Peak evening
-        else if (hour >= 17 && hour < 21) timeBonus = 10;
-        break;
+    case 'morning':
+      if (hour >= 8 && hour < 10) timeBonus = 15; // Peak morning
+      else if (hour >= 6 && hour < 12) timeBonus = 10;
+      break;
+    case 'afternoon':
+      if (hour >= 13 && hour < 15) timeBonus = 15; // Peak afternoon
+      else if (hour >= 12 && hour < 17) timeBonus = 10;
+      break;
+    case 'evening':
+      if (hour >= 18 && hour < 20) timeBonus = 15; // Peak evening
+      else if (hour >= 17 && hour < 21) timeBonus = 10;
+      break;
     }
     
     score += timeBonus;

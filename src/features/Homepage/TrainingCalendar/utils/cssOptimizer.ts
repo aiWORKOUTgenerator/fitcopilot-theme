@@ -39,41 +39,41 @@ export const loadCalendarCSS = async (view: string): Promise<CSSLoadResult> => {
 
     // View-specific styles
     switch (view) {
-      case 'dayGridMonth':
-      case 'dayGridWeek':
-        if (!cssCache.has('daygrid')) {
-          await loadStylesheet('fullcalendar-daygrid', '/wp-content/themes/fitcopilot/node_modules/@fullcalendar/daygrid/main.css');
-          cssCache.add('daygrid');
-          stylesLoaded.push('daygrid');
-          totalSize += 25; // Estimated KB
-        }
-        break;
+    case 'dayGridMonth':
+    case 'dayGridWeek':
+      if (!cssCache.has('daygrid')) {
+        await loadStylesheet('fullcalendar-daygrid', '/wp-content/themes/fitcopilot/node_modules/@fullcalendar/daygrid/main.css');
+        cssCache.add('daygrid');
+        stylesLoaded.push('daygrid');
+        totalSize += 25; // Estimated KB
+      }
+      break;
 
-      case 'timeGridWeek':
-      case 'timeGridDay':
-        if (!cssCache.has('timegrid')) {
-          await loadStylesheet('fullcalendar-timegrid', '/wp-content/themes/fitcopilot/node_modules/@fullcalendar/timegrid/main.css');
-          cssCache.add('timegrid');
-          stylesLoaded.push('timegrid');
-          totalSize += 30; // Estimated KB
-        }
-        break;
+    case 'timeGridWeek':
+    case 'timeGridDay':
+      if (!cssCache.has('timegrid')) {
+        await loadStylesheet('fullcalendar-timegrid', '/wp-content/themes/fitcopilot/node_modules/@fullcalendar/timegrid/main.css');
+        cssCache.add('timegrid');
+        stylesLoaded.push('timegrid');
+        totalSize += 30; // Estimated KB
+      }
+      break;
 
-      case 'listWeek':
-      case 'listMonth':
-      case 'listDay':
-        if (!cssCache.has('list')) {
-          await loadStylesheet('fullcalendar-list', '/wp-content/themes/fitcopilot/node_modules/@fullcalendar/list/main.css');
-          cssCache.add('list');
-          stylesLoaded.push('list');
-          totalSize += 15; // Estimated KB
-        }
-        break;
+    case 'listWeek':
+    case 'listMonth':
+    case 'listDay':
+      if (!cssCache.has('list')) {
+        await loadStylesheet('fullcalendar-list', '/wp-content/themes/fitcopilot/node_modules/@fullcalendar/list/main.css');
+        cssCache.add('list');
+        stylesLoaded.push('list');
+        totalSize += 15; // Estimated KB
+      }
+      break;
     }
 
     const loadTime = performance.now() - startTime;
 
-    console.log(`✅ Loaded ${stylesLoaded.length} CSS files for ${view} in ${loadTime.toFixed(2)}ms`);
+    logger.info(`✅ Loaded ${stylesLoaded.length} CSS files for ${view} in ${loadTime.toFixed(2)}ms`);
 
     return {
       view,
@@ -83,7 +83,7 @@ export const loadCalendarCSS = async (view: string): Promise<CSSLoadResult> => {
     };
 
   } catch (error) {
-    console.error('❌ Failed to load FullCalendar CSS:', error);
+    logger.error('❌ Failed to load FullCalendar CSS:', error);
     throw new Error(`Failed to load CSS for view: ${view}`);
   }
 };
@@ -122,17 +122,17 @@ const loadStylesheet = (id: string, href: string): Promise<void> => {
  * @param views - Array of view names to preload
  */
 export const preloadCalendarCSS = async (views: string[] = ['dayGridMonth', 'timeGridWeek']): Promise<void> => {
-  console.log(`🔄 Preloading FullCalendar CSS for views: ${views.join(', ')}`);
+  logger.info(`🔄 Preloading FullCalendar CSS for views: ${views.join(', ')}`);
 
   const preloadPromises = views.map(view => 
     loadCalendarCSS(view).catch(error => {
-      console.warn(`⚠️ Failed to preload CSS for ${view}:`, error);
+      logger.warn(`⚠️ Failed to preload CSS for ${view}:`, error);
       return null;
     })
   );
 
   await Promise.allSettled(preloadPromises);
-  console.log(`✅ CSS preloading completed for ${views.length} views`);
+  logger.info(`✅ CSS preloading completed for ${views.length} views`);
 };
 
 /**
@@ -149,7 +149,7 @@ export const clearCalendarCSS = (): void => {
   });
 
   cssCache.clear();
-  console.log('🧹 FullCalendar CSS cleared');
+  logger.info('🧹 FullCalendar CSS cleared');
 };
 
 /**
@@ -177,17 +177,17 @@ export const isCSSLoadedForView = (view: string): boolean => {
 
   // Check view-specific CSS
   switch (view) {
-    case 'dayGridMonth':
-    case 'dayGridWeek':
-      return cssCache.has('daygrid');
-    case 'timeGridWeek':
-    case 'timeGridDay':
-      return cssCache.has('timegrid');
-    case 'listWeek':
-    case 'listMonth':
-    case 'listDay':
-      return cssCache.has('list');
-    default:
-      return cssCache.has('daygrid'); // Default fallback
+  case 'dayGridMonth':
+  case 'dayGridWeek':
+    return cssCache.has('daygrid');
+  case 'timeGridWeek':
+  case 'timeGridDay':
+    return cssCache.has('timegrid');
+  case 'listWeek':
+  case 'listMonth':
+  case 'listDay':
+    return cssCache.has('list');
+  default:
+    return cssCache.has('daygrid'); // Default fallback
   }
 }; 

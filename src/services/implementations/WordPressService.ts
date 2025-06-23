@@ -7,14 +7,14 @@
  */
 
 import {
-    Feature,
-    FooterLinkGroup,
-    JourneyStep,
-    PricingPlan,
-    Testimonial,
-    WordPressData,
-    WordPressServiceData,
-    WordPressServiceEventHandlers
+  Feature,
+  FooterLinkGroup,
+  JourneyStep,
+  PricingPlan,
+  Testimonial,
+  WordPressData,
+  WordPressServiceData,
+  WordPressServiceEventHandlers
 } from '../../types/wordpress';
 import logger from '../../utils/logger';
 import { WordPressService } from '../interfaces/WordPressService';

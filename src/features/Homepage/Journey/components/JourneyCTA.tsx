@@ -33,7 +33,7 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
   
   // Map Journey-specific variants to GlobalVariantKey
   switch (variant) {
-    default: return 'default';
+  default: return 'default';
   }
 };
 
@@ -82,11 +82,9 @@ const JourneyCTA: React.FC<JourneyCTAProps> = ({
   
   // Deprecation warning
   React.useEffect(() => {
-    console.warn(
-      '⚠️  JourneyCTA is deprecated and will be removed in v2.0.0. ' +
+    logger.warn('⚠️  JourneyCTA is deprecated and will be removed in v2.0.0. ' +
       'Use UniversalButton with sectionContext="journey" instead. ' +
-      'See component documentation for migration examples.'
-    );
+      'See component documentation for migration examples.');
   }, []);
   
   // Map button variant to JourneyButton variant

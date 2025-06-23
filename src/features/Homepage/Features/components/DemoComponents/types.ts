@@ -70,7 +70,7 @@ export interface VideoPlayerProps {
   /** Custom container styles */
   style?: React.CSSProperties;
   /** Whether the video should autoplay */
-  autoplay?: boolean;
+  _autoplay?: boolean;
   /** Whether the video should loop */
   loop?: boolean;
   /** Whether the video should be muted */

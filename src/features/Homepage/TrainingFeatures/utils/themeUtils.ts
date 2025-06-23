@@ -19,10 +19,10 @@ export const mapVariantToTheme = (variant: TrainingFeaturesVariant | undefined):
   
   // Map other variants to appropriate themes
   switch (variant) {
-    case 'modern': return 'sports';
-    case 'classic': return 'default';
-    case 'minimalist': return 'default';
-    default: return 'default';
+  case 'modern': return 'sports';
+  case 'classic': return 'default';
+  case 'minimalist': return 'default';
+  default: return 'default';
   }
 };
 
@@ -34,12 +34,12 @@ export const mapVariantToTheme = (variant: TrainingFeaturesVariant | undefined):
  */
 export const mapFeatureTypeToTheme = (featureType: string | undefined): ThemeOption => {
   switch (featureType) {
-    case 'virtual': return 'default'; // Green gradient theme
-    case 'tracking': return 'gym'; // Purple gradient theme
-    case 'scheduling': return 'sports'; // Blue gradient theme
-    case 'support': return 'wellness'; // Orange gradient theme
-    case 'mobile': return 'sports'; // Pink-blue gradient theme
-    default: return 'default';
+  case 'virtual': return 'default'; // Green gradient theme
+  case 'tracking': return 'gym'; // Purple gradient theme
+  case 'scheduling': return 'sports'; // Blue gradient theme
+  case 'support': return 'wellness'; // Orange gradient theme
+  case 'mobile': return 'sports'; // Pink-blue gradient theme
+  default: return 'default';
   }
 };
 

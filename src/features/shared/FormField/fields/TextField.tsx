@@ -13,28 +13,28 @@ import FieldWrapper from './FieldWrapper';
  * TextField component for text input fields
  */
 const TextField: React.FC<TextFieldProps> = ({
+  id,
   name,
   label,
   value,
-  type = 'text',
-  placeholder,
   onChange,
   onBlur,
   onFocus,
   onKeyPress,
+  type = 'text',
+  placeholder = '',
   disabled = false,
   required = false,
+  maxLength,
+  minLength,
   error,
   helperText,
   className,
-  id,
-  maxLength,
-  minLength,
-  autoComplete,
-  spellCheck,
   'data-testid': testId,
+  autoComplete,
+  spellCheck = true,
   isLoading = false,
-  validators,
+  _validators,
   ...otherProps
 }) => {
   // Generate ID if not provided

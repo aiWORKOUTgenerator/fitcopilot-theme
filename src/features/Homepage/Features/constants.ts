@@ -1,21 +1,21 @@
 import {
-    Apple,
-    Bike,
-    Coffee,
-    Dumbbell,
-    Flame,
-    Footprints,
-    Heart,
-    Medal,
-    Timer
+  Apple,
+  Bike,
+  Coffee,
+  Dumbbell,
+  Flame,
+  Footprints,
+  Heart,
+  Medal,
+  Timer
 } from 'lucide-react';
 import { ThemeOption } from '../../../utils/theming';
 import {
-    FloatingIconData,
-    ProgressDataPoint,
-    ThemeMapping,
-    VariantKey,
-    WorkoutExercise
+  FloatingIconData,
+  ProgressDataPoint,
+  ThemeMapping,
+  VariantKey,
+  WorkoutExercise
 } from './types';
 
 // ============================================================================
@@ -34,12 +34,12 @@ export const mapVariantToTheme = (variant: VariantKey): ThemeOption => {
   
   // Custom mappings
   switch (variant) {
-    case 'boutique': return 'wellness';
-    case 'modern': return 'sports';
-    case 'classic': return 'default';
-    case 'minimalist': return 'default';
-    case 'registration': return 'default';
-    default: return 'default';
+  case 'boutique': return 'wellness';
+  case 'modern': return 'sports';
+  case 'classic': return 'default';
+  case 'minimalist': return 'default';
+  case 'registration': return 'default';
+  default: return 'default';
   }
 };
 

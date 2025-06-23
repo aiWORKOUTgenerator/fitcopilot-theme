@@ -82,9 +82,9 @@ export class CalendarErrorBoundary extends Component<CalendarErrorBoundaryProps,
     // Log detailed error information in development
     if (process.env.NODE_ENV === 'development') {
       console.group('🚨 Calendar Error Boundary Caught Error');
-      console.error('Error:', error);
-      console.error('Error Info:', errorInfo);
-      console.error('Component Stack:', errorInfo.componentStack);
+      logger.error('Error:', error);
+      logger.error('Error Info:', errorInfo);
+      logger.error('Component Stack:', errorInfo.componentStack);
       console.groupEnd();
     }
   }
@@ -116,7 +116,7 @@ export class CalendarErrorBoundary extends Component<CalendarErrorBoundaryProps,
       // Store locally for debugging
       localStorage.setItem(`calendar_error_${this.state.errorId}`, JSON.stringify(errorReport));
     } catch (reportingError) {
-      console.error('Failed to report error:', reportingError);
+      logger.error('Failed to report error:', reportingError);
     }
   };
 
@@ -199,7 +199,7 @@ export class CalendarErrorBoundary extends Component<CalendarErrorBoundaryProps,
         }
       })
       .catch(err => {
-        console.error('Failed to copy error details:', err);
+        logger.error('Failed to copy error details:', err);
       });
   };
 

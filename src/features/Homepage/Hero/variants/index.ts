@@ -50,7 +50,7 @@ export {
 };
 
 // Re-export HeroProps type for variant components
-  export type { HeroProps };
+export type { HeroProps };
 
 // Default export for backward compatibility
 export default DefaultVariant; 

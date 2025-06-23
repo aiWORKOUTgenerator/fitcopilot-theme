@@ -35,9 +35,9 @@ export const getTrainingFeaturesVariant = (variant?: VariantKey) => {
 
 // Export all variants
 export {
-    BoutiqueTrainingFeatures,
-    DefaultTrainingFeatures,
-    ModernTrainingFeatures
+  BoutiqueTrainingFeatures,
+  DefaultTrainingFeatures,
+  ModernTrainingFeatures
 };
 
 // Export sports and wellness variants (re-export default for now)

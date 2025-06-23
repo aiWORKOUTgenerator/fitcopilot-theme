@@ -89,7 +89,7 @@ const BookingConfirmation: React.FC<BookingConfirmationProps> = ({
         <div className="booking-confirmation__header">
           <div className="booking-confirmation__success-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M20 6L9 17l-5-5"/>
+              <path d="M20 6L9 17l-5-5" />
             </svg>
           </div>
           <h2 className="booking-confirmation__title">

@@ -34,7 +34,7 @@ export const loadCalendarPlugins = async (view: string): Promise<PluginLoadResul
     };
 
   } catch (error) {
-    console.error('❌ Failed to load FullCalendar plugins:', error);
+    logger.error('❌ Failed to load FullCalendar plugins:', error);
     throw new Error(`Failed to load plugins for view: ${view}`);
   }
 };

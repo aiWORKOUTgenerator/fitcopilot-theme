@@ -49,7 +49,7 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
   
   // Map Pricing-specific variants to GlobalVariantKey
   switch (variant) {
-    default: return 'default';
+  default: return 'default';
   }
 };
 
@@ -58,19 +58,19 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
  */
 const mapPlanTypeToContextType = (planType?: string): 'basic' | 'pro' | 'elite' | 'custom' => {
   switch (planType?.toLowerCase()) {
-    case 'pro':
-    case 'professional':
-      return 'pro';
-    case 'elite':
-    case 'premium':
-      return 'elite';
-    case 'custom':
-    case 'enterprise':
-      return 'custom';
-    case 'basic':
-    case 'free':
-    default:
-      return 'basic';
+  case 'pro':
+  case 'professional':
+    return 'pro';
+  case 'elite':
+  case 'premium':
+    return 'elite';
+  case 'custom':
+  case 'enterprise':
+    return 'custom';
+  case 'basic':
+  case 'free':
+  default:
+    return 'basic';
   }
 };
 

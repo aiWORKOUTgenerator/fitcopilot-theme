@@ -142,7 +142,7 @@ export const convertISOToDateTimeLocal = (isoString: string): string => {
     const date = new Date(isoString);
     return formatForDateTimeLocal(date);
   } catch (error) {
-    console.warn('Failed to convert ISO string to datetime-local:', isoString, error);
+    logger.warn('Failed to convert ISO string to datetime-local:', isoString, error);
     return '';
   }
 };
@@ -166,7 +166,7 @@ export const safeParseDate = (value: string | Date | number | null | undefined):
     const date = new Date(value);
     return isNaN(date.getTime()) ? null : date;
   } catch (error) {
-    console.warn('Failed to parse date:', value, error);
+    logger.warn('Failed to parse date:', value, error);
     return null;
   }
 }; 

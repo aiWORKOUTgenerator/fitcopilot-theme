@@ -28,19 +28,19 @@ export interface PricingCardHeaderProps {
 export const PricingCardHeader: React.FC<PricingCardHeaderProps> = ({
   plan,
   isPopular,
-  variant = 'default'
+  _variant = 'default'
 }) => {
   // Determine plan name gradient colors based on plan type
   const getPlanNameGradient = () => {
     switch (plan.name) {
-      case 'Basic':
-        return plan.titleTextColors;
-      case 'Elite':
-        return plan.titleTextColors;
-      case 'Pro':
-        return 'from-purple-300 to-indigo-400';
-      default:
-        return plan.accentColors;
+    case 'Basic':
+      return plan.titleTextColors;
+    case 'Elite':
+      return plan.titleTextColors;
+    case 'Pro':
+      return 'from-purple-300 to-indigo-400';
+    default:
+      return plan.accentColors;
     }
   };
 

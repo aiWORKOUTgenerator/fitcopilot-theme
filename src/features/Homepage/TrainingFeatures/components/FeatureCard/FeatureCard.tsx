@@ -55,7 +55,7 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
 
   // Handle navigation with analytics
   const handleNavigate = (action: string) => {
-    console.log(`Navigate to feature: ${feature.title} - ${action}`);
+    logger.info(`Navigate to feature: ${feature.title} - ${action}`);
     
     // Analytics tracking for navigation
     if (typeof window !== 'undefined' && window.gtag) {

@@ -811,7 +811,7 @@ export const PrimaryButtonShowcase: Story = {
       </svg>
     );
   
-  return (
+    return (
       <div className="primary-showcase">
         <style>{`
           .primary-showcase {
@@ -936,8 +936,8 @@ export const PrimaryButtonShowcase: Story = {
           <div className="showcase-title">Interactive Hover State</div>
           <PrimaryHoverToggle />
         </div>
-    </div>
-  );
+      </div>
+    );
   },
   parameters: {
     docs: {

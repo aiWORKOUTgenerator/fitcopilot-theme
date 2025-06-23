@@ -28,7 +28,7 @@ const Checkbox: React.FC<CheckboxFieldProps> = ({
   'data-testid': testId,
   labelPosition = 'right',
   isLoading = false,
-  validators,
+  _validators,
   ...otherProps
 }) => {
   // Generate ID if not provided

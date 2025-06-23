@@ -30,7 +30,7 @@ const FileField: React.FC<Omit<FileFieldProps, 'value'> & { value?: File | null 
   className,
   'data-testid': testId,
   isLoading = false,
-  validators,
+  _validators,
   value, // We need to extract this but not pass it to the input element
   ...otherProps
 }) => {

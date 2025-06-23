@@ -116,7 +116,7 @@ export class TrainerApiService {
       const requestUrl = `${API_CONFIG.baseUrl}/trainer-availability?${params}`;
       
       if (process.env.NODE_ENV === 'development') {
-        console.log('🚀 Making API request:', {
+        logger.info('🚀 Making API request:', {
           url: requestUrl,
           nonce: nonce ? `${nonce.substring(0, 10)}...` : 'NOT SET',
           eventType,
@@ -130,7 +130,7 @@ export class TrainerApiService {
       
       // If primary request fails with 403, try fallback methods
       if (!response.ok && response.status === 403) {
-        console.warn('🔄 Primary request failed with 403, trying fallback methods...');
+        logger.warn('🔄 Primary request failed with 403, trying fallback methods...');
         
         // Fallback 1: Try nonce as URL parameter
         const fallbackUrl = `${requestUrl}&_wpnonce=${encodeURIComponent(nonce)}`;
@@ -138,13 +138,13 @@ export class TrainerApiService {
         
         // Fallback 2: Try without nonce (public access)
         if (!response.ok && response.status === 403) {
-          console.warn('🔄 Fallback 1 failed, trying public access...');
+          logger.warn('🔄 Fallback 1 failed, trying public access...');
           response = await this.makeRequest(requestUrl, '', 'none');
         }
         
         // Fallback 3: Try with credentials
         if (!response.ok && response.status === 403) {
-          console.warn('🔄 Fallback 2 failed, trying with credentials...');
+          logger.warn('🔄 Fallback 2 failed, trying with credentials...');
           response = await this.makeRequest(requestUrl, nonce, 'credentials');
         }
       }
@@ -157,7 +157,7 @@ export class TrainerApiService {
           errorMessage = errorData.message || errorMessage;
         } catch (parseError) {
           // If we can't parse the error response, use the status text
-          console.warn('Could not parse error response:', parseError);
+          logger.warn('Could not parse error response:', parseError);
         }
         
         // Provide specific guidance for 403 errors
@@ -179,7 +179,7 @@ export class TrainerApiService {
       
       // Log performance metrics
       if (process.env.NODE_ENV === 'development') {
-        console.log('🚀 Trainer Availability Performance:', {
+        logger.info('🚀 Trainer Availability Performance:', {
           apiCallMs: data.metadata.performance_ms,
           totalMs: result.metadata.performanceMs,
           slotsFound: result.availableSlots.length,
@@ -193,11 +193,11 @@ export class TrainerApiService {
       const endTime = performance.now();
       
       if (error instanceof DOMException && error.name === 'AbortError') {
-        console.log('Trainer availability request was cancelled');
+        logger.info('Trainer availability request was cancelled');
         throw new Error('Request was cancelled');
       }
       
-      console.error('Trainer Availability API Error:', error);
+      logger.error('Trainer Availability API Error:', error);
       
       return {
         success: false,
@@ -233,7 +233,7 @@ export class TrainerApiService {
       return await this.getTrainerAvailability(date, eventType, duration, trainerId);
     } catch (error) {
       if (retryCount < API_CONFIG.retries) {
-        console.log(`Retrying trainer availability request (${retryCount + 1}/${API_CONFIG.retries})`);
+        logger.info(`Retrying trainer availability request (${retryCount + 1}/${API_CONFIG.retries})`);
         
         // Exponential backoff
         const delay = Math.pow(2, retryCount) * 1000;
@@ -275,7 +275,7 @@ export class TrainerApiService {
       };
       
     } catch (error) {
-      console.error('Error finding slots with preferences:', error);
+      logger.error('Error finding slots with preferences:', error);
       throw error;
     }
   }
@@ -348,15 +348,15 @@ export class TrainerApiService {
       
       // Filter by preferred time of day
       switch (preferences.preferredTimeOfDay) {
-        case 'morning':
-          return hour >= 6 && hour < 12;
-        case 'afternoon':
-          return hour >= 12 && hour < 17;
-        case 'evening':
-          return hour >= 17 && hour < 21;
-        case 'any':
-        default:
-          return true;
+      case 'morning':
+        return hour >= 6 && hour < 12;
+      case 'afternoon':
+        return hour >= 12 && hour < 17;
+      case 'evening':
+        return hour >= 17 && hour < 21;
+      case 'any':
+      default:
+        return true;
       }
     });
   }
@@ -398,31 +398,31 @@ export class TrainerApiService {
     
     // Time of day preference
     switch (preferences.preferredTimeOfDay) {
-      case 'morning':
-        if (hour >= 9 && hour < 12) score += 15;
-        else if (hour >= 6 && hour < 9) score += 10;
-        break;
-      case 'afternoon':
-        if (hour >= 13 && hour < 16) score += 15;
-        else if (hour >= 12 && hour < 17) score += 10;
-        break;
-      case 'evening':
-        if (hour >= 17 && hour < 19) score += 15;
-        else if (hour >= 19 && hour < 21) score += 10;
-        break;
+    case 'morning':
+      if (hour >= 9 && hour < 12) score += 15;
+      else if (hour >= 6 && hour < 9) score += 10;
+      break;
+    case 'afternoon':
+      if (hour >= 13 && hour < 16) score += 15;
+      else if (hour >= 12 && hour < 17) score += 10;
+      break;
+    case 'evening':
+      if (hour >= 17 && hour < 19) score += 15;
+      else if (hour >= 19 && hour < 21) score += 10;
+      break;
     }
     
     // Status preference (available > limited > waitlist)
     switch (slot.status) {
-      case 'available':
-        score += 20;
-        break;
-      case 'limited':
-        score += 10;
-        break;
-      case 'waitlist':
-        score += 5;
-        break;
+    case 'available':
+      score += 20;
+      break;
+    case 'limited':
+      score += 10;
+      break;
+    case 'waitlist':
+      score += 5;
+      break;
     }
     
     // Price preference (lower is better, but not the primary factor)
@@ -485,7 +485,7 @@ export class TrainerApiService {
         const nonce = source();
         if (nonce && typeof nonce === 'string' && nonce.length === 10) {
           if (process.env.NODE_ENV === 'development') {
-            console.log('🔐 Valid nonce found:', {
+            logger.info('🔐 Valid nonce found:', {
               nonce: nonce,
               source: source.toString().match(/\w+(?=\?\.)/)?.[0] || 'unknown'
             });
@@ -494,14 +494,14 @@ export class TrainerApiService {
         }
       } catch (e) {
         // Continue to next source
-    if (process.env.NODE_ENV === 'development') {
-          console.warn('⚠️ Nonce source failed:', e);
+        if (process.env.NODE_ENV === 'development') {
+          logger.warn('⚠️ Nonce source failed:', e);
         }
       }
     }
     
     if (process.env.NODE_ENV === 'development') {
-      console.error('❌ No valid nonce found for API requests. Debug info:', {
+      logger.error('❌ No valid nonce found for API requests. Debug info:', {
         fitcopilotApiConfig: (window as any).fitcopilotApiConfig,
         wpApiSettings: (window as any).wpApiSettings,
         fitcopilotTrainingCalendarData: (window as any).fitcopilotTrainingCalendarData,
@@ -510,7 +510,7 @@ export class TrainerApiService {
       });
     }
     
-    console.error('🚨 CRITICAL: No valid REST API nonce found - API requests will fail with 403');
+    logger.error('🚨 CRITICAL: No valid REST API nonce found - API requests will fail with 403');
     return '';
   }
   
@@ -565,38 +565,38 @@ export class TrainerApiService {
     };
     
     switch (strategy) {
-      case 'header':
-        options.headers = {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': nonce
-        };
-        break;
+    case 'header':
+      options.headers = {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': nonce
+      };
+      break;
         
-      case 'parameter':
-        // Nonce already in URL for this strategy
-        options.headers = {
-          'Content-Type': 'application/json'
-        };
-        break;
+    case 'parameter':
+      // Nonce already in URL for this strategy
+      options.headers = {
+        'Content-Type': 'application/json'
+      };
+      break;
         
-      case 'credentials':
-        options.headers = {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': nonce
-        };
-        options.credentials = 'include';
-        break;
+    case 'credentials':
+      options.headers = {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': nonce
+      };
+      options.credentials = 'include';
+      break;
         
-      case 'none':
-      default:
-        options.headers = {
-          'Content-Type': 'application/json'
-        };
-        break;
+    case 'none':
+    default:
+      options.headers = {
+        'Content-Type': 'application/json'
+      };
+      break;
     }
     
     if (process.env.NODE_ENV === 'development') {
-      console.log(`🔗 Request strategy: ${strategy}`, {
+      logger.info(`🔗 Request strategy: ${strategy}`, {
         url: url.length > 100 ? `${url.substring(0, 100)}...` : url,
         headers: options.headers,
         credentials: options.credentials

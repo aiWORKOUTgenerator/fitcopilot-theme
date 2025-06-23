@@ -270,7 +270,7 @@ export const LongList: Story = {
 
 // Theme showcase story
 export const ThemeShowcase: Story = {
-  render: (args: BenefitsListProps) => ComponentWithThemes(BenefitsList, args),
+  render: (_args: BenefitsListProps) => ComponentWithThemes(BenefitsList, _args),
   args: {
     benefits: strengthBenefits,
     variant: 'default',
@@ -863,7 +863,7 @@ export const WithAnimations: Story = {
 
 // Enhanced BenefitsList with Secondary TrainingCTA Integration
 export const WithSecondaryTrainingCTA: Story = {
-  render: (args) => (
+  render: (_args) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', alignItems: 'center', padding: '20px' }}>
       <div style={{ textAlign: 'center' }}>
         <h4 style={{ color: '#1f2937', fontSize: '18px', fontWeight: '600', marginBottom: '16px' }}>
@@ -920,7 +920,7 @@ export const WithSecondaryTrainingCTA: Story = {
 
 // CTA Integration Across All Variants
 export const CTAIntegrationAllVariants: Story = {
-  render: (args) => (
+  render: (_args) => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px', padding: '20px' }}>
       {['default', 'classic', 'modern', 'minimalist', 'boutique', 'wellness', 'sports'].map((variant) => (
         <div key={variant} style={{ 
@@ -970,7 +970,7 @@ export const CTAIntegrationAllVariants: Story = {
 
 // Realistic Benefits List Context Integration
 export const RealisticIntegrationContext: Story = {
-  render: (args) => (
+  render: (_args) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '40px', padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
       {/* Program Showcase */}
       <div style={{ 
@@ -1109,7 +1109,7 @@ export const RealisticIntegrationContext: Story = {
 
 // Mobile Responsive CTA Integration
 export const MobileCTAIntegration: Story = {
-  render: (args) => (
+  render: (_args) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', padding: '20px' }}>
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>
         <h4 style={{ color: '#1f2937', fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>
@@ -1173,7 +1173,7 @@ export const MobileCTAIntegration: Story = {
 
 // Performance Testing with CTA Integration
 export const PerformanceCTAIntegration: Story = {
-  render: (args) => (
+  render: (_args) => (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', padding: '20px' }}>
       {Array.from({ length: 6 }, (_, i) => (
         <div key={i} style={{ 
@@ -1221,7 +1221,7 @@ export const PerformanceCTAIntegration: Story = {
 
 // Without CTA for comparison
 export const WithoutCTAComparison: Story = {
-  render: (args) => (
+  render: (_args) => (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
       <div style={{ textAlign: 'center' }}>
         <h4 style={{ color: '#1f2937', fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>

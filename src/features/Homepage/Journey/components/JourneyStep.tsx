@@ -1,15 +1,15 @@
 import { ChevronRight } from 'lucide-react';
 import React, { KeyboardEvent, useRef } from 'react';
 import {
-    ExtendedCSSProperties
+  ExtendedCSSProperties
 } from '../../../../types/components';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import {
-    DetailedFeature,
-    ExpandedContentProps,
-    JourneyStepProps as LocalJourneyStepProps,
-    VariantKey,
-    isVariant
+  DetailedFeature,
+  ExpandedContentProps,
+  JourneyStepProps as LocalJourneyStepProps,
+  VariantKey,
+  isVariant
 } from '../types';
 // Import from utils/tokenUtils instead of redefining functions
 import { getConnectorColorClass, getGlowEffectClass, getStepGradientClass } from '../utils/tokenUtils';
@@ -108,7 +108,7 @@ const JourneyStep: React.FC<LocalJourneyStepProps> = ({
   isLast,
   variant = 'default'
 }) => {
-  const prefersReducedMotion = useReducedMotion();
+  const _prefersReducedMotion = useReducedMotion();
 
   // Get appropriate classes from our token utility
   const stepGradientClass = getStepGradientClass(step.number);

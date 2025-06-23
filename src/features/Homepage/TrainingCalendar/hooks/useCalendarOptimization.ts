@@ -46,7 +46,7 @@ const usePerformanceMonitoring = () => {
 
     // Log performance warnings in development
     if (process.env.NODE_ENV === 'development' && renderTime > 100) {
-      console.warn(`🐌 Slow render detected: ${renderTime.toFixed(2)}ms (avg: ${performanceRef.current.averageRenderTime.toFixed(2)}ms)`);
+      logger.warn(`🐌 Slow render detected: ${renderTime.toFixed(2)}ms (avg: ${performanceRef.current.averageRenderTime.toFixed(2)}ms)`);
     }
   }, []);
 
@@ -243,7 +243,7 @@ const useBundleOptimization = () => {
 
         // Report to analytics if load time is concerning
         if (loadTime > 2000) { // 2 seconds
-          console.warn(`📦 Bundle load time exceeded target: ${loadTime}ms`);
+          logger.warn(`📦 Bundle load time exceeded target: ${loadTime}ms`);
         }
       }
     };
@@ -278,14 +278,14 @@ const useMemoryOptimization = (events: CalendarEvent[]) => {
 
     // Memory warning for large datasets
     if (eventsInMemory > 1000) {
-      console.warn(`🧠 Large dataset in memory: ${eventsInMemory} events (~${estimatedMemoryMB.toFixed(2)}MB)`);
+      logger.warn(`🧠 Large dataset in memory: ${eventsInMemory} events (~${estimatedMemoryMB.toFixed(2)}MB)`);
     }
   }, [events.length]);
 
   const cleanupEvents = useCallback(() => {
     // Cleanup function for removing old events from memory
     // This would be called on component unmount or date range changes
-    console.log('🧹 Cleaning up event data from memory');
+    logger.info('🧹 Cleaning up event data from memory');
   }, []);
 
   return { memoryUsage, cleanupEvents };

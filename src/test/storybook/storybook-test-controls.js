@@ -27,7 +27,7 @@
    * Inject test controls into the Storybook UI
    */
   function injectTestControls() {
-    console.log('Injecting Storybook test controls...');
+    logger.info('Injecting Storybook test controls...');
 
     // Create a container for test controls
     const testControls = document.createElement('div');
@@ -103,7 +103,7 @@
         label: 'Mark ✅ Pass', 
         action: () => {
           const componentName = getCurrentComponentName();
-          console.log(`✅ PASSED: ${componentName}`);
+          logger.info(`✅ PASSED: ${componentName}`);
           if (localStorage) {
             const results = JSON.parse(localStorage.getItem('storybook-test-results') || '{}');
             results[componentName] = { status: 'pass', timestamp: new Date().toISOString() };
@@ -117,7 +117,7 @@
         action: () => {
           const componentName = getCurrentComponentName();
           const issue = prompt('Enter the warning issue:');
-          console.log(`⚠️ WARNING: ${componentName} - ${issue}`);
+          logger.info(`⚠️ WARNING: ${componentName} - ${issue}`);
           if (localStorage && issue) {
             const results = JSON.parse(localStorage.getItem('storybook-test-results') || '{}');
             results[componentName] = { 
@@ -135,7 +135,7 @@
         action: () => {
           const componentName = getCurrentComponentName();
           const issue = prompt('Enter the failure issue:');
-          console.log(`❌ FAILED: ${componentName} - ${issue}`);
+          logger.info(`❌ FAILED: ${componentName} - ${issue}`);
           if (localStorage && issue) {
             const results = JSON.parse(localStorage.getItem('storybook-test-results') || '{}');
             results[componentName] = { 
@@ -160,7 +160,7 @@
               if (window.themeTester) {
                 window.themeTester.testCurrentComponent();
               } else {
-                console.error('Theme tester not found.');
+                logger.error('Theme tester not found.');
               }
             };
             document.head.appendChild(script);
@@ -215,7 +215,7 @@
     // Add the controls to the document
     document.body.appendChild(testControls);
 
-    console.log('Storybook test controls injected.');
+    logger.info('Storybook test controls injected.');
   }
 
   /**
@@ -249,7 +249,7 @@
         nextLink.click();
       }
     } else {
-      console.log('No more components to test.');
+      logger.info('No more components to test.');
     }
   }
 

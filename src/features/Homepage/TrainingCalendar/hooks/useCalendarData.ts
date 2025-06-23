@@ -79,8 +79,8 @@ const getCalendarData = (): any => {
   
   // PHASE 2: Enhanced debugging and fallback handling
   if (!data) {
-    console.warn('Training Calendar Phase 2: fitcopilotTrainingCalendarData not found in window.');
-    console.log('Available window properties:', Object.keys(window));
+    logger.warn('Training Calendar Phase 2: fitcopilotTrainingCalendarData not found in window.');
+    logger.info('Available window properties:', Object.keys(window));
     
     // Return empty data structure with debug info
     return {
@@ -99,7 +99,7 @@ const getCalendarData = (): any => {
   }
   
   // PHASE 2: Log successful data loading
-  console.log('Training Calendar Phase 2: WordPress data loaded successfully', {
+  logger.info('Training Calendar Phase 2: WordPress data loaded successfully', {
     eventsCount: data.events?.length || 0,
     trainersCount: data.trainers?.length || 0,
     phase: data.debug?.phase || 'Unknown',
@@ -268,7 +268,7 @@ export const useCalendarData = ({
   // ===== ERROR HANDLING =====
   
   const handleError = useCallback((err: Error) => {
-    console.error('Calendar data error:', err);
+    logger.error('Calendar data error:', err);
     setError(err.message);
     setLoading('error');
   }, []);
@@ -291,44 +291,44 @@ export const useCalendarData = ({
       clearError();
       
       // SIMPLIFIED: Use only static data to avoid AJAX nonce issues
-      console.log('📊 Using static data only (no AJAX calls)');
+      logger.info('📊 Using static data only (no AJAX calls)');
       
-          const calendarData = getCalendarData();
-          const eventsData = calendarData.events || [];
+      const calendarData = getCalendarData();
+      const eventsData = calendarData.events || [];
           
-          // Apply date filtering if needed
-          let filteredEvents = eventsData;
+      // Apply date filtering if needed
+      let filteredEvents = eventsData;
           
-          if (startDate || endDate) {
-            filteredEvents = eventsData.filter((event: any) => {
-              const eventStart = parseDate(event.start);
-              const eventEnd = parseDate(event.end);
-              if (!eventStart || !eventEnd) return false;
+      if (startDate || endDate) {
+        filteredEvents = eventsData.filter((event: any) => {
+          const eventStart = parseDate(event.start);
+          const eventEnd = parseDate(event.end);
+          if (!eventStart || !eventEnd) return false;
               
-              if (startDate && eventEnd < startDate) return false;
-              if (endDate && eventStart > endDate) return false;
+          if (startDate && eventEnd < startDate) return false;
+          if (endDate && eventStart > endDate) return false;
               
-              return true;
-            });
-          }
+          return true;
+        });
+      }
           
-          // Apply trainer filtering
-          if (trainerId) {
-            filteredEvents = filteredEvents.filter((event: any) => 
-              event.trainerId === trainerId || event.extendedProps?.trainerId === trainerId
-            );
-          }
+      // Apply trainer filtering
+      if (trainerId) {
+        filteredEvents = filteredEvents.filter((event: any) => 
+          event.trainerId === trainerId || event.extendedProps?.trainerId === trainerId
+        );
+      }
           
-          const transformedEvents = filteredEvents.map(transformWordPressEvent);
-          setEvents(transformedEvents);
-          setTotalEvents(transformedEvents.length);
+      const transformedEvents = filteredEvents.map(transformWordPressEvent);
+      setEvents(transformedEvents);
+      setTotalEvents(transformedEvents.length);
       setLastFetch(new Date());
-          setLoading('success');
+      setLoading('success');
           
-      console.log('✅ Static data loaded successfully:', transformedEvents.length, 'events');
+      logger.info('✅ Static data loaded successfully:', transformedEvents.length, 'events');
           
     } catch (err) {
-      console.error('❌ Static data loading failed:', err);
+      logger.error('❌ Static data loading failed:', err);
       handleError(err instanceof Error ? err : new Error('Unknown error occurred'));
     }
   }, [view, initialDate, trainerId, clearError, handleError]);
@@ -340,7 +340,7 @@ export const useCalendarData = ({
       const trainersData = calendarData.trainers || [];
       
       const transformedTrainers = trainersData.map(transformWordPressTrainer);
-        setTrainers(transformedTrainers);
+      setTrainers(transformedTrainers);
       
     } catch (err) {
       if (err instanceof Error) {
@@ -361,7 +361,7 @@ export const useCalendarData = ({
   const addEvent = useCallback(async (eventData: Omit<CalendarEvent, 'id'>): Promise<CalendarEvent> => {
     try {
       // PHASE 4: Enable AJAX calls for event creation with safety mechanisms
-      console.log('🔄 PHASE 4: Attempting AJAX call to save_individual_calendar_event');
+      logger.info('🔄 PHASE 4: Attempting AJAX call to save_individual_calendar_event');
       
       const requestData = {
         event_data: JSON.stringify({
@@ -381,7 +381,7 @@ export const useCalendarData = ({
         })
       };
       
-      console.log('📤 AJAX Create Request Data:', requestData);
+      logger.info('📤 AJAX Create Request Data:', requestData);
       
       // PHASE 4: Make AJAX call with timeout
       const timeoutPromise = new Promise((_, reject) => {
@@ -391,7 +391,7 @@ export const useCalendarData = ({
       const ajaxPromise = ajaxRequest('save_individual_calendar_event', requestData);
       const response = await Promise.race([ajaxPromise, timeoutPromise]);
       
-      console.log('📥 AJAX Create Response:', response);
+      logger.info('📥 AJAX Create Response:', response);
       
       // Transform response to CalendarEvent format
       const newEvent: CalendarEvent = {
@@ -408,15 +408,15 @@ export const useCalendarData = ({
           (newEvent.duration === 20 && newEvent.eventType === 'assessment')) {
         setRecentBooking(newEvent);
         setBookingConfirmationVisible(true);
-        console.log('🎉 20-minute consultation booked:', newEvent);
+        logger.info('🎉 20-minute consultation booked:', newEvent);
       }
       
-      console.log('✅ AJAX create successful:', newEvent.title);
+      logger.info('✅ AJAX create successful:', newEvent.title);
       return newEvent;
       
     } catch (err) {
       if (err instanceof Error) {
-        console.warn('⚠️ AJAX create failed, creating locally:', err.message);
+        logger.warn('⚠️ AJAX create failed, creating locally:', err.message);
         handleError(err);
         
         // PHASE 4: Fallback to local creation if AJAX fails
@@ -434,10 +434,10 @@ export const useCalendarData = ({
             (newEvent.duration === 20 && newEvent.eventType === 'assessment')) {
           setRecentBooking(newEvent);
           setBookingConfirmationVisible(true);
-          console.log('🎉 20-minute consultation booked (fallback):', newEvent);
+          logger.info('🎉 20-minute consultation booked (fallback):', newEvent);
         }
         
-        console.log('🔄 Fallback create successful:', newEvent.title);
+        logger.info('🔄 Fallback create successful:', newEvent.title);
         return newEvent;
       }
       throw err;
@@ -447,7 +447,7 @@ export const useCalendarData = ({
   const updateEvent = useCallback(async (id: string | number, updates: Partial<CalendarEvent>): Promise<CalendarEvent> => {
     try {
       // PHASE 4: Enable AJAX calls for event updates with safety mechanisms
-      console.log('🔄 PHASE 4: Attempting AJAX call to save_individual_calendar_event for update');
+      logger.info('🔄 PHASE 4: Attempting AJAX call to save_individual_calendar_event for update');
       
       const requestData = {
         event_data: JSON.stringify({
@@ -468,7 +468,7 @@ export const useCalendarData = ({
         })
       };
       
-      console.log('📤 AJAX Update Request Data:', requestData);
+      logger.info('📤 AJAX Update Request Data:', requestData);
       
       // PHASE 4: Make AJAX call with timeout
       const timeoutPromise = new Promise((_, reject) => {
@@ -478,7 +478,7 @@ export const useCalendarData = ({
       const ajaxPromise = ajaxRequest('save_individual_calendar_event', requestData);
       const response = await Promise.race([ajaxPromise, timeoutPromise]);
       
-      console.log('📥 AJAX Update Response:', response);
+      logger.info('📥 AJAX Update Response:', response);
       
       // Create updated event object
       const updatedEvent = {
@@ -487,16 +487,16 @@ export const useCalendarData = ({
         updated: new Date()
       } as CalendarEvent;
       
-        setEvents(prev => prev.map(event => 
+      setEvents(prev => prev.map(event => 
         event.id === id ? { ...event, ...updatedEvent } : event
-        ));
+      ));
       
-      console.log('✅ AJAX update successful:', updatedEvent.title || 'Event');
-        return updatedEvent;
+      logger.info('✅ AJAX update successful:', updatedEvent.title || 'Event');
+      return updatedEvent;
       
     } catch (err) {
       if (err instanceof Error) {
-        console.warn('⚠️ AJAX update failed, updating locally:', err.message);
+        logger.warn('⚠️ AJAX update failed, updating locally:', err.message);
         handleError(err);
         
         // PHASE 4: Fallback to local update if AJAX fails
@@ -510,7 +510,7 @@ export const useCalendarData = ({
           event.id === id ? { ...event, ...updatedEvent } : event
         ));
         
-        console.log('🔄 Fallback update successful:', updatedEvent.title || 'Event');
+        logger.info('🔄 Fallback update successful:', updatedEvent.title || 'Event');
         return updatedEvent;
       }
       throw err;
@@ -520,13 +520,13 @@ export const useCalendarData = ({
   const deleteEvent = useCallback(async (id: string | number): Promise<void> => {
     try {
       // PHASE 4: Enable AJAX calls for event deletion with safety mechanisms
-      console.log('🔄 PHASE 4: Attempting AJAX call to delete_calendar_event');
+      logger.info('🔄 PHASE 4: Attempting AJAX call to delete_calendar_event');
       
       const requestData = {
         event_id: id
       };
       
-      console.log('📤 AJAX Delete Request Data:', requestData);
+      logger.info('📤 AJAX Delete Request Data:', requestData);
       
       // PHASE 4: Make AJAX call with timeout
       const timeoutPromise = new Promise((_, reject) => {
@@ -536,21 +536,21 @@ export const useCalendarData = ({
       const ajaxPromise = ajaxRequest('delete_calendar_event', requestData);
       const response = await Promise.race([ajaxPromise, timeoutPromise]);
       
-      console.log('📥 AJAX Delete Response:', response);
+      logger.info('📥 AJAX Delete Response:', response);
       
       // Remove event from local state
-        setEvents(prev => prev.filter(event => event.id !== id));
+      setEvents(prev => prev.filter(event => event.id !== id));
       
-      console.log('✅ AJAX delete successful for event ID:', id);
+      logger.info('✅ AJAX delete successful for event ID:', id);
       
     } catch (err) {
       if (err instanceof Error) {
-        console.warn('⚠️ AJAX delete failed, deleting locally:', err.message);
+        logger.warn('⚠️ AJAX delete failed, deleting locally:', err.message);
         handleError(err);
         
         // PHASE 4: Fallback to local deletion if AJAX fails
         setEvents(prev => prev.filter(event => event.id !== id));
-        console.log('🔄 Fallback delete successful for event ID:', id);
+        logger.info('🔄 Fallback delete successful for event ID:', id);
       }
       throw err;
     }
@@ -581,13 +581,13 @@ export const useCalendarData = ({
   
   useEffect(() => {
     if (autoRefresh && refreshInterval > 0) {
-      console.log('🔄 PHASE 4: Setting up auto-refresh with', refreshInterval, 'ms interval');
+      logger.info('🔄 PHASE 4: Setting up auto-refresh with', refreshInterval, 'ms interval');
       
       const scheduleRefresh = () => {
         refreshTimeoutRef.current = setTimeout(() => {
           // PHASE 4: Add safety checks before auto-refresh
           if (loading === 'loading') {
-            console.log('⏳ Auto-refresh skipped: already loading');
+            logger.info('⏳ Auto-refresh skipped: already loading');
             scheduleRefresh(); // Reschedule for next interval
             return;
           }
@@ -602,19 +602,19 @@ export const useCalendarData = ({
             
             // If trainer data was synced recently (within last 30 seconds), force full refresh
             if (syncAge < 30000) {
-              console.log('🎯 PHASE 2: Trainer data recently synchronized, forcing full refresh...');
+              logger.info('🎯 PHASE 2: Trainer data recently synchronized, forcing full refresh...');
               // Force full data refresh to pick up trainer changes
               fetchTrainers().then(() => {
-                console.log('✅ Trainer data refreshed due to recent sync');
+                logger.info('✅ Trainer data refreshed due to recent sync');
               }).catch(err => {
-                console.warn('⚠️ Trainer refresh failed:', err.message);
+                logger.warn('⚠️ Trainer refresh failed:', err.message);
               });
             }
           }
           
-          console.log('🔄 Auto-refresh triggered');
+          logger.info('🔄 Auto-refresh triggered');
           refreshData().catch(err => {
-            console.warn('⚠️ Auto-refresh failed:', err.message);
+            logger.warn('⚠️ Auto-refresh failed:', err.message);
           }).finally(() => {
             scheduleRefresh(); // Always reschedule
           });
@@ -626,7 +626,7 @@ export const useCalendarData = ({
       return () => {
         if (refreshTimeoutRef.current) {
           clearTimeout(refreshTimeoutRef.current);
-          console.log('🛑 Auto-refresh cleared');
+          logger.info('🛑 Auto-refresh cleared');
         }
       };
     }
@@ -636,12 +636,12 @@ export const useCalendarData = ({
   
   useEffect(() => {
     // PHASE 4: Re-enable initial data load with safety mechanisms
-    console.log('🔄 PHASE 4: Initial data load enabled with safety mechanisms');
+    logger.info('🔄 PHASE 4: Initial data load enabled with safety mechanisms');
     
     // Add a small delay to prevent immediate execution
     const timeoutId = setTimeout(() => {
       refreshData().catch(err => {
-        console.warn('⚠️ Initial data load failed, using static data:', err.message);
+        logger.warn('⚠️ Initial data load failed, using static data:', err.message);
       });
     }, 100);
     

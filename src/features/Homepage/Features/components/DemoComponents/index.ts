@@ -9,7 +9,7 @@ export { SampleWorkout } from './SampleWorkout';
 export { VideoPlayer } from './VideoPlayer';
 
 export type {
-    BackgroundVideoPlayerProps, DemoComponentConfig, ProgressChartProps, SampleWorkoutProps, VideoControlsConfig, VideoOverlayConfig, VideoPlayerProps
+  BackgroundVideoPlayerProps, DemoComponentConfig, ProgressChartProps, SampleWorkoutProps, VideoControlsConfig, VideoOverlayConfig, VideoPlayerProps
 } from './types';
 
 // Re-export types from parent for convenience

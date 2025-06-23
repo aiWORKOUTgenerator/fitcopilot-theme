@@ -50,5 +50,5 @@ export interface BenefitsListProps {
     /**
      * Custom CTA text (defaults to "View All Programs")
      */
-    ctaText?: string;
+    _ctaText?: string;
 } 

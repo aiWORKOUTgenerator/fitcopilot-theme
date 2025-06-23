@@ -268,22 +268,22 @@ export const validateTrainingFeaturesCTAProps = (props: {
     
     // Validate required navigation method
     if (!onNavigate && !href) {
-      console.warn('TrainingFeaturesCTA: Either onNavigate or href must be provided for navigation to work properly.');
+      logger.warn('TrainingFeaturesCTA: Either onNavigate or href must be provided for navigation to work properly.');
     }
     
     // Validate onNavigate function
     if (onNavigate && typeof onNavigate !== 'function') {
-      console.warn('TrainingFeaturesCTA: onNavigate must be a function.');
+      logger.warn('TrainingFeaturesCTA: onNavigate must be a function.');
     }
     
     // Validate featureTitle format
     if (featureTitle && typeof featureTitle !== 'string') {
-      console.warn('TrainingFeaturesCTA: featureTitle must be a string.');
+      logger.warn('TrainingFeaturesCTA: featureTitle must be a string.');
     }
     
     // Validate href format
     if (href && typeof href !== 'string') {
-      console.warn('TrainingFeaturesCTA: href must be a string.');
+      logger.warn('TrainingFeaturesCTA: href must be a string.');
     }
   }
 };

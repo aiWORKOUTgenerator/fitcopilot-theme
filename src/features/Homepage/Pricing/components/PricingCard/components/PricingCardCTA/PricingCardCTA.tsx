@@ -28,10 +28,10 @@ import { PricingCardCTAProps } from '../../types';
  */
 export const PricingCardCTA: React.FC<PricingCardCTAProps> = ({
   plan,
-  isHovered,
+  _isHovered,
   tooltipStates,
   onClick,
-  variant = 'default'
+  _variant = 'default'
 }) => {
   /**
    * Get plan-specific button styling classes
@@ -41,14 +41,14 @@ export const PricingCardCTA: React.FC<PricingCardCTAProps> = ({
     const baseClasses = 'w-full flex items-center justify-center rounded-lg px-4 py-3 font-medium transition-all duration-300';
     
     switch (plan.name) {
-      case 'Basic':
-        return `${baseClasses} bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:shadow-md hover:shadow-blue-500/20 active:from-blue-600 active:to-indigo-700`;
-      case 'Pro':
-        return `${baseClasses} bg-gradient-to-r from-lime-400 to-emerald-500 text-gray-900 hover:shadow-md hover:shadow-lime-500/20 active:from-lime-500 active:to-emerald-600`;
-      case 'Elite':
-        return `${baseClasses} bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:shadow-md hover:shadow-purple-500/20 active:from-purple-600 active:to-indigo-700`;
-      default:
-        return `${baseClasses} bg-gray-700 text-white hover:bg-gray-600`;
+    case 'Basic':
+      return `${baseClasses} bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:shadow-md hover:shadow-blue-500/20 active:from-blue-600 active:to-indigo-700`;
+    case 'Pro':
+      return `${baseClasses} bg-gradient-to-r from-lime-400 to-emerald-500 text-gray-900 hover:shadow-md hover:shadow-lime-500/20 active:from-lime-500 active:to-emerald-600`;
+    case 'Elite':
+      return `${baseClasses} bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:shadow-md hover:shadow-purple-500/20 active:from-purple-600 active:to-indigo-700`;
+    default:
+      return `${baseClasses} bg-gray-700 text-white hover:bg-gray-600`;
     }
   };
 
@@ -58,12 +58,12 @@ export const PricingCardCTA: React.FC<PricingCardCTAProps> = ({
    */
   const getButtonText = (): string => {
     switch (plan.name) {
-      case 'Basic':
-        return tooltipStates.isBasicCardHovered ? 'Get FREE Access' : plan.ctaText;
-      case 'Pro':
-        return tooltipStates.isProCardHovered ? 'Get Beta Price - $10/mo' : 'Get Started';
-      default:
-        return plan.isPopular ? 'Get Started' : (plan.ctaText || 'Get Started');
+    case 'Basic':
+      return tooltipStates.isBasicCardHovered ? 'Get FREE Access' : plan.ctaText;
+    case 'Pro':
+      return tooltipStates.isProCardHovered ? 'Get Beta Price - $10/mo' : 'Get Started';
+    default:
+      return plan.isPopular ? 'Get Started' : (plan.ctaText || 'Get Started');
     }
   };
 
@@ -82,12 +82,12 @@ export const PricingCardCTA: React.FC<PricingCardCTAProps> = ({
    */
   const getSparklesColor = (): string => {
     switch (plan.name) {
-      case 'Basic':
-        return 'text-blue-300';
-      case 'Pro':
-        return 'text-lime-300';
-      default:
-        return '';
+    case 'Basic':
+      return 'text-blue-300';
+    case 'Pro':
+      return 'text-lime-300';
+    default:
+      return '';
     }
   };
 

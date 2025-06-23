@@ -130,7 +130,7 @@ const ThemeUsageExample: React.FC = () => {
           overflow: 'auto',
           fontSize: '0.875rem'
         }}>
-{`import { useTheme } from '../../context/ThemeContext';
+          {`import { useTheme } from '../../context/ThemeContext';
 
 const MyComponent = () => {
   const { theme, setTheme } = useTheme();

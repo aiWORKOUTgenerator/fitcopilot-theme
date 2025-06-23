@@ -110,7 +110,7 @@ const FormField: React.FC<FormFieldProps> = (props) => {
   // Additional field types would be implemented here
 
   // Fallback for unknown field types
-  console.error(`Unknown field type: ${(props as any).fieldType}`);
+  logger.error(`Unknown field type: ${(props as any).fieldType}`);
   return null;
 };
 

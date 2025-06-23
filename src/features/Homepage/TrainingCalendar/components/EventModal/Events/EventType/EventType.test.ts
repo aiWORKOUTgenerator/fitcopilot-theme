@@ -9,25 +9,25 @@
  */
 
 import {
-    EVENT_TYPE_OPTIONS,
-    getAutomaticSelections,
-    getDurationOptionsForEventType,
-    getEventTypeOption,
-    getSmartSchedulingConfig,
-    hasAutomaticSelections
+  EVENT_TYPE_OPTIONS,
+  getAutomaticSelections,
+  getDurationOptionsForEventType,
+  getEventTypeOption,
+  getSmartSchedulingConfig,
+  hasAutomaticSelections
 } from './EventTypeConfig';
 import {
-    validateDuration,
-    validateEventConfiguration,
-    validateEventType
+  validateDuration,
+  validateEventConfiguration,
+  validateEventType
 } from './EventTypeValidator';
 import {
-    createSchedulingEngine,
-    findQuickAvailableSlots
+  createSchedulingEngine,
+  findQuickAvailableSlots
 } from './SchedulingEngine';
 import {
-    filterSlotsByPreferences,
-    formatTimeSlot
+  filterSlotsByPreferences,
+  formatTimeSlot
 } from './SchedulingUtils';
 
 describe('EventType Module', () => {

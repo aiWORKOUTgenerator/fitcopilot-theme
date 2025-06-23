@@ -117,7 +117,7 @@ export const createLazyComponent = <T extends ComponentType<any>>(
  */
 export const preloadComponent = (importFn: () => Promise<any>): Promise<any> => {
   return importFn().catch(error => {
-    console.warn('Component preload failed:', error);
+    logger.warn('Component preload failed:', error);
     return null;
   });
 };
@@ -220,17 +220,17 @@ export const preloadCalendarPlugins = async (view: string) => {
   
   try {
     switch (view) {
-      case 'dayGridMonth':
-        plugins.push(import('@fullcalendar/daygrid'));
-        break;
-      case 'timeGridWeek':
-      case 'timeGridDay':
-        plugins.push(import('@fullcalendar/timegrid'));
-        break;
-      case 'listWeek':
-      case 'listMonth':
-        plugins.push(import('@fullcalendar/list'));
-        break;
+    case 'dayGridMonth':
+      plugins.push(import('@fullcalendar/daygrid'));
+      break;
+    case 'timeGridWeek':
+    case 'timeGridDay':
+      plugins.push(import('@fullcalendar/timegrid'));
+      break;
+    case 'listWeek':
+    case 'listMonth':
+      plugins.push(import('@fullcalendar/list'));
+      break;
     }
     
     // Always preload interaction plugin
@@ -238,7 +238,7 @@ export const preloadCalendarPlugins = async (view: string) => {
     
     await Promise.all(plugins);
   } catch (error) {
-    console.warn('Failed to preload calendar plugins:', error);
+    logger.warn('Failed to preload calendar plugins:', error);
   }
 };
 

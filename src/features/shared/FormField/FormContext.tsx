@@ -281,7 +281,7 @@ export const FormProvider: React.FC<FormProviderProps> = ({
           await onSubmit(values);
         }
       } catch (error) {
-        console.error('Form submission error:', error);
+        logger.error('Form submission error:', error);
       }
     } else if (onError) {
       // Call onError callback

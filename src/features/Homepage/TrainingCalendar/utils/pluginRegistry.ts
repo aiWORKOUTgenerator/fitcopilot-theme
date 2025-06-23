@@ -225,8 +225,8 @@ export class FullCalendarPluginRegistry {
     // Store stats
     this.loadStats.push(...loadStats);
 
-    console.log(`✅ Loaded ${plugins.length} FullCalendar plugins for ${view} in ${totalLoadTime.toFixed(2)}ms`);
-    console.log(`📊 Total size: ${totalSize}KB, Cache hits: ${loadStats.filter(s => s.cacheHit).length}/${loadStats.length}`);
+    logger.info(`✅ Loaded ${plugins.length} FullCalendar plugins for ${view} in ${totalLoadTime.toFixed(2)}ms`);
+    logger.info(`📊 Total size: ${totalSize}KB, Cache hits: ${loadStats.filter(s => s.cacheHit).length}/${loadStats.length}`);
 
     return {
       plugins: loadedPlugins,
@@ -255,7 +255,7 @@ export class FullCalendarPluginRegistry {
    * Preload plugins for common views
    */
   async preloadCommonViews(views: string[] = ['dayGridMonth', 'timeGridWeek']): Promise<void> {
-    console.log(`🔄 Preloading plugins for views: ${views.join(', ')}`);
+    logger.info(`🔄 Preloading plugins for views: ${views.join(', ')}`);
 
     const preloadPromises = views.map(async (view) => {
       if (this.preloadPromises.has(view)) {
@@ -263,7 +263,7 @@ export class FullCalendarPluginRegistry {
       }
 
       const promise = this.loadPluginsForView(view).catch(error => {
-        console.warn(`⚠️ Failed to preload plugins for ${view}:`, error);
+        logger.warn(`⚠️ Failed to preload plugins for ${view}:`, error);
         return null;
       });
 
@@ -272,7 +272,7 @@ export class FullCalendarPluginRegistry {
     });
 
     await Promise.allSettled(preloadPromises);
-    console.log(`✅ Preloading completed for ${views.length} views`);
+    logger.info(`✅ Preloading completed for ${views.length} views`);
   }
 
   /**
@@ -318,7 +318,7 @@ export class FullCalendarPluginRegistry {
     this.cache.clear();
     this.loadStats = [];
     this.preloadPromises.clear();
-    console.log('🧹 FullCalendar plugin registry reset');
+    logger.info('🧹 FullCalendar plugin registry reset');
   }
 
   /**
@@ -338,7 +338,7 @@ export class FullCalendarPluginRegistry {
     totalPluginsLoaded: number;
     slowestPlugin: PluginLoadStats | null;
     fastestPlugin: PluginLoadStats | null;
-  } {
+    } {
     if (this.loadStats.length === 0) {
       return {
         averageLoadTime: 0,

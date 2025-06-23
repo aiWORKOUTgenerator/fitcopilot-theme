@@ -32,15 +32,15 @@ export function Testimonials({ variant = 'default', className = '' }: Testimonia
         // Try to get data from WordPress localized script
         if (typeof window !== 'undefined' && (window as any).fitcopilotTestimonialsData) {
           const wpData = (window as any).fitcopilotTestimonialsData;
-          console.log('Testimonials data from WordPress:', wpData);
+          logger.info('Testimonials data from WordPress:', wpData);
           
           if (wpData.testimonials && wpData.testimonials.length > 0) {
             // Filter only active testimonials
             const activeTestimonials = wpData.testimonials.filter((t: any) => t.active !== false);
             setTestimonials(activeTestimonials);
-            console.log(`Loaded ${activeTestimonials.length} active testimonials from WordPress`);
+            logger.info(`Loaded ${activeTestimonials.length} active testimonials from WordPress`);
           } else {
-            console.warn('No testimonials found in WordPress data, using defaults');
+            logger.warn('No testimonials found in WordPress data, using defaults');
             setTestimonials(defaultTestimonials);
           }
         } else if (typeof window !== 'undefined' && (window as any).athleteDashboardData?.wpData?.testimonialsData) {
@@ -49,16 +49,16 @@ export function Testimonials({ variant = 'default', className = '' }: Testimonia
           if (wpData.testimonials && wpData.testimonials.length > 0) {
             const activeTestimonials = wpData.testimonials.filter((t: any) => t.active !== false);
             setTestimonials(activeTestimonials);
-            console.log(`Loaded ${activeTestimonials.length} active testimonials from athlete dashboard data`);
+            logger.info(`Loaded ${activeTestimonials.length} active testimonials from athlete dashboard data`);
           } else {
             setTestimonials(defaultTestimonials);
           }
         } else {
-          console.warn('WordPress testimonials data not found, using static defaults');
+          logger.warn('WordPress testimonials data not found, using static defaults');
           setTestimonials(defaultTestimonials);
         }
       } catch (error) {
-        console.error('Error loading testimonials:', error);
+        logger.error('Error loading testimonials:', error);
         setTestimonials(defaultTestimonials);
       } finally {
         setIsLoading(false);
@@ -140,8 +140,8 @@ export function Testimonials({ variant = 'default', className = '' }: Testimonia
   const canGoNext = currentIndex < maxIndex;
 
   // Generate variant-specific accent color
-  const getAccentClass = () => {
-    switch (variant) {
+  const _getAccentClass = (variantKey: GlobalVariantKey): string => {
+    switch (variantKey) {
     case 'gym':
       return 'text-lime-300';
     case 'sports':

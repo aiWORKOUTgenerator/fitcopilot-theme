@@ -142,14 +142,14 @@ export const PERSONAL_TRAINING_SCHEDULING: SmartSchedulingConfig = {
  */
 export const getSmartSchedulingConfig = (eventType: string): SmartSchedulingConfig | null => {
   switch (eventType) {
-    case 'Free Consultation (20 Min)':
-      return FREE_CONSULTATION_SCHEDULING;
-    case 'Online Group Fitness Class (45 Min)':
-      return GROUP_FITNESS_SCHEDULING;
-    case 'Personal Training Session':
-      return PERSONAL_TRAINING_SCHEDULING;
-    default:
-      return null;
+  case 'Free Consultation (20 Min)':
+    return FREE_CONSULTATION_SCHEDULING;
+  case 'Online Group Fitness Class (45 Min)':
+    return GROUP_FITNESS_SCHEDULING;
+  case 'Personal Training Session':
+    return PERSONAL_TRAINING_SCHEDULING;
+  default:
+    return null;
   }
 };
 

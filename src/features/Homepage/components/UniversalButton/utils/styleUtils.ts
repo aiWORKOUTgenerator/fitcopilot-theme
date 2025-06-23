@@ -71,45 +71,45 @@ export const getThemeStyleConfig = (
   
   // Add theme-specific CSS custom properties based on section and theme
   switch (theme) {
-    case 'gym':
-      customProperties['--button-theme-primary'] = 'var(--color-violet-400)';
-      customProperties['--button-theme-secondary'] = 'var(--color-purple-500)';
-      break;
-    case 'sports':
-      customProperties['--button-theme-primary'] = 'var(--color-cyan-400)';
-      customProperties['--button-theme-secondary'] = 'var(--color-blue-500)';
-      break;
-    case 'wellness':
-      customProperties['--button-theme-primary'] = 'var(--color-teal-400)';
-      customProperties['--button-theme-secondary'] = 'var(--color-teal-500)';
-      break;
-    case 'modern':
-      customProperties['--button-theme-primary'] = 'var(--color-slate-400)';
-      customProperties['--button-theme-secondary'] = 'var(--color-slate-500)';
-      break;
-    case 'classic':
-      customProperties['--button-theme-primary'] = 'var(--color-amber-400)';
-      customProperties['--button-theme-secondary'] = 'var(--color-amber-500)';
-      break;
-    case 'minimalist':
-      customProperties['--button-theme-primary'] = 'var(--color-gray-400)';
-      customProperties['--button-theme-secondary'] = 'var(--color-gray-500)';
-      break;
-    case 'boutique':
-      customProperties['--button-theme-primary'] = 'var(--color-pink-400)';
-      customProperties['--button-theme-secondary'] = 'var(--color-rose-500)';
-      break;
-    case 'registration':
-      customProperties['--button-theme-primary'] = 'var(--color-blue-400)';
-      customProperties['--button-theme-secondary'] = 'var(--color-blue-500)';
-      break;
-    case 'mobile':
-      customProperties['--button-theme-primary'] = 'var(--color-indigo-400)';
-      customProperties['--button-theme-secondary'] = 'var(--color-indigo-500)';
-      break;
-    default:
-      customProperties['--button-theme-primary'] = 'var(--color-lime-300)';
-      customProperties['--button-theme-secondary'] = 'var(--color-emerald-400)';
+  case 'gym':
+    customProperties['--button-theme-primary'] = 'var(--color-violet-400)';
+    customProperties['--button-theme-secondary'] = 'var(--color-purple-500)';
+    break;
+  case 'sports':
+    customProperties['--button-theme-primary'] = 'var(--color-cyan-400)';
+    customProperties['--button-theme-secondary'] = 'var(--color-blue-500)';
+    break;
+  case 'wellness':
+    customProperties['--button-theme-primary'] = 'var(--color-teal-400)';
+    customProperties['--button-theme-secondary'] = 'var(--color-teal-500)';
+    break;
+  case 'modern':
+    customProperties['--button-theme-primary'] = 'var(--color-slate-400)';
+    customProperties['--button-theme-secondary'] = 'var(--color-slate-500)';
+    break;
+  case 'classic':
+    customProperties['--button-theme-primary'] = 'var(--color-amber-400)';
+    customProperties['--button-theme-secondary'] = 'var(--color-amber-500)';
+    break;
+  case 'minimalist':
+    customProperties['--button-theme-primary'] = 'var(--color-gray-400)';
+    customProperties['--button-theme-secondary'] = 'var(--color-gray-500)';
+    break;
+  case 'boutique':
+    customProperties['--button-theme-primary'] = 'var(--color-pink-400)';
+    customProperties['--button-theme-secondary'] = 'var(--color-rose-500)';
+    break;
+  case 'registration':
+    customProperties['--button-theme-primary'] = 'var(--color-blue-400)';
+    customProperties['--button-theme-secondary'] = 'var(--color-blue-500)';
+    break;
+  case 'mobile':
+    customProperties['--button-theme-primary'] = 'var(--color-indigo-400)';
+    customProperties['--button-theme-secondary'] = 'var(--color-indigo-500)';
+    break;
+  default:
+    customProperties['--button-theme-primary'] = 'var(--color-lime-300)';
+    customProperties['--button-theme-secondary'] = 'var(--color-emerald-400)';
   }
   
   return {
@@ -191,16 +191,16 @@ export const mapSectionPropsToContextType = (
   props: Record<string, any>
 ): string | undefined => {
   switch (sectionContext) {
-    case 'personal-training':
-      return props.coachType;
-    case 'training-features':
-      return props.featureType;
-    case 'pricing':
-      return props.planType;
-    case 'testimonials':
-      return props.testimonialType;
-    default:
-      return props.contextType;
+  case 'personal-training':
+    return props.coachType;
+  case 'training-features':
+    return props.featureType;
+  case 'pricing':
+    return props.planType;
+  case 'testimonials':
+    return props.testimonialType;
+  default:
+    return props.contextType;
   }
 };
 
@@ -212,10 +212,10 @@ export const mapSectionPropsToStyleVariant = (
   props: Record<string, any>
 ): string | undefined => {
   switch (sectionContext) {
-    case 'training':
-      return props.styleVariant;
-    default:
-      return props.styleVariant;
+  case 'training':
+    return props.styleVariant;
+  default:
+    return props.styleVariant;
   }
 };
 
@@ -227,11 +227,11 @@ export const mapSectionPropsToGradientClass = (
   props: Record<string, any>
 ): string | undefined => {
   switch (sectionContext) {
-    case 'features':
-    case 'training-features':
-      return props.gradientClass;
-    default:
-      return props.gradientClass;
+  case 'features':
+  case 'training-features':
+    return props.gradientClass;
+  default:
+    return props.gradientClass;
   }
 };
 
@@ -243,10 +243,10 @@ export const mapSectionPropsToGradientColor = (
   props: Record<string, any>
 ): string | undefined => {
   switch (sectionContext) {
-    case 'journey':
-      return props.gradientColor;
-    default:
-      return props.gradientColor;
+  case 'journey':
+    return props.gradientColor;
+  default:
+    return props.gradientColor;
   }
 };
 
@@ -258,10 +258,10 @@ export const mapSectionPropsToGradientColors = (
   props: Record<string, any>
 ): string | undefined => {
   switch (sectionContext) {
-    case 'pricing':
-      return props.gradientColors;
-    default:
-      return props.gradientColors;
+  case 'pricing':
+    return props.gradientColors;
+  default:
+    return props.gradientColors;
   }
 };
 
@@ -299,20 +299,20 @@ export const getSupportedVariantsForSection = (sectionContext: SectionContext): 
   const baseVariants: UniversalButtonVariant[] = ['primary', 'secondary'];
   
   switch (sectionContext) {
-    case 'hero':
-      // Hero only supports primary and secondary based on audit
-      return baseVariants;
-    case 'features':
-    case 'training':
-    case 'journey':
-    case 'personal-training':
-    case 'training-features':
-    case 'pricing':
-    case 'testimonials':
-      // Other sections can support additional variants
-      return [...baseVariants, 'tertiary', 'ghost', 'link'];
-    default:
-      return baseVariants;
+  case 'hero':
+    // Hero only supports primary and secondary based on audit
+    return baseVariants;
+  case 'features':
+  case 'training':
+  case 'journey':
+  case 'personal-training':
+  case 'training-features':
+  case 'pricing':
+  case 'testimonials':
+    // Other sections can support additional variants
+    return [...baseVariants, 'tertiary', 'ghost', 'link'];
+  default:
+    return baseVariants;
   }
 };
 

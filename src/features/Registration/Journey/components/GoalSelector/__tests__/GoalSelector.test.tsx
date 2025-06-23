@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint-disable */
 import { act, render, screen } from '@testing-library/react';
 import { axe } from 'jest-axe';

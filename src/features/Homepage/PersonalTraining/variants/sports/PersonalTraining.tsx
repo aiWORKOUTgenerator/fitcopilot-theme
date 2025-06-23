@@ -1,10 +1,10 @@
 import {
-    Award,
-    Calendar,
-    Dumbbell,
-    Heart,
-    RefreshCw,
-    User
+  Award,
+  Calendar,
+  Dumbbell,
+  Heart,
+  RefreshCw,
+  User
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import MediaContainer from '../../components/MediaContainer';

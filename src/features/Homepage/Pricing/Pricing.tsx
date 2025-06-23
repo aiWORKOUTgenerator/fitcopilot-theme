@@ -237,14 +237,14 @@ export const Pricing: React.FC<PricingProps> = ({
   }, [createAnimationSequence]);
   
   // Handle Pro Plan click with animation sequence
-  const handleProClick = useCallback(() => {
+  const _handleProClick = useCallback(() => {
     if (animationState === 'normal') {
       setAnimationState('exploding');
       window.setTimeout(() => {
         setAnimationState('transitioning');
         window.setTimeout(() => {
           setAnimationState('betaPrice');
-      }, 500);
+        }, 500);
       }, ANIMATION_TIMINGS.ANIMATION_RESTART_DELAY);
     } else {
       setAnimationState('normal');
@@ -254,7 +254,7 @@ export const Pricing: React.FC<PricingProps> = ({
       onPlanSelect(2, 'Pro');
     }
     
-    console.log('Pro plan selected');
+    logger.info('Pro plan selected');
   }, [animationState, onPlanSelect]);
 
   const toggleFeatures = useCallback((planName: string) => {
@@ -293,7 +293,7 @@ export const Pricing: React.FC<PricingProps> = ({
     // Default plans data
     return [
       {
-      name: 'Basic',
+        name: 'Basic',
         price: '$9.99',
         betaPrice: 'FREE',
         description: 'Perfect for beginners starting their fitness journey',
@@ -305,7 +305,7 @@ export const Pricing: React.FC<PricingProps> = ({
         badge: 'Starter',
         ctaText: 'Get Started',
         ctaLink: 'https://buy.stripe.com/aEU005dBndUQ2D68wI',
-      features: [
+        features: [
           { text: 'AI-generated workouts', isHighlighted: true },
           { text: 'Enhanced Fitness Profile' },
           { text: 'Multiple Output Formats' },
@@ -315,7 +315,7 @@ export const Pricing: React.FC<PricingProps> = ({
         isPopular: false
       },
       {
-      name: 'Pro',
+        name: 'Pro',
         price: '$19.99',
         betaPrice: '$10',
         description: 'Our most popular plan for serious fitness enthusiasts',
@@ -327,7 +327,7 @@ export const Pricing: React.FC<PricingProps> = ({
         badge: 'Most Popular',
         ctaText: 'Try Pro Plan',
         ctaLink: 'https://buy.stripe.com/aEU005dBndUQ2D68wI',
-      features: [
+        features: [
           { text: 'Everything in Basic', isHighlighted: true },
           { text: 'Advanced workout tracking', isHighlighted: true },
           { text: 'Full equipment customization' },
@@ -344,14 +344,14 @@ export const Pricing: React.FC<PricingProps> = ({
         isPopular: true
       },
       {
-      name: 'Elite',
+        name: 'Elite',
         price: '$99.99',
         description: 'Maximize Your Potential with Expert Coaches & AI Mastery',
         icon: null,
-      accentColors: 'from-purple-300 to-indigo-400',
-      titleTextColors: 'from-lime-300 to-emerald-400',
-      priceTextColors: 'from-lime-300 to-emerald-400',
-      accentTextColor: 'purple-300',
+        accentColors: 'from-purple-300 to-indigo-400',
+        titleTextColors: 'from-lime-300 to-emerald-400',
+        priceTextColors: 'from-lime-300 to-emerald-400',
+        accentTextColor: 'purple-300',
         badge: 'Premium',
         ctaText: 'Go Elite',
         ctaLink: 'https://buy.stripe.com/aEU28d0OB04091u3cs',
@@ -406,7 +406,7 @@ export const Pricing: React.FC<PricingProps> = ({
   return (
     <section 
       id="pricing" 
-                    className={`pricing-section w-full py-24 px-4 relative overflow-hidden bg-gray-900 ${className}`}
+      className={`pricing-section w-full py-24 px-4 relative overflow-hidden bg-gray-900 ${className}`}
       data-theme={currentTheme !== 'default' ? currentTheme : undefined}
     >
       {/* Background grid pattern now handled by ::before pseudo-element in CSS */}
@@ -415,20 +415,20 @@ export const Pricing: React.FC<PricingProps> = ({
       {showBackgroundParticles && (
         <div className="price-particles pointer-events-none">
           {Array.from({ length: 12 }).map((_, i) => (
-      <div
-        key={i}
-        className="price-particle"
-        style={{
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-          width: `${Math.random() * 4 + 2}px`,
-          height: `${Math.random() * 4 + 2}px`,
-          animationDelay: `${Math.random() * 4}s`,
-          animationDuration: `${Math.random() * 8 + 10}s`
-        }}
-      />
+            <div
+              key={i}
+              className="price-particle"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                width: `${Math.random() * 4 + 2}px`,
+                height: `${Math.random() * 4 + 2}px`,
+                animationDelay: `${Math.random() * 4}s`,
+                animationDuration: `${Math.random() * 8 + 10}s`
+              }}
+            />
           ))}
-      </div>
+        </div>
       )}
       
       <div className="max-w-6xl mx-auto relative z-10 text-sharp">
@@ -451,9 +451,9 @@ export const Pricing: React.FC<PricingProps> = ({
               plan={plan}
               index={index}
               animationState={plan.name === 'Pro' ? animationState : 
-                             plan.name === 'Basic' ? basicAnimationState : 'normal'}
+                plan.name === 'Basic' ? basicAnimationState : 'normal'}
               isHovered={plan.name === 'Basic' ? tooltipStates.isBasicCardHovered :
-                        plan.name === 'Pro' ? tooltipStates.isProCardHovered : false}
+                plan.name === 'Pro' ? tooltipStates.isProCardHovered : false}
               featuresExpanded={expandedFeatures[plan.name] || false}
               tooltipStates={tooltipStates}
               variant={currentTheme}
@@ -462,7 +462,7 @@ export const Pricing: React.FC<PricingProps> = ({
               onPlanSelect={onPlanSelect}
               onToggleFeatures={() => toggleFeatures(plan.name)}
               renderExplosionParticles={() => renderExplosionParticles}
-                         />
+            />
           ))}
         </div>
         

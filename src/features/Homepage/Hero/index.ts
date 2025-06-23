@@ -73,7 +73,7 @@ export { HeroComponent as Hero };
  * <HeroVariant />
  * ```
  */
-    export { getHeroVariant };
+export { getHeroVariant };
 
 /**
  * Variant component map
@@ -90,7 +90,7 @@ export { HeroComponent as Hero };
  * <GymVariant />
  * ```
  */
-    export { HeroMap };
+export { HeroMap };
 
 // ============================================================================
 // TYPE EXPORTS
@@ -115,7 +115,7 @@ export { HeroComponent as Hero };
  * };
  * ```
  */
-    export * from './types';
+export * from './types';
 
 // ============================================================================
 // COMPONENT EXPORTS
@@ -146,7 +146,7 @@ export * from './components';
  * This allows importing shared types directly from the Hero module
  */
 export type {
-    BaseButtonProps, BaseComponentProps,
-    BaseSectionProps, GlobalVariantKey
+  BaseButtonProps, BaseComponentProps,
+  BaseSectionProps, GlobalVariantKey
 } from '../types/shared';
 

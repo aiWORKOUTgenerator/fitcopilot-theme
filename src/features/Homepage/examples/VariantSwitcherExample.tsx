@@ -11,11 +11,11 @@
 
 import React from 'react';
 import {
-    getVariantClass,
-    isWordPressEnvironment,
-    useGlobalVariant,
-    useSectionVariant,
-    useWordPressVariant
+  getVariantClass,
+  isWordPressEnvironment,
+  useGlobalVariant,
+  useSectionVariant,
+  useWordPressVariant
 } from '../context/GlobalVariantContext';
 import { GlobalVariantKey } from '../types/shared';
 
@@ -75,7 +75,7 @@ export const VariantSwitcher: React.FC<VariantSwitcherProps> = ({
     try {
       await setVariant(variant);
     } catch (err) {
-      console.error('Failed to change variant:', err);
+      logger.error('Failed to change variant:', err);
     }
   };
 
@@ -83,7 +83,7 @@ export const VariantSwitcher: React.FC<VariantSwitcherProps> = ({
     try {
       await syncWithWordPress();
     } catch (err) {
-      console.error('Failed to sync with WordPress:', err);
+      logger.error('Failed to sync with WordPress:', err);
     }
   };
 
@@ -135,9 +135,9 @@ export const VariantSwitcher: React.FC<VariantSwitcherProps> = ({
             className={`
               px-3 py-2 text-xs rounded-md border transition-colors
               ${currentVariant === variant
-                ? 'bg-blue-100 border-blue-300 text-blue-800 dark:bg-blue-900 dark:border-blue-600 dark:text-blue-200'
-                : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600'
-              }
+            ? 'bg-blue-100 border-blue-300 text-blue-800 dark:bg-blue-900 dark:border-blue-600 dark:text-blue-200'
+            : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600'
+          }
               ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
             `}
             data-testid={`variant-${variant}`}
@@ -158,9 +158,9 @@ export const VariantSwitcher: React.FC<VariantSwitcherProps> = ({
               className={`
                 text-xs px-2 py-1 rounded-full
                 ${wpIntegration.isConnected 
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
-                  : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                }
+          ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
+          : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+        }
               `}
             >
               {wpIntegration.isConnected ? 'Connected' : 'Disconnected'}
@@ -258,9 +258,9 @@ const SectionSupportItem: React.FC<{
         className={`
           px-1 py-0.5 rounded text-xs
           ${supported 
-            ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' 
-            : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'
-          }
+      ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' 
+      : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400'
+    }
         `}
       >
         {supported ? '✓' : '✗'}

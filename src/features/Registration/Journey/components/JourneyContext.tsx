@@ -11,19 +11,19 @@ const journeyLogger = (() => {
     }
     // Fallback to a minimal logger if the main logger is not ready
     return {
-      debug: (message: string, ...data: unknown[]) => console.log(`[JourneyContext] ${message}`, ...data),
-      info: (message: string, ...data: unknown[]) => console.info(`[JourneyContext] ${message}`, ...data),
-      warn: (message: string, ...data: unknown[]) => console.warn(`[JourneyContext] ${message}`, ...data),
-      error: (message: string, ...data: unknown[]) => console.error(`[JourneyContext] ${message}`, ...data)
+      debug: (message: string, ...data: unknown[]) => logger.info(`[JourneyContext] ${message}`, ...data),
+      info: (message: string, ...data: unknown[]) => logger.info(`[JourneyContext] ${message}`, ...data),
+      warn: (message: string, ...data: unknown[]) => logger.warn(`[JourneyContext] ${message}`, ...data),
+      error: (message: string, ...data: unknown[]) => logger.error(`[JourneyContext] ${message}`, ...data)
     };
   } catch (err) {
     // In case of any error, provide a minimal fallback logger
-    console.warn('Failed to initialize journeyLogger, using fallback', err);
+    logger.warn('Failed to initialize journeyLogger, using fallback', err);
     return {
-      debug: (message: string, ...data: unknown[]) => console.log(`[JourneyContext] ${message}`, ...data),
-      info: (message: string, ...data: unknown[]) => console.info(`[JourneyContext] ${message}`, ...data),
-      warn: (message: string, ...data: unknown[]) => console.warn(`[JourneyContext] ${message}`, ...data),
-      error: (message: string, ...data: unknown[]) => console.error(`[JourneyContext] ${message}`, ...data)
+      debug: (message: string, ...data: unknown[]) => logger.info(`[JourneyContext] ${message}`, ...data),
+      info: (message: string, ...data: unknown[]) => logger.info(`[JourneyContext] ${message}`, ...data),
+      warn: (message: string, ...data: unknown[]) => logger.warn(`[JourneyContext] ${message}`, ...data),
+      error: (message: string, ...data: unknown[]) => logger.error(`[JourneyContext] ${message}`, ...data)
     };
   }
 })();

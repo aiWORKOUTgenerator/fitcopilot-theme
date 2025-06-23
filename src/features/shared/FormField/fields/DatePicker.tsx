@@ -30,7 +30,7 @@ const DateField: React.FC<DateFieldProps> = ({
   className,
   'data-testid': testId,
   isLoading = false,
-  validators,
+  _validators,
   ...otherProps
 }) => {
   // Generate ID if not provided

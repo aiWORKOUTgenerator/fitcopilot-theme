@@ -3,9 +3,9 @@
  * These utilities help properly validate types at runtime
  */
 import {
-    FullscreenSupport,
-    MediaAPIMethod,
-    PictureInPictureSupport
+  FullscreenSupport,
+  MediaAPIMethod,
+  PictureInPictureSupport
 } from '../../types/mediaTypes';
 import { VendorExtendedVideoElement, VendorExtendedWindow } from '../../types/vendor';
 

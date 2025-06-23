@@ -34,38 +34,38 @@ export const SkeletonLoader: React.FC<SkeletonLoaderProps> = ({
   // For other types, provide simpler skeleton structures
   const renderSkeletonByType = () => {
     switch (type) {
-      case 'event':
-        return (
-          <div className="skeleton-loader skeleton-loader--event">
-            <div className="skeleton-shimmer skeleton-shimmer--event-title"></div>
-            <div className="skeleton-shimmer skeleton-shimmer--event-time"></div>
-            <div className="skeleton-shimmer skeleton-shimmer--event-trainer"></div>
-          </div>
-        );
+    case 'event':
+      return (
+        <div className="skeleton-loader skeleton-loader--event">
+          <div className="skeleton-shimmer skeleton-shimmer--event-title"></div>
+          <div className="skeleton-shimmer skeleton-shimmer--event-time"></div>
+          <div className="skeleton-shimmer skeleton-shimmer--event-trainer"></div>
+        </div>
+      );
 
-      case 'controls':
-        return (
-          <div className="skeleton-loader skeleton-loader--controls">
-            <div className="skeleton-shimmer skeleton-shimmer--button"></div>
-            <div className="skeleton-shimmer skeleton-shimmer--button"></div>
-            <div className="skeleton-shimmer skeleton-shimmer--button"></div>
-          </div>
-        );
+    case 'controls':
+      return (
+        <div className="skeleton-loader skeleton-loader--controls">
+          <div className="skeleton-shimmer skeleton-shimmer--button"></div>
+          <div className="skeleton-shimmer skeleton-shimmer--button"></div>
+          <div className="skeleton-shimmer skeleton-shimmer--button"></div>
+        </div>
+      );
 
-      case 'stats':
-        return (
-          <div className="skeleton-loader skeleton-loader--stats">
-            <div className="skeleton-shimmer skeleton-shimmer--stat-number"></div>
-            <div className="skeleton-shimmer skeleton-shimmer--stat-label"></div>
-          </div>
-        );
+    case 'stats':
+      return (
+        <div className="skeleton-loader skeleton-loader--stats">
+          <div className="skeleton-shimmer skeleton-shimmer--stat-number"></div>
+          <div className="skeleton-shimmer skeleton-shimmer--stat-label"></div>
+        </div>
+      );
 
-      default:
-        return (
-          <div className="skeleton-loader skeleton-loader--default">
-            <div className="skeleton-shimmer"></div>
-          </div>
-        );
+    default:
+      return (
+        <div className="skeleton-loader skeleton-loader--default">
+          <div className="skeleton-shimmer"></div>
+        </div>
+      );
     }
   };
 

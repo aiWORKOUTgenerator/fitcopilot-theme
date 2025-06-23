@@ -4,11 +4,11 @@
 
 import * as React from 'react';
 import {
-    CheckboxFieldEventHandlers,
-    InputFieldEventHandlers,
-    InputKeyPressHandler,
-    SelectFieldEventHandlers,
-    TextAreaFieldEventHandlers
+  CheckboxFieldEventHandlers,
+  InputFieldEventHandlers,
+  InputKeyPressHandler,
+  SelectFieldEventHandlers,
+  TextAreaFieldEventHandlers
 } from './events';
 import { MultiSelectFieldProps } from './fields/MultiSelectField';
 import { ValidatorFn } from './validators';
@@ -62,7 +62,7 @@ export interface TextFieldProps extends BaseFormFieldProps, InputFieldEventHandl
   /** Whether to enable spellcheck */
   spellCheck?: boolean;
   /** Validation functions */
-  validators?: ValidatorFn<string>[];
+  _validators?: ValidatorFn<string>[];
 }
 
 /**
@@ -82,7 +82,7 @@ export interface TextAreaFieldProps extends BaseFormFieldProps, TextAreaFieldEve
   /** Whether to resize the textarea */
   resizable?: boolean;
   /** Validation functions */
-  validators?: ValidatorFn<string>[];
+  _validators?: ValidatorFn<string>[];
 }
 
 /**
@@ -102,7 +102,7 @@ export interface SelectFieldProps extends BaseFormFieldProps, SelectFieldEventHa
   /** Placeholder text (first option) */
   placeholder?: string;
   /** Validation functions */
-  validators?: ValidatorFn<string>[];
+  _validators?: ValidatorFn<string>[];
 }
 
 /**
@@ -116,7 +116,7 @@ export interface CheckboxFieldProps extends BaseFormFieldProps, CheckboxFieldEve
   /** Whether to display the label on the right (default) or left */
   labelPosition?: 'left' | 'right';
   /** Validation functions */
-  validators?: ValidatorFn<boolean>[];
+  _validators?: ValidatorFn<boolean>[];
 }
 
 /**
@@ -154,7 +154,7 @@ export interface RadioGroupFieldProps extends BaseFormFieldProps {
   /** Layout direction */
   direction?: 'horizontal' | 'vertical';
   /** Validation functions */
-  validators?: ValidatorFn<string>[];
+  _validators?: ValidatorFn<string>[];
 }
 
 /**
@@ -170,7 +170,7 @@ export interface SwitchFieldProps extends BaseFormFieldProps, CheckboxFieldEvent
   /** Optional off label */
   offLabel?: string;
   /** Validation functions */
-  validators?: ValidatorFn<boolean>[];
+  _validators?: ValidatorFn<boolean>[];
 }
 
 /**
@@ -186,7 +186,7 @@ export interface DateFieldProps extends BaseFormFieldProps, InputFieldEventHandl
   /** Max date (ISO string) */
   max?: string;
   /** Validation functions */
-  validators?: ValidatorFn<string>[];
+  _validators?: ValidatorFn<string>[];
 }
 
 /**
@@ -210,7 +210,7 @@ export interface FileFieldProps extends BaseFormFieldProps {
   /** Custom upload button text */
   buttonText?: string;
   /** Validation functions */
-  validators?: ValidatorFn<File | null>[];
+  _validators?: ValidatorFn<File | null>[];
 }
 
 /**

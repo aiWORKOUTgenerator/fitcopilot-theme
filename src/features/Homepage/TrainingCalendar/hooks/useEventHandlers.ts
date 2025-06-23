@@ -21,12 +21,12 @@ export interface EventHandlerCallbacks {
 export const useEventHandlers = (callbacks: EventHandlerCallbacks) => {
   const handleEventClick = useCallback((event: any) => {
     // Handle event click logic
-    console.log('Event clicked:', event);
+    logger.info('Event clicked:', event);
   }, []);
 
   const handleDateSelect = useCallback((selectInfo: any) => {
     // Handle date selection logic
-    console.log('Date selected:', selectInfo);
+    logger.info('Date selected:', selectInfo);
     if (callbacks.onCreate) {
       callbacks.onCreate({
         title: 'New Event',
@@ -38,7 +38,7 @@ export const useEventHandlers = (callbacks: EventHandlerCallbacks) => {
 
   const handleEventDrop = useCallback((dropInfo: any) => {
     // Handle event drag and drop logic
-    console.log('Event dropped:', dropInfo);
+    logger.info('Event dropped:', dropInfo);
     if (callbacks.onUpdate) {
       callbacks.onUpdate(dropInfo.event.id, {
         start: dropInfo.event.start,
@@ -49,7 +49,7 @@ export const useEventHandlers = (callbacks: EventHandlerCallbacks) => {
 
   const handleEventResize = useCallback((resizeInfo: any) => {
     // Handle event resize logic
-    console.log('Event resized:', resizeInfo);
+    logger.info('Event resized:', resizeInfo);
     if (callbacks.onUpdate) {
       callbacks.onUpdate(resizeInfo.event.id, {
         start: resizeInfo.event.start,
@@ -60,7 +60,7 @@ export const useEventHandlers = (callbacks: EventHandlerCallbacks) => {
 
   const handleBookingSubmit = useCallback((eventId: string, bookingData: any) => {
     // Handle booking submission logic
-    console.log('Booking submitted:', eventId, bookingData);
+    logger.info('Booking submitted:', eventId, bookingData);
     if (callbacks.onBooking) {
       return callbacks.onBooking(eventId, bookingData);
     }

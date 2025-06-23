@@ -23,10 +23,10 @@ export interface PersonalTrainingButtonProps extends HeroButtonProps {
  */
 const mapSizeToButtonSize = (size: ButtonSize): 'sm' | 'md' | 'lg' => {
   switch (size) {
-    case 'small': return 'sm';
-    case 'medium': return 'md';
-    case 'large': return 'lg';
-    default: return 'md';
+  case 'small': return 'sm';
+  case 'medium': return 'md';
+  case 'large': return 'lg';
+  default: return 'md';
   }
 };
 
@@ -70,6 +70,8 @@ export const PersonalTrainingButton: React.FC<PersonalTrainingButtonProps> = ({
   const startIcon = leftIcon ? <span className="personal-training-button__icon--left">{leftIcon}</span> : undefined;
   const endIcon = rightIcon ? <span className="personal-training-button__icon--right">{rightIcon}</span> : undefined;
   
+  const _theme = theme || 'default';
+
   return (
     <Button
       variant={variant}

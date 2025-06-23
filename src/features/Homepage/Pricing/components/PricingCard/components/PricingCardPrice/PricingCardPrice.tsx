@@ -18,7 +18,7 @@ export interface PricingCardPriceProps {
   /** Current animation state for this plan */
   animationState: AnimationState;
   /** Whether this card is currently being hovered */
-  isHovered: boolean;
+  _isHovered: boolean;
   /** Function to render explosion particles */
   renderExplosionParticles?: () => React.ReactNode;
   /** Plan type for determining animation behavior */
@@ -69,7 +69,7 @@ const useExplosionParticles = () => {
 export const PricingCardPrice: React.FC<PricingCardPriceProps> = ({
   plan,
   animationState,
-  isHovered,
+  _isHovered,
   renderExplosionParticles,
   planType
 }) => {
@@ -79,38 +79,38 @@ export const PricingCardPrice: React.FC<PricingCardPriceProps> = ({
   // Determine the appropriate gradient classes based on plan type
   const getPriceGradient = () => {
     switch (planType) {
-      case 'pro':
-        return 'from-purple-300 to-indigo-400';
-      case 'basic':
-        return 'from-blue-300 to-cyan-400';
-      case 'elite':
-        return plan.priceTextColors;
-      default:
-        return plan.accentColors;
+    case 'pro':
+      return 'from-purple-300 to-indigo-400';
+    case 'basic':
+      return 'from-blue-300 to-cyan-400';
+    case 'elite':
+      return plan.priceTextColors;
+    default:
+      return plan.accentColors;
     }
   };
 
   // Determine the appropriate beta badge styling
   const getBetaBadgeClass = () => {
     switch (planType) {
-      case 'pro':
-        return 'text-lime-300 border-lime-300/30';
-      case 'basic':
-        return 'text-blue-300 border-blue-300/30';
-      default:
-        return 'text-gray-300 border-gray-300/30';
+    case 'pro':
+      return 'text-lime-300 border-lime-300/30';
+    case 'basic':
+      return 'text-blue-300 border-blue-300/30';
+    default:
+      return 'text-gray-300 border-gray-300/30';
     }
   };
 
   // Determine the beta badge text
   const getBetaBadgeText = () => {
     switch (planType) {
-      case 'pro':
-        return 'Beta Offer';
-      case 'basic':
-        return 'Beta Special';
-      default:
-        return 'Special Offer';
+    case 'pro':
+      return 'Beta Offer';
+    case 'basic':
+      return 'Beta Special';
+    default:
+      return 'Special Offer';
     }
   };
 

@@ -11,11 +11,11 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import TrainingFeaturesCTA from './TrainingFeaturesCTA';
 import { TrainingFeaturesCTAProps } from './types';
 import {
-    clearFeaturesUtilityCaches,
-    generateFeaturesCTAText,
-    generateFeaturesStyleClasses,
-    mapFeaturesSizeToUniversalButton,
-    mapFeaturesVariantToGlobal
+  clearFeaturesUtilityCaches,
+  generateFeaturesCTAText,
+  generateFeaturesStyleClasses,
+  mapFeaturesSizeToUniversalButton,
+  mapFeaturesVariantToGlobal
 } from './utils';
 
 // Mock dependencies

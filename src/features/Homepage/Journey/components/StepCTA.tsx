@@ -32,7 +32,7 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
   
   // Map Journey-specific variants to GlobalVariantKey
   switch (variant) {
-    default: return 'default';
+  default: return 'default';
   }
 };
 

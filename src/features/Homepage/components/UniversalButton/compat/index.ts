@@ -8,14 +8,14 @@
 import React from 'react';
 import { UniversalButton } from '../UniversalButton';
 import type {
-    FeatureButtonCompatProps,
-    HeroButtonCompatProps,
-    JourneyButtonCompatProps,
-    PersonalTrainingButtonCompatProps,
-    PricingButtonCompatProps,
-    TestimonialsButtonCompatProps,
-    TrainingButtonCompatProps,
-    TrainingFeaturesButtonCompatProps
+  FeatureButtonCompatProps,
+  HeroButtonCompatProps,
+  JourneyButtonCompatProps,
+  PersonalTrainingButtonCompatProps,
+  PricingButtonCompatProps,
+  TestimonialsButtonCompatProps,
+  TrainingButtonCompatProps,
+  TrainingFeaturesButtonCompatProps
 } from '../types';
 
 /**

@@ -229,7 +229,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     // Loading state
     loading: (isLoading: boolean) => {
       // Handle loading state if needed
-      console.log('Calendar loading:', isLoading);
+      logger.info('Calendar loading:', isLoading);
     }
   }), [currentDate, calendarHeight, settings]);
   
@@ -242,13 +242,13 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   }, [onEventClick]);
   
   const handleDateSelect = useCallback((selectInfo: DateSelectArg) => {
-    console.log('🔍 CalendarView: Date selected!', selectInfo);
-    console.log('🔍 CalendarView: onDateSelect exists?', !!onDateSelect);
+    logger.info('🔍 CalendarView: Date selected!', selectInfo);
+    logger.info('🔍 CalendarView: onDateSelect exists?', !!onDateSelect);
     if (onDateSelect) {
-      console.log('🔍 CalendarView: Calling onDateSelect...');
+      logger.info('🔍 CalendarView: Calling onDateSelect...');
       onDateSelect(selectInfo);
     } else {
-      console.log('⚠️ CalendarView: No onDateSelect handler provided!');
+      logger.info('⚠️ CalendarView: No onDateSelect handler provided!');
     }
   }, [onDateSelect]);
   

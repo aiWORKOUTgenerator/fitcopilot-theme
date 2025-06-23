@@ -27,7 +27,7 @@ const RadioGroup: React.FC<RadioGroupFieldProps> = ({
   'data-testid': testId,
   direction = 'vertical',
   isLoading = false,
-  validators,
+  _validators,
   ...otherProps
 }) => {
   // Generate ID if not provided

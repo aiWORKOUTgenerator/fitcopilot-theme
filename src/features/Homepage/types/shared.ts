@@ -436,9 +436,9 @@ export type ComponentFromVariantMap<T extends VariantComponentMap> = T[keyof T];
  * Re-export React types for convenience
  */
 export type {
-    CSSProperties, ComponentType,
-    FC,
-    MouseEvent, ReactNode
+  CSSProperties, ComponentType,
+  FC,
+  MouseEvent, ReactNode
 } from 'react';
 
 // Note: Types cannot be exported as default values in TypeScript

@@ -200,11 +200,11 @@ const getThemeClasses = (
  */
 const mapSizeToButtonSize = (size?: string) => {
   switch (size) {
-    case 'small': return 'small' as const;
-    case 'medium': return 'medium' as const;
-    case 'large': return 'large' as const;
-    case 'xl': return 'large' as const; // Map xl to large for shared Button
-    default: return 'medium' as const;
+  case 'small': return 'small' as const;
+  case 'medium': return 'medium' as const;
+  case 'large': return 'large' as const;
+  case 'xl': return 'large' as const; // Map xl to large for shared Button
+  default: return 'medium' as const;
   }
 };
 
@@ -213,12 +213,12 @@ const mapSizeToButtonSize = (size?: string) => {
  */
 const mapVariantToButtonVariant = (variant?: string): ButtonVariant => {
   switch (variant) {
-    case 'primary': return 'primary';
-    case 'secondary': return 'secondary';
-    case 'tertiary': return 'secondary'; // Map tertiary to secondary
-    case 'ghost': return 'text'; // Map ghost to text
-    case 'link': return 'link';
-    default: return 'primary';
+  case 'primary': return 'primary';
+  case 'secondary': return 'secondary';
+  case 'tertiary': return 'secondary'; // Map tertiary to secondary
+  case 'ghost': return 'text'; // Map ghost to text
+  case 'link': return 'link';
+  default: return 'primary';
   }
 };
 

@@ -1,23 +1,23 @@
 import {
-    Activity,
-    Award,
-    BarChart3,
-    Brain,
-    Calendar,
-    CheckCircle,
-    Clock,
-    Heart,
-    LineChart,
-    RefreshCw,
-    Share2,
-    Shield,
-    Smile,
-    Star,
-    Target,
-    TrendingUp,
-    Trophy,
-    Users,
-    Zap
+  Activity,
+  Award,
+  BarChart3,
+  Brain,
+  Calendar,
+  CheckCircle,
+  Clock,
+  Heart,
+  LineChart,
+  RefreshCw,
+  Share2,
+  Shield,
+  Smile,
+  Star,
+  Target,
+  TrendingUp,
+  Trophy,
+  Users,
+  Zap
 } from 'lucide-react';
 import React, { useCallback, useEffect } from 'react';
 import logger from '../../../utils/logger';
@@ -30,11 +30,12 @@ import './journey-animations.scss';
 import './journey-utility-classes.scss';
 import './Journey.scss';
 import {
-    JourneyProps,
-    JourneyStep as JourneyStepType
+  JourneyProps,
+  JourneyStep as JourneyStepType
 } from './types';
 import { useJourneyStore } from './utils/journeyState';
 import { getIconColorClass, getStepGradientClass } from './utils/tokenUtils';
+import { useMediaQuery } from '@mui/material';
 
 /**
  * Journey component - Shows the user journey/process flow with expandable steps
@@ -44,7 +45,7 @@ const Journey: React.FC<JourneyProps> = ({
   journey = [],
   variant: _variant = 'default'
 }) => {
-  const prefersReducedMotion = useReducedMotion();
+  const _prefersReducedMotion = useReducedMotion();
   const { expandedStep, setExpandedStep } = useJourneyStore();
   
   // Use the centralized animation system with enhanced smooth settings
@@ -235,11 +236,11 @@ const Journey: React.FC<JourneyProps> = ({
 
     // Smooth scroll to expanded step
     if (newExpanded !== null) {
-        setTimeout(() => {
+      setTimeout(() => {
         const stepElement = document.querySelector(`[data-step-index="${index}"]`);
-          if (stepElement) {
-            stepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
+        if (stepElement) {
+          stepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }, 150); // Small delay to allow expansion animation
     }
   }, [expandedStep, setExpandedStep]);
@@ -259,11 +260,11 @@ const Journey: React.FC<JourneyProps> = ({
           data-animation="fade-up"
           data-delay="0"
         >
-        <SectionHeader
-          title={<>Your Fitness <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">Journey</span></>}
-          description="Four simple steps to transform your fitness routine with AI-powered workouts"
-          variant={_variant}
-        />
+          <SectionHeader
+            title={<>Your Fitness <span className="bg-gradient-to-r from-lime-300 to-emerald-400 text-transparent bg-clip-text">Journey</span></>}
+            description="Four simple steps to transform your fitness routine with AI-powered workouts"
+            variant={_variant}
+          />
         </div>
 
         {/* Journey Steps - Centralized animation container */}

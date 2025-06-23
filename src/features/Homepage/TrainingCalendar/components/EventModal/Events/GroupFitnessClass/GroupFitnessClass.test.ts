@@ -10,13 +10,13 @@
 
 import { CalendarEvent } from '../../../../interfaces';
 import {
-    getGroupClassSpecificErrors,
-    getGroupFitnessClassFormConfig,
-    GroupFitnessClassConfig,
-    GroupFitnessClassModule,
-    isGroupFitnessClass,
-    isGroupFitnessClassEvent,
-    validateGroupFitnessClass
+  getGroupClassSpecificErrors,
+  getGroupFitnessClassFormConfig,
+  GroupFitnessClassConfig,
+  GroupFitnessClassModule,
+  isGroupFitnessClass,
+  isGroupFitnessClassEvent,
+  validateGroupFitnessClass
 } from './index';
 
 describe('Group Fitness Class Event Module', () => {

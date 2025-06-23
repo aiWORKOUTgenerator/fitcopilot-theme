@@ -84,15 +84,15 @@ class EventModalErrorBoundary extends Component<EventModalErrorBoundaryProps, Ev
     });
     
     // Log error for debugging
-    console.error('EventModal Error Boundary caught an error:', error);
-    console.error('Error Info:', errorInfo);
+    logger.error('EventModal Error Boundary caught an error:', error);
+    logger.error('Error Info:', errorInfo);
     
     // Report error to external handler if provided
     if (onError) {
       try {
         onError(error, errorInfo);
       } catch (reportingError) {
-        console.error('Error reporting failed:', reportingError);
+        logger.error('Error reporting failed:', reportingError);
       }
     }
     
@@ -118,7 +118,7 @@ class EventModalErrorBoundary extends Component<EventModalErrorBoundaryProps, Ev
       }));
       
       if (process.env.NODE_ENV === 'development') {
-        console.log(`EventModal: Recovery attempt ${this.state.retryCount + 1}`);
+        logger.info(`EventModal: Recovery attempt ${this.state.retryCount + 1}`);
       }
     }, 2000);
   };

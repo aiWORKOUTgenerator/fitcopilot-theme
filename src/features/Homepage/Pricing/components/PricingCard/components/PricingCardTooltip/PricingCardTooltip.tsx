@@ -32,7 +32,7 @@ export const PricingCardTooltip: React.FC<PricingCardTooltipProps> = ({
   visible,
   content,
   type,
-  variant = 'default'
+  _variant = 'default'
 }) => {
   /**
    * Get tooltip content based on plan type
@@ -40,35 +40,35 @@ export const PricingCardTooltip: React.FC<PricingCardTooltipProps> = ({
    */
   const getTooltipContent = () => {
     switch (type) {
-      case 'beta':
-        return (
-          <div className="flex items-start mb-2">
-            <Shield className="w-5 h-5 text-lime-300 mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
-            <div>
-              <h5 className="font-medium text-lime-300 text-sm">Beta Release Offer</h5>
-              <p className="text-xs text-gray-300 small">
-                Provide feedback directly to our development team and help shape the future of AI Workout Generator.
-              </p>
-            </div>
+    case 'beta':
+      return (
+        <div className="flex items-start mb-2">
+          <Shield className="w-5 h-5 text-lime-300 mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
+          <div>
+            <h5 className="font-medium text-lime-300 text-sm">Beta Release Offer</h5>
+            <p className="text-xs text-gray-300 small">
+              Provide feedback directly to our development team and help shape the future of AI Workout Generator.
+            </p>
           </div>
-        );
-      case 'elite':
-        return (
-          <div className="flex items-start mb-2">
-            <Users className="w-5 h-5 text-purple-300 mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
-            <div>
-              <h5 className="font-medium text-purple-300 text-sm">Certified Trainers</h5>
-              <p className="text-xs text-gray-300 small">
-                Work with real certified trainers who will optimize your plan using both their fitness expertise and AI tools.
-              </p>
-            </div>
+        </div>
+      );
+    case 'elite':
+      return (
+        <div className="flex items-start mb-2">
+          <Users className="w-5 h-5 text-purple-300 mr-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
+          <div>
+            <h5 className="font-medium text-purple-300 text-sm">Certified Trainers</h5>
+            <p className="text-xs text-gray-300 small">
+              Work with real certified trainers who will optimize your plan using both their fitness expertise and AI tools.
+            </p>
           </div>
-        );
-      case 'basic':
-        // Basic plan doesn't have a tooltip in the original implementation
-        return null;
-      default:
-        return content;
+        </div>
+      );
+    case 'basic':
+      // Basic plan doesn't have a tooltip in the original implementation
+      return null;
+    default:
+      return content;
     }
   };
 

@@ -42,8 +42,8 @@ const mapVariantToGlobal = (variant?: string): GlobalVariantKey => {
   
   // Map testimonials-specific variants to GlobalVariantKey
   switch (variant) {
-    case 'nutrition': return 'wellness'; // Map nutrition to wellness
-    default: return 'default';
+  case 'nutrition': return 'wellness'; // Map nutrition to wellness
+  default: return 'default';
   }
 };
 

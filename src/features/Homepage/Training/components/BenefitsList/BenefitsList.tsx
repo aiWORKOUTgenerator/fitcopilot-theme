@@ -20,13 +20,13 @@ const BenefitsList: React.FC<BenefitsListProps> = ({
   id,
   includeCTA = false,
   onCTAClick,
-  ctaText,
+  _ctaText,
 }) => {
   const listClasses = `benefits-list benefits-list--${variant} ${className}`;
 
   // Validation for CTA integration
   if (includeCTA && !onCTAClick) {
-    console.warn('BenefitsList: includeCTA is true but onCTAClick is not provided. CTA will not be displayed.');
+    logger.warn('BenefitsList: includeCTA is true but onCTAClick is not provided. CTA will not be displayed.');
   }
 
   return (

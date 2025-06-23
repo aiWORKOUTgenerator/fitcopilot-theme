@@ -1,10 +1,10 @@
 // Demo Components (new extracted components)
 export {
-    BackgroundVideoPlayer, ProgressChart, SampleWorkout, VideoPlayer
+  BackgroundVideoPlayer, ProgressChart, SampleWorkout, VideoPlayer
 } from './DemoComponents';
 
 export type {
-    BackgroundVideoPlayerProps, DemoComponentConfig, ProgressChartProps, SampleWorkoutProps, VideoControlsConfig, VideoOverlayConfig, VideoPlayerProps
+  BackgroundVideoPlayerProps, DemoComponentConfig, ProgressChartProps, SampleWorkoutProps, VideoControlsConfig, VideoOverlayConfig, VideoPlayerProps
 } from './DemoComponents';
 
 // Other components

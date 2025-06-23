@@ -36,7 +36,7 @@ const LoadingFallback = () => (
  * All initialization happens in index.tsx
  */
 const Homepage: React.FC = () => {
-  console.log('🏠 Homepage component rendering...');
+  logger.info('🏠 Homepage component rendering...');
   
   // Use debug hook to measure render time
   debug.useRenderTime('Homepage');
@@ -44,7 +44,7 @@ const Homepage: React.FC = () => {
   // Determine if in debug mode
   const isDebug = debug.isDebugMode();
   
-  console.log('🔧 Homepage debug mode:', isDebug);
+  logger.info('🔧 Homepage debug mode:', isDebug);
 
   // Check if registration page is requested (based on URL hash or query param)
   const showRegistration = window.location.hash.includes('#registration') ||

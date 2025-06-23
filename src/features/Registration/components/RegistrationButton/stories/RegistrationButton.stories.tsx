@@ -810,7 +810,7 @@ export const DesignTokenUsage: Story = {
             color: '#6b7280',
             lineHeight: '1.5'
           }}>
-{`--registration-button-border-radius: 9999px
+            {`--registration-button-border-radius: 9999px
 --registration-button-font-weight: 600
 --registration-button-transition: all 0.2s ease
 --registration-button-hover-scale: 1.02

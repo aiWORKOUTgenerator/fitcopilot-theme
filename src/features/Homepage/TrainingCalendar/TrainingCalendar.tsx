@@ -91,13 +91,13 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   // Get WordPress calendar data
   const wordpressData = useMemo(() => {
     if (typeof window !== 'undefined') {
-      console.log('🔍 TrainingCalendar: Checking window data...');
-      console.log('🔍 window.fitcopilotTrainingCalendarData:', (window as any)?.fitcopilotTrainingCalendarData);
-      console.log('🔍 All window.fitcopilot* keys:', Object.keys(window).filter(key => key.includes('fitcopilot')));
+      logger.info('🔍 TrainingCalendar: Checking window data...');
+      logger.info('🔍 window.fitcopilotTrainingCalendarData:', (window as any)?.fitcopilotTrainingCalendarData);
+      logger.info('🔍 All window.fitcopilot* keys:', Object.keys(window).filter(key => key.includes('fitcopilot')));
       
       const data = (window as any)?.fitcopilotTrainingCalendarData || {};
-      console.log('🔍 Using data:', data);
-      console.log('🔍 Trainers in data:', data.trainers);
+      logger.info('🔍 Using data:', data);
+      logger.info('🔍 Trainers in data:', data.trainers);
       
       return data;
     }
@@ -168,12 +168,12 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   // ===== MODAL HANDLERS =====
   
   const openEventModal = useCallback((event: CalendarEvent | null, mode: 'view' | 'edit' | 'create', selectedDate?: Date) => {
-    console.log('🚀 openEventModal CALLED with:', {
+    logger.info('🚀 openEventModal CALLED with:', {
       event: event ? { id: event.id, title: event.title } : null,
       mode,
       selectedDate
     });
-    console.log('🚀 Current modal state before change:', modalState);
+    logger.info('🚀 Current modal state before change:', modalState);
     
     setModalState({
       isOpen: true,
@@ -182,7 +182,7 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
       selectedDate
     });
     
-    console.log('🚀 setModalState called - modal should now be open');
+    logger.info('🚀 setModalState called - modal should now be open');
   }, [modalState]);
   
   const closeEventModal = useCallback(() => {
@@ -206,12 +206,12 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
       if (modalState.mode === 'create') {
         // Create new event
         await createEvent(eventData as Omit<CalendarEvent, 'id'>);
-        console.log('✅ Event created successfully');
+        logger.info('✅ Event created successfully');
       } else if (modalState.mode === 'edit' && modalState.event) {
         // Update existing event
         const updatedEvent = { ...modalState.event, ...eventData };
         await updateEvent(updatedEvent);
-        console.log('✅ Event updated successfully');
+        logger.info('✅ Event updated successfully');
       }
       
       // Refresh calendar data to show changes
@@ -220,7 +220,7 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
       // Close modal
       closeEventModal();
     } catch (error) {
-      console.error('❌ Error saving event:', error);
+      logger.error('❌ Error saving event:', error);
       // Error is already handled by the hooks, just log it
     }
   }, [modalState, createEvent, updateEvent, refreshData, closeEventModal]);
@@ -228,7 +228,7 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   const handleEventDelete = useCallback(async (eventId: string | number) => {
     try {
       await deleteEvent(eventId);
-      console.log('✅ Event deleted successfully');
+      logger.info('✅ Event deleted successfully');
       
       // Refresh calendar data to remove deleted event
       await refreshData();
@@ -236,7 +236,7 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
       // Close modal
       closeEventModal();
     } catch (error) {
-      console.error('❌ Error deleting event:', error);
+      logger.error('❌ Error deleting event:', error);
       // Error is already handled by the hooks, just log it
     }
   }, [deleteEvent, refreshData, closeEventModal]);
@@ -245,64 +245,64 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   
   const handleEventClick = useCallback((eventInfo: any) => {
     try {
-      console.log('🔥 EVENT CLICK DEBUG START 🔥');
-      console.log('📅 Event clicked:', eventInfo?.event?.title || 'Unknown event');
-      console.log('📅 Full eventInfo structure:', eventInfo);
-      console.log('📅 Event object:', eventInfo?.event);
-      console.log('📅 Event extendedProps:', eventInfo?.event?.extendedProps);
+      logger.info('🔥 EVENT CLICK DEBUG START 🔥');
+      logger.info('📅 Event clicked:', eventInfo?.event?.title || 'Unknown event');
+      logger.info('📅 Full eventInfo structure:', eventInfo);
+      logger.info('📅 Event object:', eventInfo?.event);
+      logger.info('📅 Event extendedProps:', eventInfo?.event?.extendedProps);
       
       // Safely extract event ID
       const eventId = eventInfo?.event?.id;
-      console.log('🆔 Extracted event ID:', eventId, typeof eventId);
+      logger.info('🆔 Extracted event ID:', eventId, typeof eventId);
       
       if (!eventId) {
-        console.warn('⚠️ No event ID found in eventInfo:', eventInfo);
+        logger.warn('⚠️ No event ID found in eventInfo:', eventInfo);
         return;
       }
       
       // Debug available calendar events
-      console.log('📊 Available calendar events:', calendarEvents.length);
-      console.log('📊 Calendar events IDs:', calendarEvents.map(e => ({ id: e.id, type: typeof e.id, title: e.title })));
+      logger.info('📊 Available calendar events:', calendarEvents.length);
+      logger.info('📊 Calendar events IDs:', calendarEvents.map(e => ({ id: e.id, type: typeof e.id, title: e.title })));
       
       // Find the corresponding calendar event
       const calendarEvent = calendarEvents.find(event => 
         event.id.toString() === eventId.toString()
       );
       
-      console.log('🔍 Looking for event with ID:', eventId);
-      console.log('🔍 Found calendar event:', calendarEvent);
+      logger.info('🔍 Looking for event with ID:', eventId);
+      logger.info('🔍 Found calendar event:', calendarEvent);
       
       if (calendarEvent) {
-        console.log('✅ Found calendar event:', calendarEvent);
-        console.log('🚀 About to open modal with event:', calendarEvent.title);
-        console.log('🚀 Modal state before opening:', modalState);
+        logger.info('✅ Found calendar event:', calendarEvent);
+        logger.info('🚀 About to open modal with event:', calendarEvent.title);
+        logger.info('🚀 Modal state before opening:', modalState);
         
         // Open event in view mode
         openEventModal(calendarEvent, 'view');
         
-        console.log('🚀 openEventModal called successfully');
+        logger.info('🚀 openEventModal called successfully');
         
         // Check modal state after a brief delay
         setTimeout(() => {
-          console.log('🚀 Modal state after opening (delayed check):', modalState);
+          logger.info('🚀 Modal state after opening (delayed check):', modalState);
         }, 100);
         
       } else {
-        console.warn('⚠️ Event not found in calendar data:', eventId);
-        console.warn('Available events:', calendarEvents.map(e => ({ id: e.id, title: e.title })));
+        logger.warn('⚠️ Event not found in calendar data:', eventId);
+        logger.warn('Available events:', calendarEvents.map(e => ({ id: e.id, title: e.title })));
       }
       
-      console.log('🔥 EVENT CLICK DEBUG END 🔥');
+      logger.info('🔥 EVENT CLICK DEBUG END 🔥');
       
     } catch (error) {
-      console.error('❌ Error in handleEventClick:', error);
-      console.error('EventInfo that caused error:', eventInfo);
-      console.error('Stack trace:', error instanceof Error ? error.stack : 'No stack trace available');
+      logger.error('❌ Error in handleEventClick:', error);
+      logger.error('EventInfo that caused error:', eventInfo);
+      logger.error('Stack trace:', error instanceof Error ? error.stack : 'No stack trace available');
     }
   }, [calendarEvents, openEventModal, modalState]);
 
   const handleDateSelect = useCallback((selectInfo: any) => {
-    console.log('📅 Date selected for new event:', selectInfo.startStr);
+    logger.info('📅 Date selected for new event:', selectInfo.startStr);
     
     // Create a new event template
     // REMOVED: defaultTrainerId - no longer using trainers
@@ -328,7 +328,7 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   }, [openEventModal]); // REMOVED: calendarTrainers dependency
 
   const handleEventDrop = useCallback(async (dropInfo: any) => {
-    console.log('📅 Event dropped:', dropInfo.event.title);
+    logger.info('📅 Event dropped:', dropInfo.event.title);
     
     try {
       // Find the corresponding calendar event
@@ -346,20 +346,20 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
         };
         
         await updateEvent(updatedEvent);
-        console.log('✅ Event moved successfully');
+        logger.info('✅ Event moved successfully');
         
         // Refresh calendar data
         await refreshData();
       }
     } catch (error) {
-      console.error('❌ Error moving event:', error);
+      logger.error('❌ Error moving event:', error);
       // Revert the move
       dropInfo.revert();
     }
   }, [calendarEvents, updateEvent, refreshData]);
 
   const handleEventResize = useCallback(async (resizeInfo: any) => {
-    console.log('📅 Event resized:', resizeInfo.event.title);
+    logger.info('📅 Event resized:', resizeInfo.event.title);
     
     try {
       // Find the corresponding calendar event
@@ -377,13 +377,13 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
         };
         
         await updateEvent(updatedEvent);
-        console.log('✅ Event resized successfully');
+        logger.info('✅ Event resized successfully');
         
         // Refresh calendar data
         await refreshData();
       }
     } catch (error) {
-      console.error('❌ Error resizing event:', error);
+      logger.error('❌ Error resizing event:', error);
       // Revert the resize
       resizeInfo.revert();
     }
@@ -431,7 +431,7 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
         <div className="training-calendar__error">
           <div className="error-content">
             <div className="error-icon">⚠️</div>
-          <p>Error loading calendar: {error}</p>
+            <p>Error loading calendar: {error}</p>
             <button 
               className="retry-button"
               onClick={() => window.location.reload()}

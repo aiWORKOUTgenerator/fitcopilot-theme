@@ -26,7 +26,7 @@ export const ThemeProvider: React.FC<{
 }> = ({ theme = 'default', children }) => {
   // For testing, we create a simple setTheme function
   const setTheme = (newTheme: string) => {
-    console.log(`Theme would change to: ${newTheme}`);
+    logger.info(`Theme would change to: ${newTheme}`);
   };
 
   return (

@@ -64,43 +64,43 @@ export const useBookingFlow = (event: CalendarEvent, callbacks: BookingFlowCallb
     const errors: Record<string, string> = {};
 
     switch (step) {
-      case 1: // Client Information
-        if (!state.bookingData.clientInfo?.name?.trim()) {
-          errors.clientName = 'Full name is required';
-        }
-        if (!state.bookingData.clientInfo?.email?.trim()) {
-          errors.clientEmail = 'Email address is required';
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.bookingData.clientInfo.email)) {
-          errors.clientEmail = 'Please enter a valid email address';
-        }
-        if (!state.bookingData.clientInfo?.phone?.trim()) {
-          errors.clientPhone = 'Phone number is required';
-        }
-        break;
+    case 1: // Client Information
+      if (!state.bookingData.clientInfo?.name?.trim()) {
+        errors.clientName = 'Full name is required';
+      }
+      if (!state.bookingData.clientInfo?.email?.trim()) {
+        errors.clientEmail = 'Email address is required';
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.bookingData.clientInfo.email)) {
+        errors.clientEmail = 'Please enter a valid email address';
+      }
+      if (!state.bookingData.clientInfo?.phone?.trim()) {
+        errors.clientPhone = 'Phone number is required';
+      }
+      break;
 
-      case 2: // Emergency Contact
-        if (!state.bookingData.emergencyContact?.name?.trim()) {
-          errors.emergencyName = 'Emergency contact name is required';
-        }
-        if (!state.bookingData.emergencyContact?.phone?.trim()) {
-          errors.emergencyPhone = 'Emergency contact phone is required';
-        }
-        break;
+    case 2: // Emergency Contact
+      if (!state.bookingData.emergencyContact?.name?.trim()) {
+        errors.emergencyName = 'Emergency contact name is required';
+      }
+      if (!state.bookingData.emergencyContact?.phone?.trim()) {
+        errors.emergencyPhone = 'Emergency contact phone is required';
+      }
+      break;
 
-      case 3: // Medical & Goals
-        // Optional validation - can add requirements if needed
-        break;
+    case 3: // Medical & Goals
+      // Optional validation - can add requirements if needed
+      break;
 
-      case 4: // Payment & Confirmation
-        if (event.price && event.price > 0) {
-          if (!state.paymentData.method) {
-            errors.paymentMethod = 'Payment method is required';
-          }
-          if (state.paymentData.method === 'card' && !state.paymentData.cardNumber) {
-            errors.cardNumber = 'Card number is required';
-          }
+    case 4: // Payment & Confirmation
+      if (event.price && event.price > 0) {
+        if (!state.paymentData.method) {
+          errors.paymentMethod = 'Payment method is required';
         }
-        break;
+        if (state.paymentData.method === 'card' && !state.paymentData.cardNumber) {
+          errors.cardNumber = 'Card number is required';
+        }
+      }
+      break;
     }
 
     setState(prev => ({ ...prev, errors }));

@@ -86,107 +86,107 @@ const useKeyboardNavigation = (
     }
 
     switch (event.key) {
-      case 'ArrowLeft':
-        event.preventDefault();
-        if (navigationMode === 'calendar') {
-          onNavigate?.('prev');
-        } else if (navigationMode === 'events' && focusedEventIndex > 0) {
-          setFocusedEventIndex(focusedEventIndex - 1);
-        }
-        break;
+    case 'ArrowLeft':
+      event.preventDefault();
+      if (navigationMode === 'calendar') {
+        onNavigate?.('prev');
+      } else if (navigationMode === 'events' && focusedEventIndex > 0) {
+        setFocusedEventIndex(focusedEventIndex - 1);
+      }
+      break;
         
-      case 'ArrowRight':
-        event.preventDefault();
-        if (navigationMode === 'calendar') {
-          onNavigate?.('next');
-        } else if (navigationMode === 'events' && focusedEventIndex < events.length - 1) {
-          setFocusedEventIndex(focusedEventIndex + 1);
-        }
-        break;
+    case 'ArrowRight':
+      event.preventDefault();
+      if (navigationMode === 'calendar') {
+        onNavigate?.('next');
+      } else if (navigationMode === 'events' && focusedEventIndex < events.length - 1) {
+        setFocusedEventIndex(focusedEventIndex + 1);
+      }
+      break;
         
-      case 'ArrowUp':
-        event.preventDefault();
-        if (navigationMode === 'events' && focusedEventIndex > 0) {
-          setFocusedEventIndex(Math.max(0, focusedEventIndex - 1));
-        }
-        break;
+    case 'ArrowUp':
+      event.preventDefault();
+      if (navigationMode === 'events' && focusedEventIndex > 0) {
+        setFocusedEventIndex(Math.max(0, focusedEventIndex - 1));
+      }
+      break;
         
-      case 'ArrowDown':
-        event.preventDefault();
-        if (navigationMode === 'events' && focusedEventIndex < events.length - 1) {
-          setFocusedEventIndex(Math.min(events.length - 1, focusedEventIndex + 1));
-        }
-        break;
+    case 'ArrowDown':
+      event.preventDefault();
+      if (navigationMode === 'events' && focusedEventIndex < events.length - 1) {
+        setFocusedEventIndex(Math.min(events.length - 1, focusedEventIndex + 1));
+      }
+      break;
         
-      case 'Home':
-        event.preventDefault();
-        if (navigationMode === 'events') {
-          setFocusedEventIndex(0);
-        } else {
-          onNavigate?.('today');
-        }
-        break;
+    case 'Home':
+      event.preventDefault();
+      if (navigationMode === 'events') {
+        setFocusedEventIndex(0);
+      } else {
+        onNavigate?.('today');
+      }
+      break;
         
-      case 'End':
-        event.preventDefault();
-        if (navigationMode === 'events') {
-          setFocusedEventIndex(events.length - 1);
-        }
-        break;
+    case 'End':
+      event.preventDefault();
+      if (navigationMode === 'events') {
+        setFocusedEventIndex(events.length - 1);
+      }
+      break;
         
-      case 'Enter':
-      case ' ':
-        event.preventDefault();
-        if (navigationMode === 'events' && focusedEventIndex >= 0 && events[focusedEventIndex]) {
-          onEventSelect?.(events[focusedEventIndex]);
-        }
-        break;
+    case 'Enter':
+    case ' ':
+      event.preventDefault();
+      if (navigationMode === 'events' && focusedEventIndex >= 0 && events[focusedEventIndex]) {
+        onEventSelect?.(events[focusedEventIndex]);
+      }
+      break;
         
-      case 'Tab':
-        // Switch between calendar and events navigation
-        if (event.shiftKey) {
-          setNavigationMode(navigationMode === 'events' ? 'calendar' : 'events');
-        }
-        break;
+    case 'Tab':
+      // Switch between calendar and events navigation
+      if (event.shiftKey) {
+        setNavigationMode(navigationMode === 'events' ? 'calendar' : 'events');
+      }
+      break;
         
-      case 'Escape':
-        event.preventDefault();
-        setFocusedEventIndex(-1);
-        setNavigationMode('calendar');
-        break;
+    case 'Escape':
+      event.preventDefault();
+      setFocusedEventIndex(-1);
+      setNavigationMode('calendar');
+      break;
         
       // View switching shortcuts
-      case 'M':
-      case 'm':
-        if (event.ctrlKey || event.metaKey) {
-          event.preventDefault();
-          onNavigate?.('today', 'dayGridMonth');
-        }
-        break;
+    case 'M':
+    case 'm':
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+        onNavigate?.('today', 'dayGridMonth');
+      }
+      break;
         
-      case 'W':
-      case 'w':
-        if (event.ctrlKey || event.metaKey) {
-          event.preventDefault();
-          onNavigate?.('today', 'timeGridWeek');
-        }
-        break;
+    case 'W':
+    case 'w':
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+        onNavigate?.('today', 'timeGridWeek');
+      }
+      break;
         
-      case 'D':
-      case 'd':
-        if (event.ctrlKey || event.metaKey) {
-          event.preventDefault();
-          onNavigate?.('today', 'timeGridDay');
-        }
-        break;
+    case 'D':
+    case 'd':
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+        onNavigate?.('today', 'timeGridDay');
+      }
+      break;
         
-      case 'L':
-      case 'l':
-        if (event.ctrlKey || event.metaKey) {
-          event.preventDefault();
-          onNavigate?.('today', 'listWeek');
-        }
-        break;
+    case 'L':
+    case 'l':
+      if (event.ctrlKey || event.metaKey) {
+        event.preventDefault();
+        onNavigate?.('today', 'listWeek');
+      }
+      break;
     }
   }, [events, focusedEventIndex, navigationMode, onNavigate, onEventSelect]);
 

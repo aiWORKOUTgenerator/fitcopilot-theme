@@ -3,11 +3,11 @@ import React, { useRef, useState } from 'react';
 import { useJourney } from '../JourneyContext';
 import { JourneyStepData, JourneyStepFeature } from '../JourneyStepCard';
 import {
-    MockAnalyticsSelector,
-    MockCustomizeExperience,
-    MockCustomizedMedical,
-    MockGoalSelector,
-    MockRegistrationButton
+  MockAnalyticsSelector,
+  MockCustomizeExperience,
+  MockCustomizedMedical,
+  MockGoalSelector,
+  MockRegistrationButton
 } from './mocks/MockJourneyDependencies';
 
 interface StorybookJourneyStepCardProps {

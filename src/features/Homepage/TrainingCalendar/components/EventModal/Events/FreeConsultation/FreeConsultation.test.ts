@@ -10,12 +10,12 @@
 
 import { CalendarEvent } from '../../../../interfaces';
 import {
-    FreeConsultationConfig,
-    FreeConsultationModule,
-    getFreeConsultationFormConfig,
-    isFreeConsultation,
-    isFreeConsultationEvent,
-    validateFreeConsultation
+  FreeConsultationConfig,
+  FreeConsultationModule,
+  getFreeConsultationFormConfig,
+  isFreeConsultation,
+  isFreeConsultationEvent,
+  validateFreeConsultation
 } from './index';
 
 describe('Free Consultation Event Module', () => {

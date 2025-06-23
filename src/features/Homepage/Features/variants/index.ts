@@ -35,14 +35,14 @@ export const getFeaturesVariant = () => {
 
 // Export all variants
 export {
-    BoutiqueVariant,
-    ClassicVariant,
-    DefaultVariant,
-    MinimalistVariant,
-    ModernVariant,
-    RegistrationVariant,
-    SportsVariant,
-    WellnessVariant
+  BoutiqueVariant,
+  ClassicVariant,
+  DefaultVariant,
+  MinimalistVariant,
+  ModernVariant,
+  RegistrationVariant,
+  SportsVariant,
+  WellnessVariant
 };
 
 // Default export for backward compatibility
