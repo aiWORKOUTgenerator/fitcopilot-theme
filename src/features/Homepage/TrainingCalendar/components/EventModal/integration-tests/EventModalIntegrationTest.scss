@@ -1,0 +1,382 @@
+/**
+ * Event Modal Integration Test Styles
+ * 
+ * Styling for the comprehensive integration test suite
+ * 
+ * @package FitCopilot
+ * @subpackage TrainingCalendar
+ * @since 1.0.0
+ */
+
+// Canonical design system import - MUST BE FIRST
+@use '../../../../../../../styles/design-system' as ds;
+
+.event-modal-integration-test {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+// ===== HEADER =====
+
+.test-header {
+  margin-bottom: 30px;
+  text-align: center;
+  
+  h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+  }
+  
+  p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0 0 20px 0;
+  }
+}
+
+.test-stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: 8px;
+  min-width: 80px;
+  
+  &--total {
+    background: #f3f4f6;
+    border: 2px solid #d1d5db;
+  }
+  
+  &--passed {
+    background: #d1fae5;
+    border: 2px solid #10b981;
+    
+    .stat-value {
+      color: #065f46;
+    }
+  }
+  
+  &--failed {
+    background: #fee2e2;
+    border: 2px solid #ef4444;
+    
+    .stat-value {
+      color: #991b1b;
+    }
+  }
+  
+  &--pending {
+    background: #fef3c7;
+    border: 2px solid #f59e0b;
+    
+    .stat-value {
+      color: #92400e;
+    }
+  }
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+// ===== CONTROLS =====
+
+.test-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.test-button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  &--primary {
+    background: #8b5cf6;
+    color: white;
+    
+    &:hover:not(:disabled) {
+      background: #7c3aed;
+      transform: translateY(-1px);
+    }
+  }
+  
+  &--secondary {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    
+    &:hover:not(:disabled) {
+      background: #e5e7eb;
+    }
+  }
+}
+
+// ===== SCENARIOS =====
+
+.test-scenarios {
+  margin-bottom: 30px;
+  
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 15px 0;
+  }
+}
+
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.scenario-card {
+  padding: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #8b5cf6;
+    background: #fefefe;
+  }
+  
+  &--active {
+    border-color: #f59e0b;
+    background: #fffbeb;
+    
+    .scenario-header h4 {
+      color: #d97706;
+    }
+  }
+}
+
+.scenario-header {
+  display: flex;
+  justify-content: between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  
+  h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+    flex: 1;
+  }
+}
+
+.scenario-run-button {
+  background: #8b5cf6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 10px;
+  
+  &:hover:not(:disabled) {
+    background: #7c3aed;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.scenario-card p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+// ===== TEST LOG =====
+
+.test-log {
+  margin-bottom: 30px;
+  
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 15px 0;
+  }
+}
+
+.test-log-content {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  padding: 16px;
+}
+
+.no-results {
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+  padding: 20px;
+}
+
+.test-result {
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid transparent;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  &--pass {
+    background: #d1fae5;
+    border-left-color: #10b981;
+  }
+  
+  &--fail {
+    background: #fee2e2;
+    border-left-color: #ef4444;
+  }
+  
+  &--pending {
+    background: #fef3c7;
+    border-left-color: #f59e0b;
+  }
+}
+
+.test-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.test-result-name {
+  font-weight: 600;
+  color: #1f2937;
+  flex: 1;
+}
+
+.test-result-status {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  .test-result--pass & {
+    background: #065f46;
+    color: white;
+  }
+  
+  .test-result--fail & {
+    background: #991b1b;
+    color: white;
+  }
+  
+  .test-result--pending & {
+    background: #92400e;
+    color: white;
+  }
+}
+
+.test-result-time {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.test-result-message {
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.4;
+}
+
+// ===== MANUAL CONTROLS =====
+
+.manual-test-controls {
+  border-top: 2px solid #e5e7eb;
+  padding-top: 20px;
+  
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 15px 0;
+  }
+}
+
+.manual-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  
+  button {
+    padding: 10px 16px;
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #e5e7eb;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+// ===== MODAL OVERRIDE =====
+
+.integration-test-modal {
+  z-index: 9999; // Ensure test modal appears above everything
+} 

@@ -82,6 +82,7 @@ export const useEventModalIntegration = (props: UseEventModalIntegrationProps) =
     setComponentError: eventModal.setComponentError,
     incrementRetryCount: eventModal.incrementRetryCount,
     setHasRecovered: eventModal.setHasRecovered,
+    setShowUserRegistration: eventModal.setShowUserRegistration,
     
     // Current state
     formData: eventModal.state.formData,

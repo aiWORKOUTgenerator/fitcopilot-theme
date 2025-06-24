@@ -28,6 +28,7 @@ interface UseEventActionsProps {
   setComponentError: (error: Error | null) => void;
   incrementRetryCount: () => void;
   setHasRecovered: (recovered: boolean) => void;
+  setShowUserRegistration: (show: boolean) => void;
   
   // Current state
   formData: Partial<CalendarEvent>;
@@ -81,6 +82,7 @@ export const useEventActions = ({
   setComponentError,
   incrementRetryCount,
   setHasRecovered,
+  setShowUserRegistration,
   formData,
   retryCount,
   retryLimit
@@ -284,6 +286,7 @@ export const useEventActions = ({
     // Check if user registration is required
     if (handleUserRegistrationRequired()) {
       console.log('📅 User registration required - showing registration modal');
+      setShowUserRegistration(true);
       return; // User registration modal will be shown
     }
     
@@ -292,7 +295,7 @@ export const useEventActions = ({
     if (onModeChange) {
       onModeChange('edit');
     }
-  }, [handleUserRegistrationRequired, onModeChange]);
+  }, [handleUserRegistrationRequired, onModeChange, setShowUserRegistration]);
   
   return {
     handleFormFieldChange,

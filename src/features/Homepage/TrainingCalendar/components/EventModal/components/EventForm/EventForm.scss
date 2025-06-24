@@ -1,0 +1,293 @@
+/**
+ * Event Form Styles
+ * 
+ * Styling for the EventForm component
+ * Follows form-management.js patterns and design system conventions
+ */
+
+// Canonical design system import - MUST BE FIRST
+@use '../../../../../../../styles/design-system' as ds;
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem 0;
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__event-type-selector {
+    // EventTypeSelector already has its own styling
+    // This provides any additional wrapper styling if needed
+  }
+
+  &__field-error {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-error-100);
+    border: 1px solid var(--color-error-500);
+    border-radius: 6px;
+    color: var(--color-error-700);
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+
+    &::before {
+      content: '⚠️';
+      font-size: 1rem;
+    }
+  }
+
+  // ===== SELECTED TIME SLOT =====
+
+  &__selected-slot {
+    background: var(--modal-bg-secondary);
+    border: 1px solid var(--modal-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 0.5rem 0;
+
+    &--error {
+      border-color: var(--color-warning-500);
+      background: var(--color-warning-100);
+    }
+  }
+
+  &__selected-slot-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--modal-text-primary);
+  }
+
+  &__selected-slot-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__selected-slot-time,
+  &__selected-slot-trainer,
+  &__selected-slot-price {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--modal-text-secondary);
+
+    strong {
+      color: var(--modal-text-primary);
+      font-weight: 600;
+    }
+  }
+
+  &__selected-slot-error {
+    margin: 0;
+    color: var(--color-warning-700);
+    font-style: italic;
+  }
+
+  &__change-slot-button {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: var(--color-primary-500);
+    border: 1px solid var(--color-primary-500);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--color-primary-500);
+      color: white;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      border-color: var(--modal-border);
+      color: var(--modal-text-disabled);
+    }
+
+    &:focus {
+      outline: 2px solid var(--color-primary-500);
+      outline-offset: 2px;
+    }
+  }
+
+  // ===== FORM FIELDS =====
+
+  &__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--modal-text-primary);
+  }
+
+  &__textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--modal-border);
+    border-radius: 6px;
+    background: var(--modal-bg-primary);
+    color: var(--modal-text-primary);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    resize: vertical;
+    min-height: 6rem;
+    font-family: inherit;
+    transition: all 0.15s ease;
+
+    &::placeholder {
+      color: var(--modal-text-secondary);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary-500);
+      box-shadow: 0 0 0 3px var(--color-primary-100);
+    }
+
+    &:disabled {
+      background: var(--modal-bg-disabled);
+      color: var(--modal-text-disabled);
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    &.error {
+      border-color: var(--color-error-500);
+      
+      &:focus {
+        border-color: var(--color-error-500);
+        box-shadow: 0 0 0 3px var(--color-error-100);
+      }
+    }
+  }
+
+  &__field-help {
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--modal-text-secondary);
+    line-height: 1.4;
+  }
+
+  // ===== TIME SLOT SELECTOR =====
+
+  &__time-slot-selector {
+    position: relative;
+    margin-top: 1rem;
+    padding: 1.5rem;
+    background: var(--modal-bg-primary);
+    border: 1px solid var(--modal-border);
+    border-radius: 8px;
+  }
+
+  &__time-slot-selector-component {
+    // Wrapper for TimeSlotSelector component
+    // Component has its own styling
+  }
+}
+
+// ===== LOADING STATES =====
+
+.event-form.event-form--loading {
+  opacity: 0.7;
+  pointer-events: none;
+
+  .event-form__section {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 6px;
+      z-index: 1;
+    }
+  }
+}
+
+// ===== RESPONSIVE DESIGN =====
+
+@media (max-width: 768px) {
+  .event-form {
+    gap: 1.5rem;
+    padding: 1rem 0;
+
+    &__selected-slot {
+      padding: 1rem;
+    }
+
+    &__selected-slot-content {
+      gap: 0.5rem;
+    }
+
+    &__time-slot-selector {
+      padding: 1rem;
+      margin-top: 0.75rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .event-form {
+    gap: 1rem;
+    padding: 0.75rem 0;
+
+    &__section {
+      gap: 0.75rem;
+    }
+
+    &__selected-slot {
+      padding: 0.75rem;
+    }
+
+    &__selected-slot-title {
+      font-size: 1rem;
+    }
+
+    &__textarea {
+      padding: 0.625rem;
+      font-size: 0.875rem;
+      min-height: 5rem;
+    }
+
+    &__time-slot-selector {
+      padding: 0.75rem;
+    }
+  }
+}
+
+// ===== FOCUS STATES =====
+
+.event-form {
+  // Enhanced focus states for better accessibility
+  
+  *:focus {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+
+  // Custom focus for specific elements
+  &__change-slot-button:focus,
+  &__textarea:focus {
+    outline: none; // Using custom focus styles above
+  }
+} 
