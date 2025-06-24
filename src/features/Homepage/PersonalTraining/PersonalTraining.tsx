@@ -1,19 +1,19 @@
 import {
-  Award,
-  Dumbbell,
-  Heart,
-  User,
-  Users
+    Award,
+    Dumbbell,
+    Heart,
+    User,
+    Users
 } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import MediaContainer from './components/MediaContainer';
 import { PersonalTrainingCTA } from './components/PersonalTrainingCTA';
 import {
-  AthleteDashboardData,
-  DataSource,
-  PersonalTrainingSettings,
-  Trainer,
-  WordPressTrainer
+    AthleteDashboardData,
+    DataSource,
+    PersonalTrainingSettings,
+    Trainer,
+    WordPressTrainer
 } from './interfaces';
 import './PersonalTraining.scss';
 import { PersonalTrainingProps } from './types';

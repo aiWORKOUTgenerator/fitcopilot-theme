@@ -48,6 +48,9 @@ export interface EventConfig {
   /** Whether location selection is required */
   requiresLocation: boolean;
   
+  /** Default location for the event */
+  defaultLocation?: string;
+  
   /** Default event type classification */
   defaultEventType: string;
   

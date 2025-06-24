@@ -314,8 +314,9 @@ class FitCopilot_Trainer_Availability_API {
             'allowed_days' => array(1, 2, 3, 4, 5, 6) // Monday to Saturday
         );
         
+        // Use event type IDs for business logic
         switch ($event_type) {
-            case 'Free Consultation (20 Min)':
+            case 'fitness_assessment':
                 return array_merge($default_config, array(
                     'start_hour' => 9,
                     'end_hour' => 17,
@@ -323,15 +324,23 @@ class FitCopilot_Trainer_Availability_API {
                     'allowed_days' => array(1, 2, 3, 4, 5) // Weekdays only
                 ));
                 
-            case 'Online Group Fitness Class (45 Min)':
+            case 'group_fitness':
                 return array_merge($default_config, array(
                     'start_hour' => 6,
                     'end_hour' => 20,
                     'buffer_time' => 15
                 ));
                 
-            case 'Personal Training Session':
+            case 'personal_training':
                 return $default_config;
+                
+            case 'group_forum':
+                return array_merge($default_config, array(
+                    'start_hour' => 10,
+                    'end_hour' => 16,
+                    'buffer_time' => 10,
+                    'allowed_days' => array(2, 4, 6) // Tuesday, Thursday, Saturday
+                ));
                 
             default:
                 return $default_config;
@@ -378,19 +387,25 @@ class FitCopilot_Trainer_Availability_API {
     private function trainer_supports_event_type($trainer, $event_type) {
         $specialty = strtolower($trainer['specialty'] ?? '');
         
+        // Use event type IDs for trainer compatibility logic
         switch ($event_type) {
-            case 'Free Consultation (20 Min)':
+            case 'fitness_assessment':
                 return true; // All trainers can do consultations
                 
-            case 'Online Group Fitness Class (45 Min)':
+            case 'group_fitness':
                 return strpos($specialty, 'group') !== false || 
                        strpos($specialty, 'fitness') !== false ||
                        strpos($specialty, 'cardio') !== false;
                 
-            case 'Personal Training Session':
+            case 'personal_training':
                 return strpos($specialty, 'personal') !== false || 
                        strpos($specialty, 'training') !== false ||
                        strpos($specialty, 'strength') !== false;
+                
+            case 'group_forum':
+                return strpos($specialty, 'wellness') !== false ||
+                       strpos($specialty, 'nutrition') !== false ||
+                       strpos($specialty, 'coach') !== false;
                 
             default:
                 return true;
@@ -472,29 +487,36 @@ class FitCopilot_Trainer_Availability_API {
      * Get remaining spots for group events
      */
     private function get_spots_remaining($slot, $event_type) {
-        if (strpos($event_type, 'Group') !== false) {
-            // Group classes have limited spots
-            return rand(1, 15); // Random for demo, would be calculated from bookings
-        }
-        
+        // Use event type IDs for spot calculation
+        switch ($event_type) {
+            case 'group_fitness':
+                return rand(1, 15); // Group classes have limited spots
+            case 'group_forum':
+                return rand(1, 8); // Forums have smaller capacity
+            default:
         return null; // Individual sessions don't have spot limits
+        }
     }
     
     /**
      * Get pricing for slot
      */
     private function get_slot_price($event_type, $duration, $trainer) {
+        // Use event type IDs for pricing logic
         switch ($event_type) {
-            case 'Free Consultation (20 Min)':
-                return 0;
+            case 'fitness_assessment':
+                return 0; // Free consultation
                 
-            case 'Online Group Fitness Class (45 Min)':
-                return 25;
+            case 'group_fitness':
+                return 25; // Fixed group class price
                 
-            case 'Personal Training Session':
+            case 'personal_training':
                 // Price based on duration
                 $base_rate = 80; // Base rate per hour
                 return round(($duration / 60) * $base_rate);
+                
+            case 'group_forum':
+                return 0; // Free discussion forum
                 
             default:
                 return 0;
@@ -509,11 +531,20 @@ class FitCopilot_Trainer_Availability_API {
             return null;
         }
         
+        // Use event type IDs for recommendation logic
+        if ($event_type === 'fitness_assessment') {
         // For consultations, recommend morning slots
-        if ($event_type === 'Free Consultation (20 Min)') {
             foreach ($available_slots as $slot) {
                 $hour = date('H', strtotime($slot['start_time']));
                 if ($hour >= 9 && $hour <= 12) {
+                    return $slot;
+                }
+            }
+        } elseif ($event_type === 'group_fitness') {
+            // For group fitness, recommend early morning or evening
+            foreach ($available_slots as $slot) {
+                $hour = date('H', strtotime($slot['start_time']));
+                if (($hour >= 6 && $hour <= 8) || ($hour >= 17 && $hour <= 19)) {
                     return $slot;
                 }
             }
@@ -551,13 +582,29 @@ class FitCopilot_Trainer_Availability_API {
     }
     
     /**
-     * Map frontend event types to backend event types
+     * Map frontend event titles/types to backend event type IDs
+     * 
+     * Note: Event titles can be anything (user-customizable), but event types
+     * are system identifiers that drive business logic and configuration.
      */
     private function map_frontend_event_type($frontend_event_type) {
+        // Map both legacy display names and proper event type IDs
         $mapping = array(
-            'Free Consultation (20 Min)' => 'Fitness Assessment',
-            'Online Group Fitness Class (45 Min)' => 'Group Fitness Class',
-            'Personal Training Session' => 'Personal Training Session'
+            // Legacy display names (for backward compatibility)
+            'Free Consultation (20 Min)' => 'fitness_assessment',
+            'Online Group Fitness Class (45 Min)' => 'group_fitness',
+            'Personal Training Session' => 'personal_training',
+            
+            // Event type IDs (pass through unchanged)
+            'fitness_assessment' => 'fitness_assessment',
+            'personal_training' => 'personal_training', 
+            'group_fitness' => 'group_fitness',
+            'group_forum' => 'group_forum',
+            
+            // Alternative display names
+            'Fitness Assessment' => 'fitness_assessment',
+            'Group Fitness Class' => 'group_fitness',
+            'Group Discussion Forum' => 'group_forum'
         );
         
         return $mapping[$frontend_event_type] ?? $frontend_event_type;

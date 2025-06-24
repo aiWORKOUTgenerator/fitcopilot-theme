@@ -239,10 +239,27 @@ class FitCopilot_Training_Calendar_Renderer {
                         return;
                     }
                     
+                    // Filter to only show future events (upcoming events only)
+                    var now = new Date();
+                    var futureEvents = events.filter(function(event) {
+                        var eventDate = new Date(event.start);
+                        return eventDate > now; // Only events in the future
+                    });
+                    
+                    // Check if we have any upcoming events after filtering
+                    if (futureEvents.length === 0) {
+                        container.innerHTML = '<div style="padding: 15px; text-align: center; color: #666; background: #fff; border: 1px solid #ddd; border-radius: 4px;">' +
+                                            '<p>No upcoming events found. All events are in the past.</p>' +
+                                            '<button type="button" class="button button-primary" style="margin-top: 10px;">' +
+                                            '<span class="dashicons dashicons-plus-alt" style="margin-top: 3px;"></span> Create New Event' +
+                                            '</button></div>';
+                        return;
+                    }
+                    
                     var eventsHtml = '<div class="events-list">';
                     
-                    // Show first 3 upcoming events
-                    var upcomingEvents = events.slice(0, 3);
+                    // Show first 3 upcoming events from the filtered future events
+                    var upcomingEvents = futureEvents.slice(0, 3);
                     upcomingEvents.forEach(function(event) {
                         var eventDate = new Date(event.start);
                         var formattedDate = eventDate.toLocaleDateString() + ' ' + eventDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});

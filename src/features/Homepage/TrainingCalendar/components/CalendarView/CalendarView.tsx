@@ -236,8 +236,17 @@ const CalendarView: React.FC<CalendarViewProps> = ({
   // ===== EVENT HANDLERS =====
   
   const handleEventClick = useCallback((clickInfo: EventClickArg) => {
+    console.log('📅 CalendarView: Event clicked!', clickInfo);
+    console.log('📅 CalendarView: Event details:', {
+      id: clickInfo.event.id,
+      title: clickInfo.event.title,
+      extendedProps: clickInfo.event.extendedProps
+    });
+    
     if (onEventClick) {
-      onEventClick(clickInfo.event);
+      // Pass the full clickInfo object, not just the event
+      // This matches what TrainingCalendar expects
+      onEventClick(clickInfo as any);
     }
   }, [onEventClick]);
   

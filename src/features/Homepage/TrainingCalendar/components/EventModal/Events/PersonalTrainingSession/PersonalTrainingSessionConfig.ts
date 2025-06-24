@@ -37,6 +37,9 @@ export const PersonalTrainingSessionConfig: EventConfig = {
   // Location selection required for session coordination
   requiresLocation: true,
   
+  // Default to Google Meet for virtual sessions
+  defaultLocation: 'google_meet',
+  
   // Default event classification
   defaultEventType: 'session',
   

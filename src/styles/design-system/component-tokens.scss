@@ -476,13 +476,35 @@
     --nav-item-gap: var(--spacing-8);
     --nav-font-weight: var(--font-weight-medium);
 
-    /* Modal tokens */
+    /* Modal tokens - ENHANCED for better contrast */
     --modal-border-radius: var(--radius-lg);
     --modal-padding: var(--spacing-6);
     --modal-shadow: var(--shadow-lg);
-    --modal-backdrop-opacity: 0.5;
+    --modal-backdrop-opacity: 0.6;
     --modal-max-width: 500px;
     --modal-transition: var(--transition-all);
+    
+    /* Modal specific color tokens */
+    --modal-text-primary: var(--color-text-primary);
+    --modal-text-secondary: var(--color-text-secondary);
+    --modal-text-muted: var(--color-text-muted);
+    --modal-bg-primary: var(--color-ui-surface);
+    --modal-bg-secondary: var(--color-ui-surface-elevated);
+    --modal-border: var(--color-ui-border);
+    --modal-border-light: var(--color-ui-border-light);
+    
+    /* Status badge colors for dark theme */
+    --badge-success-bg: rgba(34, 197, 94, 0.15);
+    --badge-success-text: var(--color-success-400);
+    --badge-success-border: rgba(34, 197, 94, 0.3);
+    
+    --badge-info-bg: rgba(59, 130, 246, 0.15);
+    --badge-info-text: var(--color-status-info);
+    --badge-info-border: rgba(59, 130, 246, 0.3);
+    
+    --badge-warning-bg: rgba(251, 191, 36, 0.15);
+    --badge-warning-text: var(--color-text-warning);
+    --badge-warning-border: rgba(251, 191, 36, 0.3);
 
     /* Tooltip tokens */
     --tooltip-bg-color: var(--color-gray-800);

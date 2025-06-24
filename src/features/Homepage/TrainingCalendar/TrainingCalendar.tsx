@@ -9,7 +9,7 @@
  */
 
 import { Calendar as CalendarIcon } from 'lucide-react';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Component imports
 import { BookingConfirmation } from './components/BookingConfirmation';
@@ -136,36 +136,70 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
     };
   }, [wordpressData.settings, initialView]);
 
-  // Transform WordPress events to CalendarEvent format
+  // Transform WordPress events to CalendarEvent format using the proper transformation function
   const calendarEvents: CalendarEvent[] = useMemo(() => {
-    const wpEvents = wordpressData.events || events || [];
+    console.log('🔄 TrainingCalendar: Transforming events...');
+    console.log('🔄 WordPress events data:', wordpressData.events);
+    console.log('🔄 Hook events data:', events);
     
-    return wpEvents.map((event: any) => ({
-      id: event.id || event.event_id,
-      title: event.title,
+    // Prioritize WordPress data over hook data for consistency
+    const wpEvents = wordpressData.events || events || [];
+    console.log('🔄 Using events:', wpEvents);
+    console.log('🔄 Event count:', wpEvents.length);
+    
+    if (wpEvents.length > 0) {
+      console.log('🔄 Sample event structure:', wpEvents[0]);
+    }
+    
+    const transformedEvents = wpEvents.map((event: any) => {
+      // Enhanced transformation with better data handling
+      const transformedEvent = {
+        id: event.id || event.event_id || `temp-${Date.now()}-${Math.random()}`,
+        title: event.title || 'Untitled Event',
       description: event.description || '',
-      start: event.start || event.start_datetime,
-      end: event.end || event.end_datetime,
-      trainerId: event.trainerId || event.trainer_id,
-      eventType: event.eventType || event.event_type || 'session',
-      bookingStatus: event.bookingStatus || event.booking_status || 'available',
+        start: event.start || event.start_datetime || new Date().toISOString(),
+        end: event.end || event.end_datetime || new Date().toISOString(),
+        trainerId: event.trainerId || event.trainer_id || event.trainer || null,
+        eventType: event.eventType || event.event_type || event.type || 'session',
+        bookingStatus: event.bookingStatus || event.booking_status || event.status || 'available',
       sessionType: event.sessionType || event.session_type || 'individual',
-      location: event.location || '',
+        location: event.location || 'Online',
       maxParticipants: event.maxParticipants || event.max_participants || 1,
       currentParticipants: event.currentParticipants || event.current_participants || 0,
-      backgroundColor: event.backgroundColor || event.background_color,
-      borderColor: event.borderColor || event.border_color,
+        backgroundColor: event.backgroundColor || event.background_color || '#8b5cf6',
+        borderColor: event.borderColor || event.border_color || '#8b5cf6',
       textColor: event.textColor || event.text_color || '#ffffff',
-      price: event.price,
+        price: event.price || 0,
       currency: event.currency || 'USD',
-      zoomLink: event.zoomLink || event.zoom_link,
-      specialInstructions: event.specialInstructions || event.special_instructions
-    }));
+        zoomLink: event.zoomLink || event.zoom_link || '',
+        specialInstructions: event.specialInstructions || event.special_instructions || ''
+      };
+      
+      console.log('🔄 Transformed event:', { 
+        original: { id: event.id, title: event.title }, 
+        transformed: { id: transformedEvent.id, title: transformedEvent.title }
+      });
+      
+      return transformedEvent;
+    });
+    
+    console.log('🔄 Final transformed events:', transformedEvents.length, 'events');
+    return transformedEvents;
   }, [wordpressData.events, events]);
 
   // REMOVED: All trainer data processing - no longer needed
 
   // ===== MODAL HANDLERS =====
+  
+  // Add debugging effect to track modal state changes
+  useEffect(() => {
+    console.log('🔍 MODAL STATE CHANGED:', modalState);
+    if (modalState.isOpen) {
+      console.log('✅ Modal should be visible now');
+    } else {
+      console.log('❌ Modal should be hidden now');
+    }
+  }, [modalState]);
   
   const openEventModal = useCallback((event: CalendarEvent | null, mode: 'view' | 'edit' | 'create', selectedDate?: Date) => {
     console.log('🚀 openEventModal CALLED with:', {
@@ -183,6 +217,11 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
     });
     
     console.log('🚀 setModalState called - modal should now be open');
+    
+    // Force a re-render check
+    setTimeout(() => {
+      console.log('🚀 Modal state after 100ms:', modalState);
+    }, 100);
   }, [modalState]);
   
   const closeEventModal = useCallback(() => {
@@ -246,13 +285,16 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
   const handleEventClick = useCallback((eventInfo: any) => {
     try {
       console.log('🔥 EVENT CLICK DEBUG START 🔥');
-      console.log('📅 Event clicked:', eventInfo?.event?.title || 'Unknown event');
       console.log('📅 Full eventInfo structure:', eventInfo);
-      console.log('📅 Event object:', eventInfo?.event);
-      console.log('📅 Event extendedProps:', eventInfo?.event?.extendedProps);
+      
+      // Handle both direct event object and FullCalendar clickInfo structure
+      const event = eventInfo?.event || eventInfo;
+      console.log('📅 Event object:', event);
+      console.log('📅 Event clicked:', event?.title || 'Unknown event');
+      console.log('📅 Event extendedProps:', event?.extendedProps);
       
       // Safely extract event ID
-      const eventId = eventInfo?.event?.id;
+      const eventId = event?.id;
       console.log('🆔 Extracted event ID:', eventId, typeof eventId);
       
       if (!eventId) {
@@ -264,32 +306,60 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
       console.log('📊 Available calendar events:', calendarEvents.length);
       console.log('📊 Calendar events IDs:', calendarEvents.map(e => ({ id: e.id, type: typeof e.id, title: e.title })));
       
-      // Find the corresponding calendar event
-      const calendarEvent = calendarEvents.find(event => 
-        event.id.toString() === eventId.toString()
-      );
+      // Find the corresponding calendar event with enhanced matching
+      console.log('🔍 Looking for event with ID:', eventId, 'Type:', typeof eventId);
+      console.log('🔍 Available calendar events for matching:');
+      calendarEvents.forEach((event, index) => {
+        console.log(`  ${index}: ID=${event.id} (${typeof event.id}), Title=${event.title}`);
+      });
       
-      console.log('🔍 Looking for event with ID:', eventId);
-      console.log('🔍 Found calendar event:', calendarEvent);
+      const calendarEvent = calendarEvents.find(event => {
+        const eventIdStr = event.id.toString();
+        const searchIdStr = eventId.toString();
+        const matches = eventIdStr === searchIdStr;
+        console.log(`🔍 Comparing: "${eventIdStr}" === "${searchIdStr}" = ${matches}`);
+        return matches;
+      });
+      
+      console.log('🔍 Found calendar event:', calendarEvent ? {
+        id: calendarEvent.id,
+        title: calendarEvent.title,
+        eventType: calendarEvent.eventType
+      } : null);
       
       if (calendarEvent) {
         console.log('✅ Found calendar event:', calendarEvent);
         console.log('🚀 About to open modal with event:', calendarEvent.title);
-        console.log('🚀 Modal state before opening:', modalState);
         
         // Open event in view mode
         openEventModal(calendarEvent, 'view');
         
         console.log('🚀 openEventModal called successfully');
         
-        // Check modal state after a brief delay
-        setTimeout(() => {
-          console.log('🚀 Modal state after opening (delayed check):', modalState);
-        }, 100);
-        
       } else {
-        console.warn('⚠️ Event not found in calendar data:', eventId);
-        console.warn('Available events:', calendarEvents.map(e => ({ id: e.id, title: e.title })));
+        // Enhanced fallback: Create event from FullCalendar data
+        console.log('⚠️ Event not found in calendar data, creating from FullCalendar event');
+        
+        const fallbackEvent = {
+          id: event?.id || 'unknown',
+          title: event?.title || 'Unknown Event',
+          description: event?.extendedProps?.description || '',
+          start: event?.start ? event.start.toISOString() : new Date().toISOString(),
+          end: event?.end ? event.end.toISOString() : new Date().toISOString(),
+          trainerId: event?.extendedProps?.trainerId || null,
+          eventType: event?.extendedProps?.eventType || 'session',
+          bookingStatus: event?.extendedProps?.bookingStatus || 'available',
+          sessionType: event?.extendedProps?.sessionType || 'individual',
+          location: event?.extendedProps?.location || 'Online',
+          maxParticipants: event?.extendedProps?.maxParticipants || 1,
+          currentParticipants: event?.extendedProps?.currentParticipants || 0,
+          backgroundColor: event?.backgroundColor || '#8b5cf6',
+          borderColor: event?.borderColor || '#8b5cf6',
+          textColor: event?.textColor || '#ffffff'
+        };
+        
+        console.log('✅ Created fallback event:', fallbackEvent);
+        openEventModal(fallbackEvent, 'view');
       }
       
       console.log('🔥 EVENT CLICK DEBUG END 🔥');
@@ -299,7 +369,7 @@ export const TrainingCalendar: React.FC<TrainingCalendarProps> = ({
       console.error('EventInfo that caused error:', eventInfo);
       console.error('Stack trace:', error instanceof Error ? error.stack : 'No stack trace available');
     }
-  }, [calendarEvents, openEventModal, modalState]);
+  }, [calendarEvents, openEventModal]);
 
   const handleDateSelect = useCallback((selectInfo: any) => {
     console.log('📅 Date selected for new event:', selectInfo.startStr);

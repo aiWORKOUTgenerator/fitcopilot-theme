@@ -37,6 +37,9 @@ export const GroupFitnessClassConfig: EventConfig = {
   // Location selection required for virtual meeting
   requiresLocation: true,
   
+  // Default to Google Meet for virtual group classes
+  defaultLocation: 'google_meet',
+  
   // Default event classification
   defaultEventType: 'group_class',
   

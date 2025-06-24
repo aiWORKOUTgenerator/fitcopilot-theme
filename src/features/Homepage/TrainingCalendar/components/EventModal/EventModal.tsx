@@ -194,7 +194,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
       eventType: 'session' as EventType,
       bookingStatus: 'available' as BookingStatus,
       sessionType: 'individual' as SessionType,
-      location: '',
+      location: 'google_meet',
       duration: undefined,
       maxParticipants: 1,
       currentParticipants: 0,
@@ -207,9 +207,10 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
   
   const memoizedOptions = useMemo(() => ({
     locationOptions: [
-      { value: '', label: '- Select Location -' },
-      { value: 'google_meet', label: 'Google Meet (Active)' },
-      { value: 'zoom', label: 'Zoom (Coming Soon)' }
+      { value: 'google_meet', label: '📹 Google Meet (Recommended)' },
+      { value: 'zoom', label: '💻 Zoom (Coming Soon)' },
+      { value: 'in_person', label: '🏢 In-Person Session' },
+      { value: 'phone_call', label: '📞 Phone Call' }
     ],
     eventTypeOptions: [
       { value: 'session', label: 'Training Session' },
@@ -427,13 +428,29 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
     // Check if user is already authenticated (placeholder for future implementation)
     const isAuthenticated = false; // TODO: Implement user authentication check
     
-    if (!isAuthenticated && mode === 'create') {
+    if (!isAuthenticated) {
       setShowUserRegistration(true);
       return true; // Prevent normal save flow
     }
     
     return false; // Allow normal save flow
-  }, [mode]);
+  }, []);
+
+  const handleBookSession = useCallback(() => {
+    console.log('📅 Book Session clicked - checking user registration...');
+    
+    // Check if user registration is required
+    if (handleUserRegistrationRequired()) {
+      console.log('📅 User registration required - showing registration modal');
+      return; // User registration modal will be shown
+    }
+    
+    // If user is already authenticated, proceed to booking/edit mode
+    console.log('📅 User authenticated - proceeding to booking');
+    if (onModeChange) {
+      onModeChange('edit');
+    }
+  }, [handleUserRegistrationRequired, onModeChange]);
   
   const handleUserRegistered = useCallback(async (user: RegisteredUser) => {
     console.log('User registered successfully:', user);
@@ -874,11 +891,14 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
 
     const getLocationDisplay = (location: string) => {
       switch (location) {
-        case 'Google Meet (Active)': return '📹 Google Meet (Online)';
-        case 'Zoom (Coming Soon)': return '📹 Zoom (Coming Soon)';
+        case 'google_meet': return '📹 Google Meet (Online)';
+        case 'zoom': return '💻 Zoom (Coming Soon)';
+        case 'in_person': return '🏢 In-Person Session';
+        case 'phone_call': return '📞 Phone Call';
+        case 'Google Meet (Active)': return '📹 Google Meet (Online)'; // Legacy support
+        case 'Zoom (Coming Soon)': return '💻 Zoom (Coming Soon)'; // Legacy support
         case 'online': return '📹 Online Session';
-        case 'in-person': return '🏢 In-Person';
-        default: return location || '📹 Online Session';
+        default: return location || '📹 Google Meet (Online)';
       }
     };
 
@@ -928,19 +948,119 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
             </div>
           </div>
 
-          {/* Location Section */}
-          <div className="event-modal__detail-section">
-            <h4 className="section-title">📍 Location</h4>
+          {/* Location Section - ENHANCED with Google Meet default */}
+          <div className="event-modal__detail-section location-section">
+            <h4 className="section-title">📍 Meeting Location</h4>
             <div className="detail-content">
               <div className="detail-item location-item">
-                {getLocationDisplay(event.location || '')}
+                <div className="location-display">
+                  <div className="location-main">
+                    {getLocationDisplay(event.location || 'google_meet')}
+                  </div>
+                  {(event.location === 'google_meet' || !event.location) && (
+                    <div className="location-features">
+                      <span className="feature-badge">✨ HD Video & Audio</span>
+                      <span className="feature-badge">🔒 Secure & Private</span>
+                      <span className="feature-badge">📱 Mobile Friendly</span>
+                    </div>
+                  )}
+                </div>
               </div>
-              {event.zoomLink && (
-                <div className="detail-item">
-                  <strong>Meeting Link:</strong> 
-                  <a href={event.zoomLink} target="_blank" rel="noopener noreferrer" className="meeting-link">
-                    Join Session
-                  </a>
+              {/* Enhanced Meeting Link Section */}
+              {(event.location === 'google_meet' || !event.location) && (
+                <div className="detail-item meeting-link-section">
+                  <div className="meeting-link-container">
+                    <div className="meeting-link-header">
+                      <strong>📹 Meeting Access</strong>
+                      <span className="meeting-status available">Ready to Join</span>
+                    </div>
+                    {event.zoomLink ? (
+                      <a 
+                        href={event.zoomLink} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="meeting-link-button primary"
+                      >
+                        <span className="link-icon">🚀</span>
+                        <span className="link-text">Join Google Meet Session</span>
+                        <span className="link-arrow">→</span>
+                      </a>
+                    ) : (
+                      <div className="meeting-link-placeholder">
+                        <span className="placeholder-icon">🔗</span>
+                        <span className="placeholder-text">Meeting link will be provided upon booking confirmation</span>
+                      </div>
+                    )}
+                    <div className="meeting-instructions">
+                      <p><strong>📋 How to Join:</strong></p>
+                      <ul>
+                        <li>Click the meeting link 5 minutes before your session</li>
+                        <li>Allow camera and microphone permissions</li>
+                        <li>Have a stable internet connection ready</li>
+                        <li>Find a quiet, well-lit space for your session</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* Zoom Coming Soon Section */}
+              {event.location === 'zoom' && (
+                <div className="detail-item meeting-link-section">
+                  <div className="meeting-link-container coming-soon">
+                    <div className="meeting-link-header">
+                      <strong>💻 Zoom Integration</strong>
+                      <span className="meeting-status coming-soon">Coming Soon</span>
+                    </div>
+                    <div className="coming-soon-notice">
+                      <span className="notice-icon">🚧</span>
+                      <span className="notice-text">Zoom integration is currently in development. Please use Google Meet for now.</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* In-Person Location Details */}
+              {event.location === 'in_person' && (
+                <div className="detail-item meeting-link-section">
+                  <div className="meeting-link-container in-person">
+                    <div className="meeting-link-header">
+                      <strong>🏢 Studio Location</strong>
+                      <span className="meeting-status confirmed">Address Confirmed</span>
+                    </div>
+                    <div className="location-details">
+                      <p><strong>📍 Address:</strong> FitCopilot Training Studio<br />
+                      123 Fitness Ave, Suite 100<br />
+                      Your City, State 12345</p>
+                      <div className="location-instructions">
+                        <p><strong>📋 What to Bring:</strong></p>
+                        <ul>
+                          <li>Workout clothes and athletic shoes</li>
+                          <li>Water bottle and towel</li>
+                          <li>Arrive 10 minutes early for check-in</li>
+                          <li>Valid ID for first-time visitors</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* Phone Call Details */}
+              {event.location === 'phone_call' && (
+                <div className="detail-item meeting-link-section">
+                  <div className="meeting-link-container phone-call">
+                    <div className="meeting-link-header">
+                      <strong>📞 Phone Consultation</strong>
+                      <span className="meeting-status ready">Call Details</span>
+                    </div>
+                    <div className="phone-details">
+                      <p><strong>📱 How it Works:</strong></p>
+                      <ul>
+                        <li>Your trainer will call you at the scheduled time</li>
+                        <li>Ensure you have good phone reception</li>
+                        <li>Have a pen and paper ready for notes</li>
+                        <li>Find a quiet space for your consultation</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -1006,7 +1126,7 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
             <button
               type="button"
               className="btn btn--primary btn--large"
-              onClick={() => onModeChange && onModeChange('edit')}
+              onClick={handleBookSession}
               disabled={loading}
             >
               📅 Book This Session
@@ -1396,7 +1516,11 @@ const EventModal: React.FC<EventModalProps> = React.memo(({
           showDeleteConfirm={showDeleteConfirm}
           onClose={onClose}
           onSave={handleSave}
-          onDelete={onDelete}
+          onDelete={onDelete ? () => {
+            if (event?.id) {
+              onDelete(event.id);
+            }
+          } : undefined}
           onShowDeleteConfirm={setShowDeleteConfirm}
           onConfirmDelete={() => {
             setShowDeleteConfirm(false);

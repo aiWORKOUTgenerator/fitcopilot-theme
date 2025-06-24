@@ -37,6 +37,9 @@ export const FreeConsultationConfig: EventConfig = {
   // Location selection required for virtual meeting
   requiresLocation: true,
   
+  // Default to Google Meet for virtual consultations
+  defaultLocation: 'google_meet',
+  
   // Default event classification
   defaultEventType: 'session',
   

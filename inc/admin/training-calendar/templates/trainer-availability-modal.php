@@ -433,6 +433,9 @@
                                 <p>Loading coverage analysis...</p>
                             </div>
                         </div>
+                        
+                        <!-- Event Type Coverage (for JavaScript compatibility) -->
+                        <div id="event-type-coverage" style="margin-top: 20px;"></div>
                     </div>
                 </div>
                 
@@ -462,6 +465,55 @@
                     </div>
                 </div>
                 
+                <!-- Advanced Analytics (Charts & Visualizations) -->
+                <div class="advanced-analytics" style="margin-bottom: 30px;">
+                    <div class="analytics-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <!-- Certification Breakdown Chart -->
+                        <div class="chart-container" style="background: white; border-radius: 8px; border: 1px solid #ddd; padding: 20px;">
+                            <h5 style="margin: 0 0 15px 0; color: #1d2327;">Certification Levels</h5>
+                            <div id="certification-chart">
+                                <div style="text-align: center; padding: 20px; color: #666;">
+                                    <div class="spinner is-active" style="float: none; margin: 0 auto 10px;"></div>
+                                    <p>Loading certification data...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Workload Distribution -->
+                        <div class="chart-container" style="background: white; border-radius: 8px; border: 1px solid #ddd; padding: 20px;">
+                            <h5 style="margin: 0 0 15px 0; color: #1d2327;">Workload Distribution</h5>
+                            <div id="workload-distribution">
+                                <div style="text-align: center; padding: 20px; color: #666;">
+                                    <div class="spinner is-active" style="float: none; margin: 0 auto 10px;"></div>
+                                    <p>Loading workload data...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Availability Heatmap -->
+                    <div class="heatmap-container" style="margin-top: 20px; background: white; border-radius: 8px; border: 1px solid #ddd; padding: 20px;">
+                        <h5 style="margin: 0 0 15px 0; color: #1d2327;">Availability Heatmap</h5>
+                        <div id="availability-heatmap">
+                            <div style="text-align: center; padding: 20px; color: #666;">
+                                <div class="spinner is-active" style="float: none; margin: 0 auto 10px;"></div>
+                                <p>Loading availability heatmap...</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Trends -->
+                    <div class="trends-container" style="margin-top: 20px; background: white; border-radius: 8px; border: 1px solid #ddd; padding: 20px;">
+                        <h5 style="margin: 0 0 15px 0; color: #1d2327;">Performance Trends</h5>
+                        <div id="performance-trends">
+                            <div style="text-align: center; padding: 20px; color: #666;">
+                                <div class="spinner is-active" style="float: none; margin: 0 auto 10px;"></div>
+                                <p>Loading performance trends...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Assignment Recommendations -->
                 <div class="assignment-recommendations" style="background: white; border-radius: 8px; border: 1px solid #ddd; overflow: hidden;">
                     <div class="recommendations-header" style="padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd;">
@@ -477,6 +529,9 @@
                                 <p>Analyzing assignments for recommendations...</p>
                             </div>
                         </div>
+                        
+                        <!-- Recommendations Panel (for JavaScript compatibility) -->
+                        <div id="recommendations-panel" style="display: none;"></div>
                     </div>
                 </div>
             </div>

@@ -47,22 +47,44 @@
     --color-violet-800: #4c1d95;
     --color-violet-900: #2e1065;
 
+    // Success color scale for better contrast
+    --color-success-50: #f0fdf4;
+    --color-success-100: #dcfce7;
+    --color-success-200: #bbf7d0;
+    --color-success-300: #86efac;
+    --color-success-400: #4ade80;
+    --color-success-500: #22c55e;
+    --color-success-600: #16a34a;
+    --color-success-700: #15803d;
+    --color-success-800: #166534;
+    --color-success-900: #14532d;
+
     // Semantic color mapping
     --color-brand-primary: var(--color-primary-500);
     --color-brand-accent: var(--color-accent-400);
 
-    // UI state colors
+    // UI state colors - ENHANCED for better contrast
     --color-ui-background: var(--color-gray-900);
     --color-ui-surface: var(--color-gray-800);
-    --color-ui-surface-alt: rgba(31, 41, 55, 0.6);  /* Lighter: 0.8 → 0.6 */
-    --color-ui-border: var(--color-gray-700);
+    --color-ui-surface-elevated: var(--color-gray-700);
+    --color-ui-surface-alt: rgba(31, 41, 55, 0.6);
+    --color-ui-border: var(--color-gray-600);
+    --color-ui-border-light: var(--color-gray-500);
 
-    // Text colors
-    --color-text-primary: var(--color-gray-50);
-    --color-text-secondary: var(--color-gray-300);
+    // Text colors - FIXED for better contrast on dark backgrounds
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #e5e7eb;
+    --color-text-muted: #d1d5db;
     --color-text-accent: var(--color-accent-400);
-    --color-text-muted: var(--color-gray-400);
-    --color-text-inverse: var(--color-gray-900);
+    --color-text-success: var(--color-success-400);
+    --color-text-warning: #fbbf24;
+    --color-text-error: #f87171;
+
+    // Status colors for dark theme compatibility
+    --color-status-success: var(--color-success-400);
+    --color-status-warning: #fbbf24;
+    --color-status-error: #f87171;
+    --color-status-info: #60a5fa;
 
     // Component colors
     --color-hero-heading: var(--color-text-primary);

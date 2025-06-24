@@ -422,12 +422,19 @@ jQuery(document).ready(function($) {
         updateAdminInterface: function(data) {
             const events = data.events || [];
             
-            // Calculate statistics
+            // Filter to only upcoming events for statistics
+            const now = new Date();
+            const upcomingEvents = events.filter(event => {
+                const eventDate = new Date(event.start_datetime);
+                return eventDate > now; // Only events in the future
+            });
+            
+            // Calculate statistics for upcoming events only
             const stats = {
-                total: events.length,
-                confirmed: events.filter(e => e.booking_status === 'confirmed').length,
-                pending: events.filter(e => e.booking_status === 'pending').length,
-                available: events.filter(e => e.booking_status === 'available').length
+                total: upcomingEvents.length,
+                confirmed: upcomingEvents.filter(e => e.booking_status === 'confirmed').length,
+                pending: upcomingEvents.filter(e => e.booking_status === 'pending').length,
+                available: upcomingEvents.filter(e => e.booking_status === 'available').length
             };
             
             // Update statistics display
@@ -436,10 +443,11 @@ jQuery(document).ready(function($) {
             $('#pending-events').text(stats.pending);
             $('#available-slots').text(stats.available);
             
-            // Update events list
+            // Update events list (this function will also filter for upcoming events)
             this.updateEventsList(events);
             
             console.log('✅ Admin interface updated with live data');
+            console.log('📊 Upcoming events statistics:', stats);
         },
         
         /**
@@ -466,11 +474,37 @@ jQuery(document).ready(function($) {
                 return;
             }
             
-            // Sort events by start date
-            events.sort((a, b) => new Date(a.start_datetime) - new Date(b.start_datetime));
+            // Filter to only show future events (upcoming events only)
+            const now = new Date();
+            const futureEvents = events.filter(event => {
+                const eventDate = new Date(event.start_datetime);
+                return eventDate > now; // Only events in the future
+            });
+            
+            // Check if we have any upcoming events after filtering
+            if (futureEvents.length === 0) {
+                eventsContainer.html(`
+                    <div class="no-events">
+                        <p>No upcoming events found. All events are in the past.</p>
+                        <button type="button" class="button button-primary" id="create-first-event-btn">
+                            ➕ Create New Event
+                        </button>
+                    </div>
+                `);
+                
+                // Bind create event handler
+                $('#create-first-event-btn').on('click', function() {
+                    TrainingCalendarAdmin.showCreateEventModal();
+                });
+                
+                return;
+            }
+            
+            // Sort future events by start date
+            futureEvents.sort((a, b) => new Date(a.start_datetime) - new Date(b.start_datetime));
             
             // Show only next 5 upcoming events
-            const upcomingEvents = events.slice(0, 5);
+            const upcomingEvents = futureEvents.slice(0, 5);
             
             let eventsHtml = '';
             upcomingEvents.forEach(event => {
@@ -708,22 +742,35 @@ jQuery(document).ready(function($) {
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label for="event-title">Event Title *</label>
-                                        <select id="event-title" name="title" required>
-                                            <option value="" selected>- Choose Event -</option>
-                                            <option value="Free Consultation (20 Min)">Free Consultation (20 Min)</option>
-                                            <option value="Online Group Fitness Class (45 Min)">Online Group Fitness Class (45 Min)</option>
-                                            <option value="Personal Training Session">Personal Training Session</option>
-                                        </select>
+                                        <div class="event-title-container">
+                                            <input type="text" id="event-title" name="title" required
+                                                   placeholder="Enter custom event title or select from suggestions..."
+                                                   style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                            <div class="title-suggestions" style="margin-top: 8px;">
+                                                <label style="font-size: 12px; color: #666; margin-bottom: 5px; display: block;">Quick suggestions:</label>
+                                                <div class="suggestion-buttons" style="display: flex; flex-wrap: wrap; gap: 5px;">
+                                                    <button type="button" class="title-suggestion-btn" data-title="Free Consultation">Free Consultation</button>
+                                                    <button type="button" class="title-suggestion-btn" data-title="Fitness Assessment">Fitness Assessment</button>
+                                                    <button type="button" class="title-suggestion-btn" data-title="Personal Training Session">Personal Training Session</button>
+                                                    <button type="button" class="title-suggestion-btn" data-title="Group Fitness Class">Group Fitness Class</button>
+                                                    <button type="button" class="title-suggestion-btn" data-title="Nutrition Consultation">Nutrition Consultation</button>
+                                                    <button type="button" class="title-suggestion-btn" data-title="Goal Setting Session">Goal Setting Session</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="event-type">Event Type *</label>
                                         <select id="event-type" name="event_type" required>
-                                            <option value="session">Personal Training Session</option>
-                                            <option value="group_class">Group Fitness Class</option>
-                                            <option value="assessment">Fitness Assessment</option>
-                                            <option value="workshop">Workshop/Seminar</option>
-                                            <option value="availability">Trainer Availability</option>
-                                            <option value="blocked">Blocked Time</option>
+                                            <option value="">- Select Event Type -</option>
+                                            <option value="fitness_assessment">🏃‍♂️ Fitness Assessment (Free, 20 min)</option>
+                                            <option value="personal_training">💪 Personal Training (Duration-based pricing)</option>
+                                            <option value="group_fitness">🤸‍♀️ Group Fitness Class ($25, Trainer scheduled)</option>
+                                            <option value="group_forum">💬 Group Discussion Forum (Free, 30-45 min)</option>
+                                            <option value="workshop">🎓 Workshop/Seminar</option>
+                                            <option value="consultation">💬 Consultation</option>
+                                            <option value="assessment">📊 Assessment</option>
+                                            <option value="blocked">⛔ Blocked Time</option>
                                         </select>
                                     </div>
                                 </div>
@@ -952,12 +999,27 @@ jQuery(document).ready(function($) {
                 }
             });
             
-            // Event title change handler - update description and toggle duration field
-            $('#event-title').on('change', function() {
-                const selectedTitle = $(this).val();
-                const description = TrainingCalendarAdmin.getDefaultDescription(selectedTitle);
+            // Title suggestion button handlers
+            $(document).on('click', '.title-suggestion-btn', function() {
+                const suggestedTitle = $(this).data('title');
+                $('#event-title').val(suggestedTitle).trigger('input');
+                $(this).addClass('selected').siblings().removeClass('selected');
+            });
+            
+            // Event type change handler - provide smart title suggestions and update form
+            $('#event-type').on('change', function() {
+                const selectedEventType = $(this).val();
+                TrainingCalendarAdmin.updateFormForEventType(selectedEventType);
+            });
+            
+            // Event title input handler - update description as user types or selects
+            $('#event-title').on('input change', function() {
+                const currentTitle = $(this).val().trim();
+                if (currentTitle) {
+                    const description = TrainingCalendarAdmin.getSmartDescription(currentTitle);
                 $('#event-description').val(description);
-                TrainingCalendarAdmin.toggleDurationField(selectedTitle);
+                    TrainingCalendarAdmin.toggleDurationField(currentTitle);
+                }
             });
             
             // Save event
@@ -1004,16 +1066,24 @@ jQuery(document).ready(function($) {
             const $spinner = $saveBtn.find('.button-spinner');
             const $text = $saveBtn.find('.button-text');
             
-            // Custom validation for dropdown selections
-            const eventTitle = $('#event-title').val();
+            // Custom validation for required fields
+            const eventTitle = $('#event-title').val().trim();
             if (!eventTitle) {
-                alert('Please select an event type from the dropdown.');
+                alert('Please enter an event title.');
                 $('#event-title').focus();
                 return;
             }
             
+            // Event type validation
+            const eventType = $('#event-type').val();
+            if (!eventType) {
+                alert('Please select an event type.');
+                $('#event-type').focus();
+                return;
+            }
+            
             // Duration validation for Personal Training Session
-            if (eventTitle === 'Personal Training Session' && !$('#event-duration').val()) {
+            if (eventType === 'personal_training' && $('#duration-field-container').is(':visible') && !$('#event-duration').val()) {
                 alert('Please select a duration for the Personal Training Session.');
                 $('#event-duration').focus();
                 return;
@@ -1265,12 +1335,22 @@ jQuery(document).ready(function($) {
                                 <div class="form-row">
                                                                     <div class="form-group">
                                     <label for="edit-event-title">Event Title *</label>
-                                    <select id="edit-event-title" required>
-                                        <option value="" ${!event.title || (event.title !== 'Free Consultation (20 Min)' && event.title !== 'Online Group Fitness Class (45 Min)' && event.title !== 'Personal Training Session') ? 'selected' : ''}>- Choose Event -</option>
-                                        <option value="Free Consultation (20 Min)" ${event.title === 'Free Consultation (20 Min)' ? 'selected' : ''}>Free Consultation (20 Min)</option>
-                                        <option value="Online Group Fitness Class (45 Min)" ${event.title === 'Online Group Fitness Class (45 Min)' ? 'selected' : ''}>Online Group Fitness Class (45 Min)</option>
-                                        <option value="Personal Training Session" ${event.title === 'Personal Training Session' ? 'selected' : ''}>Personal Training Session</option>
-                                    </select>
+                                        <div class="event-title-container">
+                                            <input type="text" id="edit-event-title" required
+                                                   placeholder="Enter custom event title or select from suggestions..."
+                                                   style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                                            <div class="title-suggestions" style="margin-top: 8px;">
+                                                <label style="font-size: 12px; color: #666; margin-bottom: 5px; display: block;">Quick suggestions:</label>
+                                                <div class="suggestion-buttons" style="display: flex; flex-wrap: wrap; gap: 5px;">
+                                                    <button type="button" class="title-suggestion-btn" data-title="Free Consultation">Free Consultation</button>
+                                                    <button type="button" class="title-suggestion-btn" data-title="Fitness Assessment">Fitness Assessment</button>
+                                                    <button type="button" class="title-suggestion-btn" data-title="Personal Training Session">Personal Training Session</button>
+                                                    <button type="button" class="title-suggestion-btn" data-title="Group Fitness Class">Group Fitness Class</button>
+                                                    <button type="button" class="title-suggestion-btn" data-title="Nutrition Consultation">Nutrition Consultation</button>
+                                                    <button type="button" class="title-suggestion-btn" data-title="Goal Setting Session">Goal Setting Session</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                 </div>
                                     <div class="form-group">
                                         <label for="edit-event-type">Event Type</label>
@@ -1385,8 +1465,16 @@ jQuery(document).ready(function($) {
             // Add styles (reuse existing modal styles)
             this.addModalStyles();
             
+            // Store current editing event for reference
+            window.currentEditingEvent = event;
+            
             // Add modal to page
             $('body').append(modalHtml);
+            
+            // Set the title value after modal is added to DOM
+            setTimeout(() => {
+                $('#edit-event-title').val(event.title || '');
+            }, 100);
             
             // Bind modal events
             this.bindEditEventModalEvents();
@@ -1424,12 +1512,27 @@ jQuery(document).ready(function($) {
                 TrainingCalendarAdmin.saveEditedEvent();
             });
             
-            // Event title change handler - update description and toggle duration field
-            $('#edit-event-title').on('change', function() {
-                const selectedTitle = $(this).val();
-                const description = TrainingCalendarAdmin.getDefaultDescription(selectedTitle);
+            // Set the current event title value
+            const currentEvent = window.currentEditingEvent;
+            if (currentEvent) {
+                $('#edit-event-title').val(currentEvent.title || '');
+            }
+            
+            // Title suggestion button handlers for edit modal
+            $(document).on('click', '#edit-event-modal .title-suggestion-btn', function() {
+                const suggestedTitle = $(this).data('title');
+                $('#edit-event-title').val(suggestedTitle).trigger('input');
+                $(this).addClass('selected').siblings().removeClass('selected');
+            });
+            
+            // Event title input handler - update description as user types or selects
+            $('#edit-event-title').on('input change', function() {
+                const currentTitle = $(this).val().trim();
+                if (currentTitle) {
+                    const description = TrainingCalendarAdmin.getSmartDescription(currentTitle);
                 $('#edit-event-description').val(description);
-                TrainingCalendarAdmin.toggleEditDurationField(selectedTitle);
+                    TrainingCalendarAdmin.toggleEditDurationField(currentTitle);
+                }
             });
         },
 
@@ -1598,6 +1701,215 @@ jQuery(document).ready(function($) {
                     return 'One-on-one personalized training session tailored to your specific goals and fitness level. Includes customized workout programming, form correction, motivation, and progress tracking. Sessions can be conducted in-person or virtually based on your preference.';
                 default:
                     return '';
+            }
+        },
+        
+        /**
+         * Get smart description based on event title (enhanced version)
+         */
+        getSmartDescription: function(title) {
+            const lowerTitle = title.toLowerCase();
+            
+            // Exact matches first
+            const exactDescriptions = {
+                'free consultation': 'A complimentary consultation to discuss your fitness goals, assess your current fitness level, and create a personalized training plan.',
+                'fitness assessment': 'Comprehensive fitness evaluation including movement analysis, strength testing, and goal-setting discussion to create your personalized fitness roadmap.',
+                'personal training session': 'One-on-one personalized training session tailored to your specific goals and fitness level. Includes customized workout programming, form correction, and progress tracking.',
+                'group fitness class': 'Energizing group fitness class designed for all fitness levels with dynamic warm-up, full-body workout, and cool-down stretching.',
+                'nutrition consultation': 'Personalized nutrition consultation to discuss dietary goals, meal planning, and create a sustainable nutrition strategy.',
+                'goal setting session': 'Dedicated session to define clear fitness goals, create action plans, and establish accountability measures for your fitness journey.'
+            };
+            
+            if (exactDescriptions[lowerTitle]) {
+                return exactDescriptions[lowerTitle];
+            }
+            
+            // Partial matches based on keywords
+            if (lowerTitle.includes('consultation')) {
+                return 'Professional consultation to discuss your needs, assess current status, and create a personalized plan.';
+            } else if (lowerTitle.includes('assessment') || lowerTitle.includes('evaluation')) {
+                return 'Comprehensive assessment to evaluate your current fitness level and identify areas for improvement.';
+            } else if (lowerTitle.includes('training') || lowerTitle.includes('workout')) {
+                return 'Personalized training session designed to help you achieve your specific fitness goals.';
+            } else if (lowerTitle.includes('class') || lowerTitle.includes('group')) {
+                return 'Group fitness session designed for multiple participants with professional instruction and motivation.';
+            } else if (lowerTitle.includes('nutrition') || lowerTitle.includes('diet')) {
+                return 'Nutrition-focused session to help you develop healthy eating habits and achieve your wellness goals.';
+            }
+            
+            // Default fallback
+            return 'Professional fitness session tailored to your individual needs and goals.';
+        },
+        
+        /**
+         * Update form based on selected event type
+         */
+        updateFormForEventType: function(eventType) {
+            if (!eventType) return;
+            
+            // Update suggested titles based on event type
+            this.updateTitleSuggestions(eventType);
+            
+            // Update default values based on event type
+            this.setEventTypeDefaults(eventType);
+            
+            // Update form constraints
+            this.updateFormConstraints(eventType);
+        },
+        
+        /**
+         * Update title suggestions based on event type
+         */
+        updateTitleSuggestions: function(eventType) {
+            const suggestionMapping = {
+                'fitness_assessment': [
+                    'Free Consultation',
+                    'Fitness Assessment', 
+                    'Goal Setting Session',
+                    'Movement Analysis',
+                    'Fitness Evaluation',
+                    'Initial Consultation'
+                ],
+                'personal_training': [
+                    'Personal Training Session',
+                    'One-on-One Training',
+                    'Strength Training',
+                    'Cardio Session',
+                    'Weight Loss Session',
+                    'Muscle Building Session'
+                ],
+                'group_fitness': [
+                    'Group Fitness Class',
+                    'HIIT Class',
+                    'Yoga Session',
+                    'Cardio Bootcamp',
+                    'Strength Circuit',
+                    'Wellness Workshop'
+                ],
+                'group_forum': [
+                    'Group Discussion Forum',
+                    'Wellness Workshop',
+                    'Nutrition Seminar',
+                    'Goal Setting Workshop',
+                    'Community Check-in',
+                    'Motivation Session'
+                ]
+            };
+            
+            const suggestions = suggestionMapping[eventType] || [
+                'Fitness Session',
+                'Training Session',
+                'Consultation',
+                'Assessment',
+                'Workshop',
+                'Class'
+            ];
+            
+            // Update suggestion buttons
+            const $container = $('.suggestion-buttons');
+            $container.empty();
+            
+            suggestions.forEach(title => {
+                const $btn = $(`<button type="button" class="title-suggestion-btn" data-title="${title}">${title}</button>`);
+                $container.append($btn);
+            });
+        },
+        
+        /**
+         * Set default values based on event type
+         */
+        setEventTypeDefaults: function(eventType) {
+            const defaults = {
+                'fitness_assessment': {
+                    title: 'Free Consultation',
+                    duration: null,
+                    maxParticipants: 1,
+                    backgroundColor: '#10b981',
+                    showDuration: false
+                },
+                'personal_training': {
+                    title: 'Personal Training Session',
+                    duration: null,
+                    maxParticipants: 1,
+                    backgroundColor: '#3b82f6',
+                    showDuration: true
+                },
+                'group_fitness': {
+                    title: 'Group Fitness Class',
+                    duration: 45,
+                    maxParticipants: 15,
+                    backgroundColor: '#f59e0b',
+                    showDuration: false
+                },
+                'group_forum': {
+                    title: 'Group Discussion Forum',
+                    duration: 30,
+                    maxParticipants: 8,
+                    backgroundColor: '#8b5cf6',
+                    showDuration: false
+                }
+            };
+            
+            const config = defaults[eventType];
+            if (!config) return;
+            
+            // Set default title if current is empty
+            if (!$('#event-title').val().trim()) {
+                $('#event-title').val(config.title);
+            }
+            
+            // Update form fields
+            $('#event-max-participants').val(config.maxParticipants);
+            $('#event-background-color').val(config.backgroundColor);
+            
+            // Show/hide duration field
+            if (config.showDuration) {
+                $('#duration-field-container').show();
+            } else {
+                $('#duration-field-container').hide();
+                if (config.duration) {
+                    $('#event-duration').val(config.duration);
+                }
+            }
+        },
+        
+        /**
+         * Update form constraints based on event type
+         */
+        updateFormConstraints: function(eventType) {
+            const constraints = {
+                'fitness_assessment': {
+                    maxParticipants: { min: 1, max: 1 },
+                    durationRequired: false
+                },
+                'personal_training': {
+                    maxParticipants: { min: 1, max: 2 },
+                    durationRequired: true
+                },
+                'group_fitness': {
+                    maxParticipants: { min: 2, max: 20 },
+                    durationRequired: false
+                },
+                'group_forum': {
+                    maxParticipants: { min: 2, max: 12 },
+                    durationRequired: false
+                }
+            };
+            
+            const config = constraints[eventType];
+            if (!config) return;
+            
+            // Update max participants constraints
+            const $maxParticipants = $('#event-max-participants');
+            $maxParticipants.attr('min', config.maxParticipants.min);
+            $maxParticipants.attr('max', config.maxParticipants.max);
+            
+            // Adjust current value if out of range
+            const currentMax = parseInt($maxParticipants.val());
+            if (currentMax < config.maxParticipants.min) {
+                $maxParticipants.val(config.maxParticipants.min);
+            } else if (currentMax > config.maxParticipants.max) {
+                $maxParticipants.val(config.maxParticipants.max);
             }
         },
 
@@ -1925,6 +2237,41 @@ jQuery(document).ready(function($) {
                     text-align: center;
                     padding: 40px;
                     color: #6b7280;
+                }
+                
+                /* Title suggestion button styles */
+                .title-suggestion-btn {
+                    background: #f1f5f9;
+                    border: 1px solid #cbd5e1;
+                    padding: 6px 12px;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    cursor: pointer;
+                    color: #475569;
+                    transition: all 0.2s ease;
+                }
+                
+                .title-suggestion-btn:hover {
+                    background: #e2e8f0;
+                    border-color: #94a3b8;
+                    color: #334155;
+                }
+                
+                .title-suggestion-btn.selected {
+                    background: #1d4ed8;
+                    border-color: #1d4ed8;
+                    color: white;
+                }
+                
+                .event-title-container {
+                    position: relative;
+                }
+                
+                .title-suggestions {
+                    background: #fafafa;
+                    border-radius: 4px;
+                    padding: 10px;
+                    border: 1px solid #e5e7eb;
                 }
                 
                 @media (max-width: 768px) {

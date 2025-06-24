@@ -42,6 +42,7 @@ export const createFormDefaults = (config: EventConfig): Partial<CalendarEvent> 
     title: config.title,
     description: config.description,
     duration: config.defaultDuration,
+    location: config.defaultLocation || 'google_meet',
     eventType: config.defaultEventType as any,
     sessionType: config.defaultSessionType as any,
     bookingStatus: config.defaultBookingStatus as any,
@@ -159,9 +160,10 @@ export const getCategoryDisplayName = (category: EventConfig['category']): strin
  * Default location options (shared across events)
  */
 export const DEFAULT_LOCATION_OPTIONS = [
-  { value: '', label: '- Select Location -' },
-  { value: 'google_meet', label: 'Google Meet (Active)' },
-  { value: 'zoom', label: 'Zoom (Coming Soon)' }
+  { value: 'google_meet', label: '📹 Google Meet (Recommended)' },
+  { value: 'zoom', label: '💻 Zoom (Coming Soon)' },
+  { value: 'in_person', label: '🏢 In-Person Session' },
+  { value: 'phone_call', label: '📞 Phone Call' }
 ];
 
 /**

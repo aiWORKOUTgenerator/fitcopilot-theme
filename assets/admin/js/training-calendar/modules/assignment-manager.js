@@ -265,6 +265,7 @@
          * Handle statistics tab activation
          */
         onStatisticsTabActivated: function() {
+            console.log('Assignment Manager: Statistics tab activated');
             this.loadAssignmentStatistics();
         },
         
@@ -951,6 +952,13 @@
          * Load assignment statistics for statistics tab
          */
         loadAssignmentStatistics: async function() {
+            console.log('Assignment Manager: Loading statistics...');
+            console.log('AJAX Config:', {
+                url: this.config.ajaxUrl,
+                nonce: this.config.nonce ? 'Present' : 'Missing',
+                timeout: this.config.timeout
+            });
+            
             try {
                 const response = await $.ajax({
                     url: this.config.ajaxUrl,
@@ -962,14 +970,22 @@
                     timeout: this.config.timeout
                 });
                 
+                console.log('Assignment Manager: AJAX response received:', response);
+                
                 if (response.success) {
+                    console.log('Assignment Manager: Statistics data:', response.data);
                     this.renderStatistics(response.data || response);
                 } else {
                     throw new Error(response.data?.message || 'Failed to load statistics');
                 }
                 
             } catch (error) {
-                console.error('Load statistics error:', error);
+                console.error('Assignment Manager: Load statistics error:', error);
+                console.error('Error details:', {
+                    status: error.status,
+                    statusText: error.statusText,
+                    responseText: error.responseText
+                });
                 this.showStatisticsError('Failed to load statistics: ' + error.message);
             }
         },
@@ -978,6 +994,8 @@
          * Render statistics dashboard - ENHANCED with detailed analytics
          */
         renderStatistics: function(data) {
+            console.log('Assignment Manager: Rendering statistics with data:', data);
+            
             // Update metric cards with enhanced data
             $('#stat-total-assignments').text(data.total_assignments || 0);
             $('#stat-coverage-rate').text(data.coverage_rate || '0%');
@@ -1218,7 +1236,7 @@
          * Render event type coverage bars
          */
         renderCoverageBars: function(eventTypeCoverage) {
-            const coverageContainer = $('#event-type-coverage');
+            const coverageContainer = $('#coverage-bars');
             if (!coverageContainer.length) return;
             
             const eventTypes = {
@@ -1297,7 +1315,7 @@
          * Render recommendations panel
          */
         renderRecommendations: function(recommendations) {
-            const recommendationsContainer = $('#recommendations-panel');
+            const recommendationsContainer = $('#recommendations-list');
             if (!recommendationsContainer.length) return;
             
             if (!recommendations.length) {
